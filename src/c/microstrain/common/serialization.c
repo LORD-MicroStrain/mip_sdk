@@ -183,7 +183,7 @@ EXTRACT_MACRO(double, double  )
 ///       The counter value read from the buffer.
 ///@param max_count
 ///       The maximum value of the counter. If the count exceeds this, it is
-///       set to 0 and the serializer is put into an error state.
+///       set to 0 and the serializer is insert into an error state.
 ///
 void microstrain_extract_count(microstrain_serializer* serializer, uint8_t* count_out, uint8_t max_count)
 {

@@ -1,8 +1,9 @@
 #pragma once
 
 #include "common.h"
-#include "mip/mip_descriptors.h"
-#include "../mip_result.h"
+#include <mip/mip_descriptors.h>
+#include <mip/mip_result.h>
+#include <mip/mip_interface.h>
 
 #include <stdint.h>
 #include <stddef.h>
@@ -14,9 +15,6 @@ namespace C {
 extern "C" {
 
 #endif // __cplusplus
-struct mip_interface;
-struct microstrain_serializer;
-struct mip_field;
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup MipCommands_c  MIP Commands [C]
@@ -67,17 +65,28 @@ struct mip_base_device_info
     char serial_number[16];
     char lot_number[16];
     char device_options[16];
-    
 };
 typedef struct mip_base_device_info mip_base_device_info;
+
 void insert_mip_base_device_info(microstrain_serializer* serializer, const mip_base_device_info* self);
 void extract_mip_base_device_info(microstrain_serializer* serializer, mip_base_device_info* self);
 
-typedef uint8_t mip_time_format;
-static const mip_time_format MIP_TIME_FORMAT_GPS = 1; ///<  GPS time, a = week number since 1980, b = time of week in milliseconds.
+enum mip_time_format
+{
+    MIP_TIME_FORMAT_GPS = 1,  ///<  GPS time, a = week number since 1980, b = time of week in milliseconds.
+};
+typedef enum mip_time_format mip_time_format;
 
-void insert_mip_time_format(microstrain_serializer* serializer, const mip_time_format self);
-void extract_mip_time_format(microstrain_serializer* serializer, mip_time_format* self);
+inline void insert_mip_time_format(microstrain_serializer* serializer, const mip_time_format self)
+{
+    microstrain_insert_u8(serializer, (uint8_t)(self));
+}
+inline void extract_mip_time_format(microstrain_serializer* serializer, mip_time_format* self)
+{
+    uint8_t tmp = 0;
+    microstrain_extract_u8(serializer, &tmp);
+    *self = tmp;
+}
 
 typedef uint32_t mip_commanded_test_bits_gq7;
 static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_NONE                   = 0x00000000;
@@ -109,9 +118,16 @@ static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_GNSS_RTK_FA
 static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_GNSS_SOLUTION_FAULT    = 0x40000000; ///<  
 static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_GNSS_GENERAL_FAULT     = 0x80000000; ///<  
 static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_ALL                    = 0xFFFFFFFF;
-
-void insert_mip_commanded_test_bits_gq7(microstrain_serializer* serializer, const mip_commanded_test_bits_gq7 self);
-void extract_mip_commanded_test_bits_gq7(microstrain_serializer* serializer, mip_commanded_test_bits_gq7* self);
+inline void insert_mip_commanded_test_bits_gq7(microstrain_serializer* serializer, const mip_commanded_test_bits_gq7 self)
+{
+    microstrain_insert_u32(serializer, (uint32_t)(self));
+}
+inline void extract_mip_commanded_test_bits_gq7(microstrain_serializer* serializer, mip_commanded_test_bits_gq7* self)
+{
+    uint32_t tmp = 0;
+    microstrain_extract_u32(serializer, &tmp);
+    *self = tmp;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -128,7 +144,7 @@ void extract_mip_commanded_test_bits_gq7(microstrain_serializer* serializer, mip
 ///
 ///@{
 
-mip_cmd_result mip_base_ping(struct mip_interface* device);
+mip_cmd_result mip_base_ping(mip_interface* device);
 
 ///@}
 ///
@@ -142,7 +158,7 @@ mip_cmd_result mip_base_ping(struct mip_interface* device);
 ///
 ///@{
 
-mip_cmd_result mip_base_set_idle(struct mip_interface* device);
+mip_cmd_result mip_base_set_idle(mip_interface* device);
 
 ///@}
 ///
@@ -155,13 +171,13 @@ mip_cmd_result mip_base_set_idle(struct mip_interface* device);
 struct mip_base_get_device_info_response
 {
     mip_base_device_info device_info;
-    
 };
 typedef struct mip_base_get_device_info_response mip_base_get_device_info_response;
+
 void insert_mip_base_get_device_info_response(microstrain_serializer* serializer, const mip_base_get_device_info_response* self);
 void extract_mip_base_get_device_info_response(microstrain_serializer* serializer, mip_base_get_device_info_response* self);
 
-mip_cmd_result mip_base_get_device_info(struct mip_interface* device, mip_base_device_info* device_info_out);
+mip_cmd_result mip_base_get_device_info(mip_interface* device, mip_base_device_info* device_info_out);
 
 ///@}
 ///
@@ -178,13 +194,13 @@ struct mip_base_get_device_descriptors_response
 {
     uint16_t descriptors[253];
     uint8_t descriptors_count;
-    
 };
 typedef struct mip_base_get_device_descriptors_response mip_base_get_device_descriptors_response;
+
 void insert_mip_base_get_device_descriptors_response(microstrain_serializer* serializer, const mip_base_get_device_descriptors_response* self);
 void extract_mip_base_get_device_descriptors_response(microstrain_serializer* serializer, mip_base_get_device_descriptors_response* self);
 
-mip_cmd_result mip_base_get_device_descriptors(struct mip_interface* device, uint16_t* descriptors_out, size_t descriptors_out_max, uint8_t* descriptors_out_count);
+mip_cmd_result mip_base_get_device_descriptors(mip_interface* device, uint16_t* descriptors_out, size_t descriptors_out_max, uint8_t* descriptors_out_count);
 
 ///@}
 ///
@@ -202,13 +218,13 @@ mip_cmd_result mip_base_get_device_descriptors(struct mip_interface* device, uin
 struct mip_base_built_in_test_response
 {
     uint32_t result;
-    
 };
 typedef struct mip_base_built_in_test_response mip_base_built_in_test_response;
+
 void insert_mip_base_built_in_test_response(microstrain_serializer* serializer, const mip_base_built_in_test_response* self);
 void extract_mip_base_built_in_test_response(microstrain_serializer* serializer, mip_base_built_in_test_response* self);
 
-mip_cmd_result mip_base_built_in_test(struct mip_interface* device, uint32_t* result_out);
+mip_cmd_result mip_base_built_in_test(mip_interface* device, uint32_t* result_out);
 
 ///@}
 ///
@@ -220,7 +236,7 @@ mip_cmd_result mip_base_built_in_test(struct mip_interface* device, uint32_t* re
 ///
 ///@{
 
-mip_cmd_result mip_base_resume(struct mip_interface* device);
+mip_cmd_result mip_base_resume(mip_interface* device);
 
 ///@}
 ///
@@ -237,13 +253,13 @@ struct mip_base_get_extended_descriptors_response
 {
     uint16_t descriptors[253];
     uint8_t descriptors_count;
-    
 };
 typedef struct mip_base_get_extended_descriptors_response mip_base_get_extended_descriptors_response;
+
 void insert_mip_base_get_extended_descriptors_response(microstrain_serializer* serializer, const mip_base_get_extended_descriptors_response* self);
 void extract_mip_base_get_extended_descriptors_response(microstrain_serializer* serializer, mip_base_get_extended_descriptors_response* self);
 
-mip_cmd_result mip_base_get_extended_descriptors(struct mip_interface* device, uint16_t* descriptors_out, size_t descriptors_out_max, uint8_t* descriptors_out_count);
+mip_cmd_result mip_base_get_extended_descriptors(mip_interface* device, uint16_t* descriptors_out, size_t descriptors_out_max, uint8_t* descriptors_out_count);
 
 ///@}
 ///
@@ -258,13 +274,13 @@ mip_cmd_result mip_base_get_extended_descriptors(struct mip_interface* device, u
 struct mip_base_continuous_bit_response
 {
     uint8_t result[16]; ///< Device-specific bitfield (128 bits). See device user manual. Bits are least-significant-byte first. For example, bit 0 is located at bit 0 of result[0], bit 1 is located at bit 1 of result[0], bit 8 is located at bit 0 of result[1], and bit 127 is located at bit 7 of result[15].
-    
 };
 typedef struct mip_base_continuous_bit_response mip_base_continuous_bit_response;
+
 void insert_mip_base_continuous_bit_response(microstrain_serializer* serializer, const mip_base_continuous_bit_response* self);
 void extract_mip_base_continuous_bit_response(microstrain_serializer* serializer, mip_base_continuous_bit_response* self);
 
-mip_cmd_result mip_base_continuous_bit(struct mip_interface* device, uint8_t* result_out);
+mip_cmd_result mip_base_continuous_bit(mip_interface* device, uint8_t* result_out);
 
 ///@}
 ///
@@ -288,14 +304,15 @@ mip_cmd_result mip_base_continuous_bit(struct mip_interface* device, uint8_t* re
 ///@{
 
 enum { MIP_BASE_COMM_SPEED_COMMAND_ALL_PORTS = 0 };
+
 struct mip_base_comm_speed_command
 {
     mip_function_selector function;
     uint8_t port; ///< Port ID number, starting with 1. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all ports. See the device user manual for details.
     uint32_t baud; ///< Port baud rate. Must be a supported rate.
-    
 };
 typedef struct mip_base_comm_speed_command mip_base_comm_speed_command;
+
 void insert_mip_base_comm_speed_command(microstrain_serializer* serializer, const mip_base_comm_speed_command* self);
 void extract_mip_base_comm_speed_command(microstrain_serializer* serializer, mip_base_comm_speed_command* self);
 
@@ -303,17 +320,17 @@ struct mip_base_comm_speed_response
 {
     uint8_t port; ///< Port ID number, starting with 1. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all ports. See the device user manual for details.
     uint32_t baud; ///< Port baud rate. Must be a supported rate.
-    
 };
 typedef struct mip_base_comm_speed_response mip_base_comm_speed_response;
+
 void insert_mip_base_comm_speed_response(microstrain_serializer* serializer, const mip_base_comm_speed_response* self);
 void extract_mip_base_comm_speed_response(microstrain_serializer* serializer, mip_base_comm_speed_response* self);
 
-mip_cmd_result mip_base_write_comm_speed(struct mip_interface* device, uint8_t port, uint32_t baud);
-mip_cmd_result mip_base_read_comm_speed(struct mip_interface* device, uint8_t port, uint32_t* baud_out);
-mip_cmd_result mip_base_save_comm_speed(struct mip_interface* device, uint8_t port);
-mip_cmd_result mip_base_load_comm_speed(struct mip_interface* device, uint8_t port);
-mip_cmd_result mip_base_default_comm_speed(struct mip_interface* device, uint8_t port);
+mip_cmd_result mip_base_write_comm_speed(mip_interface* device, uint8_t port, uint32_t baud);
+mip_cmd_result mip_base_read_comm_speed(mip_interface* device, uint8_t port, uint32_t* baud_out);
+mip_cmd_result mip_base_save_comm_speed(mip_interface* device, uint8_t port);
+mip_cmd_result mip_base_load_comm_speed(mip_interface* device, uint8_t port);
+mip_cmd_result mip_base_default_comm_speed(mip_interface* device, uint8_t port);
 
 ///@}
 ///
@@ -326,25 +343,37 @@ mip_cmd_result mip_base_default_comm_speed(struct mip_interface* device, uint8_t
 ///
 ///@{
 
-typedef uint8_t mip_base_gps_time_update_command_field_id;
-static const mip_base_gps_time_update_command_field_id MIP_BASE_GPS_TIME_UPDATE_COMMAND_FIELD_ID_WEEK_NUMBER  = 1; ///<  Week number.
-static const mip_base_gps_time_update_command_field_id MIP_BASE_GPS_TIME_UPDATE_COMMAND_FIELD_ID_TIME_OF_WEEK = 2; ///<  Time of week in seconds.
+enum mip_base_gps_time_update_command_field_id
+{
+    MIP_BASE_GPS_TIME_UPDATE_COMMAND_FIELD_ID_WEEK_NUMBER  = 1,  ///<  Week number.
+    MIP_BASE_GPS_TIME_UPDATE_COMMAND_FIELD_ID_TIME_OF_WEEK = 2,  ///<  Time of week in seconds.
+};
+typedef enum mip_base_gps_time_update_command_field_id mip_base_gps_time_update_command_field_id;
+
+inline void insert_mip_base_gps_time_update_command_field_id(microstrain_serializer* serializer, const mip_base_gps_time_update_command_field_id self)
+{
+    microstrain_insert_u8(serializer, (uint8_t)(self));
+}
+inline void extract_mip_base_gps_time_update_command_field_id(microstrain_serializer* serializer, mip_base_gps_time_update_command_field_id* self)
+{
+    uint8_t tmp = 0;
+    microstrain_extract_u8(serializer, &tmp);
+    *self = tmp;
+}
+
 
 struct mip_base_gps_time_update_command
 {
     mip_function_selector function;
     mip_base_gps_time_update_command_field_id field_id; ///< Determines how to interpret value.
     uint32_t value; ///< Week number or time of week, depending on the field_id.
-    
 };
 typedef struct mip_base_gps_time_update_command mip_base_gps_time_update_command;
+
 void insert_mip_base_gps_time_update_command(microstrain_serializer* serializer, const mip_base_gps_time_update_command* self);
 void extract_mip_base_gps_time_update_command(microstrain_serializer* serializer, mip_base_gps_time_update_command* self);
 
-void insert_mip_base_gps_time_update_command_field_id(microstrain_serializer* serializer, const mip_base_gps_time_update_command_field_id self);
-void extract_mip_base_gps_time_update_command_field_id(microstrain_serializer* serializer, mip_base_gps_time_update_command_field_id* self);
-
-mip_cmd_result mip_base_write_gps_time_update(struct mip_interface* device, mip_base_gps_time_update_command_field_id field_id, uint32_t value);
+mip_cmd_result mip_base_write_gps_time_update(mip_interface* device, mip_base_gps_time_update_command_field_id field_id, uint32_t value);
 
 ///@}
 ///
@@ -356,7 +385,7 @@ mip_cmd_result mip_base_write_gps_time_update(struct mip_interface* device, mip_
 ///
 ///@{
 
-mip_cmd_result mip_base_soft_reset(struct mip_interface* device);
+mip_cmd_result mip_base_soft_reset(mip_interface* device);
 
 ///@}
 ///

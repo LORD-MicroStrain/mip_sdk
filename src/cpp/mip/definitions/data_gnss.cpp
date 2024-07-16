@@ -1,1228 +1,1203 @@
 
 #include "data_gnss.hpp"
 
-#include "microstrain/common/serialization.hpp"
-#include "../mip_interface.hpp"
+#include <mip/mip_serialization.hpp>
+#include <mip/mip_interface.h>
 
 #include <assert.h>
 
 
 namespace mip {
-;
-
 namespace C {
 struct mip_interface;
 } // namespace C
 
 namespace data_gnss {
 
-using ::mip::insert;
-using ::mip::extract;
 using namespace ::mip::C;
-
-////////////////////////////////////////////////////////////////////////////////
-// Shared Type Definitions
-////////////////////////////////////////////////////////////////////////////////
-
 
 ////////////////////////////////////////////////////////////////////////////////
 // Mip Fields
 ////////////////////////////////////////////////////////////////////////////////
 
-void insert(::microstrain::Serializer& serializer, const PosLlh& self)
+void PosLlh::insert(Serializer& serializer) const
 {
-    insert(serializer, self.latitude);
+    serializer.insert(latitude);
     
-    insert(serializer, self.longitude);
+    serializer.insert(longitude);
     
-    insert(serializer, self.ellipsoid_height);
+    serializer.insert(ellipsoid_height);
     
-    insert(serializer, self.msl_height);
+    serializer.insert(msl_height);
     
-    insert(serializer, self.horizontal_accuracy);
+    serializer.insert(horizontal_accuracy);
     
-    insert(serializer, self.vertical_accuracy);
+    serializer.insert(vertical_accuracy);
     
-    insert(serializer, self.valid_flags);
+    serializer.insert(valid_flags);
     
 }
-void extract(::microstrain::Serializer& serializer, PosLlh& self)
+void PosLlh::extract(Serializer& serializer)
 {
-    extract(serializer, self.latitude);
+    serializer.extract(latitude);
     
-    extract(serializer, self.longitude);
+    serializer.extract(longitude);
     
-    extract(serializer, self.ellipsoid_height);
+    serializer.extract(ellipsoid_height);
     
-    extract(serializer, self.msl_height);
+    serializer.extract(msl_height);
     
-    extract(serializer, self.horizontal_accuracy);
+    serializer.extract(horizontal_accuracy);
     
-    extract(serializer, self.vertical_accuracy);
+    serializer.extract(vertical_accuracy);
     
-    extract(serializer, self.valid_flags);
-    
-}
-
-void insert(::microstrain::Serializer& serializer, const PosEcef& self)
-{
-    for(unsigned int i=0; i < 3; i++)
-        insert(serializer, self.x[i]);
-    
-    insert(serializer, self.x_accuracy);
-    
-    insert(serializer, self.valid_flags);
-    
-}
-void extract(::microstrain::Serializer& serializer, PosEcef& self)
-{
-    for(unsigned int i=0; i < 3; i++)
-        extract(serializer, self.x[i]);
-    
-    extract(serializer, self.x_accuracy);
-    
-    extract(serializer, self.valid_flags);
+    serializer.extract(valid_flags);
     
 }
 
-void insert(::microstrain::Serializer& serializer, const VelNed& self)
+void PosEcef::insert(Serializer& serializer) const
 {
-    for(unsigned int i=0; i < 3; i++)
-        insert(serializer, self.v[i]);
+    serializer.insert(x);
     
-    insert(serializer, self.speed);
+    serializer.insert(x_accuracy);
     
-    insert(serializer, self.ground_speed);
-    
-    insert(serializer, self.heading);
-    
-    insert(serializer, self.speed_accuracy);
-    
-    insert(serializer, self.heading_accuracy);
-    
-    insert(serializer, self.valid_flags);
+    serializer.insert(valid_flags);
     
 }
-void extract(::microstrain::Serializer& serializer, VelNed& self)
+void PosEcef::extract(Serializer& serializer)
 {
-    for(unsigned int i=0; i < 3; i++)
-        extract(serializer, self.v[i]);
+    serializer.extract(x);
     
-    extract(serializer, self.speed);
+    serializer.extract(x_accuracy);
     
-    extract(serializer, self.ground_speed);
-    
-    extract(serializer, self.heading);
-    
-    extract(serializer, self.speed_accuracy);
-    
-    extract(serializer, self.heading_accuracy);
-    
-    extract(serializer, self.valid_flags);
+    serializer.extract(valid_flags);
     
 }
 
-void insert(::microstrain::Serializer& serializer, const VelEcef& self)
+void VelNed::insert(Serializer& serializer) const
 {
-    for(unsigned int i=0; i < 3; i++)
-        insert(serializer, self.v[i]);
+    serializer.insert(v);
     
-    insert(serializer, self.v_accuracy);
+    serializer.insert(speed);
     
-    insert(serializer, self.valid_flags);
+    serializer.insert(ground_speed);
+    
+    serializer.insert(heading);
+    
+    serializer.insert(speed_accuracy);
+    
+    serializer.insert(heading_accuracy);
+    
+    serializer.insert(valid_flags);
     
 }
-void extract(::microstrain::Serializer& serializer, VelEcef& self)
+void VelNed::extract(Serializer& serializer)
 {
-    for(unsigned int i=0; i < 3; i++)
-        extract(serializer, self.v[i]);
+    serializer.extract(v);
     
-    extract(serializer, self.v_accuracy);
+    serializer.extract(speed);
     
-    extract(serializer, self.valid_flags);
+    serializer.extract(ground_speed);
     
-}
-
-void insert(::microstrain::Serializer& serializer, const Dop& self)
-{
-    insert(serializer, self.gdop);
+    serializer.extract(heading);
     
-    insert(serializer, self.pdop);
+    serializer.extract(speed_accuracy);
     
-    insert(serializer, self.hdop);
+    serializer.extract(heading_accuracy);
     
-    insert(serializer, self.vdop);
-    
-    insert(serializer, self.tdop);
-    
-    insert(serializer, self.ndop);
-    
-    insert(serializer, self.edop);
-    
-    insert(serializer, self.valid_flags);
-    
-}
-void extract(::microstrain::Serializer& serializer, Dop& self)
-{
-    extract(serializer, self.gdop);
-    
-    extract(serializer, self.pdop);
-    
-    extract(serializer, self.hdop);
-    
-    extract(serializer, self.vdop);
-    
-    extract(serializer, self.tdop);
-    
-    extract(serializer, self.ndop);
-    
-    extract(serializer, self.edop);
-    
-    extract(serializer, self.valid_flags);
+    serializer.extract(valid_flags);
     
 }
 
-void insert(::microstrain::Serializer& serializer, const UtcTime& self)
+void VelEcef::insert(Serializer& serializer) const
 {
-    insert(serializer, self.year);
+    serializer.insert(v);
     
-    insert(serializer, self.month);
+    serializer.insert(v_accuracy);
     
-    insert(serializer, self.day);
-    
-    insert(serializer, self.hour);
-    
-    insert(serializer, self.min);
-    
-    insert(serializer, self.sec);
-    
-    insert(serializer, self.msec);
-    
-    insert(serializer, self.valid_flags);
+    serializer.insert(valid_flags);
     
 }
-void extract(::microstrain::Serializer& serializer, UtcTime& self)
+void VelEcef::extract(Serializer& serializer)
 {
-    extract(serializer, self.year);
+    serializer.extract(v);
     
-    extract(serializer, self.month);
+    serializer.extract(v_accuracy);
     
-    extract(serializer, self.day);
-    
-    extract(serializer, self.hour);
-    
-    extract(serializer, self.min);
-    
-    extract(serializer, self.sec);
-    
-    extract(serializer, self.msec);
-    
-    extract(serializer, self.valid_flags);
+    serializer.extract(valid_flags);
     
 }
 
-void insert(::microstrain::Serializer& serializer, const GpsTime& self)
+void Dop::insert(Serializer& serializer) const
 {
-    insert(serializer, self.tow);
+    serializer.insert(gdop);
     
-    insert(serializer, self.week_number);
+    serializer.insert(pdop);
     
-    insert(serializer, self.valid_flags);
+    serializer.insert(hdop);
+    
+    serializer.insert(vdop);
+    
+    serializer.insert(tdop);
+    
+    serializer.insert(ndop);
+    
+    serializer.insert(edop);
+    
+    serializer.insert(valid_flags);
     
 }
-void extract(::microstrain::Serializer& serializer, GpsTime& self)
+void Dop::extract(Serializer& serializer)
 {
-    extract(serializer, self.tow);
+    serializer.extract(gdop);
     
-    extract(serializer, self.week_number);
+    serializer.extract(pdop);
     
-    extract(serializer, self.valid_flags);
+    serializer.extract(hdop);
     
-}
-
-void insert(::microstrain::Serializer& serializer, const ClockInfo& self)
-{
-    insert(serializer, self.bias);
+    serializer.extract(vdop);
     
-    insert(serializer, self.drift);
+    serializer.extract(tdop);
     
-    insert(serializer, self.accuracy_estimate);
+    serializer.extract(ndop);
     
-    insert(serializer, self.valid_flags);
+    serializer.extract(edop);
     
-}
-void extract(::microstrain::Serializer& serializer, ClockInfo& self)
-{
-    extract(serializer, self.bias);
-    
-    extract(serializer, self.drift);
-    
-    extract(serializer, self.accuracy_estimate);
-    
-    extract(serializer, self.valid_flags);
+    serializer.extract(valid_flags);
     
 }
 
-void insert(::microstrain::Serializer& serializer, const FixInfo& self)
+void UtcTime::insert(Serializer& serializer) const
 {
-    insert(serializer, self.fix_type);
+    serializer.insert(year);
     
-    insert(serializer, self.num_sv);
+    serializer.insert(month);
     
-    insert(serializer, self.fix_flags);
+    serializer.insert(day);
     
-    insert(serializer, self.valid_flags);
+    serializer.insert(hour);
+    
+    serializer.insert(min);
+    
+    serializer.insert(sec);
+    
+    serializer.insert(msec);
+    
+    serializer.insert(valid_flags);
     
 }
-void extract(::microstrain::Serializer& serializer, FixInfo& self)
+void UtcTime::extract(Serializer& serializer)
 {
-    extract(serializer, self.fix_type);
+    serializer.extract(year);
     
-    extract(serializer, self.num_sv);
+    serializer.extract(month);
     
-    extract(serializer, self.fix_flags);
+    serializer.extract(day);
     
-    extract(serializer, self.valid_flags);
+    serializer.extract(hour);
     
-}
-
-void insert(::microstrain::Serializer& serializer, const SvInfo& self)
-{
-    insert(serializer, self.channel);
+    serializer.extract(min);
     
-    insert(serializer, self.sv_id);
+    serializer.extract(sec);
     
-    insert(serializer, self.carrier_noise_ratio);
+    serializer.extract(msec);
     
-    insert(serializer, self.azimuth);
-    
-    insert(serializer, self.elevation);
-    
-    insert(serializer, self.sv_flags);
-    
-    insert(serializer, self.valid_flags);
-    
-}
-void extract(::microstrain::Serializer& serializer, SvInfo& self)
-{
-    extract(serializer, self.channel);
-    
-    extract(serializer, self.sv_id);
-    
-    extract(serializer, self.carrier_noise_ratio);
-    
-    extract(serializer, self.azimuth);
-    
-    extract(serializer, self.elevation);
-    
-    extract(serializer, self.sv_flags);
-    
-    extract(serializer, self.valid_flags);
+    serializer.extract(valid_flags);
     
 }
 
-void insert(::microstrain::Serializer& serializer, const HwStatus& self)
+void GpsTime::insert(Serializer& serializer) const
 {
-    insert(serializer, self.receiver_state);
+    serializer.insert(tow);
     
-    insert(serializer, self.antenna_state);
+    serializer.insert(week_number);
     
-    insert(serializer, self.antenna_power);
-    
-    insert(serializer, self.valid_flags);
+    serializer.insert(valid_flags);
     
 }
-void extract(::microstrain::Serializer& serializer, HwStatus& self)
+void GpsTime::extract(Serializer& serializer)
 {
-    extract(serializer, self.receiver_state);
+    serializer.extract(tow);
     
-    extract(serializer, self.antenna_state);
+    serializer.extract(week_number);
     
-    extract(serializer, self.antenna_power);
-    
-    extract(serializer, self.valid_flags);
+    serializer.extract(valid_flags);
     
 }
 
-void insert(::microstrain::Serializer& serializer, const DgpsInfo& self)
+void ClockInfo::insert(Serializer& serializer) const
 {
-    insert(serializer, self.sv_id);
+    serializer.insert(bias);
     
-    insert(serializer, self.age);
+    serializer.insert(drift);
     
-    insert(serializer, self.range_correction);
+    serializer.insert(accuracy_estimate);
     
-    insert(serializer, self.range_rate_correction);
-    
-    insert(serializer, self.valid_flags);
+    serializer.insert(valid_flags);
     
 }
-void extract(::microstrain::Serializer& serializer, DgpsInfo& self)
+void ClockInfo::extract(Serializer& serializer)
 {
-    extract(serializer, self.sv_id);
+    serializer.extract(bias);
     
-    extract(serializer, self.age);
+    serializer.extract(drift);
     
-    extract(serializer, self.range_correction);
+    serializer.extract(accuracy_estimate);
     
-    extract(serializer, self.range_rate_correction);
-    
-    extract(serializer, self.valid_flags);
+    serializer.extract(valid_flags);
     
 }
 
-void insert(::microstrain::Serializer& serializer, const DgpsChannel& self)
+void FixInfo::insert(Serializer& serializer) const
 {
-    insert(serializer, self.sv_id);
+    serializer.insert(fix_type);
     
-    insert(serializer, self.age);
+    serializer.insert(num_sv);
     
-    insert(serializer, self.range_correction);
+    serializer.insert(fix_flags);
     
-    insert(serializer, self.range_rate_correction);
-    
-    insert(serializer, self.valid_flags);
+    serializer.insert(valid_flags);
     
 }
-void extract(::microstrain::Serializer& serializer, DgpsChannel& self)
+void FixInfo::extract(Serializer& serializer)
 {
-    extract(serializer, self.sv_id);
+    serializer.extract(fix_type);
     
-    extract(serializer, self.age);
+    serializer.extract(num_sv);
     
-    extract(serializer, self.range_correction);
+    serializer.extract(fix_flags);
     
-    extract(serializer, self.range_rate_correction);
-    
-    extract(serializer, self.valid_flags);
+    serializer.extract(valid_flags);
     
 }
 
-void insert(::microstrain::Serializer& serializer, const ClockInfo2& self)
+void SvInfo::insert(Serializer& serializer) const
 {
-    insert(serializer, self.bias);
+    serializer.insert(channel);
     
-    insert(serializer, self.drift);
+    serializer.insert(sv_id);
     
-    insert(serializer, self.bias_accuracy_estimate);
+    serializer.insert(carrier_noise_ratio);
     
-    insert(serializer, self.drift_accuracy_estimate);
+    serializer.insert(azimuth);
     
-    insert(serializer, self.valid_flags);
+    serializer.insert(elevation);
+    
+    serializer.insert(sv_flags);
+    
+    serializer.insert(valid_flags);
     
 }
-void extract(::microstrain::Serializer& serializer, ClockInfo2& self)
+void SvInfo::extract(Serializer& serializer)
 {
-    extract(serializer, self.bias);
+    serializer.extract(channel);
     
-    extract(serializer, self.drift);
+    serializer.extract(sv_id);
     
-    extract(serializer, self.bias_accuracy_estimate);
+    serializer.extract(carrier_noise_ratio);
     
-    extract(serializer, self.drift_accuracy_estimate);
+    serializer.extract(azimuth);
     
-    extract(serializer, self.valid_flags);
+    serializer.extract(elevation);
     
-}
-
-void insert(::microstrain::Serializer& serializer, const GpsLeapSeconds& self)
-{
-    insert(serializer, self.leap_seconds);
+    serializer.extract(sv_flags);
     
-    insert(serializer, self.valid_flags);
-    
-}
-void extract(::microstrain::Serializer& serializer, GpsLeapSeconds& self)
-{
-    extract(serializer, self.leap_seconds);
-    
-    extract(serializer, self.valid_flags);
+    serializer.extract(valid_flags);
     
 }
 
-void insert(::microstrain::Serializer& serializer, const SbasInfo& self)
+void HwStatus::insert(Serializer& serializer) const
 {
-    insert(serializer, self.time_of_week);
+    serializer.insert(receiver_state);
     
-    insert(serializer, self.week_number);
+    serializer.insert(antenna_state);
     
-    insert(serializer, self.sbas_system);
+    serializer.insert(antenna_power);
     
-    insert(serializer, self.sbas_id);
-    
-    insert(serializer, self.count);
-    
-    insert(serializer, self.sbas_status);
-    
-    insert(serializer, self.valid_flags);
+    serializer.insert(valid_flags);
     
 }
-void extract(::microstrain::Serializer& serializer, SbasInfo& self)
+void HwStatus::extract(Serializer& serializer)
 {
-    extract(serializer, self.time_of_week);
+    serializer.extract(receiver_state);
     
-    extract(serializer, self.week_number);
+    serializer.extract(antenna_state);
     
-    extract(serializer, self.sbas_system);
+    serializer.extract(antenna_power);
     
-    extract(serializer, self.sbas_id);
-    
-    extract(serializer, self.count);
-    
-    extract(serializer, self.sbas_status);
-    
-    extract(serializer, self.valid_flags);
+    serializer.extract(valid_flags);
     
 }
 
-void insert(::microstrain::Serializer& serializer, const SbasCorrection& self)
+void DgpsInfo::insert(Serializer& serializer) const
 {
-    insert(serializer, self.index);
+    serializer.insert(sv_id);
     
-    insert(serializer, self.count);
+    serializer.insert(age);
     
-    insert(serializer, self.time_of_week);
+    serializer.insert(range_correction);
     
-    insert(serializer, self.week_number);
+    serializer.insert(range_rate_correction);
     
-    insert(serializer, self.gnss_id);
-    
-    insert(serializer, self.sv_id);
-    
-    insert(serializer, self.udrei);
-    
-    insert(serializer, self.pseudorange_correction);
-    
-    insert(serializer, self.iono_correction);
-    
-    insert(serializer, self.valid_flags);
+    serializer.insert(valid_flags);
     
 }
-void extract(::microstrain::Serializer& serializer, SbasCorrection& self)
+void DgpsInfo::extract(Serializer& serializer)
 {
-    extract(serializer, self.index);
+    serializer.extract(sv_id);
     
-    extract(serializer, self.count);
+    serializer.extract(age);
     
-    extract(serializer, self.time_of_week);
+    serializer.extract(range_correction);
     
-    extract(serializer, self.week_number);
+    serializer.extract(range_rate_correction);
     
-    extract(serializer, self.gnss_id);
-    
-    extract(serializer, self.sv_id);
-    
-    extract(serializer, self.udrei);
-    
-    extract(serializer, self.pseudorange_correction);
-    
-    extract(serializer, self.iono_correction);
-    
-    extract(serializer, self.valid_flags);
+    serializer.extract(valid_flags);
     
 }
 
-void insert(::microstrain::Serializer& serializer, const RfErrorDetection& self)
+void DgpsChannel::insert(Serializer& serializer) const
 {
-    insert(serializer, self.rf_band);
+    serializer.insert(sv_id);
     
-    insert(serializer, self.jamming_state);
+    serializer.insert(age);
     
-    insert(serializer, self.spoofing_state);
+    serializer.insert(range_correction);
+    
+    serializer.insert(range_rate_correction);
+    
+    serializer.insert(valid_flags);
+    
+}
+void DgpsChannel::extract(Serializer& serializer)
+{
+    serializer.extract(sv_id);
+    
+    serializer.extract(age);
+    
+    serializer.extract(range_correction);
+    
+    serializer.extract(range_rate_correction);
+    
+    serializer.extract(valid_flags);
+    
+}
+
+void ClockInfo2::insert(Serializer& serializer) const
+{
+    serializer.insert(bias);
+    
+    serializer.insert(drift);
+    
+    serializer.insert(bias_accuracy_estimate);
+    
+    serializer.insert(drift_accuracy_estimate);
+    
+    serializer.insert(valid_flags);
+    
+}
+void ClockInfo2::extract(Serializer& serializer)
+{
+    serializer.extract(bias);
+    
+    serializer.extract(drift);
+    
+    serializer.extract(bias_accuracy_estimate);
+    
+    serializer.extract(drift_accuracy_estimate);
+    
+    serializer.extract(valid_flags);
+    
+}
+
+void GpsLeapSeconds::insert(Serializer& serializer) const
+{
+    serializer.insert(leap_seconds);
+    
+    serializer.insert(valid_flags);
+    
+}
+void GpsLeapSeconds::extract(Serializer& serializer)
+{
+    serializer.extract(leap_seconds);
+    
+    serializer.extract(valid_flags);
+    
+}
+
+void SbasInfo::insert(Serializer& serializer) const
+{
+    serializer.insert(time_of_week);
+    
+    serializer.insert(week_number);
+    
+    serializer.insert(sbas_system);
+    
+    serializer.insert(sbas_id);
+    
+    serializer.insert(count);
+    
+    serializer.insert(sbas_status);
+    
+    serializer.insert(valid_flags);
+    
+}
+void SbasInfo::extract(Serializer& serializer)
+{
+    serializer.extract(time_of_week);
+    
+    serializer.extract(week_number);
+    
+    serializer.extract(sbas_system);
+    
+    serializer.extract(sbas_id);
+    
+    serializer.extract(count);
+    
+    serializer.extract(sbas_status);
+    
+    serializer.extract(valid_flags);
+    
+}
+
+void SbasCorrection::insert(Serializer& serializer) const
+{
+    serializer.insert(index);
+    
+    serializer.insert(count);
+    
+    serializer.insert(time_of_week);
+    
+    serializer.insert(week_number);
+    
+    serializer.insert(gnss_id);
+    
+    serializer.insert(sv_id);
+    
+    serializer.insert(udrei);
+    
+    serializer.insert(pseudorange_correction);
+    
+    serializer.insert(iono_correction);
+    
+    serializer.insert(valid_flags);
+    
+}
+void SbasCorrection::extract(Serializer& serializer)
+{
+    serializer.extract(index);
+    
+    serializer.extract(count);
+    
+    serializer.extract(time_of_week);
+    
+    serializer.extract(week_number);
+    
+    serializer.extract(gnss_id);
+    
+    serializer.extract(sv_id);
+    
+    serializer.extract(udrei);
+    
+    serializer.extract(pseudorange_correction);
+    
+    serializer.extract(iono_correction);
+    
+    serializer.extract(valid_flags);
+    
+}
+
+void RfErrorDetection::insert(Serializer& serializer) const
+{
+    serializer.insert(rf_band);
+    
+    serializer.insert(jamming_state);
+    
+    serializer.insert(spoofing_state);
     
     for(unsigned int i=0; i < 4; i++)
-        insert(serializer, self.reserved[i]);
+        serializer.insert(reserved[i]);
     
-    insert(serializer, self.valid_flags);
+    serializer.insert(valid_flags);
     
 }
-void extract(::microstrain::Serializer& serializer, RfErrorDetection& self)
+void RfErrorDetection::extract(Serializer& serializer)
 {
-    extract(serializer, self.rf_band);
+    serializer.extract(rf_band);
     
-    extract(serializer, self.jamming_state);
+    serializer.extract(jamming_state);
     
-    extract(serializer, self.spoofing_state);
+    serializer.extract(spoofing_state);
     
     for(unsigned int i=0; i < 4; i++)
-        extract(serializer, self.reserved[i]);
+        serializer.extract(reserved[i]);
     
-    extract(serializer, self.valid_flags);
-    
-}
-
-void insert(::microstrain::Serializer& serializer, const BaseStationInfo& self)
-{
-    insert(serializer, self.time_of_week);
-    
-    insert(serializer, self.week_number);
-    
-    for(unsigned int i=0; i < 3; i++)
-        insert(serializer, self.ecef_pos[i]);
-    
-    insert(serializer, self.height);
-    
-    insert(serializer, self.station_id);
-    
-    insert(serializer, self.indicators);
-    
-    insert(serializer, self.valid_flags);
-    
-}
-void extract(::microstrain::Serializer& serializer, BaseStationInfo& self)
-{
-    extract(serializer, self.time_of_week);
-    
-    extract(serializer, self.week_number);
-    
-    for(unsigned int i=0; i < 3; i++)
-        extract(serializer, self.ecef_pos[i]);
-    
-    extract(serializer, self.height);
-    
-    extract(serializer, self.station_id);
-    
-    extract(serializer, self.indicators);
-    
-    extract(serializer, self.valid_flags);
+    serializer.extract(valid_flags);
     
 }
 
-void insert(::microstrain::Serializer& serializer, const RtkCorrectionsStatus& self)
+void BaseStationInfo::insert(Serializer& serializer) const
 {
-    insert(serializer, self.time_of_week);
+    serializer.insert(time_of_week);
     
-    insert(serializer, self.week_number);
+    serializer.insert(week_number);
     
-    insert(serializer, self.epoch_status);
+    serializer.insert(ecef_pos);
     
-    insert(serializer, self.dongle_status);
+    serializer.insert(height);
     
-    insert(serializer, self.gps_correction_latency);
+    serializer.insert(station_id);
     
-    insert(serializer, self.glonass_correction_latency);
+    serializer.insert(indicators);
     
-    insert(serializer, self.galileo_correction_latency);
+    serializer.insert(valid_flags);
     
-    insert(serializer, self.beidou_correction_latency);
+}
+void BaseStationInfo::extract(Serializer& serializer)
+{
+    serializer.extract(time_of_week);
+    
+    serializer.extract(week_number);
+    
+    serializer.extract(ecef_pos);
+    
+    serializer.extract(height);
+    
+    serializer.extract(station_id);
+    
+    serializer.extract(indicators);
+    
+    serializer.extract(valid_flags);
+    
+}
+
+void RtkCorrectionsStatus::insert(Serializer& serializer) const
+{
+    serializer.insert(time_of_week);
+    
+    serializer.insert(week_number);
+    
+    serializer.insert(epoch_status);
+    
+    serializer.insert(dongle_status);
+    
+    serializer.insert(gps_correction_latency);
+    
+    serializer.insert(glonass_correction_latency);
+    
+    serializer.insert(galileo_correction_latency);
+    
+    serializer.insert(beidou_correction_latency);
     
     for(unsigned int i=0; i < 4; i++)
-        insert(serializer, self.reserved[i]);
+        serializer.insert(reserved[i]);
     
-    insert(serializer, self.valid_flags);
+    serializer.insert(valid_flags);
     
 }
-void extract(::microstrain::Serializer& serializer, RtkCorrectionsStatus& self)
+void RtkCorrectionsStatus::extract(Serializer& serializer)
 {
-    extract(serializer, self.time_of_week);
+    serializer.extract(time_of_week);
     
-    extract(serializer, self.week_number);
+    serializer.extract(week_number);
     
-    extract(serializer, self.epoch_status);
+    serializer.extract(epoch_status);
     
-    extract(serializer, self.dongle_status);
+    serializer.extract(dongle_status);
     
-    extract(serializer, self.gps_correction_latency);
+    serializer.extract(gps_correction_latency);
     
-    extract(serializer, self.glonass_correction_latency);
+    serializer.extract(glonass_correction_latency);
     
-    extract(serializer, self.galileo_correction_latency);
+    serializer.extract(galileo_correction_latency);
     
-    extract(serializer, self.beidou_correction_latency);
+    serializer.extract(beidou_correction_latency);
     
     for(unsigned int i=0; i < 4; i++)
-        extract(serializer, self.reserved[i]);
+        serializer.extract(reserved[i]);
     
-    extract(serializer, self.valid_flags);
-    
-}
-
-void insert(::microstrain::Serializer& serializer, const SatelliteStatus& self)
-{
-    insert(serializer, self.index);
-    
-    insert(serializer, self.count);
-    
-    insert(serializer, self.time_of_week);
-    
-    insert(serializer, self.week_number);
-    
-    insert(serializer, self.gnss_id);
-    
-    insert(serializer, self.satellite_id);
-    
-    insert(serializer, self.elevation);
-    
-    insert(serializer, self.azimuth);
-    
-    insert(serializer, self.health);
-    
-    insert(serializer, self.valid_flags);
-    
-}
-void extract(::microstrain::Serializer& serializer, SatelliteStatus& self)
-{
-    extract(serializer, self.index);
-    
-    extract(serializer, self.count);
-    
-    extract(serializer, self.time_of_week);
-    
-    extract(serializer, self.week_number);
-    
-    extract(serializer, self.gnss_id);
-    
-    extract(serializer, self.satellite_id);
-    
-    extract(serializer, self.elevation);
-    
-    extract(serializer, self.azimuth);
-    
-    extract(serializer, self.health);
-    
-    extract(serializer, self.valid_flags);
+    serializer.extract(valid_flags);
     
 }
 
-void insert(::microstrain::Serializer& serializer, const Raw& self)
+void SatelliteStatus::insert(Serializer& serializer) const
 {
-    insert(serializer, self.index);
+    serializer.insert(index);
     
-    insert(serializer, self.count);
+    serializer.insert(count);
     
-    insert(serializer, self.time_of_week);
+    serializer.insert(time_of_week);
     
-    insert(serializer, self.week_number);
+    serializer.insert(week_number);
     
-    insert(serializer, self.receiver_id);
+    serializer.insert(gnss_id);
     
-    insert(serializer, self.tracking_channel);
+    serializer.insert(satellite_id);
     
-    insert(serializer, self.gnss_id);
+    serializer.insert(elevation);
     
-    insert(serializer, self.satellite_id);
+    serializer.insert(azimuth);
     
-    insert(serializer, self.signal_id);
+    serializer.insert(health);
     
-    insert(serializer, self.signal_strength);
-    
-    insert(serializer, self.quality);
-    
-    insert(serializer, self.pseudorange);
-    
-    insert(serializer, self.carrier_phase);
-    
-    insert(serializer, self.doppler);
-    
-    insert(serializer, self.range_uncert);
-    
-    insert(serializer, self.phase_uncert);
-    
-    insert(serializer, self.doppler_uncert);
-    
-    insert(serializer, self.lock_time);
-    
-    insert(serializer, self.valid_flags);
+    serializer.insert(valid_flags);
     
 }
-void extract(::microstrain::Serializer& serializer, Raw& self)
+void SatelliteStatus::extract(Serializer& serializer)
 {
-    extract(serializer, self.index);
+    serializer.extract(index);
     
-    extract(serializer, self.count);
+    serializer.extract(count);
     
-    extract(serializer, self.time_of_week);
+    serializer.extract(time_of_week);
     
-    extract(serializer, self.week_number);
+    serializer.extract(week_number);
     
-    extract(serializer, self.receiver_id);
+    serializer.extract(gnss_id);
     
-    extract(serializer, self.tracking_channel);
+    serializer.extract(satellite_id);
     
-    extract(serializer, self.gnss_id);
+    serializer.extract(elevation);
     
-    extract(serializer, self.satellite_id);
+    serializer.extract(azimuth);
     
-    extract(serializer, self.signal_id);
+    serializer.extract(health);
     
-    extract(serializer, self.signal_strength);
-    
-    extract(serializer, self.quality);
-    
-    extract(serializer, self.pseudorange);
-    
-    extract(serializer, self.carrier_phase);
-    
-    extract(serializer, self.doppler);
-    
-    extract(serializer, self.range_uncert);
-    
-    extract(serializer, self.phase_uncert);
-    
-    extract(serializer, self.doppler_uncert);
-    
-    extract(serializer, self.lock_time);
-    
-    extract(serializer, self.valid_flags);
+    serializer.extract(valid_flags);
     
 }
 
-void insert(::microstrain::Serializer& serializer, const GpsEphemeris& self)
+void Raw::insert(Serializer& serializer) const
 {
-    insert(serializer, self.index);
+    serializer.insert(index);
     
-    insert(serializer, self.count);
+    serializer.insert(count);
     
-    insert(serializer, self.time_of_week);
+    serializer.insert(time_of_week);
     
-    insert(serializer, self.week_number);
+    serializer.insert(week_number);
     
-    insert(serializer, self.satellite_id);
+    serializer.insert(receiver_id);
     
-    insert(serializer, self.health);
+    serializer.insert(tracking_channel);
     
-    insert(serializer, self.iodc);
+    serializer.insert(gnss_id);
     
-    insert(serializer, self.iode);
+    serializer.insert(satellite_id);
     
-    insert(serializer, self.t_oc);
+    serializer.insert(signal_id);
     
-    insert(serializer, self.af0);
+    serializer.insert(signal_strength);
     
-    insert(serializer, self.af1);
+    serializer.insert(quality);
     
-    insert(serializer, self.af2);
+    serializer.insert(pseudorange);
     
-    insert(serializer, self.t_gd);
+    serializer.insert(carrier_phase);
     
-    insert(serializer, self.ISC_L1CA);
+    serializer.insert(doppler);
     
-    insert(serializer, self.ISC_L2C);
+    serializer.insert(range_uncert);
     
-    insert(serializer, self.t_oe);
+    serializer.insert(phase_uncert);
     
-    insert(serializer, self.a);
+    serializer.insert(doppler_uncert);
     
-    insert(serializer, self.a_dot);
+    serializer.insert(lock_time);
     
-    insert(serializer, self.mean_anomaly);
-    
-    insert(serializer, self.delta_mean_motion);
-    
-    insert(serializer, self.delta_mean_motion_dot);
-    
-    insert(serializer, self.eccentricity);
-    
-    insert(serializer, self.argument_of_perigee);
-    
-    insert(serializer, self.omega);
-    
-    insert(serializer, self.omega_dot);
-    
-    insert(serializer, self.inclination);
-    
-    insert(serializer, self.inclination_dot);
-    
-    insert(serializer, self.c_ic);
-    
-    insert(serializer, self.c_is);
-    
-    insert(serializer, self.c_uc);
-    
-    insert(serializer, self.c_us);
-    
-    insert(serializer, self.c_rc);
-    
-    insert(serializer, self.c_rs);
-    
-    insert(serializer, self.valid_flags);
+    serializer.insert(valid_flags);
     
 }
-void extract(::microstrain::Serializer& serializer, GpsEphemeris& self)
+void Raw::extract(Serializer& serializer)
 {
-    extract(serializer, self.index);
+    serializer.extract(index);
     
-    extract(serializer, self.count);
+    serializer.extract(count);
     
-    extract(serializer, self.time_of_week);
+    serializer.extract(time_of_week);
     
-    extract(serializer, self.week_number);
+    serializer.extract(week_number);
     
-    extract(serializer, self.satellite_id);
+    serializer.extract(receiver_id);
     
-    extract(serializer, self.health);
+    serializer.extract(tracking_channel);
     
-    extract(serializer, self.iodc);
+    serializer.extract(gnss_id);
     
-    extract(serializer, self.iode);
+    serializer.extract(satellite_id);
     
-    extract(serializer, self.t_oc);
+    serializer.extract(signal_id);
     
-    extract(serializer, self.af0);
+    serializer.extract(signal_strength);
     
-    extract(serializer, self.af1);
+    serializer.extract(quality);
     
-    extract(serializer, self.af2);
+    serializer.extract(pseudorange);
     
-    extract(serializer, self.t_gd);
+    serializer.extract(carrier_phase);
     
-    extract(serializer, self.ISC_L1CA);
+    serializer.extract(doppler);
     
-    extract(serializer, self.ISC_L2C);
+    serializer.extract(range_uncert);
     
-    extract(serializer, self.t_oe);
+    serializer.extract(phase_uncert);
     
-    extract(serializer, self.a);
+    serializer.extract(doppler_uncert);
     
-    extract(serializer, self.a_dot);
+    serializer.extract(lock_time);
     
-    extract(serializer, self.mean_anomaly);
-    
-    extract(serializer, self.delta_mean_motion);
-    
-    extract(serializer, self.delta_mean_motion_dot);
-    
-    extract(serializer, self.eccentricity);
-    
-    extract(serializer, self.argument_of_perigee);
-    
-    extract(serializer, self.omega);
-    
-    extract(serializer, self.omega_dot);
-    
-    extract(serializer, self.inclination);
-    
-    extract(serializer, self.inclination_dot);
-    
-    extract(serializer, self.c_ic);
-    
-    extract(serializer, self.c_is);
-    
-    extract(serializer, self.c_uc);
-    
-    extract(serializer, self.c_us);
-    
-    extract(serializer, self.c_rc);
-    
-    extract(serializer, self.c_rs);
-    
-    extract(serializer, self.valid_flags);
+    serializer.extract(valid_flags);
     
 }
 
-void insert(::microstrain::Serializer& serializer, const GalileoEphemeris& self)
+void GpsEphemeris::insert(Serializer& serializer) const
 {
-    insert(serializer, self.index);
+    serializer.insert(index);
     
-    insert(serializer, self.count);
+    serializer.insert(count);
     
-    insert(serializer, self.time_of_week);
+    serializer.insert(time_of_week);
     
-    insert(serializer, self.week_number);
+    serializer.insert(week_number);
     
-    insert(serializer, self.satellite_id);
+    serializer.insert(satellite_id);
     
-    insert(serializer, self.health);
+    serializer.insert(health);
     
-    insert(serializer, self.iodc);
+    serializer.insert(iodc);
     
-    insert(serializer, self.iode);
+    serializer.insert(iode);
     
-    insert(serializer, self.t_oc);
+    serializer.insert(t_oc);
     
-    insert(serializer, self.af0);
+    serializer.insert(af0);
     
-    insert(serializer, self.af1);
+    serializer.insert(af1);
     
-    insert(serializer, self.af2);
+    serializer.insert(af2);
     
-    insert(serializer, self.t_gd);
+    serializer.insert(t_gd);
     
-    insert(serializer, self.ISC_L1CA);
+    serializer.insert(ISC_L1CA);
     
-    insert(serializer, self.ISC_L2C);
+    serializer.insert(ISC_L2C);
     
-    insert(serializer, self.t_oe);
+    serializer.insert(t_oe);
     
-    insert(serializer, self.a);
+    serializer.insert(a);
     
-    insert(serializer, self.a_dot);
+    serializer.insert(a_dot);
     
-    insert(serializer, self.mean_anomaly);
+    serializer.insert(mean_anomaly);
     
-    insert(serializer, self.delta_mean_motion);
+    serializer.insert(delta_mean_motion);
     
-    insert(serializer, self.delta_mean_motion_dot);
+    serializer.insert(delta_mean_motion_dot);
     
-    insert(serializer, self.eccentricity);
+    serializer.insert(eccentricity);
     
-    insert(serializer, self.argument_of_perigee);
+    serializer.insert(argument_of_perigee);
     
-    insert(serializer, self.omega);
+    serializer.insert(omega);
     
-    insert(serializer, self.omega_dot);
+    serializer.insert(omega_dot);
     
-    insert(serializer, self.inclination);
+    serializer.insert(inclination);
     
-    insert(serializer, self.inclination_dot);
+    serializer.insert(inclination_dot);
     
-    insert(serializer, self.c_ic);
+    serializer.insert(c_ic);
     
-    insert(serializer, self.c_is);
+    serializer.insert(c_is);
     
-    insert(serializer, self.c_uc);
+    serializer.insert(c_uc);
     
-    insert(serializer, self.c_us);
+    serializer.insert(c_us);
     
-    insert(serializer, self.c_rc);
+    serializer.insert(c_rc);
     
-    insert(serializer, self.c_rs);
+    serializer.insert(c_rs);
     
-    insert(serializer, self.valid_flags);
+    serializer.insert(valid_flags);
     
 }
-void extract(::microstrain::Serializer& serializer, GalileoEphemeris& self)
+void GpsEphemeris::extract(Serializer& serializer)
 {
-    extract(serializer, self.index);
+    serializer.extract(index);
     
-    extract(serializer, self.count);
+    serializer.extract(count);
     
-    extract(serializer, self.time_of_week);
+    serializer.extract(time_of_week);
     
-    extract(serializer, self.week_number);
+    serializer.extract(week_number);
     
-    extract(serializer, self.satellite_id);
+    serializer.extract(satellite_id);
     
-    extract(serializer, self.health);
+    serializer.extract(health);
     
-    extract(serializer, self.iodc);
+    serializer.extract(iodc);
     
-    extract(serializer, self.iode);
+    serializer.extract(iode);
     
-    extract(serializer, self.t_oc);
+    serializer.extract(t_oc);
     
-    extract(serializer, self.af0);
+    serializer.extract(af0);
     
-    extract(serializer, self.af1);
+    serializer.extract(af1);
     
-    extract(serializer, self.af2);
+    serializer.extract(af2);
     
-    extract(serializer, self.t_gd);
+    serializer.extract(t_gd);
     
-    extract(serializer, self.ISC_L1CA);
+    serializer.extract(ISC_L1CA);
     
-    extract(serializer, self.ISC_L2C);
+    serializer.extract(ISC_L2C);
     
-    extract(serializer, self.t_oe);
+    serializer.extract(t_oe);
     
-    extract(serializer, self.a);
+    serializer.extract(a);
     
-    extract(serializer, self.a_dot);
+    serializer.extract(a_dot);
     
-    extract(serializer, self.mean_anomaly);
+    serializer.extract(mean_anomaly);
     
-    extract(serializer, self.delta_mean_motion);
+    serializer.extract(delta_mean_motion);
     
-    extract(serializer, self.delta_mean_motion_dot);
+    serializer.extract(delta_mean_motion_dot);
     
-    extract(serializer, self.eccentricity);
+    serializer.extract(eccentricity);
     
-    extract(serializer, self.argument_of_perigee);
+    serializer.extract(argument_of_perigee);
     
-    extract(serializer, self.omega);
+    serializer.extract(omega);
     
-    extract(serializer, self.omega_dot);
+    serializer.extract(omega_dot);
     
-    extract(serializer, self.inclination);
+    serializer.extract(inclination);
     
-    extract(serializer, self.inclination_dot);
+    serializer.extract(inclination_dot);
     
-    extract(serializer, self.c_ic);
+    serializer.extract(c_ic);
     
-    extract(serializer, self.c_is);
+    serializer.extract(c_is);
     
-    extract(serializer, self.c_uc);
+    serializer.extract(c_uc);
     
-    extract(serializer, self.c_us);
+    serializer.extract(c_us);
     
-    extract(serializer, self.c_rc);
+    serializer.extract(c_rc);
     
-    extract(serializer, self.c_rs);
+    serializer.extract(c_rs);
     
-    extract(serializer, self.valid_flags);
-    
-}
-
-void insert(::microstrain::Serializer& serializer, const GloEphemeris& self)
-{
-    insert(serializer, self.index);
-    
-    insert(serializer, self.count);
-    
-    insert(serializer, self.time_of_week);
-    
-    insert(serializer, self.week_number);
-    
-    insert(serializer, self.satellite_id);
-    
-    insert(serializer, self.freq_number);
-    
-    insert(serializer, self.tk);
-    
-    insert(serializer, self.tb);
-    
-    insert(serializer, self.sat_type);
-    
-    insert(serializer, self.gamma);
-    
-    insert(serializer, self.tau_n);
-    
-    for(unsigned int i=0; i < 3; i++)
-        insert(serializer, self.x[i]);
-    
-    for(unsigned int i=0; i < 3; i++)
-        insert(serializer, self.v[i]);
-    
-    for(unsigned int i=0; i < 3; i++)
-        insert(serializer, self.a[i]);
-    
-    insert(serializer, self.health);
-    
-    insert(serializer, self.P);
-    
-    insert(serializer, self.NT);
-    
-    insert(serializer, self.delta_tau_n);
-    
-    insert(serializer, self.Ft);
-    
-    insert(serializer, self.En);
-    
-    insert(serializer, self.P1);
-    
-    insert(serializer, self.P2);
-    
-    insert(serializer, self.P3);
-    
-    insert(serializer, self.P4);
-    
-    insert(serializer, self.valid_flags);
-    
-}
-void extract(::microstrain::Serializer& serializer, GloEphemeris& self)
-{
-    extract(serializer, self.index);
-    
-    extract(serializer, self.count);
-    
-    extract(serializer, self.time_of_week);
-    
-    extract(serializer, self.week_number);
-    
-    extract(serializer, self.satellite_id);
-    
-    extract(serializer, self.freq_number);
-    
-    extract(serializer, self.tk);
-    
-    extract(serializer, self.tb);
-    
-    extract(serializer, self.sat_type);
-    
-    extract(serializer, self.gamma);
-    
-    extract(serializer, self.tau_n);
-    
-    for(unsigned int i=0; i < 3; i++)
-        extract(serializer, self.x[i]);
-    
-    for(unsigned int i=0; i < 3; i++)
-        extract(serializer, self.v[i]);
-    
-    for(unsigned int i=0; i < 3; i++)
-        extract(serializer, self.a[i]);
-    
-    extract(serializer, self.health);
-    
-    extract(serializer, self.P);
-    
-    extract(serializer, self.NT);
-    
-    extract(serializer, self.delta_tau_n);
-    
-    extract(serializer, self.Ft);
-    
-    extract(serializer, self.En);
-    
-    extract(serializer, self.P1);
-    
-    extract(serializer, self.P2);
-    
-    extract(serializer, self.P3);
-    
-    extract(serializer, self.P4);
-    
-    extract(serializer, self.valid_flags);
+    serializer.extract(valid_flags);
     
 }
 
-void insert(::microstrain::Serializer& serializer, const GpsIonoCorr& self)
+void GalileoEphemeris::insert(Serializer& serializer) const
 {
-    insert(serializer, self.time_of_week);
+    serializer.insert(index);
     
-    insert(serializer, self.week_number);
+    serializer.insert(count);
+    
+    serializer.insert(time_of_week);
+    
+    serializer.insert(week_number);
+    
+    serializer.insert(satellite_id);
+    
+    serializer.insert(health);
+    
+    serializer.insert(iodc);
+    
+    serializer.insert(iode);
+    
+    serializer.insert(t_oc);
+    
+    serializer.insert(af0);
+    
+    serializer.insert(af1);
+    
+    serializer.insert(af2);
+    
+    serializer.insert(t_gd);
+    
+    serializer.insert(ISC_L1CA);
+    
+    serializer.insert(ISC_L2C);
+    
+    serializer.insert(t_oe);
+    
+    serializer.insert(a);
+    
+    serializer.insert(a_dot);
+    
+    serializer.insert(mean_anomaly);
+    
+    serializer.insert(delta_mean_motion);
+    
+    serializer.insert(delta_mean_motion_dot);
+    
+    serializer.insert(eccentricity);
+    
+    serializer.insert(argument_of_perigee);
+    
+    serializer.insert(omega);
+    
+    serializer.insert(omega_dot);
+    
+    serializer.insert(inclination);
+    
+    serializer.insert(inclination_dot);
+    
+    serializer.insert(c_ic);
+    
+    serializer.insert(c_is);
+    
+    serializer.insert(c_uc);
+    
+    serializer.insert(c_us);
+    
+    serializer.insert(c_rc);
+    
+    serializer.insert(c_rs);
+    
+    serializer.insert(valid_flags);
+    
+}
+void GalileoEphemeris::extract(Serializer& serializer)
+{
+    serializer.extract(index);
+    
+    serializer.extract(count);
+    
+    serializer.extract(time_of_week);
+    
+    serializer.extract(week_number);
+    
+    serializer.extract(satellite_id);
+    
+    serializer.extract(health);
+    
+    serializer.extract(iodc);
+    
+    serializer.extract(iode);
+    
+    serializer.extract(t_oc);
+    
+    serializer.extract(af0);
+    
+    serializer.extract(af1);
+    
+    serializer.extract(af2);
+    
+    serializer.extract(t_gd);
+    
+    serializer.extract(ISC_L1CA);
+    
+    serializer.extract(ISC_L2C);
+    
+    serializer.extract(t_oe);
+    
+    serializer.extract(a);
+    
+    serializer.extract(a_dot);
+    
+    serializer.extract(mean_anomaly);
+    
+    serializer.extract(delta_mean_motion);
+    
+    serializer.extract(delta_mean_motion_dot);
+    
+    serializer.extract(eccentricity);
+    
+    serializer.extract(argument_of_perigee);
+    
+    serializer.extract(omega);
+    
+    serializer.extract(omega_dot);
+    
+    serializer.extract(inclination);
+    
+    serializer.extract(inclination_dot);
+    
+    serializer.extract(c_ic);
+    
+    serializer.extract(c_is);
+    
+    serializer.extract(c_uc);
+    
+    serializer.extract(c_us);
+    
+    serializer.extract(c_rc);
+    
+    serializer.extract(c_rs);
+    
+    serializer.extract(valid_flags);
+    
+}
+
+void GloEphemeris::insert(Serializer& serializer) const
+{
+    serializer.insert(index);
+    
+    serializer.insert(count);
+    
+    serializer.insert(time_of_week);
+    
+    serializer.insert(week_number);
+    
+    serializer.insert(satellite_id);
+    
+    serializer.insert(freq_number);
+    
+    serializer.insert(tk);
+    
+    serializer.insert(tb);
+    
+    serializer.insert(sat_type);
+    
+    serializer.insert(gamma);
+    
+    serializer.insert(tau_n);
+    
+    serializer.insert(x);
+    
+    serializer.insert(v);
+    
+    serializer.insert(a);
+    
+    serializer.insert(health);
+    
+    serializer.insert(P);
+    
+    serializer.insert(NT);
+    
+    serializer.insert(delta_tau_n);
+    
+    serializer.insert(Ft);
+    
+    serializer.insert(En);
+    
+    serializer.insert(P1);
+    
+    serializer.insert(P2);
+    
+    serializer.insert(P3);
+    
+    serializer.insert(P4);
+    
+    serializer.insert(valid_flags);
+    
+}
+void GloEphemeris::extract(Serializer& serializer)
+{
+    serializer.extract(index);
+    
+    serializer.extract(count);
+    
+    serializer.extract(time_of_week);
+    
+    serializer.extract(week_number);
+    
+    serializer.extract(satellite_id);
+    
+    serializer.extract(freq_number);
+    
+    serializer.extract(tk);
+    
+    serializer.extract(tb);
+    
+    serializer.extract(sat_type);
+    
+    serializer.extract(gamma);
+    
+    serializer.extract(tau_n);
+    
+    serializer.extract(x);
+    
+    serializer.extract(v);
+    
+    serializer.extract(a);
+    
+    serializer.extract(health);
+    
+    serializer.extract(P);
+    
+    serializer.extract(NT);
+    
+    serializer.extract(delta_tau_n);
+    
+    serializer.extract(Ft);
+    
+    serializer.extract(En);
+    
+    serializer.extract(P1);
+    
+    serializer.extract(P2);
+    
+    serializer.extract(P3);
+    
+    serializer.extract(P4);
+    
+    serializer.extract(valid_flags);
+    
+}
+
+void GpsIonoCorr::insert(Serializer& serializer) const
+{
+    serializer.insert(time_of_week);
+    
+    serializer.insert(week_number);
     
     for(unsigned int i=0; i < 4; i++)
-        insert(serializer, self.alpha[i]);
+        serializer.insert(alpha[i]);
     
     for(unsigned int i=0; i < 4; i++)
-        insert(serializer, self.beta[i]);
+        serializer.insert(beta[i]);
     
-    insert(serializer, self.valid_flags);
+    serializer.insert(valid_flags);
     
 }
-void extract(::microstrain::Serializer& serializer, GpsIonoCorr& self)
+void GpsIonoCorr::extract(Serializer& serializer)
 {
-    extract(serializer, self.time_of_week);
+    serializer.extract(time_of_week);
     
-    extract(serializer, self.week_number);
-    
-    for(unsigned int i=0; i < 4; i++)
-        extract(serializer, self.alpha[i]);
+    serializer.extract(week_number);
     
     for(unsigned int i=0; i < 4; i++)
-        extract(serializer, self.beta[i]);
+        serializer.extract(alpha[i]);
     
-    extract(serializer, self.valid_flags);
+    for(unsigned int i=0; i < 4; i++)
+        serializer.extract(beta[i]);
+    
+    serializer.extract(valid_flags);
     
 }
 
-void insert(::microstrain::Serializer& serializer, const GalileoIonoCorr& self)
+void GalileoIonoCorr::insert(Serializer& serializer) const
 {
-    insert(serializer, self.time_of_week);
+    serializer.insert(time_of_week);
     
-    insert(serializer, self.week_number);
+    serializer.insert(week_number);
     
-    for(unsigned int i=0; i < 3; i++)
-        insert(serializer, self.alpha[i]);
+    serializer.insert(alpha);
     
-    insert(serializer, self.disturbance_flags);
+    serializer.insert(disturbance_flags);
     
-    insert(serializer, self.valid_flags);
+    serializer.insert(valid_flags);
     
 }
-void extract(::microstrain::Serializer& serializer, GalileoIonoCorr& self)
+void GalileoIonoCorr::extract(Serializer& serializer)
 {
-    extract(serializer, self.time_of_week);
+    serializer.extract(time_of_week);
     
-    extract(serializer, self.week_number);
+    serializer.extract(week_number);
     
-    for(unsigned int i=0; i < 3; i++)
-        extract(serializer, self.alpha[i]);
+    serializer.extract(alpha);
     
-    extract(serializer, self.disturbance_flags);
+    serializer.extract(disturbance_flags);
     
-    extract(serializer, self.valid_flags);
+    serializer.extract(valid_flags);
     
 }
 

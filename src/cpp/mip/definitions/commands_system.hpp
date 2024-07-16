@@ -1,16 +1,14 @@
 #pragma once
 
 #include "common.hpp"
-#include "mip/mip_descriptors.hpp"
-#include "../mip_result.hpp"
+#include <mip/mip_descriptors.hpp>
+#include <mip/mip_result.hpp>
+#include <mip/mip_interface.hpp>
 
 #include <stdint.h>
 #include <stddef.h>
-#include <stdbool.h>
 
 namespace mip {
-;
-
 namespace C {
 struct mip_interface;
 } // namespace C
@@ -71,30 +69,24 @@ static constexpr const uint8_t MIP_SYSTEM_COMMAND_COMM_MODE_GPS = 0x03;
 
 struct CommMode
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     uint8_t mode = 0;
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_system::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_system::CMD_COM_MODE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "CommMode";
     static constexpr const char* DOC_NAME = "CommMode";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x0000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x0000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(mode);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(mode));
     }
@@ -106,31 +98,39 @@ struct CommMode
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        uint8_t mode = 0;
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_system::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_system::REPLY_COM_MODE;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "CommMode::Response";
         static constexpr const char* DOC_NAME = "CommMode Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        uint8_t mode = 0;
+        auto asTuple() const
+        {
+            return std::make_tuple(mode);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(mode));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const CommMode& self);
-void extract(::microstrain::Serializer& serializer, CommMode& self);
-
-void insert(::microstrain::Serializer& serializer, const CommMode::Response& self);
-void extract(::microstrain::Serializer& serializer, CommMode::Response& self);
-
 TypedResult<CommMode> writeCommMode(C::mip_interface& device, uint8_t mode);
 TypedResult<CommMode> readCommMode(C::mip_interface& device, uint8_t* modeOut);
 TypedResult<CommMode> defaultCommMode(C::mip_interface& device);

@@ -1,12 +1,12 @@
 #pragma once
 
 #include "common.hpp"
-#include "mip/mip_descriptors.hpp"
-#include "../mip_result.hpp"
+#include <mip/mip_descriptors.hpp>
+#include <mip/mip_result.hpp>
+#include <mip/mip_interface.hpp>
 
 #include <stdint.h>
 #include <stddef.h>
-#include <stdbool.h>
 
 namespace mip {
 namespace C {
@@ -166,15 +166,17 @@ struct NmeaMessage
         GLONASS = 4,  ///<  NMEA message will be produced with talker id "GL".
     };
     
+    /// Parameters
     MessageID message_id = static_cast<MessageID>(0); ///< NMEA sentence type.
     TalkerID talker_id = static_cast<TalkerID>(0); ///< NMEA talker ID. Ignored for proprietary sentences.
     uint8_t source_desc_set = 0; ///< Data descriptor set where the data will be sourced. Available options depend on the sentence.
     uint16_t decimation = 0; ///< Decimation from the base rate for source_desc_set. Frequency is limited to 10 Hz or the base rate, whichever is lower. Must be 0 when polling.
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
 };
-void insert(::microstrain::Serializer& serializer, const NmeaMessage& self);
-void extract(::microstrain::Serializer& serializer, NmeaMessage& self);
-
 enum class SensorRangeType : uint8_t
 {
     ALL   = 0,  ///<  Only allowed for SAVE, LOAD, and DEFAULT function selectors.
@@ -204,33 +206,35 @@ enum class SensorRangeType : uint8_t
 
 struct PollImuMessage
 {
+    /// Parameters
     bool suppress_ack = 0; ///< Suppress the usual ACK/NACK reply.
     uint8_t num_descriptors = 0; ///< Number of descriptors in the descriptor list.
     DescriptorRate descriptors[83]; ///< Descriptor list.
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_POLL_IMU_MESSAGE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "PollImuMessage";
     static constexpr const char* DOC_NAME = "PollImuMessage";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000030;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(suppress_ack,num_descriptors,descriptors);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(suppress_ack),std::ref(num_descriptors),std::ref(descriptors));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     typedef void Response;
 };
-void insert(::microstrain::Serializer& serializer, const PollImuMessage& self);
-void extract(::microstrain::Serializer& serializer, PollImuMessage& self);
-
 TypedResult<PollImuMessage> pollImuMessage(C::mip_interface& device, bool suppressAck, uint8_t numDescriptors, const DescriptorRate* descriptors);
 
 ///@}
@@ -250,33 +254,35 @@ TypedResult<PollImuMessage> pollImuMessage(C::mip_interface& device, bool suppre
 
 struct PollGnssMessage
 {
+    /// Parameters
     bool suppress_ack = 0; ///< Suppress the usual ACK/NACK reply.
     uint8_t num_descriptors = 0; ///< Number of descriptors in the descriptor list.
     DescriptorRate descriptors[83]; ///< Descriptor list.
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_POLL_GNSS_MESSAGE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "PollGnssMessage";
     static constexpr const char* DOC_NAME = "PollGnssMessage";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000030;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(suppress_ack,num_descriptors,descriptors);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(suppress_ack),std::ref(num_descriptors),std::ref(descriptors));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     typedef void Response;
 };
-void insert(::microstrain::Serializer& serializer, const PollGnssMessage& self);
-void extract(::microstrain::Serializer& serializer, PollGnssMessage& self);
-
 TypedResult<PollGnssMessage> pollGnssMessage(C::mip_interface& device, bool suppressAck, uint8_t numDescriptors, const DescriptorRate* descriptors);
 
 ///@}
@@ -296,33 +302,35 @@ TypedResult<PollGnssMessage> pollGnssMessage(C::mip_interface& device, bool supp
 
 struct PollFilterMessage
 {
+    /// Parameters
     bool suppress_ack = 0; ///< Suppress the usual ACK/NACK reply.
     uint8_t num_descriptors = 0; ///< Number of descriptors in the format list.
     DescriptorRate descriptors[83]; ///< Descriptor format list.
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_POLL_FILTER_MESSAGE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "PollFilterMessage";
     static constexpr const char* DOC_NAME = "PollFilterMessage";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000030;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(suppress_ack,num_descriptors,descriptors);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(suppress_ack),std::ref(num_descriptors),std::ref(descriptors));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     typedef void Response;
 };
-void insert(::microstrain::Serializer& serializer, const PollFilterMessage& self);
-void extract(::microstrain::Serializer& serializer, PollFilterMessage& self);
-
 TypedResult<PollFilterMessage> pollFilterMessage(C::mip_interface& device, bool suppressAck, uint8_t numDescriptors, const DescriptorRate* descriptors);
 
 ///@}
@@ -337,31 +345,25 @@ TypedResult<PollFilterMessage> pollFilterMessage(C::mip_interface& device, bool 
 
 struct ImuMessageFormat
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     uint8_t num_descriptors = 0; ///< Number of descriptors
     DescriptorRate descriptors[82]; ///< Descriptor format list.
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_IMU_MESSAGE_FORMAT;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "ImuMessageFormat";
     static constexpr const char* DOC_NAME = "ImuMessageFormat";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8003;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x0000000C;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(num_descriptors,descriptors);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(num_descriptors),std::ref(descriptors));
     }
@@ -373,32 +375,40 @@ struct ImuMessageFormat
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        uint8_t num_descriptors = 0; ///< Number of descriptors
+        DescriptorRate descriptors[82]; ///< Descriptor format list.
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_IMU_MESSAGE_FORMAT;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "ImuMessageFormat::Response";
         static constexpr const char* DOC_NAME = "ImuMessageFormat Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x0000000C;
-        uint8_t num_descriptors = 0; ///< Number of descriptors
-        DescriptorRate descriptors[82]; ///< Descriptor format list.
+        auto asTuple() const
+        {
+            return std::make_tuple(num_descriptors,descriptors);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(num_descriptors),std::ref(descriptors));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const ImuMessageFormat& self);
-void extract(::microstrain::Serializer& serializer, ImuMessageFormat& self);
-
-void insert(::microstrain::Serializer& serializer, const ImuMessageFormat::Response& self);
-void extract(::microstrain::Serializer& serializer, ImuMessageFormat::Response& self);
-
 TypedResult<ImuMessageFormat> writeImuMessageFormat(C::mip_interface& device, uint8_t numDescriptors, const DescriptorRate* descriptors);
 TypedResult<ImuMessageFormat> readImuMessageFormat(C::mip_interface& device, uint8_t* numDescriptorsOut, uint8_t numDescriptorsOutMax, DescriptorRate* descriptorsOut);
 TypedResult<ImuMessageFormat> saveImuMessageFormat(C::mip_interface& device);
@@ -417,31 +427,25 @@ TypedResult<ImuMessageFormat> defaultImuMessageFormat(C::mip_interface& device);
 
 struct GpsMessageFormat
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     uint8_t num_descriptors = 0; ///< Number of descriptors
     DescriptorRate descriptors[82]; ///< Descriptor format list.
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GNSS_MESSAGE_FORMAT;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "GpsMessageFormat";
     static constexpr const char* DOC_NAME = "GpsMessageFormat";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8003;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x0000000C;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(num_descriptors,descriptors);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(num_descriptors),std::ref(descriptors));
     }
@@ -453,32 +457,40 @@ struct GpsMessageFormat
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        uint8_t num_descriptors = 0; ///< Number of descriptors
+        DescriptorRate descriptors[82]; ///< Descriptor format list.
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GNSS_MESSAGE_FORMAT;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "GpsMessageFormat::Response";
         static constexpr const char* DOC_NAME = "GpsMessageFormat Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x0000000C;
-        uint8_t num_descriptors = 0; ///< Number of descriptors
-        DescriptorRate descriptors[82]; ///< Descriptor format list.
+        auto asTuple() const
+        {
+            return std::make_tuple(num_descriptors,descriptors);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(num_descriptors),std::ref(descriptors));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const GpsMessageFormat& self);
-void extract(::microstrain::Serializer& serializer, GpsMessageFormat& self);
-
-void insert(::microstrain::Serializer& serializer, const GpsMessageFormat::Response& self);
-void extract(::microstrain::Serializer& serializer, GpsMessageFormat::Response& self);
-
 TypedResult<GpsMessageFormat> writeGpsMessageFormat(C::mip_interface& device, uint8_t numDescriptors, const DescriptorRate* descriptors);
 TypedResult<GpsMessageFormat> readGpsMessageFormat(C::mip_interface& device, uint8_t* numDescriptorsOut, uint8_t numDescriptorsOutMax, DescriptorRate* descriptorsOut);
 TypedResult<GpsMessageFormat> saveGpsMessageFormat(C::mip_interface& device);
@@ -497,31 +509,25 @@ TypedResult<GpsMessageFormat> defaultGpsMessageFormat(C::mip_interface& device);
 
 struct FilterMessageFormat
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     uint8_t num_descriptors = 0; ///< Number of descriptors (limited by payload size)
     DescriptorRate descriptors[82];
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_FILTER_MESSAGE_FORMAT;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "FilterMessageFormat";
     static constexpr const char* DOC_NAME = "FilterMessageFormat";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8003;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x0000000C;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
-        return std::make_tuple(num_descriptors, descriptors);
+        return std::make_tuple(num_descriptors,descriptors);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(num_descriptors),std::ref(descriptors));
     }
@@ -533,34 +539,40 @@ struct FilterMessageFormat
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        uint8_t num_descriptors = 0; ///< Number of descriptors (limited by payload size)
+        DescriptorRate descriptors[82];
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_FILTER_MESSAGE_FORMAT;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "FilterMessageFormat::Response";
         static constexpr const char* DOC_NAME = "FilterMessageFormat Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x0000000C;
-        uint8_t num_descriptors = 0; ///< Number of descriptors (limited by payload size)
-        DescriptorRate descriptors[82];
-        //Counter<uint8_t, +1> num_descriptors = 0;
-        //Array<DescriptorRate, 82, -1> descriptors;
-
+        auto asTuple() const
+        {
+            return std::make_tuple(num_descriptors,descriptors);
+        }
         
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(num_descriptors),std::ref(descriptors));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const FilterMessageFormat& self);
-void extract(::microstrain::Serializer& serializer, FilterMessageFormat& self);
-
-void insert(::microstrain::Serializer& serializer, const FilterMessageFormat::Response& self);
-void extract(::microstrain::Serializer& serializer, FilterMessageFormat::Response& self);
-
 TypedResult<FilterMessageFormat> writeFilterMessageFormat(C::mip_interface& device, uint8_t numDescriptors, const DescriptorRate* descriptors);
 TypedResult<FilterMessageFormat> readFilterMessageFormat(C::mip_interface& device, uint8_t* numDescriptorsOut, uint8_t numDescriptorsOutMax, DescriptorRate* descriptorsOut);
 TypedResult<FilterMessageFormat> saveFilterMessageFormat(C::mip_interface& device);
@@ -580,51 +592,57 @@ TypedResult<FilterMessageFormat> defaultFilterMessageFormat(C::mip_interface& de
 
 struct ImuGetBaseRate
 {
-    
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GET_IMU_BASE_RATE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "ImuGetBaseRate";
     static constexpr const char* DOC_NAME = "Get IMU Data Base Rate";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple();
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple();
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        uint16_t rate = 0; ///< [hz]
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_IMU_BASE_RATE;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "ImuGetBaseRate::Response";
         static constexpr const char* DOC_NAME = "Get IMU Data Base Rate Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        uint16_t rate = 0; ///< [hz]
+        auto asTuple() const
+        {
+            return std::make_tuple(rate);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(rate));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const ImuGetBaseRate& self);
-void extract(::microstrain::Serializer& serializer, ImuGetBaseRate& self);
-
-void insert(::microstrain::Serializer& serializer, const ImuGetBaseRate::Response& self);
-void extract(::microstrain::Serializer& serializer, ImuGetBaseRate::Response& self);
-
 TypedResult<ImuGetBaseRate> imuGetBaseRate(C::mip_interface& device, uint16_t* rateOut);
 
 ///@}
@@ -640,51 +658,57 @@ TypedResult<ImuGetBaseRate> imuGetBaseRate(C::mip_interface& device, uint16_t* r
 
 struct GpsGetBaseRate
 {
-    
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GET_GNSS_BASE_RATE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "GpsGetBaseRate";
     static constexpr const char* DOC_NAME = "Get GNSS Data Base Rate";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple();
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple();
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        uint16_t rate = 0; ///< [hz]
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GNSS_BASE_RATE;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "GpsGetBaseRate::Response";
         static constexpr const char* DOC_NAME = "Get GNSS Data Base Rate Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        uint16_t rate = 0; ///< [hz]
+        auto asTuple() const
+        {
+            return std::make_tuple(rate);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(rate));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const GpsGetBaseRate& self);
-void extract(::microstrain::Serializer& serializer, GpsGetBaseRate& self);
-
-void insert(::microstrain::Serializer& serializer, const GpsGetBaseRate::Response& self);
-void extract(::microstrain::Serializer& serializer, GpsGetBaseRate::Response& self);
-
 TypedResult<GpsGetBaseRate> gpsGetBaseRate(C::mip_interface& device, uint16_t* rateOut);
 
 ///@}
@@ -700,51 +724,57 @@ TypedResult<GpsGetBaseRate> gpsGetBaseRate(C::mip_interface& device, uint16_t* r
 
 struct FilterGetBaseRate
 {
-    
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GET_FILTER_BASE_RATE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "FilterGetBaseRate";
     static constexpr const char* DOC_NAME = "Get Estimation Filter Data Base Rate";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple();
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple();
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        uint16_t rate = 0; ///< [hz]
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_FILTER_BASE_RATE;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "FilterGetBaseRate::Response";
         static constexpr const char* DOC_NAME = "Get Estimation Filter Data Base Rate Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        uint16_t rate = 0; ///< [hz]
+        auto asTuple() const
+        {
+            return std::make_tuple(rate);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(rate));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const FilterGetBaseRate& self);
-void extract(::microstrain::Serializer& serializer, FilterGetBaseRate& self);
-
-void insert(::microstrain::Serializer& serializer, const FilterGetBaseRate::Response& self);
-void extract(::microstrain::Serializer& serializer, FilterGetBaseRate::Response& self);
-
 TypedResult<FilterGetBaseRate> filterGetBaseRate(C::mip_interface& device, uint16_t* rateOut);
 
 ///@}
@@ -764,34 +794,36 @@ TypedResult<FilterGetBaseRate> filterGetBaseRate(C::mip_interface& device, uint1
 
 struct PollData
 {
+    /// Parameters
     uint8_t desc_set = 0; ///< Data descriptor set. Must be supported.
     bool suppress_ack = 0; ///< Suppress the usual ACK/NACK reply.
     uint8_t num_descriptors = 0; ///< Number of descriptors in the format list.
     uint8_t descriptors[82] = {0}; ///< Descriptor format list.
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_POLL_DATA;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "PollData";
     static constexpr const char* DOC_NAME = "PollData";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x000000C0;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(desc_set,suppress_ack,num_descriptors,descriptors);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(desc_set),std::ref(suppress_ack),std::ref(num_descriptors),std::ref(descriptors));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     typedef void Response;
 };
-void insert(::microstrain::Serializer& serializer, const PollData& self);
-void extract(::microstrain::Serializer& serializer, PollData& self);
-
 TypedResult<PollData> pollData(C::mip_interface& device, uint8_t descSet, bool suppressAck, uint8_t numDescriptors, const uint8_t* descriptors);
 
 ///@}
@@ -804,53 +836,61 @@ TypedResult<PollData> pollData(C::mip_interface& device, uint8_t descSet, bool s
 
 struct GetBaseRate
 {
+    /// Parameters
     uint8_t desc_set = 0; ///< This is the data descriptor set. It must be a supported descriptor.
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GET_BASE_RATE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "GetBaseRate";
     static constexpr const char* DOC_NAME = "Get Data Base Rate";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(desc_set);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(desc_set));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        uint8_t desc_set = 0; ///< Echoes the parameter in the command.
+        uint16_t rate = 0; ///< Base rate in Hz (0 = variable, unknown, or user-defined rate.  Data will be sent when received).
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_BASE_RATE;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "GetBaseRate::Response";
         static constexpr const char* DOC_NAME = "Get Data Base Rate Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        uint8_t desc_set = 0; ///< Echoes the parameter in the command.
-        uint16_t rate = 0; ///< Base rate in Hz (0 = variable, unknown, or user-defined rate.  Data will be sent when received).
+        auto asTuple() const
+        {
+            return std::make_tuple(desc_set,rate);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(desc_set),std::ref(rate));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const GetBaseRate& self);
-void extract(::microstrain::Serializer& serializer, GetBaseRate& self);
-
-void insert(::microstrain::Serializer& serializer, const GetBaseRate::Response& self);
-void extract(::microstrain::Serializer& serializer, GetBaseRate::Response& self);
-
 TypedResult<GetBaseRate> getBaseRate(C::mip_interface& device, uint8_t descSet, uint16_t* rateOut);
 
 ///@}
@@ -865,32 +905,26 @@ TypedResult<GetBaseRate> getBaseRate(C::mip_interface& device, uint8_t descSet, 
 
 struct MessageFormat
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     uint8_t desc_set = 0; ///< Data descriptor set. Must be supported. When function is SAVE, LOAD, or DEFAULT, can be 0 to apply to all descriptor sets.
     uint8_t num_descriptors = 0; ///< Number of descriptors (limited by payload size)
     DescriptorRate descriptors[82]; ///< List of descriptors and decimations.
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_MESSAGE_FORMAT;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "MessageFormat";
     static constexpr const char* DOC_NAME = "MessageFormat";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8007;
-    static constexpr const uint32_t READ_PARAMS    = 0x8001;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8001;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8001;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8001;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000030;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(desc_set,num_descriptors,descriptors);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(desc_set),std::ref(num_descriptors),std::ref(descriptors));
     }
@@ -903,33 +937,41 @@ struct MessageFormat
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        uint8_t desc_set = 0; ///< Echoes the descriptor set from the command.
+        uint8_t num_descriptors = 0; ///< Number of descriptors in the list.
+        DescriptorRate descriptors[82]; ///< List of descriptors and decimations.
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_MESSAGE_FORMAT;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "MessageFormat::Response";
         static constexpr const char* DOC_NAME = "MessageFormat Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000030;
-        uint8_t desc_set = 0; ///< Echoes the descriptor set from the command.
-        uint8_t num_descriptors = 0; ///< Number of descriptors in the list.
-        DescriptorRate descriptors[82]; ///< List of descriptors and decimations.
+        auto asTuple() const
+        {
+            return std::make_tuple(desc_set,num_descriptors,descriptors);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(desc_set),std::ref(num_descriptors),std::ref(descriptors));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const MessageFormat& self);
-void extract(::microstrain::Serializer& serializer, MessageFormat& self);
-
-void insert(::microstrain::Serializer& serializer, const MessageFormat::Response& self);
-void extract(::microstrain::Serializer& serializer, MessageFormat::Response& self);
-
 TypedResult<MessageFormat> writeMessageFormat(C::mip_interface& device, uint8_t descSet, uint8_t numDescriptors, const DescriptorRate* descriptors);
 TypedResult<MessageFormat> readMessageFormat(C::mip_interface& device, uint8_t descSet, uint8_t* numDescriptorsOut, uint8_t numDescriptorsOutMax, DescriptorRate* descriptorsOut);
 TypedResult<MessageFormat> saveMessageFormat(C::mip_interface& device, uint8_t descSet);
@@ -952,33 +994,35 @@ TypedResult<MessageFormat> defaultMessageFormat(C::mip_interface& device, uint8_
 
 struct NmeaPollData
 {
+    /// Parameters
     bool suppress_ack = 0; ///< Suppress the usual ACK/NACK reply.
     uint8_t count = 0; ///< Number of format entries (limited by payload size)
     NmeaMessage format_entries[40]; ///< List of format entries.
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_POLL_NMEA_MESSAGE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "NmeaPollData";
     static constexpr const char* DOC_NAME = "NmeaPollData";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000030;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(suppress_ack,count,format_entries);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(suppress_ack),std::ref(count),std::ref(format_entries));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     typedef void Response;
 };
-void insert(::microstrain::Serializer& serializer, const NmeaPollData& self);
-void extract(::microstrain::Serializer& serializer, NmeaPollData& self);
-
 TypedResult<NmeaPollData> nmeaPollData(C::mip_interface& device, bool suppressAck, uint8_t count, const NmeaMessage* formatEntries);
 
 ///@}
@@ -991,31 +1035,25 @@ TypedResult<NmeaPollData> nmeaPollData(C::mip_interface& device, bool suppressAc
 
 struct NmeaMessageFormat
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     uint8_t count = 0; ///< Number of format entries (limited by payload size)
     NmeaMessage format_entries[40]; ///< List of format entries.
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_NMEA_MESSAGE_FORMAT;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "NmeaMessageFormat";
     static constexpr const char* DOC_NAME = "NmeaMessageFormat";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8003;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x0000000C;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(count,format_entries);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(count),std::ref(format_entries));
     }
@@ -1027,32 +1065,40 @@ struct NmeaMessageFormat
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        uint8_t count = 0; ///< Number of format entries (limited by payload size)
+        NmeaMessage format_entries[40]; ///< List of format entries.
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_NMEA_MESSAGE_FORMAT;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "NmeaMessageFormat::Response";
         static constexpr const char* DOC_NAME = "NmeaMessageFormat Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x0000000C;
-        uint8_t count = 0; ///< Number of format entries (limited by payload size)
-        NmeaMessage format_entries[40]; ///< List of format entries.
+        auto asTuple() const
+        {
+            return std::make_tuple(count,format_entries);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(count),std::ref(format_entries));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const NmeaMessageFormat& self);
-void extract(::microstrain::Serializer& serializer, NmeaMessageFormat& self);
-
-void insert(::microstrain::Serializer& serializer, const NmeaMessageFormat::Response& self);
-void extract(::microstrain::Serializer& serializer, NmeaMessageFormat::Response& self);
-
 TypedResult<NmeaMessageFormat> writeNmeaMessageFormat(C::mip_interface& device, uint8_t count, const NmeaMessage* formatEntries);
 TypedResult<NmeaMessageFormat> readNmeaMessageFormat(C::mip_interface& device, uint8_t* countOut, uint8_t countOutMax, NmeaMessage* formatEntriesOut);
 TypedResult<NmeaMessageFormat> saveNmeaMessageFormat(C::mip_interface& device);
@@ -1073,28 +1119,23 @@ TypedResult<NmeaMessageFormat> defaultNmeaMessageFormat(C::mip_interface& device
 
 struct DeviceSettings
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_DEVICE_STARTUP_SETTINGS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "DeviceSettings";
     static constexpr const char* DOC_NAME = "DeviceSettings";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x0000;
-    static constexpr const uint32_t READ_PARAMS    = 0x0000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple();
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple();
     }
@@ -1106,11 +1147,12 @@ struct DeviceSettings
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     typedef void Response;
 };
-void insert(::microstrain::Serializer& serializer, const DeviceSettings& self);
-void extract(::microstrain::Serializer& serializer, DeviceSettings& self);
-
 TypedResult<DeviceSettings> saveDeviceSettings(C::mip_interface& device);
 TypedResult<DeviceSettings> loadDeviceSettings(C::mip_interface& device);
 TypedResult<DeviceSettings> defaultDeviceSettings(C::mip_interface& device);
@@ -1139,30 +1181,24 @@ TypedResult<DeviceSettings> defaultDeviceSettings(C::mip_interface& device);
 
 struct UartBaudrate
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     uint32_t baud = 0;
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_UART_BAUDRATE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "UartBaudrate";
     static constexpr const char* DOC_NAME = "UartBaudrate";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(baud);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(baud));
     }
@@ -1174,31 +1210,39 @@ struct UartBaudrate
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        uint32_t baud = 0;
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_UART_BAUDRATE;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "UartBaudrate::Response";
         static constexpr const char* DOC_NAME = "UartBaudrate Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        uint32_t baud = 0;
+        auto asTuple() const
+        {
+            return std::make_tuple(baud);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(baud));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const UartBaudrate& self);
-void extract(::microstrain::Serializer& serializer, UartBaudrate& self);
-
-void insert(::microstrain::Serializer& serializer, const UartBaudrate::Response& self);
-void extract(::microstrain::Serializer& serializer, UartBaudrate::Response& self);
-
 TypedResult<UartBaudrate> writeUartBaudrate(C::mip_interface& device, uint32_t baud);
 TypedResult<UartBaudrate> readUartBaudrate(C::mip_interface& device, uint32_t* baudOut);
 TypedResult<UartBaudrate> saveUartBaudrate(C::mip_interface& device);
@@ -1225,32 +1269,34 @@ struct FactoryStreaming
         ADD       = 2,  ///<  Adds descriptors to the current message format(s) without changing existing descriptors. May result in duplicates.
     };
     
+    /// Parameters
     Action action = static_cast<Action>(0);
     uint8_t reserved = 0; ///< Reserved. Set to 0x00.
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_CONFIGURE_FACTORY_STREAMING;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "FactoryStreaming";
     static constexpr const char* DOC_NAME = "FactoryStreaming";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(action,reserved);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(action),std::ref(reserved));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     typedef void Response;
 };
-void insert(::microstrain::Serializer& serializer, const FactoryStreaming& self);
-void extract(::microstrain::Serializer& serializer, FactoryStreaming& self);
-
 TypedResult<FactoryStreaming> factoryStreaming(C::mip_interface& device, FactoryStreaming::Action action, uint8_t reserved);
 
 ///@}
@@ -1272,31 +1318,25 @@ struct DatastreamControl
     static constexpr const uint8_t LEGACY_GNSS_STREAM = 0x02;
     static constexpr const uint8_t LEGACY_FILTER_STREAM = 0x03;
     static constexpr const uint8_t ALL_STREAMS = 0x00;
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     uint8_t desc_set = 0; ///< The descriptor set of the stream to control. When function is SAVE, LOAD, or DEFAULT, can be ALL_STREAMS(0) to apply to all descriptor sets. On Generation 5 products, this must be one of the above legacy constants.
     bool enable = 0; ///< True or false to enable or disable the stream.
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_CONTROL_DATA_STREAM;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "DatastreamControl";
     static constexpr const char* DOC_NAME = "DatastreamControl";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8003;
-    static constexpr const uint32_t READ_PARAMS    = 0x8001;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8001;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8001;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8001;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(desc_set,enable);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(desc_set),std::ref(enable));
     }
@@ -1309,32 +1349,40 @@ struct DatastreamControl
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        uint8_t desc_set = 0;
+        bool enabled = 0;
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_DATASTREAM_ENABLE;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "DatastreamControl::Response";
         static constexpr const char* DOC_NAME = "DatastreamControl Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        uint8_t desc_set = 0;
-        bool enabled = 0;
+        auto asTuple() const
+        {
+            return std::make_tuple(desc_set,enabled);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(desc_set),std::ref(enabled));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const DatastreamControl& self);
-void extract(::microstrain::Serializer& serializer, DatastreamControl& self);
-
-void insert(::microstrain::Serializer& serializer, const DatastreamControl::Response& self);
-void extract(::microstrain::Serializer& serializer, DatastreamControl::Response& self);
-
 TypedResult<DatastreamControl> writeDatastreamControl(C::mip_interface& device, uint8_t descSet, bool enable);
 TypedResult<DatastreamControl> readDatastreamControl(C::mip_interface& device, uint8_t descSet, bool* enabledOut);
 TypedResult<DatastreamControl> saveDatastreamControl(C::mip_interface& device, uint8_t descSet);
@@ -1380,6 +1428,7 @@ struct ConstellationSettings
     
     struct OptionFlags : Bitfield<OptionFlags>
     {
+        typedef uint16_t Type;
         enum _enumType : uint16_t
         {
             NONE   = 0x0000,
@@ -1396,48 +1445,43 @@ struct ConstellationSettings
         OptionFlags& operator|=(uint16_t val) { return *this = value | val; }
         OptionFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool l1saif() const { return (value & L1SAIF) > 0; }
-        void l1saif(bool val) { if(val) value |= L1SAIF; else value &= ~L1SAIF; }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
     struct Settings
     {
+        /// Parameters
         ConstellationId constellation_id = static_cast<ConstellationId>(0); ///< Constellation ID
         uint8_t enable = 0; ///< Enable/Disable constellation
         uint8_t reserved_channels = 0; ///< Minimum number of channels reserved for this constellation
         uint8_t max_channels = 0; ///< Maximum number of channels to use for this constallation
         OptionFlags option_flags; ///< Constellation option Flags
         
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     uint16_t max_channels = 0;
     uint8_t config_count = 0;
     Settings settings[42];
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GNSS_CONSTELLATION_SETTINGS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "ConstellationSettings";
     static constexpr const char* DOC_NAME = "ConstellationSettings";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8007;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000030;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(max_channels,config_count,settings);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(max_channels),std::ref(config_count),std::ref(settings));
     }
@@ -1449,37 +1493,42 @@ struct ConstellationSettings
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
-        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GNSS_CONSTELLATION_SETTINGS;
-        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
-        static constexpr const char* NAME = "ConstellationSettings::Response";
-        static constexpr const char* DOC_NAME = "ConstellationSettings Response";
-        
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x000000C0;
+        /// Parameters
         uint16_t max_channels_available = 0; ///< Maximum channels available
         uint16_t max_channels_use = 0; ///< Maximum channels to use
         uint8_t config_count = 0; ///< Number of constellation configurations
         Settings settings[42]; ///< Constellation Settings
         
+        /// Descriptors
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GNSS_CONSTELLATION_SETTINGS;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+        static constexpr const char* NAME = "ConstellationSettings::Response";
+        static constexpr const char* DOC_NAME = "ConstellationSettings Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        auto as_tuple()
+        auto asTuple() const
+        {
+            return std::make_tuple(max_channels_available,max_channels_use,config_count,settings);
+        }
+        
+        auto asTuple()
         {
             return std::make_tuple(std::ref(max_channels_available),std::ref(max_channels_use),std::ref(config_count),std::ref(settings));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const ConstellationSettings& self);
-void extract(::microstrain::Serializer& serializer, ConstellationSettings& self);
-
-void insert(::microstrain::Serializer& serializer, const ConstellationSettings::Settings& self);
-void extract(::microstrain::Serializer& serializer, ConstellationSettings::Settings& self);
-
-void insert(::microstrain::Serializer& serializer, const ConstellationSettings::Response& self);
-void extract(::microstrain::Serializer& serializer, ConstellationSettings::Response& self);
-
 TypedResult<ConstellationSettings> writeConstellationSettings(C::mip_interface& device, uint16_t maxChannels, uint8_t configCount, const ConstellationSettings::Settings* settings);
 TypedResult<ConstellationSettings> readConstellationSettings(C::mip_interface& device, uint16_t* maxChannelsAvailableOut, uint16_t* maxChannelsUseOut, uint8_t* configCountOut, uint8_t configCountOutMax, ConstellationSettings::Settings* settingsOut);
 TypedResult<ConstellationSettings> saveConstellationSettings(C::mip_interface& device);
@@ -1501,6 +1550,7 @@ struct GnssSbasSettings
 {
     struct SBASOptions : Bitfield<SBASOptions>
     {
+        typedef uint16_t Type;
         enum _enumType : uint16_t
         {
             NONE               = 0x0000,
@@ -1519,44 +1569,30 @@ struct GnssSbasSettings
         SBASOptions& operator|=(uint16_t val) { return *this = value | val; }
         SBASOptions& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool enableRanging() const { return (value & ENABLE_RANGING) > 0; }
-        void enableRanging(bool val) { if(val) value |= ENABLE_RANGING; else value &= ~ENABLE_RANGING; }
-        bool enableCorrections() const { return (value & ENABLE_CORRECTIONS) > 0; }
-        void enableCorrections(bool val) { if(val) value |= ENABLE_CORRECTIONS; else value &= ~ENABLE_CORRECTIONS; }
-        bool applyIntegrity() const { return (value & APPLY_INTEGRITY) > 0; }
-        void applyIntegrity(bool val) { if(val) value |= APPLY_INTEGRITY; else value &= ~APPLY_INTEGRITY; }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     uint8_t enable_sbas = 0; ///< 0 - SBAS Disabled, 1 - SBAS enabled
     SBASOptions sbas_options; ///< SBAS options, see definition
     uint8_t num_included_prns = 0; ///< Number of SBAS PRNs to include in search (0 = include all)
     uint16_t included_prns[39] = {0}; ///< List of specific SBAS PRNs to search for
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GNSS_SBAS_SETTINGS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "GnssSbasSettings";
     static constexpr const char* DOC_NAME = "SBAS Settings";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x800F;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x000000C0;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(enable_sbas,sbas_options,num_included_prns,included_prns);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(enable_sbas),std::ref(sbas_options),std::ref(num_included_prns),std::ref(included_prns));
     }
@@ -1568,34 +1604,42 @@ struct GnssSbasSettings
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
-        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GNSS_SBAS_SETTINGS;
-        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
-        static constexpr const char* NAME = "GnssSbasSettings::Response";
-        static constexpr const char* DOC_NAME = "SBAS Settings Response";
-        
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x000000C0;
+        /// Parameters
         uint8_t enable_sbas = 0; ///< 0 - SBAS Disabled, 1 - SBAS enabled
         SBASOptions sbas_options; ///< SBAS options, see definition
         uint8_t num_included_prns = 0; ///< Number of SBAS PRNs to include in search (0 = include all)
         uint16_t included_prns[39] = {0}; ///< List of specific SBAS PRNs to search for
         
+        /// Descriptors
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GNSS_SBAS_SETTINGS;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+        static constexpr const char* NAME = "GnssSbasSettings::Response";
+        static constexpr const char* DOC_NAME = "SBAS Settings Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        auto as_tuple()
+        auto asTuple() const
+        {
+            return std::make_tuple(enable_sbas,sbas_options,num_included_prns,included_prns);
+        }
+        
+        auto asTuple()
         {
             return std::make_tuple(std::ref(enable_sbas),std::ref(sbas_options),std::ref(num_included_prns),std::ref(included_prns));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const GnssSbasSettings& self);
-void extract(::microstrain::Serializer& serializer, GnssSbasSettings& self);
-
-void insert(::microstrain::Serializer& serializer, const GnssSbasSettings::Response& self);
-void extract(::microstrain::Serializer& serializer, GnssSbasSettings::Response& self);
-
 TypedResult<GnssSbasSettings> writeGnssSbasSettings(C::mip_interface& device, uint8_t enableSbas, GnssSbasSettings::SBASOptions sbasOptions, uint8_t numIncludedPrns, const uint16_t* includedPrns);
 TypedResult<GnssSbasSettings> readGnssSbasSettings(C::mip_interface& device, uint8_t* enableSbasOut, GnssSbasSettings::SBASOptions* sbasOptionsOut, uint8_t* numIncludedPrnsOut, uint8_t numIncludedPrnsOutMax, uint16_t* includedPrnsOut);
 TypedResult<GnssSbasSettings> saveGnssSbasSettings(C::mip_interface& device);
@@ -1628,31 +1672,25 @@ struct GnssAssistedFix
         ENABLED = 1,  ///<  Enable assisted fix
     };
     
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     AssistedFixOption option = static_cast<AssistedFixOption>(0); ///< Assisted fix options
     uint8_t flags = 0; ///< Assisted fix flags (set to 0xFF)
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GNSS_ASSISTED_FIX_SETTINGS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "GnssAssistedFix";
     static constexpr const char* DOC_NAME = "GNSS Assisted Fix Settings";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8003;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(option,flags);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(option),std::ref(flags));
     }
@@ -1664,32 +1702,40 @@ struct GnssAssistedFix
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        AssistedFixOption option = static_cast<AssistedFixOption>(0); ///< Assisted fix options
+        uint8_t flags = 0; ///< Assisted fix flags (set to 0xFF)
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GNSS_ASSISTED_FIX_SETTINGS;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "GnssAssistedFix::Response";
         static constexpr const char* DOC_NAME = "GNSS Assisted Fix Settings Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        AssistedFixOption option = static_cast<AssistedFixOption>(0); ///< Assisted fix options
-        uint8_t flags = 0; ///< Assisted fix flags (set to 0xFF)
+        auto asTuple() const
+        {
+            return std::make_tuple(option,flags);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(option),std::ref(flags));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const GnssAssistedFix& self);
-void extract(::microstrain::Serializer& serializer, GnssAssistedFix& self);
-
-void insert(::microstrain::Serializer& serializer, const GnssAssistedFix::Response& self);
-void extract(::microstrain::Serializer& serializer, GnssAssistedFix::Response& self);
-
 TypedResult<GnssAssistedFix> writeGnssAssistedFix(C::mip_interface& device, GnssAssistedFix::AssistedFixOption option, uint8_t flags);
 TypedResult<GnssAssistedFix> readGnssAssistedFix(C::mip_interface& device, GnssAssistedFix::AssistedFixOption* optionOut, uint8_t* flagsOut);
 TypedResult<GnssAssistedFix> saveGnssAssistedFix(C::mip_interface& device);
@@ -1709,32 +1755,26 @@ TypedResult<GnssAssistedFix> defaultGnssAssistedFix(C::mip_interface& device);
 
 struct GnssTimeAssistance
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     double tow = 0; ///< GPS Time of week [seconds]
     uint16_t week_number = 0; ///< GPS Weeks since 1980 [weeks]
     float accuracy = 0; ///< Accuracy of time information [seconds]
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GNSS_TIME_ASSISTANCE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "GnssTimeAssistance";
     static constexpr const char* DOC_NAME = "GnssTimeAssistance";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8007;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x0000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x0000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x0000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(tow,week_number,accuracy);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(tow),std::ref(week_number),std::ref(accuracy));
     }
@@ -1746,33 +1786,41 @@ struct GnssTimeAssistance
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        double tow = 0; ///< GPS Time of week [seconds]
+        uint16_t week_number = 0; ///< GPS Weeks since 1980 [weeks]
+        float accuracy = 0; ///< Accuracy of time information [seconds]
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GNSS_TIME_ASSISTANCE;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "GnssTimeAssistance::Response";
         static constexpr const char* DOC_NAME = "GnssTimeAssistance Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        double tow = 0; ///< GPS Time of week [seconds]
-        uint16_t week_number = 0; ///< GPS Weeks since 1980 [weeks]
-        float accuracy = 0; ///< Accuracy of time information [seconds]
+        auto asTuple() const
+        {
+            return std::make_tuple(tow,week_number,accuracy);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(tow),std::ref(week_number),std::ref(accuracy));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const GnssTimeAssistance& self);
-void extract(::microstrain::Serializer& serializer, GnssTimeAssistance& self);
-
-void insert(::microstrain::Serializer& serializer, const GnssTimeAssistance::Response& self);
-void extract(::microstrain::Serializer& serializer, GnssTimeAssistance::Response& self);
-
 TypedResult<GnssTimeAssistance> writeGnssTimeAssistance(C::mip_interface& device, double tow, uint16_t weekNumber, float accuracy);
 TypedResult<GnssTimeAssistance> readGnssTimeAssistance(C::mip_interface& device, double* towOut, uint16_t* weekNumberOut, float* accuracyOut);
 
@@ -1801,6 +1849,7 @@ TypedResult<GnssTimeAssistance> readGnssTimeAssistance(C::mip_interface& device,
 
 struct ImuLowpassFilter
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     uint8_t target_descriptor = 0; ///< Field descriptor of filtered quantity within the Sensor data set. Supported values are accel (0x04), gyro (0x05), mag (0x06), and pressure (0x17), provided the data is supported by the device. Except with the READ function selector, this can be 0 to apply to all of the above quantities.
     bool enable = 0; ///< The target data will be filtered if this is true.
@@ -1808,27 +1857,20 @@ struct ImuLowpassFilter
     uint16_t frequency = 0; ///< -3dB cutoff frequency in Hz. Will not affect filtering if 'manual' is false.
     uint8_t reserved = 0; ///< Reserved, set to 0x00.
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_IMU_LOWPASS_FILTER;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "ImuLowpassFilter";
     static constexpr const char* DOC_NAME = "Advanced Low-Pass Filter Settings";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x801F;
-    static constexpr const uint32_t READ_PARAMS    = 0x8001;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8001;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8001;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8001;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(target_descriptor,enable,manual,frequency,reserved);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(target_descriptor),std::ref(enable),std::ref(manual),std::ref(frequency),std::ref(reserved));
     }
@@ -1841,35 +1883,43 @@ struct ImuLowpassFilter
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
-        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_ADVANCED_DATA_FILTER;
-        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
-        static constexpr const char* NAME = "ImuLowpassFilter::Response";
-        static constexpr const char* DOC_NAME = "Advanced Low-Pass Filter Settings Response";
-        
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
+        /// Parameters
         uint8_t target_descriptor = 0;
         bool enable = 0; ///< True if the filter is currently enabled.
         bool manual = 0; ///< True if the filter cutoff was manually configured.
         uint16_t frequency = 0; ///< The cutoff frequency of the filter. If the filter is in auto mode, this value is unspecified.
         uint8_t reserved = 0; ///< Reserved and must be ignored.
         
+        /// Descriptors
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_ADVANCED_DATA_FILTER;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+        static constexpr const char* NAME = "ImuLowpassFilter::Response";
+        static constexpr const char* DOC_NAME = "Advanced Low-Pass Filter Settings Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        auto as_tuple()
+        auto asTuple() const
+        {
+            return std::make_tuple(target_descriptor,enable,manual,frequency,reserved);
+        }
+        
+        auto asTuple()
         {
             return std::make_tuple(std::ref(target_descriptor),std::ref(enable),std::ref(manual),std::ref(frequency),std::ref(reserved));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const ImuLowpassFilter& self);
-void extract(::microstrain::Serializer& serializer, ImuLowpassFilter& self);
-
-void insert(::microstrain::Serializer& serializer, const ImuLowpassFilter::Response& self);
-void extract(::microstrain::Serializer& serializer, ImuLowpassFilter::Response& self);
-
 TypedResult<ImuLowpassFilter> writeImuLowpassFilter(C::mip_interface& device, uint8_t targetDescriptor, bool enable, bool manual, uint16_t frequency, uint8_t reserved);
 TypedResult<ImuLowpassFilter> readImuLowpassFilter(C::mip_interface& device, uint8_t targetDescriptor, bool* enableOut, bool* manualOut, uint16_t* frequencyOut, uint8_t* reservedOut);
 TypedResult<ImuLowpassFilter> saveImuLowpassFilter(C::mip_interface& device, uint8_t targetDescriptor);
@@ -1895,30 +1945,24 @@ struct PpsSource
         GENERATED  = 4,  ///<  PPS is generated from the system oscillator.
     };
     
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     Source source = static_cast<Source>(0);
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_PPS_SOURCE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "PpsSource";
     static constexpr const char* DOC_NAME = "PpsSource";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(source);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(source));
     }
@@ -1930,31 +1974,39 @@ struct PpsSource
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        Source source = static_cast<Source>(0);
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_PPS_SOURCE;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "PpsSource::Response";
         static constexpr const char* DOC_NAME = "PpsSource Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        Source source = static_cast<Source>(0);
+        auto asTuple() const
+        {
+            return std::make_tuple(source);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(source));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const PpsSource& self);
-void extract(::microstrain::Serializer& serializer, PpsSource& self);
-
-void insert(::microstrain::Serializer& serializer, const PpsSource::Response& self);
-void extract(::microstrain::Serializer& serializer, PpsSource::Response& self);
-
 TypedResult<PpsSource> writePpsSource(C::mip_interface& device, PpsSource::Source source);
 TypedResult<PpsSource> readPpsSource(C::mip_interface& device, PpsSource::Source* sourceOut);
 TypedResult<PpsSource> savePpsSource(C::mip_interface& device);
@@ -2018,6 +2070,7 @@ struct GpioConfig
     
     struct PinMode : Bitfield<PinMode>
     {
+        typedef uint8_t Type;
         enum _enumType : uint8_t
         {
             NONE       = 0x00,
@@ -2036,44 +2089,30 @@ struct GpioConfig
         PinMode& operator|=(uint8_t val) { return *this = value | val; }
         PinMode& operator&=(uint8_t val) { return *this = value & val; }
         
-        bool openDrain() const { return (value & OPEN_DRAIN) > 0; }
-        void openDrain(bool val) { if(val) value |= OPEN_DRAIN; else value &= ~OPEN_DRAIN; }
-        bool pulldown() const { return (value & PULLDOWN) > 0; }
-        void pulldown(bool val) { if(val) value |= PULLDOWN; else value &= ~PULLDOWN; }
-        bool pullup() const { return (value & PULLUP) > 0; }
-        void pullup(bool val) { if(val) value |= PULLUP; else value &= ~PULLUP; }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     uint8_t pin = 0; ///< GPIO pin number counting from 1. For save, load, and default function selectors, this can be 0 to select all pins.
     Feature feature = static_cast<Feature>(0); ///< Determines how the pin will be used.
     Behavior behavior = static_cast<Behavior>(0); ///< Select an appropriate value from the enumeration based on the selected feature (e.g. for PPS, select one of the values prefixed with PPS_.)
     PinMode pin_mode; ///< GPIO configuration. May be restricted depending on device, pin, feature, and behavior. See device user manual.
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GPIO_CONFIG;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "GpioConfig";
     static constexpr const char* DOC_NAME = "GPIO Configuration";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x800F;
-    static constexpr const uint32_t READ_PARAMS    = 0x8001;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8001;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8001;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8001;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(pin,feature,behavior,pin_mode);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(pin),std::ref(feature),std::ref(behavior),std::ref(pin_mode));
     }
@@ -2086,34 +2125,42 @@ struct GpioConfig
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
-        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GPIO_CONFIG;
-        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
-        static constexpr const char* NAME = "GpioConfig::Response";
-        static constexpr const char* DOC_NAME = "GPIO Configuration Response";
-        
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
+        /// Parameters
         uint8_t pin = 0; ///< GPIO pin number counting from 1. For save, load, and default function selectors, this can be 0 to select all pins.
         Feature feature = static_cast<Feature>(0); ///< Determines how the pin will be used.
         Behavior behavior = static_cast<Behavior>(0); ///< Select an appropriate value from the enumeration based on the selected feature (e.g. for PPS, select one of the values prefixed with PPS_.)
         PinMode pin_mode; ///< GPIO configuration. May be restricted depending on device, pin, feature, and behavior. See device user manual.
         
+        /// Descriptors
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GPIO_CONFIG;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+        static constexpr const char* NAME = "GpioConfig::Response";
+        static constexpr const char* DOC_NAME = "GPIO Configuration Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        auto as_tuple()
+        auto asTuple() const
+        {
+            return std::make_tuple(pin,feature,behavior,pin_mode);
+        }
+        
+        auto asTuple()
         {
             return std::make_tuple(std::ref(pin),std::ref(feature),std::ref(behavior),std::ref(pin_mode));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const GpioConfig& self);
-void extract(::microstrain::Serializer& serializer, GpioConfig& self);
-
-void insert(::microstrain::Serializer& serializer, const GpioConfig::Response& self);
-void extract(::microstrain::Serializer& serializer, GpioConfig::Response& self);
-
 TypedResult<GpioConfig> writeGpioConfig(C::mip_interface& device, uint8_t pin, GpioConfig::Feature feature, GpioConfig::Behavior behavior, GpioConfig::PinMode pinMode);
 TypedResult<GpioConfig> readGpioConfig(C::mip_interface& device, uint8_t pin, GpioConfig::Feature* featureOut, GpioConfig::Behavior* behaviorOut, GpioConfig::PinMode* pinModeOut);
 TypedResult<GpioConfig> saveGpioConfig(C::mip_interface& device, uint8_t pin);
@@ -2145,31 +2192,25 @@ TypedResult<GpioConfig> defaultGpioConfig(C::mip_interface& device, uint8_t pin)
 
 struct GpioState
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     uint8_t pin = 0; ///< GPIO pin number counting from 1. Cannot be 0.
     bool state = 0; ///< The pin state.
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GPIO_STATE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "GpioState";
     static constexpr const char* DOC_NAME = "GPIO State";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8003;
-    static constexpr const uint32_t READ_PARAMS    = 0x8001;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x0000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x0000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x0000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(pin,state);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(pin),std::ref(state));
     }
@@ -2181,32 +2222,40 @@ struct GpioState
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        uint8_t pin = 0; ///< GPIO pin number counting from 1. Cannot be 0.
+        bool state = 0; ///< The pin state.
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GPIO_STATE;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "GpioState::Response";
         static constexpr const char* DOC_NAME = "GPIO State Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        uint8_t pin = 0; ///< GPIO pin number counting from 1. Cannot be 0.
-        bool state = 0; ///< The pin state.
+        auto asTuple() const
+        {
+            return std::make_tuple(pin,state);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(pin),std::ref(state));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const GpioState& self);
-void extract(::microstrain::Serializer& serializer, GpioState& self);
-
-void insert(::microstrain::Serializer& serializer, const GpioState::Response& self);
-void extract(::microstrain::Serializer& serializer, GpioState::Response& self);
-
 TypedResult<GpioState> writeGpioState(C::mip_interface& device, uint8_t pin, bool state);
 TypedResult<GpioState> readGpioState(C::mip_interface& device, uint8_t pin, bool* stateOut);
 
@@ -2227,32 +2276,26 @@ struct Odometer
         QUADRATURE = 2,  ///<  Quadrature encoder mode.
     };
     
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     Mode mode = static_cast<Mode>(0); ///< Mode setting.
     float scaling = 0; ///< Encoder pulses per meter of distance traveled [pulses/m]. Distance traveled is computed using the formula d = p / N * 2R * pi, where d is distance, p is the number of pulses received, N is the encoder resolution, and R is the wheel radius. By simplifying all of the parameters into one, the formula d = p / S is obtained, where s is the odometer scaling factor passed to this command. S is equivalent to N / (2R * pi) and has units of pulses / meter. N is in units of "A" pulses per revolution and R is in meters. Make this value negative if the odometer is mounted so that it rotates backwards.
     float uncertainty = 0; ///< Uncertainty in encoder counts to distance translation (1-sigma value) [m/m].
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_ODOMETER_CONFIG;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "Odometer";
     static constexpr const char* DOC_NAME = "Odometer Settings";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8007;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(mode,scaling,uncertainty);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(mode),std::ref(scaling),std::ref(uncertainty));
     }
@@ -2264,33 +2307,41 @@ struct Odometer
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        Mode mode = static_cast<Mode>(0); ///< Mode setting.
+        float scaling = 0; ///< Encoder pulses per meter of distance traveled [pulses/m]. Distance traveled is computed using the formula d = p / N * 2R * pi, where d is distance, p is the number of pulses received, N is the encoder resolution, and R is the wheel radius. By simplifying all of the parameters into one, the formula d = p / S is obtained, where s is the odometer scaling factor passed to this command. S is equivalent to N / (2R * pi) and has units of pulses / meter. N is in units of "A" pulses per revolution and R is in meters. Make this value negative if the odometer is mounted so that it rotates backwards.
+        float uncertainty = 0; ///< Uncertainty in encoder counts to distance translation (1-sigma value) [m/m].
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_ODOMETER_CONFIG;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "Odometer::Response";
         static constexpr const char* DOC_NAME = "Odometer Settings Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        Mode mode = static_cast<Mode>(0); ///< Mode setting.
-        float scaling = 0; ///< Encoder pulses per meter of distance traveled [pulses/m]. Distance traveled is computed using the formula d = p / N * 2R * pi, where d is distance, p is the number of pulses received, N is the encoder resolution, and R is the wheel radius. By simplifying all of the parameters into one, the formula d = p / S is obtained, where s is the odometer scaling factor passed to this command. S is equivalent to N / (2R * pi) and has units of pulses / meter. N is in units of "A" pulses per revolution and R is in meters. Make this value negative if the odometer is mounted so that it rotates backwards.
-        float uncertainty = 0; ///< Uncertainty in encoder counts to distance translation (1-sigma value) [m/m].
+        auto asTuple() const
+        {
+            return std::make_tuple(mode,scaling,uncertainty);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(mode),std::ref(scaling),std::ref(uncertainty));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const Odometer& self);
-void extract(::microstrain::Serializer& serializer, Odometer& self);
-
-void insert(::microstrain::Serializer& serializer, const Odometer::Response& self);
-void extract(::microstrain::Serializer& serializer, Odometer::Response& self);
-
 TypedResult<Odometer> writeOdometer(C::mip_interface& device, Odometer::Mode mode, float scaling, float uncertainty);
 TypedResult<Odometer> readOdometer(C::mip_interface& device, Odometer::Mode* modeOut, float* scalingOut, float* uncertaintyOut);
 TypedResult<Odometer> saveOdometer(C::mip_interface& device);
@@ -2331,62 +2382,72 @@ struct GetEventSupport
     
     struct Info
     {
+        /// Parameters
         uint8_t type = 0; ///< Trigger or action type, as defined in the respective setup command.
         uint8_t count = 0; ///< This is the maximum number of instances supported for this type.
         
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
+    /// Parameters
     Query query = static_cast<Query>(0); ///< What type of information to retrieve.
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_EVENT_SUPPORT;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "GetEventSupport";
     static constexpr const char* DOC_NAME = "Get Supported Events";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(query);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(query));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
-        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_EVENT_SUPPORT;
-        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
-        static constexpr const char* NAME = "GetEventSupport::Response";
-        static constexpr const char* DOC_NAME = "Get Supported Events Response";
-        
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x000000C0;
+        /// Parameters
         Query query = static_cast<Query>(0); ///< Query type specified in the command.
         uint8_t max_instances = 0; ///< Number of slots available. The 'instance' number for the configuration or control commands must be between 1 and this value.
         uint8_t num_entries = 0; ///< Number of supported types.
         Info entries[126]; ///< List of supported types.
         
+        /// Descriptors
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_EVENT_SUPPORT;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+        static constexpr const char* NAME = "GetEventSupport::Response";
+        static constexpr const char* DOC_NAME = "Get Supported Events Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        auto as_tuple()
+        auto asTuple() const
+        {
+            return std::make_tuple(query,max_instances,num_entries,entries);
+        }
+        
+        auto asTuple()
         {
             return std::make_tuple(std::ref(query),std::ref(max_instances),std::ref(num_entries),std::ref(entries));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const GetEventSupport& self);
-void extract(::microstrain::Serializer& serializer, GetEventSupport& self);
-
-void insert(::microstrain::Serializer& serializer, const GetEventSupport::Info& self);
-void extract(::microstrain::Serializer& serializer, GetEventSupport::Info& self);
-
-void insert(::microstrain::Serializer& serializer, const GetEventSupport::Response& self);
-void extract(::microstrain::Serializer& serializer, GetEventSupport::Response& self);
-
 TypedResult<GetEventSupport> getEventSupport(C::mip_interface& device, GetEventSupport::Query query, uint8_t* maxInstancesOut, uint8_t* numEntriesOut, uint8_t numEntriesOutMax, GetEventSupport::Info* entriesOut);
 
 ///@}
@@ -2416,31 +2477,25 @@ struct EventControl
         TEST_PULSE = 3,  ///<  Trigger is forced to the active state for one event cycle only. After the test cycle, the mode reverts to the previous state (either enabled or disabled).
     };
     
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     uint8_t instance = 0; ///< Trigger instance to affect. 0 can be used to apply the mode to all configured triggers, except when the function selector is READ.
     Mode mode = static_cast<Mode>(0); ///< How to change the trigger state. Except when instance is 0, the corresponding trigger must be configured, i.e. not have type 0.
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_EVENT_CONTROL;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "EventControl";
     static constexpr const char* DOC_NAME = "Event Control";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8003;
-    static constexpr const uint32_t READ_PARAMS    = 0x8001;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8001;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8001;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8001;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(instance,mode);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(instance),std::ref(mode));
     }
@@ -2453,32 +2508,40 @@ struct EventControl
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        uint8_t instance = 0; ///< Trigger instance to affect. 0 can be used to apply the mode to all configured triggers, except when the function selector is READ.
+        Mode mode = static_cast<Mode>(0); ///< How to change the trigger state. Except when instance is 0, the corresponding trigger must be configured, i.e. not have type 0.
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_EVENT_CONTROL;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "EventControl::Response";
         static constexpr const char* DOC_NAME = "Event Control Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        uint8_t instance = 0; ///< Trigger instance to affect. 0 can be used to apply the mode to all configured triggers, except when the function selector is READ.
-        Mode mode = static_cast<Mode>(0); ///< How to change the trigger state. Except when instance is 0, the corresponding trigger must be configured, i.e. not have type 0.
+        auto asTuple() const
+        {
+            return std::make_tuple(instance,mode);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(instance),std::ref(mode));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const EventControl& self);
-void extract(::microstrain::Serializer& serializer, EventControl& self);
-
-void insert(::microstrain::Serializer& serializer, const EventControl::Response& self);
-void extract(::microstrain::Serializer& serializer, EventControl::Response& self);
-
 TypedResult<EventControl> writeEventControl(C::mip_interface& device, uint8_t instance, EventControl::Mode mode);
 TypedResult<EventControl> readEventControl(C::mip_interface& device, uint8_t instance, EventControl::Mode* modeOut);
 TypedResult<EventControl> saveEventControl(C::mip_interface& device, uint8_t instance);
@@ -2496,6 +2559,7 @@ struct GetEventTriggerStatus
 {
     struct Status : Bitfield<Status>
     {
+        typedef uint8_t Type;
         enum _enumType : uint8_t
         {
             NONE    = 0x00,
@@ -2514,74 +2578,76 @@ struct GetEventTriggerStatus
         Status& operator|=(uint8_t val) { return *this = value | val; }
         Status& operator&=(uint8_t val) { return *this = value & val; }
         
-        bool active() const { return (value & ACTIVE) > 0; }
-        void active(bool val) { if(val) value |= ACTIVE; else value &= ~ACTIVE; }
-        bool enabled() const { return (value & ENABLED) > 0; }
-        void enabled(bool val) { if(val) value |= ENABLED; else value &= ~ENABLED; }
-        bool test() const { return (value & TEST) > 0; }
-        void test(bool val) { if(val) value |= TEST; else value &= ~TEST; }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
     struct Entry
     {
+        /// Parameters
         uint8_t type = 0; ///< Configured trigger type.
         Status status; ///< Trigger status.
         
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
+    /// Parameters
     uint8_t requested_count = 0; ///< Number of entries requested. If 0, requests all trigger slots.
     uint8_t requested_instances[20] = {0}; ///< List of trigger instances to query.
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_EVENT_TRIGGER_STATUS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "GetEventTriggerStatus";
     static constexpr const char* DOC_NAME = "Get Trigger Status";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x0000000C;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(requested_count,requested_instances);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(requested_count),std::ref(requested_instances));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        uint8_t count = 0; ///< Number of entries requested. If requested_count was 0, this is the number of supported trigger slots.
+        Entry triggers[20]; ///< A list of the configured triggers. Entries are in the order requested, or in increasing order if count was 0.
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_EVENT_TRIGGER_STATUS;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "GetEventTriggerStatus::Response";
         static constexpr const char* DOC_NAME = "Get Trigger Status Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x0000000C;
-        uint8_t count = 0; ///< Number of entries requested. If requested_count was 0, this is the number of supported trigger slots.
-        Entry triggers[20]; ///< A list of the configured triggers. Entries are in the order requested, or in increasing order if count was 0.
+        auto asTuple() const
+        {
+            return std::make_tuple(count,triggers);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(count),std::ref(triggers));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const GetEventTriggerStatus& self);
-void extract(::microstrain::Serializer& serializer, GetEventTriggerStatus& self);
-
-void insert(::microstrain::Serializer& serializer, const GetEventTriggerStatus::Entry& self);
-void extract(::microstrain::Serializer& serializer, GetEventTriggerStatus::Entry& self);
-
-void insert(::microstrain::Serializer& serializer, const GetEventTriggerStatus::Response& self);
-void extract(::microstrain::Serializer& serializer, GetEventTriggerStatus::Response& self);
-
 TypedResult<GetEventTriggerStatus> getEventTriggerStatus(C::mip_interface& device, uint8_t requestedCount, const uint8_t* requestedInstances, uint8_t* countOut, uint8_t countOutMax, GetEventTriggerStatus::Entry* triggersOut);
 
 ///@}
@@ -2595,61 +2661,71 @@ struct GetEventActionStatus
 {
     struct Entry
     {
+        /// Parameters
         uint8_t action_type = 0; ///< Configured action type.
         uint8_t trigger_id = 0; ///< Associated trigger instance.
         
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
+    /// Parameters
     uint8_t requested_count = 0; ///< Number of entries requested. If 0, requests all action slots.
     uint8_t requested_instances[20] = {0}; ///< List of action instances to query.
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_EVENT_ACTION_STATUS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "GetEventActionStatus";
     static constexpr const char* DOC_NAME = "Get Action Status";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x0000000C;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(requested_count,requested_instances);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(requested_count),std::ref(requested_instances));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        uint8_t count = 0; ///< Number of entries requested. If requested_count was 0, this is the number of supported action slots.
+        Entry actions[20]; ///< A list of the configured actions. Entries are in the order requested, or in increasing order if count was 0.
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_EVENT_ACTION_STATUS;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "GetEventActionStatus::Response";
         static constexpr const char* DOC_NAME = "Get Action Status Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x0000000C;
-        uint8_t count = 0; ///< Number of entries requested. If requested_count was 0, this is the number of supported action slots.
-        Entry actions[20]; ///< A list of the configured actions. Entries are in the order requested, or in increasing order if count was 0.
+        auto asTuple() const
+        {
+            return std::make_tuple(count,actions);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(count),std::ref(actions));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const GetEventActionStatus& self);
-void extract(::microstrain::Serializer& serializer, GetEventActionStatus& self);
-
-void insert(::microstrain::Serializer& serializer, const GetEventActionStatus::Entry& self);
-void extract(::microstrain::Serializer& serializer, GetEventActionStatus::Entry& self);
-
-void insert(::microstrain::Serializer& serializer, const GetEventActionStatus::Response& self);
-void extract(::microstrain::Serializer& serializer, GetEventActionStatus::Response& self);
-
 TypedResult<GetEventActionStatus> getEventActionStatus(C::mip_interface& device, uint8_t requestedCount, const uint8_t* requestedInstances, uint8_t* countOut, uint8_t countOutMax, GetEventActionStatus::Entry* actionsOut);
 
 ///@}
@@ -2672,8 +2748,13 @@ struct EventTrigger
             EDGE       = 4,  ///<  Use if the pin is configured for timestamping via the 3DM Gpio Configuration command (0x0C41).
         };
         
+        /// Parameters
         uint8_t pin = 0; ///< GPIO pin number.
         Mode mode = static_cast<Mode>(0); ///< How the pin state affects the trigger.
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
         
     };
     struct ThresholdParams
@@ -2684,6 +2765,7 @@ struct EventTrigger
             INTERVAL = 2,  ///<  Trigger at evenly-spaced intervals. Normally used with time fields to trigger periodically. Trigger is active when (value % interval) &lt;= int_thres. If the thresholds are reversed (high_thres &lt; low_thres) then the trigger is active when (value % low_thres) &gt; high_thres.
         };
         
+        /// Parameters
         uint8_t desc_set = 0; ///< Descriptor set of target data quantity.
         uint8_t field_desc = 0; ///< Field descriptor of target data quantity.
         uint8_t param_id = 0; ///< 1-based index of the target parameter within the MIP field. E.g. for Scaled Accel (0x80,0x04) a value of 2 would represent the Y axis.
@@ -2698,6 +2780,10 @@ struct EventTrigger
             double high_thres;
             double interval;
         };
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
         
     };
     struct CombinationParams
@@ -2715,8 +2801,13 @@ struct EventTrigger
         static constexpr const uint16_t LOGIC_AND_AB = 0x8888;
         static constexpr const uint16_t LOGIC_AB_OR_C = 0xF8F8;
         static constexpr const uint16_t LOGIC_AND = 0x8000;
+        /// Parameters
         uint16_t logic_table = 0; ///< The last column of a truth table describing the output given the state of each input.
         uint8_t input_triggers[4] = {0}; ///< List of trigger IDs for inputs. Use 0 for unused inputs.
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
         
     };
     enum class Type : uint8_t
@@ -2729,38 +2820,32 @@ struct EventTrigger
     
     union Parameters
     {
-        Parameters() {}
         GpioParams gpio;
         ThresholdParams threshold;
         CombinationParams combination;
+        
+        Parameters() {}
     };
-    
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     uint8_t instance = 0; ///< Trigger number. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all instances.
     Type type = static_cast<Type>(0); ///< Type of trigger to configure.
     Parameters parameters;
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_EVENT_TRIGGER_CONFIG;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "EventTrigger";
     static constexpr const char* DOC_NAME = "Event Trigger Configuration";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8007;
-    static constexpr const uint32_t READ_PARAMS    = 0x8001;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8001;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8001;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8001;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(instance,type,parameters);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(instance),std::ref(type),std::ref(parameters));
     }
@@ -2773,42 +2858,41 @@ struct EventTrigger
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        uint8_t instance = 0; ///< Trigger number. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all instances.
+        Type type = static_cast<Type>(0); ///< Type of trigger to configure.
+        Parameters parameters;
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_EVENT_TRIGGER_CONFIG;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "EventTrigger::Response";
         static constexpr const char* DOC_NAME = "Event Trigger Configuration Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        uint8_t instance = 0; ///< Trigger number. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all instances.
-        Type type = static_cast<Type>(0); ///< Type of trigger to configure.
-        Parameters parameters;
+        auto asTuple() const
+        {
+            return std::make_tuple(instance,type,parameters);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(instance),std::ref(type),std::ref(parameters));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const EventTrigger& self);
-void extract(::microstrain::Serializer& serializer, EventTrigger& self);
-
-void insert(::microstrain::Serializer& serializer, const EventTrigger::GpioParams& self);
-void extract(::microstrain::Serializer& serializer, EventTrigger::GpioParams& self);
-
-void insert(::microstrain::Serializer& serializer, const EventTrigger::ThresholdParams& self);
-void extract(::microstrain::Serializer& serializer, EventTrigger::ThresholdParams& self);
-
-void insert(::microstrain::Serializer& serializer, const EventTrigger::CombinationParams& self);
-void extract(::microstrain::Serializer& serializer, EventTrigger::CombinationParams& self);
-
-void insert(::microstrain::Serializer& serializer, const EventTrigger::Response& self);
-void extract(::microstrain::Serializer& serializer, EventTrigger::Response& self);
-
 TypedResult<EventTrigger> writeEventTrigger(C::mip_interface& device, uint8_t instance, EventTrigger::Type type, const EventTrigger::Parameters& parameters);
 TypedResult<EventTrigger> readEventTrigger(C::mip_interface& device, uint8_t instance, EventTrigger::Type* typeOut, EventTrigger::Parameters* parametersOut);
 TypedResult<EventTrigger> saveEventTrigger(C::mip_interface& device, uint8_t instance);
@@ -2837,16 +2921,26 @@ struct EventAction
             TOGGLE       = 7,  ///<  Pin will change to the opposite state each time the trigger activates.
         };
         
+        /// Parameters
         uint8_t pin = 0; ///< GPIO pin number.
         Mode mode = static_cast<Mode>(0); ///< Behavior of the pin.
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
         
     };
     struct MessageParams
     {
+        /// Parameters
         uint8_t desc_set = 0; ///< MIP data descriptor set.
         uint16_t decimation = 0; ///< Decimation from the base rate. If 0, a packet is emitted each time the trigger activates. Otherwise, packets will be streamed while the trigger is active. The internal decimation counter is reset if the trigger deactivates.
         uint8_t num_fields = 0; ///< Number of mip fields in the packet. Limited to 12.
         uint8_t descriptors[20] = {0}; ///< List of field descriptors.
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
         
     };
     enum class Type : uint8_t
@@ -2858,38 +2952,32 @@ struct EventAction
     
     union Parameters
     {
-        Parameters() {}
         GpioParams gpio;
         MessageParams message;
+        
+        Parameters() {}
     };
-    
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     uint8_t instance = 0; ///< Action number. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all instances.
     uint8_t trigger = 0; ///< Trigger ID number.
     Type type = static_cast<Type>(0); ///< Type of action to configure.
     Parameters parameters;
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_EVENT_ACTION_CONFIG;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "EventAction";
     static constexpr const char* DOC_NAME = "Event Action Configuration";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x800F;
-    static constexpr const uint32_t READ_PARAMS    = 0x8001;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8001;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8001;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8001;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(instance,trigger,type,parameters);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(instance),std::ref(trigger),std::ref(type),std::ref(parameters));
     }
@@ -2902,40 +2990,42 @@ struct EventAction
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
-        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_EVENT_ACTION_CONFIG;
-        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
-        static constexpr const char* NAME = "EventAction::Response";
-        static constexpr const char* DOC_NAME = "Event Action Configuration Response";
-        
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
+        /// Parameters
         uint8_t instance = 0; ///< Action number. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all instances.
         uint8_t trigger = 0; ///< Trigger ID number.
         Type type = static_cast<Type>(0); ///< Type of action to configure.
         Parameters parameters;
         
+        /// Descriptors
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_EVENT_ACTION_CONFIG;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+        static constexpr const char* NAME = "EventAction::Response";
+        static constexpr const char* DOC_NAME = "Event Action Configuration Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        auto as_tuple()
+        auto asTuple() const
+        {
+            return std::make_tuple(instance,trigger,type,parameters);
+        }
+        
+        auto asTuple()
         {
             return std::make_tuple(std::ref(instance),std::ref(trigger),std::ref(type),std::ref(parameters));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const EventAction& self);
-void extract(::microstrain::Serializer& serializer, EventAction& self);
-
-void insert(::microstrain::Serializer& serializer, const EventAction::GpioParams& self);
-void extract(::microstrain::Serializer& serializer, EventAction::GpioParams& self);
-
-void insert(::microstrain::Serializer& serializer, const EventAction::MessageParams& self);
-void extract(::microstrain::Serializer& serializer, EventAction::MessageParams& self);
-
-void insert(::microstrain::Serializer& serializer, const EventAction::Response& self);
-void extract(::microstrain::Serializer& serializer, EventAction::Response& self);
-
 TypedResult<EventAction> writeEventAction(C::mip_interface& device, uint8_t instance, uint8_t trigger, EventAction::Type type, const EventAction::Parameters& parameters);
 TypedResult<EventAction> readEventAction(C::mip_interface& device, uint8_t instance, uint8_t* triggerOut, EventAction::Type* typeOut, EventAction::Parameters* parametersOut);
 TypedResult<EventAction> saveEventAction(C::mip_interface& device, uint8_t instance);
@@ -2954,30 +3044,24 @@ TypedResult<EventAction> defaultEventAction(C::mip_interface& device, uint8_t in
 
 struct AccelBias
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     Vector3f bias; ///< accelerometer bias in the sensor frame (x,y,z) [g]
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_ACCEL_BIAS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "AccelBias";
     static constexpr const char* DOC_NAME = "Configure Accel Bias";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(bias);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(bias));
     }
@@ -2989,31 +3073,39 @@ struct AccelBias
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        Vector3f bias; ///< accelerometer bias in the sensor frame (x,y,z) [g]
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_ACCEL_BIAS_VECTOR;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "AccelBias::Response";
         static constexpr const char* DOC_NAME = "Configure Accel Bias Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        Vector3f bias; ///< accelerometer bias in the sensor frame (x,y,z) [g]
+        auto asTuple() const
+        {
+            return std::make_tuple(bias);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(bias));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const AccelBias& self);
-void extract(::microstrain::Serializer& serializer, AccelBias& self);
-
-void insert(::microstrain::Serializer& serializer, const AccelBias::Response& self);
-void extract(::microstrain::Serializer& serializer, AccelBias::Response& self);
-
 TypedResult<AccelBias> writeAccelBias(C::mip_interface& device, const float* bias);
 TypedResult<AccelBias> readAccelBias(C::mip_interface& device, float* biasOut);
 TypedResult<AccelBias> saveAccelBias(C::mip_interface& device);
@@ -3032,30 +3124,24 @@ TypedResult<AccelBias> defaultAccelBias(C::mip_interface& device);
 
 struct GyroBias
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     Vector3f bias; ///< gyro bias in the sensor frame (x,y,z) [radians/second]
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GYRO_BIAS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "GyroBias";
     static constexpr const char* DOC_NAME = "Configure Gyro Bias";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(bias);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(bias));
     }
@@ -3067,31 +3153,39 @@ struct GyroBias
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        Vector3f bias; ///< gyro bias in the sensor frame (x,y,z) [radians/second]
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GYRO_BIAS_VECTOR;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "GyroBias::Response";
         static constexpr const char* DOC_NAME = "Configure Gyro Bias Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        Vector3f bias; ///< gyro bias in the sensor frame (x,y,z) [radians/second]
+        auto asTuple() const
+        {
+            return std::make_tuple(bias);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(bias));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const GyroBias& self);
-void extract(::microstrain::Serializer& serializer, GyroBias& self);
-
-void insert(::microstrain::Serializer& serializer, const GyroBias::Response& self);
-void extract(::microstrain::Serializer& serializer, GyroBias::Response& self);
-
 TypedResult<GyroBias> writeGyroBias(C::mip_interface& device, const float* bias);
 TypedResult<GyroBias> readGyroBias(C::mip_interface& device, float* biasOut);
 TypedResult<GyroBias> saveGyroBias(C::mip_interface& device);
@@ -3113,52 +3207,60 @@ TypedResult<GyroBias> defaultGyroBias(C::mip_interface& device);
 
 struct CaptureGyroBias
 {
+    /// Parameters
     uint16_t averaging_time_ms = 0; ///< Averaging time [milliseconds]
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_CAPTURE_GYRO_BIAS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "CaptureGyroBias";
     static constexpr const char* DOC_NAME = "Capture Gyro Bias";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(averaging_time_ms);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(averaging_time_ms));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        Vector3f bias; ///< gyro bias in the sensor frame (x,y,z) [radians/second]
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GYRO_BIAS_VECTOR;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "CaptureGyroBias::Response";
         static constexpr const char* DOC_NAME = "Capture Gyro Bias Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        Vector3f bias; ///< gyro bias in the sensor frame (x,y,z) [radians/second]
+        auto asTuple() const
+        {
+            return std::make_tuple(bias);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(bias));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const CaptureGyroBias& self);
-void extract(::microstrain::Serializer& serializer, CaptureGyroBias& self);
-
-void insert(::microstrain::Serializer& serializer, const CaptureGyroBias::Response& self);
-void extract(::microstrain::Serializer& serializer, CaptureGyroBias::Response& self);
-
 TypedResult<CaptureGyroBias> captureGyroBias(C::mip_interface& device, uint16_t averagingTimeMs, float* biasOut);
 
 ///@}
@@ -3177,30 +3279,24 @@ TypedResult<CaptureGyroBias> captureGyroBias(C::mip_interface& device, uint16_t 
 
 struct MagHardIronOffset
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     Vector3f offset; ///< hard iron offset in the sensor frame (x,y,z) [Gauss]
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_HARD_IRON_OFFSET;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "MagHardIronOffset";
     static constexpr const char* DOC_NAME = "Magnetometer Hard Iron Offset";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(offset);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(offset));
     }
@@ -3212,31 +3308,39 @@ struct MagHardIronOffset
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        Vector3f offset; ///< hard iron offset in the sensor frame (x,y,z) [Gauss]
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_HARD_IRON_OFFSET_VECTOR;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "MagHardIronOffset::Response";
         static constexpr const char* DOC_NAME = "Magnetometer Hard Iron Offset Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        Vector3f offset; ///< hard iron offset in the sensor frame (x,y,z) [Gauss]
+        auto asTuple() const
+        {
+            return std::make_tuple(offset);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(offset));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const MagHardIronOffset& self);
-void extract(::microstrain::Serializer& serializer, MagHardIronOffset& self);
-
-void insert(::microstrain::Serializer& serializer, const MagHardIronOffset::Response& self);
-void extract(::microstrain::Serializer& serializer, MagHardIronOffset::Response& self);
-
 TypedResult<MagHardIronOffset> writeMagHardIronOffset(C::mip_interface& device, const float* offset);
 TypedResult<MagHardIronOffset> readMagHardIronOffset(C::mip_interface& device, float* offsetOut);
 TypedResult<MagHardIronOffset> saveMagHardIronOffset(C::mip_interface& device);
@@ -3263,30 +3367,24 @@ TypedResult<MagHardIronOffset> defaultMagHardIronOffset(C::mip_interface& device
 
 struct MagSoftIronMatrix
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     Matrix3f offset; ///< soft iron matrix [dimensionless]
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_SOFT_IRON_MATRIX;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "MagSoftIronMatrix";
     static constexpr const char* DOC_NAME = "Magnetometer Soft Iron Matrix";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(offset);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(offset));
     }
@@ -3298,31 +3396,39 @@ struct MagSoftIronMatrix
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        Matrix3f offset; ///< soft iron matrix [dimensionless]
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_SOFT_IRON_COMP_MATRIX;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "MagSoftIronMatrix::Response";
         static constexpr const char* DOC_NAME = "Magnetometer Soft Iron Matrix Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        Matrix3f offset; ///< soft iron matrix [dimensionless]
+        auto asTuple() const
+        {
+            return std::make_tuple(offset);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(offset));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const MagSoftIronMatrix& self);
-void extract(::microstrain::Serializer& serializer, MagSoftIronMatrix& self);
-
-void insert(::microstrain::Serializer& serializer, const MagSoftIronMatrix::Response& self);
-void extract(::microstrain::Serializer& serializer, MagSoftIronMatrix::Response& self);
-
 TypedResult<MagSoftIronMatrix> writeMagSoftIronMatrix(C::mip_interface& device, const float* offset);
 TypedResult<MagSoftIronMatrix> readMagSoftIronMatrix(C::mip_interface& device, float* offsetOut);
 TypedResult<MagSoftIronMatrix> saveMagSoftIronMatrix(C::mip_interface& device);
@@ -3339,30 +3445,24 @@ TypedResult<MagSoftIronMatrix> defaultMagSoftIronMatrix(C::mip_interface& device
 
 struct ConingScullingEnable
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     bool enable = 0; ///< If true, coning and sculling compensation is enabled.
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_CONING_AND_SCULLING_ENABLE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "ConingScullingEnable";
     static constexpr const char* DOC_NAME = "Coning and Sculling Enable";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(enable);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(enable));
     }
@@ -3374,31 +3474,39 @@ struct ConingScullingEnable
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        bool enable = 0; ///< If true, coning and sculling compensation is enabled.
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_CONING_AND_SCULLING_ENABLE;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "ConingScullingEnable::Response";
         static constexpr const char* DOC_NAME = "Coning and Sculling Enable Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        bool enable = 0; ///< If true, coning and sculling compensation is enabled.
+        auto asTuple() const
+        {
+            return std::make_tuple(enable);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(enable));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const ConingScullingEnable& self);
-void extract(::microstrain::Serializer& serializer, ConingScullingEnable& self);
-
-void insert(::microstrain::Serializer& serializer, const ConingScullingEnable::Response& self);
-void extract(::microstrain::Serializer& serializer, ConingScullingEnable::Response& self);
-
 TypedResult<ConingScullingEnable> writeConingScullingEnable(C::mip_interface& device, bool enable);
 TypedResult<ConingScullingEnable> readConingScullingEnable(C::mip_interface& device, bool* enableOut);
 TypedResult<ConingScullingEnable> saveConingScullingEnable(C::mip_interface& device);
@@ -3439,32 +3547,26 @@ TypedResult<ConingScullingEnable> defaultConingScullingEnable(C::mip_interface& 
 
 struct Sensor2VehicleTransformEuler
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     float roll = 0; ///< [radians]
     float pitch = 0; ///< [radians]
     float yaw = 0; ///< [radians]
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_SENSOR2VEHICLE_TRANSFORM_EUL;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "Sensor2VehicleTransformEuler";
     static constexpr const char* DOC_NAME = "Sensor to Vehicle Frame Transformation Euler";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8007;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(roll,pitch,yaw);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(roll),std::ref(pitch),std::ref(yaw));
     }
@@ -3476,33 +3578,41 @@ struct Sensor2VehicleTransformEuler
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        float roll = 0; ///< [radians]
+        float pitch = 0; ///< [radians]
+        float yaw = 0; ///< [radians]
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_SENSOR2VEHICLE_TRANSFORM_EUL;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "Sensor2VehicleTransformEuler::Response";
         static constexpr const char* DOC_NAME = "Sensor to Vehicle Frame Transformation Euler Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        float roll = 0; ///< [radians]
-        float pitch = 0; ///< [radians]
-        float yaw = 0; ///< [radians]
+        auto asTuple() const
+        {
+            return std::make_tuple(roll,pitch,yaw);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(roll),std::ref(pitch),std::ref(yaw));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const Sensor2VehicleTransformEuler& self);
-void extract(::microstrain::Serializer& serializer, Sensor2VehicleTransformEuler& self);
-
-void insert(::microstrain::Serializer& serializer, const Sensor2VehicleTransformEuler::Response& self);
-void extract(::microstrain::Serializer& serializer, Sensor2VehicleTransformEuler::Response& self);
-
 TypedResult<Sensor2VehicleTransformEuler> writeSensor2VehicleTransformEuler(C::mip_interface& device, float roll, float pitch, float yaw);
 TypedResult<Sensor2VehicleTransformEuler> readSensor2VehicleTransformEuler(C::mip_interface& device, float* rollOut, float* pitchOut, float* yawOut);
 TypedResult<Sensor2VehicleTransformEuler> saveSensor2VehicleTransformEuler(C::mip_interface& device);
@@ -3551,30 +3661,24 @@ TypedResult<Sensor2VehicleTransformEuler> defaultSensor2VehicleTransformEuler(C:
 
 struct Sensor2VehicleTransformQuaternion
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     Quatf q; ///< Unit length quaternion representing transform [w, i, j, k]
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_SENSOR2VEHICLE_TRANSFORM_QUAT;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "Sensor2VehicleTransformQuaternion";
     static constexpr const char* DOC_NAME = "Sensor to Vehicle Frame Transformation Quaternion";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(q);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(q));
     }
@@ -3586,31 +3690,39 @@ struct Sensor2VehicleTransformQuaternion
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        Quatf q; ///< Unit length quaternion representing transform [w, i, j, k]
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_SENSOR2VEHICLE_TRANSFORM_QUAT;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "Sensor2VehicleTransformQuaternion::Response";
         static constexpr const char* DOC_NAME = "Sensor to Vehicle Frame Transformation Quaternion Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        Quatf q; ///< Unit length quaternion representing transform [w, i, j, k]
+        auto asTuple() const
+        {
+            return std::make_tuple(q);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(q));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const Sensor2VehicleTransformQuaternion& self);
-void extract(::microstrain::Serializer& serializer, Sensor2VehicleTransformQuaternion& self);
-
-void insert(::microstrain::Serializer& serializer, const Sensor2VehicleTransformQuaternion::Response& self);
-void extract(::microstrain::Serializer& serializer, Sensor2VehicleTransformQuaternion::Response& self);
-
 TypedResult<Sensor2VehicleTransformQuaternion> writeSensor2VehicleTransformQuaternion(C::mip_interface& device, const float* q);
 TypedResult<Sensor2VehicleTransformQuaternion> readSensor2VehicleTransformQuaternion(C::mip_interface& device, float* qOut);
 TypedResult<Sensor2VehicleTransformQuaternion> saveSensor2VehicleTransformQuaternion(C::mip_interface& device);
@@ -3657,30 +3769,24 @@ TypedResult<Sensor2VehicleTransformQuaternion> defaultSensor2VehicleTransformQua
 
 struct Sensor2VehicleTransformDcm
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     Matrix3f dcm; ///< 3 x 3 direction cosine matrix, stored in row-major order
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_SENSOR2VEHICLE_TRANSFORM_DCM;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "Sensor2VehicleTransformDcm";
     static constexpr const char* DOC_NAME = "Sensor to Vehicle Frame Transformation Direction Cosine Matrix";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(dcm);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(dcm));
     }
@@ -3692,31 +3798,39 @@ struct Sensor2VehicleTransformDcm
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        Matrix3f dcm; ///< 3 x 3 direction cosine matrix, stored in row-major order
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_SENSOR2VEHICLE_TRANSFORM_DCM;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "Sensor2VehicleTransformDcm::Response";
         static constexpr const char* DOC_NAME = "Sensor to Vehicle Frame Transformation Direction Cosine Matrix Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        Matrix3f dcm; ///< 3 x 3 direction cosine matrix, stored in row-major order
+        auto asTuple() const
+        {
+            return std::make_tuple(dcm);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(dcm));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const Sensor2VehicleTransformDcm& self);
-void extract(::microstrain::Serializer& serializer, Sensor2VehicleTransformDcm& self);
-
-void insert(::microstrain::Serializer& serializer, const Sensor2VehicleTransformDcm::Response& self);
-void extract(::microstrain::Serializer& serializer, Sensor2VehicleTransformDcm::Response& self);
-
 TypedResult<Sensor2VehicleTransformDcm> writeSensor2VehicleTransformDcm(C::mip_interface& device, const float* dcm);
 TypedResult<Sensor2VehicleTransformDcm> readSensor2VehicleTransformDcm(C::mip_interface& device, float* dcmOut);
 TypedResult<Sensor2VehicleTransformDcm> saveSensor2VehicleTransformDcm(C::mip_interface& device);
@@ -3737,33 +3851,27 @@ TypedResult<Sensor2VehicleTransformDcm> defaultSensor2VehicleTransformDcm(C::mip
 
 struct ComplementaryFilter
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     bool pitch_roll_enable = 0; ///< Enable Pitch/Roll corrections
     bool heading_enable = 0; ///< Enable Heading corrections (only available on devices with magnetometer)
     float pitch_roll_time_constant = 0; ///< Time constant associated with the pitch/roll corrections [s]
     float heading_time_constant = 0; ///< Time constant associated with the heading corrections [s]
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_LEGACY_COMP_FILTER;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "ComplementaryFilter";
     static constexpr const char* DOC_NAME = "Complementary filter settings";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x800F;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(pitch_roll_enable,heading_enable,pitch_roll_time_constant,heading_time_constant);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(pitch_roll_enable),std::ref(heading_enable),std::ref(pitch_roll_time_constant),std::ref(heading_time_constant));
     }
@@ -3775,34 +3883,42 @@ struct ComplementaryFilter
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
-        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_LEGACY_COMP_FILTER;
-        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
-        static constexpr const char* NAME = "ComplementaryFilter::Response";
-        static constexpr const char* DOC_NAME = "Complementary filter settings Response";
-        
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
+        /// Parameters
         bool pitch_roll_enable = 0; ///< Enable Pitch/Roll corrections
         bool heading_enable = 0; ///< Enable Heading corrections (only available on devices with magnetometer)
         float pitch_roll_time_constant = 0; ///< Time constant associated with the pitch/roll corrections [s]
         float heading_time_constant = 0; ///< Time constant associated with the heading corrections [s]
         
+        /// Descriptors
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_LEGACY_COMP_FILTER;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+        static constexpr const char* NAME = "ComplementaryFilter::Response";
+        static constexpr const char* DOC_NAME = "Complementary filter settings Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        auto as_tuple()
+        auto asTuple() const
+        {
+            return std::make_tuple(pitch_roll_enable,heading_enable,pitch_roll_time_constant,heading_time_constant);
+        }
+        
+        auto asTuple()
         {
             return std::make_tuple(std::ref(pitch_roll_enable),std::ref(heading_enable),std::ref(pitch_roll_time_constant),std::ref(heading_time_constant));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const ComplementaryFilter& self);
-void extract(::microstrain::Serializer& serializer, ComplementaryFilter& self);
-
-void insert(::microstrain::Serializer& serializer, const ComplementaryFilter::Response& self);
-void extract(::microstrain::Serializer& serializer, ComplementaryFilter::Response& self);
-
 TypedResult<ComplementaryFilter> writeComplementaryFilter(C::mip_interface& device, bool pitchRollEnable, bool headingEnable, float pitchRollTimeConstant, float headingTimeConstant);
 TypedResult<ComplementaryFilter> readComplementaryFilter(C::mip_interface& device, bool* pitchRollEnableOut, bool* headingEnableOut, float* pitchRollTimeConstantOut, float* headingTimeConstantOut);
 TypedResult<ComplementaryFilter> saveComplementaryFilter(C::mip_interface& device);
@@ -3826,31 +3942,25 @@ TypedResult<ComplementaryFilter> defaultComplementaryFilter(C::mip_interface& de
 
 struct SensorRange
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     SensorRangeType sensor = static_cast<SensorRangeType>(0); ///< Which type of sensor will get the new range value.
     uint8_t setting = 0; ///< Use the 3DM Get Calibrated Sensor Ranges (0x0C,0x53) command to determine this value.
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_SENSOR_RANGE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "SensorRange";
     static constexpr const char* DOC_NAME = "Sensor Range";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8003;
-    static constexpr const uint32_t READ_PARAMS    = 0x8001;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8001;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8001;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8001;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(sensor,setting);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(sensor),std::ref(setting));
     }
@@ -3863,32 +3973,40 @@ struct SensorRange
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        SensorRangeType sensor = static_cast<SensorRangeType>(0); ///< Which type of sensor will get the new range value.
+        uint8_t setting = 0; ///< Use the 3DM Get Calibrated Sensor Ranges (0x0C,0x53) command to determine this value.
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_SENSOR_RANGE;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "SensorRange::Response";
         static constexpr const char* DOC_NAME = "Sensor Range Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        SensorRangeType sensor = static_cast<SensorRangeType>(0); ///< Which type of sensor will get the new range value.
-        uint8_t setting = 0; ///< Use the 3DM Get Calibrated Sensor Ranges (0x0C,0x53) command to determine this value.
+        auto asTuple() const
+        {
+            return std::make_tuple(sensor,setting);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(sensor),std::ref(setting));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const SensorRange& self);
-void extract(::microstrain::Serializer& serializer, SensorRange& self);
-
-void insert(::microstrain::Serializer& serializer, const SensorRange::Response& self);
-void extract(::microstrain::Serializer& serializer, SensorRange::Response& self);
-
 TypedResult<SensorRange> writeSensorRange(C::mip_interface& device, SensorRangeType sensor, uint8_t setting);
 TypedResult<SensorRange> readSensorRange(C::mip_interface& device, SensorRangeType sensor, uint8_t* settingOut);
 TypedResult<SensorRange> saveSensorRange(C::mip_interface& device, SensorRangeType sensor);
@@ -3910,61 +4028,71 @@ struct CalibratedSensorRanges
 {
     struct Entry
     {
+        /// Parameters
         uint8_t setting = 0; ///< The value used in the 3DM Sensor Range command and response.
         float range = 0; ///< The actual range value. Units depend on the sensor type.
         
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
+    /// Parameters
     SensorRangeType sensor = static_cast<SensorRangeType>(0); ///< The sensor to query. Cannot be ALL.
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_CALIBRATED_RANGES;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "CalibratedSensorRanges";
     static constexpr const char* DOC_NAME = "Get Calibrated Sensor Ranges";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(sensor);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(sensor));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        SensorRangeType sensor = static_cast<SensorRangeType>(0); ///< The sensor type from the command.
+        uint8_t num_ranges = 0; ///< Number of supported ranges.
+        Entry ranges[50]; ///< List of possible range settings.
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_CALIBRATED_RANGES;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "CalibratedSensorRanges::Response";
         static constexpr const char* DOC_NAME = "Get Calibrated Sensor Ranges Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000030;
-        SensorRangeType sensor = static_cast<SensorRangeType>(0); ///< The sensor type from the command.
-        uint8_t num_ranges = 0; ///< Number of supported ranges.
-        Entry ranges[50]; ///< List of possible range settings.
+        auto asTuple() const
+        {
+            return std::make_tuple(sensor,num_ranges,ranges);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(sensor),std::ref(num_ranges),std::ref(ranges));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const CalibratedSensorRanges& self);
-void extract(::microstrain::Serializer& serializer, CalibratedSensorRanges& self);
-
-void insert(::microstrain::Serializer& serializer, const CalibratedSensorRanges::Entry& self);
-void extract(::microstrain::Serializer& serializer, CalibratedSensorRanges::Entry& self);
-
-void insert(::microstrain::Serializer& serializer, const CalibratedSensorRanges::Response& self);
-void extract(::microstrain::Serializer& serializer, CalibratedSensorRanges::Response& self);
-
 TypedResult<CalibratedSensorRanges> calibratedSensorRanges(C::mip_interface& device, SensorRangeType sensor, uint8_t* numRangesOut, uint8_t numRangesOutMax, CalibratedSensorRanges::Entry* rangesOut);
 
 ///@}
@@ -3990,6 +4118,7 @@ TypedResult<CalibratedSensorRanges> calibratedSensorRanges(C::mip_interface& dev
 
 struct LowpassFilter
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     uint8_t desc_set = 0; ///< Descriptor set of the quantity to be filtered.
     uint8_t field_desc = 0; ///< Field descriptor of the quantity to be filtered.
@@ -3997,27 +4126,20 @@ struct LowpassFilter
     bool manual = 0; ///< If false, the frequency parameter is ignored and the filter will track to half of the configured message format frequency.
     float frequency = 0; ///< Cutoff frequency in Hz. This will return the actual frequency when read out in automatic mode.
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_LOWPASS_FILTER;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "LowpassFilter";
     static constexpr const char* DOC_NAME = "Low-pass anti-aliasing filter";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x801F;
-    static constexpr const uint32_t READ_PARAMS    = 0x8003;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8003;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8003;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8003;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0003;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(desc_set,field_desc,enable,manual,frequency);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(desc_set),std::ref(field_desc),std::ref(enable),std::ref(manual),std::ref(frequency));
     }
@@ -4031,35 +4153,43 @@ struct LowpassFilter
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
-        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_LOWPASS_FILTER;
-        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
-        static constexpr const char* NAME = "LowpassFilter::Response";
-        static constexpr const char* DOC_NAME = "Low-pass anti-aliasing filter Response";
-        
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0003;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
+        /// Parameters
         uint8_t desc_set = 0; ///< Descriptor set of the quantity to be filtered.
         uint8_t field_desc = 0; ///< Field descriptor of the quantity to be filtered.
         bool enable = 0; ///< The filter will be enabled if this is true.
         bool manual = 0; ///< If false, the frequency parameter is ignored and the filter will track to half of the configured message format frequency.
         float frequency = 0; ///< Cutoff frequency in Hz. This will return the actual frequency when read out in automatic mode.
         
+        /// Descriptors
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_LOWPASS_FILTER;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+        static constexpr const char* NAME = "LowpassFilter::Response";
+        static constexpr const char* DOC_NAME = "Low-pass anti-aliasing filter Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        auto as_tuple()
+        auto asTuple() const
+        {
+            return std::make_tuple(desc_set,field_desc,enable,manual,frequency);
+        }
+        
+        auto asTuple()
         {
             return std::make_tuple(std::ref(desc_set),std::ref(field_desc),std::ref(enable),std::ref(manual),std::ref(frequency));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const LowpassFilter& self);
-void extract(::microstrain::Serializer& serializer, LowpassFilter& self);
-
-void insert(::microstrain::Serializer& serializer, const LowpassFilter::Response& self);
-void extract(::microstrain::Serializer& serializer, LowpassFilter::Response& self);
-
 TypedResult<LowpassFilter> writeLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc, bool enable, bool manual, float frequency);
 TypedResult<LowpassFilter> readLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc, bool* enableOut, bool* manualOut, float* frequencyOut);
 TypedResult<LowpassFilter> saveLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc);

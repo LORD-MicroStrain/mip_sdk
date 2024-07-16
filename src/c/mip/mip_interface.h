@@ -1,11 +1,11 @@
 #pragma once
 
-#include <stdint.h>
-#include <stddef.h>
-
 #include "mip_parser.h"
 #include "mip_cmdqueue.h"
 #include "mip_dispatch.h"
+
+#include <stdint.h>
+#include <stddef.h>
 
 #ifdef __cplusplus
 namespace mip{

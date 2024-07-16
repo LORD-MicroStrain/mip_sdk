@@ -1,73 +1,53 @@
 
 #include "commands_system.hpp"
 
-#include "microstrain/common/serialization.hpp"
-#include "../mip_interface.hpp"
+#include <mip/mip_serialization.hpp>
+#include <mip/mip_interface.h>
 
 #include <assert.h>
 
 
 namespace mip {
-;
-
 namespace C {
 struct mip_interface;
 } // namespace C
 
 namespace commands_system {
 
-using ::mip::insert;
-using ::mip::extract;
 using namespace ::mip::C;
-
-////////////////////////////////////////////////////////////////////////////////
-// Shared Type Definitions
-////////////////////////////////////////////////////////////////////////////////
-
 
 ////////////////////////////////////////////////////////////////////////////////
 // Mip Fields
 ////////////////////////////////////////////////////////////////////////////////
 
-void insert(::microstrain::Serializer& serializer, const CommMode& self)
+void CommMode::insert(Serializer& serializer) const
 {
-    insert(serializer, self.function);
+    serializer.insert(function);
     
-    if( self.function == FunctionSelector::WRITE )
+    if( function == FunctionSelector::WRITE )
     {
-        insert(serializer, self.mode);
+        serializer.insert(mode);
         
     }
 }
-void extract(::microstrain::Serializer& serializer, CommMode& self)
+void CommMode::extract(Serializer& serializer)
 {
-    extract(serializer, self.function);
+    serializer.extract(function);
     
-    if( self.function == FunctionSelector::WRITE )
+    if( function == FunctionSelector::WRITE )
     {
-        extract(serializer, self.mode);
+        serializer.extract(mode);
         
     }
-}
-
-void insert(::microstrain::Serializer& serializer, const CommMode::Response& self)
-{
-    insert(serializer, self.mode);
-    
-}
-void extract(::microstrain::Serializer& serializer, CommMode::Response& self)
-{
-    extract(serializer, self.mode);
-    
 }
 
 TypedResult<CommMode> writeCommMode(C::mip_interface& device, uint8_t mode)
 {
-    uint8_t                 buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    microstrain::Serializer serializer(buffer, sizeof(buffer));
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
     
-    insert(serializer, FunctionSelector::WRITE);
-    insert(serializer, mode);
+    serializer.insert(FunctionSelector::WRITE);
+    serializer.insert(mode);
     
     assert(serializer.isOk());
     
@@ -75,33 +55,33 @@ TypedResult<CommMode> writeCommMode(C::mip_interface& device, uint8_t mode)
 }
 TypedResult<CommMode> readCommMode(C::mip_interface& device, uint8_t* modeOut)
 {
-    uint8_t                 buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    microstrain::Serializer serializer(buffer, sizeof(buffer));
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
     
-    insert(serializer, FunctionSelector::READ);
+    serializer.insert(FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
     TypedResult<CommMode> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_COM_MODE, buffer, (uint8_t)serializer.length(), REPLY_COM_MODE, buffer, &responseLength);
     
-    if( result == CmdResult::ACK_OK )
+    if( result == MIP_ACK_OK )
     {
-        microstrain::Serializer deserializer(buffer, responseLength);
+        Serializer deserializer(buffer, responseLength);
         
         assert(modeOut);
-        extract(deserializer, *modeOut);
+        deserializer.extract(*modeOut);
         
         if( deserializer.remaining() != 0 )
-            result = CmdResult::STATUS_ERROR;
+            result = MIP_STATUS_ERROR;
     }
     return result;
 }
 TypedResult<CommMode> defaultCommMode(C::mip_interface& device)
 {
-    uint8_t                 buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    microstrain::Serializer serializer(buffer, sizeof(buffer));
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
     
-    insert(serializer, FunctionSelector::RESET);
+    serializer.insert(FunctionSelector::RESET);
     assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_COM_MODE, buffer, (uint8_t)serializer.length());

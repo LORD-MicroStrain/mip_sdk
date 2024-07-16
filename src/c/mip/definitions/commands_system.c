@@ -13,14 +13,6 @@ namespace C {
 extern "C" {
 
 #endif // __cplusplus
-struct mip_interface;
-struct microstrain_serializer;
-struct mip_field;
-
-
-////////////////////////////////////////////////////////////////////////////////
-// Shared Type Definitions
-////////////////////////////////////////////////////////////////////////////////
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -48,33 +40,21 @@ void extract_mip_system_comm_mode_command(microstrain_serializer* serializer, mi
     }
 }
 
-void insert_mip_system_comm_mode_response(microstrain_serializer* serializer, const mip_system_comm_mode_response* self)
-{
-    microstrain_insert_u8(serializer, self->mode);
-    
-}
-void extract_mip_system_comm_mode_response(microstrain_serializer* serializer, mip_system_comm_mode_response* self)
-{
-    microstrain_extract_u8(serializer, &self->mode);
-    
-}
-
-mip_cmd_result mip_system_write_comm_mode(struct mip_interface* device, uint8_t mode)
+mip_cmd_result mip_system_write_comm_mode(mip_interface* device, uint8_t mode)
 {
     microstrain_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     microstrain_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
-
+    
     microstrain_insert_u8(&serializer, mode);
     
     assert(microstrain_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_SYSTEM_CMD_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, buffer, (uint8_t) microstrain_serializer_length(
-        &serializer));
+    return mip_interface_run_command(device, MIP_SYSTEM_CMD_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
 }
-mip_cmd_result mip_system_read_comm_mode(struct mip_interface* device, uint8_t* mode_out)
+mip_cmd_result mip_system_read_comm_mode(mip_interface* device, uint8_t* mode_out)
 {
     microstrain_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -85,8 +65,7 @@ mip_cmd_result mip_system_read_comm_mode(struct mip_interface* device, uint8_t* 
     assert(microstrain_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_SYSTEM_CMD_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, buffer, (uint8_t) microstrain_serializer_length(
-        &serializer), MIP_REPLY_DESC_SYSTEM_COM_MODE, buffer, &responseLength);
+    mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_SYSTEM_CMD_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, buffer, (uint8_t)microstrain_serializer_length(&serializer), MIP_REPLY_DESC_SYSTEM_COM_MODE, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -96,12 +75,12 @@ mip_cmd_result mip_system_read_comm_mode(struct mip_interface* device, uint8_t* 
         assert(mode_out);
         microstrain_extract_u8(&deserializer, mode_out);
         
-        if(microstrain_serializer_remaining(&deserializer) != 0 )
+        if( microstrain_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
 }
-mip_cmd_result mip_system_default_comm_mode(struct mip_interface* device)
+mip_cmd_result mip_system_default_comm_mode(mip_interface* device)
 {
     microstrain_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -111,8 +90,7 @@ mip_cmd_result mip_system_default_comm_mode(struct mip_interface* device)
     
     assert(microstrain_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_SYSTEM_CMD_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, buffer, (uint8_t) microstrain_serializer_length(
-        &serializer));
+    return mip_interface_run_command(device, MIP_SYSTEM_CMD_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
 }
 
 #ifdef __cplusplus

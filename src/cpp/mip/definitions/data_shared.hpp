@@ -1,16 +1,14 @@
 #pragma once
 
 #include "common.hpp"
-#include "mip/mip_descriptors.hpp"
-#include "../mip_result.hpp"
+#include <mip/mip_descriptors.hpp>
+#include <mip/mip_result.hpp>
+#include <mip/mip_interface.hpp>
 
 #include <stdint.h>
 #include <stddef.h>
-#include <stdbool.h>
 
 namespace mip {
-;
-
 namespace C {
 struct mip_interface;
 } // namespace C
@@ -66,28 +64,32 @@ static constexpr const uint8_t MIP_DATA_DESC_SHARED_START = 0xD0;
 
 struct EventSource
 {
+    /// Parameters
     uint8_t trigger_id = 0; ///< Trigger ID number. If 0, this message was emitted due to being scheduled in the 3DM Message Format Command (0x0C,0x0F).
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_EVENT_SOURCE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "EventSource";
     static constexpr const char* DOC_NAME = "EventSource";
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
-    
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(trigger_id);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(trigger_id));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
 };
-void insert(::microstrain::Serializer& serializer, const EventSource& self);
-void extract(::microstrain::Serializer& serializer, EventSource& self);
-
 
 ///@}
 ///
@@ -102,28 +104,32 @@ void extract(::microstrain::Serializer& serializer, EventSource& self);
 
 struct Ticks
 {
+    /// Parameters
     uint32_t ticks = 0; ///< Ticks since powerup.
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_TICKS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "Ticks";
     static constexpr const char* DOC_NAME = "Ticks";
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
-    
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(ticks);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(ticks));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
 };
-void insert(::microstrain::Serializer& serializer, const Ticks& self);
-void extract(::microstrain::Serializer& serializer, Ticks& self);
-
 
 ///@}
 ///
@@ -139,28 +145,32 @@ void extract(::microstrain::Serializer& serializer, Ticks& self);
 
 struct DeltaTicks
 {
+    /// Parameters
     uint32_t ticks = 0; ///< Ticks since last output.
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_DELTA_TICKS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "DeltaTicks";
     static constexpr const char* DOC_NAME = "DeltaTicks";
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
-    
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(ticks);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(ticks));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
 };
-void insert(::microstrain::Serializer& serializer, const DeltaTicks& self);
-void extract(::microstrain::Serializer& serializer, DeltaTicks& self);
-
 
 ///@}
 ///
@@ -177,6 +187,7 @@ struct GpsTimestamp
 {
     struct ValidFlags : Bitfield<ValidFlags>
     {
+        typedef uint16_t Type;
         enum _enumType : uint16_t
         {
             NONE        = 0x0000,
@@ -195,41 +206,37 @@ struct GpsTimestamp
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool tow() const { return (value & TOW) > 0; }
-        void tow(bool val) { if(val) value |= TOW; else value &= ~TOW; }
-        bool weekNumber() const { return (value & WEEK_NUMBER) > 0; }
-        void weekNumber(bool val) { if(val) value |= WEEK_NUMBER; else value &= ~WEEK_NUMBER; }
-        uint16_t timeValid() const { return (value & TIME_VALID) >> 0; }
-        void timeValid(uint16_t val) { value = (value & ~TIME_VALID) | (val << 0); }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
+    /// Parameters
     double tow = 0; ///< GPS Time of Week [seconds]
     uint16_t week_number = 0; ///< GPS Week Number since 1980 [weeks]
     ValidFlags valid_flags;
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_GPS_TIME;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "GpsTimestamp";
     static constexpr const char* DOC_NAME = "GpsTimestamp";
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
-    
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(tow,week_number,valid_flags);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(tow),std::ref(week_number),std::ref(valid_flags));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
 };
-void insert(::microstrain::Serializer& serializer, const GpsTimestamp& self);
-void extract(::microstrain::Serializer& serializer, GpsTimestamp& self);
-
 
 ///@}
 ///
@@ -250,28 +257,32 @@ void extract(::microstrain::Serializer& serializer, GpsTimestamp& self);
 
 struct DeltaTime
 {
+    /// Parameters
     double seconds = 0; ///< Seconds since last output.
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_DELTA_TIME;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "DeltaTime";
     static constexpr const char* DOC_NAME = "DeltaTime";
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
-    
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(seconds);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(seconds));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
 };
-void insert(::microstrain::Serializer& serializer, const DeltaTime& self);
-void extract(::microstrain::Serializer& serializer, DeltaTime& self);
-
 
 ///@}
 ///
@@ -290,28 +301,32 @@ void extract(::microstrain::Serializer& serializer, DeltaTime& self);
 
 struct ReferenceTimestamp
 {
+    /// Parameters
     uint64_t nanoseconds = 0; ///< Nanoseconds since initialization.
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_REFERENCE_TIME;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "ReferenceTimestamp";
     static constexpr const char* DOC_NAME = "ReferenceTimestamp";
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
-    
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(nanoseconds);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(nanoseconds));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
 };
-void insert(::microstrain::Serializer& serializer, const ReferenceTimestamp& self);
-void extract(::microstrain::Serializer& serializer, ReferenceTimestamp& self);
-
 
 ///@}
 ///
@@ -332,28 +347,32 @@ void extract(::microstrain::Serializer& serializer, ReferenceTimestamp& self);
 
 struct ReferenceTimeDelta
 {
+    /// Parameters
     uint64_t dt_nanos = 0; ///< Nanoseconds since the last occurrence of this field in a packet of the same descriptor set and event source.
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_REF_TIME_DELTA;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "ReferenceTimeDelta";
     static constexpr const char* DOC_NAME = "ReferenceTimeDelta";
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
-    
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(dt_nanos);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(dt_nanos));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
 };
-void insert(::microstrain::Serializer& serializer, const ReferenceTimeDelta& self);
-void extract(::microstrain::Serializer& serializer, ReferenceTimeDelta& self);
-
 
 ///@}
 ///
@@ -375,6 +394,7 @@ struct ExternalTimestamp
 {
     struct ValidFlags : Bitfield<ValidFlags>
     {
+        typedef uint16_t Type;
         enum _enumType : uint16_t
         {
             NONE        = 0x0000,
@@ -391,36 +411,36 @@ struct ExternalTimestamp
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool nanoseconds() const { return (value & NANOSECONDS) > 0; }
-        void nanoseconds(bool val) { if(val) value |= NANOSECONDS; else value &= ~NANOSECONDS; }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
+    /// Parameters
     uint64_t nanoseconds = 0;
     ValidFlags valid_flags;
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_EXTERNAL_TIME;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "ExternalTimestamp";
     static constexpr const char* DOC_NAME = "ExternalTimestamp";
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
-    
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(nanoseconds,valid_flags);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(nanoseconds),std::ref(valid_flags));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
 };
-void insert(::microstrain::Serializer& serializer, const ExternalTimestamp& self);
-void extract(::microstrain::Serializer& serializer, ExternalTimestamp& self);
-
 
 ///@}
 ///
@@ -446,6 +466,7 @@ struct ExternalTimeDelta
 {
     struct ValidFlags : Bitfield<ValidFlags>
     {
+        typedef uint16_t Type;
         enum _enumType : uint16_t
         {
             NONE     = 0x0000,
@@ -462,36 +483,36 @@ struct ExternalTimeDelta
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool dtNanos() const { return (value & DT_NANOS) > 0; }
-        void dtNanos(bool val) { if(val) value |= DT_NANOS; else value &= ~DT_NANOS; }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
+    /// Parameters
     uint64_t dt_nanos = 0; ///< Nanoseconds since the last occurrence of this field in a packet of the same descriptor set and event source.
     ValidFlags valid_flags;
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_SYS_TIME_DELTA;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "ExternalTimeDelta";
     static constexpr const char* DOC_NAME = "ExternalTimeDelta";
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
-    
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(dt_nanos,valid_flags);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(dt_nanos),std::ref(valid_flags));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
 };
-void insert(::microstrain::Serializer& serializer, const ExternalTimeDelta& self);
-void extract(::microstrain::Serializer& serializer, ExternalTimeDelta& self);
-
 
 ///@}
 ///

@@ -1,16 +1,14 @@
 #pragma once
 
 #include "common.hpp"
-#include "mip/mip_descriptors.hpp"
+#include <mip/mip_descriptors.hpp>
 #include <mip/mip_result.hpp>
+#include <mip/mip_interface.hpp>
 
 #include <stdint.h>
 #include <stddef.h>
-#include <stdbool.h>
 
 namespace mip {
-;
-
 namespace C {
 struct mip_interface;
 } // namespace C
@@ -191,30 +189,30 @@ enum class FilterAdaptiveMeasurement : uint8_t
 
 struct Reset
 {
-    
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_RESET_FILTER;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "Reset";
     static constexpr const char* DOC_NAME = "Reset Navigation Filter";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple();
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple();
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     typedef void Response;
 };
-void insert(::microstrain::Serializer& serializer, const Reset& self);
-void extract(::microstrain::Serializer& serializer, Reset& self);
-
 TypedResult<Reset> reset(C::mip_interface& device);
 
 ///@}
@@ -238,33 +236,35 @@ TypedResult<Reset> reset(C::mip_interface& device);
 
 struct SetInitialAttitude
 {
+    /// Parameters
     float roll = 0; ///< [radians]
     float pitch = 0; ///< [radians]
     float heading = 0; ///< [radians]
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_SET_INITIAL_ATTITUDE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "SetInitialAttitude";
     static constexpr const char* DOC_NAME = "Set Initial Attitude";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(roll,pitch,heading);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(roll),std::ref(pitch),std::ref(heading));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     typedef void Response;
 };
-void insert(::microstrain::Serializer& serializer, const SetInitialAttitude& self);
-void extract(::microstrain::Serializer& serializer, SetInitialAttitude& self);
-
 TypedResult<SetInitialAttitude> setInitialAttitude(C::mip_interface& device, float roll, float pitch, float heading);
 
 ///@}
@@ -289,6 +289,7 @@ struct EstimationControl
 {
     struct EnableFlags : Bitfield<EnableFlags>
     {
+        typedef uint16_t Type;
         enum _enumType : uint16_t
         {
             NONE               = 0x0000,
@@ -311,49 +312,27 @@ struct EstimationControl
         EnableFlags& operator|=(uint16_t val) { return *this = value | val; }
         EnableFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool gyroBias() const { return (value & GYRO_BIAS) > 0; }
-        void gyroBias(bool val) { if(val) value |= GYRO_BIAS; else value &= ~GYRO_BIAS; }
-        bool accelBias() const { return (value & ACCEL_BIAS) > 0; }
-        void accelBias(bool val) { if(val) value |= ACCEL_BIAS; else value &= ~ACCEL_BIAS; }
-        bool gyroScaleFactor() const { return (value & GYRO_SCALE_FACTOR) > 0; }
-        void gyroScaleFactor(bool val) { if(val) value |= GYRO_SCALE_FACTOR; else value &= ~GYRO_SCALE_FACTOR; }
-        bool accelScaleFactor() const { return (value & ACCEL_SCALE_FACTOR) > 0; }
-        void accelScaleFactor(bool val) { if(val) value |= ACCEL_SCALE_FACTOR; else value &= ~ACCEL_SCALE_FACTOR; }
-        bool antennaOffset() const { return (value & ANTENNA_OFFSET) > 0; }
-        void antennaOffset(bool val) { if(val) value |= ANTENNA_OFFSET; else value &= ~ANTENNA_OFFSET; }
-        bool autoMagHardIron() const { return (value & AUTO_MAG_HARD_IRON) > 0; }
-        void autoMagHardIron(bool val) { if(val) value |= AUTO_MAG_HARD_IRON; else value &= ~AUTO_MAG_HARD_IRON; }
-        bool autoMagSoftIron() const { return (value & AUTO_MAG_SOFT_IRON) > 0; }
-        void autoMagSoftIron(bool val) { if(val) value |= AUTO_MAG_SOFT_IRON; else value &= ~AUTO_MAG_SOFT_IRON; }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     EnableFlags enable; ///< See above
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_ESTIMATION_CONTROL_FLAGS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "EstimationControl";
     static constexpr const char* DOC_NAME = "Estimation Control Flags";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(enable);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(enable));
     }
@@ -365,31 +344,39 @@ struct EstimationControl
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        EnableFlags enable; ///< See above
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_ESTIMATION_CONTROL_FLAGS;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "EstimationControl::Response";
         static constexpr const char* DOC_NAME = "Estimation Control Flags Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        EnableFlags enable; ///< See above
+        auto asTuple() const
+        {
+            return std::make_tuple(enable);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(enable));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const EstimationControl& self);
-void extract(::microstrain::Serializer& serializer, EstimationControl& self);
-
-void insert(::microstrain::Serializer& serializer, const EstimationControl::Response& self);
-void extract(::microstrain::Serializer& serializer, EstimationControl::Response& self);
-
 TypedResult<EstimationControl> writeEstimationControl(C::mip_interface& device, EstimationControl::EnableFlags enable);
 TypedResult<EstimationControl> readEstimationControl(C::mip_interface& device, EstimationControl::EnableFlags* enableOut);
 TypedResult<EstimationControl> saveEstimationControl(C::mip_interface& device);
@@ -410,6 +397,7 @@ TypedResult<EstimationControl> defaultEstimationControl(C::mip_interface& device
 
 struct ExternalGnssUpdate
 {
+    /// Parameters
     double gps_time = 0; ///< [seconds]
     uint16_t gps_week = 0; ///< [GPS week number, not modulus 1024]
     double latitude = 0; ///< [degrees]
@@ -419,29 +407,30 @@ struct ExternalGnssUpdate
     Vector3f pos_uncertainty; ///< NED Frame, 1-sigma [meters]
     Vector3f vel_uncertainty; ///< NED Frame, 1-sigma [meters/second]
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_EXTERNAL_GNSS_UPDATE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "ExternalGnssUpdate";
     static constexpr const char* DOC_NAME = "External GNSS Update";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(gps_time,gps_week,latitude,longitude,height,velocity,pos_uncertainty,vel_uncertainty);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(gps_time),std::ref(gps_week),std::ref(latitude),std::ref(longitude),std::ref(height),std::ref(velocity),std::ref(pos_uncertainty),std::ref(vel_uncertainty));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     typedef void Response;
 };
-void insert(::microstrain::Serializer& serializer, const ExternalGnssUpdate& self);
-void extract(::microstrain::Serializer& serializer, ExternalGnssUpdate& self);
-
 TypedResult<ExternalGnssUpdate> externalGnssUpdate(C::mip_interface& device, double gpsTime, uint16_t gpsWeek, double latitude, double longitude, double height, const float* velocity, const float* posUncertainty, const float* velUncertainty);
 
 ///@}
@@ -466,33 +455,35 @@ TypedResult<ExternalGnssUpdate> externalGnssUpdate(C::mip_interface& device, dou
 
 struct ExternalHeadingUpdate
 {
+    /// Parameters
     float heading = 0; ///< Bounded by +-PI [radians]
     float heading_uncertainty = 0; ///< 1-sigma [radians]
     uint8_t type = 0; ///< 1 - True, 2 - Magnetic
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_EXTERNAL_HEADING_UPDATE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "ExternalHeadingUpdate";
     static constexpr const char* DOC_NAME = "External Heading Update";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(heading,heading_uncertainty,type);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(heading),std::ref(heading_uncertainty),std::ref(type));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     typedef void Response;
 };
-void insert(::microstrain::Serializer& serializer, const ExternalHeadingUpdate& self);
-void extract(::microstrain::Serializer& serializer, ExternalHeadingUpdate& self);
-
 TypedResult<ExternalHeadingUpdate> externalHeadingUpdate(C::mip_interface& device, float heading, float headingUncertainty, uint8_t type);
 
 ///@}
@@ -521,35 +512,37 @@ TypedResult<ExternalHeadingUpdate> externalHeadingUpdate(C::mip_interface& devic
 
 struct ExternalHeadingUpdateWithTime
 {
+    /// Parameters
     double gps_time = 0; ///< [seconds]
     uint16_t gps_week = 0; ///< [GPS week number, not modulus 1024]
     float heading = 0; ///< Relative to true north, bounded by +-PI [radians]
     float heading_uncertainty = 0; ///< 1-sigma [radians]
     uint8_t type = 0; ///< 1 - True, 2 - Magnetic
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_EXTERNAL_HEADING_UPDATE_WITH_TIME;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "ExternalHeadingUpdateWithTime";
     static constexpr const char* DOC_NAME = "External Heading Update With Time";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(gps_time,gps_week,heading,heading_uncertainty,type);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(gps_time),std::ref(gps_week),std::ref(heading),std::ref(heading_uncertainty),std::ref(type));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     typedef void Response;
 };
-void insert(::microstrain::Serializer& serializer, const ExternalHeadingUpdateWithTime& self);
-void extract(::microstrain::Serializer& serializer, ExternalHeadingUpdateWithTime& self);
-
 TypedResult<ExternalHeadingUpdateWithTime> externalHeadingUpdateWithTime(C::mip_interface& device, double gpsTime, uint16_t gpsWeek, float heading, float headingUncertainty, uint8_t type);
 
 ///@}
@@ -568,6 +561,7 @@ struct TareOrientation
 {
     struct MipTareAxes : Bitfield<MipTareAxes>
     {
+        typedef uint8_t Type;
         enum _enumType : uint8_t
         {
             NONE  = 0x0,
@@ -586,41 +580,27 @@ struct TareOrientation
         MipTareAxes& operator|=(uint8_t val) { return *this = value | val; }
         MipTareAxes& operator&=(uint8_t val) { return *this = value & val; }
         
-        bool roll() const { return (value & ROLL) > 0; }
-        void roll(bool val) { if(val) value |= ROLL; else value &= ~ROLL; }
-        bool pitch() const { return (value & PITCH) > 0; }
-        void pitch(bool val) { if(val) value |= PITCH; else value &= ~PITCH; }
-        bool yaw() const { return (value & YAW) > 0; }
-        void yaw(bool val) { if(val) value |= YAW; else value &= ~YAW; }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     MipTareAxes axes; ///< Axes to tare
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_TARE_ORIENTATION;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "TareOrientation";
     static constexpr const char* DOC_NAME = "Tare Sensor Orientation";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(axes);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(axes));
     }
@@ -632,31 +612,39 @@ struct TareOrientation
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        MipTareAxes axes; ///< Axes to tare
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_TARE_ORIENTATION;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "TareOrientation::Response";
         static constexpr const char* DOC_NAME = "Tare Sensor Orientation Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        MipTareAxes axes; ///< Axes to tare
+        auto asTuple() const
+        {
+            return std::make_tuple(axes);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(axes));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const TareOrientation& self);
-void extract(::microstrain::Serializer& serializer, TareOrientation& self);
-
-void insert(::microstrain::Serializer& serializer, const TareOrientation::Response& self);
-void extract(::microstrain::Serializer& serializer, TareOrientation::Response& self);
-
 TypedResult<TareOrientation> writeTareOrientation(C::mip_interface& device, TareOrientation::MipTareAxes axes);
 TypedResult<TareOrientation> readTareOrientation(C::mip_interface& device, TareOrientation::MipTareAxes* axesOut);
 TypedResult<TareOrientation> saveTareOrientation(C::mip_interface& device);
@@ -681,30 +669,24 @@ struct VehicleDynamicsMode
         AIRBORNE_HIGH_G = 4,  ///<  
     };
     
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     DynamicsMode mode = static_cast<DynamicsMode>(0);
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_VEHICLE_DYNAMICS_MODE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "VehicleDynamicsMode";
     static constexpr const char* DOC_NAME = "Vehicle Dynamics Mode";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(mode);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(mode));
     }
@@ -716,31 +698,39 @@ struct VehicleDynamicsMode
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        DynamicsMode mode = static_cast<DynamicsMode>(0);
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_VEHICLE_DYNAMICS_MODE;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "VehicleDynamicsMode::Response";
         static constexpr const char* DOC_NAME = "Vehicle Dynamics Mode Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        DynamicsMode mode = static_cast<DynamicsMode>(0);
+        auto asTuple() const
+        {
+            return std::make_tuple(mode);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(mode));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const VehicleDynamicsMode& self);
-void extract(::microstrain::Serializer& serializer, VehicleDynamicsMode& self);
-
-void insert(::microstrain::Serializer& serializer, const VehicleDynamicsMode::Response& self);
-void extract(::microstrain::Serializer& serializer, VehicleDynamicsMode::Response& self);
-
 TypedResult<VehicleDynamicsMode> writeVehicleDynamicsMode(C::mip_interface& device, VehicleDynamicsMode::DynamicsMode mode);
 TypedResult<VehicleDynamicsMode> readVehicleDynamicsMode(C::mip_interface& device, VehicleDynamicsMode::DynamicsMode* modeOut);
 TypedResult<VehicleDynamicsMode> saveVehicleDynamicsMode(C::mip_interface& device);
@@ -779,32 +769,26 @@ TypedResult<VehicleDynamicsMode> defaultVehicleDynamicsMode(C::mip_interface& de
 
 struct SensorToVehicleRotationEuler
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     float roll = 0; ///< [radians]
     float pitch = 0; ///< [radians]
     float yaw = 0; ///< [radians]
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_SENSOR2VEHICLE_ROTATION_EULER;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "SensorToVehicleRotationEuler";
     static constexpr const char* DOC_NAME = "Sensor to Vehicle Frame Rotation Euler";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8007;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(roll,pitch,yaw);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(roll),std::ref(pitch),std::ref(yaw));
     }
@@ -816,33 +800,41 @@ struct SensorToVehicleRotationEuler
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        float roll = 0; ///< [radians]
+        float pitch = 0; ///< [radians]
+        float yaw = 0; ///< [radians]
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_SENSOR2VEHICLE_ROTATION_EULER;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "SensorToVehicleRotationEuler::Response";
         static constexpr const char* DOC_NAME = "Sensor to Vehicle Frame Rotation Euler Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        float roll = 0; ///< [radians]
-        float pitch = 0; ///< [radians]
-        float yaw = 0; ///< [radians]
+        auto asTuple() const
+        {
+            return std::make_tuple(roll,pitch,yaw);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(roll),std::ref(pitch),std::ref(yaw));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const SensorToVehicleRotationEuler& self);
-void extract(::microstrain::Serializer& serializer, SensorToVehicleRotationEuler& self);
-
-void insert(::microstrain::Serializer& serializer, const SensorToVehicleRotationEuler::Response& self);
-void extract(::microstrain::Serializer& serializer, SensorToVehicleRotationEuler::Response& self);
-
 TypedResult<SensorToVehicleRotationEuler> writeSensorToVehicleRotationEuler(C::mip_interface& device, float roll, float pitch, float yaw);
 TypedResult<SensorToVehicleRotationEuler> readSensorToVehicleRotationEuler(C::mip_interface& device, float* rollOut, float* pitchOut, float* yawOut);
 TypedResult<SensorToVehicleRotationEuler> saveSensorToVehicleRotationEuler(C::mip_interface& device);
@@ -887,30 +879,24 @@ TypedResult<SensorToVehicleRotationEuler> defaultSensorToVehicleRotationEuler(C:
 
 struct SensorToVehicleRotationDcm
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     Matrix3f dcm;
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_SENSOR2VEHICLE_ROTATION_DCM;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "SensorToVehicleRotationDcm";
     static constexpr const char* DOC_NAME = "Sensor to Vehicle Frame Rotation DCM";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(dcm);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(dcm));
     }
@@ -922,31 +908,39 @@ struct SensorToVehicleRotationDcm
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        Matrix3f dcm;
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_SENSOR2VEHICLE_ROTATION_DCM;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "SensorToVehicleRotationDcm::Response";
         static constexpr const char* DOC_NAME = "Sensor to Vehicle Frame Rotation DCM Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        Matrix3f dcm;
+        auto asTuple() const
+        {
+            return std::make_tuple(dcm);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(dcm));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const SensorToVehicleRotationDcm& self);
-void extract(::microstrain::Serializer& serializer, SensorToVehicleRotationDcm& self);
-
-void insert(::microstrain::Serializer& serializer, const SensorToVehicleRotationDcm::Response& self);
-void extract(::microstrain::Serializer& serializer, SensorToVehicleRotationDcm::Response& self);
-
 TypedResult<SensorToVehicleRotationDcm> writeSensorToVehicleRotationDcm(C::mip_interface& device, const float* dcm);
 TypedResult<SensorToVehicleRotationDcm> readSensorToVehicleRotationDcm(C::mip_interface& device, float* dcmOut);
 TypedResult<SensorToVehicleRotationDcm> saveSensorToVehicleRotationDcm(C::mip_interface& device);
@@ -990,30 +984,24 @@ TypedResult<SensorToVehicleRotationDcm> defaultSensorToVehicleRotationDcm(C::mip
 
 struct SensorToVehicleRotationQuaternion
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     Quatf quat;
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_SENSOR2VEHICLE_ROTATION_QUATERNION;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "SensorToVehicleRotationQuaternion";
     static constexpr const char* DOC_NAME = "Sensor to Vehicle Frame Rotation Quaternion";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(quat);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(quat));
     }
@@ -1025,31 +1013,39 @@ struct SensorToVehicleRotationQuaternion
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        Quatf quat;
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_SENSOR2VEHICLE_ROTATION_QUATERNION;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "SensorToVehicleRotationQuaternion::Response";
         static constexpr const char* DOC_NAME = "Sensor to Vehicle Frame Rotation Quaternion Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        Quatf quat;
+        auto asTuple() const
+        {
+            return std::make_tuple(quat);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(quat));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const SensorToVehicleRotationQuaternion& self);
-void extract(::microstrain::Serializer& serializer, SensorToVehicleRotationQuaternion& self);
-
-void insert(::microstrain::Serializer& serializer, const SensorToVehicleRotationQuaternion::Response& self);
-void extract(::microstrain::Serializer& serializer, SensorToVehicleRotationQuaternion::Response& self);
-
 TypedResult<SensorToVehicleRotationQuaternion> writeSensorToVehicleRotationQuaternion(C::mip_interface& device, const float* quat);
 TypedResult<SensorToVehicleRotationQuaternion> readSensorToVehicleRotationQuaternion(C::mip_interface& device, float* quatOut);
 TypedResult<SensorToVehicleRotationQuaternion> saveSensorToVehicleRotationQuaternion(C::mip_interface& device);
@@ -1074,30 +1070,24 @@ TypedResult<SensorToVehicleRotationQuaternion> defaultSensorToVehicleRotationQua
 
 struct SensorToVehicleOffset
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     Vector3f offset; ///< [meters]
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_SENSOR2VEHICLE_OFFSET;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "SensorToVehicleOffset";
     static constexpr const char* DOC_NAME = "Sensor to Vehicle Frame Offset";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(offset);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(offset));
     }
@@ -1109,31 +1099,39 @@ struct SensorToVehicleOffset
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        Vector3f offset; ///< [meters]
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_SENSOR2VEHICLE_OFFSET;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "SensorToVehicleOffset::Response";
         static constexpr const char* DOC_NAME = "Sensor to Vehicle Frame Offset Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        Vector3f offset; ///< [meters]
+        auto asTuple() const
+        {
+            return std::make_tuple(offset);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(offset));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const SensorToVehicleOffset& self);
-void extract(::microstrain::Serializer& serializer, SensorToVehicleOffset& self);
-
-void insert(::microstrain::Serializer& serializer, const SensorToVehicleOffset::Response& self);
-void extract(::microstrain::Serializer& serializer, SensorToVehicleOffset::Response& self);
-
 TypedResult<SensorToVehicleOffset> writeSensorToVehicleOffset(C::mip_interface& device, const float* offset);
 TypedResult<SensorToVehicleOffset> readSensorToVehicleOffset(C::mip_interface& device, float* offsetOut);
 TypedResult<SensorToVehicleOffset> saveSensorToVehicleOffset(C::mip_interface& device);
@@ -1155,30 +1153,24 @@ TypedResult<SensorToVehicleOffset> defaultSensorToVehicleOffset(C::mip_interface
 
 struct AntennaOffset
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     Vector3f offset; ///< [meters]
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_ANTENNA_OFFSET;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "AntennaOffset";
     static constexpr const char* DOC_NAME = "GNSS Antenna Offset Control";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(offset);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(offset));
     }
@@ -1190,31 +1182,39 @@ struct AntennaOffset
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        Vector3f offset; ///< [meters]
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_ANTENNA_OFFSET;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "AntennaOffset::Response";
         static constexpr const char* DOC_NAME = "GNSS Antenna Offset Control Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        Vector3f offset; ///< [meters]
+        auto asTuple() const
+        {
+            return std::make_tuple(offset);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(offset));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const AntennaOffset& self);
-void extract(::microstrain::Serializer& serializer, AntennaOffset& self);
-
-void insert(::microstrain::Serializer& serializer, const AntennaOffset::Response& self);
-void extract(::microstrain::Serializer& serializer, AntennaOffset::Response& self);
-
 TypedResult<AntennaOffset> writeAntennaOffset(C::mip_interface& device, const float* offset);
 TypedResult<AntennaOffset> readAntennaOffset(C::mip_interface& device, float* offsetOut);
 TypedResult<AntennaOffset> saveAntennaOffset(C::mip_interface& device);
@@ -1243,30 +1243,24 @@ struct GnssSource
         INT_2   = 4,  ///<  Internal GNSS Receiver 2 only
     };
     
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     Source source = static_cast<Source>(0);
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_GNSS_SOURCE_CONTROL;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "GnssSource";
     static constexpr const char* DOC_NAME = "GNSS Aiding Source Control";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(source);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(source));
     }
@@ -1278,31 +1272,39 @@ struct GnssSource
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        Source source = static_cast<Source>(0);
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_GNSS_SOURCE_CONTROL;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "GnssSource::Response";
         static constexpr const char* DOC_NAME = "GNSS Aiding Source Control Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        Source source = static_cast<Source>(0);
+        auto asTuple() const
+        {
+            return std::make_tuple(source);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(source));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const GnssSource& self);
-void extract(::microstrain::Serializer& serializer, GnssSource& self);
-
-void insert(::microstrain::Serializer& serializer, const GnssSource::Response& self);
-void extract(::microstrain::Serializer& serializer, GnssSource::Response& self);
-
 TypedResult<GnssSource> writeGnssSource(C::mip_interface& device, GnssSource::Source source);
 TypedResult<GnssSource> readGnssSource(C::mip_interface& device, GnssSource::Source* sourceOut);
 TypedResult<GnssSource> saveGnssSource(C::mip_interface& device);
@@ -1342,30 +1344,24 @@ struct HeadingSource
         GNSS_VEL_AND_MAG_AND_EXTERNAL = 7,  ///<  
     };
     
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     Source source = static_cast<Source>(0);
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_HEADING_UPDATE_CONTROL;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "HeadingSource";
     static constexpr const char* DOC_NAME = "Heading Aiding Source Control";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(source);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(source));
     }
@@ -1377,31 +1373,39 @@ struct HeadingSource
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        Source source = static_cast<Source>(0);
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_HEADING_UPDATE_CONTROL;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "HeadingSource::Response";
         static constexpr const char* DOC_NAME = "Heading Aiding Source Control Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        Source source = static_cast<Source>(0);
+        auto asTuple() const
+        {
+            return std::make_tuple(source);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(source));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const HeadingSource& self);
-void extract(::microstrain::Serializer& serializer, HeadingSource& self);
-
-void insert(::microstrain::Serializer& serializer, const HeadingSource::Response& self);
-void extract(::microstrain::Serializer& serializer, HeadingSource::Response& self);
-
 TypedResult<HeadingSource> writeHeadingSource(C::mip_interface& device, HeadingSource::Source source);
 TypedResult<HeadingSource> readHeadingSource(C::mip_interface& device, HeadingSource::Source* sourceOut);
 TypedResult<HeadingSource> saveHeadingSource(C::mip_interface& device);
@@ -1426,30 +1430,24 @@ TypedResult<HeadingSource> defaultHeadingSource(C::mip_interface& device);
 
 struct AutoInitControl
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     uint8_t enable = 0; ///< See above
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_AUTOINIT_CONTROL;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "AutoInitControl";
     static constexpr const char* DOC_NAME = "Auto-initialization Control";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(enable);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(enable));
     }
@@ -1461,31 +1459,39 @@ struct AutoInitControl
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        uint8_t enable = 0; ///< See above
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_AUTOINIT_CONTROL;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "AutoInitControl::Response";
         static constexpr const char* DOC_NAME = "Auto-initialization Control Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        uint8_t enable = 0; ///< See above
+        auto asTuple() const
+        {
+            return std::make_tuple(enable);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(enable));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const AutoInitControl& self);
-void extract(::microstrain::Serializer& serializer, AutoInitControl& self);
-
-void insert(::microstrain::Serializer& serializer, const AutoInitControl::Response& self);
-void extract(::microstrain::Serializer& serializer, AutoInitControl::Response& self);
-
 TypedResult<AutoInitControl> writeAutoInitControl(C::mip_interface& device, uint8_t enable);
 TypedResult<AutoInitControl> readAutoInitControl(C::mip_interface& device, uint8_t* enableOut);
 TypedResult<AutoInitControl> saveAutoInitControl(C::mip_interface& device);
@@ -1508,30 +1514,24 @@ TypedResult<AutoInitControl> defaultAutoInitControl(C::mip_interface& device);
 
 struct AccelNoise
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     Vector3f noise; ///< Accel Noise 1-sigma [meters/second^2]
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_ACCEL_NOISE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "AccelNoise";
     static constexpr const char* DOC_NAME = "Accelerometer Noise Standard Deviation";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(noise);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(noise));
     }
@@ -1543,31 +1543,39 @@ struct AccelNoise
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        Vector3f noise; ///< Accel Noise 1-sigma [meters/second^2]
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_ACCEL_NOISE;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "AccelNoise::Response";
         static constexpr const char* DOC_NAME = "Accelerometer Noise Standard Deviation Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        Vector3f noise; ///< Accel Noise 1-sigma [meters/second^2]
+        auto asTuple() const
+        {
+            return std::make_tuple(noise);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(noise));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const AccelNoise& self);
-void extract(::microstrain::Serializer& serializer, AccelNoise& self);
-
-void insert(::microstrain::Serializer& serializer, const AccelNoise::Response& self);
-void extract(::microstrain::Serializer& serializer, AccelNoise::Response& self);
-
 TypedResult<AccelNoise> writeAccelNoise(C::mip_interface& device, const float* noise);
 TypedResult<AccelNoise> readAccelNoise(C::mip_interface& device, float* noiseOut);
 TypedResult<AccelNoise> saveAccelNoise(C::mip_interface& device);
@@ -1590,30 +1598,24 @@ TypedResult<AccelNoise> defaultAccelNoise(C::mip_interface& device);
 
 struct GyroNoise
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     Vector3f noise; ///< Gyro Noise 1-sigma [rad/second]
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_GYRO_NOISE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "GyroNoise";
     static constexpr const char* DOC_NAME = "Gyroscope Noise Standard Deviation";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(noise);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(noise));
     }
@@ -1625,31 +1627,39 @@ struct GyroNoise
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        Vector3f noise; ///< Gyro Noise 1-sigma [rad/second]
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_GYRO_NOISE;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "GyroNoise::Response";
         static constexpr const char* DOC_NAME = "Gyroscope Noise Standard Deviation Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        Vector3f noise; ///< Gyro Noise 1-sigma [rad/second]
+        auto asTuple() const
+        {
+            return std::make_tuple(noise);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(noise));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const GyroNoise& self);
-void extract(::microstrain::Serializer& serializer, GyroNoise& self);
-
-void insert(::microstrain::Serializer& serializer, const GyroNoise::Response& self);
-void extract(::microstrain::Serializer& serializer, GyroNoise::Response& self);
-
 TypedResult<GyroNoise> writeGyroNoise(C::mip_interface& device, const float* noise);
 TypedResult<GyroNoise> readGyroNoise(C::mip_interface& device, float* noiseOut);
 TypedResult<GyroNoise> saveGyroNoise(C::mip_interface& device);
@@ -1669,31 +1679,25 @@ TypedResult<GyroNoise> defaultGyroNoise(C::mip_interface& device);
 
 struct AccelBiasModel
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     Vector3f beta; ///< Accel Bias Beta [1/second]
     Vector3f noise; ///< Accel Noise 1-sigma [meters/second^2]
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_ACCEL_BIAS_MODEL;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "AccelBiasModel";
     static constexpr const char* DOC_NAME = "Accelerometer Bias Model Parameters";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8003;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(beta,noise);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(beta),std::ref(noise));
     }
@@ -1705,32 +1709,40 @@ struct AccelBiasModel
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        Vector3f beta; ///< Accel Bias Beta [1/second]
+        Vector3f noise; ///< Accel Noise 1-sigma [meters/second^2]
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_ACCEL_BIAS_MODEL;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "AccelBiasModel::Response";
         static constexpr const char* DOC_NAME = "Accelerometer Bias Model Parameters Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        Vector3f beta; ///< Accel Bias Beta [1/second]
-        Vector3f noise; ///< Accel Noise 1-sigma [meters/second^2]
+        auto asTuple() const
+        {
+            return std::make_tuple(beta,noise);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(beta),std::ref(noise));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const AccelBiasModel& self);
-void extract(::microstrain::Serializer& serializer, AccelBiasModel& self);
-
-void insert(::microstrain::Serializer& serializer, const AccelBiasModel::Response& self);
-void extract(::microstrain::Serializer& serializer, AccelBiasModel::Response& self);
-
 TypedResult<AccelBiasModel> writeAccelBiasModel(C::mip_interface& device, const float* beta, const float* noise);
 TypedResult<AccelBiasModel> readAccelBiasModel(C::mip_interface& device, float* betaOut, float* noiseOut);
 TypedResult<AccelBiasModel> saveAccelBiasModel(C::mip_interface& device);
@@ -1750,31 +1762,25 @@ TypedResult<AccelBiasModel> defaultAccelBiasModel(C::mip_interface& device);
 
 struct GyroBiasModel
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     Vector3f beta; ///< Gyro Bias Beta [1/second]
     Vector3f noise; ///< Gyro Noise 1-sigma [rad/second]
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_GYRO_BIAS_MODEL;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "GyroBiasModel";
     static constexpr const char* DOC_NAME = "Gyroscope Bias Model Parameters";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8003;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(beta,noise);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(beta),std::ref(noise));
     }
@@ -1786,32 +1792,40 @@ struct GyroBiasModel
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        Vector3f beta; ///< Gyro Bias Beta [1/second]
+        Vector3f noise; ///< Gyro Noise 1-sigma [rad/second]
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_GYRO_BIAS_MODEL;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "GyroBiasModel::Response";
         static constexpr const char* DOC_NAME = "Gyroscope Bias Model Parameters Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        Vector3f beta; ///< Gyro Bias Beta [1/second]
-        Vector3f noise; ///< Gyro Noise 1-sigma [rad/second]
+        auto asTuple() const
+        {
+            return std::make_tuple(beta,noise);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(beta),std::ref(noise));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const GyroBiasModel& self);
-void extract(::microstrain::Serializer& serializer, GyroBiasModel& self);
-
-void insert(::microstrain::Serializer& serializer, const GyroBiasModel::Response& self);
-void extract(::microstrain::Serializer& serializer, GyroBiasModel::Response& self);
-
 TypedResult<GyroBiasModel> writeGyroBiasModel(C::mip_interface& device, const float* beta, const float* noise);
 TypedResult<GyroBiasModel> readGyroBiasModel(C::mip_interface& device, float* betaOut, float* noiseOut);
 TypedResult<GyroBiasModel> saveGyroBiasModel(C::mip_interface& device);
@@ -1838,30 +1852,24 @@ struct AltitudeAiding
         PRESURE = 1,  ///<  Enable pressure sensor aiding
     };
     
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     AidingSelector selector = static_cast<AidingSelector>(0); ///< See above
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_ALTITUDE_AIDING_CONTROL;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "AltitudeAiding";
     static constexpr const char* DOC_NAME = "Altitude Aiding Control";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(selector);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(selector));
     }
@@ -1873,31 +1881,39 @@ struct AltitudeAiding
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        AidingSelector selector = static_cast<AidingSelector>(0); ///< See above
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_ALTITUDE_AIDING_CONTROL;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "AltitudeAiding::Response";
         static constexpr const char* DOC_NAME = "Altitude Aiding Control Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        AidingSelector selector = static_cast<AidingSelector>(0); ///< See above
+        auto asTuple() const
+        {
+            return std::make_tuple(selector);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(selector));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const AltitudeAiding& self);
-void extract(::microstrain::Serializer& serializer, AltitudeAiding& self);
-
-void insert(::microstrain::Serializer& serializer, const AltitudeAiding::Response& self);
-void extract(::microstrain::Serializer& serializer, AltitudeAiding::Response& self);
-
 TypedResult<AltitudeAiding> writeAltitudeAiding(C::mip_interface& device, AltitudeAiding::AidingSelector selector);
 TypedResult<AltitudeAiding> readAltitudeAiding(C::mip_interface& device, AltitudeAiding::AidingSelector* selectorOut);
 TypedResult<AltitudeAiding> saveAltitudeAiding(C::mip_interface& device);
@@ -1921,30 +1937,24 @@ struct PitchRollAiding
         GRAVITY_VEC = 1,  ///<  Enable gravity vector aiding
     };
     
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     AidingSource source = static_cast<AidingSource>(0); ///< Controls the aiding source
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_SECONDARY_PITCH_ROLL_AIDING_CONTROL;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "PitchRollAiding";
     static constexpr const char* DOC_NAME = "Pitch/Roll Aiding Control";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(source);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(source));
     }
@@ -1956,31 +1966,39 @@ struct PitchRollAiding
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        AidingSource source = static_cast<AidingSource>(0); ///< Controls the aiding source
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_SECONDARY_PITCH_ROLL_AIDING_CONTROL;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "PitchRollAiding::Response";
         static constexpr const char* DOC_NAME = "Pitch/Roll Aiding Control Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        AidingSource source = static_cast<AidingSource>(0); ///< Controls the aiding source
+        auto asTuple() const
+        {
+            return std::make_tuple(source);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(source));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const PitchRollAiding& self);
-void extract(::microstrain::Serializer& serializer, PitchRollAiding& self);
-
-void insert(::microstrain::Serializer& serializer, const PitchRollAiding::Response& self);
-void extract(::microstrain::Serializer& serializer, PitchRollAiding::Response& self);
-
 TypedResult<PitchRollAiding> writePitchRollAiding(C::mip_interface& device, PitchRollAiding::AidingSource source);
 TypedResult<PitchRollAiding> readPitchRollAiding(C::mip_interface& device, PitchRollAiding::AidingSource* sourceOut);
 TypedResult<PitchRollAiding> savePitchRollAiding(C::mip_interface& device);
@@ -1998,31 +2016,25 @@ TypedResult<PitchRollAiding> defaultPitchRollAiding(C::mip_interface& device);
 
 struct AutoZupt
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     uint8_t enable = 0; ///< 0 - Disable, 1 - Enable
     float threshold = 0; ///< [meters/second]
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_ZUPT_CONTROL;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "AutoZupt";
     static constexpr const char* DOC_NAME = "Zero Velocity Update Control";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8003;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(enable,threshold);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(enable),std::ref(threshold));
     }
@@ -2034,32 +2046,40 @@ struct AutoZupt
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        uint8_t enable = 0; ///< 0 - Disable, 1 - Enable
+        float threshold = 0; ///< [meters/second]
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_ZUPT_CONTROL;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "AutoZupt::Response";
         static constexpr const char* DOC_NAME = "Zero Velocity Update Control Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        uint8_t enable = 0; ///< 0 - Disable, 1 - Enable
-        float threshold = 0; ///< [meters/second]
+        auto asTuple() const
+        {
+            return std::make_tuple(enable,threshold);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(enable),std::ref(threshold));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const AutoZupt& self);
-void extract(::microstrain::Serializer& serializer, AutoZupt& self);
-
-void insert(::microstrain::Serializer& serializer, const AutoZupt::Response& self);
-void extract(::microstrain::Serializer& serializer, AutoZupt::Response& self);
-
 TypedResult<AutoZupt> writeAutoZupt(C::mip_interface& device, uint8_t enable, float threshold);
 TypedResult<AutoZupt> readAutoZupt(C::mip_interface& device, uint8_t* enableOut, float* thresholdOut);
 TypedResult<AutoZupt> saveAutoZupt(C::mip_interface& device);
@@ -2078,31 +2098,25 @@ TypedResult<AutoZupt> defaultAutoZupt(C::mip_interface& device);
 
 struct AutoAngularZupt
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     uint8_t enable = 0; ///< 0 - Disable, 1 - Enable
     float threshold = 0; ///< [radians/second]
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_ANGULAR_ZUPT_CONTROL;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "AutoAngularZupt";
     static constexpr const char* DOC_NAME = "Zero Angular Rate Update Control";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8003;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(enable,threshold);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(enable),std::ref(threshold));
     }
@@ -2114,32 +2128,40 @@ struct AutoAngularZupt
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        uint8_t enable = 0; ///< 0 - Disable, 1 - Enable
+        float threshold = 0; ///< [radians/second]
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_ANGULAR_ZUPT_CONTROL;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "AutoAngularZupt::Response";
         static constexpr const char* DOC_NAME = "Zero Angular Rate Update Control Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        uint8_t enable = 0; ///< 0 - Disable, 1 - Enable
-        float threshold = 0; ///< [radians/second]
+        auto asTuple() const
+        {
+            return std::make_tuple(enable,threshold);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(enable),std::ref(threshold));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const AutoAngularZupt& self);
-void extract(::microstrain::Serializer& serializer, AutoAngularZupt& self);
-
-void insert(::microstrain::Serializer& serializer, const AutoAngularZupt::Response& self);
-void extract(::microstrain::Serializer& serializer, AutoAngularZupt::Response& self);
-
 TypedResult<AutoAngularZupt> writeAutoAngularZupt(C::mip_interface& device, uint8_t enable, float threshold);
 TypedResult<AutoAngularZupt> readAutoAngularZupt(C::mip_interface& device, uint8_t* enableOut, float* thresholdOut);
 TypedResult<AutoAngularZupt> saveAutoAngularZupt(C::mip_interface& device);
@@ -2156,30 +2178,30 @@ TypedResult<AutoAngularZupt> defaultAutoAngularZupt(C::mip_interface& device);
 
 struct CommandedZupt
 {
-    
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_COMMANDED_ZUPT;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "CommandedZupt";
     static constexpr const char* DOC_NAME = "Commanded Zero Velocity Update";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple();
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple();
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     typedef void Response;
 };
-void insert(::microstrain::Serializer& serializer, const CommandedZupt& self);
-void extract(::microstrain::Serializer& serializer, CommandedZupt& self);
-
 TypedResult<CommandedZupt> commandedZupt(C::mip_interface& device);
 
 ///@}
@@ -2192,30 +2214,30 @@ TypedResult<CommandedZupt> commandedZupt(C::mip_interface& device);
 
 struct CommandedAngularZupt
 {
-    
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_COMMANDED_ANGULAR_ZUPT;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "CommandedAngularZupt";
     static constexpr const char* DOC_NAME = "Commanded Zero Angular Rate Update";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple();
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple();
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     typedef void Response;
 };
-void insert(::microstrain::Serializer& serializer, const CommandedAngularZupt& self);
-void extract(::microstrain::Serializer& serializer, CommandedAngularZupt& self);
-
 TypedResult<CommandedAngularZupt> commandedAngularZupt(C::mip_interface& device);
 
 ///@}
@@ -2230,28 +2252,23 @@ TypedResult<CommandedAngularZupt> commandedAngularZupt(C::mip_interface& device)
 
 struct MagCaptureAutoCal
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_MAG_CAPTURE_AUTO_CALIBRATION;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "MagCaptureAutoCal";
     static constexpr const char* DOC_NAME = "Magnetometer Capture Auto Calibration";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8000;
-    static constexpr const uint32_t READ_PARAMS    = 0x0000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x0000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple();
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple();
     }
@@ -2263,11 +2280,12 @@ struct MagCaptureAutoCal
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     typedef void Response;
 };
-void insert(::microstrain::Serializer& serializer, const MagCaptureAutoCal& self);
-void extract(::microstrain::Serializer& serializer, MagCaptureAutoCal& self);
-
 TypedResult<MagCaptureAutoCal> writeMagCaptureAutoCal(C::mip_interface& device);
 TypedResult<MagCaptureAutoCal> saveMagCaptureAutoCal(C::mip_interface& device);
 
@@ -2286,30 +2304,24 @@ TypedResult<MagCaptureAutoCal> saveMagCaptureAutoCal(C::mip_interface& device);
 
 struct GravityNoise
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     Vector3f noise; ///< Gravity Noise 1-sigma [gauss]
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_GRAVITY_NOISE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "GravityNoise";
     static constexpr const char* DOC_NAME = "Gravity Noise Standard Deviation";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(noise);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(noise));
     }
@@ -2321,31 +2333,39 @@ struct GravityNoise
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        Vector3f noise; ///< Gravity Noise 1-sigma [gauss]
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_GRAVITY_NOISE;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "GravityNoise::Response";
         static constexpr const char* DOC_NAME = "Gravity Noise Standard Deviation Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        Vector3f noise; ///< Gravity Noise 1-sigma [gauss]
+        auto asTuple() const
+        {
+            return std::make_tuple(noise);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(noise));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const GravityNoise& self);
-void extract(::microstrain::Serializer& serializer, GravityNoise& self);
-
-void insert(::microstrain::Serializer& serializer, const GravityNoise::Response& self);
-void extract(::microstrain::Serializer& serializer, GravityNoise::Response& self);
-
 TypedResult<GravityNoise> writeGravityNoise(C::mip_interface& device, const float* noise);
 TypedResult<GravityNoise> readGravityNoise(C::mip_interface& device, float* noiseOut);
 TypedResult<GravityNoise> saveGravityNoise(C::mip_interface& device);
@@ -2367,30 +2387,24 @@ TypedResult<GravityNoise> defaultGravityNoise(C::mip_interface& device);
 
 struct PressureAltitudeNoise
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     float noise = 0; ///< Pressure Altitude Noise 1-sigma [m]
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_PRESSURE_NOISE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "PressureAltitudeNoise";
     static constexpr const char* DOC_NAME = "Pressure Altitude Noise Standard Deviation";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(noise);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(noise));
     }
@@ -2402,31 +2416,39 @@ struct PressureAltitudeNoise
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        float noise = 0; ///< Pressure Altitude Noise 1-sigma [m]
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_PRESSURE_NOISE;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "PressureAltitudeNoise::Response";
         static constexpr const char* DOC_NAME = "Pressure Altitude Noise Standard Deviation Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        float noise = 0; ///< Pressure Altitude Noise 1-sigma [m]
+        auto asTuple() const
+        {
+            return std::make_tuple(noise);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(noise));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const PressureAltitudeNoise& self);
-void extract(::microstrain::Serializer& serializer, PressureAltitudeNoise& self);
-
-void insert(::microstrain::Serializer& serializer, const PressureAltitudeNoise::Response& self);
-void extract(::microstrain::Serializer& serializer, PressureAltitudeNoise::Response& self);
-
 TypedResult<PressureAltitudeNoise> writePressureAltitudeNoise(C::mip_interface& device, float noise);
 TypedResult<PressureAltitudeNoise> readPressureAltitudeNoise(C::mip_interface& device, float* noiseOut);
 TypedResult<PressureAltitudeNoise> savePressureAltitudeNoise(C::mip_interface& device);
@@ -2450,30 +2472,24 @@ TypedResult<PressureAltitudeNoise> defaultPressureAltitudeNoise(C::mip_interface
 
 struct HardIronOffsetNoise
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     Vector3f noise; ///< Hard Iron Offset Noise 1-sigma [gauss]
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_HARD_IRON_OFFSET_NOISE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "HardIronOffsetNoise";
     static constexpr const char* DOC_NAME = "Hard Iron Offset Process Noise";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(noise);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(noise));
     }
@@ -2485,31 +2501,39 @@ struct HardIronOffsetNoise
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        Vector3f noise; ///< Hard Iron Offset Noise 1-sigma [gauss]
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_HARD_IRON_OFFSET_NOISE;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "HardIronOffsetNoise::Response";
         static constexpr const char* DOC_NAME = "Hard Iron Offset Process Noise Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        Vector3f noise; ///< Hard Iron Offset Noise 1-sigma [gauss]
+        auto asTuple() const
+        {
+            return std::make_tuple(noise);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(noise));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const HardIronOffsetNoise& self);
-void extract(::microstrain::Serializer& serializer, HardIronOffsetNoise& self);
-
-void insert(::microstrain::Serializer& serializer, const HardIronOffsetNoise::Response& self);
-void extract(::microstrain::Serializer& serializer, HardIronOffsetNoise::Response& self);
-
 TypedResult<HardIronOffsetNoise> writeHardIronOffsetNoise(C::mip_interface& device, const float* noise);
 TypedResult<HardIronOffsetNoise> readHardIronOffsetNoise(C::mip_interface& device, float* noiseOut);
 TypedResult<HardIronOffsetNoise> saveHardIronOffsetNoise(C::mip_interface& device);
@@ -2532,30 +2556,24 @@ TypedResult<HardIronOffsetNoise> defaultHardIronOffsetNoise(C::mip_interface& de
 
 struct SoftIronMatrixNoise
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     Matrix3f noise; ///< Soft Iron Matrix Noise 1-sigma [dimensionless]
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_SOFT_IRON_MATRIX_NOISE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "SoftIronMatrixNoise";
     static constexpr const char* DOC_NAME = "Soft Iron Offset Process Noise";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(noise);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(noise));
     }
@@ -2567,31 +2585,39 @@ struct SoftIronMatrixNoise
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        Matrix3f noise; ///< Soft Iron Matrix Noise 1-sigma [dimensionless]
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_SOFT_IRON_MATRIX_NOISE;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "SoftIronMatrixNoise::Response";
         static constexpr const char* DOC_NAME = "Soft Iron Offset Process Noise Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        Matrix3f noise; ///< Soft Iron Matrix Noise 1-sigma [dimensionless]
+        auto asTuple() const
+        {
+            return std::make_tuple(noise);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(noise));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const SoftIronMatrixNoise& self);
-void extract(::microstrain::Serializer& serializer, SoftIronMatrixNoise& self);
-
-void insert(::microstrain::Serializer& serializer, const SoftIronMatrixNoise::Response& self);
-void extract(::microstrain::Serializer& serializer, SoftIronMatrixNoise::Response& self);
-
 TypedResult<SoftIronMatrixNoise> writeSoftIronMatrixNoise(C::mip_interface& device, const float* noise);
 TypedResult<SoftIronMatrixNoise> readSoftIronMatrixNoise(C::mip_interface& device, float* noiseOut);
 TypedResult<SoftIronMatrixNoise> saveSoftIronMatrixNoise(C::mip_interface& device);
@@ -2614,30 +2640,24 @@ TypedResult<SoftIronMatrixNoise> defaultSoftIronMatrixNoise(C::mip_interface& de
 
 struct MagNoise
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     Vector3f noise; ///< Mag Noise 1-sigma [gauss]
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_MAG_NOISE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "MagNoise";
     static constexpr const char* DOC_NAME = "Magnetometer Noise Standard Deviation";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(noise);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(noise));
     }
@@ -2649,31 +2669,39 @@ struct MagNoise
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        Vector3f noise; ///< Mag Noise 1-sigma [gauss]
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_MAG_NOISE;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "MagNoise::Response";
         static constexpr const char* DOC_NAME = "Magnetometer Noise Standard Deviation Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        Vector3f noise; ///< Mag Noise 1-sigma [gauss]
+        auto asTuple() const
+        {
+            return std::make_tuple(noise);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(noise));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const MagNoise& self);
-void extract(::microstrain::Serializer& serializer, MagNoise& self);
-
-void insert(::microstrain::Serializer& serializer, const MagNoise::Response& self);
-void extract(::microstrain::Serializer& serializer, MagNoise::Response& self);
-
 TypedResult<MagNoise> writeMagNoise(C::mip_interface& device, const float* noise);
 TypedResult<MagNoise> readMagNoise(C::mip_interface& device, float* noiseOut);
 TypedResult<MagNoise> saveMagNoise(C::mip_interface& device);
@@ -2694,31 +2722,25 @@ TypedResult<MagNoise> defaultMagNoise(C::mip_interface& device);
 
 struct InclinationSource
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     FilterMagParamSource source = static_cast<FilterMagParamSource>(0); ///< Inclination Source
     float inclination = 0; ///< Inclination angle [radians] (only required if source = MANUAL)
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_INCLINATION_SOURCE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "InclinationSource";
     static constexpr const char* DOC_NAME = "Inclination Source";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8003;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(source,inclination);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(source),std::ref(inclination));
     }
@@ -2730,32 +2752,40 @@ struct InclinationSource
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        FilterMagParamSource source = static_cast<FilterMagParamSource>(0); ///< Inclination Source
+        float inclination = 0; ///< Inclination angle [radians] (only required if source = MANUAL)
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_INCLINATION_SOURCE;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "InclinationSource::Response";
         static constexpr const char* DOC_NAME = "Inclination Source Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        FilterMagParamSource source = static_cast<FilterMagParamSource>(0); ///< Inclination Source
-        float inclination = 0; ///< Inclination angle [radians] (only required if source = MANUAL)
+        auto asTuple() const
+        {
+            return std::make_tuple(source,inclination);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(source),std::ref(inclination));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const InclinationSource& self);
-void extract(::microstrain::Serializer& serializer, InclinationSource& self);
-
-void insert(::microstrain::Serializer& serializer, const InclinationSource::Response& self);
-void extract(::microstrain::Serializer& serializer, InclinationSource::Response& self);
-
 TypedResult<InclinationSource> writeInclinationSource(C::mip_interface& device, FilterMagParamSource source, float inclination);
 TypedResult<InclinationSource> readInclinationSource(C::mip_interface& device, FilterMagParamSource* sourceOut, float* inclinationOut);
 TypedResult<InclinationSource> saveInclinationSource(C::mip_interface& device);
@@ -2776,31 +2806,25 @@ TypedResult<InclinationSource> defaultInclinationSource(C::mip_interface& device
 
 struct MagneticDeclinationSource
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     FilterMagParamSource source = static_cast<FilterMagParamSource>(0); ///< Magnetic field declination angle source
     float declination = 0; ///< Declination angle [radians] (only required if source = MANUAL)
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_DECLINATION_SOURCE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "MagneticDeclinationSource";
     static constexpr const char* DOC_NAME = "Magnetic Field Declination Source Control";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8003;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(source,declination);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(source),std::ref(declination));
     }
@@ -2812,32 +2836,40 @@ struct MagneticDeclinationSource
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        FilterMagParamSource source = static_cast<FilterMagParamSource>(0); ///< Magnetic field declination angle source
+        float declination = 0; ///< Declination angle [radians] (only required if source = MANUAL)
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_DECLINATION_SOURCE;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "MagneticDeclinationSource::Response";
         static constexpr const char* DOC_NAME = "Magnetic Field Declination Source Control Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        FilterMagParamSource source = static_cast<FilterMagParamSource>(0); ///< Magnetic field declination angle source
-        float declination = 0; ///< Declination angle [radians] (only required if source = MANUAL)
+        auto asTuple() const
+        {
+            return std::make_tuple(source,declination);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(source),std::ref(declination));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const MagneticDeclinationSource& self);
-void extract(::microstrain::Serializer& serializer, MagneticDeclinationSource& self);
-
-void insert(::microstrain::Serializer& serializer, const MagneticDeclinationSource::Response& self);
-void extract(::microstrain::Serializer& serializer, MagneticDeclinationSource::Response& self);
-
 TypedResult<MagneticDeclinationSource> writeMagneticDeclinationSource(C::mip_interface& device, FilterMagParamSource source, float declination);
 TypedResult<MagneticDeclinationSource> readMagneticDeclinationSource(C::mip_interface& device, FilterMagParamSource* sourceOut, float* declinationOut);
 TypedResult<MagneticDeclinationSource> saveMagneticDeclinationSource(C::mip_interface& device);
@@ -2857,31 +2889,25 @@ TypedResult<MagneticDeclinationSource> defaultMagneticDeclinationSource(C::mip_i
 
 struct MagFieldMagnitudeSource
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     FilterMagParamSource source = static_cast<FilterMagParamSource>(0); ///< Magnetic Field Magnitude Source
     float magnitude = 0; ///< Magnitude [gauss] (only required if source = MANUAL)
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_MAGNETIC_MAGNITUDE_SOURCE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "MagFieldMagnitudeSource";
     static constexpr const char* DOC_NAME = "Magnetic Field Magnitude Source";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8003;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(source,magnitude);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(source),std::ref(magnitude));
     }
@@ -2893,32 +2919,40 @@ struct MagFieldMagnitudeSource
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        FilterMagParamSource source = static_cast<FilterMagParamSource>(0); ///< Magnetic Field Magnitude Source
+        float magnitude = 0; ///< Magnitude [gauss] (only required if source = MANUAL)
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_MAGNETIC_MAGNITUDE_SOURCE;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "MagFieldMagnitudeSource::Response";
         static constexpr const char* DOC_NAME = "Magnetic Field Magnitude Source Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        FilterMagParamSource source = static_cast<FilterMagParamSource>(0); ///< Magnetic Field Magnitude Source
-        float magnitude = 0; ///< Magnitude [gauss] (only required if source = MANUAL)
+        auto asTuple() const
+        {
+            return std::make_tuple(source,magnitude);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(source),std::ref(magnitude));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const MagFieldMagnitudeSource& self);
-void extract(::microstrain::Serializer& serializer, MagFieldMagnitudeSource& self);
-
-void insert(::microstrain::Serializer& serializer, const MagFieldMagnitudeSource::Response& self);
-void extract(::microstrain::Serializer& serializer, MagFieldMagnitudeSource::Response& self);
-
 TypedResult<MagFieldMagnitudeSource> writeMagFieldMagnitudeSource(C::mip_interface& device, FilterMagParamSource source, float magnitude);
 TypedResult<MagFieldMagnitudeSource> readMagFieldMagnitudeSource(C::mip_interface& device, FilterMagParamSource* sourceOut, float* magnitudeOut);
 TypedResult<MagFieldMagnitudeSource> saveMagFieldMagnitudeSource(C::mip_interface& device);
@@ -2938,33 +2972,27 @@ TypedResult<MagFieldMagnitudeSource> defaultMagFieldMagnitudeSource(C::mip_inter
 
 struct ReferencePosition
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     bool enable = 0; ///< enable/disable
     double latitude = 0; ///< [degrees]
     double longitude = 0; ///< [degrees]
     double altitude = 0; ///< [meters]
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_REFERENCE_POSITION;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "ReferencePosition";
     static constexpr const char* DOC_NAME = "Set Reference Position";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x800F;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(enable,latitude,longitude,altitude);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(enable),std::ref(latitude),std::ref(longitude),std::ref(altitude));
     }
@@ -2976,34 +3004,42 @@ struct ReferencePosition
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
-        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
-        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_REFERENCE_POSITION;
-        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
-        static constexpr const char* NAME = "ReferencePosition::Response";
-        static constexpr const char* DOC_NAME = "Set Reference Position Response";
-        
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
+        /// Parameters
         bool enable = 0; ///< enable/disable
         double latitude = 0; ///< [degrees]
         double longitude = 0; ///< [degrees]
         double altitude = 0; ///< [meters]
         
+        /// Descriptors
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_REFERENCE_POSITION;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+        static constexpr const char* NAME = "ReferencePosition::Response";
+        static constexpr const char* DOC_NAME = "Set Reference Position Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        auto as_tuple()
+        auto asTuple() const
+        {
+            return std::make_tuple(enable,latitude,longitude,altitude);
+        }
+        
+        auto asTuple()
         {
             return std::make_tuple(std::ref(enable),std::ref(latitude),std::ref(longitude),std::ref(altitude));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const ReferencePosition& self);
-void extract(::microstrain::Serializer& serializer, ReferencePosition& self);
-
-void insert(::microstrain::Serializer& serializer, const ReferencePosition::Response& self);
-void extract(::microstrain::Serializer& serializer, ReferencePosition::Response& self);
-
 TypedResult<ReferencePosition> writeReferencePosition(C::mip_interface& device, bool enable, double latitude, double longitude, double altitude);
 TypedResult<ReferencePosition> readReferencePosition(C::mip_interface& device, bool* enableOut, double* latitudeOut, double* longitudeOut, double* altitudeOut);
 TypedResult<ReferencePosition> saveReferencePosition(C::mip_interface& device);
@@ -3033,6 +3069,7 @@ TypedResult<ReferencePosition> defaultReferencePosition(C::mip_interface& device
 
 struct AccelMagnitudeErrorAdaptiveMeasurement
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     FilterAdaptiveMeasurement adaptive_measurement = static_cast<FilterAdaptiveMeasurement>(0); ///< Adaptive measurement selector
     float frequency = 0; ///< Low-pass filter curoff frequency [hertz]
@@ -3042,27 +3079,20 @@ struct AccelMagnitudeErrorAdaptiveMeasurement
     float high_limit_uncertainty = 0; ///< 1-Sigma [meters/second^2]
     float minimum_uncertainty = 0; ///< 1-Sigma [meters/second^2]
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_ACCEL_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "AccelMagnitudeErrorAdaptiveMeasurement";
     static constexpr const char* DOC_NAME = "Gravity Magnitude Error Adaptive Measurement";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x807F;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(adaptive_measurement,frequency,low_limit,high_limit,low_limit_uncertainty,high_limit_uncertainty,minimum_uncertainty);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(adaptive_measurement),std::ref(frequency),std::ref(low_limit),std::ref(high_limit),std::ref(low_limit_uncertainty),std::ref(high_limit_uncertainty),std::ref(minimum_uncertainty));
     }
@@ -3074,16 +3104,13 @@ struct AccelMagnitudeErrorAdaptiveMeasurement
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
-        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
-        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_ACCEL_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL;
-        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
-        static constexpr const char* NAME = "AccelMagnitudeErrorAdaptiveMeasurement::Response";
-        static constexpr const char* DOC_NAME = "Gravity Magnitude Error Adaptive Measurement Response";
-        
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
+        /// Parameters
         FilterAdaptiveMeasurement adaptive_measurement = static_cast<FilterAdaptiveMeasurement>(0); ///< Adaptive measurement selector
         float frequency = 0; ///< Low-pass filter curoff frequency [hertz]
         float low_limit = 0; ///< [meters/second^2]
@@ -3092,19 +3119,30 @@ struct AccelMagnitudeErrorAdaptiveMeasurement
         float high_limit_uncertainty = 0; ///< 1-Sigma [meters/second^2]
         float minimum_uncertainty = 0; ///< 1-Sigma [meters/second^2]
         
+        /// Descriptors
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_ACCEL_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+        static constexpr const char* NAME = "AccelMagnitudeErrorAdaptiveMeasurement::Response";
+        static constexpr const char* DOC_NAME = "Gravity Magnitude Error Adaptive Measurement Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        auto as_tuple()
+        auto asTuple() const
+        {
+            return std::make_tuple(adaptive_measurement,frequency,low_limit,high_limit,low_limit_uncertainty,high_limit_uncertainty,minimum_uncertainty);
+        }
+        
+        auto asTuple()
         {
             return std::make_tuple(std::ref(adaptive_measurement),std::ref(frequency),std::ref(low_limit),std::ref(high_limit),std::ref(low_limit_uncertainty),std::ref(high_limit_uncertainty),std::ref(minimum_uncertainty));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const AccelMagnitudeErrorAdaptiveMeasurement& self);
-void extract(::microstrain::Serializer& serializer, AccelMagnitudeErrorAdaptiveMeasurement& self);
-
-void insert(::microstrain::Serializer& serializer, const AccelMagnitudeErrorAdaptiveMeasurement::Response& self);
-void extract(::microstrain::Serializer& serializer, AccelMagnitudeErrorAdaptiveMeasurement::Response& self);
-
 TypedResult<AccelMagnitudeErrorAdaptiveMeasurement> writeAccelMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device, FilterAdaptiveMeasurement adaptiveMeasurement, float frequency, float lowLimit, float highLimit, float lowLimitUncertainty, float highLimitUncertainty, float minimumUncertainty);
 TypedResult<AccelMagnitudeErrorAdaptiveMeasurement> readAccelMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device, FilterAdaptiveMeasurement* adaptiveMeasurementOut, float* frequencyOut, float* lowLimitOut, float* highLimitOut, float* lowLimitUncertaintyOut, float* highLimitUncertaintyOut, float* minimumUncertaintyOut);
 TypedResult<AccelMagnitudeErrorAdaptiveMeasurement> saveAccelMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device);
@@ -3129,6 +3167,7 @@ TypedResult<AccelMagnitudeErrorAdaptiveMeasurement> defaultAccelMagnitudeErrorAd
 
 struct MagMagnitudeErrorAdaptiveMeasurement
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     FilterAdaptiveMeasurement adaptive_measurement = static_cast<FilterAdaptiveMeasurement>(0); ///< Adaptive measurement selector
     float frequency = 0; ///< Low-pass filter curoff frequency [hertz]
@@ -3138,27 +3177,20 @@ struct MagMagnitudeErrorAdaptiveMeasurement
     float high_limit_uncertainty = 0; ///< 1-Sigma [meters/second^2]
     float minimum_uncertainty = 0; ///< 1-Sigma [meters/second^2]
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_MAG_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "MagMagnitudeErrorAdaptiveMeasurement";
     static constexpr const char* DOC_NAME = "Magnetometer Magnitude Error Adaptive Measurement";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x807F;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(adaptive_measurement,frequency,low_limit,high_limit,low_limit_uncertainty,high_limit_uncertainty,minimum_uncertainty);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(adaptive_measurement),std::ref(frequency),std::ref(low_limit),std::ref(high_limit),std::ref(low_limit_uncertainty),std::ref(high_limit_uncertainty),std::ref(minimum_uncertainty));
     }
@@ -3170,16 +3202,13 @@ struct MagMagnitudeErrorAdaptiveMeasurement
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
-        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
-        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_MAG_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL;
-        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
-        static constexpr const char* NAME = "MagMagnitudeErrorAdaptiveMeasurement::Response";
-        static constexpr const char* DOC_NAME = "Magnetometer Magnitude Error Adaptive Measurement Response";
-        
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
+        /// Parameters
         FilterAdaptiveMeasurement adaptive_measurement = static_cast<FilterAdaptiveMeasurement>(0); ///< Adaptive measurement selector
         float frequency = 0; ///< Low-pass filter curoff frequency [hertz]
         float low_limit = 0; ///< [meters/second^2]
@@ -3188,19 +3217,30 @@ struct MagMagnitudeErrorAdaptiveMeasurement
         float high_limit_uncertainty = 0; ///< 1-Sigma [meters/second^2]
         float minimum_uncertainty = 0; ///< 1-Sigma [meters/second^2]
         
+        /// Descriptors
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_MAG_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+        static constexpr const char* NAME = "MagMagnitudeErrorAdaptiveMeasurement::Response";
+        static constexpr const char* DOC_NAME = "Magnetometer Magnitude Error Adaptive Measurement Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        auto as_tuple()
+        auto asTuple() const
+        {
+            return std::make_tuple(adaptive_measurement,frequency,low_limit,high_limit,low_limit_uncertainty,high_limit_uncertainty,minimum_uncertainty);
+        }
+        
+        auto asTuple()
         {
             return std::make_tuple(std::ref(adaptive_measurement),std::ref(frequency),std::ref(low_limit),std::ref(high_limit),std::ref(low_limit_uncertainty),std::ref(high_limit_uncertainty),std::ref(minimum_uncertainty));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const MagMagnitudeErrorAdaptiveMeasurement& self);
-void extract(::microstrain::Serializer& serializer, MagMagnitudeErrorAdaptiveMeasurement& self);
-
-void insert(::microstrain::Serializer& serializer, const MagMagnitudeErrorAdaptiveMeasurement::Response& self);
-void extract(::microstrain::Serializer& serializer, MagMagnitudeErrorAdaptiveMeasurement::Response& self);
-
 TypedResult<MagMagnitudeErrorAdaptiveMeasurement> writeMagMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device, FilterAdaptiveMeasurement adaptiveMeasurement, float frequency, float lowLimit, float highLimit, float lowLimitUncertainty, float highLimitUncertainty, float minimumUncertainty);
 TypedResult<MagMagnitudeErrorAdaptiveMeasurement> readMagMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device, FilterAdaptiveMeasurement* adaptiveMeasurementOut, float* frequencyOut, float* lowLimitOut, float* highLimitOut, float* lowLimitUncertaintyOut, float* highLimitUncertaintyOut, float* minimumUncertaintyOut);
 TypedResult<MagMagnitudeErrorAdaptiveMeasurement> saveMagMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device);
@@ -3227,6 +3267,7 @@ TypedResult<MagMagnitudeErrorAdaptiveMeasurement> defaultMagMagnitudeErrorAdapti
 
 struct MagDipAngleErrorAdaptiveMeasurement
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     bool enable = 0; ///< Enable/Disable
     float frequency = 0; ///< Low-pass filter curoff frequency [hertz]
@@ -3234,27 +3275,20 @@ struct MagDipAngleErrorAdaptiveMeasurement
     float high_limit_uncertainty = 0; ///< 1-Sigma [meters/second^2]
     float minimum_uncertainty = 0; ///< 1-Sigma [meters/second^2]
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_MAG_DIP_ANGLE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "MagDipAngleErrorAdaptiveMeasurement";
     static constexpr const char* DOC_NAME = "Magnetometer Dig Angle Error Adaptive Measurement";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x801F;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(enable,frequency,high_limit,high_limit_uncertainty,minimum_uncertainty);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(enable),std::ref(frequency),std::ref(high_limit),std::ref(high_limit_uncertainty),std::ref(minimum_uncertainty));
     }
@@ -3266,35 +3300,43 @@ struct MagDipAngleErrorAdaptiveMeasurement
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
-        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
-        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_MAG_DIP_ANGLE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL;
-        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
-        static constexpr const char* NAME = "MagDipAngleErrorAdaptiveMeasurement::Response";
-        static constexpr const char* DOC_NAME = "Magnetometer Dig Angle Error Adaptive Measurement Response";
-        
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
+        /// Parameters
         bool enable = 0; ///< Enable/Disable
         float frequency = 0; ///< Low-pass filter curoff frequency [hertz]
         float high_limit = 0; ///< [meters/second^2]
         float high_limit_uncertainty = 0; ///< 1-Sigma [meters/second^2]
         float minimum_uncertainty = 0; ///< 1-Sigma [meters/second^2]
         
+        /// Descriptors
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_MAG_DIP_ANGLE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+        static constexpr const char* NAME = "MagDipAngleErrorAdaptiveMeasurement::Response";
+        static constexpr const char* DOC_NAME = "Magnetometer Dig Angle Error Adaptive Measurement Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        auto as_tuple()
+        auto asTuple() const
+        {
+            return std::make_tuple(enable,frequency,high_limit,high_limit_uncertainty,minimum_uncertainty);
+        }
+        
+        auto asTuple()
         {
             return std::make_tuple(std::ref(enable),std::ref(frequency),std::ref(high_limit),std::ref(high_limit_uncertainty),std::ref(minimum_uncertainty));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const MagDipAngleErrorAdaptiveMeasurement& self);
-void extract(::microstrain::Serializer& serializer, MagDipAngleErrorAdaptiveMeasurement& self);
-
-void insert(::microstrain::Serializer& serializer, const MagDipAngleErrorAdaptiveMeasurement::Response& self);
-void extract(::microstrain::Serializer& serializer, MagDipAngleErrorAdaptiveMeasurement::Response& self);
-
 TypedResult<MagDipAngleErrorAdaptiveMeasurement> writeMagDipAngleErrorAdaptiveMeasurement(C::mip_interface& device, bool enable, float frequency, float highLimit, float highLimitUncertainty, float minimumUncertainty);
 TypedResult<MagDipAngleErrorAdaptiveMeasurement> readMagDipAngleErrorAdaptiveMeasurement(C::mip_interface& device, bool* enableOut, float* frequencyOut, float* highLimitOut, float* highLimitUncertaintyOut, float* minimumUncertaintyOut);
 TypedResult<MagDipAngleErrorAdaptiveMeasurement> saveMagDipAngleErrorAdaptiveMeasurement(C::mip_interface& device);
@@ -3327,31 +3369,25 @@ struct AidingMeasurementEnable
         ALL                   = 65535,  ///<  Save/load/reset all options
     };
     
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     AidingSource aiding_source = static_cast<AidingSource>(0); ///< Aiding measurement source
     bool enable = 0; ///< Controls the aiding source
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_AIDING_MEASUREMENT_ENABLE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "AidingMeasurementEnable";
     static constexpr const char* DOC_NAME = "Aiding Measurement Control";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8003;
-    static constexpr const uint32_t READ_PARAMS    = 0x8001;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8001;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8001;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8001;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(aiding_source,enable);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(aiding_source),std::ref(enable));
     }
@@ -3364,32 +3400,40 @@ struct AidingMeasurementEnable
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        AidingSource aiding_source = static_cast<AidingSource>(0); ///< Aiding measurement source
+        bool enable = 0; ///< Controls the aiding source
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_AIDING_MEASUREMENT_ENABLE;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "AidingMeasurementEnable::Response";
         static constexpr const char* DOC_NAME = "Aiding Measurement Control Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        AidingSource aiding_source = static_cast<AidingSource>(0); ///< Aiding measurement source
-        bool enable = 0; ///< Controls the aiding source
+        auto asTuple() const
+        {
+            return std::make_tuple(aiding_source,enable);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(aiding_source),std::ref(enable));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const AidingMeasurementEnable& self);
-void extract(::microstrain::Serializer& serializer, AidingMeasurementEnable& self);
-
-void insert(::microstrain::Serializer& serializer, const AidingMeasurementEnable::Response& self);
-void extract(::microstrain::Serializer& serializer, AidingMeasurementEnable::Response& self);
-
 TypedResult<AidingMeasurementEnable> writeAidingMeasurementEnable(C::mip_interface& device, AidingMeasurementEnable::AidingSource aidingSource, bool enable);
 TypedResult<AidingMeasurementEnable> readAidingMeasurementEnable(C::mip_interface& device, AidingMeasurementEnable::AidingSource aidingSource, bool* enableOut);
 TypedResult<AidingMeasurementEnable> saveAidingMeasurementEnable(C::mip_interface& device, AidingMeasurementEnable::AidingSource aidingSource);
@@ -3408,30 +3452,30 @@ TypedResult<AidingMeasurementEnable> defaultAidingMeasurementEnable(C::mip_inter
 
 struct Run
 {
-    
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_RUN;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "Run";
     static constexpr const char* DOC_NAME = "Run Navigation Filter";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple();
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple();
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     typedef void Response;
 };
-void insert(::microstrain::Serializer& serializer, const Run& self);
-void extract(::microstrain::Serializer& serializer, Run& self);
-
 TypedResult<Run> run(C::mip_interface& device);
 
 ///@}
@@ -3446,32 +3490,26 @@ TypedResult<Run> run(C::mip_interface& device);
 
 struct KinematicConstraint
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     uint8_t acceleration_constraint_selection = 0; ///< Acceleration constraint: <br/> 0=None (default), <br/> 1=Zero-acceleration.
     uint8_t velocity_constraint_selection = 0; ///< 0=None (default), <br/> 1=Zero-velocity, <br/> 2=Wheeled-vehicle. <br/>
     uint8_t angular_constraint_selection = 0; ///< 0=None (default), 1=Zero-angular rate (ZUPT).
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_KINEMATIC_CONSTRAINT;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "KinematicConstraint";
     static constexpr const char* DOC_NAME = "Kinematic Constraint Control";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8007;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(acceleration_constraint_selection,velocity_constraint_selection,angular_constraint_selection);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(acceleration_constraint_selection),std::ref(velocity_constraint_selection),std::ref(angular_constraint_selection));
     }
@@ -3483,33 +3521,41 @@ struct KinematicConstraint
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        uint8_t acceleration_constraint_selection = 0; ///< Acceleration constraint: <br/> 0=None (default), <br/> 1=Zero-acceleration.
+        uint8_t velocity_constraint_selection = 0; ///< 0=None (default), <br/> 1=Zero-velocity, <br/> 2=Wheeled-vehicle. <br/>
+        uint8_t angular_constraint_selection = 0; ///< 0=None (default), 1=Zero-angular rate (ZUPT).
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_KINEMATIC_CONSTRAINT;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "KinematicConstraint::Response";
         static constexpr const char* DOC_NAME = "Kinematic Constraint Control Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        uint8_t acceleration_constraint_selection = 0; ///< Acceleration constraint: <br/> 0=None (default), <br/> 1=Zero-acceleration.
-        uint8_t velocity_constraint_selection = 0; ///< 0=None (default), <br/> 1=Zero-velocity, <br/> 2=Wheeled-vehicle. <br/>
-        uint8_t angular_constraint_selection = 0; ///< 0=None (default), 1=Zero-angular rate (ZUPT).
+        auto asTuple() const
+        {
+            return std::make_tuple(acceleration_constraint_selection,velocity_constraint_selection,angular_constraint_selection);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(acceleration_constraint_selection),std::ref(velocity_constraint_selection),std::ref(angular_constraint_selection));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const KinematicConstraint& self);
-void extract(::microstrain::Serializer& serializer, KinematicConstraint& self);
-
-void insert(::microstrain::Serializer& serializer, const KinematicConstraint::Response& self);
-void extract(::microstrain::Serializer& serializer, KinematicConstraint::Response& self);
-
 TypedResult<KinematicConstraint> writeKinematicConstraint(C::mip_interface& device, uint8_t accelerationConstraintSelection, uint8_t velocityConstraintSelection, uint8_t angularConstraintSelection);
 TypedResult<KinematicConstraint> readKinematicConstraint(C::mip_interface& device, uint8_t* accelerationConstraintSelectionOut, uint8_t* velocityConstraintSelectionOut, uint8_t* angularConstraintSelectionOut);
 TypedResult<KinematicConstraint> saveKinematicConstraint(C::mip_interface& device);
@@ -3532,6 +3578,7 @@ struct InitializationConfiguration
 {
     struct AlignmentSelector : Bitfield<AlignmentSelector>
     {
+        typedef uint8_t Type;
         enum _enumType : uint8_t
         {
             NONE         = 0x00,
@@ -3551,19 +3598,9 @@ struct InitializationConfiguration
         AlignmentSelector& operator|=(uint8_t val) { return *this = value | val; }
         AlignmentSelector& operator&=(uint8_t val) { return *this = value & val; }
         
-        bool dualAntenna() const { return (value & DUAL_ANTENNA) > 0; }
-        void dualAntenna(bool val) { if(val) value |= DUAL_ANTENNA; else value &= ~DUAL_ANTENNA; }
-        bool kinematic() const { return (value & KINEMATIC) > 0; }
-        void kinematic(bool val) { if(val) value |= KINEMATIC; else value &= ~KINEMATIC; }
-        bool magnetometer() const { return (value & MAGNETOMETER) > 0; }
-        void magnetometer(bool val) { if(val) value |= MAGNETOMETER; else value &= ~MAGNETOMETER; }
-        bool external() const { return (value & EXTERNAL) > 0; }
-        void external(bool val) { if(val) value |= EXTERNAL; else value &= ~EXTERNAL; }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
     enum class InitialConditionSource : uint8_t
     {
         AUTO_POS_VEL_ATT        = 0,  ///<  Automatic position, velocity and attitude
@@ -3572,6 +3609,7 @@ struct InitializationConfiguration
         MANUAL                  = 3,  ///<  User-specified position, velocity, and attitude.
     };
     
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     uint8_t wait_for_run_command = 0; ///< Initialize filter only after receiving "run" command
     InitialConditionSource initial_cond_src = static_cast<InitialConditionSource>(0); ///< Initial condition source:
@@ -3583,27 +3621,20 @@ struct InitializationConfiguration
     Vector3f initial_velocity; ///< User-specified initial platform velocity (units determined by reference frame selector, see note.)
     FilterReferenceFrame reference_frame_selector = static_cast<FilterReferenceFrame>(0); ///< User-specified initial position/velocity reference frames
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_INITIALIZATION_CONFIGURATION;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "InitializationConfiguration";
     static constexpr const char* DOC_NAME = "Navigation Filter Initialization";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x81FF;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(wait_for_run_command,initial_cond_src,auto_heading_alignment_selector,initial_heading,initial_pitch,initial_roll,initial_position,initial_velocity,reference_frame_selector);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(wait_for_run_command),std::ref(initial_cond_src),std::ref(auto_heading_alignment_selector),std::ref(initial_heading),std::ref(initial_pitch),std::ref(initial_roll),std::ref(initial_position),std::ref(initial_velocity),std::ref(reference_frame_selector));
     }
@@ -3615,16 +3646,13 @@ struct InitializationConfiguration
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
-        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
-        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_INITIALIZATION_CONFIGURATION;
-        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
-        static constexpr const char* NAME = "InitializationConfiguration::Response";
-        static constexpr const char* DOC_NAME = "Navigation Filter Initialization Response";
-        
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
+        /// Parameters
         uint8_t wait_for_run_command = 0; ///< Initialize filter only after receiving "run" command
         InitialConditionSource initial_cond_src = static_cast<InitialConditionSource>(0); ///< Initial condition source:
         AlignmentSelector auto_heading_alignment_selector; ///< Bitfield specifying the allowed automatic heading alignment methods for automatic initial conditions. Bits are set to 1 to enable, and the correspond to the following: <br/>
@@ -3635,19 +3663,30 @@ struct InitializationConfiguration
         Vector3f initial_velocity; ///< User-specified initial platform velocity (units determined by reference frame selector, see note.)
         FilterReferenceFrame reference_frame_selector = static_cast<FilterReferenceFrame>(0); ///< User-specified initial position/velocity reference frames
         
+        /// Descriptors
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_INITIALIZATION_CONFIGURATION;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+        static constexpr const char* NAME = "InitializationConfiguration::Response";
+        static constexpr const char* DOC_NAME = "Navigation Filter Initialization Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        auto as_tuple()
+        auto asTuple() const
+        {
+            return std::make_tuple(wait_for_run_command,initial_cond_src,auto_heading_alignment_selector,initial_heading,initial_pitch,initial_roll,initial_position,initial_velocity,reference_frame_selector);
+        }
+        
+        auto asTuple()
         {
             return std::make_tuple(std::ref(wait_for_run_command),std::ref(initial_cond_src),std::ref(auto_heading_alignment_selector),std::ref(initial_heading),std::ref(initial_pitch),std::ref(initial_roll),std::ref(initial_position),std::ref(initial_velocity),std::ref(reference_frame_selector));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const InitializationConfiguration& self);
-void extract(::microstrain::Serializer& serializer, InitializationConfiguration& self);
-
-void insert(::microstrain::Serializer& serializer, const InitializationConfiguration::Response& self);
-void extract(::microstrain::Serializer& serializer, InitializationConfiguration::Response& self);
-
 TypedResult<InitializationConfiguration> writeInitializationConfiguration(C::mip_interface& device, uint8_t waitForRunCommand, InitializationConfiguration::InitialConditionSource initialCondSrc, InitializationConfiguration::AlignmentSelector autoHeadingAlignmentSelector, float initialHeading, float initialPitch, float initialRoll, const float* initialPosition, const float* initialVelocity, FilterReferenceFrame referenceFrameSelector);
 TypedResult<InitializationConfiguration> readInitializationConfiguration(C::mip_interface& device, uint8_t* waitForRunCommandOut, InitializationConfiguration::InitialConditionSource* initialCondSrcOut, InitializationConfiguration::AlignmentSelector* autoHeadingAlignmentSelectorOut, float* initialHeadingOut, float* initialPitchOut, float* initialRollOut, float* initialPositionOut, float* initialVelocityOut, FilterReferenceFrame* referenceFrameSelectorOut);
 TypedResult<InitializationConfiguration> saveInitializationConfiguration(C::mip_interface& device);
@@ -3664,31 +3703,25 @@ TypedResult<InitializationConfiguration> defaultInitializationConfiguration(C::m
 
 struct AdaptiveFilterOptions
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     uint8_t level = 0; ///< Auto-adaptive operating level: <br/> 0=Off, <br/> 1=Conservative, <br/> 2=Moderate (default), <br/> 3=Aggressive.
     uint16_t time_limit = 0; ///< Maximum duration of measurement rejection before entering recovery mode    (ms)
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_ADAPTIVE_FILTER_OPTIONS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "AdaptiveFilterOptions";
     static constexpr const char* DOC_NAME = "Adaptive Filter Control";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8003;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(level,time_limit);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(level),std::ref(time_limit));
     }
@@ -3700,32 +3733,40 @@ struct AdaptiveFilterOptions
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        uint8_t level = 0; ///< Auto-adaptive operating level: <br/> 0=Off, <br/> 1=Conservative, <br/> 2=Moderate (default), <br/> 3=Aggressive.
+        uint16_t time_limit = 0; ///< Maximum duration of measurement rejection before entering recovery mode    (ms)
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_ADAPTIVE_FILTER_OPTIONS;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "AdaptiveFilterOptions::Response";
         static constexpr const char* DOC_NAME = "Adaptive Filter Control Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        uint8_t level = 0; ///< Auto-adaptive operating level: <br/> 0=Off, <br/> 1=Conservative, <br/> 2=Moderate (default), <br/> 3=Aggressive.
-        uint16_t time_limit = 0; ///< Maximum duration of measurement rejection before entering recovery mode    (ms)
+        auto asTuple() const
+        {
+            return std::make_tuple(level,time_limit);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(level),std::ref(time_limit));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const AdaptiveFilterOptions& self);
-void extract(::microstrain::Serializer& serializer, AdaptiveFilterOptions& self);
-
-void insert(::microstrain::Serializer& serializer, const AdaptiveFilterOptions::Response& self);
-void extract(::microstrain::Serializer& serializer, AdaptiveFilterOptions::Response& self);
-
 TypedResult<AdaptiveFilterOptions> writeAdaptiveFilterOptions(C::mip_interface& device, uint8_t level, uint16_t timeLimit);
 TypedResult<AdaptiveFilterOptions> readAdaptiveFilterOptions(C::mip_interface& device, uint8_t* levelOut, uint16_t* timeLimitOut);
 TypedResult<AdaptiveFilterOptions> saveAdaptiveFilterOptions(C::mip_interface& device);
@@ -3745,31 +3786,25 @@ TypedResult<AdaptiveFilterOptions> defaultAdaptiveFilterOptions(C::mip_interface
 
 struct MultiAntennaOffset
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     uint8_t receiver_id = 0; ///< Receiver: 1, 2, etc...
     Vector3f antenna_offset; ///< Antenna lever arm offset vector in the vehicle frame (m)
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_MULTI_ANTENNA_OFFSET;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "MultiAntennaOffset";
     static constexpr const char* DOC_NAME = "GNSS Multi-Antenna Offset Control";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8003;
-    static constexpr const uint32_t READ_PARAMS    = 0x8001;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8001;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8001;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8001;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(receiver_id,antenna_offset);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(receiver_id),std::ref(antenna_offset));
     }
@@ -3782,32 +3817,40 @@ struct MultiAntennaOffset
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        uint8_t receiver_id = 0;
+        Vector3f antenna_offset;
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_MULTI_ANTENNA_OFFSET;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "MultiAntennaOffset::Response";
         static constexpr const char* DOC_NAME = "GNSS Multi-Antenna Offset Control Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        uint8_t receiver_id = 0;
-        Vector3f antenna_offset;
+        auto asTuple() const
+        {
+            return std::make_tuple(receiver_id,antenna_offset);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(receiver_id),std::ref(antenna_offset));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const MultiAntennaOffset& self);
-void extract(::microstrain::Serializer& serializer, MultiAntennaOffset& self);
-
-void insert(::microstrain::Serializer& serializer, const MultiAntennaOffset::Response& self);
-void extract(::microstrain::Serializer& serializer, MultiAntennaOffset::Response& self);
-
 TypedResult<MultiAntennaOffset> writeMultiAntennaOffset(C::mip_interface& device, uint8_t receiverId, const float* antennaOffset);
 TypedResult<MultiAntennaOffset> readMultiAntennaOffset(C::mip_interface& device, uint8_t receiverId, float* antennaOffsetOut);
 TypedResult<MultiAntennaOffset> saveMultiAntennaOffset(C::mip_interface& device, uint8_t receiverId);
@@ -3824,32 +3867,26 @@ TypedResult<MultiAntennaOffset> defaultMultiAntennaOffset(C::mip_interface& devi
 
 struct RelPosConfiguration
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     uint8_t source = 0; ///< 0 - auto (RTK base station), 1 - manual
     FilterReferenceFrame reference_frame_selector = static_cast<FilterReferenceFrame>(0); ///< ECEF or LLH
     Vector3d reference_coordinates; ///< reference coordinates, units determined by source selection
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_REL_POS_CONFIGURATION;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "RelPosConfiguration";
     static constexpr const char* DOC_NAME = "Relative Position Configuration";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8007;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(source,reference_frame_selector,reference_coordinates);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(source),std::ref(reference_frame_selector),std::ref(reference_coordinates));
     }
@@ -3861,33 +3898,41 @@ struct RelPosConfiguration
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        uint8_t source = 0; ///< 0 - auto (RTK base station), 1 - manual
+        FilterReferenceFrame reference_frame_selector = static_cast<FilterReferenceFrame>(0); ///< ECEF or LLH
+        Vector3d reference_coordinates; ///< reference coordinates, units determined by source selection
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_REL_POS_CONFIGURATION;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "RelPosConfiguration::Response";
         static constexpr const char* DOC_NAME = "Relative Position Configuration Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        uint8_t source = 0; ///< 0 - auto (RTK base station), 1 - manual
-        FilterReferenceFrame reference_frame_selector = static_cast<FilterReferenceFrame>(0); ///< ECEF or LLH
-        Vector3d reference_coordinates; ///< reference coordinates, units determined by source selection
+        auto asTuple() const
+        {
+            return std::make_tuple(source,reference_frame_selector,reference_coordinates);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(source),std::ref(reference_frame_selector),std::ref(reference_coordinates));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const RelPosConfiguration& self);
-void extract(::microstrain::Serializer& serializer, RelPosConfiguration& self);
-
-void insert(::microstrain::Serializer& serializer, const RelPosConfiguration::Response& self);
-void extract(::microstrain::Serializer& serializer, RelPosConfiguration::Response& self);
-
 TypedResult<RelPosConfiguration> writeRelPosConfiguration(C::mip_interface& device, uint8_t source, FilterReferenceFrame referenceFrameSelector, const double* referenceCoordinates);
 TypedResult<RelPosConfiguration> readRelPosConfiguration(C::mip_interface& device, uint8_t* sourceOut, FilterReferenceFrame* referenceFrameSelectorOut, double* referenceCoordinatesOut);
 TypedResult<RelPosConfiguration> saveRelPosConfiguration(C::mip_interface& device);
@@ -3916,31 +3961,25 @@ struct RefPointLeverArm
         VEH = 1,  ///<  Defines the origin of the vehicle
     };
     
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     ReferencePointSelector ref_point_sel = static_cast<ReferencePointSelector>(0); ///< Reserved, must be 1
     Vector3f lever_arm_offset; ///< [m] Lever arm offset vector in the vehicle's reference frame.
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_REF_POINT_LEVER_ARM;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "RefPointLeverArm";
     static constexpr const char* DOC_NAME = "Reference point lever arm";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8003;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(ref_point_sel,lever_arm_offset);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(ref_point_sel),std::ref(lever_arm_offset));
     }
@@ -3952,32 +3991,40 @@ struct RefPointLeverArm
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        ReferencePointSelector ref_point_sel = static_cast<ReferencePointSelector>(0); ///< Reserved, must be 1
+        Vector3f lever_arm_offset; ///< [m] Lever arm offset vector in the vehicle's reference frame.
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_REF_POINT_LEVER_ARM;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "RefPointLeverArm::Response";
         static constexpr const char* DOC_NAME = "Reference point lever arm Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        ReferencePointSelector ref_point_sel = static_cast<ReferencePointSelector>(0); ///< Reserved, must be 1
-        Vector3f lever_arm_offset; ///< [m] Lever arm offset vector in the vehicle's reference frame.
+        auto asTuple() const
+        {
+            return std::make_tuple(ref_point_sel,lever_arm_offset);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(ref_point_sel),std::ref(lever_arm_offset));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const RefPointLeverArm& self);
-void extract(::microstrain::Serializer& serializer, RefPointLeverArm& self);
-
-void insert(::microstrain::Serializer& serializer, const RefPointLeverArm::Response& self);
-void extract(::microstrain::Serializer& serializer, RefPointLeverArm::Response& self);
-
 TypedResult<RefPointLeverArm> writeRefPointLeverArm(C::mip_interface& device, RefPointLeverArm::ReferencePointSelector refPointSel, const float* leverArmOffset);
 TypedResult<RefPointLeverArm> readRefPointLeverArm(C::mip_interface& device, RefPointLeverArm::ReferencePointSelector* refPointSelOut, float* leverArmOffsetOut);
 TypedResult<RefPointLeverArm> saveRefPointLeverArm(C::mip_interface& device);
@@ -3996,34 +4043,36 @@ TypedResult<RefPointLeverArm> defaultRefPointLeverArm(C::mip_interface& device);
 
 struct SpeedMeasurement
 {
+    /// Parameters
     uint8_t source = 0; ///< Reserved, must be 1.
     float time_of_week = 0; ///< GPS time of week when speed was sampled
     float speed = 0; ///< Estimated speed along vehicle's x-axis (may be positive or negative) [meters/second]
     float speed_uncertainty = 0; ///< Estimated uncertainty in the speed measurement (1-sigma value) [meters/second]
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_SPEED_MEASUREMENT;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "SpeedMeasurement";
     static constexpr const char* DOC_NAME = "Input speed measurement";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(source,time_of_week,speed,speed_uncertainty);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(source),std::ref(time_of_week),std::ref(speed),std::ref(speed_uncertainty));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     typedef void Response;
 };
-void insert(::microstrain::Serializer& serializer, const SpeedMeasurement& self);
-void extract(::microstrain::Serializer& serializer, SpeedMeasurement& self);
-
 TypedResult<SpeedMeasurement> speedMeasurement(C::mip_interface& device, uint8_t source, float timeOfWeek, float speed, float speedUncertainty);
 
 ///@}
@@ -4042,31 +4091,25 @@ TypedResult<SpeedMeasurement> speedMeasurement(C::mip_interface& device, uint8_t
 
 struct SpeedLeverArm
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     uint8_t source = 0; ///< Reserved, must be 1.
     Vector3f lever_arm_offset; ///< [m] Lever arm offset vector in the vehicle's reference frame.
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_SPEED_LEVER_ARM;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "SpeedLeverArm";
     static constexpr const char* DOC_NAME = "Measurement speed lever arm";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8003;
-    static constexpr const uint32_t READ_PARAMS    = 0x8001;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8001;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8001;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8001;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(source,lever_arm_offset);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(source),std::ref(lever_arm_offset));
     }
@@ -4079,32 +4122,40 @@ struct SpeedLeverArm
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        uint8_t source = 0; ///< Reserved, must be 1.
+        Vector3f lever_arm_offset; ///< [m] Lever arm offset vector in the vehicle's reference frame.
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_SPEED_LEVER_ARM;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "SpeedLeverArm::Response";
         static constexpr const char* DOC_NAME = "Measurement speed lever arm Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        uint8_t source = 0; ///< Reserved, must be 1.
-        Vector3f lever_arm_offset; ///< [m] Lever arm offset vector in the vehicle's reference frame.
+        auto asTuple() const
+        {
+            return std::make_tuple(source,lever_arm_offset);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(source),std::ref(lever_arm_offset));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const SpeedLeverArm& self);
-void extract(::microstrain::Serializer& serializer, SpeedLeverArm& self);
-
-void insert(::microstrain::Serializer& serializer, const SpeedLeverArm::Response& self);
-void extract(::microstrain::Serializer& serializer, SpeedLeverArm::Response& self);
-
 TypedResult<SpeedLeverArm> writeSpeedLeverArm(C::mip_interface& device, uint8_t source, const float* leverArmOffset);
 TypedResult<SpeedLeverArm> readSpeedLeverArm(C::mip_interface& device, uint8_t source, float* leverArmOffsetOut);
 TypedResult<SpeedLeverArm> saveSpeedLeverArm(C::mip_interface& device, uint8_t source);
@@ -4127,30 +4178,24 @@ TypedResult<SpeedLeverArm> defaultSpeedLeverArm(C::mip_interface& device, uint8_
 
 struct WheeledVehicleConstraintControl
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     uint8_t enable = 0; ///< 0 - Disable, 1 - Enable
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_VEHICLE_CONSTRAINT_CONTROL;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "WheeledVehicleConstraintControl";
     static constexpr const char* DOC_NAME = "Wheeled Vehicle Constraint Control";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(enable);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(enable));
     }
@@ -4162,31 +4207,39 @@ struct WheeledVehicleConstraintControl
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        uint8_t enable = 0; ///< 0 - Disable, 1 - Enable
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_VEHICLE_CONSTRAINT_CONTROL;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "WheeledVehicleConstraintControl::Response";
         static constexpr const char* DOC_NAME = "Wheeled Vehicle Constraint Control Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        uint8_t enable = 0; ///< 0 - Disable, 1 - Enable
+        auto asTuple() const
+        {
+            return std::make_tuple(enable);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(enable));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const WheeledVehicleConstraintControl& self);
-void extract(::microstrain::Serializer& serializer, WheeledVehicleConstraintControl& self);
-
-void insert(::microstrain::Serializer& serializer, const WheeledVehicleConstraintControl::Response& self);
-void extract(::microstrain::Serializer& serializer, WheeledVehicleConstraintControl::Response& self);
-
 TypedResult<WheeledVehicleConstraintControl> writeWheeledVehicleConstraintControl(C::mip_interface& device, uint8_t enable);
 TypedResult<WheeledVehicleConstraintControl> readWheeledVehicleConstraintControl(C::mip_interface& device, uint8_t* enableOut);
 TypedResult<WheeledVehicleConstraintControl> saveWheeledVehicleConstraintControl(C::mip_interface& device);
@@ -4207,30 +4260,24 @@ TypedResult<WheeledVehicleConstraintControl> defaultWheeledVehicleConstraintCont
 
 struct VerticalGyroConstraintControl
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     uint8_t enable = 0; ///< 0 - Disable, 1 - Enable
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_GYRO_CONSTRAINT_CONTROL;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "VerticalGyroConstraintControl";
     static constexpr const char* DOC_NAME = "Vertical Gyro Constraint Control";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(enable);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(enable));
     }
@@ -4242,31 +4289,39 @@ struct VerticalGyroConstraintControl
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        uint8_t enable = 0; ///< 0 - Disable, 1 - Enable
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_GYRO_CONSTRAINT_CONTROL;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "VerticalGyroConstraintControl::Response";
         static constexpr const char* DOC_NAME = "Vertical Gyro Constraint Control Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        uint8_t enable = 0; ///< 0 - Disable, 1 - Enable
+        auto asTuple() const
+        {
+            return std::make_tuple(enable);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(enable));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const VerticalGyroConstraintControl& self);
-void extract(::microstrain::Serializer& serializer, VerticalGyroConstraintControl& self);
-
-void insert(::microstrain::Serializer& serializer, const VerticalGyroConstraintControl::Response& self);
-void extract(::microstrain::Serializer& serializer, VerticalGyroConstraintControl::Response& self);
-
 TypedResult<VerticalGyroConstraintControl> writeVerticalGyroConstraintControl(C::mip_interface& device, uint8_t enable);
 TypedResult<VerticalGyroConstraintControl> readVerticalGyroConstraintControl(C::mip_interface& device, uint8_t* enableOut);
 TypedResult<VerticalGyroConstraintControl> saveVerticalGyroConstraintControl(C::mip_interface& device);
@@ -4285,31 +4340,25 @@ TypedResult<VerticalGyroConstraintControl> defaultVerticalGyroConstraintControl(
 
 struct GnssAntennaCalControl
 {
+    /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
     uint8_t enable = 0; ///< 0 - Disable, 1 - Enable
     float max_offset = 0; ///< Maximum absolute value of lever arm offset error in the vehicle frame [meters]. See device user manual for the valid range of this parameter.
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_ANTENNA_CALIBRATION_CONTROL;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "GnssAntennaCalControl";
     static constexpr const char* DOC_NAME = "GNSS Antenna Offset Calibration Control";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x8003;
-    static constexpr const uint32_t READ_PARAMS    = 0x8000;
-    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
-    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
-    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(enable,max_offset);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(enable),std::ref(max_offset));
     }
@@ -4321,32 +4370,40 @@ struct GnssAntennaCalControl
         return cmd;
     }
     
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     struct Response
     {
+        /// Parameters
+        uint8_t enable = 0; ///< 0 - Disable, 1 - Enable
+        float max_offset = 0; ///< Maximum absolute value of lever arm offset error in the vehicle frame [meters]. See device user manual for the valid range of this parameter.
+        
+        /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_ANTENNA_CALIBRATION_CONTROL;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "GnssAntennaCalControl::Response";
         static constexpr const char* DOC_NAME = "GNSS Antenna Offset Calibration Control Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
-        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        uint8_t enable = 0; ///< 0 - Disable, 1 - Enable
-        float max_offset = 0; ///< Maximum absolute value of lever arm offset error in the vehicle frame [meters]. See device user manual for the valid range of this parameter.
+        auto asTuple() const
+        {
+            return std::make_tuple(enable,max_offset);
+        }
         
-        
-        auto as_tuple()
+        auto asTuple()
         {
             return std::make_tuple(std::ref(enable),std::ref(max_offset));
         }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
     };
 };
-void insert(::microstrain::Serializer& serializer, const GnssAntennaCalControl& self);
-void extract(::microstrain::Serializer& serializer, GnssAntennaCalControl& self);
-
-void insert(::microstrain::Serializer& serializer, const GnssAntennaCalControl::Response& self);
-void extract(::microstrain::Serializer& serializer, GnssAntennaCalControl::Response& self);
-
 TypedResult<GnssAntennaCalControl> writeGnssAntennaCalControl(C::mip_interface& device, uint8_t enable, float maxOffset);
 TypedResult<GnssAntennaCalControl> readGnssAntennaCalControl(C::mip_interface& device, uint8_t* enableOut, float* maxOffsetOut);
 TypedResult<GnssAntennaCalControl> saveGnssAntennaCalControl(C::mip_interface& device);
@@ -4366,31 +4423,33 @@ TypedResult<GnssAntennaCalControl> defaultGnssAntennaCalControl(C::mip_interface
 
 struct SetInitialHeading
 {
+    /// Parameters
     float heading = 0; ///< Initial heading in radians [-pi, pi]
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_SET_INITIAL_HEADING;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "SetInitialHeading";
     static constexpr const char* DOC_NAME = "Set Initial Heading Control";
-    
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(heading);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(heading));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
     typedef void Response;
 };
-void insert(::microstrain::Serializer& serializer, const SetInitialHeading& self);
-void extract(::microstrain::Serializer& serializer, SetInitialHeading& self);
-
 TypedResult<SetInitialHeading> setInitialHeading(C::mip_interface& device, float heading);
 
 ///@}

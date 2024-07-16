@@ -1,8 +1,9 @@
 #pragma once
 
 #include "common.h"
-#include "mip/mip_descriptors.h"
-#include "../mip_result.h"
+#include <mip/mip_descriptors.h>
+#include <mip/mip_result.h>
+#include <mip/mip_interface.h>
 
 #include <stdint.h>
 #include <stddef.h>
@@ -14,8 +15,6 @@ namespace C {
 extern "C" {
 
 #endif // __cplusplus
-struct mip_interface;
-struct mip_field;
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup MipCommands_c  MIP Commands [C]
@@ -144,23 +143,52 @@ enum
 // Shared Type Definitions
 ////////////////////////////////////////////////////////////////////////////////
 
-typedef uint8_t mip_nmea_message_message_id;
-static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_GGA  = 1;   ///<  GPS System Fix Data. Source can be the Filter or GNSS1/2 datasets.
-static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_GLL  = 2;   ///<  Geographic Position Lat/Lon. Source can be the Filter or GNSS1/2 datasets.
-static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_GSV  = 3;   ///<  GNSS Satellites in View. Source must be either GNSS1 or GNSS2 datasets. The talker ID must be set to IGNORED.
-static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_RMC  = 4;   ///<  Recommended Minimum Specific GNSS Data. Source can be the Filter or GNSS1/2 datasets.
-static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_VTG  = 5;   ///<  Course over Ground. Source can be the Filter or GNSS1/2 datasets.
-static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_HDT  = 6;   ///<  Heading, True. Source can be the Filter or GNSS1/2 datasets.
-static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_ZDA  = 7;   ///<  Time & Date. Source must be the GNSS1 or GNSS2 datasets.
-static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_PKRA = 129; ///<  Parker proprietary Euler angles. Source must be the Filter dataset. The talker ID must be set to IGNORED.
-static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_PKRR = 130; ///<  Parker proprietary Angular Rate/Acceleration. Source must be the Sensor dataset. The talker ID must be set to IGNORED.
+enum mip_nmea_message_message_id
+{
+    MIP_NMEA_MESSAGE_MESSAGE_ID_GGA  = 1,  ///<  GPS System Fix Data. Source can be the Filter or GNSS1/2 datasets.
+    MIP_NMEA_MESSAGE_MESSAGE_ID_GLL  = 2,  ///<  Geographic Position Lat/Lon. Source can be the Filter or GNSS1/2 datasets.
+    MIP_NMEA_MESSAGE_MESSAGE_ID_GSV  = 3,  ///<  GNSS Satellites in View. Source must be either GNSS1 or GNSS2 datasets. The talker ID must be set to IGNORED.
+    MIP_NMEA_MESSAGE_MESSAGE_ID_RMC  = 4,  ///<  Recommended Minimum Specific GNSS Data. Source can be the Filter or GNSS1/2 datasets.
+    MIP_NMEA_MESSAGE_MESSAGE_ID_VTG  = 5,  ///<  Course over Ground. Source can be the Filter or GNSS1/2 datasets.
+    MIP_NMEA_MESSAGE_MESSAGE_ID_HDT  = 6,  ///<  Heading, True. Source can be the Filter or GNSS1/2 datasets.
+    MIP_NMEA_MESSAGE_MESSAGE_ID_ZDA  = 7,  ///<  Time & Date. Source must be the GNSS1 or GNSS2 datasets.
+    MIP_NMEA_MESSAGE_MESSAGE_ID_PKRA = 129,  ///<  Parker proprietary Euler angles. Source must be the Filter dataset. The talker ID must be set to IGNORED.
+    MIP_NMEA_MESSAGE_MESSAGE_ID_PKRR = 130,  ///<  Parker proprietary Angular Rate/Acceleration. Source must be the Sensor dataset. The talker ID must be set to IGNORED.
+};
+typedef enum mip_nmea_message_message_id mip_nmea_message_message_id;
 
-typedef uint8_t mip_nmea_message_talker_id;
-static const mip_nmea_message_talker_id MIP_NMEA_MESSAGE_TALKER_ID_IGNORED = 0; ///<  Talker ID cannot be changed.
-static const mip_nmea_message_talker_id MIP_NMEA_MESSAGE_TALKER_ID_GNSS    = 1; ///<  NMEA message will be produced with talker id "GN".
-static const mip_nmea_message_talker_id MIP_NMEA_MESSAGE_TALKER_ID_GPS     = 2; ///<  NMEA message will be produced with talker id "GP".
-static const mip_nmea_message_talker_id MIP_NMEA_MESSAGE_TALKER_ID_GALILEO = 3; ///<  NMEA message will be produced with talker id "GA".
-static const mip_nmea_message_talker_id MIP_NMEA_MESSAGE_TALKER_ID_GLONASS = 4; ///<  NMEA message will be produced with talker id "GL".
+inline void insert_mip_nmea_message_message_id(microstrain_serializer* serializer, const mip_nmea_message_message_id self)
+{
+    microstrain_insert_u8(serializer, (uint8_t)(self));
+}
+inline void extract_mip_nmea_message_message_id(microstrain_serializer* serializer, mip_nmea_message_message_id* self)
+{
+    uint8_t tmp = 0;
+    microstrain_extract_u8(serializer, &tmp);
+    *self = tmp;
+}
+
+enum mip_nmea_message_talker_id
+{
+    MIP_NMEA_MESSAGE_TALKER_ID_IGNORED = 0,  ///<  Talker ID cannot be changed.
+    MIP_NMEA_MESSAGE_TALKER_ID_GNSS    = 1,  ///<  NMEA message will be produced with talker id "GN".
+    MIP_NMEA_MESSAGE_TALKER_ID_GPS     = 2,  ///<  NMEA message will be produced with talker id "GP".
+    MIP_NMEA_MESSAGE_TALKER_ID_GALILEO = 3,  ///<  NMEA message will be produced with talker id "GA".
+    MIP_NMEA_MESSAGE_TALKER_ID_GLONASS = 4,  ///<  NMEA message will be produced with talker id "GL".
+};
+typedef enum mip_nmea_message_talker_id mip_nmea_message_talker_id;
+
+inline void insert_mip_nmea_message_talker_id(microstrain_serializer* serializer, const mip_nmea_message_talker_id self)
+{
+    microstrain_insert_u8(serializer, (uint8_t)(self));
+}
+inline void extract_mip_nmea_message_talker_id(microstrain_serializer* serializer, mip_nmea_message_talker_id* self)
+{
+    uint8_t tmp = 0;
+    microstrain_extract_u8(serializer, &tmp);
+    *self = tmp;
+}
+
 
 struct mip_nmea_message
 {
@@ -168,27 +196,32 @@ struct mip_nmea_message
     mip_nmea_message_talker_id talker_id; ///< NMEA talker ID. Ignored for proprietary sentences.
     uint8_t source_desc_set; ///< Data descriptor set where the data will be sourced. Available options depend on the sentence.
     uint16_t decimation; ///< Decimation from the base rate for source_desc_set. Frequency is limited to 10 Hz or the base rate, whichever is lower. Must be 0 when polling.
-    
 };
 typedef struct mip_nmea_message mip_nmea_message;
+
 void insert_mip_nmea_message(microstrain_serializer* serializer, const mip_nmea_message* self);
 void extract_mip_nmea_message(microstrain_serializer* serializer, mip_nmea_message* self);
 
-void insert_mip_nmea_message_message_id(microstrain_serializer* serializer, const mip_nmea_message_message_id self);
-void extract_mip_nmea_message_message_id(microstrain_serializer* serializer, mip_nmea_message_message_id* self);
+enum mip_sensor_range_type
+{
+    MIP_SENSOR_RANGE_TYPE_ALL   = 0,  ///<  Only allowed for SAVE, LOAD, and DEFAULT function selectors.
+    MIP_SENSOR_RANGE_TYPE_ACCEL = 1,  ///<  Accelerometer. Range is specified in g.
+    MIP_SENSOR_RANGE_TYPE_GYRO  = 2,  ///<  Gyroscope. Range is specified in degrees/s.
+    MIP_SENSOR_RANGE_TYPE_MAG   = 3,  ///<  Magnetometer. Range is specified in Gauss.
+    MIP_SENSOR_RANGE_TYPE_PRESS = 4,  ///<  Pressure sensor. Range is specified in hPa.
+};
+typedef enum mip_sensor_range_type mip_sensor_range_type;
 
-void insert_mip_nmea_message_talker_id(microstrain_serializer* serializer, const mip_nmea_message_talker_id self);
-void extract_mip_nmea_message_talker_id(microstrain_serializer* serializer, mip_nmea_message_talker_id* self);
-
-typedef uint8_t mip_sensor_range_type;
-static const mip_sensor_range_type MIP_SENSOR_RANGE_TYPE_ALL   = 0; ///<  Only allowed for SAVE, LOAD, and DEFAULT function selectors.
-static const mip_sensor_range_type MIP_SENSOR_RANGE_TYPE_ACCEL = 1; ///<  Accelerometer. Range is specified in g.
-static const mip_sensor_range_type MIP_SENSOR_RANGE_TYPE_GYRO  = 2; ///<  Gyroscope. Range is specified in degrees/s.
-static const mip_sensor_range_type MIP_SENSOR_RANGE_TYPE_MAG   = 3; ///<  Magnetometer. Range is specified in Gauss.
-static const mip_sensor_range_type MIP_SENSOR_RANGE_TYPE_PRESS = 4; ///<  Pressure sensor. Range is specified in hPa.
-
-void insert_mip_sensor_range_type(microstrain_serializer* serializer, const mip_sensor_range_type self);
-void extract_mip_sensor_range_type(microstrain_serializer* serializer, mip_sensor_range_type* self);
+inline void insert_mip_sensor_range_type(microstrain_serializer* serializer, const mip_sensor_range_type self)
+{
+    microstrain_insert_u8(serializer, (uint8_t)(self));
+}
+inline void extract_mip_sensor_range_type(microstrain_serializer* serializer, mip_sensor_range_type* self)
+{
+    uint8_t tmp = 0;
+    microstrain_extract_u8(serializer, &tmp);
+    *self = tmp;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -213,13 +246,13 @@ struct mip_3dm_poll_imu_message_command
     bool suppress_ack; ///< Suppress the usual ACK/NACK reply.
     uint8_t num_descriptors; ///< Number of descriptors in the descriptor list.
     mip_descriptor_rate descriptors[83]; ///< Descriptor list.
-    
 };
 typedef struct mip_3dm_poll_imu_message_command mip_3dm_poll_imu_message_command;
+
 void insert_mip_3dm_poll_imu_message_command(microstrain_serializer* serializer, const mip_3dm_poll_imu_message_command* self);
 void extract_mip_3dm_poll_imu_message_command(microstrain_serializer* serializer, mip_3dm_poll_imu_message_command* self);
 
-mip_cmd_result mip_3dm_poll_imu_message(struct mip_interface* device, bool suppress_ack, uint8_t num_descriptors, const mip_descriptor_rate* descriptors);
+mip_cmd_result mip_3dm_poll_imu_message(mip_interface* device, bool suppress_ack, uint8_t num_descriptors, const mip_descriptor_rate* descriptors);
 
 ///@}
 ///
@@ -241,13 +274,13 @@ struct mip_3dm_poll_gnss_message_command
     bool suppress_ack; ///< Suppress the usual ACK/NACK reply.
     uint8_t num_descriptors; ///< Number of descriptors in the descriptor list.
     mip_descriptor_rate descriptors[83]; ///< Descriptor list.
-    
 };
 typedef struct mip_3dm_poll_gnss_message_command mip_3dm_poll_gnss_message_command;
+
 void insert_mip_3dm_poll_gnss_message_command(microstrain_serializer* serializer, const mip_3dm_poll_gnss_message_command* self);
 void extract_mip_3dm_poll_gnss_message_command(microstrain_serializer* serializer, mip_3dm_poll_gnss_message_command* self);
 
-mip_cmd_result mip_3dm_poll_gnss_message(struct mip_interface* device, bool suppress_ack, uint8_t num_descriptors, const mip_descriptor_rate* descriptors);
+mip_cmd_result mip_3dm_poll_gnss_message(mip_interface* device, bool suppress_ack, uint8_t num_descriptors, const mip_descriptor_rate* descriptors);
 
 ///@}
 ///
@@ -269,13 +302,13 @@ struct mip_3dm_poll_filter_message_command
     bool suppress_ack; ///< Suppress the usual ACK/NACK reply.
     uint8_t num_descriptors; ///< Number of descriptors in the format list.
     mip_descriptor_rate descriptors[83]; ///< Descriptor format list.
-    
 };
 typedef struct mip_3dm_poll_filter_message_command mip_3dm_poll_filter_message_command;
+
 void insert_mip_3dm_poll_filter_message_command(microstrain_serializer* serializer, const mip_3dm_poll_filter_message_command* self);
 void extract_mip_3dm_poll_filter_message_command(microstrain_serializer* serializer, mip_3dm_poll_filter_message_command* self);
 
-mip_cmd_result mip_3dm_poll_filter_message(struct mip_interface* device, bool suppress_ack, uint8_t num_descriptors, const mip_descriptor_rate* descriptors);
+mip_cmd_result mip_3dm_poll_filter_message(mip_interface* device, bool suppress_ack, uint8_t num_descriptors, const mip_descriptor_rate* descriptors);
 
 ///@}
 ///
@@ -292,9 +325,9 @@ struct mip_3dm_imu_message_format_command
     mip_function_selector function;
     uint8_t num_descriptors; ///< Number of descriptors
     mip_descriptor_rate descriptors[82]; ///< Descriptor format list.
-    
 };
 typedef struct mip_3dm_imu_message_format_command mip_3dm_imu_message_format_command;
+
 void insert_mip_3dm_imu_message_format_command(microstrain_serializer* serializer, const mip_3dm_imu_message_format_command* self);
 void extract_mip_3dm_imu_message_format_command(microstrain_serializer* serializer, mip_3dm_imu_message_format_command* self);
 
@@ -302,17 +335,17 @@ struct mip_3dm_imu_message_format_response
 {
     uint8_t num_descriptors; ///< Number of descriptors
     mip_descriptor_rate descriptors[82]; ///< Descriptor format list.
-    
 };
 typedef struct mip_3dm_imu_message_format_response mip_3dm_imu_message_format_response;
+
 void insert_mip_3dm_imu_message_format_response(microstrain_serializer* serializer, const mip_3dm_imu_message_format_response* self);
 void extract_mip_3dm_imu_message_format_response(microstrain_serializer* serializer, mip_3dm_imu_message_format_response* self);
 
-mip_cmd_result mip_3dm_write_imu_message_format(struct mip_interface* device, uint8_t num_descriptors, const mip_descriptor_rate* descriptors);
-mip_cmd_result mip_3dm_read_imu_message_format(struct mip_interface* device, uint8_t* num_descriptors_out, uint8_t num_descriptors_out_max, mip_descriptor_rate* descriptors_out);
-mip_cmd_result mip_3dm_save_imu_message_format(struct mip_interface* device);
-mip_cmd_result mip_3dm_load_imu_message_format(struct mip_interface* device);
-mip_cmd_result mip_3dm_default_imu_message_format(struct mip_interface* device);
+mip_cmd_result mip_3dm_write_imu_message_format(mip_interface* device, uint8_t num_descriptors, const mip_descriptor_rate* descriptors);
+mip_cmd_result mip_3dm_read_imu_message_format(mip_interface* device, uint8_t* num_descriptors_out, uint8_t num_descriptors_out_max, mip_descriptor_rate* descriptors_out);
+mip_cmd_result mip_3dm_save_imu_message_format(mip_interface* device);
+mip_cmd_result mip_3dm_load_imu_message_format(mip_interface* device);
+mip_cmd_result mip_3dm_default_imu_message_format(mip_interface* device);
 
 ///@}
 ///
@@ -329,9 +362,9 @@ struct mip_3dm_gps_message_format_command
     mip_function_selector function;
     uint8_t num_descriptors; ///< Number of descriptors
     mip_descriptor_rate descriptors[82]; ///< Descriptor format list.
-    
 };
 typedef struct mip_3dm_gps_message_format_command mip_3dm_gps_message_format_command;
+
 void insert_mip_3dm_gps_message_format_command(microstrain_serializer* serializer, const mip_3dm_gps_message_format_command* self);
 void extract_mip_3dm_gps_message_format_command(microstrain_serializer* serializer, mip_3dm_gps_message_format_command* self);
 
@@ -339,17 +372,17 @@ struct mip_3dm_gps_message_format_response
 {
     uint8_t num_descriptors; ///< Number of descriptors
     mip_descriptor_rate descriptors[82]; ///< Descriptor format list.
-    
 };
 typedef struct mip_3dm_gps_message_format_response mip_3dm_gps_message_format_response;
+
 void insert_mip_3dm_gps_message_format_response(microstrain_serializer* serializer, const mip_3dm_gps_message_format_response* self);
 void extract_mip_3dm_gps_message_format_response(microstrain_serializer* serializer, mip_3dm_gps_message_format_response* self);
 
-mip_cmd_result mip_3dm_write_gps_message_format(struct mip_interface* device, uint8_t num_descriptors, const mip_descriptor_rate* descriptors);
-mip_cmd_result mip_3dm_read_gps_message_format(struct mip_interface* device, uint8_t* num_descriptors_out, uint8_t num_descriptors_out_max, mip_descriptor_rate* descriptors_out);
-mip_cmd_result mip_3dm_save_gps_message_format(struct mip_interface* device);
-mip_cmd_result mip_3dm_load_gps_message_format(struct mip_interface* device);
-mip_cmd_result mip_3dm_default_gps_message_format(struct mip_interface* device);
+mip_cmd_result mip_3dm_write_gps_message_format(mip_interface* device, uint8_t num_descriptors, const mip_descriptor_rate* descriptors);
+mip_cmd_result mip_3dm_read_gps_message_format(mip_interface* device, uint8_t* num_descriptors_out, uint8_t num_descriptors_out_max, mip_descriptor_rate* descriptors_out);
+mip_cmd_result mip_3dm_save_gps_message_format(mip_interface* device);
+mip_cmd_result mip_3dm_load_gps_message_format(mip_interface* device);
+mip_cmd_result mip_3dm_default_gps_message_format(mip_interface* device);
 
 ///@}
 ///
@@ -366,9 +399,9 @@ struct mip_3dm_filter_message_format_command
     mip_function_selector function;
     uint8_t num_descriptors; ///< Number of descriptors (limited by payload size)
     mip_descriptor_rate descriptors[82];
-    
 };
 typedef struct mip_3dm_filter_message_format_command mip_3dm_filter_message_format_command;
+
 void insert_mip_3dm_filter_message_format_command(microstrain_serializer* serializer, const mip_3dm_filter_message_format_command* self);
 void extract_mip_3dm_filter_message_format_command(microstrain_serializer* serializer, mip_3dm_filter_message_format_command* self);
 
@@ -376,17 +409,17 @@ struct mip_3dm_filter_message_format_response
 {
     uint8_t num_descriptors; ///< Number of descriptors (limited by payload size)
     mip_descriptor_rate descriptors[82];
-    
 };
 typedef struct mip_3dm_filter_message_format_response mip_3dm_filter_message_format_response;
+
 void insert_mip_3dm_filter_message_format_response(microstrain_serializer* serializer, const mip_3dm_filter_message_format_response* self);
 void extract_mip_3dm_filter_message_format_response(microstrain_serializer* serializer, mip_3dm_filter_message_format_response* self);
 
-mip_cmd_result mip_3dm_write_filter_message_format(struct mip_interface* device, uint8_t num_descriptors, const mip_descriptor_rate* descriptors);
-mip_cmd_result mip_3dm_read_filter_message_format(struct mip_interface* device, uint8_t* num_descriptors_out, uint8_t num_descriptors_out_max, mip_descriptor_rate* descriptors_out);
-mip_cmd_result mip_3dm_save_filter_message_format(struct mip_interface* device);
-mip_cmd_result mip_3dm_load_filter_message_format(struct mip_interface* device);
-mip_cmd_result mip_3dm_default_filter_message_format(struct mip_interface* device);
+mip_cmd_result mip_3dm_write_filter_message_format(mip_interface* device, uint8_t num_descriptors, const mip_descriptor_rate* descriptors);
+mip_cmd_result mip_3dm_read_filter_message_format(mip_interface* device, uint8_t* num_descriptors_out, uint8_t num_descriptors_out_max, mip_descriptor_rate* descriptors_out);
+mip_cmd_result mip_3dm_save_filter_message_format(mip_interface* device);
+mip_cmd_result mip_3dm_load_filter_message_format(mip_interface* device);
+mip_cmd_result mip_3dm_default_filter_message_format(mip_interface* device);
 
 ///@}
 ///
@@ -402,13 +435,13 @@ mip_cmd_result mip_3dm_default_filter_message_format(struct mip_interface* devic
 struct mip_3dm_imu_get_base_rate_response
 {
     uint16_t rate; ///< [hz]
-    
 };
 typedef struct mip_3dm_imu_get_base_rate_response mip_3dm_imu_get_base_rate_response;
+
 void insert_mip_3dm_imu_get_base_rate_response(microstrain_serializer* serializer, const mip_3dm_imu_get_base_rate_response* self);
 void extract_mip_3dm_imu_get_base_rate_response(microstrain_serializer* serializer, mip_3dm_imu_get_base_rate_response* self);
 
-mip_cmd_result mip_3dm_imu_get_base_rate(struct mip_interface* device, uint16_t* rate_out);
+mip_cmd_result mip_3dm_imu_get_base_rate(mip_interface* device, uint16_t* rate_out);
 
 ///@}
 ///
@@ -424,13 +457,13 @@ mip_cmd_result mip_3dm_imu_get_base_rate(struct mip_interface* device, uint16_t*
 struct mip_3dm_gps_get_base_rate_response
 {
     uint16_t rate; ///< [hz]
-    
 };
 typedef struct mip_3dm_gps_get_base_rate_response mip_3dm_gps_get_base_rate_response;
+
 void insert_mip_3dm_gps_get_base_rate_response(microstrain_serializer* serializer, const mip_3dm_gps_get_base_rate_response* self);
 void extract_mip_3dm_gps_get_base_rate_response(microstrain_serializer* serializer, mip_3dm_gps_get_base_rate_response* self);
 
-mip_cmd_result mip_3dm_gps_get_base_rate(struct mip_interface* device, uint16_t* rate_out);
+mip_cmd_result mip_3dm_gps_get_base_rate(mip_interface* device, uint16_t* rate_out);
 
 ///@}
 ///
@@ -446,13 +479,13 @@ mip_cmd_result mip_3dm_gps_get_base_rate(struct mip_interface* device, uint16_t*
 struct mip_3dm_filter_get_base_rate_response
 {
     uint16_t rate; ///< [hz]
-    
 };
 typedef struct mip_3dm_filter_get_base_rate_response mip_3dm_filter_get_base_rate_response;
+
 void insert_mip_3dm_filter_get_base_rate_response(microstrain_serializer* serializer, const mip_3dm_filter_get_base_rate_response* self);
 void extract_mip_3dm_filter_get_base_rate_response(microstrain_serializer* serializer, mip_3dm_filter_get_base_rate_response* self);
 
-mip_cmd_result mip_3dm_filter_get_base_rate(struct mip_interface* device, uint16_t* rate_out);
+mip_cmd_result mip_3dm_filter_get_base_rate(mip_interface* device, uint16_t* rate_out);
 
 ///@}
 ///
@@ -475,13 +508,13 @@ struct mip_3dm_poll_data_command
     bool suppress_ack; ///< Suppress the usual ACK/NACK reply.
     uint8_t num_descriptors; ///< Number of descriptors in the format list.
     uint8_t descriptors[82]; ///< Descriptor format list.
-    
 };
 typedef struct mip_3dm_poll_data_command mip_3dm_poll_data_command;
+
 void insert_mip_3dm_poll_data_command(microstrain_serializer* serializer, const mip_3dm_poll_data_command* self);
 void extract_mip_3dm_poll_data_command(microstrain_serializer* serializer, mip_3dm_poll_data_command* self);
 
-mip_cmd_result mip_3dm_poll_data(struct mip_interface* device, uint8_t desc_set, bool suppress_ack, uint8_t num_descriptors, const uint8_t* descriptors);
+mip_cmd_result mip_3dm_poll_data(mip_interface* device, uint8_t desc_set, bool suppress_ack, uint8_t num_descriptors, const uint8_t* descriptors);
 
 ///@}
 ///
@@ -494,9 +527,9 @@ mip_cmd_result mip_3dm_poll_data(struct mip_interface* device, uint8_t desc_set,
 struct mip_3dm_get_base_rate_command
 {
     uint8_t desc_set; ///< This is the data descriptor set. It must be a supported descriptor.
-    
 };
 typedef struct mip_3dm_get_base_rate_command mip_3dm_get_base_rate_command;
+
 void insert_mip_3dm_get_base_rate_command(microstrain_serializer* serializer, const mip_3dm_get_base_rate_command* self);
 void extract_mip_3dm_get_base_rate_command(microstrain_serializer* serializer, mip_3dm_get_base_rate_command* self);
 
@@ -504,13 +537,13 @@ struct mip_3dm_get_base_rate_response
 {
     uint8_t desc_set; ///< Echoes the parameter in the command.
     uint16_t rate; ///< Base rate in Hz (0 = variable, unknown, or user-defined rate.  Data will be sent when received).
-    
 };
 typedef struct mip_3dm_get_base_rate_response mip_3dm_get_base_rate_response;
+
 void insert_mip_3dm_get_base_rate_response(microstrain_serializer* serializer, const mip_3dm_get_base_rate_response* self);
 void extract_mip_3dm_get_base_rate_response(microstrain_serializer* serializer, mip_3dm_get_base_rate_response* self);
 
-mip_cmd_result mip_3dm_get_base_rate(struct mip_interface* device, uint8_t desc_set, uint16_t* rate_out);
+mip_cmd_result mip_3dm_get_base_rate(mip_interface* device, uint8_t desc_set, uint16_t* rate_out);
 
 ///@}
 ///
@@ -528,9 +561,9 @@ struct mip_3dm_message_format_command
     uint8_t desc_set; ///< Data descriptor set. Must be supported. When function is SAVE, LOAD, or DEFAULT, can be 0 to apply to all descriptor sets.
     uint8_t num_descriptors; ///< Number of descriptors (limited by payload size)
     mip_descriptor_rate descriptors[82]; ///< List of descriptors and decimations.
-    
 };
 typedef struct mip_3dm_message_format_command mip_3dm_message_format_command;
+
 void insert_mip_3dm_message_format_command(microstrain_serializer* serializer, const mip_3dm_message_format_command* self);
 void extract_mip_3dm_message_format_command(microstrain_serializer* serializer, mip_3dm_message_format_command* self);
 
@@ -539,17 +572,17 @@ struct mip_3dm_message_format_response
     uint8_t desc_set; ///< Echoes the descriptor set from the command.
     uint8_t num_descriptors; ///< Number of descriptors in the list.
     mip_descriptor_rate descriptors[82]; ///< List of descriptors and decimations.
-    
 };
 typedef struct mip_3dm_message_format_response mip_3dm_message_format_response;
+
 void insert_mip_3dm_message_format_response(microstrain_serializer* serializer, const mip_3dm_message_format_response* self);
 void extract_mip_3dm_message_format_response(microstrain_serializer* serializer, mip_3dm_message_format_response* self);
 
-mip_cmd_result mip_3dm_write_message_format(struct mip_interface* device, uint8_t desc_set, uint8_t num_descriptors, const mip_descriptor_rate* descriptors);
-mip_cmd_result mip_3dm_read_message_format(struct mip_interface* device, uint8_t desc_set, uint8_t* num_descriptors_out, uint8_t num_descriptors_out_max, mip_descriptor_rate* descriptors_out);
-mip_cmd_result mip_3dm_save_message_format(struct mip_interface* device, uint8_t desc_set);
-mip_cmd_result mip_3dm_load_message_format(struct mip_interface* device, uint8_t desc_set);
-mip_cmd_result mip_3dm_default_message_format(struct mip_interface* device, uint8_t desc_set);
+mip_cmd_result mip_3dm_write_message_format(mip_interface* device, uint8_t desc_set, uint8_t num_descriptors, const mip_descriptor_rate* descriptors);
+mip_cmd_result mip_3dm_read_message_format(mip_interface* device, uint8_t desc_set, uint8_t* num_descriptors_out, uint8_t num_descriptors_out_max, mip_descriptor_rate* descriptors_out);
+mip_cmd_result mip_3dm_save_message_format(mip_interface* device, uint8_t desc_set);
+mip_cmd_result mip_3dm_load_message_format(mip_interface* device, uint8_t desc_set);
+mip_cmd_result mip_3dm_default_message_format(mip_interface* device, uint8_t desc_set);
 
 ///@}
 ///
@@ -570,13 +603,13 @@ struct mip_3dm_nmea_poll_data_command
     bool suppress_ack; ///< Suppress the usual ACK/NACK reply.
     uint8_t count; ///< Number of format entries (limited by payload size)
     mip_nmea_message format_entries[40]; ///< List of format entries.
-    
 };
 typedef struct mip_3dm_nmea_poll_data_command mip_3dm_nmea_poll_data_command;
+
 void insert_mip_3dm_nmea_poll_data_command(microstrain_serializer* serializer, const mip_3dm_nmea_poll_data_command* self);
 void extract_mip_3dm_nmea_poll_data_command(microstrain_serializer* serializer, mip_3dm_nmea_poll_data_command* self);
 
-mip_cmd_result mip_3dm_nmea_poll_data(struct mip_interface* device, bool suppress_ack, uint8_t count, const mip_nmea_message* format_entries);
+mip_cmd_result mip_3dm_nmea_poll_data(mip_interface* device, bool suppress_ack, uint8_t count, const mip_nmea_message* format_entries);
 
 ///@}
 ///
@@ -591,9 +624,9 @@ struct mip_3dm_nmea_message_format_command
     mip_function_selector function;
     uint8_t count; ///< Number of format entries (limited by payload size)
     mip_nmea_message format_entries[40]; ///< List of format entries.
-    
 };
 typedef struct mip_3dm_nmea_message_format_command mip_3dm_nmea_message_format_command;
+
 void insert_mip_3dm_nmea_message_format_command(microstrain_serializer* serializer, const mip_3dm_nmea_message_format_command* self);
 void extract_mip_3dm_nmea_message_format_command(microstrain_serializer* serializer, mip_3dm_nmea_message_format_command* self);
 
@@ -601,17 +634,17 @@ struct mip_3dm_nmea_message_format_response
 {
     uint8_t count; ///< Number of format entries (limited by payload size)
     mip_nmea_message format_entries[40]; ///< List of format entries.
-    
 };
 typedef struct mip_3dm_nmea_message_format_response mip_3dm_nmea_message_format_response;
+
 void insert_mip_3dm_nmea_message_format_response(microstrain_serializer* serializer, const mip_3dm_nmea_message_format_response* self);
 void extract_mip_3dm_nmea_message_format_response(microstrain_serializer* serializer, mip_3dm_nmea_message_format_response* self);
 
-mip_cmd_result mip_3dm_write_nmea_message_format(struct mip_interface* device, uint8_t count, const mip_nmea_message* format_entries);
-mip_cmd_result mip_3dm_read_nmea_message_format(struct mip_interface* device, uint8_t* count_out, uint8_t count_out_max, mip_nmea_message* format_entries_out);
-mip_cmd_result mip_3dm_save_nmea_message_format(struct mip_interface* device);
-mip_cmd_result mip_3dm_load_nmea_message_format(struct mip_interface* device);
-mip_cmd_result mip_3dm_default_nmea_message_format(struct mip_interface* device);
+mip_cmd_result mip_3dm_write_nmea_message_format(mip_interface* device, uint8_t count, const mip_nmea_message* format_entries);
+mip_cmd_result mip_3dm_read_nmea_message_format(mip_interface* device, uint8_t* count_out, uint8_t count_out_max, mip_nmea_message* format_entries_out);
+mip_cmd_result mip_3dm_save_nmea_message_format(mip_interface* device);
+mip_cmd_result mip_3dm_load_nmea_message_format(mip_interface* device);
+mip_cmd_result mip_3dm_default_nmea_message_format(mip_interface* device);
 
 ///@}
 ///
@@ -628,15 +661,15 @@ mip_cmd_result mip_3dm_default_nmea_message_format(struct mip_interface* device)
 struct mip_3dm_device_settings_command
 {
     mip_function_selector function;
-    
 };
 typedef struct mip_3dm_device_settings_command mip_3dm_device_settings_command;
+
 void insert_mip_3dm_device_settings_command(microstrain_serializer* serializer, const mip_3dm_device_settings_command* self);
 void extract_mip_3dm_device_settings_command(microstrain_serializer* serializer, mip_3dm_device_settings_command* self);
 
-mip_cmd_result mip_3dm_save_device_settings(struct mip_interface* device);
-mip_cmd_result mip_3dm_load_device_settings(struct mip_interface* device);
-mip_cmd_result mip_3dm_default_device_settings(struct mip_interface* device);
+mip_cmd_result mip_3dm_save_device_settings(mip_interface* device);
+mip_cmd_result mip_3dm_load_device_settings(mip_interface* device);
+mip_cmd_result mip_3dm_default_device_settings(mip_interface* device);
 
 ///@}
 ///
@@ -664,26 +697,26 @@ struct mip_3dm_uart_baudrate_command
 {
     mip_function_selector function;
     uint32_t baud;
-    
 };
 typedef struct mip_3dm_uart_baudrate_command mip_3dm_uart_baudrate_command;
+
 void insert_mip_3dm_uart_baudrate_command(microstrain_serializer* serializer, const mip_3dm_uart_baudrate_command* self);
 void extract_mip_3dm_uart_baudrate_command(microstrain_serializer* serializer, mip_3dm_uart_baudrate_command* self);
 
 struct mip_3dm_uart_baudrate_response
 {
     uint32_t baud;
-    
 };
 typedef struct mip_3dm_uart_baudrate_response mip_3dm_uart_baudrate_response;
+
 void insert_mip_3dm_uart_baudrate_response(microstrain_serializer* serializer, const mip_3dm_uart_baudrate_response* self);
 void extract_mip_3dm_uart_baudrate_response(microstrain_serializer* serializer, mip_3dm_uart_baudrate_response* self);
 
-mip_cmd_result mip_3dm_write_uart_baudrate(struct mip_interface* device, uint32_t baud);
-mip_cmd_result mip_3dm_read_uart_baudrate(struct mip_interface* device, uint32_t* baud_out);
-mip_cmd_result mip_3dm_save_uart_baudrate(struct mip_interface* device);
-mip_cmd_result mip_3dm_load_uart_baudrate(struct mip_interface* device);
-mip_cmd_result mip_3dm_default_uart_baudrate(struct mip_interface* device);
+mip_cmd_result mip_3dm_write_uart_baudrate(mip_interface* device, uint32_t baud);
+mip_cmd_result mip_3dm_read_uart_baudrate(mip_interface* device, uint32_t* baud_out);
+mip_cmd_result mip_3dm_save_uart_baudrate(mip_interface* device);
+mip_cmd_result mip_3dm_load_uart_baudrate(mip_interface* device);
+mip_cmd_result mip_3dm_default_uart_baudrate(mip_interface* device);
 
 ///@}
 ///
@@ -696,25 +729,37 @@ mip_cmd_result mip_3dm_default_uart_baudrate(struct mip_interface* device);
 ///
 ///@{
 
-typedef uint8_t mip_3dm_factory_streaming_command_action;
-static const mip_3dm_factory_streaming_command_action MIP_3DM_FACTORY_STREAMING_COMMAND_ACTION_OVERWRITE = 0; ///<  Replaces the message format(s), removing any existing descriptors.
-static const mip_3dm_factory_streaming_command_action MIP_3DM_FACTORY_STREAMING_COMMAND_ACTION_MERGE     = 1; ///<  Merges support descriptors into existing format(s). May reorder descriptors.
-static const mip_3dm_factory_streaming_command_action MIP_3DM_FACTORY_STREAMING_COMMAND_ACTION_ADD       = 2; ///<  Adds descriptors to the current message format(s) without changing existing descriptors. May result in duplicates.
+enum mip_3dm_factory_streaming_command_action
+{
+    MIP_3DM_FACTORY_STREAMING_COMMAND_ACTION_OVERWRITE = 0,  ///<  Replaces the message format(s), removing any existing descriptors.
+    MIP_3DM_FACTORY_STREAMING_COMMAND_ACTION_MERGE     = 1,  ///<  Merges support descriptors into existing format(s). May reorder descriptors.
+    MIP_3DM_FACTORY_STREAMING_COMMAND_ACTION_ADD       = 2,  ///<  Adds descriptors to the current message format(s) without changing existing descriptors. May result in duplicates.
+};
+typedef enum mip_3dm_factory_streaming_command_action mip_3dm_factory_streaming_command_action;
+
+inline void insert_mip_3dm_factory_streaming_command_action(microstrain_serializer* serializer, const mip_3dm_factory_streaming_command_action self)
+{
+    microstrain_insert_u8(serializer, (uint8_t)(self));
+}
+inline void extract_mip_3dm_factory_streaming_command_action(microstrain_serializer* serializer, mip_3dm_factory_streaming_command_action* self)
+{
+    uint8_t tmp = 0;
+    microstrain_extract_u8(serializer, &tmp);
+    *self = tmp;
+}
+
 
 struct mip_3dm_factory_streaming_command
 {
     mip_3dm_factory_streaming_command_action action;
     uint8_t reserved; ///< Reserved. Set to 0x00.
-    
 };
 typedef struct mip_3dm_factory_streaming_command mip_3dm_factory_streaming_command;
+
 void insert_mip_3dm_factory_streaming_command(microstrain_serializer* serializer, const mip_3dm_factory_streaming_command* self);
 void extract_mip_3dm_factory_streaming_command(microstrain_serializer* serializer, mip_3dm_factory_streaming_command* self);
 
-void insert_mip_3dm_factory_streaming_command_action(microstrain_serializer* serializer, const mip_3dm_factory_streaming_command_action self);
-void extract_mip_3dm_factory_streaming_command_action(microstrain_serializer* serializer, mip_3dm_factory_streaming_command_action* self);
-
-mip_cmd_result mip_3dm_factory_streaming(struct mip_interface* device, mip_3dm_factory_streaming_command_action action, uint8_t reserved);
+mip_cmd_result mip_3dm_factory_streaming(mip_interface* device, mip_3dm_factory_streaming_command_action action, uint8_t reserved);
 
 ///@}
 ///
@@ -733,14 +778,15 @@ enum { MIP_3DM_DATASTREAM_CONTROL_COMMAND_LEGACY_IMU_STREAM = 0x01 };
 enum { MIP_3DM_DATASTREAM_CONTROL_COMMAND_LEGACY_GNSS_STREAM = 0x02 };
 enum { MIP_3DM_DATASTREAM_CONTROL_COMMAND_LEGACY_FILTER_STREAM = 0x03 };
 enum { MIP_3DM_DATASTREAM_CONTROL_COMMAND_ALL_STREAMS = 0x00 };
+
 struct mip_3dm_datastream_control_command
 {
     mip_function_selector function;
     uint8_t desc_set; ///< The descriptor set of the stream to control. When function is SAVE, LOAD, or DEFAULT, can be ALL_STREAMS(0) to apply to all descriptor sets. On Generation 5 products, this must be one of the above legacy constants.
     bool enable; ///< True or false to enable or disable the stream.
-    
 };
 typedef struct mip_3dm_datastream_control_command mip_3dm_datastream_control_command;
+
 void insert_mip_3dm_datastream_control_command(microstrain_serializer* serializer, const mip_3dm_datastream_control_command* self);
 void extract_mip_3dm_datastream_control_command(microstrain_serializer* serializer, mip_3dm_datastream_control_command* self);
 
@@ -748,17 +794,17 @@ struct mip_3dm_datastream_control_response
 {
     uint8_t desc_set;
     bool enabled;
-    
 };
 typedef struct mip_3dm_datastream_control_response mip_3dm_datastream_control_response;
+
 void insert_mip_3dm_datastream_control_response(microstrain_serializer* serializer, const mip_3dm_datastream_control_response* self);
 void extract_mip_3dm_datastream_control_response(microstrain_serializer* serializer, mip_3dm_datastream_control_response* self);
 
-mip_cmd_result mip_3dm_write_datastream_control(struct mip_interface* device, uint8_t desc_set, bool enable);
-mip_cmd_result mip_3dm_read_datastream_control(struct mip_interface* device, uint8_t desc_set, bool* enabled_out);
-mip_cmd_result mip_3dm_save_datastream_control(struct mip_interface* device, uint8_t desc_set);
-mip_cmd_result mip_3dm_load_datastream_control(struct mip_interface* device, uint8_t desc_set);
-mip_cmd_result mip_3dm_default_datastream_control(struct mip_interface* device, uint8_t desc_set);
+mip_cmd_result mip_3dm_write_datastream_control(mip_interface* device, uint8_t desc_set, bool enable);
+mip_cmd_result mip_3dm_read_datastream_control(mip_interface* device, uint8_t desc_set, bool* enabled_out);
+mip_cmd_result mip_3dm_save_datastream_control(mip_interface* device, uint8_t desc_set);
+mip_cmd_result mip_3dm_load_datastream_control(mip_interface* device, uint8_t desc_set);
+mip_cmd_result mip_3dm_default_datastream_control(mip_interface* device, uint8_t desc_set);
 
 ///@}
 ///
@@ -785,18 +831,42 @@ mip_cmd_result mip_3dm_default_datastream_control(struct mip_interface* device, 
 ///
 ///@{
 
-typedef uint8_t mip_3dm_constellation_settings_command_constellation_id;
-static const mip_3dm_constellation_settings_command_constellation_id MIP_3DM_CONSTELLATION_SETTINGS_COMMAND_CONSTELLATION_ID_GPS     = 0; ///<  GPS (G1-G32)
-static const mip_3dm_constellation_settings_command_constellation_id MIP_3DM_CONSTELLATION_SETTINGS_COMMAND_CONSTELLATION_ID_SBAS    = 1; ///<  SBAS (S120-S158)
-static const mip_3dm_constellation_settings_command_constellation_id MIP_3DM_CONSTELLATION_SETTINGS_COMMAND_CONSTELLATION_ID_GALILEO = 2; ///<  GALILEO (E1-E36)
-static const mip_3dm_constellation_settings_command_constellation_id MIP_3DM_CONSTELLATION_SETTINGS_COMMAND_CONSTELLATION_ID_BEIDOU  = 3; ///<  BeiDou (B1-B37)
-static const mip_3dm_constellation_settings_command_constellation_id MIP_3DM_CONSTELLATION_SETTINGS_COMMAND_CONSTELLATION_ID_QZSS    = 5; ///<  QZSS (Q1-Q5)
-static const mip_3dm_constellation_settings_command_constellation_id MIP_3DM_CONSTELLATION_SETTINGS_COMMAND_CONSTELLATION_ID_GLONASS = 6; ///<  GLONASS (R1-R32)
+enum mip_3dm_constellation_settings_command_constellation_id
+{
+    MIP_3DM_CONSTELLATION_SETTINGS_COMMAND_CONSTELLATION_ID_GPS     = 0,  ///<  GPS (G1-G32)
+    MIP_3DM_CONSTELLATION_SETTINGS_COMMAND_CONSTELLATION_ID_SBAS    = 1,  ///<  SBAS (S120-S158)
+    MIP_3DM_CONSTELLATION_SETTINGS_COMMAND_CONSTELLATION_ID_GALILEO = 2,  ///<  GALILEO (E1-E36)
+    MIP_3DM_CONSTELLATION_SETTINGS_COMMAND_CONSTELLATION_ID_BEIDOU  = 3,  ///<  BeiDou (B1-B37)
+    MIP_3DM_CONSTELLATION_SETTINGS_COMMAND_CONSTELLATION_ID_QZSS    = 5,  ///<  QZSS (Q1-Q5)
+    MIP_3DM_CONSTELLATION_SETTINGS_COMMAND_CONSTELLATION_ID_GLONASS = 6,  ///<  GLONASS (R1-R32)
+};
+typedef enum mip_3dm_constellation_settings_command_constellation_id mip_3dm_constellation_settings_command_constellation_id;
+
+inline void insert_mip_3dm_constellation_settings_command_constellation_id(microstrain_serializer* serializer, const mip_3dm_constellation_settings_command_constellation_id self)
+{
+    microstrain_insert_u8(serializer, (uint8_t)(self));
+}
+inline void extract_mip_3dm_constellation_settings_command_constellation_id(microstrain_serializer* serializer, mip_3dm_constellation_settings_command_constellation_id* self)
+{
+    uint8_t tmp = 0;
+    microstrain_extract_u8(serializer, &tmp);
+    *self = tmp;
+}
 
 typedef uint16_t mip_3dm_constellation_settings_command_option_flags;
 static const mip_3dm_constellation_settings_command_option_flags MIP_3DM_CONSTELLATION_SETTINGS_COMMAND_OPTION_FLAGS_NONE   = 0x0000;
 static const mip_3dm_constellation_settings_command_option_flags MIP_3DM_CONSTELLATION_SETTINGS_COMMAND_OPTION_FLAGS_L1SAIF = 0x0001; ///<  Available only for QZSS
 static const mip_3dm_constellation_settings_command_option_flags MIP_3DM_CONSTELLATION_SETTINGS_COMMAND_OPTION_FLAGS_ALL    = 0x0001;
+inline void insert_mip_3dm_constellation_settings_command_option_flags(microstrain_serializer* serializer, const mip_3dm_constellation_settings_command_option_flags self)
+{
+    microstrain_insert_u16(serializer, (uint16_t)(self));
+}
+inline void extract_mip_3dm_constellation_settings_command_option_flags(microstrain_serializer* serializer, mip_3dm_constellation_settings_command_option_flags* self)
+{
+    uint16_t tmp = 0;
+    microstrain_extract_u16(serializer, &tmp);
+    *self = tmp;
+}
 
 struct mip_3dm_constellation_settings_command_settings
 {
@@ -805,29 +875,24 @@ struct mip_3dm_constellation_settings_command_settings
     uint8_t reserved_channels; ///< Minimum number of channels reserved for this constellation
     uint8_t max_channels; ///< Maximum number of channels to use for this constallation
     mip_3dm_constellation_settings_command_option_flags option_flags; ///< Constellation option Flags
-    
 };
 typedef struct mip_3dm_constellation_settings_command_settings mip_3dm_constellation_settings_command_settings;
+
+void insert_mip_3dm_constellation_settings_command_settings(microstrain_serializer* serializer, const mip_3dm_constellation_settings_command_settings* self);
+void extract_mip_3dm_constellation_settings_command_settings(microstrain_serializer* serializer, mip_3dm_constellation_settings_command_settings* self);
+
+
 struct mip_3dm_constellation_settings_command
 {
     mip_function_selector function;
     uint16_t max_channels;
     uint8_t config_count;
     mip_3dm_constellation_settings_command_settings settings[42];
-    
 };
 typedef struct mip_3dm_constellation_settings_command mip_3dm_constellation_settings_command;
+
 void insert_mip_3dm_constellation_settings_command(microstrain_serializer* serializer, const mip_3dm_constellation_settings_command* self);
 void extract_mip_3dm_constellation_settings_command(microstrain_serializer* serializer, mip_3dm_constellation_settings_command* self);
-
-void insert_mip_3dm_constellation_settings_command_constellation_id(microstrain_serializer* serializer, const mip_3dm_constellation_settings_command_constellation_id self);
-void extract_mip_3dm_constellation_settings_command_constellation_id(microstrain_serializer* serializer, mip_3dm_constellation_settings_command_constellation_id* self);
-
-void insert_mip_3dm_constellation_settings_command_option_flags(microstrain_serializer* serializer, const mip_3dm_constellation_settings_command_option_flags self);
-void extract_mip_3dm_constellation_settings_command_option_flags(microstrain_serializer* serializer, mip_3dm_constellation_settings_command_option_flags* self);
-
-void insert_mip_3dm_constellation_settings_command_settings(microstrain_serializer* serializer, const mip_3dm_constellation_settings_command_settings* self);
-void extract_mip_3dm_constellation_settings_command_settings(microstrain_serializer* serializer, mip_3dm_constellation_settings_command_settings* self);
 
 struct mip_3dm_constellation_settings_response
 {
@@ -835,17 +900,17 @@ struct mip_3dm_constellation_settings_response
     uint16_t max_channels_use; ///< Maximum channels to use
     uint8_t config_count; ///< Number of constellation configurations
     mip_3dm_constellation_settings_command_settings settings[42]; ///< Constellation Settings
-    
 };
 typedef struct mip_3dm_constellation_settings_response mip_3dm_constellation_settings_response;
+
 void insert_mip_3dm_constellation_settings_response(microstrain_serializer* serializer, const mip_3dm_constellation_settings_response* self);
 void extract_mip_3dm_constellation_settings_response(microstrain_serializer* serializer, mip_3dm_constellation_settings_response* self);
 
-mip_cmd_result mip_3dm_write_constellation_settings(struct mip_interface* device, uint16_t max_channels, uint8_t config_count, const mip_3dm_constellation_settings_command_settings* settings);
-mip_cmd_result mip_3dm_read_constellation_settings(struct mip_interface* device, uint16_t* max_channels_available_out, uint16_t* max_channels_use_out, uint8_t* config_count_out, uint8_t config_count_out_max, mip_3dm_constellation_settings_command_settings* settings_out);
-mip_cmd_result mip_3dm_save_constellation_settings(struct mip_interface* device);
-mip_cmd_result mip_3dm_load_constellation_settings(struct mip_interface* device);
-mip_cmd_result mip_3dm_default_constellation_settings(struct mip_interface* device);
+mip_cmd_result mip_3dm_write_constellation_settings(mip_interface* device, uint16_t max_channels, uint8_t config_count, const mip_3dm_constellation_settings_command_settings* settings);
+mip_cmd_result mip_3dm_read_constellation_settings(mip_interface* device, uint16_t* max_channels_available_out, uint16_t* max_channels_use_out, uint8_t* config_count_out, uint8_t config_count_out_max, mip_3dm_constellation_settings_command_settings* settings_out);
+mip_cmd_result mip_3dm_save_constellation_settings(mip_interface* device);
+mip_cmd_result mip_3dm_load_constellation_settings(mip_interface* device);
+mip_cmd_result mip_3dm_default_constellation_settings(mip_interface* device);
 
 ///@}
 ///
@@ -864,6 +929,17 @@ static const mip_3dm_gnss_sbas_settings_command_sbasoptions MIP_3DM_GNSS_SBAS_SE
 static const mip_3dm_gnss_sbas_settings_command_sbasoptions MIP_3DM_GNSS_SBAS_SETTINGS_COMMAND_SBASOPTIONS_ENABLE_CORRECTIONS = 0x0002; ///<  Use SBAS differential corrections
 static const mip_3dm_gnss_sbas_settings_command_sbasoptions MIP_3DM_GNSS_SBAS_SETTINGS_COMMAND_SBASOPTIONS_APPLY_INTEGRITY    = 0x0004; ///<  Use SBAS integrity information.  If enabled, only GPS satellites for which integrity information is available will be used.
 static const mip_3dm_gnss_sbas_settings_command_sbasoptions MIP_3DM_GNSS_SBAS_SETTINGS_COMMAND_SBASOPTIONS_ALL                = 0x0007;
+inline void insert_mip_3dm_gnss_sbas_settings_command_sbasoptions(microstrain_serializer* serializer, const mip_3dm_gnss_sbas_settings_command_sbasoptions self)
+{
+    microstrain_insert_u16(serializer, (uint16_t)(self));
+}
+inline void extract_mip_3dm_gnss_sbas_settings_command_sbasoptions(microstrain_serializer* serializer, mip_3dm_gnss_sbas_settings_command_sbasoptions* self)
+{
+    uint16_t tmp = 0;
+    microstrain_extract_u16(serializer, &tmp);
+    *self = tmp;
+}
+
 
 struct mip_3dm_gnss_sbas_settings_command
 {
@@ -872,14 +948,11 @@ struct mip_3dm_gnss_sbas_settings_command
     mip_3dm_gnss_sbas_settings_command_sbasoptions sbas_options; ///< SBAS options, see definition
     uint8_t num_included_prns; ///< Number of SBAS PRNs to include in search (0 = include all)
     uint16_t included_prns[39]; ///< List of specific SBAS PRNs to search for
-    
 };
 typedef struct mip_3dm_gnss_sbas_settings_command mip_3dm_gnss_sbas_settings_command;
+
 void insert_mip_3dm_gnss_sbas_settings_command(microstrain_serializer* serializer, const mip_3dm_gnss_sbas_settings_command* self);
 void extract_mip_3dm_gnss_sbas_settings_command(microstrain_serializer* serializer, mip_3dm_gnss_sbas_settings_command* self);
-
-void insert_mip_3dm_gnss_sbas_settings_command_sbasoptions(microstrain_serializer* serializer, const mip_3dm_gnss_sbas_settings_command_sbasoptions self);
-void extract_mip_3dm_gnss_sbas_settings_command_sbasoptions(microstrain_serializer* serializer, mip_3dm_gnss_sbas_settings_command_sbasoptions* self);
 
 struct mip_3dm_gnss_sbas_settings_response
 {
@@ -887,17 +960,17 @@ struct mip_3dm_gnss_sbas_settings_response
     mip_3dm_gnss_sbas_settings_command_sbasoptions sbas_options; ///< SBAS options, see definition
     uint8_t num_included_prns; ///< Number of SBAS PRNs to include in search (0 = include all)
     uint16_t included_prns[39]; ///< List of specific SBAS PRNs to search for
-    
 };
 typedef struct mip_3dm_gnss_sbas_settings_response mip_3dm_gnss_sbas_settings_response;
+
 void insert_mip_3dm_gnss_sbas_settings_response(microstrain_serializer* serializer, const mip_3dm_gnss_sbas_settings_response* self);
 void extract_mip_3dm_gnss_sbas_settings_response(microstrain_serializer* serializer, mip_3dm_gnss_sbas_settings_response* self);
 
-mip_cmd_result mip_3dm_write_gnss_sbas_settings(struct mip_interface* device, uint8_t enable_sbas, mip_3dm_gnss_sbas_settings_command_sbasoptions sbas_options, uint8_t num_included_prns, const uint16_t* included_prns);
-mip_cmd_result mip_3dm_read_gnss_sbas_settings(struct mip_interface* device, uint8_t* enable_sbas_out, mip_3dm_gnss_sbas_settings_command_sbasoptions* sbas_options_out, uint8_t* num_included_prns_out, uint8_t num_included_prns_out_max, uint16_t* included_prns_out);
-mip_cmd_result mip_3dm_save_gnss_sbas_settings(struct mip_interface* device);
-mip_cmd_result mip_3dm_load_gnss_sbas_settings(struct mip_interface* device);
-mip_cmd_result mip_3dm_default_gnss_sbas_settings(struct mip_interface* device);
+mip_cmd_result mip_3dm_write_gnss_sbas_settings(mip_interface* device, uint8_t enable_sbas, mip_3dm_gnss_sbas_settings_command_sbasoptions sbas_options, uint8_t num_included_prns, const uint16_t* included_prns);
+mip_cmd_result mip_3dm_read_gnss_sbas_settings(mip_interface* device, uint8_t* enable_sbas_out, mip_3dm_gnss_sbas_settings_command_sbasoptions* sbas_options_out, uint8_t* num_included_prns_out, uint8_t num_included_prns_out_max, uint16_t* included_prns_out);
+mip_cmd_result mip_3dm_save_gnss_sbas_settings(mip_interface* device);
+mip_cmd_result mip_3dm_load_gnss_sbas_settings(mip_interface* device);
+mip_cmd_result mip_3dm_default_gnss_sbas_settings(mip_interface* device);
 
 ///@}
 ///
@@ -917,39 +990,51 @@ mip_cmd_result mip_3dm_default_gnss_sbas_settings(struct mip_interface* device);
 ///
 ///@{
 
-typedef uint8_t mip_3dm_gnss_assisted_fix_command_assisted_fix_option;
-static const mip_3dm_gnss_assisted_fix_command_assisted_fix_option MIP_3DM_GNSS_ASSISTED_FIX_COMMAND_ASSISTED_FIX_OPTION_NONE    = 0; ///<  No assisted fix (default)
-static const mip_3dm_gnss_assisted_fix_command_assisted_fix_option MIP_3DM_GNSS_ASSISTED_FIX_COMMAND_ASSISTED_FIX_OPTION_ENABLED = 1; ///<  Enable assisted fix
+enum mip_3dm_gnss_assisted_fix_command_assisted_fix_option
+{
+    MIP_3DM_GNSS_ASSISTED_FIX_COMMAND_ASSISTED_FIX_OPTION_NONE    = 0,  ///<  No assisted fix (default)
+    MIP_3DM_GNSS_ASSISTED_FIX_COMMAND_ASSISTED_FIX_OPTION_ENABLED = 1,  ///<  Enable assisted fix
+};
+typedef enum mip_3dm_gnss_assisted_fix_command_assisted_fix_option mip_3dm_gnss_assisted_fix_command_assisted_fix_option;
+
+inline void insert_mip_3dm_gnss_assisted_fix_command_assisted_fix_option(microstrain_serializer* serializer, const mip_3dm_gnss_assisted_fix_command_assisted_fix_option self)
+{
+    microstrain_insert_u8(serializer, (uint8_t)(self));
+}
+inline void extract_mip_3dm_gnss_assisted_fix_command_assisted_fix_option(microstrain_serializer* serializer, mip_3dm_gnss_assisted_fix_command_assisted_fix_option* self)
+{
+    uint8_t tmp = 0;
+    microstrain_extract_u8(serializer, &tmp);
+    *self = tmp;
+}
+
 
 struct mip_3dm_gnss_assisted_fix_command
 {
     mip_function_selector function;
     mip_3dm_gnss_assisted_fix_command_assisted_fix_option option; ///< Assisted fix options
     uint8_t flags; ///< Assisted fix flags (set to 0xFF)
-    
 };
 typedef struct mip_3dm_gnss_assisted_fix_command mip_3dm_gnss_assisted_fix_command;
+
 void insert_mip_3dm_gnss_assisted_fix_command(microstrain_serializer* serializer, const mip_3dm_gnss_assisted_fix_command* self);
 void extract_mip_3dm_gnss_assisted_fix_command(microstrain_serializer* serializer, mip_3dm_gnss_assisted_fix_command* self);
-
-void insert_mip_3dm_gnss_assisted_fix_command_assisted_fix_option(microstrain_serializer* serializer, const mip_3dm_gnss_assisted_fix_command_assisted_fix_option self);
-void extract_mip_3dm_gnss_assisted_fix_command_assisted_fix_option(microstrain_serializer* serializer, mip_3dm_gnss_assisted_fix_command_assisted_fix_option* self);
 
 struct mip_3dm_gnss_assisted_fix_response
 {
     mip_3dm_gnss_assisted_fix_command_assisted_fix_option option; ///< Assisted fix options
     uint8_t flags; ///< Assisted fix flags (set to 0xFF)
-    
 };
 typedef struct mip_3dm_gnss_assisted_fix_response mip_3dm_gnss_assisted_fix_response;
+
 void insert_mip_3dm_gnss_assisted_fix_response(microstrain_serializer* serializer, const mip_3dm_gnss_assisted_fix_response* self);
 void extract_mip_3dm_gnss_assisted_fix_response(microstrain_serializer* serializer, mip_3dm_gnss_assisted_fix_response* self);
 
-mip_cmd_result mip_3dm_write_gnss_assisted_fix(struct mip_interface* device, mip_3dm_gnss_assisted_fix_command_assisted_fix_option option, uint8_t flags);
-mip_cmd_result mip_3dm_read_gnss_assisted_fix(struct mip_interface* device, mip_3dm_gnss_assisted_fix_command_assisted_fix_option* option_out, uint8_t* flags_out);
-mip_cmd_result mip_3dm_save_gnss_assisted_fix(struct mip_interface* device);
-mip_cmd_result mip_3dm_load_gnss_assisted_fix(struct mip_interface* device);
-mip_cmd_result mip_3dm_default_gnss_assisted_fix(struct mip_interface* device);
+mip_cmd_result mip_3dm_write_gnss_assisted_fix(mip_interface* device, mip_3dm_gnss_assisted_fix_command_assisted_fix_option option, uint8_t flags);
+mip_cmd_result mip_3dm_read_gnss_assisted_fix(mip_interface* device, mip_3dm_gnss_assisted_fix_command_assisted_fix_option* option_out, uint8_t* flags_out);
+mip_cmd_result mip_3dm_save_gnss_assisted_fix(mip_interface* device);
+mip_cmd_result mip_3dm_load_gnss_assisted_fix(mip_interface* device);
+mip_cmd_result mip_3dm_default_gnss_assisted_fix(mip_interface* device);
 
 ///@}
 ///
@@ -968,9 +1053,9 @@ struct mip_3dm_gnss_time_assistance_command
     double tow; ///< GPS Time of week [seconds]
     uint16_t week_number; ///< GPS Weeks since 1980 [weeks]
     float accuracy; ///< Accuracy of time information [seconds]
-    
 };
 typedef struct mip_3dm_gnss_time_assistance_command mip_3dm_gnss_time_assistance_command;
+
 void insert_mip_3dm_gnss_time_assistance_command(microstrain_serializer* serializer, const mip_3dm_gnss_time_assistance_command* self);
 void extract_mip_3dm_gnss_time_assistance_command(microstrain_serializer* serializer, mip_3dm_gnss_time_assistance_command* self);
 
@@ -979,14 +1064,14 @@ struct mip_3dm_gnss_time_assistance_response
     double tow; ///< GPS Time of week [seconds]
     uint16_t week_number; ///< GPS Weeks since 1980 [weeks]
     float accuracy; ///< Accuracy of time information [seconds]
-    
 };
 typedef struct mip_3dm_gnss_time_assistance_response mip_3dm_gnss_time_assistance_response;
+
 void insert_mip_3dm_gnss_time_assistance_response(microstrain_serializer* serializer, const mip_3dm_gnss_time_assistance_response* self);
 void extract_mip_3dm_gnss_time_assistance_response(microstrain_serializer* serializer, mip_3dm_gnss_time_assistance_response* self);
 
-mip_cmd_result mip_3dm_write_gnss_time_assistance(struct mip_interface* device, double tow, uint16_t week_number, float accuracy);
-mip_cmd_result mip_3dm_read_gnss_time_assistance(struct mip_interface* device, double* tow_out, uint16_t* week_number_out, float* accuracy_out);
+mip_cmd_result mip_3dm_write_gnss_time_assistance(mip_interface* device, double tow, uint16_t week_number, float accuracy);
+mip_cmd_result mip_3dm_read_gnss_time_assistance(mip_interface* device, double* tow_out, uint16_t* week_number_out, float* accuracy_out);
 
 ///@}
 ///
@@ -1019,9 +1104,9 @@ struct mip_3dm_imu_lowpass_filter_command
     bool manual; ///< If false, the cutoff frequency is set to half of the streaming rate as configured by the message format command. Otherwise, the cutoff frequency is set according to the following 'frequency' parameter.
     uint16_t frequency; ///< -3dB cutoff frequency in Hz. Will not affect filtering if 'manual' is false.
     uint8_t reserved; ///< Reserved, set to 0x00.
-    
 };
 typedef struct mip_3dm_imu_lowpass_filter_command mip_3dm_imu_lowpass_filter_command;
+
 void insert_mip_3dm_imu_lowpass_filter_command(microstrain_serializer* serializer, const mip_3dm_imu_lowpass_filter_command* self);
 void extract_mip_3dm_imu_lowpass_filter_command(microstrain_serializer* serializer, mip_3dm_imu_lowpass_filter_command* self);
 
@@ -1032,17 +1117,17 @@ struct mip_3dm_imu_lowpass_filter_response
     bool manual; ///< True if the filter cutoff was manually configured.
     uint16_t frequency; ///< The cutoff frequency of the filter. If the filter is in auto mode, this value is unspecified.
     uint8_t reserved; ///< Reserved and must be ignored.
-    
 };
 typedef struct mip_3dm_imu_lowpass_filter_response mip_3dm_imu_lowpass_filter_response;
+
 void insert_mip_3dm_imu_lowpass_filter_response(microstrain_serializer* serializer, const mip_3dm_imu_lowpass_filter_response* self);
 void extract_mip_3dm_imu_lowpass_filter_response(microstrain_serializer* serializer, mip_3dm_imu_lowpass_filter_response* self);
 
-mip_cmd_result mip_3dm_write_imu_lowpass_filter(struct mip_interface* device, uint8_t target_descriptor, bool enable, bool manual, uint16_t frequency, uint8_t reserved);
-mip_cmd_result mip_3dm_read_imu_lowpass_filter(struct mip_interface* device, uint8_t target_descriptor, bool* enable_out, bool* manual_out, uint16_t* frequency_out, uint8_t* reserved_out);
-mip_cmd_result mip_3dm_save_imu_lowpass_filter(struct mip_interface* device, uint8_t target_descriptor);
-mip_cmd_result mip_3dm_load_imu_lowpass_filter(struct mip_interface* device, uint8_t target_descriptor);
-mip_cmd_result mip_3dm_default_imu_lowpass_filter(struct mip_interface* device, uint8_t target_descriptor);
+mip_cmd_result mip_3dm_write_imu_lowpass_filter(mip_interface* device, uint8_t target_descriptor, bool enable, bool manual, uint16_t frequency, uint8_t reserved);
+mip_cmd_result mip_3dm_read_imu_lowpass_filter(mip_interface* device, uint8_t target_descriptor, bool* enable_out, bool* manual_out, uint16_t* frequency_out, uint8_t* reserved_out);
+mip_cmd_result mip_3dm_save_imu_lowpass_filter(mip_interface* device, uint8_t target_descriptor);
+mip_cmd_result mip_3dm_load_imu_lowpass_filter(mip_interface* device, uint8_t target_descriptor);
+mip_cmd_result mip_3dm_default_imu_lowpass_filter(mip_interface* device, uint8_t target_descriptor);
 
 ///@}
 ///
@@ -1052,40 +1137,52 @@ mip_cmd_result mip_3dm_default_imu_lowpass_filter(struct mip_interface* device, 
 ///
 ///@{
 
-typedef uint8_t mip_3dm_pps_source_command_source;
-static const mip_3dm_pps_source_command_source MIP_3DM_PPS_SOURCE_COMMAND_SOURCE_DISABLED   = 0; ///<  PPS output is disabled. Not valid for PPS source command.
-static const mip_3dm_pps_source_command_source MIP_3DM_PPS_SOURCE_COMMAND_SOURCE_RECEIVER_1 = 1; ///<  PPS is provided by GNSS receiver 1.
-static const mip_3dm_pps_source_command_source MIP_3DM_PPS_SOURCE_COMMAND_SOURCE_RECEIVER_2 = 2; ///<  PPS is provided by GNSS receiver 2.
-static const mip_3dm_pps_source_command_source MIP_3DM_PPS_SOURCE_COMMAND_SOURCE_GPIO       = 3; ///<  PPS is provided to an external GPIO pin. Use the GPIO Setup command to choose and configure the pin.
-static const mip_3dm_pps_source_command_source MIP_3DM_PPS_SOURCE_COMMAND_SOURCE_GENERATED  = 4; ///<  PPS is generated from the system oscillator.
+enum mip_3dm_pps_source_command_source
+{
+    MIP_3DM_PPS_SOURCE_COMMAND_SOURCE_DISABLED   = 0,  ///<  PPS output is disabled. Not valid for PPS source command.
+    MIP_3DM_PPS_SOURCE_COMMAND_SOURCE_RECEIVER_1 = 1,  ///<  PPS is provided by GNSS receiver 1.
+    MIP_3DM_PPS_SOURCE_COMMAND_SOURCE_RECEIVER_2 = 2,  ///<  PPS is provided by GNSS receiver 2.
+    MIP_3DM_PPS_SOURCE_COMMAND_SOURCE_GPIO       = 3,  ///<  PPS is provided to an external GPIO pin. Use the GPIO Setup command to choose and configure the pin.
+    MIP_3DM_PPS_SOURCE_COMMAND_SOURCE_GENERATED  = 4,  ///<  PPS is generated from the system oscillator.
+};
+typedef enum mip_3dm_pps_source_command_source mip_3dm_pps_source_command_source;
+
+inline void insert_mip_3dm_pps_source_command_source(microstrain_serializer* serializer, const mip_3dm_pps_source_command_source self)
+{
+    microstrain_insert_u8(serializer, (uint8_t)(self));
+}
+inline void extract_mip_3dm_pps_source_command_source(microstrain_serializer* serializer, mip_3dm_pps_source_command_source* self)
+{
+    uint8_t tmp = 0;
+    microstrain_extract_u8(serializer, &tmp);
+    *self = tmp;
+}
+
 
 struct mip_3dm_pps_source_command
 {
     mip_function_selector function;
     mip_3dm_pps_source_command_source source;
-    
 };
 typedef struct mip_3dm_pps_source_command mip_3dm_pps_source_command;
+
 void insert_mip_3dm_pps_source_command(microstrain_serializer* serializer, const mip_3dm_pps_source_command* self);
 void extract_mip_3dm_pps_source_command(microstrain_serializer* serializer, mip_3dm_pps_source_command* self);
-
-void insert_mip_3dm_pps_source_command_source(microstrain_serializer* serializer, const mip_3dm_pps_source_command_source self);
-void extract_mip_3dm_pps_source_command_source(microstrain_serializer* serializer, mip_3dm_pps_source_command_source* self);
 
 struct mip_3dm_pps_source_response
 {
     mip_3dm_pps_source_command_source source;
-    
 };
 typedef struct mip_3dm_pps_source_response mip_3dm_pps_source_response;
+
 void insert_mip_3dm_pps_source_response(microstrain_serializer* serializer, const mip_3dm_pps_source_response* self);
 void extract_mip_3dm_pps_source_response(microstrain_serializer* serializer, mip_3dm_pps_source_response* self);
 
-mip_cmd_result mip_3dm_write_pps_source(struct mip_interface* device, mip_3dm_pps_source_command_source source);
-mip_cmd_result mip_3dm_read_pps_source(struct mip_interface* device, mip_3dm_pps_source_command_source* source_out);
-mip_cmd_result mip_3dm_save_pps_source(struct mip_interface* device);
-mip_cmd_result mip_3dm_load_pps_source(struct mip_interface* device);
-mip_cmd_result mip_3dm_default_pps_source(struct mip_interface* device);
+mip_cmd_result mip_3dm_write_pps_source(mip_interface* device, mip_3dm_pps_source_command_source source);
+mip_cmd_result mip_3dm_read_pps_source(mip_interface* device, mip_3dm_pps_source_command_source* source_out);
+mip_cmd_result mip_3dm_save_pps_source(mip_interface* device);
+mip_cmd_result mip_3dm_load_pps_source(mip_interface* device);
+mip_cmd_result mip_3dm_default_pps_source(mip_interface* device);
 
 ///@}
 ///
@@ -1111,30 +1208,58 @@ mip_cmd_result mip_3dm_default_pps_source(struct mip_interface* device);
 ///
 ///@{
 
-typedef uint8_t mip_3dm_gpio_config_command_feature;
-static const mip_3dm_gpio_config_command_feature MIP_3DM_GPIO_CONFIG_COMMAND_FEATURE_UNUSED    = 0; ///<  The pin is not used. It may be technically possible to read the pin state in this mode, but this is not guaranteed to be true of all devices or pins.
-static const mip_3dm_gpio_config_command_feature MIP_3DM_GPIO_CONFIG_COMMAND_FEATURE_GPIO      = 1; ///<  General purpose input or output. Use this for direct control of pin output state or to stream the state of the pin.
-static const mip_3dm_gpio_config_command_feature MIP_3DM_GPIO_CONFIG_COMMAND_FEATURE_PPS       = 2; ///<  Pulse per second input or output.
-static const mip_3dm_gpio_config_command_feature MIP_3DM_GPIO_CONFIG_COMMAND_FEATURE_ENCODER   = 3; ///<  Motor encoder/odometer input.
-static const mip_3dm_gpio_config_command_feature MIP_3DM_GPIO_CONFIG_COMMAND_FEATURE_TIMESTAMP = 4; ///<  Precision Timestamping. Use with Event Trigger Configuration (0x0C,0x2E).
-static const mip_3dm_gpio_config_command_feature MIP_3DM_GPIO_CONFIG_COMMAND_FEATURE_UART      = 5; ///<  UART data or control lines.
+enum mip_3dm_gpio_config_command_feature
+{
+    MIP_3DM_GPIO_CONFIG_COMMAND_FEATURE_UNUSED    = 0,  ///<  The pin is not used. It may be technically possible to read the pin state in this mode, but this is not guaranteed to be true of all devices or pins.
+    MIP_3DM_GPIO_CONFIG_COMMAND_FEATURE_GPIO      = 1,  ///<  General purpose input or output. Use this for direct control of pin output state or to stream the state of the pin.
+    MIP_3DM_GPIO_CONFIG_COMMAND_FEATURE_PPS       = 2,  ///<  Pulse per second input or output.
+    MIP_3DM_GPIO_CONFIG_COMMAND_FEATURE_ENCODER   = 3,  ///<  Motor encoder/odometer input.
+    MIP_3DM_GPIO_CONFIG_COMMAND_FEATURE_TIMESTAMP = 4,  ///<  Precision Timestamping. Use with Event Trigger Configuration (0x0C,0x2E).
+    MIP_3DM_GPIO_CONFIG_COMMAND_FEATURE_UART      = 5,  ///<  UART data or control lines.
+};
+typedef enum mip_3dm_gpio_config_command_feature mip_3dm_gpio_config_command_feature;
 
-typedef uint8_t mip_3dm_gpio_config_command_behavior;
-static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_UNUSED            = 0;  ///<  Use 0 unless otherwise specified.
-static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_GPIO_INPUT        = 1;  ///<  Pin will be an input. This can be used to stream or poll the value and is the default setting.
-static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_GPIO_OUTPUT_LOW   = 2;  ///<  Pin is an output initially in the LOW state. This state will be restored during system startup if the configuration is saved.
-static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_GPIO_OUTPUT_HIGH  = 3;  ///<  Pin is an output initially in the HIGH state. This state will be restored during system startup if the configuration is saved.
-static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_PPS_INPUT         = 1;  ///<  Pin will receive the pulse-per-second signal. Only one pin can have this behavior. This will only work if the PPS Source command is configured to GPIO.
-static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_PPS_OUTPUT        = 2;  ///<  Pin will transmit the pulse-per-second signal from the device.
-static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_ENCODER_A         = 1;  ///<  Encoder "A" quadrature input. Only one pin can have this behavior. The last command to set this behavior will take precedence.
-static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_ENCODER_B         = 2;  ///<  Encoder "B" quadrature input. Only one pin can have this behavior. The last command to set this behavior will take precedence.
-static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_TIMESTAMP_RISING  = 1;  ///<  Rising edges will be timestamped.
-static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_TIMESTAMP_FALLING = 2;  ///<  Falling edges will be timestamped.
-static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_TIMESTAMP_EITHER  = 3;  ///<  Both rising and falling edges will be timestamped.
-static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_UART_PORT2_TX     = 33; ///<  (0x21) UART port 2 transmit.
-static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_UART_PORT2_RX     = 34; ///<  (0x22) UART port 2 receive.
-static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_UART_PORT3_TX     = 49; ///<  (0x31) UART port 3 transmit.
-static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_UART_PORT3_RX     = 50; ///<  (0x32) UART port 3 receive.
+inline void insert_mip_3dm_gpio_config_command_feature(microstrain_serializer* serializer, const mip_3dm_gpio_config_command_feature self)
+{
+    microstrain_insert_u8(serializer, (uint8_t)(self));
+}
+inline void extract_mip_3dm_gpio_config_command_feature(microstrain_serializer* serializer, mip_3dm_gpio_config_command_feature* self)
+{
+    uint8_t tmp = 0;
+    microstrain_extract_u8(serializer, &tmp);
+    *self = tmp;
+}
+
+enum mip_3dm_gpio_config_command_behavior
+{
+    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_UNUSED            = 0,  ///<  Use 0 unless otherwise specified.
+    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_GPIO_INPUT        = 1,  ///<  Pin will be an input. This can be used to stream or poll the value and is the default setting.
+    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_GPIO_OUTPUT_LOW   = 2,  ///<  Pin is an output initially in the LOW state. This state will be restored during system startup if the configuration is saved.
+    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_GPIO_OUTPUT_HIGH  = 3,  ///<  Pin is an output initially in the HIGH state. This state will be restored during system startup if the configuration is saved.
+    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_PPS_INPUT         = 1,  ///<  Pin will receive the pulse-per-second signal. Only one pin can have this behavior. This will only work if the PPS Source command is configured to GPIO.
+    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_PPS_OUTPUT        = 2,  ///<  Pin will transmit the pulse-per-second signal from the device.
+    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_ENCODER_A         = 1,  ///<  Encoder "A" quadrature input. Only one pin can have this behavior. The last command to set this behavior will take precedence.
+    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_ENCODER_B         = 2,  ///<  Encoder "B" quadrature input. Only one pin can have this behavior. The last command to set this behavior will take precedence.
+    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_TIMESTAMP_RISING  = 1,  ///<  Rising edges will be timestamped.
+    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_TIMESTAMP_FALLING = 2,  ///<  Falling edges will be timestamped.
+    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_TIMESTAMP_EITHER  = 3,  ///<  Both rising and falling edges will be timestamped.
+    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_UART_PORT2_TX     = 33,  ///<  (0x21) UART port 2 transmit.
+    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_UART_PORT2_RX     = 34,  ///<  (0x22) UART port 2 receive.
+    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_UART_PORT3_TX     = 49,  ///<  (0x31) UART port 3 transmit.
+    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_UART_PORT3_RX     = 50,  ///<  (0x32) UART port 3 receive.
+};
+typedef enum mip_3dm_gpio_config_command_behavior mip_3dm_gpio_config_command_behavior;
+
+inline void insert_mip_3dm_gpio_config_command_behavior(microstrain_serializer* serializer, const mip_3dm_gpio_config_command_behavior self)
+{
+    microstrain_insert_u8(serializer, (uint8_t)(self));
+}
+inline void extract_mip_3dm_gpio_config_command_behavior(microstrain_serializer* serializer, mip_3dm_gpio_config_command_behavior* self)
+{
+    uint8_t tmp = 0;
+    microstrain_extract_u8(serializer, &tmp);
+    *self = tmp;
+}
 
 typedef uint8_t mip_3dm_gpio_config_command_pin_mode;
 static const mip_3dm_gpio_config_command_pin_mode MIP_3DM_GPIO_CONFIG_COMMAND_PIN_MODE_NONE       = 0x00;
@@ -1142,6 +1267,17 @@ static const mip_3dm_gpio_config_command_pin_mode MIP_3DM_GPIO_CONFIG_COMMAND_PI
 static const mip_3dm_gpio_config_command_pin_mode MIP_3DM_GPIO_CONFIG_COMMAND_PIN_MODE_PULLDOWN   = 0x02; ///<  The pin will have an internal pull-down resistor enabled. This is useful for connecting inputs to signals which can only be pulled high such as mechanical switches. Cannot be used in combination with pull-up. See the device specifications for the resistance value.
 static const mip_3dm_gpio_config_command_pin_mode MIP_3DM_GPIO_CONFIG_COMMAND_PIN_MODE_PULLUP     = 0x04; ///<  The pin will have an internal pull-up resistor enabled. Useful for connecting inputs to signals which can only be pulled low such as mechanical switches, or in combination with an open drain output. Cannot be used in combination with pull-down. See the device specifications for the resistance value. Use of this mode may restrict the maximum allowed input voltage. See the device datasheet for details.
 static const mip_3dm_gpio_config_command_pin_mode MIP_3DM_GPIO_CONFIG_COMMAND_PIN_MODE_ALL        = 0x07;
+inline void insert_mip_3dm_gpio_config_command_pin_mode(microstrain_serializer* serializer, const mip_3dm_gpio_config_command_pin_mode self)
+{
+    microstrain_insert_u8(serializer, (uint8_t)(self));
+}
+inline void extract_mip_3dm_gpio_config_command_pin_mode(microstrain_serializer* serializer, mip_3dm_gpio_config_command_pin_mode* self)
+{
+    uint8_t tmp = 0;
+    microstrain_extract_u8(serializer, &tmp);
+    *self = tmp;
+}
+
 
 struct mip_3dm_gpio_config_command
 {
@@ -1150,20 +1286,11 @@ struct mip_3dm_gpio_config_command
     mip_3dm_gpio_config_command_feature feature; ///< Determines how the pin will be used.
     mip_3dm_gpio_config_command_behavior behavior; ///< Select an appropriate value from the enumeration based on the selected feature (e.g. for PPS, select one of the values prefixed with PPS_.)
     mip_3dm_gpio_config_command_pin_mode pin_mode; ///< GPIO configuration. May be restricted depending on device, pin, feature, and behavior. See device user manual.
-    
 };
 typedef struct mip_3dm_gpio_config_command mip_3dm_gpio_config_command;
+
 void insert_mip_3dm_gpio_config_command(microstrain_serializer* serializer, const mip_3dm_gpio_config_command* self);
 void extract_mip_3dm_gpio_config_command(microstrain_serializer* serializer, mip_3dm_gpio_config_command* self);
-
-void insert_mip_3dm_gpio_config_command_feature(microstrain_serializer* serializer, const mip_3dm_gpio_config_command_feature self);
-void extract_mip_3dm_gpio_config_command_feature(microstrain_serializer* serializer, mip_3dm_gpio_config_command_feature* self);
-
-void insert_mip_3dm_gpio_config_command_behavior(microstrain_serializer* serializer, const mip_3dm_gpio_config_command_behavior self);
-void extract_mip_3dm_gpio_config_command_behavior(microstrain_serializer* serializer, mip_3dm_gpio_config_command_behavior* self);
-
-void insert_mip_3dm_gpio_config_command_pin_mode(microstrain_serializer* serializer, const mip_3dm_gpio_config_command_pin_mode self);
-void extract_mip_3dm_gpio_config_command_pin_mode(microstrain_serializer* serializer, mip_3dm_gpio_config_command_pin_mode* self);
 
 struct mip_3dm_gpio_config_response
 {
@@ -1171,17 +1298,17 @@ struct mip_3dm_gpio_config_response
     mip_3dm_gpio_config_command_feature feature; ///< Determines how the pin will be used.
     mip_3dm_gpio_config_command_behavior behavior; ///< Select an appropriate value from the enumeration based on the selected feature (e.g. for PPS, select one of the values prefixed with PPS_.)
     mip_3dm_gpio_config_command_pin_mode pin_mode; ///< GPIO configuration. May be restricted depending on device, pin, feature, and behavior. See device user manual.
-    
 };
 typedef struct mip_3dm_gpio_config_response mip_3dm_gpio_config_response;
+
 void insert_mip_3dm_gpio_config_response(microstrain_serializer* serializer, const mip_3dm_gpio_config_response* self);
 void extract_mip_3dm_gpio_config_response(microstrain_serializer* serializer, mip_3dm_gpio_config_response* self);
 
-mip_cmd_result mip_3dm_write_gpio_config(struct mip_interface* device, uint8_t pin, mip_3dm_gpio_config_command_feature feature, mip_3dm_gpio_config_command_behavior behavior, mip_3dm_gpio_config_command_pin_mode pin_mode);
-mip_cmd_result mip_3dm_read_gpio_config(struct mip_interface* device, uint8_t pin, mip_3dm_gpio_config_command_feature* feature_out, mip_3dm_gpio_config_command_behavior* behavior_out, mip_3dm_gpio_config_command_pin_mode* pin_mode_out);
-mip_cmd_result mip_3dm_save_gpio_config(struct mip_interface* device, uint8_t pin);
-mip_cmd_result mip_3dm_load_gpio_config(struct mip_interface* device, uint8_t pin);
-mip_cmd_result mip_3dm_default_gpio_config(struct mip_interface* device, uint8_t pin);
+mip_cmd_result mip_3dm_write_gpio_config(mip_interface* device, uint8_t pin, mip_3dm_gpio_config_command_feature feature, mip_3dm_gpio_config_command_behavior behavior, mip_3dm_gpio_config_command_pin_mode pin_mode);
+mip_cmd_result mip_3dm_read_gpio_config(mip_interface* device, uint8_t pin, mip_3dm_gpio_config_command_feature* feature_out, mip_3dm_gpio_config_command_behavior* behavior_out, mip_3dm_gpio_config_command_pin_mode* pin_mode_out);
+mip_cmd_result mip_3dm_save_gpio_config(mip_interface* device, uint8_t pin);
+mip_cmd_result mip_3dm_load_gpio_config(mip_interface* device, uint8_t pin);
+mip_cmd_result mip_3dm_default_gpio_config(mip_interface* device, uint8_t pin);
 
 ///@}
 ///
@@ -1211,9 +1338,9 @@ struct mip_3dm_gpio_state_command
     mip_function_selector function;
     uint8_t pin; ///< GPIO pin number counting from 1. Cannot be 0.
     bool state; ///< The pin state.
-    
 };
 typedef struct mip_3dm_gpio_state_command mip_3dm_gpio_state_command;
+
 void insert_mip_3dm_gpio_state_command(microstrain_serializer* serializer, const mip_3dm_gpio_state_command* self);
 void extract_mip_3dm_gpio_state_command(microstrain_serializer* serializer, mip_3dm_gpio_state_command* self);
 
@@ -1221,14 +1348,14 @@ struct mip_3dm_gpio_state_response
 {
     uint8_t pin; ///< GPIO pin number counting from 1. Cannot be 0.
     bool state; ///< The pin state.
-    
 };
 typedef struct mip_3dm_gpio_state_response mip_3dm_gpio_state_response;
+
 void insert_mip_3dm_gpio_state_response(microstrain_serializer* serializer, const mip_3dm_gpio_state_response* self);
 void extract_mip_3dm_gpio_state_response(microstrain_serializer* serializer, mip_3dm_gpio_state_response* self);
 
-mip_cmd_result mip_3dm_write_gpio_state(struct mip_interface* device, uint8_t pin, bool state);
-mip_cmd_result mip_3dm_read_gpio_state(struct mip_interface* device, uint8_t pin, bool* state_out);
+mip_cmd_result mip_3dm_write_gpio_state(mip_interface* device, uint8_t pin, bool state);
+mip_cmd_result mip_3dm_read_gpio_state(mip_interface* device, uint8_t pin, bool* state_out);
 
 ///@}
 ///
@@ -1239,9 +1366,24 @@ mip_cmd_result mip_3dm_read_gpio_state(struct mip_interface* device, uint8_t pin
 ///
 ///@{
 
-typedef uint8_t mip_3dm_odometer_command_mode;
-static const mip_3dm_odometer_command_mode MIP_3DM_ODOMETER_COMMAND_MODE_DISABLED   = 0; ///<  Encoder is disabled.
-static const mip_3dm_odometer_command_mode MIP_3DM_ODOMETER_COMMAND_MODE_QUADRATURE = 2; ///<  Quadrature encoder mode.
+enum mip_3dm_odometer_command_mode
+{
+    MIP_3DM_ODOMETER_COMMAND_MODE_DISABLED   = 0,  ///<  Encoder is disabled.
+    MIP_3DM_ODOMETER_COMMAND_MODE_QUADRATURE = 2,  ///<  Quadrature encoder mode.
+};
+typedef enum mip_3dm_odometer_command_mode mip_3dm_odometer_command_mode;
+
+inline void insert_mip_3dm_odometer_command_mode(microstrain_serializer* serializer, const mip_3dm_odometer_command_mode self)
+{
+    microstrain_insert_u8(serializer, (uint8_t)(self));
+}
+inline void extract_mip_3dm_odometer_command_mode(microstrain_serializer* serializer, mip_3dm_odometer_command_mode* self)
+{
+    uint8_t tmp = 0;
+    microstrain_extract_u8(serializer, &tmp);
+    *self = tmp;
+}
+
 
 struct mip_3dm_odometer_command
 {
@@ -1249,31 +1391,28 @@ struct mip_3dm_odometer_command
     mip_3dm_odometer_command_mode mode; ///< Mode setting.
     float scaling; ///< Encoder pulses per meter of distance traveled [pulses/m]. Distance traveled is computed using the formula d = p / N * 2R * pi, where d is distance, p is the number of pulses received, N is the encoder resolution, and R is the wheel radius. By simplifying all of the parameters into one, the formula d = p / S is obtained, where s is the odometer scaling factor passed to this command. S is equivalent to N / (2R * pi) and has units of pulses / meter. N is in units of "A" pulses per revolution and R is in meters. Make this value negative if the odometer is mounted so that it rotates backwards.
     float uncertainty; ///< Uncertainty in encoder counts to distance translation (1-sigma value) [m/m].
-    
 };
 typedef struct mip_3dm_odometer_command mip_3dm_odometer_command;
+
 void insert_mip_3dm_odometer_command(microstrain_serializer* serializer, const mip_3dm_odometer_command* self);
 void extract_mip_3dm_odometer_command(microstrain_serializer* serializer, mip_3dm_odometer_command* self);
-
-void insert_mip_3dm_odometer_command_mode(microstrain_serializer* serializer, const mip_3dm_odometer_command_mode self);
-void extract_mip_3dm_odometer_command_mode(microstrain_serializer* serializer, mip_3dm_odometer_command_mode* self);
 
 struct mip_3dm_odometer_response
 {
     mip_3dm_odometer_command_mode mode; ///< Mode setting.
     float scaling; ///< Encoder pulses per meter of distance traveled [pulses/m]. Distance traveled is computed using the formula d = p / N * 2R * pi, where d is distance, p is the number of pulses received, N is the encoder resolution, and R is the wheel radius. By simplifying all of the parameters into one, the formula d = p / S is obtained, where s is the odometer scaling factor passed to this command. S is equivalent to N / (2R * pi) and has units of pulses / meter. N is in units of "A" pulses per revolution and R is in meters. Make this value negative if the odometer is mounted so that it rotates backwards.
     float uncertainty; ///< Uncertainty in encoder counts to distance translation (1-sigma value) [m/m].
-    
 };
 typedef struct mip_3dm_odometer_response mip_3dm_odometer_response;
+
 void insert_mip_3dm_odometer_response(microstrain_serializer* serializer, const mip_3dm_odometer_response* self);
 void extract_mip_3dm_odometer_response(microstrain_serializer* serializer, mip_3dm_odometer_response* self);
 
-mip_cmd_result mip_3dm_write_odometer(struct mip_interface* device, mip_3dm_odometer_command_mode mode, float scaling, float uncertainty);
-mip_cmd_result mip_3dm_read_odometer(struct mip_interface* device, mip_3dm_odometer_command_mode* mode_out, float* scaling_out, float* uncertainty_out);
-mip_cmd_result mip_3dm_save_odometer(struct mip_interface* device);
-mip_cmd_result mip_3dm_load_odometer(struct mip_interface* device);
-mip_cmd_result mip_3dm_default_odometer(struct mip_interface* device);
+mip_cmd_result mip_3dm_write_odometer(mip_interface* device, mip_3dm_odometer_command_mode mode, float scaling, float uncertainty);
+mip_cmd_result mip_3dm_read_odometer(mip_interface* device, mip_3dm_odometer_command_mode* mode_out, float* scaling_out, float* uncertainty_out);
+mip_cmd_result mip_3dm_save_odometer(mip_interface* device);
+mip_cmd_result mip_3dm_load_odometer(mip_interface* device);
+mip_cmd_result mip_3dm_default_odometer(mip_interface* device);
 
 ///@}
 ///
@@ -1299,31 +1438,43 @@ mip_cmd_result mip_3dm_default_odometer(struct mip_interface* device);
 ///
 ///@{
 
-typedef uint8_t mip_3dm_get_event_support_command_query;
-static const mip_3dm_get_event_support_command_query MIP_3DM_GET_EVENT_SUPPORT_COMMAND_QUERY_TRIGGER_TYPES = 1; ///<  Query the supported trigger types and max count for each.
-static const mip_3dm_get_event_support_command_query MIP_3DM_GET_EVENT_SUPPORT_COMMAND_QUERY_ACTION_TYPES  = 2; ///<  Query the supported action types and max count for each.
+enum mip_3dm_get_event_support_command_query
+{
+    MIP_3DM_GET_EVENT_SUPPORT_COMMAND_QUERY_TRIGGER_TYPES = 1,  ///<  Query the supported trigger types and max count for each.
+    MIP_3DM_GET_EVENT_SUPPORT_COMMAND_QUERY_ACTION_TYPES  = 2,  ///<  Query the supported action types and max count for each.
+};
+typedef enum mip_3dm_get_event_support_command_query mip_3dm_get_event_support_command_query;
+
+inline void insert_mip_3dm_get_event_support_command_query(microstrain_serializer* serializer, const mip_3dm_get_event_support_command_query self)
+{
+    microstrain_insert_u8(serializer, (uint8_t)(self));
+}
+inline void extract_mip_3dm_get_event_support_command_query(microstrain_serializer* serializer, mip_3dm_get_event_support_command_query* self)
+{
+    uint8_t tmp = 0;
+    microstrain_extract_u8(serializer, &tmp);
+    *self = tmp;
+}
 
 struct mip_3dm_get_event_support_command_info
 {
     uint8_t type; ///< Trigger or action type, as defined in the respective setup command.
     uint8_t count; ///< This is the maximum number of instances supported for this type.
-    
 };
 typedef struct mip_3dm_get_event_support_command_info mip_3dm_get_event_support_command_info;
-struct mip_3dm_get_event_support_command
-{
-    mip_3dm_get_event_support_command_query query; ///< What type of information to retrieve.
-    
-};
-typedef struct mip_3dm_get_event_support_command mip_3dm_get_event_support_command;
-void insert_mip_3dm_get_event_support_command(microstrain_serializer* serializer, const mip_3dm_get_event_support_command* self);
-void extract_mip_3dm_get_event_support_command(microstrain_serializer* serializer, mip_3dm_get_event_support_command* self);
-
-void insert_mip_3dm_get_event_support_command_query(microstrain_serializer* serializer, const mip_3dm_get_event_support_command_query self);
-void extract_mip_3dm_get_event_support_command_query(microstrain_serializer* serializer, mip_3dm_get_event_support_command_query* self);
 
 void insert_mip_3dm_get_event_support_command_info(microstrain_serializer* serializer, const mip_3dm_get_event_support_command_info* self);
 void extract_mip_3dm_get_event_support_command_info(microstrain_serializer* serializer, mip_3dm_get_event_support_command_info* self);
+
+
+struct mip_3dm_get_event_support_command
+{
+    mip_3dm_get_event_support_command_query query; ///< What type of information to retrieve.
+};
+typedef struct mip_3dm_get_event_support_command mip_3dm_get_event_support_command;
+
+void insert_mip_3dm_get_event_support_command(microstrain_serializer* serializer, const mip_3dm_get_event_support_command* self);
+void extract_mip_3dm_get_event_support_command(microstrain_serializer* serializer, mip_3dm_get_event_support_command* self);
 
 struct mip_3dm_get_event_support_response
 {
@@ -1331,13 +1482,13 @@ struct mip_3dm_get_event_support_response
     uint8_t max_instances; ///< Number of slots available. The 'instance' number for the configuration or control commands must be between 1 and this value.
     uint8_t num_entries; ///< Number of supported types.
     mip_3dm_get_event_support_command_info entries[126]; ///< List of supported types.
-    
 };
 typedef struct mip_3dm_get_event_support_response mip_3dm_get_event_support_response;
+
 void insert_mip_3dm_get_event_support_response(microstrain_serializer* serializer, const mip_3dm_get_event_support_response* self);
 void extract_mip_3dm_get_event_support_response(microstrain_serializer* serializer, mip_3dm_get_event_support_response* self);
 
-mip_cmd_result mip_3dm_get_event_support(struct mip_interface* device, mip_3dm_get_event_support_command_query query, uint8_t* max_instances_out, uint8_t* num_entries_out, uint8_t num_entries_out_max, mip_3dm_get_event_support_command_info* entries_out);
+mip_cmd_result mip_3dm_get_event_support(mip_interface* device, mip_3dm_get_event_support_command_query query, uint8_t* max_instances_out, uint8_t* num_entries_out, uint8_t num_entries_out_max, mip_3dm_get_event_support_command_info* entries_out);
 
 ///@}
 ///
@@ -1356,41 +1507,53 @@ mip_cmd_result mip_3dm_get_event_support(struct mip_interface* device, mip_3dm_g
 ///
 ///@{
 
-typedef uint8_t mip_3dm_event_control_command_mode;
-static const mip_3dm_event_control_command_mode MIP_3DM_EVENT_CONTROL_COMMAND_MODE_DISABLED   = 0; ///<  Trigger is disabled.
-static const mip_3dm_event_control_command_mode MIP_3DM_EVENT_CONTROL_COMMAND_MODE_ENABLED    = 1; ///<  Trigger is enabled and will work normally.
-static const mip_3dm_event_control_command_mode MIP_3DM_EVENT_CONTROL_COMMAND_MODE_TEST       = 2; ///<  Forces the trigger to the active state for testing purposes.
-static const mip_3dm_event_control_command_mode MIP_3DM_EVENT_CONTROL_COMMAND_MODE_TEST_PULSE = 3; ///<  Trigger is forced to the active state for one event cycle only. After the test cycle, the mode reverts to the previous state (either enabled or disabled).
+enum mip_3dm_event_control_command_mode
+{
+    MIP_3DM_EVENT_CONTROL_COMMAND_MODE_DISABLED   = 0,  ///<  Trigger is disabled.
+    MIP_3DM_EVENT_CONTROL_COMMAND_MODE_ENABLED    = 1,  ///<  Trigger is enabled and will work normally.
+    MIP_3DM_EVENT_CONTROL_COMMAND_MODE_TEST       = 2,  ///<  Forces the trigger to the active state for testing purposes.
+    MIP_3DM_EVENT_CONTROL_COMMAND_MODE_TEST_PULSE = 3,  ///<  Trigger is forced to the active state for one event cycle only. After the test cycle, the mode reverts to the previous state (either enabled or disabled).
+};
+typedef enum mip_3dm_event_control_command_mode mip_3dm_event_control_command_mode;
+
+inline void insert_mip_3dm_event_control_command_mode(microstrain_serializer* serializer, const mip_3dm_event_control_command_mode self)
+{
+    microstrain_insert_u8(serializer, (uint8_t)(self));
+}
+inline void extract_mip_3dm_event_control_command_mode(microstrain_serializer* serializer, mip_3dm_event_control_command_mode* self)
+{
+    uint8_t tmp = 0;
+    microstrain_extract_u8(serializer, &tmp);
+    *self = tmp;
+}
+
 
 struct mip_3dm_event_control_command
 {
     mip_function_selector function;
     uint8_t instance; ///< Trigger instance to affect. 0 can be used to apply the mode to all configured triggers, except when the function selector is READ.
     mip_3dm_event_control_command_mode mode; ///< How to change the trigger state. Except when instance is 0, the corresponding trigger must be configured, i.e. not have type 0.
-    
 };
 typedef struct mip_3dm_event_control_command mip_3dm_event_control_command;
+
 void insert_mip_3dm_event_control_command(microstrain_serializer* serializer, const mip_3dm_event_control_command* self);
 void extract_mip_3dm_event_control_command(microstrain_serializer* serializer, mip_3dm_event_control_command* self);
-
-void insert_mip_3dm_event_control_command_mode(microstrain_serializer* serializer, const mip_3dm_event_control_command_mode self);
-void extract_mip_3dm_event_control_command_mode(microstrain_serializer* serializer, mip_3dm_event_control_command_mode* self);
 
 struct mip_3dm_event_control_response
 {
     uint8_t instance; ///< Trigger instance to affect. 0 can be used to apply the mode to all configured triggers, except when the function selector is READ.
     mip_3dm_event_control_command_mode mode; ///< How to change the trigger state. Except when instance is 0, the corresponding trigger must be configured, i.e. not have type 0.
-    
 };
 typedef struct mip_3dm_event_control_response mip_3dm_event_control_response;
+
 void insert_mip_3dm_event_control_response(microstrain_serializer* serializer, const mip_3dm_event_control_response* self);
 void extract_mip_3dm_event_control_response(microstrain_serializer* serializer, mip_3dm_event_control_response* self);
 
-mip_cmd_result mip_3dm_write_event_control(struct mip_interface* device, uint8_t instance, mip_3dm_event_control_command_mode mode);
-mip_cmd_result mip_3dm_read_event_control(struct mip_interface* device, uint8_t instance, mip_3dm_event_control_command_mode* mode_out);
-mip_cmd_result mip_3dm_save_event_control(struct mip_interface* device, uint8_t instance);
-mip_cmd_result mip_3dm_load_event_control(struct mip_interface* device, uint8_t instance);
-mip_cmd_result mip_3dm_default_event_control(struct mip_interface* device, uint8_t instance);
+mip_cmd_result mip_3dm_write_event_control(mip_interface* device, uint8_t instance, mip_3dm_event_control_command_mode mode);
+mip_cmd_result mip_3dm_read_event_control(mip_interface* device, uint8_t instance, mip_3dm_event_control_command_mode* mode_out);
+mip_cmd_result mip_3dm_save_event_control(mip_interface* device, uint8_t instance);
+mip_cmd_result mip_3dm_load_event_control(mip_interface* device, uint8_t instance);
+mip_cmd_result mip_3dm_default_event_control(mip_interface* device, uint8_t instance);
 
 ///@}
 ///
@@ -1405,41 +1568,49 @@ static const mip_3dm_get_event_trigger_status_command_status MIP_3DM_GET_EVENT_T
 static const mip_3dm_get_event_trigger_status_command_status MIP_3DM_GET_EVENT_TRIGGER_STATUS_COMMAND_STATUS_ENABLED = 0x02; ///<  True if the trigger is enabled.
 static const mip_3dm_get_event_trigger_status_command_status MIP_3DM_GET_EVENT_TRIGGER_STATUS_COMMAND_STATUS_TEST    = 0x04; ///<  True if the trigger is in test mode.
 static const mip_3dm_get_event_trigger_status_command_status MIP_3DM_GET_EVENT_TRIGGER_STATUS_COMMAND_STATUS_ALL     = 0x07;
+inline void insert_mip_3dm_get_event_trigger_status_command_status(microstrain_serializer* serializer, const mip_3dm_get_event_trigger_status_command_status self)
+{
+    microstrain_insert_u8(serializer, (uint8_t)(self));
+}
+inline void extract_mip_3dm_get_event_trigger_status_command_status(microstrain_serializer* serializer, mip_3dm_get_event_trigger_status_command_status* self)
+{
+    uint8_t tmp = 0;
+    microstrain_extract_u8(serializer, &tmp);
+    *self = tmp;
+}
 
 struct mip_3dm_get_event_trigger_status_command_entry
 {
     uint8_t type; ///< Configured trigger type.
     mip_3dm_get_event_trigger_status_command_status status; ///< Trigger status.
-    
 };
 typedef struct mip_3dm_get_event_trigger_status_command_entry mip_3dm_get_event_trigger_status_command_entry;
+
+void insert_mip_3dm_get_event_trigger_status_command_entry(microstrain_serializer* serializer, const mip_3dm_get_event_trigger_status_command_entry* self);
+void extract_mip_3dm_get_event_trigger_status_command_entry(microstrain_serializer* serializer, mip_3dm_get_event_trigger_status_command_entry* self);
+
+
 struct mip_3dm_get_event_trigger_status_command
 {
     uint8_t requested_count; ///< Number of entries requested. If 0, requests all trigger slots.
     uint8_t requested_instances[20]; ///< List of trigger instances to query.
-    
 };
 typedef struct mip_3dm_get_event_trigger_status_command mip_3dm_get_event_trigger_status_command;
+
 void insert_mip_3dm_get_event_trigger_status_command(microstrain_serializer* serializer, const mip_3dm_get_event_trigger_status_command* self);
 void extract_mip_3dm_get_event_trigger_status_command(microstrain_serializer* serializer, mip_3dm_get_event_trigger_status_command* self);
-
-void insert_mip_3dm_get_event_trigger_status_command_status(microstrain_serializer* serializer, const mip_3dm_get_event_trigger_status_command_status self);
-void extract_mip_3dm_get_event_trigger_status_command_status(microstrain_serializer* serializer, mip_3dm_get_event_trigger_status_command_status* self);
-
-void insert_mip_3dm_get_event_trigger_status_command_entry(microstrain_serializer* serializer, const mip_3dm_get_event_trigger_status_command_entry* self);
-void extract_mip_3dm_get_event_trigger_status_command_entry(microstrain_serializer* serializer, mip_3dm_get_event_trigger_status_command_entry* self);
 
 struct mip_3dm_get_event_trigger_status_response
 {
     uint8_t count; ///< Number of entries requested. If requested_count was 0, this is the number of supported trigger slots.
     mip_3dm_get_event_trigger_status_command_entry triggers[20]; ///< A list of the configured triggers. Entries are in the order requested, or in increasing order if count was 0.
-    
 };
 typedef struct mip_3dm_get_event_trigger_status_response mip_3dm_get_event_trigger_status_response;
+
 void insert_mip_3dm_get_event_trigger_status_response(microstrain_serializer* serializer, const mip_3dm_get_event_trigger_status_response* self);
 void extract_mip_3dm_get_event_trigger_status_response(microstrain_serializer* serializer, mip_3dm_get_event_trigger_status_response* self);
 
-mip_cmd_result mip_3dm_get_event_trigger_status(struct mip_interface* device, uint8_t requested_count, const uint8_t* requested_instances, uint8_t* count_out, uint8_t count_out_max, mip_3dm_get_event_trigger_status_command_entry* triggers_out);
+mip_cmd_result mip_3dm_get_event_trigger_status(mip_interface* device, uint8_t requested_count, const uint8_t* requested_instances, uint8_t* count_out, uint8_t count_out_max, mip_3dm_get_event_trigger_status_command_entry* triggers_out);
 
 ///@}
 ///
@@ -1452,33 +1623,34 @@ struct mip_3dm_get_event_action_status_command_entry
 {
     uint8_t action_type; ///< Configured action type.
     uint8_t trigger_id; ///< Associated trigger instance.
-    
 };
 typedef struct mip_3dm_get_event_action_status_command_entry mip_3dm_get_event_action_status_command_entry;
+
+void insert_mip_3dm_get_event_action_status_command_entry(microstrain_serializer* serializer, const mip_3dm_get_event_action_status_command_entry* self);
+void extract_mip_3dm_get_event_action_status_command_entry(microstrain_serializer* serializer, mip_3dm_get_event_action_status_command_entry* self);
+
+
 struct mip_3dm_get_event_action_status_command
 {
     uint8_t requested_count; ///< Number of entries requested. If 0, requests all action slots.
     uint8_t requested_instances[20]; ///< List of action instances to query.
-    
 };
 typedef struct mip_3dm_get_event_action_status_command mip_3dm_get_event_action_status_command;
+
 void insert_mip_3dm_get_event_action_status_command(microstrain_serializer* serializer, const mip_3dm_get_event_action_status_command* self);
 void extract_mip_3dm_get_event_action_status_command(microstrain_serializer* serializer, mip_3dm_get_event_action_status_command* self);
-
-void insert_mip_3dm_get_event_action_status_command_entry(microstrain_serializer* serializer, const mip_3dm_get_event_action_status_command_entry* self);
-void extract_mip_3dm_get_event_action_status_command_entry(microstrain_serializer* serializer, mip_3dm_get_event_action_status_command_entry* self);
 
 struct mip_3dm_get_event_action_status_response
 {
     uint8_t count; ///< Number of entries requested. If requested_count was 0, this is the number of supported action slots.
     mip_3dm_get_event_action_status_command_entry actions[20]; ///< A list of the configured actions. Entries are in the order requested, or in increasing order if count was 0.
-    
 };
 typedef struct mip_3dm_get_event_action_status_response mip_3dm_get_event_action_status_response;
+
 void insert_mip_3dm_get_event_action_status_response(microstrain_serializer* serializer, const mip_3dm_get_event_action_status_response* self);
 void extract_mip_3dm_get_event_action_status_response(microstrain_serializer* serializer, mip_3dm_get_event_action_status_response* self);
 
-mip_cmd_result mip_3dm_get_event_action_status(struct mip_interface* device, uint8_t requested_count, const uint8_t* requested_instances, uint8_t* count_out, uint8_t count_out_max, mip_3dm_get_event_action_status_command_entry* actions_out);
+mip_cmd_result mip_3dm_get_event_action_status(mip_interface* device, uint8_t requested_count, const uint8_t* requested_instances, uint8_t* count_out, uint8_t count_out_max, mip_3dm_get_event_action_status_command_entry* actions_out);
 
 ///@}
 ///
@@ -1488,22 +1660,55 @@ mip_cmd_result mip_3dm_get_event_action_status(struct mip_interface* device, uin
 ///
 ///@{
 
-typedef uint8_t mip_3dm_event_trigger_command_gpio_params_mode;
-static const mip_3dm_event_trigger_command_gpio_params_mode MIP_3DM_EVENT_TRIGGER_COMMAND_GPIO_PARAMS_MODE_DISABLED   = 0; ///<  The pin will have no effect and the trigger will never activate.
-static const mip_3dm_event_trigger_command_gpio_params_mode MIP_3DM_EVENT_TRIGGER_COMMAND_GPIO_PARAMS_MODE_WHILE_HIGH = 1; ///<  The trigger will be active while the pin is high.
-static const mip_3dm_event_trigger_command_gpio_params_mode MIP_3DM_EVENT_TRIGGER_COMMAND_GPIO_PARAMS_MODE_WHILE_LOW  = 2; ///<  The trigger will be active while the pin is low.
-static const mip_3dm_event_trigger_command_gpio_params_mode MIP_3DM_EVENT_TRIGGER_COMMAND_GPIO_PARAMS_MODE_EDGE       = 4; ///<  Use if the pin is configured for timestamping via the 3DM Gpio Configuration command (0x0C41).
+enum mip_3dm_event_trigger_command_gpio_params_mode
+{
+    MIP_3DM_EVENT_TRIGGER_COMMAND_GPIO_PARAMS_MODE_DISABLED   = 0,  ///<  The pin will have no effect and the trigger will never activate.
+    MIP_3DM_EVENT_TRIGGER_COMMAND_GPIO_PARAMS_MODE_WHILE_HIGH = 1,  ///<  The trigger will be active while the pin is high.
+    MIP_3DM_EVENT_TRIGGER_COMMAND_GPIO_PARAMS_MODE_WHILE_LOW  = 2,  ///<  The trigger will be active while the pin is low.
+    MIP_3DM_EVENT_TRIGGER_COMMAND_GPIO_PARAMS_MODE_EDGE       = 4,  ///<  Use if the pin is configured for timestamping via the 3DM Gpio Configuration command (0x0C41).
+};
+typedef enum mip_3dm_event_trigger_command_gpio_params_mode mip_3dm_event_trigger_command_gpio_params_mode;
+
+inline void insert_mip_3dm_event_trigger_command_gpio_params_mode(microstrain_serializer* serializer, const mip_3dm_event_trigger_command_gpio_params_mode self)
+{
+    microstrain_insert_u8(serializer, (uint8_t)(self));
+}
+inline void extract_mip_3dm_event_trigger_command_gpio_params_mode(microstrain_serializer* serializer, mip_3dm_event_trigger_command_gpio_params_mode* self)
+{
+    uint8_t tmp = 0;
+    microstrain_extract_u8(serializer, &tmp);
+    *self = tmp;
+}
+
 
 struct mip_3dm_event_trigger_command_gpio_params
 {
     uint8_t pin; ///< GPIO pin number.
     mip_3dm_event_trigger_command_gpio_params_mode mode; ///< How the pin state affects the trigger.
-    
 };
 typedef struct mip_3dm_event_trigger_command_gpio_params mip_3dm_event_trigger_command_gpio_params;
-typedef uint8_t mip_3dm_event_trigger_command_threshold_params_type;
-static const mip_3dm_event_trigger_command_threshold_params_type MIP_3DM_EVENT_TRIGGER_COMMAND_THRESHOLD_PARAMS_TYPE_WINDOW   = 1; ///<  Window comparison. Trigger is active if low_thres &lt;= value &lt;= high_thres. If the thresholds are reversed, the trigger is active when value &lt; high_thres or value &gt; low_thres.
-static const mip_3dm_event_trigger_command_threshold_params_type MIP_3DM_EVENT_TRIGGER_COMMAND_THRESHOLD_PARAMS_TYPE_INTERVAL = 2; ///<  Trigger at evenly-spaced intervals. Normally used with time fields to trigger periodically. Trigger is active when (value % interval) &lt;= int_thres. If the thresholds are reversed (high_thres &lt; low_thres) then the trigger is active when (value % low_thres) &gt; high_thres.
+
+void insert_mip_3dm_event_trigger_command_gpio_params(microstrain_serializer* serializer, const mip_3dm_event_trigger_command_gpio_params* self);
+void extract_mip_3dm_event_trigger_command_gpio_params(microstrain_serializer* serializer, mip_3dm_event_trigger_command_gpio_params* self);
+
+enum mip_3dm_event_trigger_command_threshold_params_type
+{
+    MIP_3DM_EVENT_TRIGGER_COMMAND_THRESHOLD_PARAMS_TYPE_WINDOW   = 1,  ///<  Window comparison. Trigger is active if low_thres &lt;= value &lt;= high_thres. If the thresholds are reversed, the trigger is active when value &lt; high_thres or value &gt; low_thres.
+    MIP_3DM_EVENT_TRIGGER_COMMAND_THRESHOLD_PARAMS_TYPE_INTERVAL = 2,  ///<  Trigger at evenly-spaced intervals. Normally used with time fields to trigger periodically. Trigger is active when (value % interval) &lt;= int_thres. If the thresholds are reversed (high_thres &lt; low_thres) then the trigger is active when (value % low_thres) &gt; high_thres.
+};
+typedef enum mip_3dm_event_trigger_command_threshold_params_type mip_3dm_event_trigger_command_threshold_params_type;
+
+inline void insert_mip_3dm_event_trigger_command_threshold_params_type(microstrain_serializer* serializer, const mip_3dm_event_trigger_command_threshold_params_type self)
+{
+    microstrain_insert_u8(serializer, (uint8_t)(self));
+}
+inline void extract_mip_3dm_event_trigger_command_threshold_params_type(microstrain_serializer* serializer, mip_3dm_event_trigger_command_threshold_params_type* self)
+{
+    uint8_t tmp = 0;
+    microstrain_extract_u8(serializer, &tmp);
+    *self = tmp;
+}
+
 
 struct mip_3dm_event_trigger_command_threshold_params
 {
@@ -1521,9 +1726,12 @@ struct mip_3dm_event_trigger_command_threshold_params
         double high_thres;
         double interval;
     };
-    
 };
 typedef struct mip_3dm_event_trigger_command_threshold_params mip_3dm_event_trigger_command_threshold_params;
+
+void insert_mip_3dm_event_trigger_command_threshold_params(microstrain_serializer* serializer, const mip_3dm_event_trigger_command_threshold_params* self);
+void extract_mip_3dm_event_trigger_command_threshold_params(microstrain_serializer* serializer, mip_3dm_event_trigger_command_threshold_params* self);
+
 enum { MIP_3DM_EVENT_TRIGGER_COMMAND_COMBINATION_PARAMS_LOGIC_NEVER = 0x0000 };
 enum { MIP_3DM_EVENT_TRIGGER_COMMAND_COMBINATION_PARAMS_LOGIC_ALWAYS = 0xFFFF };
 enum { MIP_3DM_EVENT_TRIGGER_COMMAND_COMBINATION_PARAMS_LOGIC_NONE = 0x0001 };
@@ -1537,18 +1745,36 @@ enum { MIP_3DM_EVENT_TRIGGER_COMMAND_COMBINATION_PARAMS_LOGIC_ONLY_D = 0x0100 };
 enum { MIP_3DM_EVENT_TRIGGER_COMMAND_COMBINATION_PARAMS_LOGIC_AND_AB = 0x8888 };
 enum { MIP_3DM_EVENT_TRIGGER_COMMAND_COMBINATION_PARAMS_LOGIC_AB_OR_C = 0xF8F8 };
 enum { MIP_3DM_EVENT_TRIGGER_COMMAND_COMBINATION_PARAMS_LOGIC_AND = 0x8000 };
+
 struct mip_3dm_event_trigger_command_combination_params
 {
     uint16_t logic_table; ///< The last column of a truth table describing the output given the state of each input.
     uint8_t input_triggers[4]; ///< List of trigger IDs for inputs. Use 0 for unused inputs.
-    
 };
 typedef struct mip_3dm_event_trigger_command_combination_params mip_3dm_event_trigger_command_combination_params;
-typedef uint8_t mip_3dm_event_trigger_command_type;
-static const mip_3dm_event_trigger_command_type MIP_3DM_EVENT_TRIGGER_COMMAND_TYPE_NONE        = 0; ///<  No trigger selected. The state will always be inactive.
-static const mip_3dm_event_trigger_command_type MIP_3DM_EVENT_TRIGGER_COMMAND_TYPE_GPIO        = 1; ///<  Trigger based on the state of a GPIO pin. See GpioParams.
-static const mip_3dm_event_trigger_command_type MIP_3DM_EVENT_TRIGGER_COMMAND_TYPE_THRESHOLD   = 2; ///<  Compare a data quantity against a high and low threshold. See ThresholdParams.
-static const mip_3dm_event_trigger_command_type MIP_3DM_EVENT_TRIGGER_COMMAND_TYPE_COMBINATION = 3; ///<  Logical combination of two or more triggers. See CombinationParams.
+
+void insert_mip_3dm_event_trigger_command_combination_params(microstrain_serializer* serializer, const mip_3dm_event_trigger_command_combination_params* self);
+void extract_mip_3dm_event_trigger_command_combination_params(microstrain_serializer* serializer, mip_3dm_event_trigger_command_combination_params* self);
+
+enum mip_3dm_event_trigger_command_type
+{
+    MIP_3DM_EVENT_TRIGGER_COMMAND_TYPE_NONE        = 0,  ///<  No trigger selected. The state will always be inactive.
+    MIP_3DM_EVENT_TRIGGER_COMMAND_TYPE_GPIO        = 1,  ///<  Trigger based on the state of a GPIO pin. See GpioParams.
+    MIP_3DM_EVENT_TRIGGER_COMMAND_TYPE_THRESHOLD   = 2,  ///<  Compare a data quantity against a high and low threshold. See ThresholdParams.
+    MIP_3DM_EVENT_TRIGGER_COMMAND_TYPE_COMBINATION = 3,  ///<  Logical combination of two or more triggers. See CombinationParams.
+};
+typedef enum mip_3dm_event_trigger_command_type mip_3dm_event_trigger_command_type;
+
+inline void insert_mip_3dm_event_trigger_command_type(microstrain_serializer* serializer, const mip_3dm_event_trigger_command_type self)
+{
+    microstrain_insert_u8(serializer, (uint8_t)(self));
+}
+inline void extract_mip_3dm_event_trigger_command_type(microstrain_serializer* serializer, mip_3dm_event_trigger_command_type* self)
+{
+    uint8_t tmp = 0;
+    microstrain_extract_u8(serializer, &tmp);
+    *self = tmp;
+}
 
 union mip_3dm_event_trigger_command_parameters
 {
@@ -1564,46 +1790,28 @@ struct mip_3dm_event_trigger_command
     uint8_t instance; ///< Trigger number. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all instances.
     mip_3dm_event_trigger_command_type type; ///< Type of trigger to configure.
     mip_3dm_event_trigger_command_parameters parameters;
-    
 };
 typedef struct mip_3dm_event_trigger_command mip_3dm_event_trigger_command;
+
 void insert_mip_3dm_event_trigger_command(microstrain_serializer* serializer, const mip_3dm_event_trigger_command* self);
 void extract_mip_3dm_event_trigger_command(microstrain_serializer* serializer, mip_3dm_event_trigger_command* self);
-
-void insert_mip_3dm_event_trigger_command_gpio_params(microstrain_serializer* serializer, const mip_3dm_event_trigger_command_gpio_params* self);
-void extract_mip_3dm_event_trigger_command_gpio_params(microstrain_serializer* serializer, mip_3dm_event_trigger_command_gpio_params* self);
-
-void insert_mip_3dm_event_trigger_command_gpio_params_mode(microstrain_serializer* serializer, const mip_3dm_event_trigger_command_gpio_params_mode self);
-void extract_mip_3dm_event_trigger_command_gpio_params_mode(microstrain_serializer* serializer, mip_3dm_event_trigger_command_gpio_params_mode* self);
-
-void insert_mip_3dm_event_trigger_command_threshold_params(microstrain_serializer* serializer, const mip_3dm_event_trigger_command_threshold_params* self);
-void extract_mip_3dm_event_trigger_command_threshold_params(microstrain_serializer* serializer, mip_3dm_event_trigger_command_threshold_params* self);
-
-void insert_mip_3dm_event_trigger_command_threshold_params_type(microstrain_serializer* serializer, const mip_3dm_event_trigger_command_threshold_params_type self);
-void extract_mip_3dm_event_trigger_command_threshold_params_type(microstrain_serializer* serializer, mip_3dm_event_trigger_command_threshold_params_type* self);
-
-void insert_mip_3dm_event_trigger_command_combination_params(microstrain_serializer* serializer, const mip_3dm_event_trigger_command_combination_params* self);
-void extract_mip_3dm_event_trigger_command_combination_params(microstrain_serializer* serializer, mip_3dm_event_trigger_command_combination_params* self);
-
-void insert_mip_3dm_event_trigger_command_type(microstrain_serializer* serializer, const mip_3dm_event_trigger_command_type self);
-void extract_mip_3dm_event_trigger_command_type(microstrain_serializer* serializer, mip_3dm_event_trigger_command_type* self);
 
 struct mip_3dm_event_trigger_response
 {
     uint8_t instance; ///< Trigger number. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all instances.
     mip_3dm_event_trigger_command_type type; ///< Type of trigger to configure.
     mip_3dm_event_trigger_command_parameters parameters;
-    
 };
 typedef struct mip_3dm_event_trigger_response mip_3dm_event_trigger_response;
+
 void insert_mip_3dm_event_trigger_response(microstrain_serializer* serializer, const mip_3dm_event_trigger_response* self);
 void extract_mip_3dm_event_trigger_response(microstrain_serializer* serializer, mip_3dm_event_trigger_response* self);
 
-mip_cmd_result mip_3dm_write_event_trigger(struct mip_interface* device, uint8_t instance, mip_3dm_event_trigger_command_type type, const mip_3dm_event_trigger_command_parameters* parameters);
-mip_cmd_result mip_3dm_read_event_trigger(struct mip_interface* device, uint8_t instance, mip_3dm_event_trigger_command_type* type_out, mip_3dm_event_trigger_command_parameters* parameters_out);
-mip_cmd_result mip_3dm_save_event_trigger(struct mip_interface* device, uint8_t instance);
-mip_cmd_result mip_3dm_load_event_trigger(struct mip_interface* device, uint8_t instance);
-mip_cmd_result mip_3dm_default_event_trigger(struct mip_interface* device, uint8_t instance);
+mip_cmd_result mip_3dm_write_event_trigger(mip_interface* device, uint8_t instance, mip_3dm_event_trigger_command_type type, const mip_3dm_event_trigger_command_parameters* parameters);
+mip_cmd_result mip_3dm_read_event_trigger(mip_interface* device, uint8_t instance, mip_3dm_event_trigger_command_type* type_out, mip_3dm_event_trigger_command_parameters* parameters_out);
+mip_cmd_result mip_3dm_save_event_trigger(mip_interface* device, uint8_t instance);
+mip_cmd_result mip_3dm_load_event_trigger(mip_interface* device, uint8_t instance);
+mip_cmd_result mip_3dm_default_event_trigger(mip_interface* device, uint8_t instance);
 
 ///@}
 ///
@@ -1613,34 +1821,69 @@ mip_cmd_result mip_3dm_default_event_trigger(struct mip_interface* device, uint8
 ///
 ///@{
 
-typedef uint8_t mip_3dm_event_action_command_gpio_params_mode;
-static const mip_3dm_event_action_command_gpio_params_mode MIP_3DM_EVENT_ACTION_COMMAND_GPIO_PARAMS_MODE_DISABLED     = 0; ///<  Pin state will not be changed.
-static const mip_3dm_event_action_command_gpio_params_mode MIP_3DM_EVENT_ACTION_COMMAND_GPIO_PARAMS_MODE_ACTIVE_HIGH  = 1; ///<  Pin will be set high when the trigger is active and low otherwise.
-static const mip_3dm_event_action_command_gpio_params_mode MIP_3DM_EVENT_ACTION_COMMAND_GPIO_PARAMS_MODE_ACTIVE_LOW   = 2; ///<  Pin will be set low when the trigger is active and high otherwise.
-static const mip_3dm_event_action_command_gpio_params_mode MIP_3DM_EVENT_ACTION_COMMAND_GPIO_PARAMS_MODE_ONESHOT_HIGH = 5; ///<  Pin will be set high each time the trigger activates. It will not be set low.
-static const mip_3dm_event_action_command_gpio_params_mode MIP_3DM_EVENT_ACTION_COMMAND_GPIO_PARAMS_MODE_ONESHOT_LOW  = 6; ///<  Pin will be set low each time the trigger activates. It will not be set high.
-static const mip_3dm_event_action_command_gpio_params_mode MIP_3DM_EVENT_ACTION_COMMAND_GPIO_PARAMS_MODE_TOGGLE       = 7; ///<  Pin will change to the opposite state each time the trigger activates.
+enum mip_3dm_event_action_command_gpio_params_mode
+{
+    MIP_3DM_EVENT_ACTION_COMMAND_GPIO_PARAMS_MODE_DISABLED     = 0,  ///<  Pin state will not be changed.
+    MIP_3DM_EVENT_ACTION_COMMAND_GPIO_PARAMS_MODE_ACTIVE_HIGH  = 1,  ///<  Pin will be set high when the trigger is active and low otherwise.
+    MIP_3DM_EVENT_ACTION_COMMAND_GPIO_PARAMS_MODE_ACTIVE_LOW   = 2,  ///<  Pin will be set low when the trigger is active and high otherwise.
+    MIP_3DM_EVENT_ACTION_COMMAND_GPIO_PARAMS_MODE_ONESHOT_HIGH = 5,  ///<  Pin will be set high each time the trigger activates. It will not be set low.
+    MIP_3DM_EVENT_ACTION_COMMAND_GPIO_PARAMS_MODE_ONESHOT_LOW  = 6,  ///<  Pin will be set low each time the trigger activates. It will not be set high.
+    MIP_3DM_EVENT_ACTION_COMMAND_GPIO_PARAMS_MODE_TOGGLE       = 7,  ///<  Pin will change to the opposite state each time the trigger activates.
+};
+typedef enum mip_3dm_event_action_command_gpio_params_mode mip_3dm_event_action_command_gpio_params_mode;
+
+inline void insert_mip_3dm_event_action_command_gpio_params_mode(microstrain_serializer* serializer, const mip_3dm_event_action_command_gpio_params_mode self)
+{
+    microstrain_insert_u8(serializer, (uint8_t)(self));
+}
+inline void extract_mip_3dm_event_action_command_gpio_params_mode(microstrain_serializer* serializer, mip_3dm_event_action_command_gpio_params_mode* self)
+{
+    uint8_t tmp = 0;
+    microstrain_extract_u8(serializer, &tmp);
+    *self = tmp;
+}
+
 
 struct mip_3dm_event_action_command_gpio_params
 {
     uint8_t pin; ///< GPIO pin number.
     mip_3dm_event_action_command_gpio_params_mode mode; ///< Behavior of the pin.
-    
 };
 typedef struct mip_3dm_event_action_command_gpio_params mip_3dm_event_action_command_gpio_params;
+
+void insert_mip_3dm_event_action_command_gpio_params(microstrain_serializer* serializer, const mip_3dm_event_action_command_gpio_params* self);
+void extract_mip_3dm_event_action_command_gpio_params(microstrain_serializer* serializer, mip_3dm_event_action_command_gpio_params* self);
+
 struct mip_3dm_event_action_command_message_params
 {
     uint8_t desc_set; ///< MIP data descriptor set.
     uint16_t decimation; ///< Decimation from the base rate. If 0, a packet is emitted each time the trigger activates. Otherwise, packets will be streamed while the trigger is active. The internal decimation counter is reset if the trigger deactivates.
     uint8_t num_fields; ///< Number of mip fields in the packet. Limited to 12.
     uint8_t descriptors[20]; ///< List of field descriptors.
-    
 };
 typedef struct mip_3dm_event_action_command_message_params mip_3dm_event_action_command_message_params;
-typedef uint8_t mip_3dm_event_action_command_type;
-static const mip_3dm_event_action_command_type MIP_3DM_EVENT_ACTION_COMMAND_TYPE_NONE    = 0; ///<  No action. Parameters should be empty.
-static const mip_3dm_event_action_command_type MIP_3DM_EVENT_ACTION_COMMAND_TYPE_GPIO    = 1; ///<  Control the state of a GPIO pin. See GpioParameters.
-static const mip_3dm_event_action_command_type MIP_3DM_EVENT_ACTION_COMMAND_TYPE_MESSAGE = 2; ///<  Output a data packet. See MessageParameters.
+
+void insert_mip_3dm_event_action_command_message_params(microstrain_serializer* serializer, const mip_3dm_event_action_command_message_params* self);
+void extract_mip_3dm_event_action_command_message_params(microstrain_serializer* serializer, mip_3dm_event_action_command_message_params* self);
+
+enum mip_3dm_event_action_command_type
+{
+    MIP_3DM_EVENT_ACTION_COMMAND_TYPE_NONE    = 0,  ///<  No action. Parameters should be empty.
+    MIP_3DM_EVENT_ACTION_COMMAND_TYPE_GPIO    = 1,  ///<  Control the state of a GPIO pin. See GpioParameters.
+    MIP_3DM_EVENT_ACTION_COMMAND_TYPE_MESSAGE = 2,  ///<  Output a data packet. See MessageParameters.
+};
+typedef enum mip_3dm_event_action_command_type mip_3dm_event_action_command_type;
+
+inline void insert_mip_3dm_event_action_command_type(microstrain_serializer* serializer, const mip_3dm_event_action_command_type self)
+{
+    microstrain_insert_u8(serializer, (uint8_t)(self));
+}
+inline void extract_mip_3dm_event_action_command_type(microstrain_serializer* serializer, mip_3dm_event_action_command_type* self)
+{
+    uint8_t tmp = 0;
+    microstrain_extract_u8(serializer, &tmp);
+    *self = tmp;
+}
 
 union mip_3dm_event_action_command_parameters
 {
@@ -1656,23 +1899,11 @@ struct mip_3dm_event_action_command
     uint8_t trigger; ///< Trigger ID number.
     mip_3dm_event_action_command_type type; ///< Type of action to configure.
     mip_3dm_event_action_command_parameters parameters;
-    
 };
 typedef struct mip_3dm_event_action_command mip_3dm_event_action_command;
+
 void insert_mip_3dm_event_action_command(microstrain_serializer* serializer, const mip_3dm_event_action_command* self);
 void extract_mip_3dm_event_action_command(microstrain_serializer* serializer, mip_3dm_event_action_command* self);
-
-void insert_mip_3dm_event_action_command_gpio_params(microstrain_serializer* serializer, const mip_3dm_event_action_command_gpio_params* self);
-void extract_mip_3dm_event_action_command_gpio_params(microstrain_serializer* serializer, mip_3dm_event_action_command_gpio_params* self);
-
-void insert_mip_3dm_event_action_command_gpio_params_mode(microstrain_serializer* serializer, const mip_3dm_event_action_command_gpio_params_mode self);
-void extract_mip_3dm_event_action_command_gpio_params_mode(microstrain_serializer* serializer, mip_3dm_event_action_command_gpio_params_mode* self);
-
-void insert_mip_3dm_event_action_command_message_params(microstrain_serializer* serializer, const mip_3dm_event_action_command_message_params* self);
-void extract_mip_3dm_event_action_command_message_params(microstrain_serializer* serializer, mip_3dm_event_action_command_message_params* self);
-
-void insert_mip_3dm_event_action_command_type(microstrain_serializer* serializer, const mip_3dm_event_action_command_type self);
-void extract_mip_3dm_event_action_command_type(microstrain_serializer* serializer, mip_3dm_event_action_command_type* self);
 
 struct mip_3dm_event_action_response
 {
@@ -1680,17 +1911,17 @@ struct mip_3dm_event_action_response
     uint8_t trigger; ///< Trigger ID number.
     mip_3dm_event_action_command_type type; ///< Type of action to configure.
     mip_3dm_event_action_command_parameters parameters;
-    
 };
 typedef struct mip_3dm_event_action_response mip_3dm_event_action_response;
+
 void insert_mip_3dm_event_action_response(microstrain_serializer* serializer, const mip_3dm_event_action_response* self);
 void extract_mip_3dm_event_action_response(microstrain_serializer* serializer, mip_3dm_event_action_response* self);
 
-mip_cmd_result mip_3dm_write_event_action(struct mip_interface* device, uint8_t instance, uint8_t trigger, mip_3dm_event_action_command_type type, const mip_3dm_event_action_command_parameters* parameters);
-mip_cmd_result mip_3dm_read_event_action(struct mip_interface* device, uint8_t instance, uint8_t* trigger_out, mip_3dm_event_action_command_type* type_out, mip_3dm_event_action_command_parameters* parameters_out);
-mip_cmd_result mip_3dm_save_event_action(struct mip_interface* device, uint8_t instance);
-mip_cmd_result mip_3dm_load_event_action(struct mip_interface* device, uint8_t instance);
-mip_cmd_result mip_3dm_default_event_action(struct mip_interface* device, uint8_t instance);
+mip_cmd_result mip_3dm_write_event_action(mip_interface* device, uint8_t instance, uint8_t trigger, mip_3dm_event_action_command_type type, const mip_3dm_event_action_command_parameters* parameters);
+mip_cmd_result mip_3dm_read_event_action(mip_interface* device, uint8_t instance, uint8_t* trigger_out, mip_3dm_event_action_command_type* type_out, mip_3dm_event_action_command_parameters* parameters_out);
+mip_cmd_result mip_3dm_save_event_action(mip_interface* device, uint8_t instance);
+mip_cmd_result mip_3dm_load_event_action(mip_interface* device, uint8_t instance);
+mip_cmd_result mip_3dm_default_event_action(mip_interface* device, uint8_t instance);
 
 ///@}
 ///
@@ -1706,26 +1937,26 @@ struct mip_3dm_accel_bias_command
 {
     mip_function_selector function;
     mip_vector3f bias; ///< accelerometer bias in the sensor frame (x,y,z) [g]
-    
 };
 typedef struct mip_3dm_accel_bias_command mip_3dm_accel_bias_command;
+
 void insert_mip_3dm_accel_bias_command(microstrain_serializer* serializer, const mip_3dm_accel_bias_command* self);
 void extract_mip_3dm_accel_bias_command(microstrain_serializer* serializer, mip_3dm_accel_bias_command* self);
 
 struct mip_3dm_accel_bias_response
 {
     mip_vector3f bias; ///< accelerometer bias in the sensor frame (x,y,z) [g]
-    
 };
 typedef struct mip_3dm_accel_bias_response mip_3dm_accel_bias_response;
+
 void insert_mip_3dm_accel_bias_response(microstrain_serializer* serializer, const mip_3dm_accel_bias_response* self);
 void extract_mip_3dm_accel_bias_response(microstrain_serializer* serializer, mip_3dm_accel_bias_response* self);
 
-mip_cmd_result mip_3dm_write_accel_bias(struct mip_interface* device, const float* bias);
-mip_cmd_result mip_3dm_read_accel_bias(struct mip_interface* device, float* bias_out);
-mip_cmd_result mip_3dm_save_accel_bias(struct mip_interface* device);
-mip_cmd_result mip_3dm_load_accel_bias(struct mip_interface* device);
-mip_cmd_result mip_3dm_default_accel_bias(struct mip_interface* device);
+mip_cmd_result mip_3dm_write_accel_bias(mip_interface* device, const float* bias);
+mip_cmd_result mip_3dm_read_accel_bias(mip_interface* device, float* bias_out);
+mip_cmd_result mip_3dm_save_accel_bias(mip_interface* device);
+mip_cmd_result mip_3dm_load_accel_bias(mip_interface* device);
+mip_cmd_result mip_3dm_default_accel_bias(mip_interface* device);
 
 ///@}
 ///
@@ -1741,26 +1972,26 @@ struct mip_3dm_gyro_bias_command
 {
     mip_function_selector function;
     mip_vector3f bias; ///< gyro bias in the sensor frame (x,y,z) [radians/second]
-    
 };
 typedef struct mip_3dm_gyro_bias_command mip_3dm_gyro_bias_command;
+
 void insert_mip_3dm_gyro_bias_command(microstrain_serializer* serializer, const mip_3dm_gyro_bias_command* self);
 void extract_mip_3dm_gyro_bias_command(microstrain_serializer* serializer, mip_3dm_gyro_bias_command* self);
 
 struct mip_3dm_gyro_bias_response
 {
     mip_vector3f bias; ///< gyro bias in the sensor frame (x,y,z) [radians/second]
-    
 };
 typedef struct mip_3dm_gyro_bias_response mip_3dm_gyro_bias_response;
+
 void insert_mip_3dm_gyro_bias_response(microstrain_serializer* serializer, const mip_3dm_gyro_bias_response* self);
 void extract_mip_3dm_gyro_bias_response(microstrain_serializer* serializer, mip_3dm_gyro_bias_response* self);
 
-mip_cmd_result mip_3dm_write_gyro_bias(struct mip_interface* device, const float* bias);
-mip_cmd_result mip_3dm_read_gyro_bias(struct mip_interface* device, float* bias_out);
-mip_cmd_result mip_3dm_save_gyro_bias(struct mip_interface* device);
-mip_cmd_result mip_3dm_load_gyro_bias(struct mip_interface* device);
-mip_cmd_result mip_3dm_default_gyro_bias(struct mip_interface* device);
+mip_cmd_result mip_3dm_write_gyro_bias(mip_interface* device, const float* bias);
+mip_cmd_result mip_3dm_read_gyro_bias(mip_interface* device, float* bias_out);
+mip_cmd_result mip_3dm_save_gyro_bias(mip_interface* device);
+mip_cmd_result mip_3dm_load_gyro_bias(mip_interface* device);
+mip_cmd_result mip_3dm_default_gyro_bias(mip_interface* device);
 
 ///@}
 ///
@@ -1778,22 +2009,22 @@ mip_cmd_result mip_3dm_default_gyro_bias(struct mip_interface* device);
 struct mip_3dm_capture_gyro_bias_command
 {
     uint16_t averaging_time_ms; ///< Averaging time [milliseconds]
-    
 };
 typedef struct mip_3dm_capture_gyro_bias_command mip_3dm_capture_gyro_bias_command;
+
 void insert_mip_3dm_capture_gyro_bias_command(microstrain_serializer* serializer, const mip_3dm_capture_gyro_bias_command* self);
 void extract_mip_3dm_capture_gyro_bias_command(microstrain_serializer* serializer, mip_3dm_capture_gyro_bias_command* self);
 
 struct mip_3dm_capture_gyro_bias_response
 {
     mip_vector3f bias; ///< gyro bias in the sensor frame (x,y,z) [radians/second]
-    
 };
 typedef struct mip_3dm_capture_gyro_bias_response mip_3dm_capture_gyro_bias_response;
+
 void insert_mip_3dm_capture_gyro_bias_response(microstrain_serializer* serializer, const mip_3dm_capture_gyro_bias_response* self);
 void extract_mip_3dm_capture_gyro_bias_response(microstrain_serializer* serializer, mip_3dm_capture_gyro_bias_response* self);
 
-mip_cmd_result mip_3dm_capture_gyro_bias(struct mip_interface* device, uint16_t averaging_time_ms, float* bias_out);
+mip_cmd_result mip_3dm_capture_gyro_bias(mip_interface* device, uint16_t averaging_time_ms, float* bias_out);
 
 ///@}
 ///
@@ -1813,26 +2044,26 @@ struct mip_3dm_mag_hard_iron_offset_command
 {
     mip_function_selector function;
     mip_vector3f offset; ///< hard iron offset in the sensor frame (x,y,z) [Gauss]
-    
 };
 typedef struct mip_3dm_mag_hard_iron_offset_command mip_3dm_mag_hard_iron_offset_command;
+
 void insert_mip_3dm_mag_hard_iron_offset_command(microstrain_serializer* serializer, const mip_3dm_mag_hard_iron_offset_command* self);
 void extract_mip_3dm_mag_hard_iron_offset_command(microstrain_serializer* serializer, mip_3dm_mag_hard_iron_offset_command* self);
 
 struct mip_3dm_mag_hard_iron_offset_response
 {
     mip_vector3f offset; ///< hard iron offset in the sensor frame (x,y,z) [Gauss]
-    
 };
 typedef struct mip_3dm_mag_hard_iron_offset_response mip_3dm_mag_hard_iron_offset_response;
+
 void insert_mip_3dm_mag_hard_iron_offset_response(microstrain_serializer* serializer, const mip_3dm_mag_hard_iron_offset_response* self);
 void extract_mip_3dm_mag_hard_iron_offset_response(microstrain_serializer* serializer, mip_3dm_mag_hard_iron_offset_response* self);
 
-mip_cmd_result mip_3dm_write_mag_hard_iron_offset(struct mip_interface* device, const float* offset);
-mip_cmd_result mip_3dm_read_mag_hard_iron_offset(struct mip_interface* device, float* offset_out);
-mip_cmd_result mip_3dm_save_mag_hard_iron_offset(struct mip_interface* device);
-mip_cmd_result mip_3dm_load_mag_hard_iron_offset(struct mip_interface* device);
-mip_cmd_result mip_3dm_default_mag_hard_iron_offset(struct mip_interface* device);
+mip_cmd_result mip_3dm_write_mag_hard_iron_offset(mip_interface* device, const float* offset);
+mip_cmd_result mip_3dm_read_mag_hard_iron_offset(mip_interface* device, float* offset_out);
+mip_cmd_result mip_3dm_save_mag_hard_iron_offset(mip_interface* device);
+mip_cmd_result mip_3dm_load_mag_hard_iron_offset(mip_interface* device);
+mip_cmd_result mip_3dm_default_mag_hard_iron_offset(mip_interface* device);
 
 ///@}
 ///
@@ -1856,26 +2087,26 @@ struct mip_3dm_mag_soft_iron_matrix_command
 {
     mip_function_selector function;
     mip_matrix3f offset; ///< soft iron matrix [dimensionless]
-    
 };
 typedef struct mip_3dm_mag_soft_iron_matrix_command mip_3dm_mag_soft_iron_matrix_command;
+
 void insert_mip_3dm_mag_soft_iron_matrix_command(microstrain_serializer* serializer, const mip_3dm_mag_soft_iron_matrix_command* self);
 void extract_mip_3dm_mag_soft_iron_matrix_command(microstrain_serializer* serializer, mip_3dm_mag_soft_iron_matrix_command* self);
 
 struct mip_3dm_mag_soft_iron_matrix_response
 {
     mip_matrix3f offset; ///< soft iron matrix [dimensionless]
-    
 };
 typedef struct mip_3dm_mag_soft_iron_matrix_response mip_3dm_mag_soft_iron_matrix_response;
+
 void insert_mip_3dm_mag_soft_iron_matrix_response(microstrain_serializer* serializer, const mip_3dm_mag_soft_iron_matrix_response* self);
 void extract_mip_3dm_mag_soft_iron_matrix_response(microstrain_serializer* serializer, mip_3dm_mag_soft_iron_matrix_response* self);
 
-mip_cmd_result mip_3dm_write_mag_soft_iron_matrix(struct mip_interface* device, const float* offset);
-mip_cmd_result mip_3dm_read_mag_soft_iron_matrix(struct mip_interface* device, float* offset_out);
-mip_cmd_result mip_3dm_save_mag_soft_iron_matrix(struct mip_interface* device);
-mip_cmd_result mip_3dm_load_mag_soft_iron_matrix(struct mip_interface* device);
-mip_cmd_result mip_3dm_default_mag_soft_iron_matrix(struct mip_interface* device);
+mip_cmd_result mip_3dm_write_mag_soft_iron_matrix(mip_interface* device, const float* offset);
+mip_cmd_result mip_3dm_read_mag_soft_iron_matrix(mip_interface* device, float* offset_out);
+mip_cmd_result mip_3dm_save_mag_soft_iron_matrix(mip_interface* device);
+mip_cmd_result mip_3dm_load_mag_soft_iron_matrix(mip_interface* device);
+mip_cmd_result mip_3dm_default_mag_soft_iron_matrix(mip_interface* device);
 
 ///@}
 ///
@@ -1889,26 +2120,26 @@ struct mip_3dm_coning_sculling_enable_command
 {
     mip_function_selector function;
     bool enable; ///< If true, coning and sculling compensation is enabled.
-    
 };
 typedef struct mip_3dm_coning_sculling_enable_command mip_3dm_coning_sculling_enable_command;
+
 void insert_mip_3dm_coning_sculling_enable_command(microstrain_serializer* serializer, const mip_3dm_coning_sculling_enable_command* self);
 void extract_mip_3dm_coning_sculling_enable_command(microstrain_serializer* serializer, mip_3dm_coning_sculling_enable_command* self);
 
 struct mip_3dm_coning_sculling_enable_response
 {
     bool enable; ///< If true, coning and sculling compensation is enabled.
-    
 };
 typedef struct mip_3dm_coning_sculling_enable_response mip_3dm_coning_sculling_enable_response;
+
 void insert_mip_3dm_coning_sculling_enable_response(microstrain_serializer* serializer, const mip_3dm_coning_sculling_enable_response* self);
 void extract_mip_3dm_coning_sculling_enable_response(microstrain_serializer* serializer, mip_3dm_coning_sculling_enable_response* self);
 
-mip_cmd_result mip_3dm_write_coning_sculling_enable(struct mip_interface* device, bool enable);
-mip_cmd_result mip_3dm_read_coning_sculling_enable(struct mip_interface* device, bool* enable_out);
-mip_cmd_result mip_3dm_save_coning_sculling_enable(struct mip_interface* device);
-mip_cmd_result mip_3dm_load_coning_sculling_enable(struct mip_interface* device);
-mip_cmd_result mip_3dm_default_coning_sculling_enable(struct mip_interface* device);
+mip_cmd_result mip_3dm_write_coning_sculling_enable(mip_interface* device, bool enable);
+mip_cmd_result mip_3dm_read_coning_sculling_enable(mip_interface* device, bool* enable_out);
+mip_cmd_result mip_3dm_save_coning_sculling_enable(mip_interface* device);
+mip_cmd_result mip_3dm_load_coning_sculling_enable(mip_interface* device);
+mip_cmd_result mip_3dm_default_coning_sculling_enable(mip_interface* device);
 
 ///@}
 ///
@@ -1948,9 +2179,9 @@ struct mip_3dm_sensor_2_vehicle_transform_euler_command
     float roll; ///< [radians]
     float pitch; ///< [radians]
     float yaw; ///< [radians]
-    
 };
 typedef struct mip_3dm_sensor_2_vehicle_transform_euler_command mip_3dm_sensor_2_vehicle_transform_euler_command;
+
 void insert_mip_3dm_sensor_2_vehicle_transform_euler_command(microstrain_serializer* serializer, const mip_3dm_sensor_2_vehicle_transform_euler_command* self);
 void extract_mip_3dm_sensor_2_vehicle_transform_euler_command(microstrain_serializer* serializer, mip_3dm_sensor_2_vehicle_transform_euler_command* self);
 
@@ -1959,17 +2190,17 @@ struct mip_3dm_sensor_2_vehicle_transform_euler_response
     float roll; ///< [radians]
     float pitch; ///< [radians]
     float yaw; ///< [radians]
-    
 };
 typedef struct mip_3dm_sensor_2_vehicle_transform_euler_response mip_3dm_sensor_2_vehicle_transform_euler_response;
+
 void insert_mip_3dm_sensor_2_vehicle_transform_euler_response(microstrain_serializer* serializer, const mip_3dm_sensor_2_vehicle_transform_euler_response* self);
 void extract_mip_3dm_sensor_2_vehicle_transform_euler_response(microstrain_serializer* serializer, mip_3dm_sensor_2_vehicle_transform_euler_response* self);
 
-mip_cmd_result mip_3dm_write_sensor_2_vehicle_transform_euler(struct mip_interface* device, float roll, float pitch, float yaw);
-mip_cmd_result mip_3dm_read_sensor_2_vehicle_transform_euler(struct mip_interface* device, float* roll_out, float* pitch_out, float* yaw_out);
-mip_cmd_result mip_3dm_save_sensor_2_vehicle_transform_euler(struct mip_interface* device);
-mip_cmd_result mip_3dm_load_sensor_2_vehicle_transform_euler(struct mip_interface* device);
-mip_cmd_result mip_3dm_default_sensor_2_vehicle_transform_euler(struct mip_interface* device);
+mip_cmd_result mip_3dm_write_sensor_2_vehicle_transform_euler(mip_interface* device, float roll, float pitch, float yaw);
+mip_cmd_result mip_3dm_read_sensor_2_vehicle_transform_euler(mip_interface* device, float* roll_out, float* pitch_out, float* yaw_out);
+mip_cmd_result mip_3dm_save_sensor_2_vehicle_transform_euler(mip_interface* device);
+mip_cmd_result mip_3dm_load_sensor_2_vehicle_transform_euler(mip_interface* device);
+mip_cmd_result mip_3dm_default_sensor_2_vehicle_transform_euler(mip_interface* device);
 
 ///@}
 ///
@@ -2015,26 +2246,26 @@ struct mip_3dm_sensor_2_vehicle_transform_quaternion_command
 {
     mip_function_selector function;
     mip_quatf q; ///< Unit length quaternion representing transform [w, i, j, k]
-    
 };
 typedef struct mip_3dm_sensor_2_vehicle_transform_quaternion_command mip_3dm_sensor_2_vehicle_transform_quaternion_command;
+
 void insert_mip_3dm_sensor_2_vehicle_transform_quaternion_command(microstrain_serializer* serializer, const mip_3dm_sensor_2_vehicle_transform_quaternion_command* self);
 void extract_mip_3dm_sensor_2_vehicle_transform_quaternion_command(microstrain_serializer* serializer, mip_3dm_sensor_2_vehicle_transform_quaternion_command* self);
 
 struct mip_3dm_sensor_2_vehicle_transform_quaternion_response
 {
     mip_quatf q; ///< Unit length quaternion representing transform [w, i, j, k]
-    
 };
 typedef struct mip_3dm_sensor_2_vehicle_transform_quaternion_response mip_3dm_sensor_2_vehicle_transform_quaternion_response;
+
 void insert_mip_3dm_sensor_2_vehicle_transform_quaternion_response(microstrain_serializer* serializer, const mip_3dm_sensor_2_vehicle_transform_quaternion_response* self);
 void extract_mip_3dm_sensor_2_vehicle_transform_quaternion_response(microstrain_serializer* serializer, mip_3dm_sensor_2_vehicle_transform_quaternion_response* self);
 
-mip_cmd_result mip_3dm_write_sensor_2_vehicle_transform_quaternion(struct mip_interface* device, const float* q);
-mip_cmd_result mip_3dm_read_sensor_2_vehicle_transform_quaternion(struct mip_interface* device, float* q_out);
-mip_cmd_result mip_3dm_save_sensor_2_vehicle_transform_quaternion(struct mip_interface* device);
-mip_cmd_result mip_3dm_load_sensor_2_vehicle_transform_quaternion(struct mip_interface* device);
-mip_cmd_result mip_3dm_default_sensor_2_vehicle_transform_quaternion(struct mip_interface* device);
+mip_cmd_result mip_3dm_write_sensor_2_vehicle_transform_quaternion(mip_interface* device, const float* q);
+mip_cmd_result mip_3dm_read_sensor_2_vehicle_transform_quaternion(mip_interface* device, float* q_out);
+mip_cmd_result mip_3dm_save_sensor_2_vehicle_transform_quaternion(mip_interface* device);
+mip_cmd_result mip_3dm_load_sensor_2_vehicle_transform_quaternion(mip_interface* device);
+mip_cmd_result mip_3dm_default_sensor_2_vehicle_transform_quaternion(mip_interface* device);
 
 ///@}
 ///
@@ -2078,26 +2309,26 @@ struct mip_3dm_sensor_2_vehicle_transform_dcm_command
 {
     mip_function_selector function;
     mip_matrix3f dcm; ///< 3 x 3 direction cosine matrix, stored in row-major order
-    
 };
 typedef struct mip_3dm_sensor_2_vehicle_transform_dcm_command mip_3dm_sensor_2_vehicle_transform_dcm_command;
+
 void insert_mip_3dm_sensor_2_vehicle_transform_dcm_command(microstrain_serializer* serializer, const mip_3dm_sensor_2_vehicle_transform_dcm_command* self);
 void extract_mip_3dm_sensor_2_vehicle_transform_dcm_command(microstrain_serializer* serializer, mip_3dm_sensor_2_vehicle_transform_dcm_command* self);
 
 struct mip_3dm_sensor_2_vehicle_transform_dcm_response
 {
     mip_matrix3f dcm; ///< 3 x 3 direction cosine matrix, stored in row-major order
-    
 };
 typedef struct mip_3dm_sensor_2_vehicle_transform_dcm_response mip_3dm_sensor_2_vehicle_transform_dcm_response;
+
 void insert_mip_3dm_sensor_2_vehicle_transform_dcm_response(microstrain_serializer* serializer, const mip_3dm_sensor_2_vehicle_transform_dcm_response* self);
 void extract_mip_3dm_sensor_2_vehicle_transform_dcm_response(microstrain_serializer* serializer, mip_3dm_sensor_2_vehicle_transform_dcm_response* self);
 
-mip_cmd_result mip_3dm_write_sensor_2_vehicle_transform_dcm(struct mip_interface* device, const float* dcm);
-mip_cmd_result mip_3dm_read_sensor_2_vehicle_transform_dcm(struct mip_interface* device, float* dcm_out);
-mip_cmd_result mip_3dm_save_sensor_2_vehicle_transform_dcm(struct mip_interface* device);
-mip_cmd_result mip_3dm_load_sensor_2_vehicle_transform_dcm(struct mip_interface* device);
-mip_cmd_result mip_3dm_default_sensor_2_vehicle_transform_dcm(struct mip_interface* device);
+mip_cmd_result mip_3dm_write_sensor_2_vehicle_transform_dcm(mip_interface* device, const float* dcm);
+mip_cmd_result mip_3dm_read_sensor_2_vehicle_transform_dcm(mip_interface* device, float* dcm_out);
+mip_cmd_result mip_3dm_save_sensor_2_vehicle_transform_dcm(mip_interface* device);
+mip_cmd_result mip_3dm_load_sensor_2_vehicle_transform_dcm(mip_interface* device);
+mip_cmd_result mip_3dm_default_sensor_2_vehicle_transform_dcm(mip_interface* device);
 
 ///@}
 ///
@@ -2118,9 +2349,9 @@ struct mip_3dm_complementary_filter_command
     bool heading_enable; ///< Enable Heading corrections (only available on devices with magnetometer)
     float pitch_roll_time_constant; ///< Time constant associated with the pitch/roll corrections [s]
     float heading_time_constant; ///< Time constant associated with the heading corrections [s]
-    
 };
 typedef struct mip_3dm_complementary_filter_command mip_3dm_complementary_filter_command;
+
 void insert_mip_3dm_complementary_filter_command(microstrain_serializer* serializer, const mip_3dm_complementary_filter_command* self);
 void extract_mip_3dm_complementary_filter_command(microstrain_serializer* serializer, mip_3dm_complementary_filter_command* self);
 
@@ -2130,17 +2361,17 @@ struct mip_3dm_complementary_filter_response
     bool heading_enable; ///< Enable Heading corrections (only available on devices with magnetometer)
     float pitch_roll_time_constant; ///< Time constant associated with the pitch/roll corrections [s]
     float heading_time_constant; ///< Time constant associated with the heading corrections [s]
-    
 };
 typedef struct mip_3dm_complementary_filter_response mip_3dm_complementary_filter_response;
+
 void insert_mip_3dm_complementary_filter_response(microstrain_serializer* serializer, const mip_3dm_complementary_filter_response* self);
 void extract_mip_3dm_complementary_filter_response(microstrain_serializer* serializer, mip_3dm_complementary_filter_response* self);
 
-mip_cmd_result mip_3dm_write_complementary_filter(struct mip_interface* device, bool pitch_roll_enable, bool heading_enable, float pitch_roll_time_constant, float heading_time_constant);
-mip_cmd_result mip_3dm_read_complementary_filter(struct mip_interface* device, bool* pitch_roll_enable_out, bool* heading_enable_out, float* pitch_roll_time_constant_out, float* heading_time_constant_out);
-mip_cmd_result mip_3dm_save_complementary_filter(struct mip_interface* device);
-mip_cmd_result mip_3dm_load_complementary_filter(struct mip_interface* device);
-mip_cmd_result mip_3dm_default_complementary_filter(struct mip_interface* device);
+mip_cmd_result mip_3dm_write_complementary_filter(mip_interface* device, bool pitch_roll_enable, bool heading_enable, float pitch_roll_time_constant, float heading_time_constant);
+mip_cmd_result mip_3dm_read_complementary_filter(mip_interface* device, bool* pitch_roll_enable_out, bool* heading_enable_out, float* pitch_roll_time_constant_out, float* heading_time_constant_out);
+mip_cmd_result mip_3dm_save_complementary_filter(mip_interface* device);
+mip_cmd_result mip_3dm_load_complementary_filter(mip_interface* device);
+mip_cmd_result mip_3dm_default_complementary_filter(mip_interface* device);
 
 ///@}
 ///
@@ -2162,9 +2393,9 @@ struct mip_3dm_sensor_range_command
     mip_function_selector function;
     mip_sensor_range_type sensor; ///< Which type of sensor will get the new range value.
     uint8_t setting; ///< Use the 3DM Get Calibrated Sensor Ranges (0x0C,0x53) command to determine this value.
-    
 };
 typedef struct mip_3dm_sensor_range_command mip_3dm_sensor_range_command;
+
 void insert_mip_3dm_sensor_range_command(microstrain_serializer* serializer, const mip_3dm_sensor_range_command* self);
 void extract_mip_3dm_sensor_range_command(microstrain_serializer* serializer, mip_3dm_sensor_range_command* self);
 
@@ -2172,17 +2403,17 @@ struct mip_3dm_sensor_range_response
 {
     mip_sensor_range_type sensor; ///< Which type of sensor will get the new range value.
     uint8_t setting; ///< Use the 3DM Get Calibrated Sensor Ranges (0x0C,0x53) command to determine this value.
-    
 };
 typedef struct mip_3dm_sensor_range_response mip_3dm_sensor_range_response;
+
 void insert_mip_3dm_sensor_range_response(microstrain_serializer* serializer, const mip_3dm_sensor_range_response* self);
 void extract_mip_3dm_sensor_range_response(microstrain_serializer* serializer, mip_3dm_sensor_range_response* self);
 
-mip_cmd_result mip_3dm_write_sensor_range(struct mip_interface* device, mip_sensor_range_type sensor, uint8_t setting);
-mip_cmd_result mip_3dm_read_sensor_range(struct mip_interface* device, mip_sensor_range_type sensor, uint8_t* setting_out);
-mip_cmd_result mip_3dm_save_sensor_range(struct mip_interface* device, mip_sensor_range_type sensor);
-mip_cmd_result mip_3dm_load_sensor_range(struct mip_interface* device, mip_sensor_range_type sensor);
-mip_cmd_result mip_3dm_default_sensor_range(struct mip_interface* device, mip_sensor_range_type sensor);
+mip_cmd_result mip_3dm_write_sensor_range(mip_interface* device, mip_sensor_range_type sensor, uint8_t setting);
+mip_cmd_result mip_3dm_read_sensor_range(mip_interface* device, mip_sensor_range_type sensor, uint8_t* setting_out);
+mip_cmd_result mip_3dm_save_sensor_range(mip_interface* device, mip_sensor_range_type sensor);
+mip_cmd_result mip_3dm_load_sensor_range(mip_interface* device, mip_sensor_range_type sensor);
+mip_cmd_result mip_3dm_default_sensor_range(mip_interface* device, mip_sensor_range_type sensor);
 
 ///@}
 ///
@@ -2199,33 +2430,34 @@ struct mip_3dm_calibrated_sensor_ranges_command_entry
 {
     uint8_t setting; ///< The value used in the 3DM Sensor Range command and response.
     float range; ///< The actual range value. Units depend on the sensor type.
-    
 };
 typedef struct mip_3dm_calibrated_sensor_ranges_command_entry mip_3dm_calibrated_sensor_ranges_command_entry;
-struct mip_3dm_calibrated_sensor_ranges_command
-{
-    mip_sensor_range_type sensor; ///< The sensor to query. Cannot be ALL.
-    
-};
-typedef struct mip_3dm_calibrated_sensor_ranges_command mip_3dm_calibrated_sensor_ranges_command;
-void insert_mip_3dm_calibrated_sensor_ranges_command(microstrain_serializer* serializer, const mip_3dm_calibrated_sensor_ranges_command* self);
-void extract_mip_3dm_calibrated_sensor_ranges_command(microstrain_serializer* serializer, mip_3dm_calibrated_sensor_ranges_command* self);
 
 void insert_mip_3dm_calibrated_sensor_ranges_command_entry(microstrain_serializer* serializer, const mip_3dm_calibrated_sensor_ranges_command_entry* self);
 void extract_mip_3dm_calibrated_sensor_ranges_command_entry(microstrain_serializer* serializer, mip_3dm_calibrated_sensor_ranges_command_entry* self);
+
+
+struct mip_3dm_calibrated_sensor_ranges_command
+{
+    mip_sensor_range_type sensor; ///< The sensor to query. Cannot be ALL.
+};
+typedef struct mip_3dm_calibrated_sensor_ranges_command mip_3dm_calibrated_sensor_ranges_command;
+
+void insert_mip_3dm_calibrated_sensor_ranges_command(microstrain_serializer* serializer, const mip_3dm_calibrated_sensor_ranges_command* self);
+void extract_mip_3dm_calibrated_sensor_ranges_command(microstrain_serializer* serializer, mip_3dm_calibrated_sensor_ranges_command* self);
 
 struct mip_3dm_calibrated_sensor_ranges_response
 {
     mip_sensor_range_type sensor; ///< The sensor type from the command.
     uint8_t num_ranges; ///< Number of supported ranges.
     mip_3dm_calibrated_sensor_ranges_command_entry ranges[50]; ///< List of possible range settings.
-    
 };
 typedef struct mip_3dm_calibrated_sensor_ranges_response mip_3dm_calibrated_sensor_ranges_response;
+
 void insert_mip_3dm_calibrated_sensor_ranges_response(microstrain_serializer* serializer, const mip_3dm_calibrated_sensor_ranges_response* self);
 void extract_mip_3dm_calibrated_sensor_ranges_response(microstrain_serializer* serializer, mip_3dm_calibrated_sensor_ranges_response* self);
 
-mip_cmd_result mip_3dm_calibrated_sensor_ranges(struct mip_interface* device, mip_sensor_range_type sensor, uint8_t* num_ranges_out, uint8_t num_ranges_out_max, mip_3dm_calibrated_sensor_ranges_command_entry* ranges_out);
+mip_cmd_result mip_3dm_calibrated_sensor_ranges(mip_interface* device, mip_sensor_range_type sensor, uint8_t* num_ranges_out, uint8_t num_ranges_out_max, mip_3dm_calibrated_sensor_ranges_command_entry* ranges_out);
 
 ///@}
 ///
@@ -2256,9 +2488,9 @@ struct mip_3dm_lowpass_filter_command
     bool enable; ///< The filter will be enabled if this is true.
     bool manual; ///< If false, the frequency parameter is ignored and the filter will track to half of the configured message format frequency.
     float frequency; ///< Cutoff frequency in Hz. This will return the actual frequency when read out in automatic mode.
-    
 };
 typedef struct mip_3dm_lowpass_filter_command mip_3dm_lowpass_filter_command;
+
 void insert_mip_3dm_lowpass_filter_command(microstrain_serializer* serializer, const mip_3dm_lowpass_filter_command* self);
 void extract_mip_3dm_lowpass_filter_command(microstrain_serializer* serializer, mip_3dm_lowpass_filter_command* self);
 
@@ -2269,17 +2501,17 @@ struct mip_3dm_lowpass_filter_response
     bool enable; ///< The filter will be enabled if this is true.
     bool manual; ///< If false, the frequency parameter is ignored and the filter will track to half of the configured message format frequency.
     float frequency; ///< Cutoff frequency in Hz. This will return the actual frequency when read out in automatic mode.
-    
 };
 typedef struct mip_3dm_lowpass_filter_response mip_3dm_lowpass_filter_response;
+
 void insert_mip_3dm_lowpass_filter_response(microstrain_serializer* serializer, const mip_3dm_lowpass_filter_response* self);
 void extract_mip_3dm_lowpass_filter_response(microstrain_serializer* serializer, mip_3dm_lowpass_filter_response* self);
 
-mip_cmd_result mip_3dm_write_lowpass_filter(struct mip_interface* device, uint8_t desc_set, uint8_t field_desc, bool enable, bool manual, float frequency);
-mip_cmd_result mip_3dm_read_lowpass_filter(struct mip_interface* device, uint8_t desc_set, uint8_t field_desc, bool* enable_out, bool* manual_out, float* frequency_out);
-mip_cmd_result mip_3dm_save_lowpass_filter(struct mip_interface* device, uint8_t desc_set, uint8_t field_desc);
-mip_cmd_result mip_3dm_load_lowpass_filter(struct mip_interface* device, uint8_t desc_set, uint8_t field_desc);
-mip_cmd_result mip_3dm_default_lowpass_filter(struct mip_interface* device, uint8_t desc_set, uint8_t field_desc);
+mip_cmd_result mip_3dm_write_lowpass_filter(mip_interface* device, uint8_t desc_set, uint8_t field_desc, bool enable, bool manual, float frequency);
+mip_cmd_result mip_3dm_read_lowpass_filter(mip_interface* device, uint8_t desc_set, uint8_t field_desc, bool* enable_out, bool* manual_out, float* frequency_out);
+mip_cmd_result mip_3dm_save_lowpass_filter(mip_interface* device, uint8_t desc_set, uint8_t field_desc);
+mip_cmd_result mip_3dm_load_lowpass_filter(mip_interface* device, uint8_t desc_set, uint8_t field_desc);
+mip_cmd_result mip_3dm_default_lowpass_filter(mip_interface* device, uint8_t desc_set, uint8_t field_desc);
 
 ///@}
 ///

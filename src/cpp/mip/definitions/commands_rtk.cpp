@@ -1,246 +1,168 @@
 
 #include "commands_rtk.hpp"
 
-#include "microstrain/common/serialization.hpp"
-#include "../mip_interface.hpp"
+#include <mip/mip_serialization.hpp>
+#include <mip/mip_interface.h>
 
 #include <assert.h>
 
 
 namespace mip {
-;
-
 namespace C {
 struct mip_interface;
 } // namespace C
 
 namespace commands_rtk {
 
-using ::mip::insert;
-using ::mip::extract;
 using namespace ::mip::C;
-
-////////////////////////////////////////////////////////////////////////////////
-// Shared Type Definitions
-////////////////////////////////////////////////////////////////////////////////
-
 
 ////////////////////////////////////////////////////////////////////////////////
 // Mip Fields
 ////////////////////////////////////////////////////////////////////////////////
 
-void insert(::microstrain::Serializer& serializer, const GetStatusFlags& self)
+void GetStatusFlags::insert(Serializer& serializer) const
 {
     (void)serializer;
-    (void)self;
 }
-void extract(::microstrain::Serializer& serializer, GetStatusFlags& self)
+void GetStatusFlags::extract(Serializer& serializer)
 {
     (void)serializer;
-    (void)self;
-}
-
-void insert(::microstrain::Serializer& serializer, const GetStatusFlags::Response& self)
-{
-    insert(serializer, self.flags);
-    
-}
-void extract(::microstrain::Serializer& serializer, GetStatusFlags::Response& self)
-{
-    extract(serializer, self.flags);
-    
 }
 
 TypedResult<GetStatusFlags> getStatusFlags(C::mip_interface& device, GetStatusFlags::StatusFlags* flagsOut)
 {
-    uint8_t buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     uint8_t responseLength = sizeof(buffer);
     
     TypedResult<GetStatusFlags> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_GET_STATUS_FLAGS, NULL, 0, REPLY_GET_STATUS_FLAGS, buffer, &responseLength);
     
-    if( result == CmdResult::ACK_OK )
+    if( result == MIP_ACK_OK )
     {
-        microstrain::Serializer deserializer(buffer, responseLength);
+        Serializer deserializer(buffer, responseLength);
         
         assert(flagsOut);
-        extract(deserializer, *flagsOut);
+        deserializer.extract(*flagsOut);
         
         if( deserializer.remaining() != 0 )
-            result = CmdResult::STATUS_ERROR;
+            result = MIP_STATUS_ERROR;
     }
     return result;
 }
-void insert(::microstrain::Serializer& serializer, const GetImei& self)
+void GetImei::insert(Serializer& serializer) const
 {
     (void)serializer;
-    (void)self;
 }
-void extract(::microstrain::Serializer& serializer, GetImei& self)
+void GetImei::extract(Serializer& serializer)
 {
     (void)serializer;
-    (void)self;
-}
-
-void insert(::microstrain::Serializer& serializer, const GetImei::Response& self)
-{
-    for(unsigned int i=0; i < 32; i++)
-        insert(serializer, self.IMEI[i]);
-    
-}
-void extract(::microstrain::Serializer& serializer, GetImei::Response& self)
-{
-    for(unsigned int i=0; i < 32; i++)
-        extract(serializer, self.IMEI[i]);
-    
 }
 
 TypedResult<GetImei> getImei(C::mip_interface& device, char* imeiOut)
 {
-    uint8_t buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     uint8_t responseLength = sizeof(buffer);
     
     TypedResult<GetImei> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_GET_IMEI, NULL, 0, REPLY_GET_IMEI, buffer, &responseLength);
     
-    if( result == CmdResult::ACK_OK )
+    if( result == MIP_ACK_OK )
     {
-        microstrain::Serializer deserializer(buffer, responseLength);
+        Serializer deserializer(buffer, responseLength);
         
-        assert(imeiOut || (32 == 0));
+        assert(imeiOut);
         for(unsigned int i=0; i < 32; i++)
-            extract(deserializer, imeiOut[i]);
+            deserializer.extract(imeiOut[i]);
         
         if( deserializer.remaining() != 0 )
-            result = CmdResult::STATUS_ERROR;
+            result = MIP_STATUS_ERROR;
     }
     return result;
 }
-void insert(::microstrain::Serializer& serializer, const GetImsi& self)
+void GetImsi::insert(Serializer& serializer) const
 {
     (void)serializer;
-    (void)self;
 }
-void extract(::microstrain::Serializer& serializer, GetImsi& self)
+void GetImsi::extract(Serializer& serializer)
 {
     (void)serializer;
-    (void)self;
-}
-
-void insert(::microstrain::Serializer& serializer, const GetImsi::Response& self)
-{
-    for(unsigned int i=0; i < 32; i++)
-        insert(serializer, self.IMSI[i]);
-    
-}
-void extract(::microstrain::Serializer& serializer, GetImsi::Response& self)
-{
-    for(unsigned int i=0; i < 32; i++)
-        extract(serializer, self.IMSI[i]);
-    
 }
 
 TypedResult<GetImsi> getImsi(C::mip_interface& device, char* imsiOut)
 {
-    uint8_t buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     uint8_t responseLength = sizeof(buffer);
     
     TypedResult<GetImsi> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_GET_IMSI, NULL, 0, REPLY_GET_IMSI, buffer, &responseLength);
     
-    if( result == CmdResult::ACK_OK )
+    if( result == MIP_ACK_OK )
     {
-        microstrain::Serializer deserializer(buffer, responseLength);
+        Serializer deserializer(buffer, responseLength);
         
-        assert(imsiOut || (32 == 0));
+        assert(imsiOut);
         for(unsigned int i=0; i < 32; i++)
-            extract(deserializer, imsiOut[i]);
+            deserializer.extract(imsiOut[i]);
         
         if( deserializer.remaining() != 0 )
-            result = CmdResult::STATUS_ERROR;
+            result = MIP_STATUS_ERROR;
     }
     return result;
 }
-void insert(::microstrain::Serializer& serializer, const GetIccid& self)
+void GetIccid::insert(Serializer& serializer) const
 {
     (void)serializer;
-    (void)self;
 }
-void extract(::microstrain::Serializer& serializer, GetIccid& self)
+void GetIccid::extract(Serializer& serializer)
 {
     (void)serializer;
-    (void)self;
-}
-
-void insert(::microstrain::Serializer& serializer, const GetIccid::Response& self)
-{
-    for(unsigned int i=0; i < 32; i++)
-        insert(serializer, self.ICCID[i]);
-    
-}
-void extract(::microstrain::Serializer& serializer, GetIccid::Response& self)
-{
-    for(unsigned int i=0; i < 32; i++)
-        extract(serializer, self.ICCID[i]);
-    
 }
 
 TypedResult<GetIccid> getIccid(C::mip_interface& device, char* iccidOut)
 {
-    uint8_t buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     uint8_t responseLength = sizeof(buffer);
     
     TypedResult<GetIccid> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_GET_ICCID, NULL, 0, REPLY_GET_ICCID, buffer, &responseLength);
     
-    if( result == CmdResult::ACK_OK )
+    if( result == MIP_ACK_OK )
     {
-        microstrain::Serializer deserializer(buffer, responseLength);
+        Serializer deserializer(buffer, responseLength);
         
-        assert(iccidOut || (32 == 0));
+        assert(iccidOut);
         for(unsigned int i=0; i < 32; i++)
-            extract(deserializer, iccidOut[i]);
+            deserializer.extract(iccidOut[i]);
         
         if( deserializer.remaining() != 0 )
-            result = CmdResult::STATUS_ERROR;
+            result = MIP_STATUS_ERROR;
     }
     return result;
 }
-void insert(::microstrain::Serializer& serializer, const ConnectedDeviceType& self)
+void ConnectedDeviceType::insert(Serializer& serializer) const
 {
-    insert(serializer, self.function);
+    serializer.insert(function);
     
-    if( self.function == FunctionSelector::WRITE )
+    if( function == FunctionSelector::WRITE )
     {
-        insert(serializer, self.devType);
+        serializer.insert(devType);
         
     }
 }
-void extract(::microstrain::Serializer& serializer, ConnectedDeviceType& self)
+void ConnectedDeviceType::extract(Serializer& serializer)
 {
-    extract(serializer, self.function);
+    serializer.extract(function);
     
-    if( self.function == FunctionSelector::WRITE )
+    if( function == FunctionSelector::WRITE )
     {
-        extract(serializer, self.devType);
+        serializer.extract(devType);
         
     }
-}
-
-void insert(::microstrain::Serializer& serializer, const ConnectedDeviceType::Response& self)
-{
-    insert(serializer, self.devType);
-    
-}
-void extract(::microstrain::Serializer& serializer, ConnectedDeviceType::Response& self)
-{
-    extract(serializer, self.devType);
-    
 }
 
 TypedResult<ConnectedDeviceType> writeConnectedDeviceType(C::mip_interface& device, ConnectedDeviceType::Type devtype)
 {
-    uint8_t                 buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    microstrain::Serializer serializer(buffer, sizeof(buffer));
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
     
-    insert(serializer, FunctionSelector::WRITE);
-    insert(serializer, devtype);
+    serializer.insert(FunctionSelector::WRITE);
+    serializer.insert(devtype);
     
     assert(serializer.isOk());
     
@@ -248,352 +170,276 @@ TypedResult<ConnectedDeviceType> writeConnectedDeviceType(C::mip_interface& devi
 }
 TypedResult<ConnectedDeviceType> readConnectedDeviceType(C::mip_interface& device, ConnectedDeviceType::Type* devtypeOut)
 {
-    uint8_t                 buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    microstrain::Serializer serializer(buffer, sizeof(buffer));
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
     
-    insert(serializer, FunctionSelector::READ);
+    serializer.insert(FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
     TypedResult<ConnectedDeviceType> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_CONNECTED_DEVICE_TYPE, buffer, (uint8_t)serializer.length(), REPLY_CONNECTED_DEVICE_TYPE, buffer, &responseLength);
     
-    if( result == CmdResult::ACK_OK )
+    if( result == MIP_ACK_OK )
     {
-        microstrain::Serializer deserializer(buffer, responseLength);
+        Serializer deserializer(buffer, responseLength);
         
         assert(devtypeOut);
-        extract(deserializer, *devtypeOut);
+        deserializer.extract(*devtypeOut);
         
         if( deserializer.remaining() != 0 )
-            result = CmdResult::STATUS_ERROR;
+            result = MIP_STATUS_ERROR;
     }
     return result;
 }
 TypedResult<ConnectedDeviceType> saveConnectedDeviceType(C::mip_interface& device)
 {
-    uint8_t                 buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    microstrain::Serializer serializer(buffer, sizeof(buffer));
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
     
-    insert(serializer, FunctionSelector::SAVE);
+    serializer.insert(FunctionSelector::SAVE);
     assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_CONNECTED_DEVICE_TYPE, buffer, (uint8_t)serializer.length());
 }
 TypedResult<ConnectedDeviceType> loadConnectedDeviceType(C::mip_interface& device)
 {
-    uint8_t                 buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    microstrain::Serializer serializer(buffer, sizeof(buffer));
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
     
-    insert(serializer, FunctionSelector::LOAD);
+    serializer.insert(FunctionSelector::LOAD);
     assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_CONNECTED_DEVICE_TYPE, buffer, (uint8_t)serializer.length());
 }
 TypedResult<ConnectedDeviceType> defaultConnectedDeviceType(C::mip_interface& device)
 {
-    uint8_t                 buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    microstrain::Serializer serializer(buffer, sizeof(buffer));
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
     
-    insert(serializer, FunctionSelector::RESET);
+    serializer.insert(FunctionSelector::RESET);
     assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_CONNECTED_DEVICE_TYPE, buffer, (uint8_t)serializer.length());
 }
-void insert(::microstrain::Serializer& serializer, const GetActCode& self)
+void GetActCode::insert(Serializer& serializer) const
 {
     (void)serializer;
-    (void)self;
 }
-void extract(::microstrain::Serializer& serializer, GetActCode& self)
+void GetActCode::extract(Serializer& serializer)
 {
     (void)serializer;
-    (void)self;
-}
-
-void insert(::microstrain::Serializer& serializer, const GetActCode::Response& self)
-{
-    for(unsigned int i=0; i < 32; i++)
-        insert(serializer, self.ActivationCode[i]);
-    
-}
-void extract(::microstrain::Serializer& serializer, GetActCode::Response& self)
-{
-    for(unsigned int i=0; i < 32; i++)
-        extract(serializer, self.ActivationCode[i]);
-    
 }
 
 TypedResult<GetActCode> getActCode(C::mip_interface& device, char* activationcodeOut)
 {
-    uint8_t buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     uint8_t responseLength = sizeof(buffer);
     
     TypedResult<GetActCode> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_GET_ACT_CODE, NULL, 0, REPLY_GET_ACT_CODE, buffer, &responseLength);
     
-    if( result == CmdResult::ACK_OK )
+    if( result == MIP_ACK_OK )
     {
-        microstrain::Serializer deserializer(buffer, responseLength);
+        Serializer deserializer(buffer, responseLength);
         
-        assert(activationcodeOut || (32 == 0));
+        assert(activationcodeOut);
         for(unsigned int i=0; i < 32; i++)
-            extract(deserializer, activationcodeOut[i]);
+            deserializer.extract(activationcodeOut[i]);
         
         if( deserializer.remaining() != 0 )
-            result = CmdResult::STATUS_ERROR;
+            result = MIP_STATUS_ERROR;
     }
     return result;
 }
-void insert(::microstrain::Serializer& serializer, const GetModemFirmwareVersion& self)
+void GetModemFirmwareVersion::insert(Serializer& serializer) const
 {
     (void)serializer;
-    (void)self;
 }
-void extract(::microstrain::Serializer& serializer, GetModemFirmwareVersion& self)
+void GetModemFirmwareVersion::extract(Serializer& serializer)
 {
     (void)serializer;
-    (void)self;
-}
-
-void insert(::microstrain::Serializer& serializer, const GetModemFirmwareVersion::Response& self)
-{
-    for(unsigned int i=0; i < 32; i++)
-        insert(serializer, self.ModemFirmwareVersion[i]);
-    
-}
-void extract(::microstrain::Serializer& serializer, GetModemFirmwareVersion::Response& self)
-{
-    for(unsigned int i=0; i < 32; i++)
-        extract(serializer, self.ModemFirmwareVersion[i]);
-    
 }
 
 TypedResult<GetModemFirmwareVersion> getModemFirmwareVersion(C::mip_interface& device, char* modemfirmwareversionOut)
 {
-    uint8_t buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     uint8_t responseLength = sizeof(buffer);
     
     TypedResult<GetModemFirmwareVersion> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_GET_MODEM_FIRMWARE_VERSION, NULL, 0, REPLY_GET_MODEM_FIRMWARE_VERSION, buffer, &responseLength);
     
-    if( result == CmdResult::ACK_OK )
+    if( result == MIP_ACK_OK )
     {
-        microstrain::Serializer deserializer(buffer, responseLength);
+        Serializer deserializer(buffer, responseLength);
         
-        assert(modemfirmwareversionOut || (32 == 0));
+        assert(modemfirmwareversionOut);
         for(unsigned int i=0; i < 32; i++)
-            extract(deserializer, modemfirmwareversionOut[i]);
+            deserializer.extract(modemfirmwareversionOut[i]);
         
         if( deserializer.remaining() != 0 )
-            result = CmdResult::STATUS_ERROR;
+            result = MIP_STATUS_ERROR;
     }
     return result;
 }
-void insert(::microstrain::Serializer& serializer, const GetRssi& self)
+void GetRssi::insert(Serializer& serializer) const
 {
     (void)serializer;
-    (void)self;
 }
-void extract(::microstrain::Serializer& serializer, GetRssi& self)
+void GetRssi::extract(Serializer& serializer)
 {
     (void)serializer;
-    (void)self;
-}
-
-void insert(::microstrain::Serializer& serializer, const GetRssi::Response& self)
-{
-    insert(serializer, self.valid);
-    
-    insert(serializer, self.rssi);
-    
-    insert(serializer, self.signalQuality);
-    
-}
-void extract(::microstrain::Serializer& serializer, GetRssi::Response& self)
-{
-    extract(serializer, self.valid);
-    
-    extract(serializer, self.rssi);
-    
-    extract(serializer, self.signalQuality);
-    
 }
 
 TypedResult<GetRssi> getRssi(C::mip_interface& device, bool* validOut, int32_t* rssiOut, int32_t* signalqualityOut)
 {
-    uint8_t buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     uint8_t responseLength = sizeof(buffer);
     
     TypedResult<GetRssi> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_GET_RSSI, NULL, 0, REPLY_GET_RSSI, buffer, &responseLength);
     
-    if( result == CmdResult::ACK_OK )
+    if( result == MIP_ACK_OK )
     {
-        microstrain::Serializer deserializer(buffer, responseLength);
+        Serializer deserializer(buffer, responseLength);
         
         assert(validOut);
-        extract(deserializer, *validOut);
+        deserializer.extract(*validOut);
         
         assert(rssiOut);
-        extract(deserializer, *rssiOut);
+        deserializer.extract(*rssiOut);
         
         assert(signalqualityOut);
-        extract(deserializer, *signalqualityOut);
+        deserializer.extract(*signalqualityOut);
         
         if( deserializer.remaining() != 0 )
-            result = CmdResult::STATUS_ERROR;
+            result = MIP_STATUS_ERROR;
     }
     return result;
 }
-void insert(::microstrain::Serializer& serializer, const ServiceStatus& self)
+void ServiceStatus::insert(Serializer& serializer) const
 {
-    insert(serializer, self.reserved1);
+    serializer.insert(reserved1);
     
-    insert(serializer, self.reserved2);
+    serializer.insert(reserved2);
     
 }
-void extract(::microstrain::Serializer& serializer, ServiceStatus& self)
+void ServiceStatus::extract(Serializer& serializer)
 {
-    extract(serializer, self.reserved1);
+    serializer.extract(reserved1);
     
-    extract(serializer, self.reserved2);
-    
-}
-
-void insert(::microstrain::Serializer& serializer, const ServiceStatus::Response& self)
-{
-    insert(serializer, self.flags);
-    
-    insert(serializer, self.receivedBytes);
-    
-    insert(serializer, self.lastBytes);
-    
-    insert(serializer, self.lastBytesTime);
-    
-}
-void extract(::microstrain::Serializer& serializer, ServiceStatus::Response& self)
-{
-    extract(serializer, self.flags);
-    
-    extract(serializer, self.receivedBytes);
-    
-    extract(serializer, self.lastBytes);
-    
-    extract(serializer, self.lastBytesTime);
+    serializer.extract(reserved2);
     
 }
 
 TypedResult<ServiceStatus> serviceStatus(C::mip_interface& device, uint32_t reserved1, uint32_t reserved2, ServiceStatus::ServiceFlags* flagsOut, uint32_t* receivedbytesOut, uint32_t* lastbytesOut, uint64_t* lastbytestimeOut)
 {
-    uint8_t                 buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    microstrain::Serializer serializer(buffer, sizeof(buffer));
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
     
-    insert(serializer, reserved1);
+    serializer.insert(reserved1);
     
-    insert(serializer, reserved2);
+    serializer.insert(reserved2);
     
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
     TypedResult<ServiceStatus> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_SERVICE_STATUS, buffer, (uint8_t)serializer.length(), REPLY_SERVICE_STATUS, buffer, &responseLength);
     
-    if( result == CmdResult::ACK_OK )
+    if( result == MIP_ACK_OK )
     {
-        microstrain::Serializer deserializer(buffer, responseLength);
+        Serializer deserializer(buffer, responseLength);
         
         assert(flagsOut);
-        extract(deserializer, *flagsOut);
+        deserializer.extract(*flagsOut);
         
         assert(receivedbytesOut);
-        extract(deserializer, *receivedbytesOut);
+        deserializer.extract(*receivedbytesOut);
         
         assert(lastbytesOut);
-        extract(deserializer, *lastbytesOut);
+        deserializer.extract(*lastbytesOut);
         
         assert(lastbytestimeOut);
-        extract(deserializer, *lastbytestimeOut);
+        deserializer.extract(*lastbytestimeOut);
         
         if( deserializer.remaining() != 0 )
-            result = CmdResult::STATUS_ERROR;
+            result = MIP_STATUS_ERROR;
     }
     return result;
 }
-void insert(::microstrain::Serializer& serializer, const ProdEraseStorage& self)
+void ProdEraseStorage::insert(Serializer& serializer) const
 {
-    insert(serializer, self.media);
+    serializer.insert(media);
     
 }
-void extract(::microstrain::Serializer& serializer, ProdEraseStorage& self)
+void ProdEraseStorage::extract(Serializer& serializer)
 {
-    extract(serializer, self.media);
+    serializer.extract(media);
     
 }
 
 TypedResult<ProdEraseStorage> prodEraseStorage(C::mip_interface& device, MediaSelector media)
 {
-    uint8_t                 buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    microstrain::Serializer serializer(buffer, sizeof(buffer));
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
     
-    insert(serializer, media);
+    serializer.insert(media);
     
     assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_PROD_ERASE_STORAGE, buffer, (uint8_t)serializer.length());
 }
-void insert(::microstrain::Serializer& serializer, const LedControl& self)
+void LedControl::insert(Serializer& serializer) const
 {
     for(unsigned int i=0; i < 3; i++)
-        insert(serializer, self.primaryColor[i]);
+        serializer.insert(primaryColor[i]);
     
     for(unsigned int i=0; i < 3; i++)
-        insert(serializer, self.altColor[i]);
+        serializer.insert(altColor[i]);
     
-    insert(serializer, self.act);
+    serializer.insert(act);
     
-    insert(serializer, self.period);
+    serializer.insert(period);
     
 }
-void extract(::microstrain::Serializer& serializer, LedControl& self)
+void LedControl::extract(Serializer& serializer)
 {
     for(unsigned int i=0; i < 3; i++)
-        extract(serializer, self.primaryColor[i]);
+        serializer.extract(primaryColor[i]);
     
     for(unsigned int i=0; i < 3; i++)
-        extract(serializer, self.altColor[i]);
+        serializer.extract(altColor[i]);
     
-    extract(serializer, self.act);
+    serializer.extract(act);
     
-    extract(serializer, self.period);
+    serializer.extract(period);
     
 }
 
 TypedResult<LedControl> ledControl(C::mip_interface& device, const uint8_t* primarycolor, const uint8_t* altcolor, LedAction act, uint32_t period)
 {
-    uint8_t                 buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    microstrain::Serializer serializer(buffer, sizeof(buffer));
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
     
-    assert(primarycolor || (3 == 0));
+    assert(primarycolor);
     for(unsigned int i=0; i < 3; i++)
-        insert(serializer, primarycolor[i]);
+        serializer.insert(primarycolor[i]);
     
-    assert(altcolor || (3 == 0));
+    assert(altcolor);
     for(unsigned int i=0; i < 3; i++)
-        insert(serializer, altcolor[i]);
+        serializer.insert(altcolor[i]);
     
-    insert(serializer, act);
+    serializer.insert(act);
     
-    insert(serializer, period);
+    serializer.insert(period);
     
     assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_CONTROL, buffer, (uint8_t)serializer.length());
 }
-void insert(::microstrain::Serializer& serializer, const ModemHardReset& self)
+void ModemHardReset::insert(Serializer& serializer) const
 {
     (void)serializer;
-    (void)self;
 }
-void extract(::microstrain::Serializer& serializer, ModemHardReset& self)
+void ModemHardReset::extract(Serializer& serializer)
 {
     (void)serializer;
-    (void)self;
 }
 
 TypedResult<ModemHardReset> modemHardReset(C::mip_interface& device)

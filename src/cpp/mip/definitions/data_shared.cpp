@@ -1,146 +1,137 @@
 
 #include "data_shared.hpp"
 
-#include "microstrain/common/serialization.hpp"
-#include "../mip_interface.hpp"
+#include <mip/mip_serialization.hpp>
+#include <mip/mip_interface.h>
 
 #include <assert.h>
 
 
 namespace mip {
-;
-
 namespace C {
 struct mip_interface;
 } // namespace C
 
 namespace data_shared {
 
-using ::mip::insert;
-using ::mip::extract;
 using namespace ::mip::C;
-
-////////////////////////////////////////////////////////////////////////////////
-// Shared Type Definitions
-////////////////////////////////////////////////////////////////////////////////
-
 
 ////////////////////////////////////////////////////////////////////////////////
 // Mip Fields
 ////////////////////////////////////////////////////////////////////////////////
 
-void insert(::microstrain::Serializer& serializer, const EventSource& self)
+void EventSource::insert(Serializer& serializer) const
 {
-    insert(serializer, self.trigger_id);
+    serializer.insert(trigger_id);
     
 }
-void extract(::microstrain::Serializer& serializer, EventSource& self)
+void EventSource::extract(Serializer& serializer)
 {
-    extract(serializer, self.trigger_id);
-    
-}
-
-void insert(::microstrain::Serializer& serializer, const Ticks& self)
-{
-    insert(serializer, self.ticks);
-    
-}
-void extract(::microstrain::Serializer& serializer, Ticks& self)
-{
-    extract(serializer, self.ticks);
+    serializer.extract(trigger_id);
     
 }
 
-void insert(::microstrain::Serializer& serializer, const DeltaTicks& self)
+void Ticks::insert(Serializer& serializer) const
 {
-    insert(serializer, self.ticks);
+    serializer.insert(ticks);
     
 }
-void extract(::microstrain::Serializer& serializer, DeltaTicks& self)
+void Ticks::extract(Serializer& serializer)
 {
-    extract(serializer, self.ticks);
-    
-}
-
-void insert(::microstrain::Serializer& serializer, const GpsTimestamp& self)
-{
-    insert(serializer, self.tow);
-    
-    insert(serializer, self.week_number);
-    
-    insert(serializer, self.valid_flags);
-    
-}
-void extract(::microstrain::Serializer& serializer, GpsTimestamp& self)
-{
-    extract(serializer, self.tow);
-    
-    extract(serializer, self.week_number);
-    
-    extract(serializer, self.valid_flags);
+    serializer.extract(ticks);
     
 }
 
-void insert(::microstrain::Serializer& serializer, const DeltaTime& self)
+void DeltaTicks::insert(Serializer& serializer) const
 {
-    insert(serializer, self.seconds);
+    serializer.insert(ticks);
     
 }
-void extract(::microstrain::Serializer& serializer, DeltaTime& self)
+void DeltaTicks::extract(Serializer& serializer)
 {
-    extract(serializer, self.seconds);
-    
-}
-
-void insert(::microstrain::Serializer& serializer, const ReferenceTimestamp& self)
-{
-    insert(serializer, self.nanoseconds);
-    
-}
-void extract(::microstrain::Serializer& serializer, ReferenceTimestamp& self)
-{
-    extract(serializer, self.nanoseconds);
+    serializer.extract(ticks);
     
 }
 
-void insert(::microstrain::Serializer& serializer, const ReferenceTimeDelta& self)
+void GpsTimestamp::insert(Serializer& serializer) const
 {
-    insert(serializer, self.dt_nanos);
+    serializer.insert(tow);
+    
+    serializer.insert(week_number);
+    
+    serializer.insert(valid_flags);
     
 }
-void extract(::microstrain::Serializer& serializer, ReferenceTimeDelta& self)
+void GpsTimestamp::extract(Serializer& serializer)
 {
-    extract(serializer, self.dt_nanos);
+    serializer.extract(tow);
     
-}
-
-void insert(::microstrain::Serializer& serializer, const ExternalTimestamp& self)
-{
-    insert(serializer, self.nanoseconds);
+    serializer.extract(week_number);
     
-    insert(serializer, self.valid_flags);
-    
-}
-void extract(::microstrain::Serializer& serializer, ExternalTimestamp& self)
-{
-    extract(serializer, self.nanoseconds);
-    
-    extract(serializer, self.valid_flags);
+    serializer.extract(valid_flags);
     
 }
 
-void insert(::microstrain::Serializer& serializer, const ExternalTimeDelta& self)
+void DeltaTime::insert(Serializer& serializer) const
 {
-    insert(serializer, self.dt_nanos);
-    
-    insert(serializer, self.valid_flags);
+    serializer.insert(seconds);
     
 }
-void extract(::microstrain::Serializer& serializer, ExternalTimeDelta& self)
+void DeltaTime::extract(Serializer& serializer)
 {
-    extract(serializer, self.dt_nanos);
+    serializer.extract(seconds);
     
-    extract(serializer, self.valid_flags);
+}
+
+void ReferenceTimestamp::insert(Serializer& serializer) const
+{
+    serializer.insert(nanoseconds);
+    
+}
+void ReferenceTimestamp::extract(Serializer& serializer)
+{
+    serializer.extract(nanoseconds);
+    
+}
+
+void ReferenceTimeDelta::insert(Serializer& serializer) const
+{
+    serializer.insert(dt_nanos);
+    
+}
+void ReferenceTimeDelta::extract(Serializer& serializer)
+{
+    serializer.extract(dt_nanos);
+    
+}
+
+void ExternalTimestamp::insert(Serializer& serializer) const
+{
+    serializer.insert(nanoseconds);
+    
+    serializer.insert(valid_flags);
+    
+}
+void ExternalTimestamp::extract(Serializer& serializer)
+{
+    serializer.extract(nanoseconds);
+    
+    serializer.extract(valid_flags);
+    
+}
+
+void ExternalTimeDelta::insert(Serializer& serializer) const
+{
+    serializer.insert(dt_nanos);
+    
+    serializer.insert(valid_flags);
+    
+}
+void ExternalTimeDelta::extract(Serializer& serializer)
+{
+    serializer.extract(dt_nanos);
+    
+    serializer.extract(valid_flags);
     
 }
 

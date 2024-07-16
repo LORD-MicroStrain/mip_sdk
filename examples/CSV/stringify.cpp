@@ -26,7 +26,7 @@ struct Formatter
 {
     static constexpr size_t MAX_PARAMETERS = 20;
 
-    microstrain::Serializer serializer;
+    mip::Serializer serializer;
     std::ostream& ss;
     std::array<uint8_t, MAX_PARAMETERS> offsets;
 
@@ -77,18 +77,18 @@ std::ostream& Formatter::formatBasicType()
 ///@returns A uint64_t containing the value. All smaller integers are converted to this type.
 ///@returns std::nullopt (no value) if the offset/size is beyond the end of the buffer.
 ///
-static std::optional<uint64_t> readIntegralValue(Type type, microstrain::Serializer& serializer)
+static std::optional<uint64_t> readIntegralValue(Type type, mip::Serializer& serializer)
 {
     switch(type)
     {
-    case Type::U8:  return microstrain::extract<uint8_t >(serializer);
-    case Type::S8:  return microstrain::extract< int8_t >(serializer);
-    case Type::U16: return microstrain::extract<uint16_t>(serializer);
-    case Type::S16: return microstrain::extract< int32_t>(serializer);
-    case Type::U32: return microstrain::extract<uint32_t>(serializer);
-    case Type::S32: return microstrain::extract< int64_t>(serializer);
-    case Type::U64: return microstrain::extract<uint64_t>(serializer);
-    case Type::S64: return microstrain::extract< int64_t>(serializer);
+    case Type::U8:  return microstrain::extract<microstrain::serialization::Endian::big, uint8_t >(serializer);
+    case Type::S8:  return microstrain::extract<microstrain::serialization::Endian::big,  int8_t >(serializer);
+    case Type::U16: return microstrain::extract<microstrain::serialization::Endian::big, uint16_t>(serializer);
+    case Type::S16: return microstrain::extract<microstrain::serialization::Endian::big,  int32_t>(serializer);
+    case Type::U32: return microstrain::extract<microstrain::serialization::Endian::big, uint32_t>(serializer);
+    case Type::S32: return microstrain::extract<microstrain::serialization::Endian::big,  int64_t>(serializer);
+    case Type::U64: return microstrain::extract<microstrain::serialization::Endian::big, uint64_t>(serializer);
+    case Type::S64: return microstrain::extract<microstrain::serialization::Endian::big,  int64_t>(serializer);
     default: return std::nullopt;
     }
 }
@@ -376,7 +376,7 @@ std::ostream& formatField(std::ostream& ss, const mip::FieldView& field)
         ss << info->name;
 
         Formatter formatter = {
-            microstrain::Serializer(field.payload(), field.payloadLength()),
+            mip::Serializer(field.payload(), field.payloadLength()),
             ss,
         };
 

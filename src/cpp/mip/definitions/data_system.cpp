@@ -1,85 +1,76 @@
 
 #include "data_system.hpp"
 
-#include "microstrain/common/serialization.hpp"
-#include "../mip_interface.hpp"
+#include <mip/mip_serialization.hpp>
+#include <mip/mip_interface.h>
 
 #include <assert.h>
 
 
 namespace mip {
-;
-
 namespace C {
 struct mip_interface;
 } // namespace C
 
 namespace data_system {
 
-using ::mip::insert;
-using ::mip::extract;
 using namespace ::mip::C;
-
-////////////////////////////////////////////////////////////////////////////////
-// Shared Type Definitions
-////////////////////////////////////////////////////////////////////////////////
-
 
 ////////////////////////////////////////////////////////////////////////////////
 // Mip Fields
 ////////////////////////////////////////////////////////////////////////////////
 
-void insert(::microstrain::Serializer& serializer, const BuiltInTest& self)
+void BuiltInTest::insert(Serializer& serializer) const
 {
     for(unsigned int i=0; i < 16; i++)
-        insert(serializer, self.result[i]);
+        serializer.insert(result[i]);
     
 }
-void extract(::microstrain::Serializer& serializer, BuiltInTest& self)
+void BuiltInTest::extract(Serializer& serializer)
 {
     for(unsigned int i=0; i < 16; i++)
-        extract(serializer, self.result[i]);
+        serializer.extract(result[i]);
     
 }
 
-void insert(::microstrain::Serializer& serializer, const TimeSyncStatus& self)
+void TimeSyncStatus::insert(Serializer& serializer) const
 {
-    insert(serializer, self.time_sync);
+    serializer.insert(time_sync);
     
-    insert(serializer, self.last_pps_rcvd);
+    serializer.insert(last_pps_rcvd);
     
 }
-void extract(::microstrain::Serializer& serializer, TimeSyncStatus& self)
+void TimeSyncStatus::extract(Serializer& serializer)
 {
-    extract(serializer, self.time_sync);
+    serializer.extract(time_sync);
     
-    extract(serializer, self.last_pps_rcvd);
-    
-}
-
-void insert(::microstrain::Serializer& serializer, const GpioState& self)
-{
-    insert(serializer, self.states);
-    
-}
-void extract(::microstrain::Serializer& serializer, GpioState& self)
-{
-    extract(serializer, self.states);
+    serializer.extract(last_pps_rcvd);
     
 }
 
-void insert(::microstrain::Serializer& serializer, const GpioAnalogValue& self)
+void GpioState::insert(Serializer& serializer) const
 {
-    insert(serializer, self.gpio_id);
-    
-    insert(serializer, self.value);
+    serializer.insert(states);
     
 }
-void extract(::microstrain::Serializer& serializer, GpioAnalogValue& self)
+void GpioState::extract(Serializer& serializer)
 {
-    extract(serializer, self.gpio_id);
+    serializer.extract(states);
     
-    extract(serializer, self.value);
+}
+
+void GpioAnalogValue::insert(Serializer& serializer) const
+{
+    serializer.insert(gpio_id);
+    
+    serializer.insert(value);
+    
+}
+void GpioAnalogValue::extract(Serializer& serializer)
+{
+    serializer.extract(gpio_id);
+    
+    serializer.extract(value);
     
 }
 

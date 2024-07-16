@@ -2,6 +2,12 @@
 
 #include <microstrain/common/platform.h>
 
+#ifdef __has_include
+# if __has_include(<version>)
+#   include <version>
+# endif
+#endif
+
 #if __cpp_inline_variables >= 201606L
 #define INLINE_VAR inline
 #else

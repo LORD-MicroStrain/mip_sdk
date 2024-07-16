@@ -1,8 +1,9 @@
 #pragma once
 
 #include "common.h"
-#include "mip/mip_descriptors.h"
-#include "../mip_result.h"
+#include <mip/mip_descriptors.h>
+#include <mip/mip_result.h>
+#include <mip/mip_interface.h>
 
 #include <stdint.h>
 #include <stddef.h>
@@ -14,9 +15,6 @@ namespace C {
 extern "C" {
 
 #endif // __cplusplus
-struct mip_interface;
-struct microstrain_serializer;
-struct mip_field;
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup MipCommands_c  MIP Commands [C]
@@ -74,24 +72,24 @@ struct mip_system_comm_mode_command
 {
     mip_function_selector function;
     uint8_t mode;
-    
 };
 typedef struct mip_system_comm_mode_command mip_system_comm_mode_command;
+
 void insert_mip_system_comm_mode_command(microstrain_serializer* serializer, const mip_system_comm_mode_command* self);
 void extract_mip_system_comm_mode_command(microstrain_serializer* serializer, mip_system_comm_mode_command* self);
 
 struct mip_system_comm_mode_response
 {
     uint8_t mode;
-    
 };
 typedef struct mip_system_comm_mode_response mip_system_comm_mode_response;
+
 void insert_mip_system_comm_mode_response(microstrain_serializer* serializer, const mip_system_comm_mode_response* self);
 void extract_mip_system_comm_mode_response(microstrain_serializer* serializer, mip_system_comm_mode_response* self);
 
-mip_cmd_result mip_system_write_comm_mode(struct mip_interface* device, uint8_t mode);
-mip_cmd_result mip_system_read_comm_mode(struct mip_interface* device, uint8_t* mode_out);
-mip_cmd_result mip_system_default_comm_mode(struct mip_interface* device);
+mip_cmd_result mip_system_write_comm_mode(mip_interface* device, uint8_t mode);
+mip_cmd_result mip_system_read_comm_mode(mip_interface* device, uint8_t* mode_out);
+mip_cmd_result mip_system_default_comm_mode(mip_interface* device);
 
 ///@}
 ///

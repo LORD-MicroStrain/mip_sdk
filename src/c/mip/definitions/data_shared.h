@@ -1,8 +1,9 @@
 #pragma once
 
 #include "common.h"
-#include "mip/mip_descriptors.h"
-#include "../mip_result.h"
+#include <mip/mip_descriptors.h>
+#include <mip/mip_result.h>
+#include <mip/mip_interface.h>
 
 #include <stdint.h>
 #include <stddef.h>
@@ -14,9 +15,6 @@ namespace C {
 extern "C" {
 
 #endif // __cplusplus
-struct mip_interface;
-struct microstrain_serializer;
-struct mip_field;
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup MipData_c  MIP Data [C]
@@ -68,12 +66,12 @@ enum { MIP_DATA_DESC_SHARED_START = 0xD0 };
 struct mip_shared_event_source_data
 {
     uint8_t trigger_id; ///< Trigger ID number. If 0, this message was emitted due to being scheduled in the 3DM Message Format Command (0x0C,0x0F).
-    
 };
 typedef struct mip_shared_event_source_data mip_shared_event_source_data;
+
 void insert_mip_shared_event_source_data(microstrain_serializer* serializer, const mip_shared_event_source_data* self);
 void extract_mip_shared_event_source_data(microstrain_serializer* serializer, mip_shared_event_source_data* self);
-bool extract_mip_shared_event_source_data_from_field(const struct mip_field_view* field, void* ptr);
+bool extract_mip_shared_event_source_data_from_field(const mip_field_view* field, void* ptr);
 
 
 ///@}
@@ -90,12 +88,12 @@ bool extract_mip_shared_event_source_data_from_field(const struct mip_field_view
 struct mip_shared_ticks_data
 {
     uint32_t ticks; ///< Ticks since powerup.
-    
 };
 typedef struct mip_shared_ticks_data mip_shared_ticks_data;
+
 void insert_mip_shared_ticks_data(microstrain_serializer* serializer, const mip_shared_ticks_data* self);
 void extract_mip_shared_ticks_data(microstrain_serializer* serializer, mip_shared_ticks_data* self);
-bool extract_mip_shared_ticks_data_from_field(const struct mip_field_view* field, void* ptr);
+bool extract_mip_shared_ticks_data_from_field(const mip_field_view* field, void* ptr);
 
 
 ///@}
@@ -113,12 +111,12 @@ bool extract_mip_shared_ticks_data_from_field(const struct mip_field_view* field
 struct mip_shared_delta_ticks_data
 {
     uint32_t ticks; ///< Ticks since last output.
-    
 };
 typedef struct mip_shared_delta_ticks_data mip_shared_delta_ticks_data;
+
 void insert_mip_shared_delta_ticks_data(microstrain_serializer* serializer, const mip_shared_delta_ticks_data* self);
 void extract_mip_shared_delta_ticks_data(microstrain_serializer* serializer, mip_shared_delta_ticks_data* self);
-bool extract_mip_shared_delta_ticks_data_from_field(const struct mip_field_view* field, void* ptr);
+bool extract_mip_shared_delta_ticks_data_from_field(const mip_field_view* field, void* ptr);
 
 
 ///@}
@@ -138,21 +136,29 @@ static const mip_shared_gps_timestamp_data_valid_flags MIP_SHARED_GPS_TIMESTAMP_
 static const mip_shared_gps_timestamp_data_valid_flags MIP_SHARED_GPS_TIMESTAMP_DATA_VALID_FLAGS_WEEK_NUMBER = 0x0002; ///<  Week number has been set
 static const mip_shared_gps_timestamp_data_valid_flags MIP_SHARED_GPS_TIMESTAMP_DATA_VALID_FLAGS_TIME_VALID  = 0x0003; ///<  Both TOW and Week Number have been set
 static const mip_shared_gps_timestamp_data_valid_flags MIP_SHARED_GPS_TIMESTAMP_DATA_VALID_FLAGS_ALL         = 0x0003;
+inline void insert_mip_shared_gps_timestamp_data_valid_flags(microstrain_serializer* serializer, const mip_shared_gps_timestamp_data_valid_flags self)
+{
+    microstrain_insert_u16(serializer, (uint16_t)(self));
+}
+inline void extract_mip_shared_gps_timestamp_data_valid_flags(microstrain_serializer* serializer, mip_shared_gps_timestamp_data_valid_flags* self)
+{
+    uint16_t tmp = 0;
+    microstrain_extract_u16(serializer, &tmp);
+    *self = tmp;
+}
+
 
 struct mip_shared_gps_timestamp_data
 {
     double tow; ///< GPS Time of Week [seconds]
     uint16_t week_number; ///< GPS Week Number since 1980 [weeks]
     mip_shared_gps_timestamp_data_valid_flags valid_flags;
-    
 };
 typedef struct mip_shared_gps_timestamp_data mip_shared_gps_timestamp_data;
+
 void insert_mip_shared_gps_timestamp_data(microstrain_serializer* serializer, const mip_shared_gps_timestamp_data* self);
 void extract_mip_shared_gps_timestamp_data(microstrain_serializer* serializer, mip_shared_gps_timestamp_data* self);
-bool extract_mip_shared_gps_timestamp_data_from_field(const struct mip_field_view* field, void* ptr);
-
-void insert_mip_shared_gps_timestamp_data_valid_flags(microstrain_serializer* serializer, const mip_shared_gps_timestamp_data_valid_flags self);
-void extract_mip_shared_gps_timestamp_data_valid_flags(microstrain_serializer* serializer, mip_shared_gps_timestamp_data_valid_flags* self);
+bool extract_mip_shared_gps_timestamp_data_from_field(const mip_field_view* field, void* ptr);
 
 
 ///@}
@@ -175,12 +181,12 @@ void extract_mip_shared_gps_timestamp_data_valid_flags(microstrain_serializer* s
 struct mip_shared_delta_time_data
 {
     double seconds; ///< Seconds since last output.
-    
 };
 typedef struct mip_shared_delta_time_data mip_shared_delta_time_data;
+
 void insert_mip_shared_delta_time_data(microstrain_serializer* serializer, const mip_shared_delta_time_data* self);
 void extract_mip_shared_delta_time_data(microstrain_serializer* serializer, mip_shared_delta_time_data* self);
-bool extract_mip_shared_delta_time_data_from_field(const struct mip_field_view* field, void* ptr);
+bool extract_mip_shared_delta_time_data_from_field(const mip_field_view* field, void* ptr);
 
 
 ///@}
@@ -201,12 +207,12 @@ bool extract_mip_shared_delta_time_data_from_field(const struct mip_field_view* 
 struct mip_shared_reference_timestamp_data
 {
     uint64_t nanoseconds; ///< Nanoseconds since initialization.
-    
 };
 typedef struct mip_shared_reference_timestamp_data mip_shared_reference_timestamp_data;
+
 void insert_mip_shared_reference_timestamp_data(microstrain_serializer* serializer, const mip_shared_reference_timestamp_data* self);
 void extract_mip_shared_reference_timestamp_data(microstrain_serializer* serializer, mip_shared_reference_timestamp_data* self);
-bool extract_mip_shared_reference_timestamp_data_from_field(const struct mip_field_view* field, void* ptr);
+bool extract_mip_shared_reference_timestamp_data_from_field(const mip_field_view* field, void* ptr);
 
 
 ///@}
@@ -229,12 +235,12 @@ bool extract_mip_shared_reference_timestamp_data_from_field(const struct mip_fie
 struct mip_shared_reference_time_delta_data
 {
     uint64_t dt_nanos; ///< Nanoseconds since the last occurrence of this field in a packet of the same descriptor set and event source.
-    
 };
 typedef struct mip_shared_reference_time_delta_data mip_shared_reference_time_delta_data;
+
 void insert_mip_shared_reference_time_delta_data(microstrain_serializer* serializer, const mip_shared_reference_time_delta_data* self);
 void extract_mip_shared_reference_time_delta_data(microstrain_serializer* serializer, mip_shared_reference_time_delta_data* self);
-bool extract_mip_shared_reference_time_delta_data_from_field(const struct mip_field_view* field, void* ptr);
+bool extract_mip_shared_reference_time_delta_data_from_field(const mip_field_view* field, void* ptr);
 
 
 ///@}
@@ -257,20 +263,28 @@ typedef uint16_t mip_shared_external_timestamp_data_valid_flags;
 static const mip_shared_external_timestamp_data_valid_flags MIP_SHARED_EXTERNAL_TIMESTAMP_DATA_VALID_FLAGS_NONE        = 0x0000;
 static const mip_shared_external_timestamp_data_valid_flags MIP_SHARED_EXTERNAL_TIMESTAMP_DATA_VALID_FLAGS_NANOSECONDS = 0x0001; ///<  
 static const mip_shared_external_timestamp_data_valid_flags MIP_SHARED_EXTERNAL_TIMESTAMP_DATA_VALID_FLAGS_ALL         = 0x0001;
+inline void insert_mip_shared_external_timestamp_data_valid_flags(microstrain_serializer* serializer, const mip_shared_external_timestamp_data_valid_flags self)
+{
+    microstrain_insert_u16(serializer, (uint16_t)(self));
+}
+inline void extract_mip_shared_external_timestamp_data_valid_flags(microstrain_serializer* serializer, mip_shared_external_timestamp_data_valid_flags* self)
+{
+    uint16_t tmp = 0;
+    microstrain_extract_u16(serializer, &tmp);
+    *self = tmp;
+}
+
 
 struct mip_shared_external_timestamp_data
 {
     uint64_t nanoseconds;
     mip_shared_external_timestamp_data_valid_flags valid_flags;
-    
 };
 typedef struct mip_shared_external_timestamp_data mip_shared_external_timestamp_data;
+
 void insert_mip_shared_external_timestamp_data(microstrain_serializer* serializer, const mip_shared_external_timestamp_data* self);
 void extract_mip_shared_external_timestamp_data(microstrain_serializer* serializer, mip_shared_external_timestamp_data* self);
-bool extract_mip_shared_external_timestamp_data_from_field(const struct mip_field_view* field, void* ptr);
-
-void insert_mip_shared_external_timestamp_data_valid_flags(microstrain_serializer* serializer, const mip_shared_external_timestamp_data_valid_flags self);
-void extract_mip_shared_external_timestamp_data_valid_flags(microstrain_serializer* serializer, mip_shared_external_timestamp_data_valid_flags* self);
+bool extract_mip_shared_external_timestamp_data_from_field(const mip_field_view* field, void* ptr);
 
 
 ///@}
@@ -297,20 +311,28 @@ typedef uint16_t mip_shared_external_time_delta_data_valid_flags;
 static const mip_shared_external_time_delta_data_valid_flags MIP_SHARED_EXTERNAL_TIME_DELTA_DATA_VALID_FLAGS_NONE     = 0x0000;
 static const mip_shared_external_time_delta_data_valid_flags MIP_SHARED_EXTERNAL_TIME_DELTA_DATA_VALID_FLAGS_DT_NANOS = 0x0001; ///<  
 static const mip_shared_external_time_delta_data_valid_flags MIP_SHARED_EXTERNAL_TIME_DELTA_DATA_VALID_FLAGS_ALL      = 0x0001;
+inline void insert_mip_shared_external_time_delta_data_valid_flags(microstrain_serializer* serializer, const mip_shared_external_time_delta_data_valid_flags self)
+{
+    microstrain_insert_u16(serializer, (uint16_t)(self));
+}
+inline void extract_mip_shared_external_time_delta_data_valid_flags(microstrain_serializer* serializer, mip_shared_external_time_delta_data_valid_flags* self)
+{
+    uint16_t tmp = 0;
+    microstrain_extract_u16(serializer, &tmp);
+    *self = tmp;
+}
+
 
 struct mip_shared_external_time_delta_data
 {
     uint64_t dt_nanos; ///< Nanoseconds since the last occurrence of this field in a packet of the same descriptor set and event source.
     mip_shared_external_time_delta_data_valid_flags valid_flags;
-    
 };
 typedef struct mip_shared_external_time_delta_data mip_shared_external_time_delta_data;
+
 void insert_mip_shared_external_time_delta_data(microstrain_serializer* serializer, const mip_shared_external_time_delta_data* self);
 void extract_mip_shared_external_time_delta_data(microstrain_serializer* serializer, mip_shared_external_time_delta_data* self);
-bool extract_mip_shared_external_time_delta_data_from_field(const struct mip_field_view* field, void* ptr);
-
-void insert_mip_shared_external_time_delta_data_valid_flags(microstrain_serializer* serializer, const mip_shared_external_time_delta_data_valid_flags self);
-void extract_mip_shared_external_time_delta_data_valid_flags(microstrain_serializer* serializer, mip_shared_external_time_delta_data_valid_flags* self);
+bool extract_mip_shared_external_time_delta_data_from_field(const mip_field_view* field, void* ptr);
 
 
 ///@}

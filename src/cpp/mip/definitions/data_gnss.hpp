@@ -1,16 +1,14 @@
 #pragma once
 
 #include "common.hpp"
-#include "mip/mip_descriptors.hpp"
-#include "../mip_result.hpp"
+#include <mip/mip_descriptors.hpp>
+#include <mip/mip_result.hpp>
+#include <mip/mip_interface.hpp>
 
 #include <stdint.h>
 #include <stddef.h>
-#include <stdbool.h>
 
 namespace mip {
-;
-
 namespace C {
 struct mip_interface;
 } // namespace C
@@ -178,6 +176,7 @@ struct PosLlh
 {
     struct ValidFlags : Bitfield<ValidFlags>
     {
+        typedef uint16_t Type;
         enum _enumType : uint16_t
         {
             NONE                = 0x0000,
@@ -199,23 +198,10 @@ struct PosLlh
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool latLon() const { return (value & LAT_LON) > 0; }
-        void latLon(bool val) { if(val) value |= LAT_LON; else value &= ~LAT_LON; }
-        bool ellipsoidHeight() const { return (value & ELLIPSOID_HEIGHT) > 0; }
-        void ellipsoidHeight(bool val) { if(val) value |= ELLIPSOID_HEIGHT; else value &= ~ELLIPSOID_HEIGHT; }
-        bool mslHeight() const { return (value & MSL_HEIGHT) > 0; }
-        void mslHeight(bool val) { if(val) value |= MSL_HEIGHT; else value &= ~MSL_HEIGHT; }
-        bool horizontalAccuracy() const { return (value & HORIZONTAL_ACCURACY) > 0; }
-        void horizontalAccuracy(bool val) { if(val) value |= HORIZONTAL_ACCURACY; else value &= ~HORIZONTAL_ACCURACY; }
-        bool verticalAccuracy() const { return (value & VERTICAL_ACCURACY) > 0; }
-        void verticalAccuracy(bool val) { if(val) value |= VERTICAL_ACCURACY; else value &= ~VERTICAL_ACCURACY; }
-        uint16_t flags() const { return (value & FLAGS) >> 0; }
-        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
+    /// Parameters
     double latitude = 0; ///< [degrees]
     double longitude = 0; ///< [degrees]
     double ellipsoid_height = 0; ///< [meters]
@@ -224,26 +210,29 @@ struct PosLlh
     float vertical_accuracy = 0; ///< [meters]
     ValidFlags valid_flags;
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_POSITION_LLH;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "PosLlh";
     static constexpr const char* DOC_NAME = "GNSS LLH Position";
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
-    
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(latitude,longitude,ellipsoid_height,msl_height,horizontal_accuracy,vertical_accuracy,valid_flags);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(latitude),std::ref(longitude),std::ref(ellipsoid_height),std::ref(msl_height),std::ref(horizontal_accuracy),std::ref(vertical_accuracy),std::ref(valid_flags));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
 };
-void insert(::microstrain::Serializer& serializer, const PosLlh& self);
-void extract(::microstrain::Serializer& serializer, PosLlh& self);
-
 
 ///@}
 ///
@@ -257,6 +246,7 @@ struct PosEcef
 {
     struct ValidFlags : Bitfield<ValidFlags>
     {
+        typedef uint16_t Type;
         enum _enumType : uint16_t
         {
             NONE              = 0x0000,
@@ -275,41 +265,37 @@ struct PosEcef
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool position() const { return (value & POSITION) > 0; }
-        void position(bool val) { if(val) value |= POSITION; else value &= ~POSITION; }
-        bool positionAccuracy() const { return (value & POSITION_ACCURACY) > 0; }
-        void positionAccuracy(bool val) { if(val) value |= POSITION_ACCURACY; else value &= ~POSITION_ACCURACY; }
-        uint16_t flags() const { return (value & FLAGS) >> 0; }
-        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
+    /// Parameters
     Vector3d x; ///< [meters]
     float x_accuracy = 0; ///< [meters]
     ValidFlags valid_flags;
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_POSITION_ECEF;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "PosEcef";
     static constexpr const char* DOC_NAME = "GNSS ECEF Position";
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
-    
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(x[0],x[1],x[2],x_accuracy,valid_flags);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(x[0]),std::ref(x[1]),std::ref(x[2]),std::ref(x_accuracy),std::ref(valid_flags));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
 };
-void insert(::microstrain::Serializer& serializer, const PosEcef& self);
-void extract(::microstrain::Serializer& serializer, PosEcef& self);
-
 
 ///@}
 ///
@@ -323,6 +309,7 @@ struct VelNed
 {
     struct ValidFlags : Bitfield<ValidFlags>
     {
+        typedef uint16_t Type;
         enum _enumType : uint16_t
         {
             NONE             = 0x0000,
@@ -345,25 +332,10 @@ struct VelNed
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool velocity() const { return (value & VELOCITY) > 0; }
-        void velocity(bool val) { if(val) value |= VELOCITY; else value &= ~VELOCITY; }
-        bool speed3d() const { return (value & SPEED_3D) > 0; }
-        void speed3d(bool val) { if(val) value |= SPEED_3D; else value &= ~SPEED_3D; }
-        bool groundSpeed() const { return (value & GROUND_SPEED) > 0; }
-        void groundSpeed(bool val) { if(val) value |= GROUND_SPEED; else value &= ~GROUND_SPEED; }
-        bool heading() const { return (value & HEADING) > 0; }
-        void heading(bool val) { if(val) value |= HEADING; else value &= ~HEADING; }
-        bool speedAccuracy() const { return (value & SPEED_ACCURACY) > 0; }
-        void speedAccuracy(bool val) { if(val) value |= SPEED_ACCURACY; else value &= ~SPEED_ACCURACY; }
-        bool headingAccuracy() const { return (value & HEADING_ACCURACY) > 0; }
-        void headingAccuracy(bool val) { if(val) value |= HEADING_ACCURACY; else value &= ~HEADING_ACCURACY; }
-        uint16_t flags() const { return (value & FLAGS) >> 0; }
-        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
+    /// Parameters
     Vector3f v; ///< [meters/second]
     float speed = 0; ///< [meters/second]
     float ground_speed = 0; ///< [meters/second]
@@ -372,26 +344,29 @@ struct VelNed
     float heading_accuracy = 0; ///< [degrees]
     ValidFlags valid_flags;
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_VELOCITY_NED;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "VelNed";
     static constexpr const char* DOC_NAME = "NED Velocity";
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
-    
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(v[0],v[1],v[2],speed,ground_speed,heading,speed_accuracy,heading_accuracy,valid_flags);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(v[0]),std::ref(v[1]),std::ref(v[2]),std::ref(speed),std::ref(ground_speed),std::ref(heading),std::ref(speed_accuracy),std::ref(heading_accuracy),std::ref(valid_flags));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
 };
-void insert(::microstrain::Serializer& serializer, const VelNed& self);
-void extract(::microstrain::Serializer& serializer, VelNed& self);
-
 
 ///@}
 ///
@@ -405,6 +380,7 @@ struct VelEcef
 {
     struct ValidFlags : Bitfield<ValidFlags>
     {
+        typedef uint16_t Type;
         enum _enumType : uint16_t
         {
             NONE              = 0x0000,
@@ -423,41 +399,37 @@ struct VelEcef
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool velocity() const { return (value & VELOCITY) > 0; }
-        void velocity(bool val) { if(val) value |= VELOCITY; else value &= ~VELOCITY; }
-        bool velocityAccuracy() const { return (value & VELOCITY_ACCURACY) > 0; }
-        void velocityAccuracy(bool val) { if(val) value |= VELOCITY_ACCURACY; else value &= ~VELOCITY_ACCURACY; }
-        uint16_t flags() const { return (value & FLAGS) >> 0; }
-        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
+    /// Parameters
     Vector3f v; ///< [meters/second]
     float v_accuracy = 0; ///< [meters/second]
     ValidFlags valid_flags;
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_VELOCITY_ECEF;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "VelEcef";
     static constexpr const char* DOC_NAME = "GNSS ECEF Velocity";
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
-    
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(v[0],v[1],v[2],v_accuracy,valid_flags);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(v[0]),std::ref(v[1]),std::ref(v[2]),std::ref(v_accuracy),std::ref(valid_flags));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
 };
-void insert(::microstrain::Serializer& serializer, const VelEcef& self);
-void extract(::microstrain::Serializer& serializer, VelEcef& self);
-
 
 ///@}
 ///
@@ -471,6 +443,7 @@ struct Dop
 {
     struct ValidFlags : Bitfield<ValidFlags>
     {
+        typedef uint16_t Type;
         enum _enumType : uint16_t
         {
             NONE  = 0x0000,
@@ -494,27 +467,10 @@ struct Dop
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool gdop() const { return (value & GDOP) > 0; }
-        void gdop(bool val) { if(val) value |= GDOP; else value &= ~GDOP; }
-        bool pdop() const { return (value & PDOP) > 0; }
-        void pdop(bool val) { if(val) value |= PDOP; else value &= ~PDOP; }
-        bool hdop() const { return (value & HDOP) > 0; }
-        void hdop(bool val) { if(val) value |= HDOP; else value &= ~HDOP; }
-        bool vdop() const { return (value & VDOP) > 0; }
-        void vdop(bool val) { if(val) value |= VDOP; else value &= ~VDOP; }
-        bool tdop() const { return (value & TDOP) > 0; }
-        void tdop(bool val) { if(val) value |= TDOP; else value &= ~TDOP; }
-        bool ndop() const { return (value & NDOP) > 0; }
-        void ndop(bool val) { if(val) value |= NDOP; else value &= ~NDOP; }
-        bool edop() const { return (value & EDOP) > 0; }
-        void edop(bool val) { if(val) value |= EDOP; else value &= ~EDOP; }
-        uint16_t flags() const { return (value & FLAGS) >> 0; }
-        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
+    /// Parameters
     float gdop = 0; ///< Geometric DOP
     float pdop = 0; ///< Position DOP
     float hdop = 0; ///< Horizontal DOP
@@ -524,26 +480,29 @@ struct Dop
     float edop = 0; ///< Easting DOP
     ValidFlags valid_flags;
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_DOP;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "Dop";
     static constexpr const char* DOC_NAME = "Dop";
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
-    
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(gdop,pdop,hdop,vdop,tdop,ndop,edop,valid_flags);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(gdop),std::ref(pdop),std::ref(hdop),std::ref(vdop),std::ref(tdop),std::ref(ndop),std::ref(edop),std::ref(valid_flags));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
 };
-void insert(::microstrain::Serializer& serializer, const Dop& self);
-void extract(::microstrain::Serializer& serializer, Dop& self);
-
 
 ///@}
 ///
@@ -557,6 +516,7 @@ struct UtcTime
 {
     struct ValidFlags : Bitfield<ValidFlags>
     {
+        typedef uint16_t Type;
         enum _enumType : uint16_t
         {
             NONE               = 0x0000,
@@ -575,17 +535,10 @@ struct UtcTime
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool gnssDateTime() const { return (value & GNSS_DATE_TIME) > 0; }
-        void gnssDateTime(bool val) { if(val) value |= GNSS_DATE_TIME; else value &= ~GNSS_DATE_TIME; }
-        bool leapSecondsKnown() const { return (value & LEAP_SECONDS_KNOWN) > 0; }
-        void leapSecondsKnown(bool val) { if(val) value |= LEAP_SECONDS_KNOWN; else value &= ~LEAP_SECONDS_KNOWN; }
-        uint16_t flags() const { return (value & FLAGS) >> 0; }
-        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
+    /// Parameters
     uint16_t year = 0;
     uint8_t month = 0; ///< Month (1-12)
     uint8_t day = 0; ///< Day (1-31)
@@ -595,26 +548,29 @@ struct UtcTime
     uint32_t msec = 0; ///< Millisecond(0-999)
     ValidFlags valid_flags;
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_UTC_TIME;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "UtcTime";
     static constexpr const char* DOC_NAME = "UtcTime";
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
-    
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(year,month,day,hour,min,sec,msec,valid_flags);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(year),std::ref(month),std::ref(day),std::ref(hour),std::ref(min),std::ref(sec),std::ref(msec),std::ref(valid_flags));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
 };
-void insert(::microstrain::Serializer& serializer, const UtcTime& self);
-void extract(::microstrain::Serializer& serializer, UtcTime& self);
-
 
 ///@}
 ///
@@ -628,6 +584,7 @@ struct GpsTime
 {
     struct ValidFlags : Bitfield<ValidFlags>
     {
+        typedef uint16_t Type;
         enum _enumType : uint16_t
         {
             NONE        = 0x0000,
@@ -646,41 +603,37 @@ struct GpsTime
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool tow() const { return (value & TOW) > 0; }
-        void tow(bool val) { if(val) value |= TOW; else value &= ~TOW; }
-        bool weekNumber() const { return (value & WEEK_NUMBER) > 0; }
-        void weekNumber(bool val) { if(val) value |= WEEK_NUMBER; else value &= ~WEEK_NUMBER; }
-        uint16_t flags() const { return (value & FLAGS) >> 0; }
-        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
+    /// Parameters
     double tow = 0; ///< GPS Time of week [seconds]
     uint16_t week_number = 0; ///< GPS Week since 1980 [weeks]
     ValidFlags valid_flags;
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GPS_TIME;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "GpsTime";
     static constexpr const char* DOC_NAME = "GpsTime";
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
-    
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(tow,week_number,valid_flags);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(tow),std::ref(week_number),std::ref(valid_flags));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
 };
-void insert(::microstrain::Serializer& serializer, const GpsTime& self);
-void extract(::microstrain::Serializer& serializer, GpsTime& self);
-
 
 ///@}
 ///
@@ -694,6 +647,7 @@ struct ClockInfo
 {
     struct ValidFlags : Bitfield<ValidFlags>
     {
+        typedef uint16_t Type;
         enum _enumType : uint16_t
         {
             NONE              = 0x0000,
@@ -713,44 +667,38 @@ struct ClockInfo
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool bias() const { return (value & BIAS) > 0; }
-        void bias(bool val) { if(val) value |= BIAS; else value &= ~BIAS; }
-        bool drift() const { return (value & DRIFT) > 0; }
-        void drift(bool val) { if(val) value |= DRIFT; else value &= ~DRIFT; }
-        bool accuracyEstimate() const { return (value & ACCURACY_ESTIMATE) > 0; }
-        void accuracyEstimate(bool val) { if(val) value |= ACCURACY_ESTIMATE; else value &= ~ACCURACY_ESTIMATE; }
-        uint16_t flags() const { return (value & FLAGS) >> 0; }
-        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
+    /// Parameters
     double bias = 0; ///< [seconds]
     double drift = 0; ///< [seconds/second]
     double accuracy_estimate = 0; ///< [seconds]
     ValidFlags valid_flags;
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_CLOCK_INFO;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "ClockInfo";
     static constexpr const char* DOC_NAME = "ClockInfo";
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
-    
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(bias,drift,accuracy_estimate,valid_flags);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(bias),std::ref(drift),std::ref(accuracy_estimate),std::ref(valid_flags));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
 };
-void insert(::microstrain::Serializer& serializer, const ClockInfo& self);
-void extract(::microstrain::Serializer& serializer, ClockInfo& self);
-
 
 ///@}
 ///
@@ -776,6 +724,7 @@ struct FixInfo
     
     struct FixFlags : Bitfield<FixFlags>
     {
+        typedef uint16_t Type;
         enum _enumType : uint16_t
         {
             NONE       = 0x0000,
@@ -793,17 +742,12 @@ struct FixInfo
         FixFlags& operator|=(uint16_t val) { return *this = value | val; }
         FixFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool sbasUsed() const { return (value & SBAS_USED) > 0; }
-        void sbasUsed(bool val) { if(val) value |= SBAS_USED; else value &= ~SBAS_USED; }
-        bool dgnssUsed() const { return (value & DGNSS_USED) > 0; }
-        void dgnssUsed(bool val) { if(val) value |= DGNSS_USED; else value &= ~DGNSS_USED; }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
     struct ValidFlags : Bitfield<ValidFlags>
     {
+        typedef uint16_t Type;
         enum _enumType : uint16_t
         {
             NONE      = 0x0000,
@@ -823,44 +767,38 @@ struct FixInfo
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool fixType() const { return (value & FIX_TYPE) > 0; }
-        void fixType(bool val) { if(val) value |= FIX_TYPE; else value &= ~FIX_TYPE; }
-        bool numSv() const { return (value & NUM_SV) > 0; }
-        void numSv(bool val) { if(val) value |= NUM_SV; else value &= ~NUM_SV; }
-        bool fixFlags() const { return (value & FIX_FLAGS) > 0; }
-        void fixFlags(bool val) { if(val) value |= FIX_FLAGS; else value &= ~FIX_FLAGS; }
-        uint16_t flags() const { return (value & FLAGS) >> 0; }
-        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
+    /// Parameters
     FixType fix_type = static_cast<FixType>(0);
     uint8_t num_sv = 0;
     FixFlags fix_flags;
     ValidFlags valid_flags;
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_FIX_INFO;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "FixInfo";
     static constexpr const char* DOC_NAME = "FixInfo";
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
-    
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(fix_type,num_sv,fix_flags,valid_flags);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(fix_type),std::ref(num_sv),std::ref(fix_flags),std::ref(valid_flags));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
 };
-void insert(::microstrain::Serializer& serializer, const FixInfo& self);
-void extract(::microstrain::Serializer& serializer, FixInfo& self);
-
 
 ///@}
 ///
@@ -876,6 +814,7 @@ struct SvInfo
 {
     struct SVFlags : Bitfield<SVFlags>
     {
+        typedef uint16_t Type;
         enum _enumType : uint16_t
         {
             NONE                = 0x0000,
@@ -893,17 +832,12 @@ struct SvInfo
         SVFlags& operator|=(uint16_t val) { return *this = value | val; }
         SVFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool usedForNavigation() const { return (value & USED_FOR_NAVIGATION) > 0; }
-        void usedForNavigation(bool val) { if(val) value |= USED_FOR_NAVIGATION; else value &= ~USED_FOR_NAVIGATION; }
-        bool healthy() const { return (value & HEALTHY) > 0; }
-        void healthy(bool val) { if(val) value |= HEALTHY; else value &= ~HEALTHY; }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
     struct ValidFlags : Bitfield<ValidFlags>
     {
+        typedef uint16_t Type;
         enum _enumType : uint16_t
         {
             NONE                = 0x0000,
@@ -926,25 +860,10 @@ struct SvInfo
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool channel() const { return (value & CHANNEL) > 0; }
-        void channel(bool val) { if(val) value |= CHANNEL; else value &= ~CHANNEL; }
-        bool svId() const { return (value & SV_ID) > 0; }
-        void svId(bool val) { if(val) value |= SV_ID; else value &= ~SV_ID; }
-        bool carrierNoiseRatio() const { return (value & CARRIER_NOISE_RATIO) > 0; }
-        void carrierNoiseRatio(bool val) { if(val) value |= CARRIER_NOISE_RATIO; else value &= ~CARRIER_NOISE_RATIO; }
-        bool azimuth() const { return (value & AZIMUTH) > 0; }
-        void azimuth(bool val) { if(val) value |= AZIMUTH; else value &= ~AZIMUTH; }
-        bool elevation() const { return (value & ELEVATION) > 0; }
-        void elevation(bool val) { if(val) value |= ELEVATION; else value &= ~ELEVATION; }
-        bool svFlags() const { return (value & SV_FLAGS) > 0; }
-        void svFlags(bool val) { if(val) value |= SV_FLAGS; else value &= ~SV_FLAGS; }
-        uint16_t flags() const { return (value & FLAGS) >> 0; }
-        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
+    /// Parameters
     uint8_t channel = 0; ///< Receiver channel number
     uint8_t sv_id = 0; ///< GNSS Satellite ID
     uint16_t carrier_noise_ratio = 0; ///< [dBHz]
@@ -953,26 +872,29 @@ struct SvInfo
     SVFlags sv_flags;
     ValidFlags valid_flags;
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_SV_INFO;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "SvInfo";
     static constexpr const char* DOC_NAME = "SvInfo";
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
-    
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(channel,sv_id,carrier_noise_ratio,azimuth,elevation,sv_flags,valid_flags);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(channel),std::ref(sv_id),std::ref(carrier_noise_ratio),std::ref(azimuth),std::ref(elevation),std::ref(sv_flags),std::ref(valid_flags));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
 };
-void insert(::microstrain::Serializer& serializer, const SvInfo& self);
-void extract(::microstrain::Serializer& serializer, SvInfo& self);
-
 
 ///@}
 ///
@@ -1009,6 +931,7 @@ struct HwStatus
     
     struct ValidFlags : Bitfield<ValidFlags>
     {
+        typedef uint16_t Type;
         enum _enumType : uint16_t
         {
             NONE          = 0x0000,
@@ -1028,44 +951,38 @@ struct HwStatus
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool sensorState() const { return (value & SENSOR_STATE) > 0; }
-        void sensorState(bool val) { if(val) value |= SENSOR_STATE; else value &= ~SENSOR_STATE; }
-        bool antennaState() const { return (value & ANTENNA_STATE) > 0; }
-        void antennaState(bool val) { if(val) value |= ANTENNA_STATE; else value &= ~ANTENNA_STATE; }
-        bool antennaPower() const { return (value & ANTENNA_POWER) > 0; }
-        void antennaPower(bool val) { if(val) value |= ANTENNA_POWER; else value &= ~ANTENNA_POWER; }
-        uint16_t flags() const { return (value & FLAGS) >> 0; }
-        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
+    /// Parameters
     ReceiverState receiver_state = static_cast<ReceiverState>(0);
     AntennaState antenna_state = static_cast<AntennaState>(0);
     AntennaPower antenna_power = static_cast<AntennaPower>(0);
     ValidFlags valid_flags;
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_HW_STATUS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "HwStatus";
     static constexpr const char* DOC_NAME = "GNSS Hardware Status";
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
-    
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(receiver_state,antenna_state,antenna_power,valid_flags);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(receiver_state),std::ref(antenna_state),std::ref(antenna_power),std::ref(valid_flags));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
 };
-void insert(::microstrain::Serializer& serializer, const HwStatus& self);
-void extract(::microstrain::Serializer& serializer, HwStatus& self);
-
 
 ///@}
 ///
@@ -1091,6 +1008,7 @@ struct DgpsInfo
 {
     struct ValidFlags : Bitfield<ValidFlags>
     {
+        typedef uint16_t Type;
         enum _enumType : uint16_t
         {
             NONE                = 0x0000,
@@ -1111,47 +1029,39 @@ struct DgpsInfo
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool age() const { return (value & AGE) > 0; }
-        void age(bool val) { if(val) value |= AGE; else value &= ~AGE; }
-        bool baseStationId() const { return (value & BASE_STATION_ID) > 0; }
-        void baseStationId(bool val) { if(val) value |= BASE_STATION_ID; else value &= ~BASE_STATION_ID; }
-        bool baseStationStatus() const { return (value & BASE_STATION_STATUS) > 0; }
-        void baseStationStatus(bool val) { if(val) value |= BASE_STATION_STATUS; else value &= ~BASE_STATION_STATUS; }
-        bool numChannels() const { return (value & NUM_CHANNELS) > 0; }
-        void numChannels(bool val) { if(val) value |= NUM_CHANNELS; else value &= ~NUM_CHANNELS; }
-        uint16_t flags() const { return (value & FLAGS) >> 0; }
-        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
+    /// Parameters
     uint8_t sv_id = 0;
     float age = 0;
     float range_correction = 0;
     float range_rate_correction = 0;
     ValidFlags valid_flags;
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_DGPS_INFO;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "DgpsInfo";
     static constexpr const char* DOC_NAME = "DgpsInfo";
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
-    
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(sv_id,age,range_correction,range_rate_correction,valid_flags);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(sv_id),std::ref(age),std::ref(range_correction),std::ref(range_rate_correction),std::ref(valid_flags));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
 };
-void insert(::microstrain::Serializer& serializer, const DgpsInfo& self);
-void extract(::microstrain::Serializer& serializer, DgpsInfo& self);
-
 
 ///@}
 ///
@@ -1167,6 +1077,7 @@ struct DgpsChannel
 {
     struct ValidFlags : Bitfield<ValidFlags>
     {
+        typedef uint16_t Type;
         enum _enumType : uint16_t
         {
             NONE                  = 0x0000,
@@ -1187,47 +1098,39 @@ struct DgpsChannel
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool id() const { return (value & ID) > 0; }
-        void id(bool val) { if(val) value |= ID; else value &= ~ID; }
-        bool age() const { return (value & AGE) > 0; }
-        void age(bool val) { if(val) value |= AGE; else value &= ~AGE; }
-        bool rangeCorrection() const { return (value & RANGE_CORRECTION) > 0; }
-        void rangeCorrection(bool val) { if(val) value |= RANGE_CORRECTION; else value &= ~RANGE_CORRECTION; }
-        bool rangeRateCorrection() const { return (value & RANGE_RATE_CORRECTION) > 0; }
-        void rangeRateCorrection(bool val) { if(val) value |= RANGE_RATE_CORRECTION; else value &= ~RANGE_RATE_CORRECTION; }
-        uint16_t flags() const { return (value & FLAGS) >> 0; }
-        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
+    /// Parameters
     uint8_t sv_id = 0;
     float age = 0; ///< [s]
     float range_correction = 0; ///< [m]
     float range_rate_correction = 0; ///< [m/s]
     ValidFlags valid_flags;
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_DGPS_CHANNEL_STATUS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "DgpsChannel";
     static constexpr const char* DOC_NAME = "DgpsChannel";
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
-    
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(sv_id,age,range_correction,range_rate_correction,valid_flags);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(sv_id),std::ref(age),std::ref(range_correction),std::ref(range_rate_correction),std::ref(valid_flags));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
 };
-void insert(::microstrain::Serializer& serializer, const DgpsChannel& self);
-void extract(::microstrain::Serializer& serializer, DgpsChannel& self);
-
 
 ///@}
 ///
@@ -1243,6 +1146,7 @@ struct ClockInfo2
 {
     struct ValidFlags : Bitfield<ValidFlags>
     {
+        typedef uint16_t Type;
         enum _enumType : uint16_t
         {
             NONE           = 0x0000,
@@ -1263,47 +1167,39 @@ struct ClockInfo2
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool bias() const { return (value & BIAS) > 0; }
-        void bias(bool val) { if(val) value |= BIAS; else value &= ~BIAS; }
-        bool drift() const { return (value & DRIFT) > 0; }
-        void drift(bool val) { if(val) value |= DRIFT; else value &= ~DRIFT; }
-        bool biasAccuracy() const { return (value & BIAS_ACCURACY) > 0; }
-        void biasAccuracy(bool val) { if(val) value |= BIAS_ACCURACY; else value &= ~BIAS_ACCURACY; }
-        bool driftAccuracy() const { return (value & DRIFT_ACCURACY) > 0; }
-        void driftAccuracy(bool val) { if(val) value |= DRIFT_ACCURACY; else value &= ~DRIFT_ACCURACY; }
-        uint16_t flags() const { return (value & FLAGS) >> 0; }
-        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
+    /// Parameters
     double bias = 0;
     double drift = 0;
     double bias_accuracy_estimate = 0;
     double drift_accuracy_estimate = 0;
     ValidFlags valid_flags;
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_CLOCK_INFO_2;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "ClockInfo2";
     static constexpr const char* DOC_NAME = "ClockInfo2";
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
-    
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(bias,drift,bias_accuracy_estimate,drift_accuracy_estimate,valid_flags);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(bias),std::ref(drift),std::ref(bias_accuracy_estimate),std::ref(drift_accuracy_estimate),std::ref(valid_flags));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
 };
-void insert(::microstrain::Serializer& serializer, const ClockInfo2& self);
-void extract(::microstrain::Serializer& serializer, ClockInfo2& self);
-
 
 ///@}
 ///
@@ -1317,6 +1213,7 @@ struct GpsLeapSeconds
 {
     struct ValidFlags : Bitfield<ValidFlags>
     {
+        typedef uint16_t Type;
         enum _enumType : uint16_t
         {
             NONE         = 0x0000,
@@ -1333,36 +1230,36 @@ struct GpsLeapSeconds
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool leapSeconds() const { return (value & LEAP_SECONDS) > 0; }
-        void leapSeconds(bool val) { if(val) value |= LEAP_SECONDS; else value &= ~LEAP_SECONDS; }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
+    /// Parameters
     uint8_t leap_seconds = 0; ///< [s]
     ValidFlags valid_flags;
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GPS_LEAP_SECONDS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "GpsLeapSeconds";
     static constexpr const char* DOC_NAME = "GpsLeapSeconds";
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
-    
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(leap_seconds,valid_flags);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(leap_seconds),std::ref(valid_flags));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
 };
-void insert(::microstrain::Serializer& serializer, const GpsLeapSeconds& self);
-void extract(::microstrain::Serializer& serializer, GpsLeapSeconds& self);
-
 
 ///@}
 ///
@@ -1376,6 +1273,7 @@ struct SbasInfo
 {
     struct SbasStatus : Bitfield<SbasStatus>
     {
+        typedef uint8_t Type;
         enum _enumType : uint8_t
         {
             NONE                  = 0x00,
@@ -1395,21 +1293,12 @@ struct SbasInfo
         SbasStatus& operator|=(uint8_t val) { return *this = value | val; }
         SbasStatus& operator&=(uint8_t val) { return *this = value & val; }
         
-        bool rangeAvailable() const { return (value & RANGE_AVAILABLE) > 0; }
-        void rangeAvailable(bool val) { if(val) value |= RANGE_AVAILABLE; else value &= ~RANGE_AVAILABLE; }
-        bool correctionsAvailable() const { return (value & CORRECTIONS_AVAILABLE) > 0; }
-        void correctionsAvailable(bool val) { if(val) value |= CORRECTIONS_AVAILABLE; else value &= ~CORRECTIONS_AVAILABLE; }
-        bool integrityAvailable() const { return (value & INTEGRITY_AVAILABLE) > 0; }
-        void integrityAvailable(bool val) { if(val) value |= INTEGRITY_AVAILABLE; else value &= ~INTEGRITY_AVAILABLE; }
-        bool testMode() const { return (value & TEST_MODE) > 0; }
-        void testMode(bool val) { if(val) value |= TEST_MODE; else value &= ~TEST_MODE; }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
     struct ValidFlags : Bitfield<ValidFlags>
     {
+        typedef uint16_t Type;
         enum _enumType : uint16_t
         {
             NONE        = 0x0000,
@@ -1432,25 +1321,10 @@ struct SbasInfo
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool tow() const { return (value & TOW) > 0; }
-        void tow(bool val) { if(val) value |= TOW; else value &= ~TOW; }
-        bool weekNumber() const { return (value & WEEK_NUMBER) > 0; }
-        void weekNumber(bool val) { if(val) value |= WEEK_NUMBER; else value &= ~WEEK_NUMBER; }
-        bool sbasSystem() const { return (value & SBAS_SYSTEM) > 0; }
-        void sbasSystem(bool val) { if(val) value |= SBAS_SYSTEM; else value &= ~SBAS_SYSTEM; }
-        bool sbasId() const { return (value & SBAS_ID) > 0; }
-        void sbasId(bool val) { if(val) value |= SBAS_ID; else value &= ~SBAS_ID; }
-        bool count() const { return (value & COUNT) > 0; }
-        void count(bool val) { if(val) value |= COUNT; else value &= ~COUNT; }
-        bool sbasStatus() const { return (value & SBAS_STATUS) > 0; }
-        void sbasStatus(bool val) { if(val) value |= SBAS_STATUS; else value &= ~SBAS_STATUS; }
-        uint16_t flags() const { return (value & FLAGS) >> 0; }
-        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
+    /// Parameters
     double time_of_week = 0; ///< GPS Time of week [seconds]
     uint16_t week_number = 0; ///< GPS Week since 1980 [weeks]
     SbasSystem sbas_system = static_cast<SbasSystem>(0); ///< SBAS system id
@@ -1459,26 +1333,29 @@ struct SbasInfo
     SbasStatus sbas_status; ///< Status of the SBAS service
     ValidFlags valid_flags;
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_SBAS_INFO;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "SbasInfo";
     static constexpr const char* DOC_NAME = "SbasInfo";
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
-    
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(time_of_week,week_number,sbas_system,sbas_id,count,sbas_status,valid_flags);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(time_of_week),std::ref(week_number),std::ref(sbas_system),std::ref(sbas_id),std::ref(count),std::ref(sbas_status),std::ref(valid_flags));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
 };
-void insert(::microstrain::Serializer& serializer, const SbasInfo& self);
-void extract(::microstrain::Serializer& serializer, SbasInfo& self);
-
 
 ///@}
 ///
@@ -1514,6 +1391,7 @@ struct SbasCorrection
 {
     struct ValidFlags : Bitfield<ValidFlags>
     {
+        typedef uint16_t Type;
         enum _enumType : uint16_t
         {
             NONE                   = 0x0000,
@@ -1533,19 +1411,10 @@ struct SbasCorrection
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool udrei() const { return (value & UDREI) > 0; }
-        void udrei(bool val) { if(val) value |= UDREI; else value &= ~UDREI; }
-        bool pseudorangeCorrection() const { return (value & PSEUDORANGE_CORRECTION) > 0; }
-        void pseudorangeCorrection(bool val) { if(val) value |= PSEUDORANGE_CORRECTION; else value &= ~PSEUDORANGE_CORRECTION; }
-        bool ionoCorrection() const { return (value & IONO_CORRECTION) > 0; }
-        void ionoCorrection(bool val) { if(val) value |= IONO_CORRECTION; else value &= ~IONO_CORRECTION; }
-        uint16_t flags() const { return (value & FLAGS) >> 0; }
-        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
+    /// Parameters
     uint8_t index = 0; ///< Index of this field in this epoch.
     uint8_t count = 0; ///< Total number of fields in this epoch.
     double time_of_week = 0; ///< GPS Time of week the message was received [seconds]
@@ -1557,26 +1426,29 @@ struct SbasCorrection
     float iono_correction = 0; ///< Ionospheric correction [meters].
     ValidFlags valid_flags;
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_SBAS_CORRECTION;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "SbasCorrection";
     static constexpr const char* DOC_NAME = "SbasCorrection";
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
-    
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(index,count,time_of_week,week_number,gnss_id,sv_id,udrei,pseudorange_correction,iono_correction,valid_flags);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(index),std::ref(count),std::ref(time_of_week),std::ref(week_number),std::ref(gnss_id),std::ref(sv_id),std::ref(udrei),std::ref(pseudorange_correction),std::ref(iono_correction),std::ref(valid_flags));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
 };
-void insert(::microstrain::Serializer& serializer, const SbasCorrection& self);
-void extract(::microstrain::Serializer& serializer, SbasCorrection& self);
-
 
 ///@}
 ///
@@ -1614,6 +1486,7 @@ struct RfErrorDetection
     
     struct ValidFlags : Bitfield<ValidFlags>
     {
+        typedef uint16_t Type;
         enum _enumType : uint16_t
         {
             NONE           = 0x0000,
@@ -1633,45 +1506,39 @@ struct RfErrorDetection
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool rfBand() const { return (value & RF_BAND) > 0; }
-        void rfBand(bool val) { if(val) value |= RF_BAND; else value &= ~RF_BAND; }
-        bool jammingState() const { return (value & JAMMING_STATE) > 0; }
-        void jammingState(bool val) { if(val) value |= JAMMING_STATE; else value &= ~JAMMING_STATE; }
-        bool spoofingState() const { return (value & SPOOFING_STATE) > 0; }
-        void spoofingState(bool val) { if(val) value |= SPOOFING_STATE; else value &= ~SPOOFING_STATE; }
-        uint16_t flags() const { return (value & FLAGS) >> 0; }
-        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
+    /// Parameters
     RFBand rf_band = static_cast<RFBand>(0); ///< RF Band of the reported information
     JammingState jamming_state = static_cast<JammingState>(0); ///< GNSS Jamming State (as reported by the GNSS module)
     SpoofingState spoofing_state = static_cast<SpoofingState>(0); ///< GNSS Spoofing State (as reported by the GNSS module)
     uint8_t reserved[4] = {0}; ///< Reserved for future use
     ValidFlags valid_flags;
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_RF_ERROR_DETECTION;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "RfErrorDetection";
     static constexpr const char* DOC_NAME = "RfErrorDetection";
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
-    
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(rf_band,jamming_state,spoofing_state,reserved,valid_flags);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(rf_band),std::ref(jamming_state),std::ref(spoofing_state),std::ref(reserved),std::ref(valid_flags));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
 };
-void insert(::microstrain::Serializer& serializer, const RfErrorDetection& self);
-void extract(::microstrain::Serializer& serializer, RfErrorDetection& self);
-
 
 ///@}
 ///
@@ -1687,6 +1554,7 @@ struct BaseStationInfo
 {
     struct IndicatorFlags : Bitfield<IndicatorFlags>
     {
+        typedef uint16_t Type;
         enum _enumType : uint16_t
         {
             NONE               = 0x0000,
@@ -1711,31 +1579,12 @@ struct BaseStationInfo
         IndicatorFlags& operator|=(uint16_t val) { return *this = value | val; }
         IndicatorFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool gps() const { return (value & GPS) > 0; }
-        void gps(bool val) { if(val) value |= GPS; else value &= ~GPS; }
-        bool glonass() const { return (value & GLONASS) > 0; }
-        void glonass(bool val) { if(val) value |= GLONASS; else value &= ~GLONASS; }
-        bool galileo() const { return (value & GALILEO) > 0; }
-        void galileo(bool val) { if(val) value |= GALILEO; else value &= ~GALILEO; }
-        bool beidou() const { return (value & BEIDOU) > 0; }
-        void beidou(bool val) { if(val) value |= BEIDOU; else value &= ~BEIDOU; }
-        bool refStation() const { return (value & REF_STATION) > 0; }
-        void refStation(bool val) { if(val) value |= REF_STATION; else value &= ~REF_STATION; }
-        bool singleReceiver() const { return (value & SINGLE_RECEIVER) > 0; }
-        void singleReceiver(bool val) { if(val) value |= SINGLE_RECEIVER; else value &= ~SINGLE_RECEIVER; }
-        bool quarterCycleBit1() const { return (value & QUARTER_CYCLE_BIT1) > 0; }
-        void quarterCycleBit1(bool val) { if(val) value |= QUARTER_CYCLE_BIT1; else value &= ~QUARTER_CYCLE_BIT1; }
-        bool quarterCycleBit2() const { return (value & QUARTER_CYCLE_BIT2) > 0; }
-        void quarterCycleBit2(bool val) { if(val) value |= QUARTER_CYCLE_BIT2; else value &= ~QUARTER_CYCLE_BIT2; }
-        uint16_t quarterCycleBits() const { return (value & QUARTER_CYCLE_BITS) >> 6; }
-        void quarterCycleBits(uint16_t val) { value = (value & ~QUARTER_CYCLE_BITS) | (val << 6); }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
     struct ValidFlags : Bitfield<ValidFlags>
     {
+        typedef uint16_t Type;
         enum _enumType : uint16_t
         {
             NONE          = 0x0000,
@@ -1758,25 +1607,10 @@ struct BaseStationInfo
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool tow() const { return (value & TOW) > 0; }
-        void tow(bool val) { if(val) value |= TOW; else value &= ~TOW; }
-        bool weekNumber() const { return (value & WEEK_NUMBER) > 0; }
-        void weekNumber(bool val) { if(val) value |= WEEK_NUMBER; else value &= ~WEEK_NUMBER; }
-        bool ecefPosition() const { return (value & ECEF_POSITION) > 0; }
-        void ecefPosition(bool val) { if(val) value |= ECEF_POSITION; else value &= ~ECEF_POSITION; }
-        bool height() const { return (value & HEIGHT) > 0; }
-        void height(bool val) { if(val) value |= HEIGHT; else value &= ~HEIGHT; }
-        bool stationId() const { return (value & STATION_ID) > 0; }
-        void stationId(bool val) { if(val) value |= STATION_ID; else value &= ~STATION_ID; }
-        bool indicators() const { return (value & INDICATORS) > 0; }
-        void indicators(bool val) { if(val) value |= INDICATORS; else value &= ~INDICATORS; }
-        uint16_t flags() const { return (value & FLAGS) >> 0; }
-        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
+    /// Parameters
     double time_of_week = 0; ///< GPS Time of week the message was received [seconds]
     uint16_t week_number = 0; ///< GPS Week since 1980 [weeks]
     Vector3d ecef_pos; ///< Earth-centered, Earth-fixed [m]
@@ -1785,26 +1619,29 @@ struct BaseStationInfo
     IndicatorFlags indicators; ///< Bitfield
     ValidFlags valid_flags;
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_BASE_STATION_INFO;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "BaseStationInfo";
     static constexpr const char* DOC_NAME = "BaseStationInfo";
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
-    
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(time_of_week,week_number,ecef_pos[0],ecef_pos[1],ecef_pos[2],height,station_id,indicators,valid_flags);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(time_of_week),std::ref(week_number),std::ref(ecef_pos[0]),std::ref(ecef_pos[1]),std::ref(ecef_pos[2]),std::ref(height),std::ref(station_id),std::ref(indicators),std::ref(valid_flags));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
 };
-void insert(::microstrain::Serializer& serializer, const BaseStationInfo& self);
-void extract(::microstrain::Serializer& serializer, BaseStationInfo& self);
-
 
 ///@}
 ///
@@ -1817,6 +1654,7 @@ struct RtkCorrectionsStatus
 {
     struct ValidFlags : Bitfield<ValidFlags>
     {
+        typedef uint16_t Type;
         enum _enumType : uint16_t
         {
             NONE            = 0x0000,
@@ -1841,31 +1679,12 @@ struct RtkCorrectionsStatus
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool tow() const { return (value & TOW) > 0; }
-        void tow(bool val) { if(val) value |= TOW; else value &= ~TOW; }
-        bool weekNumber() const { return (value & WEEK_NUMBER) > 0; }
-        void weekNumber(bool val) { if(val) value |= WEEK_NUMBER; else value &= ~WEEK_NUMBER; }
-        bool epochStatus() const { return (value & EPOCH_STATUS) > 0; }
-        void epochStatus(bool val) { if(val) value |= EPOCH_STATUS; else value &= ~EPOCH_STATUS; }
-        bool dongleStatus() const { return (value & DONGLE_STATUS) > 0; }
-        void dongleStatus(bool val) { if(val) value |= DONGLE_STATUS; else value &= ~DONGLE_STATUS; }
-        bool gpsLatency() const { return (value & GPS_LATENCY) > 0; }
-        void gpsLatency(bool val) { if(val) value |= GPS_LATENCY; else value &= ~GPS_LATENCY; }
-        bool glonassLatency() const { return (value & GLONASS_LATENCY) > 0; }
-        void glonassLatency(bool val) { if(val) value |= GLONASS_LATENCY; else value &= ~GLONASS_LATENCY; }
-        bool galileoLatency() const { return (value & GALILEO_LATENCY) > 0; }
-        void galileoLatency(bool val) { if(val) value |= GALILEO_LATENCY; else value &= ~GALILEO_LATENCY; }
-        bool beidouLatency() const { return (value & BEIDOU_LATENCY) > 0; }
-        void beidouLatency(bool val) { if(val) value |= BEIDOU_LATENCY; else value &= ~BEIDOU_LATENCY; }
-        uint16_t flags() const { return (value & FLAGS) >> 0; }
-        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
     struct EpochStatus : Bitfield<EpochStatus>
     {
+        typedef uint16_t Type;
         enum _enumType : uint16_t
         {
             NONE                         = 0x0000,
@@ -1890,29 +1709,10 @@ struct RtkCorrectionsStatus
         EpochStatus& operator|=(uint16_t val) { return *this = value | val; }
         EpochStatus& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool antennaLocationReceived() const { return (value & ANTENNA_LOCATION_RECEIVED) > 0; }
-        void antennaLocationReceived(bool val) { if(val) value |= ANTENNA_LOCATION_RECEIVED; else value &= ~ANTENNA_LOCATION_RECEIVED; }
-        bool antennaDescriptionReceived() const { return (value & ANTENNA_DESCRIPTION_RECEIVED) > 0; }
-        void antennaDescriptionReceived(bool val) { if(val) value |= ANTENNA_DESCRIPTION_RECEIVED; else value &= ~ANTENNA_DESCRIPTION_RECEIVED; }
-        bool gpsReceived() const { return (value & GPS_RECEIVED) > 0; }
-        void gpsReceived(bool val) { if(val) value |= GPS_RECEIVED; else value &= ~GPS_RECEIVED; }
-        bool glonassReceived() const { return (value & GLONASS_RECEIVED) > 0; }
-        void glonassReceived(bool val) { if(val) value |= GLONASS_RECEIVED; else value &= ~GLONASS_RECEIVED; }
-        bool galileoReceived() const { return (value & GALILEO_RECEIVED) > 0; }
-        void galileoReceived(bool val) { if(val) value |= GALILEO_RECEIVED; else value &= ~GALILEO_RECEIVED; }
-        bool beidouReceived() const { return (value & BEIDOU_RECEIVED) > 0; }
-        void beidouReceived(bool val) { if(val) value |= BEIDOU_RECEIVED; else value &= ~BEIDOU_RECEIVED; }
-        bool usingGpsMsmMessages() const { return (value & USING_GPS_MSM_MESSAGES) > 0; }
-        void usingGpsMsmMessages(bool val) { if(val) value |= USING_GPS_MSM_MESSAGES; else value &= ~USING_GPS_MSM_MESSAGES; }
-        bool usingGlonassMsmMessages() const { return (value & USING_GLONASS_MSM_MESSAGES) > 0; }
-        void usingGlonassMsmMessages(bool val) { if(val) value |= USING_GLONASS_MSM_MESSAGES; else value &= ~USING_GLONASS_MSM_MESSAGES; }
-        bool dongleStatusReadFailed() const { return (value & DONGLE_STATUS_READ_FAILED) > 0; }
-        void dongleStatusReadFailed(bool val) { if(val) value |= DONGLE_STATUS_READ_FAILED; else value &= ~DONGLE_STATUS_READ_FAILED; }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
+    /// Parameters
     double time_of_week = 0; ///< GPS Time of week [seconds]
     uint16_t week_number = 0; ///< GPS Week since 1980 [weeks]
     EpochStatus epoch_status; ///< Status of the corrections received during this epoch
@@ -1924,26 +1724,29 @@ struct RtkCorrectionsStatus
     uint32_t reserved[4] = {0}; ///< Reserved for future use
     ValidFlags valid_flags;
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_RTK_CORRECTIONS_STATUS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "RtkCorrectionsStatus";
     static constexpr const char* DOC_NAME = "RtkCorrectionsStatus";
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
-    
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(time_of_week,week_number,epoch_status,dongle_status,gps_correction_latency,glonass_correction_latency,galileo_correction_latency,beidou_correction_latency,reserved,valid_flags);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(time_of_week),std::ref(week_number),std::ref(epoch_status),std::ref(dongle_status),std::ref(gps_correction_latency),std::ref(glonass_correction_latency),std::ref(galileo_correction_latency),std::ref(beidou_correction_latency),std::ref(reserved),std::ref(valid_flags));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
 };
-void insert(::microstrain::Serializer& serializer, const RtkCorrectionsStatus& self);
-void extract(::microstrain::Serializer& serializer, RtkCorrectionsStatus& self);
-
 
 ///@}
 ///
@@ -1957,6 +1760,7 @@ struct SatelliteStatus
 {
     struct ValidFlags : Bitfield<ValidFlags>
     {
+        typedef uint16_t Type;
         enum _enumType : uint16_t
         {
             NONE         = 0x0000,
@@ -1980,27 +1784,10 @@ struct SatelliteStatus
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool tow() const { return (value & TOW) > 0; }
-        void tow(bool val) { if(val) value |= TOW; else value &= ~TOW; }
-        bool weekNumber() const { return (value & WEEK_NUMBER) > 0; }
-        void weekNumber(bool val) { if(val) value |= WEEK_NUMBER; else value &= ~WEEK_NUMBER; }
-        bool gnssId() const { return (value & GNSS_ID) > 0; }
-        void gnssId(bool val) { if(val) value |= GNSS_ID; else value &= ~GNSS_ID; }
-        bool satelliteId() const { return (value & SATELLITE_ID) > 0; }
-        void satelliteId(bool val) { if(val) value |= SATELLITE_ID; else value &= ~SATELLITE_ID; }
-        bool elevation() const { return (value & ELEVATION) > 0; }
-        void elevation(bool val) { if(val) value |= ELEVATION; else value &= ~ELEVATION; }
-        bool azimuth() const { return (value & AZIMUTH) > 0; }
-        void azimuth(bool val) { if(val) value |= AZIMUTH; else value &= ~AZIMUTH; }
-        bool health() const { return (value & HEALTH) > 0; }
-        void health(bool val) { if(val) value |= HEALTH; else value &= ~HEALTH; }
-        uint16_t flags() const { return (value & FLAGS) >> 0; }
-        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
+    /// Parameters
     uint8_t index = 0; ///< Index of this field in this epoch.
     uint8_t count = 0; ///< Total number of fields in this epoch.
     double time_of_week = 0; ///< GPS Time of week [seconds]
@@ -2012,26 +1799,29 @@ struct SatelliteStatus
     bool health = 0; ///< True if the satellite is healthy.
     ValidFlags valid_flags;
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_SATELLITE_STATUS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "SatelliteStatus";
     static constexpr const char* DOC_NAME = "SatelliteStatus";
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
-    
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(index,count,time_of_week,week_number,gnss_id,satellite_id,elevation,azimuth,health,valid_flags);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(index),std::ref(count),std::ref(time_of_week),std::ref(week_number),std::ref(gnss_id),std::ref(satellite_id),std::ref(elevation),std::ref(azimuth),std::ref(health),std::ref(valid_flags));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
 };
-void insert(::microstrain::Serializer& serializer, const SatelliteStatus& self);
-void extract(::microstrain::Serializer& serializer, SatelliteStatus& self);
-
 
 ///@}
 ///
@@ -2055,6 +1845,7 @@ struct Raw
     
     struct ValidFlags : Bitfield<ValidFlags>
     {
+        typedef uint16_t Type;
         enum _enumType : uint16_t
         {
             NONE                      = 0x0000,
@@ -2087,45 +1878,10 @@ struct Raw
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool tow() const { return (value & TOW) > 0; }
-        void tow(bool val) { if(val) value |= TOW; else value &= ~TOW; }
-        bool weekNumber() const { return (value & WEEK_NUMBER) > 0; }
-        void weekNumber(bool val) { if(val) value |= WEEK_NUMBER; else value &= ~WEEK_NUMBER; }
-        bool receiverId() const { return (value & RECEIVER_ID) > 0; }
-        void receiverId(bool val) { if(val) value |= RECEIVER_ID; else value &= ~RECEIVER_ID; }
-        bool trackingChannel() const { return (value & TRACKING_CHANNEL) > 0; }
-        void trackingChannel(bool val) { if(val) value |= TRACKING_CHANNEL; else value &= ~TRACKING_CHANNEL; }
-        bool gnssId() const { return (value & GNSS_ID) > 0; }
-        void gnssId(bool val) { if(val) value |= GNSS_ID; else value &= ~GNSS_ID; }
-        bool satelliteId() const { return (value & SATELLITE_ID) > 0; }
-        void satelliteId(bool val) { if(val) value |= SATELLITE_ID; else value &= ~SATELLITE_ID; }
-        bool signalId() const { return (value & SIGNAL_ID) > 0; }
-        void signalId(bool val) { if(val) value |= SIGNAL_ID; else value &= ~SIGNAL_ID; }
-        bool signalStrength() const { return (value & SIGNAL_STRENGTH) > 0; }
-        void signalStrength(bool val) { if(val) value |= SIGNAL_STRENGTH; else value &= ~SIGNAL_STRENGTH; }
-        bool quality() const { return (value & QUALITY) > 0; }
-        void quality(bool val) { if(val) value |= QUALITY; else value &= ~QUALITY; }
-        bool pseudorange() const { return (value & PSEUDORANGE) > 0; }
-        void pseudorange(bool val) { if(val) value |= PSEUDORANGE; else value &= ~PSEUDORANGE; }
-        bool carrierPhase() const { return (value & CARRIER_PHASE) > 0; }
-        void carrierPhase(bool val) { if(val) value |= CARRIER_PHASE; else value &= ~CARRIER_PHASE; }
-        bool doppler() const { return (value & DOPPLER) > 0; }
-        void doppler(bool val) { if(val) value |= DOPPLER; else value &= ~DOPPLER; }
-        bool rangeUncertainty() const { return (value & RANGE_UNCERTAINTY) > 0; }
-        void rangeUncertainty(bool val) { if(val) value |= RANGE_UNCERTAINTY; else value &= ~RANGE_UNCERTAINTY; }
-        bool carrierPhaseUncertainty() const { return (value & CARRIER_PHASE_UNCERTAINTY) > 0; }
-        void carrierPhaseUncertainty(bool val) { if(val) value |= CARRIER_PHASE_UNCERTAINTY; else value &= ~CARRIER_PHASE_UNCERTAINTY; }
-        bool dopplerUncertainty() const { return (value & DOPPLER_UNCERTAINTY) > 0; }
-        void dopplerUncertainty(bool val) { if(val) value |= DOPPLER_UNCERTAINTY; else value &= ~DOPPLER_UNCERTAINTY; }
-        bool lockTime() const { return (value & LOCK_TIME) > 0; }
-        void lockTime(bool val) { if(val) value |= LOCK_TIME; else value &= ~LOCK_TIME; }
-        uint16_t flags() const { return (value & FLAGS) >> 0; }
-        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
+    /// Parameters
     uint8_t index = 0; ///< Index of this field in this epoch.
     uint8_t count = 0; ///< Total number of fields in this epoch.
     double time_of_week = 0; ///< GPS Time of week [seconds]
@@ -2146,26 +1902,29 @@ struct Raw
     float lock_time = 0; ///< DOC Minimum carrier phase lock time [s].  Note: the maximum value is dependent on the receiver.
     ValidFlags valid_flags;
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_RAW;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "Raw";
     static constexpr const char* DOC_NAME = "Raw";
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
-    
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(index,count,time_of_week,week_number,receiver_id,tracking_channel,gnss_id,satellite_id,signal_id,signal_strength,quality,pseudorange,carrier_phase,doppler,range_uncert,phase_uncert,doppler_uncert,lock_time,valid_flags);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(index),std::ref(count),std::ref(time_of_week),std::ref(week_number),std::ref(receiver_id),std::ref(tracking_channel),std::ref(gnss_id),std::ref(satellite_id),std::ref(signal_id),std::ref(signal_strength),std::ref(quality),std::ref(pseudorange),std::ref(carrier_phase),std::ref(doppler),std::ref(range_uncert),std::ref(phase_uncert),std::ref(doppler_uncert),std::ref(lock_time),std::ref(valid_flags));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
 };
-void insert(::microstrain::Serializer& serializer, const Raw& self);
-void extract(::microstrain::Serializer& serializer, Raw& self);
-
 
 ///@}
 ///
@@ -2179,6 +1938,7 @@ struct GpsEphemeris
 {
     struct ValidFlags : Bitfield<ValidFlags>
     {
+        typedef uint16_t Type;
         enum _enumType : uint16_t
         {
             NONE        = 0x0000,
@@ -2197,17 +1957,10 @@ struct GpsEphemeris
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool ephemeris() const { return (value & EPHEMERIS) > 0; }
-        void ephemeris(bool val) { if(val) value |= EPHEMERIS; else value &= ~EPHEMERIS; }
-        bool modernData() const { return (value & MODERN_DATA) > 0; }
-        void modernData(bool val) { if(val) value |= MODERN_DATA; else value &= ~MODERN_DATA; }
-        uint16_t flags() const { return (value & FLAGS) >> 0; }
-        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
+    /// Parameters
     uint8_t index = 0; ///< Index of this field in this epoch.
     uint8_t count = 0; ///< Total number of fields in this epoch.
     double time_of_week = 0; ///< GPS Time of week [seconds]
@@ -2243,26 +1996,29 @@ struct GpsEphemeris
     double c_rs = 0; ///< Harmonic Correction Term.
     ValidFlags valid_flags;
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GPS_EPHEMERIS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "GpsEphemeris";
     static constexpr const char* DOC_NAME = "GpsEphemeris";
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
-    
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(index,count,time_of_week,week_number,satellite_id,health,iodc,iode,t_oc,af0,af1,af2,t_gd,ISC_L1CA,ISC_L2C,t_oe,a,a_dot,mean_anomaly,delta_mean_motion,delta_mean_motion_dot,eccentricity,argument_of_perigee,omega,omega_dot,inclination,inclination_dot,c_ic,c_is,c_uc,c_us,c_rc,c_rs,valid_flags);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(index),std::ref(count),std::ref(time_of_week),std::ref(week_number),std::ref(satellite_id),std::ref(health),std::ref(iodc),std::ref(iode),std::ref(t_oc),std::ref(af0),std::ref(af1),std::ref(af2),std::ref(t_gd),std::ref(ISC_L1CA),std::ref(ISC_L2C),std::ref(t_oe),std::ref(a),std::ref(a_dot),std::ref(mean_anomaly),std::ref(delta_mean_motion),std::ref(delta_mean_motion_dot),std::ref(eccentricity),std::ref(argument_of_perigee),std::ref(omega),std::ref(omega_dot),std::ref(inclination),std::ref(inclination_dot),std::ref(c_ic),std::ref(c_is),std::ref(c_uc),std::ref(c_us),std::ref(c_rc),std::ref(c_rs),std::ref(valid_flags));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
 };
-void insert(::microstrain::Serializer& serializer, const GpsEphemeris& self);
-void extract(::microstrain::Serializer& serializer, GpsEphemeris& self);
-
 
 ///@}
 ///
@@ -2276,6 +2032,7 @@ struct GalileoEphemeris
 {
     struct ValidFlags : Bitfield<ValidFlags>
     {
+        typedef uint16_t Type;
         enum _enumType : uint16_t
         {
             NONE        = 0x0000,
@@ -2294,17 +2051,10 @@ struct GalileoEphemeris
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool ephemeris() const { return (value & EPHEMERIS) > 0; }
-        void ephemeris(bool val) { if(val) value |= EPHEMERIS; else value &= ~EPHEMERIS; }
-        bool modernData() const { return (value & MODERN_DATA) > 0; }
-        void modernData(bool val) { if(val) value |= MODERN_DATA; else value &= ~MODERN_DATA; }
-        uint16_t flags() const { return (value & FLAGS) >> 0; }
-        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
+    /// Parameters
     uint8_t index = 0; ///< Index of this field in this epoch.
     uint8_t count = 0; ///< Total number of fields in this epoch.
     double time_of_week = 0; ///< GPS Time of week [seconds]
@@ -2340,26 +2090,29 @@ struct GalileoEphemeris
     double c_rs = 0; ///< Harmonic Correction Term.
     ValidFlags valid_flags;
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GALILEO_EPHEMERIS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "GalileoEphemeris";
     static constexpr const char* DOC_NAME = "GalileoEphemeris";
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
-    
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(index,count,time_of_week,week_number,satellite_id,health,iodc,iode,t_oc,af0,af1,af2,t_gd,ISC_L1CA,ISC_L2C,t_oe,a,a_dot,mean_anomaly,delta_mean_motion,delta_mean_motion_dot,eccentricity,argument_of_perigee,omega,omega_dot,inclination,inclination_dot,c_ic,c_is,c_uc,c_us,c_rc,c_rs,valid_flags);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(index),std::ref(count),std::ref(time_of_week),std::ref(week_number),std::ref(satellite_id),std::ref(health),std::ref(iodc),std::ref(iode),std::ref(t_oc),std::ref(af0),std::ref(af1),std::ref(af2),std::ref(t_gd),std::ref(ISC_L1CA),std::ref(ISC_L2C),std::ref(t_oe),std::ref(a),std::ref(a_dot),std::ref(mean_anomaly),std::ref(delta_mean_motion),std::ref(delta_mean_motion_dot),std::ref(eccentricity),std::ref(argument_of_perigee),std::ref(omega),std::ref(omega_dot),std::ref(inclination),std::ref(inclination_dot),std::ref(c_ic),std::ref(c_is),std::ref(c_uc),std::ref(c_us),std::ref(c_rc),std::ref(c_rs),std::ref(valid_flags));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
 };
-void insert(::microstrain::Serializer& serializer, const GalileoEphemeris& self);
-void extract(::microstrain::Serializer& serializer, GalileoEphemeris& self);
-
 
 ///@}
 ///
@@ -2373,6 +2126,7 @@ struct GloEphemeris
 {
     struct ValidFlags : Bitfield<ValidFlags>
     {
+        typedef uint16_t Type;
         enum _enumType : uint16_t
         {
             NONE      = 0x0000,
@@ -2390,15 +2144,10 @@ struct GloEphemeris
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool ephemeris() const { return (value & EPHEMERIS) > 0; }
-        void ephemeris(bool val) { if(val) value |= EPHEMERIS; else value &= ~EPHEMERIS; }
-        bool flags() const { return (value & FLAGS) > 0; }
-        void flags(bool val) { if(val) value |= FLAGS; else value &= ~FLAGS; }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
+    /// Parameters
     uint8_t index = 0; ///< Index of this field in this epoch.
     uint8_t count = 0; ///< Total number of fields in this epoch.
     double time_of_week = 0; ///< GPS Time of week [seconds]
@@ -2425,26 +2174,29 @@ struct GloEphemeris
     uint8_t P4 = 0; ///< Flag indicating ephemeris parameters are present
     ValidFlags valid_flags;
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GLONASS_EPHEMERIS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "GloEphemeris";
     static constexpr const char* DOC_NAME = "Glonass Ephemeris";
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
-    
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(index,count,time_of_week,week_number,satellite_id,freq_number,tk,tb,sat_type,gamma,tau_n,x[0],x[1],x[2],v[0],v[1],v[2],a[0],a[1],a[2],health,P,NT,delta_tau_n,Ft,En,P1,P2,P3,P4,valid_flags);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(index),std::ref(count),std::ref(time_of_week),std::ref(week_number),std::ref(satellite_id),std::ref(freq_number),std::ref(tk),std::ref(tb),std::ref(sat_type),std::ref(gamma),std::ref(tau_n),std::ref(x[0]),std::ref(x[1]),std::ref(x[2]),std::ref(v[0]),std::ref(v[1]),std::ref(v[2]),std::ref(a[0]),std::ref(a[1]),std::ref(a[2]),std::ref(health),std::ref(P),std::ref(NT),std::ref(delta_tau_n),std::ref(Ft),std::ref(En),std::ref(P1),std::ref(P2),std::ref(P3),std::ref(P4),std::ref(valid_flags));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
 };
-void insert(::microstrain::Serializer& serializer, const GloEphemeris& self);
-void extract(::microstrain::Serializer& serializer, GloEphemeris& self);
-
 
 ///@}
 ///
@@ -2458,6 +2210,7 @@ struct GpsIonoCorr
 {
     struct ValidFlags : Bitfield<ValidFlags>
     {
+        typedef uint16_t Type;
         enum _enumType : uint16_t
         {
             NONE        = 0x0000,
@@ -2478,47 +2231,39 @@ struct GpsIonoCorr
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool tow() const { return (value & TOW) > 0; }
-        void tow(bool val) { if(val) value |= TOW; else value &= ~TOW; }
-        bool weekNumber() const { return (value & WEEK_NUMBER) > 0; }
-        void weekNumber(bool val) { if(val) value |= WEEK_NUMBER; else value &= ~WEEK_NUMBER; }
-        bool alpha() const { return (value & ALPHA) > 0; }
-        void alpha(bool val) { if(val) value |= ALPHA; else value &= ~ALPHA; }
-        bool beta() const { return (value & BETA) > 0; }
-        void beta(bool val) { if(val) value |= BETA; else value &= ~BETA; }
-        uint16_t flags() const { return (value & FLAGS) >> 0; }
-        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
+    /// Parameters
     double time_of_week = 0; ///< GPS Time of week [seconds]
     uint16_t week_number = 0; ///< GPS Week since 1980 [weeks]
     double alpha[4] = {0}; ///< Ionospheric Correction Terms.
     double beta[4] = {0}; ///< Ionospheric Correction Terms.
     ValidFlags valid_flags;
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GPS_IONO_CORR;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "GpsIonoCorr";
     static constexpr const char* DOC_NAME = "GPS Ionospheric Correction";
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
-    
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(time_of_week,week_number,alpha,beta,valid_flags);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(time_of_week),std::ref(week_number),std::ref(alpha),std::ref(beta),std::ref(valid_flags));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
 };
-void insert(::microstrain::Serializer& serializer, const GpsIonoCorr& self);
-void extract(::microstrain::Serializer& serializer, GpsIonoCorr& self);
-
 
 ///@}
 ///
@@ -2532,6 +2277,7 @@ struct GalileoIonoCorr
 {
     struct ValidFlags : Bitfield<ValidFlags>
     {
+        typedef uint16_t Type;
         enum _enumType : uint16_t
         {
             NONE              = 0x0000,
@@ -2552,47 +2298,39 @@ struct GalileoIonoCorr
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool tow() const { return (value & TOW) > 0; }
-        void tow(bool val) { if(val) value |= TOW; else value &= ~TOW; }
-        bool weekNumber() const { return (value & WEEK_NUMBER) > 0; }
-        void weekNumber(bool val) { if(val) value |= WEEK_NUMBER; else value &= ~WEEK_NUMBER; }
-        bool alpha() const { return (value & ALPHA) > 0; }
-        void alpha(bool val) { if(val) value |= ALPHA; else value &= ~ALPHA; }
-        bool disturbanceFlags() const { return (value & DISTURBANCE_FLAGS) > 0; }
-        void disturbanceFlags(bool val) { if(val) value |= DISTURBANCE_FLAGS; else value &= ~DISTURBANCE_FLAGS; }
-        uint16_t flags() const { return (value & FLAGS) >> 0; }
-        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
-        
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
-    
+    /// Parameters
     double time_of_week = 0; ///< GPS Time of week [seconds]
     uint16_t week_number = 0; ///< GPS Week since 1980 [weeks]
     Vector3d alpha; ///< Coefficients for the model.
     uint8_t disturbance_flags = 0; ///< Region disturbance flags (bits 1-5).
     ValidFlags valid_flags;
     
+    /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GALILEO_IONO_CORR;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "GalileoIonoCorr";
     static constexpr const char* DOC_NAME = "Galileo Ionospheric Correction";
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
-    
-    auto as_tuple() const
+    auto asTuple() const
     {
         return std::make_tuple(time_of_week,week_number,alpha[0],alpha[1],alpha[2],disturbance_flags,valid_flags);
     }
     
-    auto as_tuple()
+    auto asTuple()
     {
         return std::make_tuple(std::ref(time_of_week),std::ref(week_number),std::ref(alpha[0]),std::ref(alpha[1]),std::ref(alpha[2]),std::ref(disturbance_flags),std::ref(valid_flags));
     }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
 };
-void insert(::microstrain::Serializer& serializer, const GalileoIonoCorr& self);
-void extract(::microstrain::Serializer& serializer, GalileoIonoCorr& self);
-
 
 ///@}
 ///
