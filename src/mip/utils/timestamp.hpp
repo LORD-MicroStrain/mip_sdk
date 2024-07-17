@@ -4,23 +4,12 @@
 #include <chrono>
 #include <string>
 #include <stdexcept>
-#include <memory>
 
 #include "mip/utils/time_durations.hpp"
 #include "mip/utils/time_standard.hpp"
 
 namespace mip
 {
-    // TODO: Move to Timestamp.
-    // TODO: Add duration changing.
-    // template<typename DurationIn, typename DurationOut> 
-    //     DurationOut convert(std::uint64_t time, TimeStandard to, 
-    //     TimeStandard from); 
-    // Nanoseconds setTimestamp(std::uint64_t time, TimeStandard to, 
-    //     TimeStandard from)
-    // Nanoseconds setTimestamp(std::uint64_t time, TimeStandard from)
-        
-
     // TODO: Update documentation.
     // TODO: Change name to Timestamp when old one is removed throughout mip sdk.
     /// Manages a timestamp in nanoseconds since epoch.
@@ -30,6 +19,7 @@ namespace mip
     ///     * Currently supports GPS clock (only) for the underlying time system.
     ///     * Might add support for different time systems in the future.
     ///     * Currently supports std::chrono:duration (only) for timestamp inputs.
+    ///     * TimeStandard reference should not go out of scope. It will cause a segmentation fault if it does!
     /// ----------------------------------------------------------------------------------
     class TimestampExperimental
     {
@@ -97,6 +87,26 @@ namespace mip
         /// Casts a timestamp duration to the given arithmetic type.
         template<typename T, typename DurationIn>
         T castTime(const DurationIn &time);
+
+        // TODO: Move to Timestamp.
+        // TODO: Add duration changing.
+        // template<typename DurationIn, typename DurationOut> 
+        //     DurationOut convert(std::uint64_t time, TimeStandard to, 
+        //     TimeStandard from); 
+        // Nanoseconds setTimestamp(std::uint64_t time, TimeStandard to, 
+        //     TimeStandard from)
+        // Nanoseconds setTimestamp(std::uint64_t time, TimeStandard from)
+        template<class DurationOut = Nanoseconds>
+        DurationOut convert(const TimestampExperimental &reference)
+        {
+            Nanoseconds converted = m_standard.convertToBase(reference.getTimestamp());
+            if (converted < Nanoseconds(0))
+            {
+                return DurationOut(0);
+            }
+            
+            return std::chrono::duration_cast<DurationOut>(converted);
+        }
 
     private:
         const mip::TimeStandard &m_standard;
