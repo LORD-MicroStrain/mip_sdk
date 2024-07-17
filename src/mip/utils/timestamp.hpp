@@ -19,7 +19,6 @@ namespace mip
     ///     * Currently supports GPS clock (only) for the underlying time system.
     ///     * Might add support for different time systems in the future.
     ///     * Currently supports std::chrono:duration (only) for timestamp inputs.
-    ///     * TimeStandard reference should not go out of scope. It will cause a segmentation fault if it does!
     /// ----------------------------------------------------------------------------------
     class TimestampExperimental
     {
@@ -27,9 +26,15 @@ namespace mip
         TimestampExperimental() = delete;
 
         /// Calls synchronize().
+        // TODO: Make this message better.
+        /// NOTE: TimeStandard reference should not go out of scope. It will cause a 
+        ///       segmentation fault if it does!
         TimestampExperimental(const mip::TimeStandard &standard);
 
         /// Manually sets time since epoch.
+        // TODO: Make this message better.
+        /// NOTE: TimeStandard reference should not go out of scope. It will cause a 
+        ///       segmentation fault if it does!
         template<class DurationIn> 
         TimestampExperimental(const mip::TimeStandard &standard, DurationIn time);
 
@@ -49,6 +54,10 @@ namespace mip
         template<typename DurationIn>
         void setTimestamp(DurationIn time);
         void setTimestamp(Nanoseconds time);
+        // TODO: Add -->
+        // Nanoseconds setTimestamp(std::uint64_t time, TimeStandard to, 
+        //     TimeStandard from)
+        // Nanoseconds setTimestamp(std::uint64_t time, TimeStandard from)
 
         /// Sets a new week number for the timestamp.
         ///
@@ -88,14 +97,6 @@ namespace mip
         template<typename T, typename DurationIn>
         T castTime(const DurationIn &time);
 
-        // TODO: Move to Timestamp.
-        // TODO: Add duration changing.
-        // template<typename DurationIn, typename DurationOut> 
-        //     DurationOut convert(std::uint64_t time, TimeStandard to, 
-        //     TimeStandard from); 
-        // Nanoseconds setTimestamp(std::uint64_t time, TimeStandard to, 
-        //     TimeStandard from)
-        // Nanoseconds setTimestamp(std::uint64_t time, TimeStandard from)
         template<class DurationOut = Nanoseconds>
         DurationOut convert(const TimestampExperimental &reference)
         {

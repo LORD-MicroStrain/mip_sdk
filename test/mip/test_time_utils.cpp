@@ -93,54 +93,59 @@ struct MockTimeConvertOneSecond : mip::TimeStandard
 
 /** Setup *******************************************************************************/
 
+// Time standards
+const mip::UnixTime unix{};
+const MockUnixTime mock_unix{};
+const MockTimeConvertOneSecond mock_time_convert_one_second{};
+
 mip::TimestampExperimental setupTimestampZero()
 {
-    return {mip::UnixTime{}, mip::Nanoseconds(0)};
+    return {unix, mip::Nanoseconds(0)};
 }
 
 mip::TimestampExperimental setupTimestampOneNanosecond()
 {
-    return {mip::UnixTime{}, mip::Nanoseconds(1)};
+    return {unix, mip::Nanoseconds(1)};
 }
 
 mip::TimestampExperimental setupTimestampOneSecond()
 {
-    return {mip::UnixTime{}, mip::Seconds(1)};
+    return {unix, mip::Seconds(1)};
 }
 
 mip::TimestampExperimental setupTimestampOneSecondPlusNanosecond()
 {
-    return {mip::UnixTime{}, nanoseconds_in_second + mip::Nanoseconds(1)};
+    return {unix, nanoseconds_in_second + mip::Nanoseconds(1)};
 }
 
 mip::TimestampExperimental setupTimestampOneWeek()
 {
-    return {mip::UnixTime{}, mip::Weeks(1)};
+    return {unix, mip::Weeks(1)};
 }
 
 mip::TimestampExperimental setupTimestampHalfWeek()
 {
-    return {mip::UnixTime{}, nanoseconds_in_week / 2};
+    return {unix, nanoseconds_in_week / 2};
 }
 
 mip::TimestampExperimental setupTimestampMoreThanWeek()
 {
-    return {mip::UnixTime{}, more_than_week}; 
+    return {unix, more_than_week}; 
 }
 
 mip::TimestampExperimental setupTimestampMockUnixZero()
 {
-    return {MockUnixTime{}, mip::Nanoseconds(0)}; 
+    return {mock_unix, mip::Nanoseconds(0)}; 
 }
 
 mip::TimestampExperimental setupTimestampMockUnixSynced()
 {
-    return {MockUnixTime{}};
+    return {mock_unix};
 }
 
 mip::TimestampExperimental setupTimestampMockTime(mip::Nanoseconds time = mip::Nanoseconds(0))
 {
-    return {MockTimeConvertOneSecond{}, time}; 
+    return {mock_time_convert_one_second, time}; 
 }
 
 /** Tests *******************************************************************************/
