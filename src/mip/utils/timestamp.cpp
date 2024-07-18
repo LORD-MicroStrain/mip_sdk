@@ -1,5 +1,7 @@
 #include "mip/utils/timestamp.hpp"
 
+#include <stdexcept>
+
 namespace mip
 {
     TimestampExperimental::TimestampExperimental(const mip::TimeStandard &standard) :

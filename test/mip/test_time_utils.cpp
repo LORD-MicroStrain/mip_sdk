@@ -2,6 +2,7 @@
 #include <iterator>
 #include <iostream>
 #include <unordered_map>
+#include <string>
 
 #include <mip/utils/timestamp.hpp>
 
