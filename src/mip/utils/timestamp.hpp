@@ -43,7 +43,7 @@ namespace mip
         void synchronize();
         
         // TODO: Add documentation.
-        void increment(const TimestampExperimental &reference_synced, const TimestampExperimental &reference_old);
+        void increment(const TimestampExperimental &synced, const TimestampExperimental &old);
 
         // TODO: Update documentation.
         /// Returns whether the timestamp has diverged since a reference timestamp.
@@ -64,19 +64,14 @@ namespace mip
         DurationOut getTimestamp() const;
         Nanoseconds getTimestamp() const;
         /// Converted to base standard.
-        Nanoseconds getTimestampBase() const
-        {
-            return m_standard.convertToBase(m_timestamp);
-        }
+        Nanoseconds getTimestampBase() const;
         
-        // Sets raw time since epoch.
+        /// Sets raw time since epoch.
         template<typename DurationIn>
         void setTimestamp(DurationIn time);
         void setTimestamp(Nanoseconds time);
-        void setTimestamp(const TimestampExperimental &from)
-        {
-            m_timestamp = convertFrom(from);
-        }
+        /// Sets from another timestamp.
+        void setTimestamp(const TimestampExperimental &from);
 
         /// Sets a new week number for the timestamp.
         ///
@@ -99,16 +94,7 @@ namespace mip
         
         // throws logic error
         template<class DurationOut = Nanoseconds>
-        DurationOut convertFrom(const TimestampExperimental &reference)
-        {
-            Nanoseconds converted = m_standard.convertFromBase(reference.getTimestampBase());
-            if (converted < Nanoseconds(0))
-            {
-                throw std::logic_error("Converted timestamp < 0. Add exception handling with desired response!");
-            }
-            
-            return std::chrono::duration_cast<DurationOut>(converted);
-        }
+        DurationOut convertFrom(const TimestampExperimental &reference);
 
         // TODO: Update documentation.
         /// Casts a timestamp duration to the given arithmetic type.
@@ -126,12 +112,6 @@ namespace mip
     /*       no new declarations following this statement.                                */
     /**************************************************************************************/
 
-    inline TimestampExperimental::TimestampExperimental(const mip::TimeStandard &standard) :
-        m_standard(standard)
-    {
-        synchronize();
-    }
-
     template<class DurationIn> 
     inline TimestampExperimental::TimestampExperimental(const mip::TimeStandard &standard, DurationIn time) :
         m_standard(standard)
@@ -144,32 +124,10 @@ namespace mip
         m_timestamp = time;
     }
 
-    inline void TimestampExperimental::synchronize()
-    {
-        m_timestamp = m_standard.now();
-    }
-
-    inline void TimestampExperimental::increment(const TimestampExperimental &reference_synced, const TimestampExperimental &reference_old)
-    {
-        mip::Nanoseconds m_synced = reference_synced.getTimestamp();
-        mip::Nanoseconds m_old = reference_old.getTimestamp();
-        if (m_synced < m_old)
-        {
-            throw std::invalid_argument("Reference timestamp < old timestamp.");
-        }
-        
-        m_timestamp += (m_synced - m_old);
-    }
-
     template<typename DurationOut> 
     inline DurationOut TimestampExperimental::getTimestamp() const
     {
         return std::chrono::duration_cast<DurationOut>(getTimestamp());
-    }
-
-    inline Nanoseconds TimestampExperimental::getTimestamp() const
-    {
-        return m_timestamp;
     }
 
     template<typename DurationIn>
@@ -178,26 +136,6 @@ namespace mip
         setTimestamp(std::chrono::duration_cast<Nanoseconds>(time));
     }
     
-    inline void TimestampExperimental::setTimestamp(Nanoseconds time)
-    {
-        if (time < Nanoseconds(0))
-        {
-            throw std::invalid_argument("Time < 0.");
-        }
-
-        m_timestamp = time;
-    }
-
-    inline void TimestampExperimental::setWeek(Weeks week)
-    {
-        if (week < Weeks(0))         
-        {
-            throw std::invalid_argument("Week < 0.");
-        }
-
-        m_timestamp = week + getTimeOfWeek();
-    }
-
     template<typename DurationOut>
     inline DurationOut TimestampExperimental::getTimeOfWeek()
     {
@@ -209,31 +147,12 @@ namespace mip
         return std::chrono::duration_cast<DurationOut>(getTimeOfWeek());
     }
 
-    inline Nanoseconds TimestampExperimental::getTimeOfWeek()
-    {
-        return m_timestamp % Weeks(1);
-    }
-
     template<typename DurationIn>
     inline void TimestampExperimental::setTimeOfWeek(DurationIn time)
     {
         setTimeOfWeek(std::chrono::duration_cast<Nanoseconds>(time));
     }
     
-    inline void TimestampExperimental::setTimeOfWeek(Nanoseconds time)
-    {
-        if (time < Nanoseconds(0))
-        {
-            throw std::invalid_argument("Time of week < 0.");
-        }
-        if (time >= Weeks(1))
-        {
-            throw std::invalid_argument("Time of week >= one week.");
-        }
-
-        m_timestamp = std::chrono::duration_cast<Weeks>(m_timestamp) + time;
-    }
-
     template<typename DurationElapsed>
     inline bool TimestampExperimental::timeElapsed(const TimestampExperimental &reference)
     {
@@ -256,6 +175,18 @@ namespace mip
         }
 
         return std::chrono::duration_cast<DurationChanged>(m_timestamp) > std::chrono::duration_cast<DurationChanged>(m_reference);
+    }
+
+    template<class DurationOut>
+    inline DurationOut TimestampExperimental::convertFrom(const TimestampExperimental &reference)
+    {
+        Nanoseconds converted = m_standard.convertFromBase(reference.getTimestampBase());
+        if (converted < Nanoseconds(0))
+        {
+            throw std::logic_error("Converted timestamp < 0. Add exception handling with desired response!");
+        }
+        
+        return std::chrono::duration_cast<DurationOut>(converted);
     }
 
     template<typename T, typename DurationIn>
