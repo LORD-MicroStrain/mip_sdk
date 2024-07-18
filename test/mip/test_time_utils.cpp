@@ -238,6 +238,36 @@ int main(int argc, const char* argv[])
         timestamp.setTimestamp<mip::Seconds>(main_test_seconds);
         return getterTestCase(timestamp.getTimestamp<mip::Seconds>(), main_test_seconds);
     });
+
+    suite.addTest("SetTimestampConvertLowerZero", []() -> bool
+    {
+        auto timestamp = setupTimestampZero();
+        // This will cause the time to become negative after conversion to base.
+        auto reference = setupTimestampMockConvertOneSecond(mip::Nanoseconds(500)); // Arbitrary value
+
+        return invalidInputTestCase<std::logic_error>([&]() -> void 
+        {
+            timestamp.setTimestamp(reference);
+        });
+    });
+
+    suite.addTest("SetTimestampConvert", []() -> bool
+    {
+        auto timestamp = setupTimestampZero();
+        auto reference = setupTimestampMockConvertOneSecond(nanoseconds_in_week);
+
+        timestamp.setTimestamp(reference);
+        return getterTestCase(timestamp.getTimestamp(), nanoseconds_in_week - mip::Seconds(1));
+    });
+
+    suite.addTest("SetTimestampConvertOtherWay", []() -> bool
+    {
+        auto timestamp = setupTimestampMockConvertOneSecond(mip::Nanoseconds(0));
+        auto reference = setupTimestampOneWeek();
+
+        timestamp.setTimestamp(reference);
+        return getterTestCase(timestamp.getTimestamp(), nanoseconds_in_week + mip::Seconds(1));
+    });
     
     suite.addTest("TestSynchronize", []() -> bool
     {
