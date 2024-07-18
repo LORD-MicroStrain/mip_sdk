@@ -50,6 +50,14 @@ namespace mip
         DurationOut getTimestamp() const;
         Nanoseconds getTimestamp() const;
         
+        /// Returns time standard.
+        // TODO: Maybe change logic to return lambda calling the convertToBase function()?
+        // TODO: Implement.
+        //  getTimeStandard()
+        // {
+        //     return m_standard;
+        // }
+        
         // Sets raw time since epoch.
         template<typename DurationIn>
         void setTimestamp(DurationIn time);
@@ -97,16 +105,23 @@ namespace mip
         template<typename T, typename DurationIn>
         T castTime(const DurationIn &time);
 
+        // throws logic error
         template<class DurationOut = Nanoseconds>
         DurationOut convert(const TimestampExperimental &reference)
         {
-            Nanoseconds converted = m_standard.convertToBase(reference.getTimestamp());
+            Nanoseconds converted = m_standard.convertFromBase(reference.getTimestampBase());
             if (converted < Nanoseconds(0))
             {
-                return DurationOut(0);
+                throw std::logic_error("Converted timestamp < 0. Add exception handling with desired response!");
             }
             
             return std::chrono::duration_cast<DurationOut>(converted);
+        }
+        
+        // Converted to base standard.
+        Nanoseconds getTimestampBase() const
+        {
+            return m_standard.convertToBase(m_timestamp);
         }
 
     private:

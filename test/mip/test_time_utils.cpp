@@ -143,7 +143,7 @@ mip::TimestampExperimental setupTimestampMockUnixSynced()
     return {mock_unix};
 }
 
-mip::TimestampExperimental setupTimestampMockTime(mip::Nanoseconds time = mip::Nanoseconds(0))
+mip::TimestampExperimental setupTimestampMockConvertOneSecond(mip::Nanoseconds time = mip::Nanoseconds(0))
 {
     return {mock_time_convert_one_second, time}; 
 }
@@ -636,17 +636,19 @@ int main(int argc, const char* argv[])
     suite.addTest("ConvertLowerZero", []() -> bool
     {
         auto timestamp = setupTimestampZero();
-        // This will cause the time to become negative after conversion to base. Should be
-        // resolved to zero.
-        auto reference = setupTimestampMockTime(mip::Nanoseconds(1));
+        // This will cause the time to become negative after conversion to base.
+        auto reference = setupTimestampMockConvertOneSecond(mip::Nanoseconds(500)); // Arbitrary value
 
-        return getterTestCase(timestamp.convert(reference), mip::Nanoseconds(0));
+        return invalidInputTestCase<std::logic_error>([&]() -> void 
+        {
+            timestamp.convert(reference), mip::Nanoseconds(0);
+        });
     });
 
     suite.addTest("ConvertBase", []() -> bool
     {
         auto timestamp = setupTimestampZero();
-        auto reference = setupTimestampMockTime(nanoseconds_in_week);
+        auto reference = setupTimestampMockConvertOneSecond(nanoseconds_in_week);
 
         return getterTestCase(timestamp.convert(reference), nanoseconds_in_week - mip::Seconds(1));
     });
@@ -654,14 +656,14 @@ int main(int argc, const char* argv[])
     suite.addTest("ConvertTemplate", []() -> bool
     {
         auto timestamp = setupTimestampZero();
-        auto reference = setupTimestampMockTime(nanoseconds_in_week);
+        auto reference = setupTimestampMockConvertOneSecond(nanoseconds_in_week);
 
         return getterTestCase(timestamp.convert<mip::Seconds>(reference), seconds_in_week - mip::Seconds(1));
     });
 
     suite.addTest("ConvertOtherWay", []() -> bool
     {
-        auto timestamp = setupTimestampMockTime(mip::Nanoseconds(0));
+        auto timestamp = setupTimestampMockConvertOneSecond(mip::Nanoseconds(0));
         auto reference = setupTimestampOneWeek();
 
         return getterTestCase(timestamp.convert(reference), nanoseconds_in_week + mip::Seconds(1));
