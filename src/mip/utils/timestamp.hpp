@@ -45,12 +45,25 @@ namespace mip
         // TODO: Add documentation.
         void increment(const TimestampExperimental &reference_synced, const TimestampExperimental &reference_old);
 
+        // TODO: Update documentation.
+        /// Returns whether the timestamp has diverged since a reference timestamp.
+        ///
+        /// Timestamps are considered diverged if they differ by one or more units of the 
+        /// comparison duration.
+        template<typename DurationElapsed = Nanoseconds>
+        bool timeElapsed(const TimestampExperimental &reference);
+
+        // TODO: Update documentation.
+        /// Returns whether the timestamp has entered a new duration interval since a 
+        /// reference timestamp.
+        template<typename DurationChanged = Nanoseconds>
+        bool timeChanged(const TimestampExperimental &reference);
+
         /// Returns raw time since epoch.
         template<typename DurationOut> 
         DurationOut getTimestamp() const;
         Nanoseconds getTimestamp() const;
-        
-        // Converted to base standard.
+        /// Converted to base standard.
         Nanoseconds getTimestampBase() const
         {
             return m_standard.convertToBase(m_timestamp);
@@ -64,10 +77,6 @@ namespace mip
         {
             m_timestamp = convertFrom(from);
         }
-        // TODO: Add -->
-        // Nanoseconds setTimestamp(std::uint64_t time, TimeStandard to, 
-        //     TimeStandard from)
-        // Nanoseconds setTimestamp(std::uint64_t time, TimeStandard from)
 
         /// Sets a new week number for the timestamp.
         ///
@@ -88,25 +97,6 @@ namespace mip
         void setTimeOfWeek(DurationIn time);
         void setTimeOfWeek(Nanoseconds time);
         
-        // TODO: Update documentation.
-        /// Returns whether the timestamp has diverged since a reference timestamp.
-        ///
-        /// Timestamps are considered diverged if they differ by one or more units of the 
-        /// comparison duration.
-        template<typename DurationElapsed = Nanoseconds>
-        bool timeElapsed(const TimestampExperimental &reference);
-
-        // TODO: Update documentation.
-        /// Returns whether the timestamp has entered a new duration interval since a 
-        /// reference timestamp.
-        template<typename DurationChanged = Nanoseconds>
-        bool timeChanged(const TimestampExperimental &reference);
-
-        // TODO: Update documentation.
-        /// Casts a timestamp duration to the given arithmetic type.
-        template<typename T, typename DurationIn>
-        T castTime(const DurationIn &time);
-
         // throws logic error
         template<class DurationOut = Nanoseconds>
         DurationOut convertFrom(const TimestampExperimental &reference)
@@ -119,6 +109,11 @@ namespace mip
             
             return std::chrono::duration_cast<DurationOut>(converted);
         }
+
+        // TODO: Update documentation.
+        /// Casts a timestamp duration to the given arithmetic type.
+        template<typename T, typename DurationIn>
+        T castTime(const DurationIn &time);
 
     private:
         const mip::TimeStandard &m_standard;
