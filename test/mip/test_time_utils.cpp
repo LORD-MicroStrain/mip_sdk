@@ -630,7 +630,7 @@ int main(int argc, const char* argv[])
         // Requires no conversion to base. Should return mocked now() value.
         auto reference = setupTimestampMockUnixSynced();
         
-        return getterTestCase(timestamp.convert(reference), main_test_nanoseconds);
+        return getterTestCase(timestamp.convertFrom(reference), main_test_nanoseconds);
     });
 
     suite.addTest("ConvertLowerZero", []() -> bool
@@ -641,7 +641,7 @@ int main(int argc, const char* argv[])
 
         return invalidInputTestCase<std::logic_error>([&]() -> void 
         {
-            timestamp.convert(reference), mip::Nanoseconds(0);
+            timestamp.convertFrom(reference), mip::Nanoseconds(0);
         });
     });
 
@@ -650,7 +650,7 @@ int main(int argc, const char* argv[])
         auto timestamp = setupTimestampZero();
         auto reference = setupTimestampMockConvertOneSecond(nanoseconds_in_week);
 
-        return getterTestCase(timestamp.convert(reference), nanoseconds_in_week - mip::Seconds(1));
+        return getterTestCase(timestamp.convertFrom(reference), nanoseconds_in_week - mip::Seconds(1));
     });
 
     suite.addTest("ConvertTemplate", []() -> bool
@@ -658,7 +658,7 @@ int main(int argc, const char* argv[])
         auto timestamp = setupTimestampZero();
         auto reference = setupTimestampMockConvertOneSecond(nanoseconds_in_week);
 
-        return getterTestCase(timestamp.convert<mip::Seconds>(reference), seconds_in_week - mip::Seconds(1));
+        return getterTestCase(timestamp.convertFrom<mip::Seconds>(reference), seconds_in_week - mip::Seconds(1));
     });
 
     suite.addTest("ConvertOtherWay", []() -> bool
@@ -666,7 +666,7 @@ int main(int argc, const char* argv[])
         auto timestamp = setupTimestampMockConvertOneSecond(mip::Nanoseconds(0));
         auto reference = setupTimestampOneWeek();
 
-        return getterTestCase(timestamp.convert(reference), nanoseconds_in_week + mip::Seconds(1));
+        return getterTestCase(timestamp.convertFrom(reference), nanoseconds_in_week + mip::Seconds(1));
     });
 
     return suite.run();

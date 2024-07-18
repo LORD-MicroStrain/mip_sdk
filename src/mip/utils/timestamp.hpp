@@ -50,6 +50,12 @@ namespace mip
         DurationOut getTimestamp() const;
         Nanoseconds getTimestamp() const;
         
+        // Converted to base standard.
+        Nanoseconds getTimestampBase() const
+        {
+            return m_standard.convertToBase(m_timestamp);
+        }
+        
         /// Returns time standard.
         // TODO: Maybe change logic to return lambda calling the convertToBase function()?
         // TODO: Implement.
@@ -107,7 +113,7 @@ namespace mip
 
         // throws logic error
         template<class DurationOut = Nanoseconds>
-        DurationOut convert(const TimestampExperimental &reference)
+        DurationOut convertFrom(const TimestampExperimental &reference)
         {
             Nanoseconds converted = m_standard.convertFromBase(reference.getTimestampBase());
             if (converted < Nanoseconds(0))
@@ -116,12 +122,6 @@ namespace mip
             }
             
             return std::chrono::duration_cast<DurationOut>(converted);
-        }
-        
-        // Converted to base standard.
-        Nanoseconds getTimestampBase() const
-        {
-            return m_standard.convertToBase(m_timestamp);
         }
 
     private:
