@@ -60,6 +60,10 @@ namespace mip
         template<typename DurationIn>
         void setTimestamp(DurationIn time);
         void setTimestamp(Nanoseconds time);
+        void setTimestamp(const TimestampExperimental &from)
+        {
+            m_timestamp = convertFrom(from);
+        }
         // TODO: Add -->
         // Nanoseconds setTimestamp(std::uint64_t time, TimeStandard to, 
         //     TimeStandard from)
