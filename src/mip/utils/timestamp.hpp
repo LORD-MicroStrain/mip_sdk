@@ -56,14 +56,6 @@ namespace mip
             return m_standard.convertToBase(m_timestamp);
         }
         
-        /// Returns time standard.
-        // TODO: Maybe change logic to return lambda calling the convertToBase function()?
-        // TODO: Implement.
-        //  getTimeStandard()
-        // {
-        //     return m_standard;
-        // }
-        
         // Sets raw time since epoch.
         template<typename DurationIn>
         void setTimestamp(DurationIn time);
