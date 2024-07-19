@@ -671,47 +671,47 @@ int main(int argc, const char* argv[])
 
     suite.addTest("ConvertSame", []() -> bool
     {
-        auto timestamp = setupTimestampZero();
-        // Requires no conversion to base. Should return mocked now() value.
-        auto reference = setupTimestampMockUnixSynced();
+        mip::UnixTime to{};
+        mip::UnixTime from{};
         
-        return getterTestCase(timestamp.convertFrom(reference), main_test_nanoseconds);
+        return getterTestCase(convert(main_test_nanoseconds, to, from), main_test_nanoseconds);
     });
 
     suite.addTest("ConvertLowerZero", []() -> bool
     {
-        auto timestamp = setupTimestampZero();
+        mip::UnixTime to{};
         // This will cause the time to become negative after conversion to base.
-        auto reference = setupTimestampMockConvertOneSecond(mip::Nanoseconds(500)); // Arbitrary value
-
+        MockTimeConvertOneSecond from{};
+        
         return invalidInputTestCase<std::logic_error>([&]() -> void 
         {
-            timestamp.convertFrom(reference), mip::Nanoseconds(0);
+            // Arbitrary nanoseconds < one second
+            convert(mip::Nanoseconds(500), to, from);
         });
     });
 
     suite.addTest("ConvertBase", []() -> bool
     {
-        auto timestamp = setupTimestampZero();
-        auto reference = setupTimestampMockConvertOneSecond(nanoseconds_in_week);
+        mip::UnixTime to{};
+        MockTimeConvertOneSecond from{};
 
-        return getterTestCase(timestamp.convertFrom(reference), nanoseconds_in_week - mip::Seconds(1));
+        return getterTestCase(convert(nanoseconds_in_week, to, from), nanoseconds_in_week - mip::Seconds(1));
     });
 
     suite.addTest("ConvertTemplate", []() -> bool
     {
-        auto timestamp = setupTimestampZero();
-        auto reference = setupTimestampMockConvertOneSecond(nanoseconds_in_week);
+        mip::UnixTime to{};
+        MockTimeConvertOneSecond from{};
 
-        return getterTestCase(timestamp.convertFrom<mip::Seconds>(reference), seconds_in_week - mip::Seconds(1));
+        return getterTestCase(convert<mip::Seconds>(nanoseconds_in_week, to, from), seconds_in_week - mip::Seconds(1));
     });
 
     suite.addTest("ConvertOtherWay", []() -> bool
     {
-        auto timestamp = setupTimestampMockConvertOneSecond(mip::Nanoseconds(0));
-        auto reference = setupTimestampOneWeek();
+        MockTimeConvertOneSecond to{};
+        mip::UnixTime from{};
 
-        return getterTestCase(timestamp.convertFrom(reference), nanoseconds_in_week + mip::Seconds(1));
+        return getterTestCase(convert(nanoseconds_in_week, to, from), nanoseconds_in_week + mip::Seconds(1));
     });
 
     return suite.run();
