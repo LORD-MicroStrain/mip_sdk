@@ -27,16 +27,6 @@ namespace mip
         m_timestamp += (m_synced - m_old);
     }
 
-    Nanoseconds TimestampExperimental::getTimestamp() const
-    {
-        return m_timestamp;
-    }
-
-    Nanoseconds TimestampExperimental::getTimestampBaseStandard() const
-    {
-        return m_standard.convertToBase(m_timestamp);
-    }
-
     void TimestampExperimental::setTimestamp(Nanoseconds time)
     {
         if (time < Nanoseconds(0))
@@ -62,11 +52,6 @@ namespace mip
         m_timestamp = week + getTimeOfWeek();
     }
 
-    Nanoseconds TimestampExperimental::getTimeOfWeek()
-    {
-        return m_timestamp % Weeks(1);
-    }
-
     void TimestampExperimental::setTimeOfWeek(Nanoseconds time)
     {
         if (time < Nanoseconds(0))
@@ -79,5 +64,20 @@ namespace mip
         }
 
         m_timestamp = std::chrono::duration_cast<Weeks>(m_timestamp) + time;
+    }
+
+    Nanoseconds TimestampExperimental::getTimestamp() const
+    {
+        return m_timestamp;
+    }
+
+    Nanoseconds TimestampExperimental::getTimestampBaseStandard() const
+    {
+        return m_standard.convertToBase(m_timestamp);
+    }
+
+    Nanoseconds TimestampExperimental::getTimeOfWeek()
+    {
+        return m_timestamp % Weeks(1);
     }
 } // namespace mip
