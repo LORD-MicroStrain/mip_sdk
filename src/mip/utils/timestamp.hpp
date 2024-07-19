@@ -57,12 +57,6 @@ namespace mip
         template<typename DurationChanged = Nanoseconds>
         bool timeChanged(const TimestampExperimental &reference);
 
-        /// Returns raw time since epoch.
-        template<typename DurationOut> 
-        DurationOut getTimestamp() const;
-        Nanoseconds getTimestamp() const;
-        Nanoseconds getTimestampBaseStandard() const;
-        
         /// Sets raw time since epoch.
         template<typename DurationIn>
         void setTimestamp(DurationIn time);
@@ -75,11 +69,6 @@ namespace mip
         /// the new week number.
         void setWeek(Weeks week);
 
-        /// Returns raw time since the start of the timestamp's current week.
-        template<typename DurationOut>
-        DurationOut getTimeOfWeek();
-        Nanoseconds getTimeOfWeek();
-
         /// Sets a new time of week for the timestamp.
         ///
         /// The resulting time since epoch is calculated using the old week number and 
@@ -87,11 +76,24 @@ namespace mip
         template<typename DurationIn> 
         void setTimeOfWeek(DurationIn time);
         void setTimeOfWeek(Nanoseconds time);
+
+        /// Returns raw time since epoch.
+        template<typename DurationOut> 
+        DurationOut getTimestamp() const;
+        Nanoseconds getTimestamp() const;
+        Nanoseconds getTimestampBaseStandard() const;
         
+        /// Returns raw time since the start of the timestamp's current week.
+        template<typename DurationOut>
+        DurationOut getTimeOfWeek();
+        Nanoseconds getTimeOfWeek();
+        
+        // TODO: Move outside of class into separate utility.
         // throws logic error
         template<class DurationOut = Nanoseconds>
         DurationOut convertFrom(const TimestampExperimental &reference);
 
+        // TODO: Move outside of class into separate utility.
         // TODO: Update documentation.
         /// Casts a timestamp duration to the given arithmetic type.
         template<typename T, typename DurationIn>
