@@ -1,6 +1,6 @@
 #pragma once
 
-#include "mip/utils/time_durations.hpp"
+#include "mip/utils/time/durations.hpp"
 
 namespace mip
 {

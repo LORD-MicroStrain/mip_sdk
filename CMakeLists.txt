@@ -99,17 +99,20 @@ configure_file(${VERSION_IN_FILE} ${VERSION_OUT_FILE})
 #
 
 set(UTILS_DIR "${MIP_DIR}/utils")
-
 set(UTILS_SOURCES
     "${UTILS_DIR}/byte_ring.c"
     "${UTILS_DIR}/byte_ring.h"
     "${UTILS_DIR}/serialization.c"
     "${UTILS_DIR}/serialization.h"
-    "${UTILS_DIR}/timestamp.cpp"
-    "${UTILS_DIR}/timestamp.hpp"
-    "${UTILS_DIR}/time_durations.hpp"
-    "${UTILS_DIR}/time_standard.cpp"
-    "${UTILS_DIR}/time_standard.hpp"
+)
+
+set(UTILS_SUBDIR_TIME "${UTILS_DIR}/time")
+set(UTILS_TIME_SOURCES
+    "${UTILS_SUBDIR_TIME}/timestamp.cpp"
+    "${UTILS_SUBDIR_TIME}/timestamp.hpp"
+    "${UTILS_SUBDIR_TIME}/durations.hpp"
+    "${UTILS_SUBDIR_TIME}/standards.cpp"
+    "${UTILS_SUBDIR_TIME}/standards.hpp"
 )
 
 #
@@ -230,6 +233,7 @@ set(ALL_MIP_SOURCES
     ${MIPDEV_SOURCES}
     ${MIP_SOURCES}
     ${UTILS_SOURCES}
+    ${UTILS_TIME_SOURCES}
     ${MIP_CPP_HEADERS}
     ${MIP_INTERFACE_SOURCES}
     ${MIP_EXTRA_SOURCES}

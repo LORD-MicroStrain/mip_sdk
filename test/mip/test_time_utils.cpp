@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <string>
 
-#include <mip/utils/timestamp.hpp>
+#include <mip/utils/time/timestamp.hpp>
 
 // Test evalutation
 constexpr std::uint8_t success = 0;
