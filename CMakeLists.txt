@@ -108,11 +108,12 @@ set(UTILS_SOURCES
 
 set(UTILS_SUBDIR_TIME "${UTILS_DIR}/time")
 set(UTILS_TIME_SOURCES
-    "${UTILS_SUBDIR_TIME}/timestamp.cpp"
-    "${UTILS_SUBDIR_TIME}/timestamp.hpp"
     "${UTILS_SUBDIR_TIME}/durations.hpp"
+    "${UTILS_SUBDIR_TIME}/misc.hpp"
     "${UTILS_SUBDIR_TIME}/standards.cpp"
     "${UTILS_SUBDIR_TIME}/standards.hpp"
+    "${UTILS_SUBDIR_TIME}/timestamp.cpp"
+    "${UTILS_SUBDIR_TIME}/timestamp.hpp"
 )
 
 #
