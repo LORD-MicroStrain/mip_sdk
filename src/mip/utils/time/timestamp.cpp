@@ -73,11 +73,6 @@ namespace mip
         return m_timestamp;
     }
 
-    Nanoseconds TimestampExperimental::getTimestampBaseStandard() const
-    {
-        return m_standard.convertToBase(m_timestamp);
-    }
-
     Nanoseconds TimestampExperimental::getTimeOfWeek()
     {
         return m_timestamp % Weeks(1);

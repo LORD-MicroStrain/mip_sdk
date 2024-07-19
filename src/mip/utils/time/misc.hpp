@@ -5,14 +5,12 @@
 
 namespace mip
 {
-    // TODO: Move outside of class into separate utility.
     // throws logic error
     template<class DurationIn, class DurationOut = Nanoseconds>
     DurationOut convert(DurationIn time, const TimeStandard &to, const TimeStandard &from);
     template<class DurationOut = Nanoseconds>
     DurationOut convert(Nanoseconds time, const TimeStandard &to, const TimeStandard &from);
 
-    // TODO: Move outside of class into separate utility.
     // TODO: Update documentation.
     /// Casts a timestamp duration to the given arithmetic type.
     template<typename T, typename DurationIn>

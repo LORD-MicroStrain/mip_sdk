@@ -81,7 +81,6 @@ namespace mip
         template<typename DurationOut> 
         DurationOut getTimestamp() const;
         Nanoseconds getTimestamp() const;
-        Nanoseconds getTimestampBaseStandard() const;
         
         /// Returns raw time since the start of the timestamp's current week.
         template<typename DurationOut>

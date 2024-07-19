@@ -190,21 +190,6 @@ int main(int argc, const char* argv[])
         return getterTestCase(timestamp.getTimestamp<mip::Seconds>(), mip::Seconds(1));
     });
 
-    suite.addTest("GetTimestampBaseStandardZero", []() -> bool
-    {
-        auto timestamp = setupTimestampMockConvertOneSecond(mip::Seconds(1));
-
-        return getterTestCase(timestamp.getTimestampBaseStandard(), mip::Nanoseconds(0));
-    });
-
-    // TODO: Rename tests so this isn't jank lol.
-    suite.addTest("GetTimestampBaseStandardBase", []() -> bool
-    {
-        auto timestamp = setupTimestampMockConvertOneSecond(half_week_nanoseconds);
-
-        return getterTestCase(timestamp.getTimestampBaseStandard(), half_week_nanoseconds - mip::Seconds(1));
-    });
-
     suite.addTest("SetTimestampInvalidBase", []() -> bool
     {
         auto timestamp = setupTimestampZero();
@@ -629,7 +614,7 @@ int main(int argc, const char* argv[])
         auto timestamp = setupTimestampZero();
         auto reference_synced = setupTimestampOneSecond();
         auto reference_old = setupTimestampOneSecond();
-
+        
         timestamp.increment(reference_synced, reference_old);
         return getterTestCase(timestamp.getTimestamp(), mip::Nanoseconds(0));
     });
