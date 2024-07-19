@@ -33,10 +33,11 @@ namespace mip
         template<class DurationIn> 
         TimestampExperimental(const mip::TimeStandard &standard, DurationIn time);
 
-        /// @brief Synchronizes timestamp to a coordinated time standard. 
-        /// @deContinuously call this 
-        /// method to keep the timestamp up to date with the time standard.
+        /// Synchronizes timestamp with the time standard.
+        ///
+        /// Continuously call to keep timestamp up to date with the time standard.
         void synchronize();
+
         /// @brief Increments timestamp TODO: Make doc better.
         /// @param synced 
         /// @param old 
