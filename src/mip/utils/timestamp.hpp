@@ -121,35 +121,6 @@ namespace mip
 
         m_timestamp = time;
     }
-
-    template<typename DurationOut> 
-    inline DurationOut TimestampExperimental::getTimestamp() const
-    {
-        return std::chrono::duration_cast<DurationOut>(getTimestamp());
-    }
-
-    template<typename DurationIn>
-    inline void TimestampExperimental::setTimestamp(DurationIn time)
-    {
-        setTimestamp(std::chrono::duration_cast<Nanoseconds>(time));
-    }
-    
-    template<typename DurationOut>
-    inline DurationOut TimestampExperimental::getTimeOfWeek()
-    {
-        if (DurationOut(1) >= Weeks(1))
-        {
-            throw std::invalid_argument("Duration >= one week.");            
-        }
-
-        return std::chrono::duration_cast<DurationOut>(getTimeOfWeek());
-    }
-
-    template<typename DurationIn>
-    inline void TimestampExperimental::setTimeOfWeek(DurationIn time)
-    {
-        setTimeOfWeek(std::chrono::duration_cast<Nanoseconds>(time));
-    }
     
     template<typename DurationElapsed>
     inline bool TimestampExperimental::timeElapsed(const TimestampExperimental &reference)
@@ -173,6 +144,35 @@ namespace mip
         }
 
         return std::chrono::duration_cast<DurationChanged>(m_timestamp) > std::chrono::duration_cast<DurationChanged>(m_reference);
+    }
+
+    template<typename DurationIn>
+    inline void TimestampExperimental::setTimestamp(DurationIn time)
+    {
+        setTimestamp(std::chrono::duration_cast<Nanoseconds>(time));
+    }
+
+    template<typename DurationIn>
+    inline void TimestampExperimental::setTimeOfWeek(DurationIn time)
+    {
+        setTimeOfWeek(std::chrono::duration_cast<Nanoseconds>(time));
+    }
+    
+    template<typename DurationOut> 
+    inline DurationOut TimestampExperimental::getTimestamp() const
+    {
+        return std::chrono::duration_cast<DurationOut>(getTimestamp());
+    }
+
+    template<typename DurationOut>
+    inline DurationOut TimestampExperimental::getTimeOfWeek()
+    {
+        if (DurationOut(1) >= Weeks(1))
+        {
+            throw std::invalid_argument("Duration >= one week.");            
+        }
+
+        return std::chrono::duration_cast<DurationOut>(getTimeOfWeek());
     }
 
     template<class DurationOut>
