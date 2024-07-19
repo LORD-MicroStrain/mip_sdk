@@ -58,8 +58,9 @@ namespace mip
         template<typename DurationOut> 
         DurationOut getTimestamp() const;
         Nanoseconds getTimestamp() const;
-        /// Converted to base standard.
-        Nanoseconds getTimestampBase() const;
+
+        /// Returns raw time since epoch converted to base time standard.
+        Nanoseconds getTimestampBaseStandard() const;
         
         /// Sets raw time since epoch.
         template<typename DurationIn>
@@ -175,7 +176,7 @@ namespace mip
     template<class DurationOut>
     inline DurationOut TimestampExperimental::convertFrom(const TimestampExperimental &reference)
     {
-        Nanoseconds converted = m_standard.convertFromBase(reference.getTimestampBase());
+        Nanoseconds converted = m_standard.convertFromBase(reference.getTimestampBaseStandard());
         if (converted < Nanoseconds(0))
         {
             throw std::logic_error("Converted timestamp < 0. Add exception handling with desired response!");

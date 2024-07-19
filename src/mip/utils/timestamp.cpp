@@ -32,7 +32,7 @@ namespace mip
         return m_timestamp;
     }
 
-    Nanoseconds TimestampExperimental::getTimestampBase() const
+    Nanoseconds TimestampExperimental::getTimestampBaseStandard() const
     {
         return m_standard.convertToBase(m_timestamp);
     }
