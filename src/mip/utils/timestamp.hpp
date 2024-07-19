@@ -14,30 +14,32 @@ namespace mip
     ///     * Currently supports GPS clock (only) for the underlying time system.
     ///     * Might add support for different time systems in the future.
     ///     * Currently supports std::chrono:duration (only) for timestamp inputs.
+    ///     * Supplied TimeStandard reference should not go out of scope. It will cause a
+    ///         segmentation fault if it does!
     /// ----------------------------------------------------------------------------------
     class TimestampExperimental
     {
     public:
         TimestampExperimental() = delete;
 
-        /// Calls synchronize().
-        // TODO: Make this message better.
-        /// NOTE: TimeStandard reference should not go out of scope. It will cause a 
-        ///       segmentation fault if it does!
+        /// Calls synchronize()
+        /// @param[in] standard Time standard to reference (ex: Unix time).
         TimestampExperimental(const mip::TimeStandard &standard);
 
         /// Manually sets time since epoch.
-        // TODO: Make this message better.
-        /// NOTE: TimeStandard reference should not go out of scope. It will cause a 
-        ///       segmentation fault if it does!
+        /// @tparam    DurationIn std::chrono duration for time since epoch (ex: mip::Nanoseconds).
+        /// @param[in] standard   Time standard to reference (ex: Unix time).
+        /// @param[in] time       Manual starting time since epoch to set.
         template<class DurationIn> 
         TimestampExperimental(const mip::TimeStandard &standard, DurationIn time);
 
-        /// Synchronizes timestamp to a coordinated time standard. Continuously call this 
+        /// @brief Synchronizes timestamp to a coordinated time standard. 
+        /// @deContinuously call this 
         /// method to keep the timestamp up to date with the time standard.
         void synchronize();
-        
-        // TODO: Add documentation.
+        /// @brief Increments timestamp TODO: Make doc better.
+        /// @param synced 
+        /// @param old 
         void increment(const TimestampExperimental &synced, const TimestampExperimental &old);
 
         // TODO: Update documentation.
@@ -58,15 +60,12 @@ namespace mip
         template<typename DurationOut> 
         DurationOut getTimestamp() const;
         Nanoseconds getTimestamp() const;
-
-        /// Returns raw time since epoch converted to base time standard.
         Nanoseconds getTimestampBaseStandard() const;
         
         /// Sets raw time since epoch.
         template<typename DurationIn>
         void setTimestamp(DurationIn time);
         void setTimestamp(Nanoseconds time);
-        /// Sets from another timestamp.
         void setTimestamp(const TimestampExperimental &from);
 
         /// Sets a new week number for the timestamp.
