@@ -765,6 +765,16 @@ struct GpsTimestamp
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool ppsValid() const { return (value & PPS_VALID) > 0; }
+        void ppsValid(bool val) { if(val) value |= PPS_VALID; else value &= ~PPS_VALID; }
+        bool timeRefresh() const { return (value & TIME_REFRESH) > 0; }
+        void timeRefresh(bool val) { if(val) value |= TIME_REFRESH; else value &= ~TIME_REFRESH; }
+        bool timeInitialized() const { return (value & TIME_INITIALIZED) > 0; }
+        void timeInitialized(bool val) { if(val) value |= TIME_INITIALIZED; else value &= ~TIME_INITIALIZED; }
+        bool towValid() const { return (value & TOW_VALID) > 0; }
+        void towValid(bool val) { if(val) value |= TOW_VALID; else value &= ~TOW_VALID; }
+        bool weekNumberValid() const { return (value & WEEK_NUMBER_VALID) > 0; }
+        void weekNumberValid(bool val) { if(val) value |= WEEK_NUMBER_VALID; else value &= ~WEEK_NUMBER_VALID; }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -960,6 +970,26 @@ struct OverrangeStatus
         Status& operator|=(uint16_t val) { return *this = value | val; }
         Status& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool accelX() const { return (value & ACCEL_X) > 0; }
+        void accelX(bool val) { if(val) value |= ACCEL_X; else value &= ~ACCEL_X; }
+        bool accelY() const { return (value & ACCEL_Y) > 0; }
+        void accelY(bool val) { if(val) value |= ACCEL_Y; else value &= ~ACCEL_Y; }
+        bool accelZ() const { return (value & ACCEL_Z) > 0; }
+        void accelZ(bool val) { if(val) value |= ACCEL_Z; else value &= ~ACCEL_Z; }
+        bool gyroX() const { return (value & GYRO_X) > 0; }
+        void gyroX(bool val) { if(val) value |= GYRO_X; else value &= ~GYRO_X; }
+        bool gyroY() const { return (value & GYRO_Y) > 0; }
+        void gyroY(bool val) { if(val) value |= GYRO_Y; else value &= ~GYRO_Y; }
+        bool gyroZ() const { return (value & GYRO_Z) > 0; }
+        void gyroZ(bool val) { if(val) value |= GYRO_Z; else value &= ~GYRO_Z; }
+        bool magX() const { return (value & MAG_X) > 0; }
+        void magX(bool val) { if(val) value |= MAG_X; else value &= ~MAG_X; }
+        bool magY() const { return (value & MAG_Y) > 0; }
+        void magY(bool val) { if(val) value |= MAG_Y; else value &= ~MAG_Y; }
+        bool magZ() const { return (value & MAG_Z) > 0; }
+        void magZ(bool val) { if(val) value |= MAG_Z; else value &= ~MAG_Z; }
+        bool press() const { return (value & PRESS) > 0; }
+        void press(bool val) { if(val) value |= PRESS; else value &= ~PRESS; }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };

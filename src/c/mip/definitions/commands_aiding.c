@@ -219,28 +219,28 @@ mip_cmd_result mip_aiding_default_frame_config(mip_interface* device, uint8_t fr
     
     return mip_interface_run_command(device, MIP_AIDING_CMD_DESC_SET, MIP_CMD_DESC_AIDING_FRAME_CONFIG, buffer, (uint8_t)microstrain_serializer_length(&serializer));
 }
-void insert_mip_aiding_aiding_echo_control_command(microstrain_serializer* serializer, const mip_aiding_aiding_echo_control_command* self)
+void insert_mip_aiding_echo_control_command(microstrain_serializer* serializer, const mip_aiding_echo_control_command* self)
 {
     insert_mip_function_selector(serializer, self->function);
     
     if( self->function == MIP_FUNCTION_WRITE )
     {
-        insert_mip_aiding_aiding_echo_control_command_mode(serializer, self->mode);
+        insert_mip_aiding_echo_control_command_mode(serializer, self->mode);
         
     }
 }
-void extract_mip_aiding_aiding_echo_control_command(microstrain_serializer* serializer, mip_aiding_aiding_echo_control_command* self)
+void extract_mip_aiding_echo_control_command(microstrain_serializer* serializer, mip_aiding_echo_control_command* self)
 {
     extract_mip_function_selector(serializer, &self->function);
     
     if( self->function == MIP_FUNCTION_WRITE )
     {
-        extract_mip_aiding_aiding_echo_control_command_mode(serializer, &self->mode);
+        extract_mip_aiding_echo_control_command_mode(serializer, &self->mode);
         
     }
 }
 
-mip_cmd_result mip_aiding_write_aiding_echo_control(mip_interface* device, mip_aiding_aiding_echo_control_command_mode mode)
+mip_cmd_result mip_aiding_write_echo_control(mip_interface* device, mip_aiding_echo_control_command_mode mode)
 {
     microstrain_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -248,13 +248,13 @@ mip_cmd_result mip_aiding_write_aiding_echo_control(mip_interface* device, mip_a
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
     
-    insert_mip_aiding_aiding_echo_control_command_mode(&serializer, mode);
+    insert_mip_aiding_echo_control_command_mode(&serializer, mode);
     
     assert(microstrain_serializer_is_ok(&serializer));
     
     return mip_interface_run_command(device, MIP_AIDING_CMD_DESC_SET, MIP_CMD_DESC_AIDING_ECHO_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
 }
-mip_cmd_result mip_aiding_read_aiding_echo_control(mip_interface* device, mip_aiding_aiding_echo_control_command_mode* mode_out)
+mip_cmd_result mip_aiding_read_echo_control(mip_interface* device, mip_aiding_echo_control_command_mode* mode_out)
 {
     microstrain_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -273,14 +273,14 @@ mip_cmd_result mip_aiding_read_aiding_echo_control(mip_interface* device, mip_ai
         microstrain_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(mode_out);
-        extract_mip_aiding_aiding_echo_control_command_mode(&deserializer, mode_out);
+        extract_mip_aiding_echo_control_command_mode(&deserializer, mode_out);
         
         if( microstrain_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
 }
-mip_cmd_result mip_aiding_save_aiding_echo_control(mip_interface* device)
+mip_cmd_result mip_aiding_save_echo_control(mip_interface* device)
 {
     microstrain_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -292,7 +292,7 @@ mip_cmd_result mip_aiding_save_aiding_echo_control(mip_interface* device)
     
     return mip_interface_run_command(device, MIP_AIDING_CMD_DESC_SET, MIP_CMD_DESC_AIDING_ECHO_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
 }
-mip_cmd_result mip_aiding_load_aiding_echo_control(mip_interface* device)
+mip_cmd_result mip_aiding_load_echo_control(mip_interface* device)
 {
     microstrain_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -304,7 +304,7 @@ mip_cmd_result mip_aiding_load_aiding_echo_control(mip_interface* device)
     
     return mip_interface_run_command(device, MIP_AIDING_CMD_DESC_SET, MIP_CMD_DESC_AIDING_ECHO_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
 }
-mip_cmd_result mip_aiding_default_aiding_echo_control(mip_interface* device)
+mip_cmd_result mip_aiding_default_echo_control(mip_interface* device)
 {
     microstrain_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -316,7 +316,7 @@ mip_cmd_result mip_aiding_default_aiding_echo_control(mip_interface* device)
     
     return mip_interface_run_command(device, MIP_AIDING_CMD_DESC_SET, MIP_CMD_DESC_AIDING_ECHO_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
 }
-void insert_mip_aiding_ecef_pos_command(microstrain_serializer* serializer, const mip_aiding_ecef_pos_command* self)
+void insert_mip_aiding_pos_ecef_command(microstrain_serializer* serializer, const mip_aiding_pos_ecef_command* self)
 {
     insert_mip_time(serializer, &self->time);
     
@@ -326,10 +326,10 @@ void insert_mip_aiding_ecef_pos_command(microstrain_serializer* serializer, cons
     
     insert_mip_vector3f(serializer, self->uncertainty);
     
-    insert_mip_aiding_ecef_pos_command_valid_flags(serializer, self->valid_flags);
+    insert_mip_aiding_pos_ecef_command_valid_flags(serializer, self->valid_flags);
     
 }
-void extract_mip_aiding_ecef_pos_command(microstrain_serializer* serializer, mip_aiding_ecef_pos_command* self)
+void extract_mip_aiding_pos_ecef_command(microstrain_serializer* serializer, mip_aiding_pos_ecef_command* self)
 {
     extract_mip_time(serializer, &self->time);
     
@@ -339,11 +339,11 @@ void extract_mip_aiding_ecef_pos_command(microstrain_serializer* serializer, mip
     
     extract_mip_vector3f(serializer, self->uncertainty);
     
-    extract_mip_aiding_ecef_pos_command_valid_flags(serializer, &self->valid_flags);
+    extract_mip_aiding_pos_ecef_command_valid_flags(serializer, &self->valid_flags);
     
 }
 
-mip_cmd_result mip_aiding_ecef_pos(mip_interface* device, const mip_time* time, uint8_t frame_id, const double* position, const float* uncertainty, mip_aiding_ecef_pos_command_valid_flags valid_flags)
+mip_cmd_result mip_aiding_pos_ecef(mip_interface* device, const mip_time* time, uint8_t frame_id, const double* position, const float* uncertainty, mip_aiding_pos_ecef_command_valid_flags valid_flags)
 {
     microstrain_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -362,13 +362,13 @@ mip_cmd_result mip_aiding_ecef_pos(mip_interface* device, const mip_time* time, 
     for(unsigned int i=0; i < 3; i++)
         microstrain_insert_float(&serializer, uncertainty[i]);
     
-    insert_mip_aiding_ecef_pos_command_valid_flags(&serializer, valid_flags);
+    insert_mip_aiding_pos_ecef_command_valid_flags(&serializer, valid_flags);
     
     assert(microstrain_serializer_is_ok(&serializer));
     
     return mip_interface_run_command(device, MIP_AIDING_CMD_DESC_SET, MIP_CMD_DESC_AIDING_POS_ECEF, buffer, (uint8_t)microstrain_serializer_length(&serializer));
 }
-void insert_mip_aiding_llh_pos_command(microstrain_serializer* serializer, const mip_aiding_llh_pos_command* self)
+void insert_mip_aiding_pos_llh_command(microstrain_serializer* serializer, const mip_aiding_pos_llh_command* self)
 {
     insert_mip_time(serializer, &self->time);
     
@@ -382,10 +382,10 @@ void insert_mip_aiding_llh_pos_command(microstrain_serializer* serializer, const
     
     insert_mip_vector3f(serializer, self->uncertainty);
     
-    insert_mip_aiding_llh_pos_command_valid_flags(serializer, self->valid_flags);
+    insert_mip_aiding_pos_llh_command_valid_flags(serializer, self->valid_flags);
     
 }
-void extract_mip_aiding_llh_pos_command(microstrain_serializer* serializer, mip_aiding_llh_pos_command* self)
+void extract_mip_aiding_pos_llh_command(microstrain_serializer* serializer, mip_aiding_pos_llh_command* self)
 {
     extract_mip_time(serializer, &self->time);
     
@@ -399,11 +399,11 @@ void extract_mip_aiding_llh_pos_command(microstrain_serializer* serializer, mip_
     
     extract_mip_vector3f(serializer, self->uncertainty);
     
-    extract_mip_aiding_llh_pos_command_valid_flags(serializer, &self->valid_flags);
+    extract_mip_aiding_pos_llh_command_valid_flags(serializer, &self->valid_flags);
     
 }
 
-mip_cmd_result mip_aiding_llh_pos(mip_interface* device, const mip_time* time, uint8_t frame_id, double latitude, double longitude, double height, const float* uncertainty, mip_aiding_llh_pos_command_valid_flags valid_flags)
+mip_cmd_result mip_aiding_pos_llh(mip_interface* device, const mip_time* time, uint8_t frame_id, double latitude, double longitude, double height, const float* uncertainty, mip_aiding_pos_llh_command_valid_flags valid_flags)
 {
     microstrain_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -424,13 +424,13 @@ mip_cmd_result mip_aiding_llh_pos(mip_interface* device, const mip_time* time, u
     for(unsigned int i=0; i < 3; i++)
         microstrain_insert_float(&serializer, uncertainty[i]);
     
-    insert_mip_aiding_llh_pos_command_valid_flags(&serializer, valid_flags);
+    insert_mip_aiding_pos_llh_command_valid_flags(&serializer, valid_flags);
     
     assert(microstrain_serializer_is_ok(&serializer));
     
     return mip_interface_run_command(device, MIP_AIDING_CMD_DESC_SET, MIP_CMD_DESC_AIDING_POS_LLH, buffer, (uint8_t)microstrain_serializer_length(&serializer));
 }
-void insert_mip_aiding_height_command(microstrain_serializer* serializer, const mip_aiding_height_command* self)
+void insert_mip_aiding_height_above_ellipsoid_command(microstrain_serializer* serializer, const mip_aiding_height_above_ellipsoid_command* self)
 {
     insert_mip_time(serializer, &self->time);
     
@@ -443,7 +443,7 @@ void insert_mip_aiding_height_command(microstrain_serializer* serializer, const 
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_aiding_height_command(microstrain_serializer* serializer, mip_aiding_height_command* self)
+void extract_mip_aiding_height_above_ellipsoid_command(microstrain_serializer* serializer, mip_aiding_height_above_ellipsoid_command* self)
 {
     extract_mip_time(serializer, &self->time);
     
@@ -457,7 +457,7 @@ void extract_mip_aiding_height_command(microstrain_serializer* serializer, mip_a
     
 }
 
-mip_cmd_result mip_aiding_height(mip_interface* device, const mip_time* time, uint8_t frame_id, float height, float uncertainty, uint16_t valid_flags)
+mip_cmd_result mip_aiding_height_above_ellipsoid(mip_interface* device, const mip_time* time, uint8_t frame_id, float height, float uncertainty, uint16_t valid_flags)
 {
     microstrain_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -476,9 +476,9 @@ mip_cmd_result mip_aiding_height(mip_interface* device, const mip_time* time, ui
     
     assert(microstrain_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_AIDING_CMD_DESC_SET, MIP_CMD_DESC_AIDING_HEIGHT_ABS, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(device, MIP_AIDING_CMD_DESC_SET, MIP_CMD_DESC_AIDING_HEIGHT_ABOVE_ELLIPSOID, buffer, (uint8_t)microstrain_serializer_length(&serializer));
 }
-void insert_mip_aiding_ecef_vel_command(microstrain_serializer* serializer, const mip_aiding_ecef_vel_command* self)
+void insert_mip_aiding_vel_ecef_command(microstrain_serializer* serializer, const mip_aiding_vel_ecef_command* self)
 {
     insert_mip_time(serializer, &self->time);
     
@@ -488,10 +488,10 @@ void insert_mip_aiding_ecef_vel_command(microstrain_serializer* serializer, cons
     
     insert_mip_vector3f(serializer, self->uncertainty);
     
-    insert_mip_aiding_ecef_vel_command_valid_flags(serializer, self->valid_flags);
+    insert_mip_aiding_vel_ecef_command_valid_flags(serializer, self->valid_flags);
     
 }
-void extract_mip_aiding_ecef_vel_command(microstrain_serializer* serializer, mip_aiding_ecef_vel_command* self)
+void extract_mip_aiding_vel_ecef_command(microstrain_serializer* serializer, mip_aiding_vel_ecef_command* self)
 {
     extract_mip_time(serializer, &self->time);
     
@@ -501,11 +501,11 @@ void extract_mip_aiding_ecef_vel_command(microstrain_serializer* serializer, mip
     
     extract_mip_vector3f(serializer, self->uncertainty);
     
-    extract_mip_aiding_ecef_vel_command_valid_flags(serializer, &self->valid_flags);
+    extract_mip_aiding_vel_ecef_command_valid_flags(serializer, &self->valid_flags);
     
 }
 
-mip_cmd_result mip_aiding_ecef_vel(mip_interface* device, const mip_time* time, uint8_t frame_id, const float* velocity, const float* uncertainty, mip_aiding_ecef_vel_command_valid_flags valid_flags)
+mip_cmd_result mip_aiding_vel_ecef(mip_interface* device, const mip_time* time, uint8_t frame_id, const float* velocity, const float* uncertainty, mip_aiding_vel_ecef_command_valid_flags valid_flags)
 {
     microstrain_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -524,13 +524,13 @@ mip_cmd_result mip_aiding_ecef_vel(mip_interface* device, const mip_time* time, 
     for(unsigned int i=0; i < 3; i++)
         microstrain_insert_float(&serializer, uncertainty[i]);
     
-    insert_mip_aiding_ecef_vel_command_valid_flags(&serializer, valid_flags);
+    insert_mip_aiding_vel_ecef_command_valid_flags(&serializer, valid_flags);
     
     assert(microstrain_serializer_is_ok(&serializer));
     
     return mip_interface_run_command(device, MIP_AIDING_CMD_DESC_SET, MIP_CMD_DESC_AIDING_VEL_ECEF, buffer, (uint8_t)microstrain_serializer_length(&serializer));
 }
-void insert_mip_aiding_ned_vel_command(microstrain_serializer* serializer, const mip_aiding_ned_vel_command* self)
+void insert_mip_aiding_vel_ned_command(microstrain_serializer* serializer, const mip_aiding_vel_ned_command* self)
 {
     insert_mip_time(serializer, &self->time);
     
@@ -540,10 +540,10 @@ void insert_mip_aiding_ned_vel_command(microstrain_serializer* serializer, const
     
     insert_mip_vector3f(serializer, self->uncertainty);
     
-    insert_mip_aiding_ned_vel_command_valid_flags(serializer, self->valid_flags);
+    insert_mip_aiding_vel_ned_command_valid_flags(serializer, self->valid_flags);
     
 }
-void extract_mip_aiding_ned_vel_command(microstrain_serializer* serializer, mip_aiding_ned_vel_command* self)
+void extract_mip_aiding_vel_ned_command(microstrain_serializer* serializer, mip_aiding_vel_ned_command* self)
 {
     extract_mip_time(serializer, &self->time);
     
@@ -553,11 +553,11 @@ void extract_mip_aiding_ned_vel_command(microstrain_serializer* serializer, mip_
     
     extract_mip_vector3f(serializer, self->uncertainty);
     
-    extract_mip_aiding_ned_vel_command_valid_flags(serializer, &self->valid_flags);
+    extract_mip_aiding_vel_ned_command_valid_flags(serializer, &self->valid_flags);
     
 }
 
-mip_cmd_result mip_aiding_ned_vel(mip_interface* device, const mip_time* time, uint8_t frame_id, const float* velocity, const float* uncertainty, mip_aiding_ned_vel_command_valid_flags valid_flags)
+mip_cmd_result mip_aiding_vel_ned(mip_interface* device, const mip_time* time, uint8_t frame_id, const float* velocity, const float* uncertainty, mip_aiding_vel_ned_command_valid_flags valid_flags)
 {
     microstrain_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -576,13 +576,13 @@ mip_cmd_result mip_aiding_ned_vel(mip_interface* device, const mip_time* time, u
     for(unsigned int i=0; i < 3; i++)
         microstrain_insert_float(&serializer, uncertainty[i]);
     
-    insert_mip_aiding_ned_vel_command_valid_flags(&serializer, valid_flags);
+    insert_mip_aiding_vel_ned_command_valid_flags(&serializer, valid_flags);
     
     assert(microstrain_serializer_is_ok(&serializer));
     
     return mip_interface_run_command(device, MIP_AIDING_CMD_DESC_SET, MIP_CMD_DESC_AIDING_VEL_NED, buffer, (uint8_t)microstrain_serializer_length(&serializer));
 }
-void insert_mip_aiding_vehicle_fixed_frame_velocity_command(microstrain_serializer* serializer, const mip_aiding_vehicle_fixed_frame_velocity_command* self)
+void insert_mip_aiding_vel_body_frame_command(microstrain_serializer* serializer, const mip_aiding_vel_body_frame_command* self)
 {
     insert_mip_time(serializer, &self->time);
     
@@ -592,10 +592,10 @@ void insert_mip_aiding_vehicle_fixed_frame_velocity_command(microstrain_serializ
     
     insert_mip_vector3f(serializer, self->uncertainty);
     
-    insert_mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags(serializer, self->valid_flags);
+    insert_mip_aiding_vel_body_frame_command_valid_flags(serializer, self->valid_flags);
     
 }
-void extract_mip_aiding_vehicle_fixed_frame_velocity_command(microstrain_serializer* serializer, mip_aiding_vehicle_fixed_frame_velocity_command* self)
+void extract_mip_aiding_vel_body_frame_command(microstrain_serializer* serializer, mip_aiding_vel_body_frame_command* self)
 {
     extract_mip_time(serializer, &self->time);
     
@@ -605,11 +605,11 @@ void extract_mip_aiding_vehicle_fixed_frame_velocity_command(microstrain_seriali
     
     extract_mip_vector3f(serializer, self->uncertainty);
     
-    extract_mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags(serializer, &self->valid_flags);
+    extract_mip_aiding_vel_body_frame_command_valid_flags(serializer, &self->valid_flags);
     
 }
 
-mip_cmd_result mip_aiding_vehicle_fixed_frame_velocity(mip_interface* device, const mip_time* time, uint8_t frame_id, const float* velocity, const float* uncertainty, mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags valid_flags)
+mip_cmd_result mip_aiding_vel_body_frame(mip_interface* device, const mip_time* time, uint8_t frame_id, const float* velocity, const float* uncertainty, mip_aiding_vel_body_frame_command_valid_flags valid_flags)
 {
     microstrain_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -628,13 +628,13 @@ mip_cmd_result mip_aiding_vehicle_fixed_frame_velocity(mip_interface* device, co
     for(unsigned int i=0; i < 3; i++)
         microstrain_insert_float(&serializer, uncertainty[i]);
     
-    insert_mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags(&serializer, valid_flags);
+    insert_mip_aiding_vel_body_frame_command_valid_flags(&serializer, valid_flags);
     
     assert(microstrain_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_AIDING_CMD_DESC_SET, MIP_CMD_DESC_AIDING_VEL_ODOM, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(device, MIP_AIDING_CMD_DESC_SET, MIP_CMD_DESC_AIDING_VEL_BODY_FRAME, buffer, (uint8_t)microstrain_serializer_length(&serializer));
 }
-void insert_mip_aiding_true_heading_command(microstrain_serializer* serializer, const mip_aiding_true_heading_command* self)
+void insert_mip_aiding_heading_true_command(microstrain_serializer* serializer, const mip_aiding_heading_true_command* self)
 {
     insert_mip_time(serializer, &self->time);
     
@@ -647,7 +647,7 @@ void insert_mip_aiding_true_heading_command(microstrain_serializer* serializer, 
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_aiding_true_heading_command(microstrain_serializer* serializer, mip_aiding_true_heading_command* self)
+void extract_mip_aiding_heading_true_command(microstrain_serializer* serializer, mip_aiding_heading_true_command* self)
 {
     extract_mip_time(serializer, &self->time);
     
@@ -661,7 +661,7 @@ void extract_mip_aiding_true_heading_command(microstrain_serializer* serializer,
     
 }
 
-mip_cmd_result mip_aiding_true_heading(mip_interface* device, const mip_time* time, uint8_t frame_id, float heading, float uncertainty, uint16_t valid_flags)
+mip_cmd_result mip_aiding_heading_true(mip_interface* device, const mip_time* time, uint8_t frame_id, float heading, float uncertainty, uint16_t valid_flags)
 {
     microstrain_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];

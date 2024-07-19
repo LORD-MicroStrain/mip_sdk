@@ -206,6 +206,12 @@ struct GpsTimestamp
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool tow() const { return (value & TOW) > 0; }
+        void tow(bool val) { if(val) value |= TOW; else value &= ~TOW; }
+        bool weekNumber() const { return (value & WEEK_NUMBER) > 0; }
+        void weekNumber(bool val) { if(val) value |= WEEK_NUMBER; else value &= ~WEEK_NUMBER; }
+        uint16_t timeValid() const { return (value & TIME_VALID) >> 0; }
+        void timeValid(uint16_t val) { value = (value & ~TIME_VALID) | (val << 0); }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -411,6 +417,8 @@ struct ExternalTimestamp
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool nanoseconds() const { return (value & NANOSECONDS) > 0; }
+        void nanoseconds(bool val) { if(val) value |= NANOSECONDS; else value &= ~NANOSECONDS; }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -483,6 +491,8 @@ struct ExternalTimeDelta
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool dtNanos() const { return (value & DT_NANOS) > 0; }
+        void dtNanos(bool val) { if(val) value |= DT_NANOS; else value &= ~DT_NANOS; }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };

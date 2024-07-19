@@ -761,9 +761,13 @@ mip_cmd_result mip_filter_default_sensor_to_vehicle_offset(mip_interface* device
 ///
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_filter_antenna_offset  (0x0D,0x13) Antenna Offset [C]
-/// Set the sensor to GNSS antenna offset.
+/// Configure the GNSS antenna offset.
 /// 
-/// This is expressed in the sensor frame, from the sensor origin to the GNSS antenna RF center.
+/// For 5-series products, this is expressed in the sensor frame, from the sensor origin to the GNSS antenna RF center.
+/// 
+/// For 7-series products, this is expressed in the vehicle frame, from the sensor origin to the GNSS antenna RF center.
+/// 
+/// This command should also be used for CV7 / GV7-INS NMEA Input over GPIO.
 /// 
 /// The magnitude of the offset vector is limited to 10 meters
 /// 
@@ -1712,7 +1716,7 @@ mip_cmd_result mip_filter_default_reference_position(mip_interface* device);
 /// 
 /// Adaptive measurements can be enabled/disabled without the need for providing the additional parameters.
 /// In this case, only the function selector and enable value are required; all other parameters will remain at their previous values.
-/// When ‚Äúauto-adaptive‚Äù is selected, the filter and limit parameters are ignored.
+/// When ìauto-adaptiveî is selected, the filter and limit parameters are ignored.
 /// Instead, aiding measurements which rely on the gravity vector will be automatically reweighted by the Kalman filter according to the perceived measurement quality.
 /// 
 ///
@@ -1879,7 +1883,7 @@ enum mip_filter_aiding_measurement_enable_command_aiding_source
     MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_EXTERNAL_HEADING      = 5,  ///<  External heading input
     MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_EXTERNAL_ALTIMETER    = 6,  ///<  External pressure altimeter input
     MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_EXTERNAL_MAGNETOMETER = 7,  ///<  External magnetomer input
-    MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_VEHICLE_FRAME_VEL     = 8,  ///<  External vehicle frame velocity input
+    MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_BODY_FRAME_VEL        = 8,  ///<  External body frame velocity input
     MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_ALL                   = 65535,  ///<  Save/load/reset all options
 };
 typedef enum mip_filter_aiding_measurement_enable_command_aiding_source mip_filter_aiding_measurement_enable_command_aiding_source;
