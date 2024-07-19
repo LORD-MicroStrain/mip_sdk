@@ -3,11 +3,13 @@
 #include "mip/utils/time/durations.hpp"
 #include "mip/utils/time/standards.hpp"
 
+// TODO: Add/update documentation.
 namespace mip
 {
     // throws logic error
     template<class DurationIn, class DurationOut = Nanoseconds>
     DurationOut convert(DurationIn time, const TimeStandard &to, const TimeStandard &from);
+
     template<class DurationOut = Nanoseconds>
     DurationOut convert(Nanoseconds time, const TimeStandard &to, const TimeStandard &from);
 
@@ -18,7 +20,7 @@ namespace mip
 
 
     /**************************************************************************************/
-    /* Definitions for template declarations above.
+    /* Definitions for template declarations above.                                       */
     /**************************************************************************************/
 
     template<class DurationIn, class DurationOut>

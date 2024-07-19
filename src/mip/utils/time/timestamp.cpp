@@ -1,7 +1,5 @@
 #include "mip/utils/time/timestamp.hpp"
 
-#include <stdexcept>
-
 #include "mip/utils/time/misc.hpp"
 
 namespace mip

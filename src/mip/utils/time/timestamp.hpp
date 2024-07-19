@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdexcept>
+
 #include "mip/utils/time/durations.hpp"
 #include "mip/utils/time/standards.hpp"
 
