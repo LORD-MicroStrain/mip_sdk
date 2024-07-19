@@ -592,7 +592,7 @@ int main(int argc, const char* argv[])
     {
         return invalidInputTestCase<std::invalid_argument>([]() -> void 
         {
-            castTime<std::int32_t>(invalid_nanoseconds);
+            mip::castTime<std::int32_t>(invalid_nanoseconds);
         });
     });
 
@@ -601,7 +601,7 @@ int main(int argc, const char* argv[])
         auto timestamp = setupTimestampZero();
         std::int32_t zero_count = 0;
         
-        return getterTestCase(castTime<std::int32_t>(timestamp.getTimestamp()), zero_count);
+        return getterTestCase(mip::castTime<std::int32_t>(timestamp.getTimestamp()), zero_count);
     });
 
     suite.addTest("CastTimeArbitrary", []() -> bool
@@ -609,7 +609,7 @@ int main(int argc, const char* argv[])
         auto timestamp = setupTimestampOneWeek();
         std::int32_t seconds_count = 604800;
         
-        return getterTestCase(castTime<std::int32_t>(timestamp.getTimestamp<mip::Seconds>()), seconds_count);
+        return getterTestCase(mip::castTime<std::int32_t>(timestamp.getTimestamp<mip::Seconds>()), seconds_count);
     });
 
     suite.addTest("IncrementInvalid", []() -> bool
@@ -703,7 +703,7 @@ int main(int argc, const char* argv[])
         mip::UnixTime to{};
         MockTimeConvertOneSecond from{};
 
-        return getterTestCase(convert<mip::Seconds>(nanoseconds_in_week, to, from), seconds_in_week - mip::Seconds(1));
+        return getterTestCase(mip::convert<mip::Seconds>(nanoseconds_in_week, to, from), seconds_in_week - mip::Seconds(1));
     });
 
     suite.addTest("ConvertOtherWay", []() -> bool

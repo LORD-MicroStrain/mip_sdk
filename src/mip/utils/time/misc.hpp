@@ -1,11 +1,16 @@
 #pragma once
 
+#include "mip/utils/time/durations.hpp"
+#include "mip/utils/time/standards.hpp"
+
 namespace mip
 {
     // TODO: Move outside of class into separate utility.
     // throws logic error
+    template<class DurationIn, class DurationOut = Nanoseconds>
+    DurationOut convert(DurationIn time, const TimeStandard &to, const TimeStandard &from);
     template<class DurationOut = Nanoseconds>
-    DurationOut convertFrom(const TimestampExperimental &reference);
+    DurationOut convert(Nanoseconds time, const TimeStandard &to, const TimeStandard &from);
 
     // TODO: Move outside of class into separate utility.
     // TODO: Update documentation.
@@ -18,20 +23,27 @@ namespace mip
     /* Definitions for template declarations above.
     /**************************************************************************************/
 
-    template<class DurationOut>
-    inline DurationOut TimestampExperimental::convertFrom(const TimestampExperimental &reference)
+    template<class DurationIn, class DurationOut>
+    DurationOut convert(DurationIn time, const TimeStandard &to, const TimeStandard &from)
     {
-        Nanoseconds converted = m_standard.convertFromBase(reference.getTimestampBaseStandard());
+        return convert(std::chrono::duration_cast<Nanoseconds>(time), to, from);
+    }
+
+    template<class DurationOut>
+    DurationOut convert(Nanoseconds time, const TimeStandard &to, const TimeStandard &from)
+    {
+        Nanoseconds converted = to.convertFromBase(from.convertToBase(time));
         if (converted < Nanoseconds(0))
         {
             throw std::logic_error("Converted timestamp < 0. Add exception handling with desired response!");
         }
         
         return std::chrono::duration_cast<DurationOut>(converted);
+        
     }
 
     template<typename T, typename DurationIn>
-    T TimestampExperimental::castTime(const DurationIn &time)
+    T castTime(const DurationIn &time)
     {
         if (time < mip::Nanoseconds(0))
         {

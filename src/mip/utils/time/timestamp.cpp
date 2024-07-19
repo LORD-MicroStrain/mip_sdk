@@ -2,6 +2,8 @@
 
 #include <stdexcept>
 
+#include "mip/utils/time/misc.hpp"
+
 namespace mip
 {
     TimestampExperimental::TimestampExperimental(const mip::TimeStandard &standard) :
@@ -39,7 +41,7 @@ namespace mip
 
     void TimestampExperimental::setTimestamp(const TimestampExperimental &from)
     {
-        m_timestamp = convertFrom(from);
+        m_timestamp = convert(from.getTimestamp(), m_standard, from.m_standard);
     }
 
     void TimestampExperimental::setWeek(Weeks week)
