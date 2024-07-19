@@ -5,6 +5,7 @@
 #include <string>
 
 #include <mip/utils/time/timestamp.hpp>
+#include <mip/utils/time/misc.hpp>
 
 // Test evalutation
 constexpr std::uint8_t success = 0;
@@ -589,11 +590,9 @@ int main(int argc, const char* argv[])
     
     suite.addTest("CastTimeInvalidLower", []() -> bool
     {
-        auto timestamp = setupTimestampZero();
-        
-        return invalidInputTestCase<std::invalid_argument>([&timestamp]() -> void 
+        return invalidInputTestCase<std::invalid_argument>([]() -> void 
         {
-            timestamp.castTime<std::int32_t>(invalid_nanoseconds);
+            castTime<std::int32_t>(invalid_nanoseconds);
         });
     });
 
@@ -602,7 +601,7 @@ int main(int argc, const char* argv[])
         auto timestamp = setupTimestampZero();
         std::int32_t zero_count = 0;
         
-        return getterTestCase(timestamp.castTime<std::int32_t>(timestamp.getTimestamp()), zero_count);
+        return getterTestCase(castTime<std::int32_t>(timestamp.getTimestamp()), zero_count);
     });
 
     suite.addTest("CastTimeArbitrary", []() -> bool
@@ -610,7 +609,7 @@ int main(int argc, const char* argv[])
         auto timestamp = setupTimestampOneWeek();
         std::int32_t seconds_count = 604800;
         
-        return getterTestCase(timestamp.castTime<std::int32_t>(timestamp.getTimestamp<mip::Seconds>()), seconds_count);
+        return getterTestCase(castTime<std::int32_t>(timestamp.getTimestamp<mip::Seconds>()), seconds_count);
     });
 
     suite.addTest("IncrementInvalid", []() -> bool
