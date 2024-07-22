@@ -712,6 +712,22 @@ int main(int argc, const char* argv[])
         return getterTestCase(time.now() - getNow() < mip::Nanoseconds(1000), true);
     });
 
+    suite.addTest("UnixTimeConvertToBase", []() -> bool
+    {
+        mip::UnixTime time{};
+
+        // Threshold accounts for negligible difference in call times.
+        return getterTestCase(time.convertToBase(mip::Nanoseconds(1)), mip::Nanoseconds(1));
+    });
+
+    suite.addTest("UnixTimeConvertFromBase", []() -> bool
+    {
+        mip::UnixTime time{};
+
+        // Threshold accounts for negligible difference in call times.
+        return getterTestCase(time.convertFromBase(mip::Nanoseconds(1)), mip::Nanoseconds(1));
+    });
+
     return suite.run();
 }
 
