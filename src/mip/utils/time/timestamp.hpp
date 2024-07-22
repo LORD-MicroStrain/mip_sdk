@@ -7,17 +7,15 @@
 
 namespace mip
 {
-    // TODO: Update documentation.
     // TODO: Change name to Timestamp when old one is removed throughout mip sdk.
     /// Manages a timestamp in nanoseconds since epoch.
     ///
+    /// Provides various unit of time conversions, timestamp comparisons + tracking, synchronizing 
+    /// to a coordinated time standard, etc.
+    /// 
     /// Notes:
     /// ----------------------------------------------------------------------------------
-    ///     * Currently supports GPS clock (only) for the underlying time system.
-    ///     * Might add support for different time systems in the future.
-    ///     * Currently supports std::chrono:duration (only) for timestamp inputs.
-    ///     * Supplied TimeStandard reference should not go out of scope. It will cause a
-    ///         segmentation fault if it does!
+    ///     * Currently supports std::chrono:duration for time inputs.
     /// ----------------------------------------------------------------------------------
     class TimestampExperimental
     {
@@ -25,17 +23,21 @@ namespace mip
         TimestampExperimental() = delete;
 
         /// Calls synchronize()
-        /// @param[in] standard Time standard to reference (ex: Unix time).
+        ///
+        /// @param[in] standard Time standard to reference (ex: Unix time). NOTE: This
+        ///                     will cause a segmentation fault if it goes out of scope!
         TimestampExperimental(const mip::TimeStandard &standard);
 
         /// Manually sets time since epoch.
+        ///
         /// @tparam    DurationIn std::chrono duration for time since epoch (ex: mip::Nanoseconds).
-        /// @param[in] standard   Time standard to reference (ex: Unix time).
+        /// @param[in] standard   Time standard to reference (ex: Unix time). NOTE: This
+        ///                       will cause a segmentation fault if it goes out of scope!
         /// @param[in] time       Manual starting time since epoch to set.
         template<class DurationIn> 
         TimestampExperimental(const mip::TimeStandard &standard, DurationIn time);
 
-        /// Synchronizes timestamp with the time standard.
+        /// Synchronizes time since epoch with the time standard's time since epoch.
         ///
         /// Continuously call to keep timestamp up to date with the time standard.
         void synchronize();
