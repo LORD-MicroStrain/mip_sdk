@@ -15,9 +15,9 @@ namespace mip
         m_timestamp = m_standard.now();
     }
 
-    void TimestampExperimental::increment(const TimestampExperimental &synced, const TimestampExperimental &old)
+    void TimestampExperimental::increment(const TimestampExperimental &reference, const TimestampExperimental &old)
     {
-        mip::Nanoseconds m_synced = synced.getTimestamp();
+        mip::Nanoseconds m_synced = reference.getTimestamp();
         mip::Nanoseconds m_old = old.getTimestamp();
         if (m_synced < m_old)
         {

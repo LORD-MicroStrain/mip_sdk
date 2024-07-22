@@ -26,6 +26,7 @@ namespace mip
         ///
         /// @param[in] standard Time standard to reference (ex: Unix time). NOTE: This
         ///                     will cause a segmentation fault if it goes out of scope!
+        ///
         TimestampExperimental(const mip::TimeStandard &standard);
 
         /// Manually sets time since epoch.
@@ -34,18 +35,45 @@ namespace mip
         /// @param[in] standard   Time standard to reference (ex: Unix time). NOTE: This
         ///                       will cause a segmentation fault if it goes out of scope!
         /// @param[in] time       Manual starting time since epoch to set.
+        ///
+        /// @throws std::invalid_argument If time > 0 nanoseconds.
+        ///
         template<class DurationIn> 
         TimestampExperimental(const mip::TimeStandard &standard, DurationIn time);
 
         /// Synchronizes time since epoch with the time standard's time since epoch.
         ///
         /// Continuously call to keep timestamp up to date with the time standard.
+        ///
         void synchronize();
 
-        /// @brief Increments timestamp TODO: Make doc better.
-        /// @param synced 
-        /// @param old 
-        void increment(const TimestampExperimental &synced, const TimestampExperimental &old);
+        /// Increments time since epoch by the time difference between two timestamps.
+        ///
+        /// Useful for incrementing a manual timestamp with respect to an actual coordinated
+        /// time standard, among other things. 
+        ///
+        /// @param reference Timestamp to use as up-to-date reference.
+        /// @param old       Timestamp to use as old reference to calculate time difference.
+        ///
+        /// @throws std:invalid_argument If reference > old.
+        ///
+        /// @code
+        /// // Assuming:
+        /// // * timestamp = 5 nanoseconds since epoch
+        /// // * old = 500 nanoseconds since epoch
+        /// // * reference = 600 nanoseconds since epoch
+        ///
+        /// // Outputs 5 nanoseconds
+        /// timestamp.getTimestamp();
+        ///
+        /// // Increment: 5 ns + (600 ns - 500 ns) = 105 nanoseconds
+        /// timestamp.increment(reference, old); 
+        ///
+        /// // Now outputs 105 nanoseconds.
+        /// timestamp.getTimestamp();
+        /// @endcode
+        ///
+        void increment(const TimestampExperimental &reference, const TimestampExperimental &old);
 
         // TODO: Update documentation.
         /// Returns whether the timestamp has diverged since a reference timestamp.
