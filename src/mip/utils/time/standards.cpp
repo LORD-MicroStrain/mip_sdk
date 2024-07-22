@@ -4,8 +4,7 @@ namespace mip
 {
     Nanoseconds UnixTime::now() const
     {
-        return std::chrono::duration_cast<Nanoseconds>(
-            std::chrono::system_clock::now().time_since_epoch());
+        return std::chrono::duration_cast<Nanoseconds>(std::chrono::system_clock::now().time_since_epoch());
     }
 
     Nanoseconds UnixTime::convertToBase(Nanoseconds time) const

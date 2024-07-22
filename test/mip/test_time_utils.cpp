@@ -150,6 +150,11 @@ mip::TimestampExperimental setupTimestampMockConvertOneSecond(mip::Nanoseconds t
     return {mock_time_convert_one_second, time}; 
 }
 
+mip::Nanoseconds getNow()
+{
+    return std::chrono::duration_cast<mip::Nanoseconds>(std::chrono::system_clock::now().time_since_epoch());
+}
+
 /** Tests *******************************************************************************/
 
 int main(int argc, const char* argv[])
@@ -697,6 +702,14 @@ int main(int argc, const char* argv[])
         mip::UnixTime from{};
 
         return getterTestCase(convert(nanoseconds_in_week, to, from), nanoseconds_in_week + mip::Seconds(1));
+    });
+    
+    suite.addTest("UnixTimeNow", []() -> bool
+    {
+        mip::UnixTime time{};
+
+        // Threshold accounts for negligible difference in call times.
+        return getterTestCase(time.now() - getNow() < mip::Nanoseconds(1000), true);
     });
 
     return suite.run();
