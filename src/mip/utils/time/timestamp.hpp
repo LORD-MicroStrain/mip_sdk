@@ -52,8 +52,8 @@ namespace mip
         /// Useful for incrementing a manual timestamp with respect to an actual coordinated
         /// time standard, among other things. 
         ///
-        /// @param reference Timestamp to use as up-to-date reference.
-        /// @param old       Timestamp to use as old reference to subtract from up-to-date reference.
+        /// @param reference_new Timestamp to use as up-to-date reference.
+        /// @param reference_old Timestamp to use as old reference to subtract from up-to-date reference.
         ///
         /// @throws std:invalid_argument If reference > old.
         ///
@@ -73,19 +73,40 @@ namespace mip
         /// timestamp.getTimestamp();
         /// @endcode
         ///
-        void increment(const TimestampExperimental &reference, const TimestampExperimental &old);
+        void increment(const TimestampExperimental &reference_new, const TimestampExperimental &reference_old);
 
-        // TODO: Continue documentation.
-        /// Returns whether the timestamp has diverged since a reference timestamp.
+        /// Returns whether at least one time duration has passed since reference timestamp.
         ///
-        /// Timestamps are considered diverged if they differ by one or more units of the 
-        /// comparison duration.
+        /// In simpler terms, this checks whether reference - old >= 1 duration. Useful for
+        /// tracking things such as the time since an event started.
+        ///
+        /// @param[in] reference Old timestamp to compare against (ex: when event was triggerd).
+        ///
+        /// @throws std::invalid_argument If timestamp < reference.
+        ///
+        /// @code
+        /// // Assuming:
+        /// // * timestamp = 1 second + 1 nanosecond since epoch.
+        /// // * reference = 1 second - 1 nanosecond since epoch.
+        ///
+        /// // False since it hasn't been a full second since the reference.
+        /// bool elapsed = timestamp.timeElapsed<mip::Seconds>(reference);
+        ///
+        /// // Assuming:
+        /// // * timestamp = 1 second + 1 nanosecond since epoch.
+        /// // * reference = 1 nanoseconds since epoch.
+        ///
+        /// // True since it has been a full second since the reference.
+        /// bool elapsed = timestamp.timeElapsed<mip::Seconds>(reference);
+        /// @endcode
+        ///
         template<typename DurationElapsed = Nanoseconds>
         bool timeElapsed(const TimestampExperimental &reference);
 
         // TODO: Update documentation.
-        /// Returns whether the timestamp has entered a new duration interval since a 
-        /// reference timestamp.
+        /// Returns whether timestamp has entered a new time duration since reference timestamp.
+        ///
+        ///
         template<typename DurationChanged = Nanoseconds>
         bool timeChanged(const TimestampExperimental &reference);
 

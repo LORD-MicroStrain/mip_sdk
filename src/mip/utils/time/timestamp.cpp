@@ -15,13 +15,13 @@ namespace mip
         m_timestamp = m_standard.now();
     }
 
-    void TimestampExperimental::increment(const TimestampExperimental &reference, const TimestampExperimental &old)
+    void TimestampExperimental::increment(const TimestampExperimental &reference_new, const TimestampExperimental &reference_old)
     {
-        mip::Nanoseconds m_synced = reference.getTimestamp();
-        mip::Nanoseconds m_old = old.getTimestamp();
+        mip::Nanoseconds m_synced = reference_new.getTimestamp();
+        mip::Nanoseconds m_old = reference_old.getTimestamp();
         if (m_synced < m_old)
         {
-            throw std::invalid_argument("Reference timestamp < old timestamp.");
+            throw std::invalid_argument("New reference timestamp < old reference timestamp.");
         }
         
         m_timestamp += (m_synced - m_old);
