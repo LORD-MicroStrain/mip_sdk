@@ -716,7 +716,6 @@ int main(int argc, const char* argv[])
     {
         mip::UnixTime time{};
 
-        // Threshold accounts for negligible difference in call times.
         return getterTestCase(time.convertToBase(mip::Nanoseconds(1)), mip::Nanoseconds(1));
     });
 
@@ -724,8 +723,33 @@ int main(int argc, const char* argv[])
     {
         mip::UnixTime time{};
 
-        // Threshold accounts for negligible difference in call times.
         return getterTestCase(time.convertFromBase(mip::Nanoseconds(1)), mip::Nanoseconds(1));
+    });
+
+    suite.addTest("GpsTimeConvertToBase", []() -> bool
+    {
+        mip::GpsTime time{};
+        // Accounts for epoch gap and leap seconds.
+        constexpr mip::Nanoseconds epoch_difference(mip::Seconds(315964800) - mip::Seconds(18));
+
+        return getterTestCase(time.convertToBase(epoch_difference + mip::Nanoseconds(1)), mip::Nanoseconds(1));
+    });
+
+    suite.addTest("GpsTimeConvertFromBase", []() -> bool
+    {
+        mip::GpsTime time{};
+        // Accounts for epoch gap and leap seconds.
+        constexpr mip::Nanoseconds epoch_difference(mip::Seconds(315964800) - mip::Seconds(18));
+
+        return getterTestCase(time.convertFromBase(mip::Nanoseconds(1)), epoch_difference + mip::Nanoseconds(1));
+    });
+
+    suite.addTest("GpsTimeNow", []() -> bool
+    {
+        mip::GpsTime time{};
+
+        // Threshold accounts for negligible difference in call times.
+        return getterTestCase(time.now() - time.convertFromBase(getNow()) < mip::Nanoseconds(1000), true);
     });
 
     return suite.run();
