@@ -90,6 +90,9 @@ namespace mip
         bool timeChanged(const TimestampExperimental &reference);
 
         /// Sets raw time since epoch for the timestamp.
+        ///
+        /// @throws std::invalid_argument If time < 0 nanoseconds.
+        ///
         template<typename DurationIn>
         void setTimestamp(DurationIn time);
         void setTimestamp(Nanoseconds time);
