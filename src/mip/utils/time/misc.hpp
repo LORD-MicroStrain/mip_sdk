@@ -13,8 +13,12 @@ namespace mip
     template<typename DurationOut = Nanoseconds, typename DurationIn>
     DurationOut convert(DurationIn time, const TimeStandard &to, const TimeStandard &from);
 
-    // TODO: Update documentation.
-    /// Casts a timestamp duration to the given arithmetic type.
+    /// Casts a time duration to the given arithmetic type.
+    ///
+    /// Uses a static_cast, so typical rounding rules will apply.
+    ///
+    /// @throws std::invalid_argument If time < 0 nanoseconds.
+    ///
     template<typename T, typename DurationIn>
     T castTime(const DurationIn &time);
 
