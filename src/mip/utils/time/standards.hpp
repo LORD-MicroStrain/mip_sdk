@@ -14,7 +14,7 @@ namespace mip
         /// the base standard.
         virtual Nanoseconds convertToBase(Nanoseconds time) const = 0;
         
-        /// Should convert the given time duration in the base standard to the corresponding i
+        /// Should convert the given time duration in the base standard to the corresponding
         /// time in this standard.
         virtual Nanoseconds convertFromBase(Nanoseconds time) const = 0;
     };
