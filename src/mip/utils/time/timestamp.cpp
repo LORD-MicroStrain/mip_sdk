@@ -4,18 +4,18 @@
 
 namespace mip
 {
-    TimestampExperimental::TimestampExperimental(const mip::TimeStandard &standard) :
+    Timestamp::Timestamp(const mip::TimeStandard &standard) :
         m_standard(standard)
     {
         synchronize();
     }
 
-    void TimestampExperimental::synchronize()
+    void Timestamp::synchronize()
     {
         m_timestamp = m_standard.now();
     }
 
-    void TimestampExperimental::increment(const TimestampExperimental &reference_new, const TimestampExperimental &reference_old)
+    void Timestamp::increment(const Timestamp &reference_new, const Timestamp &reference_old)
     {
         mip::Nanoseconds m_synced = reference_new.getTimestamp();
         mip::Nanoseconds m_old = reference_old.getTimestamp();
@@ -27,7 +27,7 @@ namespace mip
         m_timestamp += (m_synced - m_old);
     }
 
-    void TimestampExperimental::setTimestamp(Nanoseconds time)
+    void Timestamp::setTimestamp(Nanoseconds time)
     {
         if (time < Nanoseconds(0))
         {
@@ -37,12 +37,12 @@ namespace mip
         m_timestamp = time;
     }
 
-    void TimestampExperimental::setTimestamp(const TimestampExperimental &from)
+    void Timestamp::setTimestamp(const Timestamp &from)
     {
         m_timestamp = convert(from.getTimestamp(), m_standard, from.m_standard);
     }
 
-    void TimestampExperimental::setWeek(Weeks week)
+    void Timestamp::setWeek(Weeks week)
     {
         if (week < Weeks(0))         
         {
@@ -52,7 +52,7 @@ namespace mip
         m_timestamp = week + getTimeOfWeek();
     }
 
-    void TimestampExperimental::setTimeOfWeek(Nanoseconds time)
+    void Timestamp::setTimeOfWeek(Nanoseconds time)
     {
         if (time < Nanoseconds(0))
         {
@@ -66,12 +66,12 @@ namespace mip
         m_timestamp = std::chrono::duration_cast<Weeks>(m_timestamp) + time;
     }
 
-    Nanoseconds TimestampExperimental::getTimestamp() const
+    Nanoseconds Timestamp::getTimestamp() const
     {
         return m_timestamp;
     }
 
-    Nanoseconds TimestampExperimental::getTimeOfWeek()
+    Nanoseconds Timestamp::getTimeOfWeek()
     {
         return m_timestamp % Weeks(1);
     }
