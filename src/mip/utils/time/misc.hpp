@@ -3,15 +3,15 @@
 #include "mip/utils/time/durations.hpp"
 #include "mip/utils/time/standards.hpp"
 
-// TODO: Add/update documentation.
 namespace mip
 {
-    // throws logic error
-    template<class DurationIn, class DurationOut = Nanoseconds>
+    /// Converts time duration from one time standard to another.
+    /// 
+    /// @throws std::logic_error If time < 0 after conversion (corresponding time duration
+    ///         doesn't exist in the other standard).
+    ///
+    template<typename DurationOut = Nanoseconds, typename DurationIn>
     DurationOut convert(DurationIn time, const TimeStandard &to, const TimeStandard &from);
-
-    template<class DurationOut = Nanoseconds>
-    DurationOut convert(Nanoseconds time, const TimeStandard &to, const TimeStandard &from);
 
     // TODO: Update documentation.
     /// Casts a timestamp duration to the given arithmetic type.
@@ -23,19 +23,13 @@ namespace mip
     /* Definitions for template declarations above.                                       */
     /**************************************************************************************/
 
-    template<class DurationIn, class DurationOut>
+    template<typename DurationOut, typename DurationIn>
     DurationOut convert(DurationIn time, const TimeStandard &to, const TimeStandard &from)
     {
-        return convert(std::chrono::duration_cast<Nanoseconds>(time), to, from);
-    }
-
-    template<class DurationOut>
-    DurationOut convert(Nanoseconds time, const TimeStandard &to, const TimeStandard &from)
-    {
-        Nanoseconds converted = to.convertFromBase(from.convertToBase(time));
+        Nanoseconds converted = to.convertFromBase(from.convertToBase(std::chrono::duration_cast<Nanoseconds>(time)));
         if (converted < Nanoseconds(0))
         {
-            throw std::logic_error("Converted timestamp < 0. Add exception handling with desired response!");
+            throw std::logic_error("Converted time < 0. Add exception handling with desired response!");
         }
         
         return std::chrono::duration_cast<DurationOut>(converted);

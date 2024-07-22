@@ -7,7 +7,6 @@
 
 namespace mip
 {
-    // TODO: Change name to Timestamp when old one is removed throughout mip sdk.
     /// Manages a timestamp in nanoseconds since epoch.
     ///
     /// Provides various unit of time conversions, timestamp comparisons + tracking, synchronizing 
@@ -18,6 +17,7 @@ namespace mip
     ///     * Currently supports std::chrono:duration for time inputs.
     ///     * Template parameters with 'Duration' in their names represent chrono durations.
     /// ----------------------------------------------------------------------------------
+    // TODO: Change name to Timestamp when old one is removed throughout mip sdk.
     class TimestampExperimental
     {
     public:
