@@ -77,7 +77,7 @@ namespace mip
 
         /// Returns whether at least one time duration has passed since reference timestamp.
         ///
-        /// In simpler terms, this checks whether reference - old >= 1 duration. Useful for
+        /// In simpler terms, this checks whether timestamp - reference >= 1 duration. Useful for
         /// tracking things such as the time since an event started.
         ///
         /// @param[in] reference Old timestamp to compare against (ex: when event was triggerd).
@@ -103,9 +103,33 @@ namespace mip
         template<typename DurationElapsed = Nanoseconds>
         bool timeElapsed(const TimestampExperimental &reference);
 
-        // TODO: Update documentation.
         /// Returns whether timestamp has entered a new time duration since reference timestamp.
         ///
+        /// In simpler terms, this checks whether timestamp > reference, with respect to the
+        /// specified time duration. This is useful for scheduling events in fixed intervals
+        /// (ex: once every hour).
+        ///
+        /// @throws std::invalid_argument If timestamp < reference.
+        ///
+        /// @code
+        /// // Assuming:
+        /// // * timestamp = 1 second + 1 nanosecond since epoch.
+        /// // * reference = 1 second - 1 nanosecond since epoch.
+        ///
+        /// // True since timestamp and reference fall within different time durations:
+        /// // * timestamp --> Within the time duration 1 seconds.
+        /// // * reference --> Within the time duration 0 seconds.
+        /// bool changed = timestamp.timeChanged<mip::Seconds>(reference);
+        ///
+        /// // Assuming:
+        /// // * timestamp = 1 second - 1 nanosecond since epoch.
+        /// // * reference = 1 nanoseconds since epoch.
+        ///
+        /// // False since timestamp and reference fall within the same time duration:
+        /// // * timestamp --> Within the time duration 0 seconds.
+        /// // * reference --> Within the time duration 0 seconds.
+        /// bool changed = timestamp.timeChanged<mip::Seconds>(reference);
+        /// @endcode
         ///
         template<typename DurationChanged = Nanoseconds>
         bool timeChanged(const TimestampExperimental &reference);
