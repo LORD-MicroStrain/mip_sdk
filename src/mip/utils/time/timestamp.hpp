@@ -89,7 +89,7 @@ namespace mip
         template<typename DurationChanged = Nanoseconds>
         bool timeChanged(const TimestampExperimental &reference);
 
-        /// Sets raw time since epoch from time duration.
+        /// Sets raw time since epoch for the timestamp.
         template<typename DurationIn>
         void setTimestamp(DurationIn time);
         void setTimestamp(Nanoseconds time);
@@ -102,20 +102,6 @@ namespace mip
         ///
         /// @throws std::invalid_argument If week < 0.
         ///
-        /// @code
-        /// // Assuming:
-        /// // * timestamp = 1 week + 2 hours since epoch
-        ///
-        /// // Outputs 168 hours + 2 hours = 170 hours.
-        /// timestamp.getTimestamp<mip::Hours>();
-        ///
-        /// // Set week: 4 weeks + 2 hours since epoch
-        /// timestamp.setWeek(mip::weeks(4));
-        ///
-        /// // Now outputs (4 * 168 hours) + 2 hours = 674 hours.
-        /// timestamp.getTimestamp<mip::Hours>();
-        /// @endcode
-        ///
         void setWeek(Weeks week);
 
         /// Sets a new time of week for the timestamp.
@@ -124,20 +110,6 @@ namespace mip
         /// the new time of week.
         ///
         /// @throws std::invalid_argument If time < 0 nanoseconds, or if time >= 1 week.
-        ///
-        /// @code
-        /// // Assuming:
-        /// // * timestamp = 3 weeks + 14 hours since epoch.
-        ///
-        /// // Outputs (3 * 168 hours) + 14 hours = 518 hours.
-        /// timestamp.getTimestamp<mip::Hours>();
-        ///
-        /// // Set time of week: 6 hours since epoch.
-        /// timestamp.setTimeOfWeek(mip::Hours(6));
-        ///
-        /// // Now outputs (3 * 168 hours) + 6 hours = 510 hours.
-        /// timestamp.getTimestamp<mip::Hours>();
-        /// @endcode
         ///
         template<typename DurationIn> 
         void setTimeOfWeek(DurationIn time);
