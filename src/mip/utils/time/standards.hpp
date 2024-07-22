@@ -4,12 +4,18 @@
 
 namespace mip
 {
-    // TODO: Add more comprehensive documentation.
     /// Extend this to create a new time standard.
     struct TimeStandard
     {
+        /// Should return the currently most up-to-date time duration in this standard.
         virtual Nanoseconds now() const = 0;
+        
+        /// Should convert the given time duration in this standard to the corresponding time in
+        /// the base standard.
         virtual Nanoseconds convertToBase(Nanoseconds time) const = 0;
+        
+        /// Should convert the given time duration in the base standard to the corresponding i
+        /// time in this standard.
         virtual Nanoseconds convertFromBase(Nanoseconds time) const = 0;
     };
     
