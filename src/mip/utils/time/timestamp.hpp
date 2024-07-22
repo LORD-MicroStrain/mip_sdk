@@ -16,6 +16,7 @@ namespace mip
     /// Notes:
     /// ----------------------------------------------------------------------------------
     ///     * Currently supports std::chrono:duration for time inputs.
+    ///     * Template parameters with 'Duration' in their names represent chrono durations.
     /// ----------------------------------------------------------------------------------
     class TimestampExperimental
     {
@@ -31,7 +32,6 @@ namespace mip
 
         /// Manually sets time since epoch.
         ///
-        /// @tparam    DurationIn std::chrono duration for time since epoch (ex: mip::Nanoseconds).
         /// @param[in] standard   Time standard to reference (ex: Unix time). NOTE: This
         ///                       will cause a segmentation fault if it goes out of scope!
         /// @param[in] time       Manual starting time since epoch to set.
@@ -43,7 +43,7 @@ namespace mip
 
         /// Synchronizes time since epoch with the time standard's time since epoch.
         ///
-        /// Continuously call to keep timestamp up to date with the time standard.
+        /// Continuously call to keep timestamp up-to-date with the time standard.
         ///
         void synchronize();
 
@@ -53,7 +53,7 @@ namespace mip
         /// time standard, among other things. 
         ///
         /// @param reference Timestamp to use as up-to-date reference.
-        /// @param old       Timestamp to use as old reference to calculate time difference.
+        /// @param old       Timestamp to use as old reference to subtract from up-to-date reference.
         ///
         /// @throws std:invalid_argument If reference > old.
         ///
@@ -75,7 +75,7 @@ namespace mip
         ///
         void increment(const TimestampExperimental &reference, const TimestampExperimental &old);
 
-        // TODO: Update documentation.
+        // TODO: Continue documentation.
         /// Returns whether the timestamp has diverged since a reference timestamp.
         ///
         /// Timestamps are considered diverged if they differ by one or more units of the 
@@ -89,7 +89,7 @@ namespace mip
         template<typename DurationChanged = Nanoseconds>
         bool timeChanged(const TimestampExperimental &reference);
 
-        /// Sets raw time since epoch.
+        /// Sets raw time since epoch from time duration.
         template<typename DurationIn>
         void setTimestamp(DurationIn time);
         void setTimestamp(Nanoseconds time);
@@ -99,6 +99,23 @@ namespace mip
         ///
         /// The resulting time since epoch is calculated using the old time of week and 
         /// the new week number.
+        ///
+        /// @throws std::invalid_argument If week < 0.
+        ///
+        /// @code
+        /// // Assuming:
+        /// // * timestamp = 1 week + 2 hours since epoch
+        ///
+        /// // Outputs 168 hours + 2 hours = 170 hours.
+        /// timestamp.getTimestamp<mip::Hours>();
+        ///
+        /// // Set week: 4 weeks + 2 hours since epoch
+        /// timestamp.setWeek(mip::weeks(4));
+        ///
+        /// // Now outputs (4 hours * 168 hours) + 2 hours = 674 hours.
+        /// timestamp.getTimestamp<mip::Hours>();
+        /// @endcode
+        ///
         void setWeek(Weeks week);
 
         /// Sets a new time of week for the timestamp.
