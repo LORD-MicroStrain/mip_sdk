@@ -19,17 +19,19 @@ namespace mip
 
     Nanoseconds GpsTime::now() const
     {
-        // return std::chrono::duration_cast<Nanoseconds>(std::chrono::system_clock::now().time_since_epoch());
+        Nanoseconds now = std::chrono::duration_cast<Nanoseconds>(std::chrono::system_clock::now().time_since_epoch());
+
+        return convertFromBase(now);
     }
 
     Nanoseconds GpsTime::convertToBase(Nanoseconds time) const
     {
-        // return time;         
+        return time + epoch_difference;
     }
 
     Nanoseconds GpsTime::convertFromBase(Nanoseconds time) const
     {
-        // return time;      
+        return time - epoch_difference;
     }
 
     // std::chrono::nanoseconds TimeStandard::now()

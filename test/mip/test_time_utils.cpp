@@ -726,22 +726,22 @@ int main(int argc, const char* argv[])
         return getterTestCase(time.convertFromBase(mip::Nanoseconds(1)), mip::Nanoseconds(1));
     });
 
-    suite.addTest("GpsTimeConvertToBase", []() -> bool
-    {
-        mip::GpsTime time{};
-        // Accounts for epoch gap and leap seconds.
-        constexpr mip::Nanoseconds epoch_difference(mip::Seconds(315964800) - mip::Seconds(18));
-
-        return getterTestCase(time.convertToBase(epoch_difference + mip::Nanoseconds(1)), mip::Nanoseconds(1));
-    });
-
     suite.addTest("GpsTimeConvertFromBase", []() -> bool
     {
         mip::GpsTime time{};
         // Accounts for epoch gap and leap seconds.
         constexpr mip::Nanoseconds epoch_difference(mip::Seconds(315964800) - mip::Seconds(18));
 
-        return getterTestCase(time.convertFromBase(mip::Nanoseconds(1)), epoch_difference + mip::Nanoseconds(1));
+        return getterTestCase(time.convertFromBase(epoch_difference + mip::Nanoseconds(1)), mip::Nanoseconds(1));
+    });
+
+    suite.addTest("GpsTimeConvertToBase", []() -> bool
+    {
+        mip::GpsTime time{};
+        // Accounts for epoch gap and leap seconds.
+        constexpr mip::Nanoseconds epoch_difference(mip::Seconds(315964800 - 18));
+
+        return getterTestCase(time.convertToBase(mip::Nanoseconds(1)), epoch_difference + mip::Nanoseconds(1));
     });
 
     suite.addTest("GpsTimeNow", []() -> bool

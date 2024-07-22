@@ -27,5 +27,9 @@ namespace mip
         Nanoseconds now() const override;
         Nanoseconds convertToBase(Nanoseconds time) const override;
         Nanoseconds convertFromBase(Nanoseconds time) const override;
+
+    private:
+        // Accounts for epoch gap and leap seconds.
+        const mip::Nanoseconds epoch_difference{Seconds(315964800 - 18)};
     };
 } // namespace mip
