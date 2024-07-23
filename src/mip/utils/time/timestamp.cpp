@@ -4,18 +4,18 @@
 
 namespace mip
 {
-    Timestamp::Timestamp(const mip::TimeStandard &standard) :
+    TimestampNew::TimestampNew(const mip::TimeStandard &standard) :
         m_standard(standard)
     {
         synchronize();
     }
 
-    void Timestamp::synchronize()
+    void TimestampNew::synchronize()
     {
         m_timestamp = m_standard.now();
     }
 
-    void Timestamp::increment(const Timestamp &reference_new, const Timestamp &reference_old)
+    void TimestampNew::increment(const TimestampNew &reference_new, const TimestampNew &reference_old)
     {
         mip::Nanoseconds m_synced = reference_new.getTimestamp();
         mip::Nanoseconds m_old = reference_old.getTimestamp();
@@ -27,7 +27,7 @@ namespace mip
         m_timestamp += (m_synced - m_old);
     }
 
-    void Timestamp::setTimestamp(Nanoseconds time)
+    void TimestampNew::setTimestamp(Nanoseconds time)
     {
         if (time < Nanoseconds(0))
         {
@@ -37,12 +37,12 @@ namespace mip
         m_timestamp = time;
     }
 
-    void Timestamp::setTimestamp(const Timestamp &from)
+    void TimestampNew::setTimestamp(const TimestampNew &from)
     {
         m_timestamp = convert(from.getTimestamp(), m_standard, from.m_standard);
     }
 
-    void Timestamp::setWeek(Weeks week)
+    void TimestampNew::setWeek(Weeks week)
     {
         if (week < Weeks(0))         
         {
@@ -52,7 +52,7 @@ namespace mip
         m_timestamp = week + getTimeOfWeek();
     }
 
-    void Timestamp::setTimeOfWeek(Nanoseconds time)
+    void TimestampNew::setTimeOfWeek(Nanoseconds time)
     {
         if (time < Nanoseconds(0))
         {
@@ -66,12 +66,12 @@ namespace mip
         m_timestamp = std::chrono::duration_cast<Weeks>(m_timestamp) + time;
     }
 
-    Nanoseconds Timestamp::getTimestamp() const
+    Nanoseconds TimestampNew::getTimestamp() const
     {
         return m_timestamp;
     }
 
-    Nanoseconds Timestamp::getTimeOfWeek()
+    Nanoseconds TimestampNew::getTimeOfWeek()
     {
         return m_timestamp % Weeks(1);
     }
