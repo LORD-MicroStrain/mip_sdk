@@ -131,7 +131,7 @@ namespace mip
         /// @endcode
         ///
         template<typename DurationChanged = Nanoseconds>
-        bool timeChanged(const TimestampNew &reference);
+        bool timeChanged(const TimestampNew &reference) const;
 
         /// Sets raw time since epoch for the timestamp.
         ///
@@ -208,7 +208,7 @@ namespace mip
     }
 
     template<typename DurationChanged>
-    inline bool TimestampNew::timeChanged(const TimestampNew &reference)
+    inline bool TimestampNew::timeChanged(const TimestampNew &reference) const
     {
         const Nanoseconds m_reference = reference.getTimestamp();
         if (m_timestamp < m_reference)
