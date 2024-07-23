@@ -169,8 +169,8 @@ namespace mip
         
         /// Returns raw time since the start of the timestamp's current week.
         template<typename DurationOut>
-        DurationOut getTimeOfWeek();
-        Nanoseconds getTimeOfWeek();
+        DurationOut getTimeOfWeek() const;
+        Nanoseconds getTimeOfWeek() const;
 
     private:
         const mip::TimeStandard &m_standard;
@@ -238,7 +238,7 @@ namespace mip
     }
 
     template<typename DurationOut>
-    inline DurationOut TimestampNew::getTimeOfWeek()
+    inline DurationOut TimestampNew::getTimeOfWeek() const
     {
         if (DurationOut(1) >= Weeks(1))
         {

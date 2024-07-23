@@ -71,7 +71,7 @@ namespace mip
         return m_timestamp;
     }
 
-    Nanoseconds TimestampNew::getTimeOfWeek()
+    Nanoseconds TimestampNew::getTimeOfWeek() const
     {
         return m_timestamp % Weeks(1);
     }
