@@ -185,7 +185,7 @@ struct MetadataFor<commands_aiding::FrameConfig>
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_aiding::FrameConfig",
         /* .title       = */ "Frame Configuration",
-        /* .docs        = */ "Defines an aiding frame associated with a specific sensor frame ID.  The frame ID used in this command\nshould mirror the frame ID used in the aiding command (if that aiding measurement is measured in this reference frame)\n\nThis transform satisfies the following relationship:\n\nEQSTART p^{veh} = R p^{sensor_frame} + t EQEND<br/>\n\nWhere:<br/>\nEQSTART R EQEND is rotation matrix defined by the rotation component and EQSTART t EQEND is the translation vector<br/><br/>\nEQSTART p^{sensor_frame} EQEND is a 3-element position vector expressed in the external sensor frame<br/>\nEQSTART p^{veh} EQEND is a 3-element position vector expressed in the vehicle frame<br/>\n\nRotation can be defined using Euler angles OR quaternions.  If Format selector is set to Euler Angles, the fourth element\nin the rotation vector is ignored and should be set to 0.\n\nWhen the tracking_enabled flag is 1, the Kalman filter will track errors in the provided frame definition; when 0, no errors are tracked.\n\nExample: GNSS antenna lever arm\n\nFrame ID: 1\nFormat: 1 (Euler)\nTranslation: [0,1,] (GNSS with a 1 meter Y offset in the vehicle frame)\nRotation: [0,0,0,0] (Rotational component is not relevant for GNSS measurements, set to zero)\n",
+        /* .docs        = */ "Defines an aiding frame associated with a specific sensor frame ID.nThe frame ID used in this command should mirror the frame ID used in the aiding commandn(if that aiding measurement is measured in this reference frame).nnThis transform satisfies the following relationship:nnEQSTART p^{veh} = R p^{sensor_frame} + t EQEND<br/>nnWhere:<br/>nEQSTART R EQEND is rotation matrix defined by the rotation component and EQSTART t EQEND is the translation vector<br/><br/>nEQSTART p^{sensor_frame} EQEND is a 3-element position vector expressed in the external sensor frame<br/>nEQSTART p^{veh} EQEND is a 3-element position vector expressed in the vehicle frame<br/>nnRotation can be defined using Euler angles OR quaternions.  If Format selector is set to Euler Angles, the fourth elementnin the rotation vector is ignored and should be set to 0.nnWhen the tracking_enabled flag is 1, the Kalman filter will track errors in the provided frame definition; when 0, no errors are tracked.nnExample: GNSS antenna lever armnnFrame ID: 1nFormat: 1 (Euler)nTranslation: [0,1,] (GNSS with a 1 meter Y offset in the vehicle frame)nRotation: [0,0,0,0] (Rotational component is not relevant for GNSS measurements, set to zero)n",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true,  true},
@@ -195,9 +195,9 @@ struct MetadataFor<commands_aiding::FrameConfig>
 };
 
 template<>
-struct MetadataFor<commands_aiding::AidingEchoControl::Mode>
+struct MetadataFor<commands_aiding::EchoControl::Mode>
 {
-    using type = commands_aiding::AidingEchoControl::Mode;
+    using type = commands_aiding::EchoControl::Mode;
 
     static constexpr inline EnumInfo::Entry entries[] = {
         { 0, "SUPPRESS_ACK", "Suppresses the usual command ack field for aiding messages." },
@@ -215,16 +215,16 @@ struct MetadataFor<commands_aiding::AidingEchoControl::Mode>
 };
 
 template<>
-struct MetadataFor<commands_aiding::AidingEchoControl::Response>
+struct MetadataFor<commands_aiding::EchoControl::Response>
 {
-    using type = commands_aiding::AidingEchoControl::Response;
+    using type = commands_aiding::EchoControl::Response;
 
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "mode",
             /* .docs          = */ "Controls data echoing.",
-            /* .type          = */ {Type::ENUM, &MetadataFor<commands_aiding::AidingEchoControl::Mode>::value},
-            /* .accessor      = */ utils::access<type, commands_aiding::AidingEchoControl::Mode, &type::mode>,
+            /* .type          = */ {Type::ENUM, &MetadataFor<commands_aiding::EchoControl::Mode>::value},
+            /* .accessor      = */ utils::access<type, commands_aiding::EchoControl::Mode, &type::mode>,
             /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
@@ -232,7 +232,7 @@ struct MetadataFor<commands_aiding::AidingEchoControl::Response>
     };
 
     static constexpr inline FieldInfo value = {
-        /* .name        = */ "commands_aiding::AidingEchoControl::Response",
+        /* .name        = */ "commands_aiding::EchoControl::Response",
         /* .title       = */ "None",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
@@ -244,17 +244,17 @@ struct MetadataFor<commands_aiding::AidingEchoControl::Response>
 };
 
 template<>
-struct MetadataFor<commands_aiding::AidingEchoControl>
+struct MetadataFor<commands_aiding::EchoControl>
 {
-    using type = commands_aiding::AidingEchoControl;
+    using type = commands_aiding::EchoControl;
 
     static constexpr inline ParameterInfo parameters[] = {
         FUNCTION_SELECTOR_PARAM,
         {
             /* .name          = */ "mode",
             /* .docs          = */ "Controls data echoing.",
-            /* .type          = */ {Type::ENUM, &MetadataFor<commands_aiding::AidingEchoControl::Mode>::value},
-            /* .accessor      = */ utils::access<type, commands_aiding::AidingEchoControl::Mode, &type::mode>,
+            /* .type          = */ {Type::ENUM, &MetadataFor<commands_aiding::EchoControl::Mode>::value},
+            /* .accessor      = */ utils::access<type, commands_aiding::EchoControl::Mode, &type::mode>,
             /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
@@ -262,7 +262,7 @@ struct MetadataFor<commands_aiding::AidingEchoControl>
     };
 
     static constexpr inline FieldInfo value = {
-        /* .name        = */ "commands_aiding::AidingEchoControl",
+        /* .name        = */ "commands_aiding::EchoControl",
         /* .title       = */ "Aiding Command Echo Control",
         /* .docs        = */ "Controls command response behavior to external aiding commands",
         /* .parameters  = */ parameters,
@@ -337,9 +337,9 @@ struct MetadataFor<commands_aiding::Time>
 };
 
 template<>
-struct MetadataFor<commands_aiding::EcefPos::ValidFlags>
+struct MetadataFor<commands_aiding::PosEcef::ValidFlags>
 {
-    using type = commands_aiding::EcefPos::ValidFlags;
+    using type = commands_aiding::PosEcef::ValidFlags;
 
     static constexpr inline BitfieldInfo::Entry entries[] = {
         { 1, "X", "" },
@@ -357,9 +357,9 @@ struct MetadataFor<commands_aiding::EcefPos::ValidFlags>
 };
 
 template<>
-struct MetadataFor<commands_aiding::EcefPos>
+struct MetadataFor<commands_aiding::PosEcef>
 {
-    using type = commands_aiding::EcefPos;
+    using type = commands_aiding::PosEcef;
 
     static constexpr inline ParameterInfo parameters[] = {
         {
@@ -401,8 +401,8 @@ struct MetadataFor<commands_aiding::EcefPos>
         {
             /* .name          = */ "valid_flags",
             /* .docs          = */ "Valid flags. Axes with 0 will be completely ignored.",
-            /* .type          = */ {Type::BITFIELD, &MetadataFor<commands_aiding::EcefPos::ValidFlags>::value},
-            /* .accessor      = */ utils::access<type, commands_aiding::EcefPos::ValidFlags, &type::valid_flags>,
+            /* .type          = */ {Type::BITFIELD, &MetadataFor<commands_aiding::PosEcef::ValidFlags>::value},
+            /* .accessor      = */ utils::access<type, commands_aiding::PosEcef::ValidFlags, &type::valid_flags>,
             /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
@@ -410,7 +410,7 @@ struct MetadataFor<commands_aiding::EcefPos>
     };
 
     static constexpr inline FieldInfo value = {
-        /* .name        = */ "commands_aiding::EcefPos",
+        /* .name        = */ "commands_aiding::PosEcef",
         /* .title       = */ "ECEF Position",
         /* .docs        = */ "Cartesian vector position aiding command. Coordinates are given in the WGS84 ECEF system.",
         /* .parameters  = */ parameters,
@@ -422,9 +422,9 @@ struct MetadataFor<commands_aiding::EcefPos>
 };
 
 template<>
-struct MetadataFor<commands_aiding::LlhPos::ValidFlags>
+struct MetadataFor<commands_aiding::PosLlh::ValidFlags>
 {
-    using type = commands_aiding::LlhPos::ValidFlags;
+    using type = commands_aiding::PosLlh::ValidFlags;
 
     static constexpr inline BitfieldInfo::Entry entries[] = {
         { 1, "Latitude", "" },
@@ -442,9 +442,9 @@ struct MetadataFor<commands_aiding::LlhPos::ValidFlags>
 };
 
 template<>
-struct MetadataFor<commands_aiding::LlhPos>
+struct MetadataFor<commands_aiding::PosLlh>
 {
-    using type = commands_aiding::LlhPos;
+    using type = commands_aiding::PosLlh;
 
     static constexpr inline ParameterInfo parameters[] = {
         {
@@ -504,8 +504,8 @@ struct MetadataFor<commands_aiding::LlhPos>
         {
             /* .name          = */ "valid_flags",
             /* .docs          = */ "Valid flags. Axes with 0 will be completely ignored.",
-            /* .type          = */ {Type::BITFIELD, &MetadataFor<commands_aiding::LlhPos::ValidFlags>::value},
-            /* .accessor      = */ utils::access<type, commands_aiding::LlhPos::ValidFlags, &type::valid_flags>,
+            /* .type          = */ {Type::BITFIELD, &MetadataFor<commands_aiding::PosLlh::ValidFlags>::value},
+            /* .accessor      = */ utils::access<type, commands_aiding::PosLlh::ValidFlags, &type::valid_flags>,
             /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
@@ -513,9 +513,9 @@ struct MetadataFor<commands_aiding::LlhPos>
     };
 
     static constexpr inline FieldInfo value = {
-        /* .name        = */ "commands_aiding::LlhPos",
+        /* .name        = */ "commands_aiding::PosLlh",
         /* .title       = */ "LLH Position",
-        /* .docs        = */ "Geodetic position aiding command. Coordinates are given in WGS84 geodetic latitude, longitude, and height above the ellipsoid.\nUncertainty is given in NED coordinates, which are parallel to incremental changes in latitude, longitude, and height.",
+        /* .docs        = */ "Geodetic position aiding command.nCoordinates are given in WGS84 geodetic latitude, longitude, and height above the ellipsoid.nUncertainty is given in NED coordinates, which are parallel to incremental changes in latitude, longitude, and height.",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
@@ -525,9 +525,9 @@ struct MetadataFor<commands_aiding::LlhPos>
 };
 
 template<>
-struct MetadataFor<commands_aiding::Height>
+struct MetadataFor<commands_aiding::HeightAboveEllipsoid>
 {
-    using type = commands_aiding::Height;
+    using type = commands_aiding::HeightAboveEllipsoid;
 
     static constexpr inline ParameterInfo parameters[] = {
         {
@@ -578,9 +578,9 @@ struct MetadataFor<commands_aiding::Height>
     };
 
     static constexpr inline FieldInfo value = {
-        /* .name        = */ "commands_aiding::Height",
-        /* .title       = */ "Height",
-        /* .docs        = */ "Estimated value of height.",
+        /* .name        = */ "commands_aiding::HeightAboveEllipsoid",
+        /* .title       = */ "Height Above Ellipsoid",
+        /* .docs        = */ "Estimated value of the height above ellipsoid.",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
@@ -590,9 +590,9 @@ struct MetadataFor<commands_aiding::Height>
 };
 
 template<>
-struct MetadataFor<commands_aiding::EcefVel::ValidFlags>
+struct MetadataFor<commands_aiding::VelEcef::ValidFlags>
 {
-    using type = commands_aiding::EcefVel::ValidFlags;
+    using type = commands_aiding::VelEcef::ValidFlags;
 
     static constexpr inline BitfieldInfo::Entry entries[] = {
         { 1, "X", "" },
@@ -610,9 +610,9 @@ struct MetadataFor<commands_aiding::EcefVel::ValidFlags>
 };
 
 template<>
-struct MetadataFor<commands_aiding::EcefVel>
+struct MetadataFor<commands_aiding::VelEcef>
 {
-    using type = commands_aiding::EcefVel;
+    using type = commands_aiding::VelEcef;
 
     static constexpr inline ParameterInfo parameters[] = {
         {
@@ -654,8 +654,8 @@ struct MetadataFor<commands_aiding::EcefVel>
         {
             /* .name          = */ "valid_flags",
             /* .docs          = */ "Valid flags. Axes with 0 will be completely ignored.",
-            /* .type          = */ {Type::BITFIELD, &MetadataFor<commands_aiding::EcefVel::ValidFlags>::value},
-            /* .accessor      = */ utils::access<type, commands_aiding::EcefVel::ValidFlags, &type::valid_flags>,
+            /* .type          = */ {Type::BITFIELD, &MetadataFor<commands_aiding::VelEcef::ValidFlags>::value},
+            /* .accessor      = */ utils::access<type, commands_aiding::VelEcef::ValidFlags, &type::valid_flags>,
             /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
@@ -663,7 +663,7 @@ struct MetadataFor<commands_aiding::EcefVel>
     };
 
     static constexpr inline FieldInfo value = {
-        /* .name        = */ "commands_aiding::EcefVel",
+        /* .name        = */ "commands_aiding::VelEcef",
         /* .title       = */ "ECEF Velocity",
         /* .docs        = */ "ECEF velocity aiding command. Coordinates are given in the WGS84 ECEF frame.",
         /* .parameters  = */ parameters,
@@ -675,9 +675,9 @@ struct MetadataFor<commands_aiding::EcefVel>
 };
 
 template<>
-struct MetadataFor<commands_aiding::NedVel::ValidFlags>
+struct MetadataFor<commands_aiding::VelNed::ValidFlags>
 {
-    using type = commands_aiding::NedVel::ValidFlags;
+    using type = commands_aiding::VelNed::ValidFlags;
 
     static constexpr inline BitfieldInfo::Entry entries[] = {
         { 1, "X", "" },
@@ -695,9 +695,9 @@ struct MetadataFor<commands_aiding::NedVel::ValidFlags>
 };
 
 template<>
-struct MetadataFor<commands_aiding::NedVel>
+struct MetadataFor<commands_aiding::VelNed>
 {
-    using type = commands_aiding::NedVel;
+    using type = commands_aiding::VelNed;
 
     static constexpr inline ParameterInfo parameters[] = {
         {
@@ -739,8 +739,8 @@ struct MetadataFor<commands_aiding::NedVel>
         {
             /* .name          = */ "valid_flags",
             /* .docs          = */ "Valid flags. Axes with 0 will be completely ignored.",
-            /* .type          = */ {Type::BITFIELD, &MetadataFor<commands_aiding::NedVel::ValidFlags>::value},
-            /* .accessor      = */ utils::access<type, commands_aiding::NedVel::ValidFlags, &type::valid_flags>,
+            /* .type          = */ {Type::BITFIELD, &MetadataFor<commands_aiding::VelNed::ValidFlags>::value},
+            /* .accessor      = */ utils::access<type, commands_aiding::VelNed::ValidFlags, &type::valid_flags>,
             /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
@@ -748,7 +748,7 @@ struct MetadataFor<commands_aiding::NedVel>
     };
 
     static constexpr inline FieldInfo value = {
-        /* .name        = */ "commands_aiding::NedVel",
+        /* .name        = */ "commands_aiding::VelNed",
         /* .title       = */ "NED Velocity",
         /* .docs        = */ "NED velocity aiding command. Coordinates are given in the local North-East-Down frame.",
         /* .parameters  = */ parameters,
@@ -760,9 +760,9 @@ struct MetadataFor<commands_aiding::NedVel>
 };
 
 template<>
-struct MetadataFor<commands_aiding::VehicleFixedFrameVelocity::ValidFlags>
+struct MetadataFor<commands_aiding::VelBodyFrame::ValidFlags>
 {
-    using type = commands_aiding::VehicleFixedFrameVelocity::ValidFlags;
+    using type = commands_aiding::VelBodyFrame::ValidFlags;
 
     static constexpr inline BitfieldInfo::Entry entries[] = {
         { 1, "X", "" },
@@ -780,9 +780,9 @@ struct MetadataFor<commands_aiding::VehicleFixedFrameVelocity::ValidFlags>
 };
 
 template<>
-struct MetadataFor<commands_aiding::VehicleFixedFrameVelocity>
+struct MetadataFor<commands_aiding::VelBodyFrame>
 {
-    using type = commands_aiding::VehicleFixedFrameVelocity;
+    using type = commands_aiding::VelBodyFrame;
 
     static constexpr inline ParameterInfo parameters[] = {
         {
@@ -824,8 +824,8 @@ struct MetadataFor<commands_aiding::VehicleFixedFrameVelocity>
         {
             /* .name          = */ "valid_flags",
             /* .docs          = */ "Valid flags. Axes with 0 will be completely ignored.",
-            /* .type          = */ {Type::BITFIELD, &MetadataFor<commands_aiding::VehicleFixedFrameVelocity::ValidFlags>::value},
-            /* .accessor      = */ utils::access<type, commands_aiding::VehicleFixedFrameVelocity::ValidFlags, &type::valid_flags>,
+            /* .type          = */ {Type::BITFIELD, &MetadataFor<commands_aiding::VelBodyFrame::ValidFlags>::value},
+            /* .accessor      = */ utils::access<type, commands_aiding::VelBodyFrame::ValidFlags, &type::valid_flags>,
             /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
@@ -833,9 +833,9 @@ struct MetadataFor<commands_aiding::VehicleFixedFrameVelocity>
     };
 
     static constexpr inline FieldInfo value = {
-        /* .name        = */ "commands_aiding::VehicleFixedFrameVelocity",
-        /* .title       = */ "Vehicle Frame Velocity",
-        /* .docs        = */ "Estimate of velocity of the vehicle in the frame associated\nwith the given sensor ID.",
+        /* .name        = */ "commands_aiding::VelBodyFrame",
+        /* .title       = */ "Body Frame Velocity",
+        /* .docs        = */ "Estimated of velocity of the vehicle in the frame associated with the given sensor ID, relative to the vehicle frame.",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
@@ -845,9 +845,9 @@ struct MetadataFor<commands_aiding::VehicleFixedFrameVelocity>
 };
 
 template<>
-struct MetadataFor<commands_aiding::TrueHeading>
+struct MetadataFor<commands_aiding::HeadingTrue>
 {
-    using type = commands_aiding::TrueHeading;
+    using type = commands_aiding::HeadingTrue;
 
     static constexpr inline ParameterInfo parameters[] = {
         {
@@ -898,7 +898,7 @@ struct MetadataFor<commands_aiding::TrueHeading>
     };
 
     static constexpr inline FieldInfo value = {
-        /* .name        = */ "commands_aiding::TrueHeading",
+        /* .name        = */ "commands_aiding::HeadingTrue",
         /* .title       = */ "True Heading",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
@@ -1063,15 +1063,15 @@ struct MetadataFor<commands_aiding::Pressure>
 static constexpr inline std::initializer_list<const FieldInfo*> ALL_COMMANDS_AIDING = {
     &MetadataFor<commands_aiding::FrameConfig>::value,
     &MetadataFor<commands_aiding::FrameConfig::Response>::value,
-    &MetadataFor<commands_aiding::AidingEchoControl>::value,
-    &MetadataFor<commands_aiding::AidingEchoControl::Response>::value,
-    &MetadataFor<commands_aiding::EcefPos>::value,
-    &MetadataFor<commands_aiding::LlhPos>::value,
-    &MetadataFor<commands_aiding::Height>::value,
-    &MetadataFor<commands_aiding::EcefVel>::value,
-    &MetadataFor<commands_aiding::NedVel>::value,
-    &MetadataFor<commands_aiding::VehicleFixedFrameVelocity>::value,
-    &MetadataFor<commands_aiding::TrueHeading>::value,
+    &MetadataFor<commands_aiding::EchoControl>::value,
+    &MetadataFor<commands_aiding::EchoControl::Response>::value,
+    &MetadataFor<commands_aiding::PosEcef>::value,
+    &MetadataFor<commands_aiding::PosLlh>::value,
+    &MetadataFor<commands_aiding::HeightAboveEllipsoid>::value,
+    &MetadataFor<commands_aiding::VelEcef>::value,
+    &MetadataFor<commands_aiding::VelNed>::value,
+    &MetadataFor<commands_aiding::VelBodyFrame>::value,
+    &MetadataFor<commands_aiding::HeadingTrue>::value,
     &MetadataFor<commands_aiding::MagneticField>::value,
     &MetadataFor<commands_aiding::Pressure>::value,
 };

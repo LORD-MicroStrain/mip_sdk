@@ -968,7 +968,7 @@ struct MetadataFor<data_gnss::SvInfo>
     static constexpr inline FieldInfo value = {
         /* .name        = */ "data_gnss::SvInfo",
         /* .title       = */ "None",
-        /* .docs        = */ "GNSS reported space vehicle information\n\nWhen enabled, these fields will arrive in separate MIP packets",
+        /* .docs        = */ "GNSS reported space vehicle informationnnWhen enabled, these fields will arrive in separate MIP packets",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
@@ -1194,7 +1194,7 @@ struct MetadataFor<data_gnss::DgpsInfo>
     static constexpr inline FieldInfo value = {
         /* .name        = */ "data_gnss::DgpsInfo",
         /* .title       = */ "None",
-        /* .docs        = */ "GNSS reported DGNSS status\n\n<pre>Possible Base Station Status Values:</pre>\n<pre>  0 - UDRE Scale Factor = 1.0</pre>\n<pre>  1 - UDRE Scale Factor = 0.75</pre>\n<pre>  2 - UDRE Scale Factor = 0.5</pre>\n<pre>  3 - UDRE Scale Factor = 0.3</pre>\n<pre>  4 - UDRE Scale Factor = 0.2</pre>\n<pre>  5 - UDRE Scale Factor = 0.1</pre>\n<pre>  6 - Reference Station Transmission Not Monitored</pre>\n<pre>  7 - Reference Station Not Working</pre>\n\n(UDRE = User Differential Range Error)",
+        /* .docs        = */ "GNSS reported DGNSS statusnn<pre>Possible Base Station Status Values:</pre>n<pre>  0 - UDRE Scale Factor = 1.0</pre>n<pre>  1 - UDRE Scale Factor = 0.75</pre>n<pre>  2 - UDRE Scale Factor = 0.5</pre>n<pre>  3 - UDRE Scale Factor = 0.3</pre>n<pre>  4 - UDRE Scale Factor = 0.2</pre>n<pre>  5 - UDRE Scale Factor = 0.1</pre>n<pre>  6 - Reference Station Transmission Not Monitored</pre>n<pre>  7 - Reference Station Not Working</pre>nn(UDRE = User Differential Range Error)",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
@@ -1281,7 +1281,7 @@ struct MetadataFor<data_gnss::DgpsChannel>
     static constexpr inline FieldInfo value = {
         /* .name        = */ "data_gnss::DgpsChannel",
         /* .title       = */ "None",
-        /* .docs        = */ "GNSS reported DGPS Channel Status status\n\nWhen enabled, a separate field for each active space vehicle will be sent in the packet.",
+        /* .docs        = */ "GNSS reported DGPS Channel Status statusnnWhen enabled, a separate field for each active space vehicle will be sent in the packet.",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
@@ -1368,7 +1368,7 @@ struct MetadataFor<data_gnss::ClockInfo2>
     static constexpr inline FieldInfo value = {
         /* .name        = */ "data_gnss::ClockInfo2",
         /* .title       = */ "None",
-        /* .docs        = */ "GNSS reported receiver clock parameters\n\nThis supersedes MIP_DATA_DESC_GNSS_CLOCK_INFO with additional information.",
+        /* .docs        = */ "GNSS reported receiver clock parametersnnThis supersedes MIP_DATA_DESC_GNSS_CLOCK_INFO with additional information.",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
@@ -1728,7 +1728,7 @@ struct MetadataFor<data_gnss::SbasCorrection>
     static constexpr inline FieldInfo value = {
         /* .name        = */ "data_gnss::SbasCorrection",
         /* .title       = */ "None",
-        /* .docs        = */ "GNSS calculated SBAS Correction\n\nUDREI - the variance of a normal distribution associated with the user differential range errors for a\nsatellite after application of fast and long-term corrections, excluding atmospheric effects\n\n<pre>UDREI  Variance</pre>\n<pre>-----------------------</pre>\n<pre>0      0.0520 m^2</pre>\n<pre>1      0.0924 m^2</pre>\n<pre>2      0.1444 m^2</pre>\n<pre>3      0.2830 m^2</pre>\n<pre>4      0.4678 m^2</pre>\n<pre>5      0.8315 m^2</pre>\n<pre>6      1.2992 m^2</pre>\n<pre>7      1.8709 m^2</pre>\n<pre>8      2.5465 m^2</pre>\n<pre>9      3.3260 m^2</pre>\n<pre>10     5.1968 m^2</pre>\n<pre>11     20.7870 m^2</pre>\n<pre>12     230.9661 m^2</pre>\n<pre>13     2078.695 m^2</pre>\n<pre>14     'Not Monitored'</pre>\n<pre>15     'Do Not Use'</pre>",
+        /* .docs        = */ "GNSS calculated SBAS CorrectionnnUDREI - the variance of a normal distribution associated with the user differential range errors for ansatellite after application of fast and long-term corrections, excluding atmospheric effectsnn<pre>UDREI  Variance</pre>n<pre>-----------------------</pre>n<pre>0      0.0520 m^2</pre>n<pre>1      0.0924 m^2</pre>n<pre>2      0.1444 m^2</pre>n<pre>3      0.2830 m^2</pre>n<pre>4      0.4678 m^2</pre>n<pre>5      0.8315 m^2</pre>n<pre>6      1.2992 m^2</pre>n<pre>7      1.8709 m^2</pre>n<pre>8      2.5465 m^2</pre>n<pre>9      3.3260 m^2</pre>n<pre>10     5.1968 m^2</pre>n<pre>11     20.7870 m^2</pre>n<pre>12     230.9661 m^2</pre>n<pre>13     2078.695 m^2</pre>n<pre>14     'Not Monitored'</pre>n<pre>15     'Do Not Use'</pre>",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
@@ -2010,7 +2010,7 @@ struct MetadataFor<data_gnss::BaseStationInfo>
     static constexpr inline FieldInfo value = {
         /* .name        = */ "data_gnss::BaseStationInfo",
         /* .title       = */ "None",
-        /* .docs        = */ "RTCM reported base station information (sourced from RTCM Message 1005 or 1006)\n\nValid Flag Mapping:",
+        /* .docs        = */ "RTCM reported base station information (sourced from RTCM Message 1005 or 1006)nnValid Flag Mapping:",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
@@ -2616,7 +2616,7 @@ struct MetadataFor<data_gnss::Raw>
         },
         {
             /* .name          = */ "lock_time",
-            /* .docs          = */ "DOC\nMinimum carrier phase lock time [s].  Note: the maximum value is dependent on the receiver.",
+            /* .docs          = */ "DOCnMinimum carrier phase lock time [s].  Note: the maximum value is dependent on the receiver.",
             /* .type          = */ {Type::FLOAT, nullptr},
             /* .accessor      = */ utils::access<type, float, &type::lock_time>,
             /* .functions     = */ {true, false, false, false, false,  true},
@@ -2728,7 +2728,7 @@ struct MetadataFor<data_gnss::GpsEphemeris>
         },
         {
             /* .name          = */ "iodc",
-            /* .docs          = */ "Issue of Data Clock. This increments each time the data changes and\nrolls over at 4. It is used to make sure various raw data elements from\ndifferent sources line up correctly.",
+            /* .docs          = */ "Issue of Data Clock. This increments each time the data changes andnrolls over at 4. It is used to make sure various raw data elements fromndifferent sources line up correctly.",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::iodc>,
             /* .functions     = */ {true, false, false, false, false,  true},
@@ -3074,7 +3074,7 @@ struct MetadataFor<data_gnss::GalileoEphemeris>
         },
         {
             /* .name          = */ "iodc",
-            /* .docs          = */ "Issue of Data Clock. This increments each time the data changes and\nrolls over at 4. It is used to make sure various raw data elements from\ndifferent sources line up correctly.",
+            /* .docs          = */ "Issue of Data Clock. This increments each time the data changes andnrolls over at 4. It is used to make sure various raw data elements fromndifferent sources line up correctly.",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::iodc>,
             /* .functions     = */ {true, false, false, false, false,  true},

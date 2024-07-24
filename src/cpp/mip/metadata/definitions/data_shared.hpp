@@ -18,7 +18,7 @@ struct MetadataFor<data_shared::EventSource>
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "trigger_id",
-            /* .docs          = */ "Trigger ID number. If 0, this message was emitted due to being\nscheduled in the 3DM Message Format Command (0x0C,0x0F).",
+            /* .docs          = */ "Trigger ID number. If 0, this message was emitted due to beingnscheduled in the 3DM Message Format Command (0x0C,0x0F).",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::trigger_id>,
             /* .functions     = */ {true, false, false, false, false,  true},
@@ -30,7 +30,7 @@ struct MetadataFor<data_shared::EventSource>
     static constexpr inline FieldInfo value = {
         /* .name        = */ "data_shared::EventSource",
         /* .title       = */ "None",
-        /* .docs        = */ "Identifies which event trigger caused this packet to be emitted.\n\nGenerally this is used to determine whether a packet was emitted\ndue to scheduled streaming or due to an event.",
+        /* .docs        = */ "Identifies which event trigger caused this packet to be emitted.nnGenerally this is used to determine whether a packet was emittedndue to scheduled streaming or due to an event.",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
@@ -59,7 +59,7 @@ struct MetadataFor<data_shared::Ticks>
     static constexpr inline FieldInfo value = {
         /* .name        = */ "data_shared::Ticks",
         /* .title       = */ "None",
-        /* .docs        = */ "Time since powerup in multiples of the base rate.\n\nThe counter will wrap around to 0 after approximately 50 days.\nOne tick is equivalent to one base period (reciprocal of the base rate).",
+        /* .docs        = */ "Time since powerup in multiples of the base rate.nnThe counter will wrap around to 0 after approximately 50 days.nOne tick is equivalent to one base period (reciprocal of the base rate).",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
@@ -88,7 +88,7 @@ struct MetadataFor<data_shared::DeltaTicks>
     static constexpr inline FieldInfo value = {
         /* .name        = */ "data_shared::DeltaTicks",
         /* .title       = */ "None",
-        /* .docs        = */ "Ticks since the last output of this field.\n\nThis field can be used to track the amount of time passed between\nevent occurrences.\nOne tick is equivalent to one base period (reciprocal of the base rate).",
+        /* .docs        = */ "Ticks since the last output of this field.nnThis field can be used to track the amount of time passed betweennevent occurrences.nOne tick is equivalent to one base period (reciprocal of the base rate).",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
@@ -155,7 +155,7 @@ struct MetadataFor<data_shared::GpsTimestamp>
     static constexpr inline FieldInfo value = {
         /* .name        = */ "data_shared::GpsTimestamp",
         /* .title       = */ "None",
-        /* .docs        = */ "Outputs the current GPS system time in time-of-week and week number format.\n\nFor events, this is the time of the event trigger.\nIn order to be valid, a PPS signal needs to be present, and both a valid GPS time-of-week and week number command (0x0C, 0x72) need to be received after PPS sync has been achieved.",
+        /* .docs        = */ "Outputs the current GPS system time in time-of-week and week number format.nnFor events, this is the time of the event trigger.nIn order to be valid, a PPS signal needs to be present, and both a valid GPS time-of-week and week number command (0x0C, 0x72) need to be received after PPS sync has been achieved.",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
@@ -184,7 +184,7 @@ struct MetadataFor<data_shared::DeltaTime>
     static constexpr inline FieldInfo value = {
         /* .name        = */ "data_shared::DeltaTime",
         /* .title       = */ "None",
-        /* .docs        = */ "Time in the synchronized clock domain since the last output of this field within the same descriptor set and event instance.\n\nThis can be used to track the amount of time passed between\nevent occurrences. See the manual page on delta time quantities.\n\nThis field contains the same value as the delta external time field, 0xD8,\nbut is expressed in seconds. Transmission of either of these fields\nrestarts a shared counter, so only one should be streamed at a time to\navoid confusion. The counter is not shared across descriptors sets or\nbetween event instances.",
+        /* .docs        = */ "Time in the synchronized clock domain since the last output of this field within the same descriptor set and event instance.nnThis can be used to track the amount of time passed betweennevent occurrences. See the manual page on delta time quantities.nnThis field contains the same value as the delta external time field, 0xD8,nbut is expressed in seconds. Transmission of either of these fieldsnrestarts a shared counter, so only one should be streamed at a time tonavoid confusion. The counter is not shared across descriptors sets ornbetween event instances.",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
@@ -213,7 +213,7 @@ struct MetadataFor<data_shared::ReferenceTimestamp>
     static constexpr inline FieldInfo value = {
         /* .name        = */ "data_shared::ReferenceTimestamp",
         /* .title       = */ "None",
-        /* .docs        = */ "Internal reference timestamp.\n\nThis timestamp represents the time at which the corresponding\ndata was sampled, according to the internal reference clock.\n\nThis is a monotonic clock which never jumps. The value is always valid.\n\nFor events, this is the time of the event trigger.",
+        /* .docs        = */ "Internal reference timestamp.nnThis timestamp represents the time at which the correspondingndata was sampled, according to the internal reference clock.nnThis is a monotonic clock which never jumps. The value is always valid.nnFor events, this is the time of the event trigger.",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
@@ -242,7 +242,7 @@ struct MetadataFor<data_shared::ReferenceTimeDelta>
     static constexpr inline FieldInfo value = {
         /* .name        = */ "data_shared::ReferenceTimeDelta",
         /* .title       = */ "None",
-        /* .docs        = */ "Delta time since the last packet.\n\nDifference between the time as reported by the shared reference time field, 0xD5,\nand the previous output of this delta quantity within the same descriptor set and event instance.\n\nThe delta is based on the reference time which never jumps. The value\nis always valid.\n\nThis can be used to track the amount of time passed between\nevent occurrences. See the manual page on delta time quantities.",
+        /* .docs        = */ "Delta time since the last packet.nnDifference between the time as reported by the shared reference time field, 0xD5,nand the previous output of this delta quantity within the same descriptor set and event instance.nnThe delta is based on the reference time which never jumps. The valuenis always valid.nnThis can be used to track the amount of time passed betweennevent occurrences. See the manual page on delta time quantities.",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
@@ -298,7 +298,7 @@ struct MetadataFor<data_shared::ExternalTimestamp>
     static constexpr inline FieldInfo value = {
         /* .name        = */ "data_shared::ExternalTimestamp",
         /* .title       = */ "None",
-        /* .docs        = */ "External timestamp in nanoseconds.\n\nThis timestamp represents the time at which the corresponding\ndata was sampled in the external clock domain.\nEquivalent to the GPS Timestamp but in nanoseconds.\n\nFor events, this is the time of the event trigger.\n\nTo be valid, external clock sync must be achieved using the PPS input.",
+        /* .docs        = */ "External timestamp in nanoseconds.nnThis timestamp represents the time at which the correspondingndata was sampled in the external clock domain.nEquivalent to the GPS Timestamp but in nanoseconds.nnFor events, this is the time of the event trigger.nnTo be valid, external clock sync must be achieved using the PPS input.",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
@@ -354,7 +354,7 @@ struct MetadataFor<data_shared::ExternalTimeDelta>
     static constexpr inline FieldInfo value = {
         /* .name        = */ "data_shared::ExternalTimeDelta",
         /* .title       = */ "None",
-        /* .docs        = */ "Delta time since the last packet containing delta external (0xFF,0xD4) or delta gps time (0xFF,0xD8).\n\nDifference between the time as reported by the shared external time field, 0xD7,\nand the previous output of this delta quantity within the same descriptor set and event instance.\n\nThis can be used to track the amount of time passed between\nevent occurrences. See the manual page on delta time quantities.\n\nThis field contains the same value as the delta gps time field, 0xD4,\nbut is expressed in nanoseconds. Transmission of either of these fields\nrestarts a shared counter, so only one should be streamed at a time to\navoid confusion. The counter is not shared across descriptors sets or\nbetween event instances.",
+        /* .docs        = */ "Delta time since the last packet containing delta external (0xFF,0xD4) or delta gps time (0xFF,0xD8).nnDifference between the time as reported by the shared external time field, 0xD7,nand the previous output of this delta quantity within the same descriptor set and event instance.nnThis can be used to track the amount of time passed betweennevent occurrences. See the manual page on delta time quantities.nnThis field contains the same value as the delta gps time field, 0xD4,nbut is expressed in nanoseconds. Transmission of either of these fieldsnrestarts a shared counter, so only one should be streamed at a time tonavoid confusion. The counter is not shared across descriptors sets ornbetween event instances.",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,

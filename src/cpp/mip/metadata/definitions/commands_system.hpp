@@ -60,7 +60,7 @@ struct MetadataFor<commands_system::CommMode>
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_system::CommMode",
         /* .title       = */ "None",
-        /* .docs        = */ "Advanced specialized communication modes.\n\nThis command allows the user to communicate directly with various subsystems which may be present in MIP devices (i.e. IMU, GNSS, etc.)\nPlease see the specific device's user manual for possible modes.\n\nThis command responds with an ACK/NACK just prior to switching to the new protocol.\nFor all functions except 0x01 (use new settings), the new communications mode value is ignored.\n\n",
+        /* .docs        = */ "Advanced specialized communication modes.nnThis command allows the user to communicate directly with various subsystems which may be present in MIP devices (i.e. IMU, GNSS, etc.)nPlease see the specific device's user manual for possible modes.nnThis command responds with an ACK/NACK just prior to switching to the new protocol.nFor all functions except 0x01 (use new settings), the new communications mode value is ignored.nn",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, false, false, true,  true},

@@ -18,7 +18,7 @@ struct MetadataFor<commands_base::Ping>
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_base::Ping",
         /* .title       = */ "Ping",
-        /* .docs        = */ "Test Communications with a device.\n\nThe Device will respond with an ACK, if present and operating correctly.\n\nIf the device is not in a normal operating mode, it may NACK.",
+        /* .docs        = */ "Test Communications with a device.nnThe Device will respond with an ACK, if present and operating correctly.nnIf the device is not in a normal operating mode, it may NACK.",
         /* .parameters  = */ {},
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
@@ -35,7 +35,7 @@ struct MetadataFor<commands_base::SetIdle>
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_base::SetIdle",
         /* .title       = */ "Set to idle",
-        /* .docs        = */ "Turn off all device data streams.\n\nThe Device will respond with an ACK, if present and operating correctly.\nThis command will suspend streaming (if enabled) or wake the device from sleep (if sleeping) to allow it to respond to status and setup commands.\nYou may restore the device mode by issuing the Resume command.",
+        /* .docs        = */ "Turn off all device data streams.nnThe Device will respond with an ACK, if present and operating correctly.nThis command will suspend streaming (if enabled) or wake the device from sleep (if sleeping) to allow it to respond to status and setup commands.nYou may restore the device mode by issuing the Resume command.",
         /* .parameters  = */ {},
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
@@ -197,7 +197,7 @@ struct MetadataFor<commands_base::GetDeviceDescriptors>
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_base::GetDeviceDescriptors",
         /* .title       = */ "Get device descriptors",
-        /* .docs        = */ "Get the command and data descriptors supported by the device.\n\nReply has two fields: 'ACK/NACK' and 'Descriptors'. The 'Descriptors' field is an array of 16 bit values.\nThe MSB specifies the descriptor set and the LSB specifies the descriptor.",
+        /* .docs        = */ "Get the command and data descriptors supported by the device.nnReply has two fields: 'ACK/NACK' and 'Descriptors'. The 'Descriptors' field is an array of 16 bit values.nThe MSB specifies the descriptor set and the LSB specifies the descriptor.",
         /* .parameters  = */ {},
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
@@ -243,7 +243,7 @@ struct MetadataFor<commands_base::BuiltInTest>
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_base::BuiltInTest",
         /* .title       = */ "Built in test",
-        /* .docs        = */ "Run the device Built-In Test (BIT).\n\nThe Built-In Test command always returns a 32 bit value.\nA value of 0 means that all tests passed.\nA non-zero value indicates that not all tests passed.\nReference the device user manual to decode the result.",
+        /* .docs        = */ "Run the device Built-In Test (BIT).nnThe Built-In Test command always returns a 32 bit value.nA value of 0 means that all tests passed.nA non-zero value indicates that not all tests passed.nReference the device user manual to decode the result.",
         /* .parameters  = */ {},
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
@@ -260,7 +260,7 @@ struct MetadataFor<commands_base::Resume>
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_base::Resume",
         /* .title       = */ "Resume",
-        /* .docs        = */ "Take the device out of idle mode.\n\nThe device responds with ACK upon success.",
+        /* .docs        = */ "Take the device out of idle mode.nnThe device responds with ACK upon success.",
         /* .parameters  = */ {},
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
@@ -306,7 +306,7 @@ struct MetadataFor<commands_base::GetExtendedDescriptors>
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_base::GetExtendedDescriptors",
         /* .title       = */ "Get device descriptors (extended)",
-        /* .docs        = */ "Get the command and data descriptors supported by the device.\n\nReply has two fields: 'ACK/NACK' and 'Descriptors'. The 'Descriptors' field is an array of 16 bit values.\nThe MSB specifies the descriptor set and the LSB specifies the descriptor.",
+        /* .docs        = */ "Get the command and data descriptors supported by the device.nnReply has two fields: 'ACK/NACK' and 'Descriptors'. The 'Descriptors' field is an array of 16 bit values.nThe MSB specifies the descriptor set and the LSB specifies the descriptor.",
         /* .parameters  = */ {},
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
@@ -323,7 +323,7 @@ struct MetadataFor<commands_base::ContinuousBit::Response>
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "result",
-            /* .docs          = */ "Device-specific bitfield (128 bits). See device user manual.\nBits are least-significant-byte first. For example, bit 0 is\nlocated at bit 0 of result[0], bit 1 is located at bit 1 of result[0],\nbit 8 is located at bit 0 of result[1], and bit 127 is located at bit\n7 of result[15].",
+            /* .docs          = */ "Device-specific bitfield (128 bits). See device user manual.nBits are least-significant-byte first. For example, bit 0 isnlocated at bit 0 of result[0], bit 1 is located at bit 1 of result[0],nbit 8 is located at bit 0 of result[1], and bit 127 is located at bitn7 of result[15].",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::result>,
             /* .functions     = */ {true, false, false, false, false,  true},
@@ -352,7 +352,7 @@ struct MetadataFor<commands_base::ContinuousBit>
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_base::ContinuousBit",
         /* .title       = */ "Continuous built-in test",
-        /* .docs        = */ "Report result of continuous built-in test.\n\nThis test is non-disruptive but is not as thorough as the commanded BIT.",
+        /* .docs        = */ "Report result of continuous built-in test.nnThis test is non-disruptive but is not as thorough as the commanded BIT.",
         /* .parameters  = */ {},
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
@@ -429,7 +429,7 @@ struct MetadataFor<commands_base::CommSpeed>
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_base::CommSpeed",
         /* .title       = */ "Comm Port Speed",
-        /* .docs        = */ "Controls the baud rate of a specific port on the device.\n\nPlease see the device user manual for supported baud rates on each port.\n\nThe device will wait until all incoming and outgoing data has been sent, up\nto a maximum of 250 ms, before applying any change.\n\nNo guarantee is provided as to what happens to commands issued during this\ndelay period; They may or may not be processed and any responses aren't\nguaranteed to be at one rate or the other. The same applies to data packets.\n\nIt is highly recommended that the device be idle before issuing this command\nand that it be issued in its own packet. Users should wait 250 ms after\nsending this command before further interaction.",
+        /* .docs        = */ "Controls the baud rate of a specific port on the device.nnPlease see the device user manual for supported baud rates on each port.nnThe device will wait until all incoming and outgoing data has been sent, upnto a maximum of 250 ms, before applying any change.nnNo guarantee is provided as to what happens to commands issued during thisndelay period; They may or may not be processed and any responses aren'tnguaranteed to be at one rate or the other. The same applies to data packets.nnIt is highly recommended that the device be idle before issuing this commandnand that it be issued in its own packet. Users should wait 250 ms afternsending this command before further interaction.",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true,  true},
@@ -487,7 +487,7 @@ struct MetadataFor<commands_base::GpsTimeUpdate>
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_base::GpsTimeUpdate",
         /* .title       = */ "GPS Time Update Command",
-        /* .docs        = */ "Set device internal GPS time\nWhen combined with a PPS input signal applied to the I/O connector, this command enables complete synchronization of data outputs\nwith an external time base, such as GPS system time. Since the hardware PPS synchronization can only detect the fractional number of seconds when pulses arrive,\ncomplete synchronization requires that the user provide the whole number of seconds via this command. After achieving PPS synchronization, this command should be sent twice: once to set the time-of-week and once to set the week number. PPS synchronization can be verified by monitoring the time sync status message (0xA0, 0x02) or the valid flags of any shared external timestamp (0x--, D7) data field.",
+        /* .docs        = */ "Set device internal GPS timenWhen combined with a PPS input signal applied to the I/O connector, this command enables complete synchronization of data outputsnwith an external time base, such as GPS system time. Since the hardware PPS synchronization can only detect the fractional number of seconds when pulses arrive,ncomplete synchronization requires that the user provide the whole number of seconds via this command. After achieving PPS synchronization, this command should be sent twice: once to set the time-of-week and once to set the week number. PPS synchronization can be verified by monitoring the time sync status message (0xA0, 0x02) or the valid flags of any shared external timestamp (0x--, D7) data field.",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, false, false, false, false,  true},
@@ -504,7 +504,7 @@ struct MetadataFor<commands_base::SoftReset>
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_base::SoftReset",
         /* .title       = */ "Reset device",
-        /* .docs        = */ "Resets the device.\n\nDevice responds with ACK and immediately resets.",
+        /* .docs        = */ "Resets the device.nnDevice responds with ACK and immediately resets.",
         /* .parameters  = */ {},
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,

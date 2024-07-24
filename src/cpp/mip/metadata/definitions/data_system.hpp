@@ -18,7 +18,7 @@ struct MetadataFor<data_system::BuiltInTest>
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "result",
-            /* .docs          = */ "Device-specific bitfield (128 bits). See device user manual.\nBits are least-significant-byte first. For example, bit 0 is\nlocated at bit 0 of result[0], bit 1 is located at bit 1 of result[0],\nbit 8 is located at bit 0 of result[1], and bit 127 is located at bit\n7 of result[15].",
+            /* .docs          = */ "Device-specific bitfield (128 bits). See device user manual.nBits are least-significant-byte first. For example, bit 0 isnlocated at bit 0 of result[0], bit 1 is located at bit 1 of result[0],nbit 8 is located at bit 0 of result[1], and bit 127 is located at bitn7 of result[15].",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::result>,
             /* .functions     = */ {true, false, false, false, false,  true},
@@ -30,7 +30,7 @@ struct MetadataFor<data_system::BuiltInTest>
     static constexpr inline FieldInfo value = {
         /* .name        = */ "data_system::BuiltInTest",
         /* .title       = */ "None",
-        /* .docs        = */ "Contains the continuous built-in-test (BIT) results.\n\nDue to the large size of this field, it is recommended to stream it at\na low rate or poll it on demand.\n\nThese bits are 'sticky' until the next output message. If a fault occurs\nin between scheduled messages or while the device is idle, the next\npacket with this field will have the corresponding flags set. The flag\nis then cleared unless the fault persists.\n\nUnlike the commanded BIT, some bits may be 1 in certain\nnon-fault situations, so simply checking if the result is all 0s is\nnot very useful. For example, on devices with a built-in GNSS receiver,\na 'solution fault' bit may be set before the receiver has obtained\na position fix. Consult the device manual to determine which bits are\nof interest for your application.\n\nAll unspecified bits are reserved for future use and must be ignored.\n",
+        /* .docs        = */ "Contains the continuous built-in-test (BIT) results.nnDue to the large size of this field, it is recommended to stream it atna low rate or poll it on demand.nnThese bits are 'sticky' until the next output message. If a fault occursnin between scheduled messages or while the device is idle, the nextnpacket with this field will have the corresponding flags set. The flagnis then cleared unless the fault persists.nnUnlike the commanded BIT, some bits may be 1 in certainnnon-fault situations, so simply checking if the result is all 0s isnnot very useful. For example, on devices with a built-in GNSS receiver,na 'solution fault' bit may be set before the receiver has obtainedna position fix. Consult the device manual to determine which bits arenof interest for your application.nnAll unspecified bits are reserved for future use and must be ignored.n",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
@@ -47,7 +47,7 @@ struct MetadataFor<data_system::TimeSyncStatus>
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "time_sync",
-            /* .docs          = */ "True if sync with the PPS signal is currently valid. False if PPS\nfeature is disabled or a PPS signal is not detected.",
+            /* .docs          = */ "True if sync with the PPS signal is currently valid. False if PPSnfeature is disabled or a PPS signal is not detected.",
             /* .type          = */ {Type::BOOL, nullptr},
             /* .accessor      = */ utils::access<type, bool, &type::time_sync>,
             /* .functions     = */ {true, false, false, false, false,  true},
@@ -56,7 +56,7 @@ struct MetadataFor<data_system::TimeSyncStatus>
         },
         {
             /* .name          = */ "last_pps_rcvd",
-            /* .docs          = */ "Elapsed time in seconds since last PPS was received, with a maximum\nvalue of 255.",
+            /* .docs          = */ "Elapsed time in seconds since last PPS was received, with a maximumnvalue of 255.",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::last_pps_rcvd>,
             /* .functions     = */ {true, false, false, false, false,  true},
@@ -85,7 +85,7 @@ struct MetadataFor<data_system::GpioState>
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "states",
-            /* .docs          = */ "Bitfield containing the states for each GPIO pin.<br/>\nBit 0 (0x01): pin 1<br/>\nBit 1 (0x02): pin 2<br/>\nBit 2 (0x04): pin 3<br/>\nBit 3 (0x08): pin 4<br/>\nBits for pins that don't exist will read as 0.",
+            /* .docs          = */ "Bitfield containing the states for each GPIO pin.<br/>nBit 0 (0x01): pin 1<br/>nBit 1 (0x02): pin 2<br/>nBit 2 (0x04): pin 3<br/>nBit 3 (0x08): pin 4<br/>nBits for pins that don't exist will read as 0.",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::states>,
             /* .functions     = */ {true, false, false, false, false,  true},
@@ -97,7 +97,7 @@ struct MetadataFor<data_system::GpioState>
     static constexpr inline FieldInfo value = {
         /* .name        = */ "data_system::GpioState",
         /* .title       = */ "None",
-        /* .docs        = */ "Indicates the state of all of the user GPIO pins.\n\nThis message can be used to correlate external signals\nwith the device time or other data quantities. It should\ngenerally be used with slow GPIO signals as brief pulses\nshorter than the scheduled data rate will be missed.\n\nTo synchronize with faster signals and pulses, or for more accurate timestamping,\nutilize the event system and set the GPIO feature to TIMESTAMP in the 3DM GPIO\nConfiguration command (0x0C,0x41).\n\nThese GPIO states are sampled within one base period\nof the system data descriptor set.\n\nTo obtain valid readings, the desired pin(s) must be configured to the GPIO feature\n(either input or output behavior) using the 3DM GPIO Configuration command\n(0x0C,0x41). Other gpio features may work on some devices but this is not guaranteed.\nConsult the factory before producing a design relying on reading pins configured\nto other feature types.",
+        /* .docs        = */ "Indicates the state of all of the user GPIO pins.nnThis message can be used to correlate external signalsnwith the device time or other data quantities. It shouldngenerally be used with slow GPIO signals as brief pulsesnshorter than the scheduled data rate will be missed.nnTo synchronize with faster signals and pulses, or for more accurate timestamping,nutilize the event system and set the GPIO feature to TIMESTAMP in the 3DM GPIOnConfiguration command (0x0C,0x41).nnThese GPIO states are sampled within one base periodnof the system data descriptor set.nnTo obtain valid readings, the desired pin(s) must be configured to the GPIO featuren(either input or output behavior) using the 3DM GPIO Configuration commandn(0x0C,0x41). Other gpio features may work on some devices but this is not guaranteed.nConsult the factory before producing a design relying on reading pins configurednto other feature types.",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
@@ -135,7 +135,7 @@ struct MetadataFor<data_system::GpioAnalogValue>
     static constexpr inline FieldInfo value = {
         /* .name        = */ "data_system::GpioAnalogValue",
         /* .title       = */ "None",
-        /* .docs        = */ "Indicates the analog value of the given user GPIO.\nThe pin must be configured for analog input.",
+        /* .docs        = */ "Indicates the analog value of the given user GPIO.nThe pin must be configured for analog input.",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,

@@ -638,7 +638,7 @@ struct MetadataFor<commands_rtk::ProdEraseStorage>
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_rtk::ProdEraseStorage",
         /* .title       = */ "None",
-        /* .docs        = */ "This command will erase the selected media to a raw and uninitialized state. ALL DATA WILL BE LOST.\nThis command is only available in calibration mode.",
+        /* .docs        = */ "This command will erase the selected media to a raw and uninitialized state. ALL DATA WILL BE LOST.nThis command is only available in calibration mode.",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
@@ -731,7 +731,7 @@ struct MetadataFor<commands_rtk::ModemHardReset>
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_rtk::ModemHardReset",
         /* .title       = */ "None",
-        /* .docs        = */ "This command will clear the modem flash.  THIS MUST NOT BE DONE OFTEN AS IT CAN DAMAGE THE FLASH!\nThis command is only available in calibration mode.",
+        /* .docs        = */ "This command will clear the modem flash.  THIS MUST NOT BE DONE OFTEN AS IT CAN DAMAGE THE FLASH!nThis command is only available in calibration mode.",
         /* .parameters  = */ {},
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
