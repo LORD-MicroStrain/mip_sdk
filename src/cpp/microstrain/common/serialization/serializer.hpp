@@ -37,10 +37,10 @@ public:
     size_t offset() const { return m_offset; }
     int remaining() const { return int(m_size - m_offset); }
 
-    bool noRemaining() const { return m_offset == m_size; }
     bool isOverrun() const { return m_offset > m_size; }
     bool isOk() const { return !isOverrun(); }
-    bool hasRemaining(size_t count) const { return m_offset+count <= m_size; }
+    bool isFinished() const { return m_offset == m_size; }
+    bool hasRemaining(size_t count=0) const { return m_offset+count <= m_size; }
 
     const uint8_t* basePointer() const { return m_ptr; }
     uint8_t* basePointer() { return m_ptr; }
@@ -361,7 +361,7 @@ bool insert(const T& value, uint8_t* buffer, size_t buffer_length, size_t offset
 {
     Serializer<E> serializer(buffer, buffer_length, offset);
     serializer.insert(value);
-    return exact_size ? serializer.noRemaining() : serializer.isOk();
+    return exact_size ? serializer.isFinished() : serializer.isOk();
 }
 
 template<serialization::Endian E, class T>
@@ -369,7 +369,7 @@ bool extract(T& value, const uint8_t* buffer, size_t buffer_length, size_t offse
 {
     Serializer<E> serializer(buffer, buffer_length, offset);
     extract(serializer, value);
-    return exact_size ? serializer.noRemaining() : serializer.isOk();
+    return exact_size ? serializer.isFinished() : serializer.isOk();
 }
 
 

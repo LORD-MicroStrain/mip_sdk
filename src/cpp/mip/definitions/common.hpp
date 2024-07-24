@@ -95,7 +95,7 @@ struct Vector
     ///@param ptr Pointer to data. Can be NULL if n==0.
     ///@param n   Number of elements in ptr. Clamped to N.
     template<typename U>
-    void copyFrom(const U* ptr, size_t n) { if(n>N) n=N; for(size_t i=0; i<n; i++) m_data[i] = ptr[i]; }
+    void copyFrom(const U* ptr, size_t n) { if(n>N) n=N; for(size_t i=0; i<n; i++) m_data[i] = (T)ptr[i]; }
 
     /// Get the size of the array
     size_t size() const { return N; }

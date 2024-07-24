@@ -85,16 +85,18 @@ int main(int argc, const char* argv[])
             const uint8_t fieldDescriptor = (rand() % 255) + 1;
             const uint8_t payloadLength = (rand() % MIP_FIELD_PAYLOAD_LENGTH_MAX) + 1;
 
-            uint8_t* payload;
-            int rem = packet.allocField(fieldDescriptor, payloadLength, &payload);
+            auto field = packet.createField(fieldDescriptor);
 
-            if( rem < 0 )
+            uint8_t* ptr = field.pointer(payloadLength);
+            if(!ptr)
                 break;
 
             for(unsigned int p=0; p<payloadLength; p++)
-                payload[p] = rand() & 0xFF;
+                ptr[p] = rand() & 0xFF;
 
-            fields[numFields] = FieldView(packet.descriptorSet(), fieldDescriptor, payload, payloadLength);
+            field.commit();
+
+            fields[numFields] = FieldView(packet.descriptorSet(), fieldDescriptor, ptr, payloadLength);
         }
 
         packet.finalize();
