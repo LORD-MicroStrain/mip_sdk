@@ -36,7 +36,7 @@ struct MetadataFor<commands_gnss::ReceiverInfo::Info>
         },
         {
             /* .name          = */ "description",
-            /* .docs          = */ "Ascii description of receiver. Contains the following info (comma-delimited):<br/>nModule name/model<br/>nFirmware version info",
+            /* .docs          = */ "Ascii description of receiver. Contains the following info (comma-delimited):<br/>\nModule name/model<br/>\nFirmware version info",
             /* .type          = */ {Type::CHAR, nullptr},
             /* .accessor      = */ utils::access<type, char, &type::description>,
             /* .functions     = */ NO_FUNCTIONS,
@@ -99,7 +99,7 @@ struct MetadataFor<commands_gnss::ReceiverInfo>
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_gnss::ReceiverInfo",
         /* .title       = */ "None",
-        /* .docs        = */ "Return information about the GNSS receivers in the device.n",
+        /* .docs        = */ "Return information about the GNSS receivers in the device.\n",
         /* .parameters  = */ {},
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
@@ -230,7 +230,7 @@ struct MetadataFor<commands_gnss::SignalConfiguration>
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_gnss::SignalConfiguration",
         /* .title       = */ "None",
-        /* .docs        = */ "Configure the GNSS signals used by the device.n",
+        /* .docs        = */ "Configure the GNSS signals used by the device.\n",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true,  true},
@@ -307,7 +307,7 @@ struct MetadataFor<commands_gnss::RtkDongleConfiguration>
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_gnss::RtkDongleConfiguration",
         /* .title       = */ "None",
-        /* .docs        = */ "Configure the communications with the RTK Dongle connected to the device.n",
+        /* .docs        = */ "Configure the communications with the RTK Dongle connected to the device.\n",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true,  true},
