@@ -443,7 +443,8 @@ void Interface::registerPacketCallback(C::mip_dispatch_handler& handler, uint8_t
 {
     auto callback = [](void* context, const C::mip_packet_view* packet, Timestamp timestamp)
     {
-        Callback(context, PacketView(*packet), timestamp);
+        PacketView packetView(*packet);
+        Callback(context, packetView, timestamp);
     };
 
     registerPacketCallback(handler, descriptorSet, afterFields, callback, userData);
@@ -485,8 +486,9 @@ void Interface::registerPacketCallback(C::mip_dispatch_handler& handler, uint8_t
 {
     auto callback = [](void* pointer, const mip::C::mip_packet_view* packet, Timestamp timestamp)
     {
+        PacketView packetView(*packet);
         Object* obj = static_cast<Object*>(pointer);
-        (obj->*Callback)(PacketView(*packet), timestamp);
+        (obj->*Callback)(packetView, timestamp);
     };
 
     registerPacketCallback(handler, descriptorSet, afterFields, callback, object);
@@ -528,7 +530,8 @@ void Interface::registerFieldCallback(C::mip_dispatch_handler& handler, uint8_t 
 {
     auto callback = [](void* context, const C::mip_field_view* field, Timestamp timestamp)
     {
-        Callback(context, FieldView(*field), timestamp);
+        FieldView fieldView(*field);
+        Callback(context, fieldView, timestamp);
     };
 
     registerFieldCallback(handler, descriptorSet, fieldDescriptor, callback, userData);
@@ -570,8 +573,9 @@ void Interface::registerFieldCallback(C::mip_dispatch_handler& handler, uint8_t 
 {
     auto callback = [](void* pointer, const C::mip_field_view* field, Timestamp timestamp)
     {
+        FieldView fieldView(*field);
         Object* obj = static_cast<Object*>(pointer);
-        (obj->*Callback)(FieldView(*field), timestamp);
+        (obj->*Callback)(fieldView, timestamp);
     };
 
     registerFieldCallback(handler, descriptorSet, fieldDescriptor, callback, object);
