@@ -42,9 +42,9 @@ pipeline {
                 -T "v142" `
                 -DBUILD_DOCUMENTATION=ON `
                 -DBUILD_PACKAGE=ON
-              cmake --build . -j
-              cmake --build . --target package
-              cmake --build . --target package_docs
+              if(\$?) { cmake --build . }
+              if(\$?) { cmake --build . --target package }
+              if(\$?) { cmake --build . --target package_docs }
             """
             archiveArtifacts artifacts: 'build_Win32/mipsdk_*'
           }
@@ -61,8 +61,8 @@ pipeline {
                 -A "x64" `
                 -T "v142" `
                 -DBUILD_PACKAGE=ON
-              cmake --build . -j
-              cmake --build . --target package
+              if(\$?) { cmake --build . }
+              if(\$?) { cmake --build . --target package }
             """
             archiveArtifacts artifacts: 'build_x64/mipsdk_*'
           }
