@@ -2,6 +2,8 @@
 
 #include "readwrite.hpp"
 
+#include <array>
+
 #include <stdint.h>
 #include <stddef.h>
 

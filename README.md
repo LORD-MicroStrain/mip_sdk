@@ -79,7 +79,7 @@ See the documentation page for [Command Results](https://lord-microstrain.github
 In order to implement command timeouts and provide time of arrival information, this library requires applications to
 provide the time of received data. The time must be provided as an unsigned integral value with a reasonable precision,
 typically milliseconds since program startup. By default the timestamp type is set to `uint64_t`, but some embedded
-applications may which to change this to `uint32_t` via the `MIP_TIMESTAMP_TYPE` define. Note that wraparound is
+applications may which to change this to `uint32_t` via the `MICROSTRAIN_TIMESTAMP_TYPE` define. Note that wraparound is
 permissible if the wraparound period is longer than twice the longest timeout used by the application.
 
 See the documentation page for [Timestamps](https://lord-microstrain.github.io/mip_sdk_documentation/latest/timestamps.html).
@@ -96,7 +96,7 @@ A basic serial port interface is provided in C and C++ for Linux, Mac, and Windo
 The serial port connection will be used in most cases, when the MIP device is connected
 via a serial or USB cable (the USB connection acts like a virtual serial port).
 
-[Enable it](#build-configuration) in the CMake configuration with `-DMIP_USE_SERIAL=1`.
+[Enable it](#build-configuration) in the CMake configuration with `-DMICROSTRAIN_ENABLE_SERIAL=1`.
 
 ### TCP Client
 
@@ -104,7 +104,7 @@ The TCP client connection allows you to connect to a MIP device remotely. The MI
 via the normal serial or USB cable to a computer system running a TCP server which forwards data between
 the serial port and TCP clients.
 
-[Enable it](#build-configuration) in the CMake configuration with `-DMIP_USE_TCP=1`.
+[Enable it](#build-configuration) in the CMake configuration with `-DMICROSTRAIN_ENABLE_TCP=1`.
 
 
 How to Build
@@ -114,36 +114,37 @@ How to Build
 
 * A working C compiler
   * C11 or later required
-* A working C++ compiler
-  * For C++ API only. Define `MIP_DISABLE_CPP=ON` if you don't want to use any C++.
+* A working C++ compiler, if using any C++ features.
+  * Define `MICROSTRAIN_ENABLE_CPP=OFF` if you don't want to use any C++. Note that some features are only available in C++.
   * C++11 or later required for the mip library
-  * C++14 or later for the examples (currently CMakeLists.txt assumes C++14 is required regardless)
+  * C++14 or later for the examples
+  * C++20 or later for metadata and associated examples.
 * CMake version 3.10 or later (technically this is optional, see below)
 * Doxygen, if building documentation
 
 ### CMake Build Configuration
 
 The following options may be specified when configuring the build with CMake (e.g. `cmake .. -DOPTION=VALUE`):
-* MIP_USE_SERIAL - Builds the included serial port library (default enabled).
-* MIP_USE_TCP - Builds the included socket library (default enabled).
-* MIP_USE_EXTRAS - Builds some higher level utility classes and functions that may use dynamic memory.
-* MIP_ENABLE_LOGGING - Builds logging functionality into the library. The user is responsible for configuring a logging callback (default enabled)
-* MIP_LOGGING_MAX_LEVEL - Max log level the SDK is allowed to log. If this is defined, any log level logged at a higher level than this will result in a noop regardless of runtime configuration. Useful if you want some logs, but do not want the overhead compiled into the code.
+* MICROSTRAIN_ENABLE_SERIAL - Builds the included serial port library (default enabled).
+* MICROSTRAIN_ENABLE_TCP - Builds the included socket library (default enabled).
+* MICROSTRAIN_ENABLE_LOGGING - Builds logging functionality into the library. The user is responsible for configuring a logging callback (default enabled)
+* MICROSTRAIN_LOGGING_MAX_LEVEL - Max log level the SDK is allowed to log. If this is defined, any log level logged at a higher level than this will result in a noop regardless of runtime configuration. Useful if you want some logs, but do not want the overhead compiled into the code.
+* MICROSTRAIN_TIMESTAMP_TYPE - Overrides the default timestamp type. See the timestamps section in the documentation.
+* MICROSTRAIN_ENABLE_CPP - Causes the src/cpp directory to be included in the build (default enabled). Disable to turn off the C++ api.
+* MIP_ENABLE_EXTRAS - Builds some higher level utility classes and functions that may use dynamic memory.
 * MIP_ENABLE_DIAGNOSTICS - Adds some counters to various entities which can serve as a debugging aid.
 * BUILD_EXAMPLES - If enabled (`-DBUILD_EXAMPLES=ON`), the example projects will be built (default disabled).
 * BUILD_TESTING - If enabled (`-DBUILD_TESTING=ON`), the test programs in the /test directory will be compiled and linked. Run the tests with `ctest`.
 * BUILD_DOCUMENTATION - If enabled, the documentation will be built with doxygen. You must have doxygen installed.
 * BUILD_DOCUMENTATION_FULL - Builds internal documentation (default disabled).
 * BUILD_DOCUMENTATION_QUIET - Suppress standard doxygen output (default enabled).
-* MIP_DISABLE_CPP - Ignores .hpp/.cpp files during the build and does not add them to the project.
 * BUILD_PACKAGE - Adds a `package` target to the project that will build a `.deb`, `.rpm`, or `.7z` file containing the library
-* MIP_TIMESTAMP_TYPE - Overrides the default timestamp type. See the timestamps section in the documentation.
 
 ### Compilation 
 
 1. Create the build directory (e.g. `mkdir build`).
 2. In the build directory, run `cmake .. <options>`
-   * Replace `<options>` with your configuration options, such as `-DMIP_USE_SERIAL=1`.
+   * Replace `<options>` with your configuration options, such as `-DMICROSTRAIN_ENABLE_SERIAL=1`.
    * You can use `cmake-gui ..` instead if you'd prefer to use the GUI tool (and have it installed).
    * An alternative generator may be used, such as ninja, code blocks, etc. by specifying `-G <generator>`
 3. Invoke `cmake --build .` in the build directory
@@ -162,10 +163,10 @@ include all the necessary files and define a few options.
 
 #### Required #defines for building without CMake
 
-Pass these to your compiler as appropriate, e.g. `arm-none-eabi-gcc -DMIP_TIMESTAMP_TYPE=uint32_t -DMIP_ENABLE_LOGGING=0`
+Pass these to your compiler as appropriate, e.g. `arm-none-eabi-gcc -DMICROSTRAIN_TIMESTAMP_TYPE=uint32_t -DMICROSTRAIN_ENABLE_LOGGING=0`
 
-* MIP_ENABLE_LOGGING (and MIP_LOGGING_MAX_LEVEL) - default is enabled
-* MIP_TIMESTAMP_TYPE - defaults to uint64_t if not specified
+* MICROSTRAIN_ENABLE_LOGGING (and MICROSTRAIN_LOGGING_MAX_LEVEL) - default is enabled
+* MICROSTRAIN_TIMESTAMP_TYPE - defaults to uint64_t if not specified
 * MIP_ENABLE_DIAGNOSTICS - Supported on embedded platforms to aid debugging
 
 These options affect the compiled code interface and sizes of various structs. They

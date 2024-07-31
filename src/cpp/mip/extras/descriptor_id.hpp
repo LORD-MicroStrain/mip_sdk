@@ -1,8 +1,6 @@
 #pragma once
 
-#include "mip/mip_descriptors.h"
-
-#include <stdint.h>
+#include "../mip_descriptors.hpp"
 
 
 namespace mip

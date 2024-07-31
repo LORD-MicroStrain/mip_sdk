@@ -1,7 +1,7 @@
 #pragma once
 
-#include "structures.hpp"
-#include "utils.hpp"
+#include "mip_structures.hpp"
+#include "mip_meta_utils.hpp"
 
 #include <mip/mip_serialization.hpp>
 #include <mip/mip_descriptors.hpp>

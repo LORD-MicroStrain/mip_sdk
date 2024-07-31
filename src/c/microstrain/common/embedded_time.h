@@ -20,7 +20,7 @@ namespace C {
 /// this requirement may result in false timeouts or delays in getting parsed packets.
 ///
 #ifdef MICROSTRAIN_TIMESTAMP_TYPE
-typedef MICROSTRAIN_TIMESTAMP_TYPE microstrain_timestamp;
+typedef MICROSTRAIN_TIMESTAMP_TYPE microstrain_embedded_timestamp;
 static_assert( sizeof(microstrain_embedded_timestamp) >= 8 || microstrain_embedded_timestamp(-1) > 0, "MICROSTRAIN_TIMESTAMP_TYPE must be unsigned unless 64 bits.");
 
 #elif defined(MICROSTRAIN_PLATFORM_DESKTOP)

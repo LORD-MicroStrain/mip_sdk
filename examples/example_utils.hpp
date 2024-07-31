@@ -1,13 +1,13 @@
 
 #pragma once
 
-#ifdef MIP_USE_SERIAL
+#ifdef MICROSTRAIN_ENABLE_SERIAL
     #include "microstrain/connections/serial/serial_connection.hpp"
 #endif
-#ifdef MIP_USE_TCP
+#ifdef MICROSTRAIN_ENABLE_TCP
     #include "microstrain/connections/tcp/tcp_connection.hpp"
 #endif
-#ifdef MIP_USE_EXTRAS
+#if defined MICROSTRAIN_ENABLE_SERIAL || defined MICROSTRAIN_ENABLE_TCP
     #include "microstrain/connections/recording/recording_connection.hpp"
 #endif
 

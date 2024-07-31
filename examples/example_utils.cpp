@@ -53,57 +53,57 @@ std::unique_ptr<ExampleUtils> openFromArgs(const std::string& port_or_hostname, 
 
     if( !binary_file_path.empty() )
     {
-#ifdef MIP_USE_EXTRAS
+#if defined MICROSTRAIN_ENABLE_SERIAL || defined MICROSTRAIN_ENABLE_TCP
         example_utils->recordedFile = std::make_unique<std::ofstream>(binary_file_path);
         if( !example_utils->recordedFile->is_open() )
             throw std::runtime_error("Unable to open binary file");
-#else  // MIP_USE_EXTRAS
-        throw std::runtime_error("The program was compiled without binary file recording support. Recompile with -DMIP_USE_EXTRAS=ON");
-#endif  // MIP_USE_EXTRAS
+#else  // MIP_ENABLE_EXTRAS
+        throw std::runtime_error("The program was compiled without binary file recording support. Recompile with -DMIP_ENABLE_EXTRAS=ON");
+#endif  // MIP_ENABLE_EXTRAS
     }
 
     if(port_or_hostname.find(PORT_KEY) == std::string::npos)  // Not a serial port
     {
 
-#ifdef MIP_USE_TCP
+#ifdef MICROSTRAIN_ENABLE_TCP
         uint32_t port = std::strtoul(baud_or_port.c_str(), nullptr, 10);
         if( port < 1024 || port > 65535 )
             throw std::runtime_error("Invalid TCP port (must be between 1024 and 65535.");
 
-#ifdef MIP_USE_EXTRAS
+#if defined MICROSTRAIN_ENABLE_SERIAL || defined MICROSTRAIN_ENABLE_TCP
         using RecordingTcpConnection = microstrain::connections::RecordingConnectionWrapper<microstrain::connections::TcpConnection>;
         example_utils->connection = std::make_unique<RecordingTcpConnection>(example_utils->recordedFile.get(), example_utils->recordedFile.get(), port_or_hostname, port);
-#else  // MIP_USE_EXTRAS
+#else  // MIP_ENABLE_EXTRAS
         using TcpConnection = microstrain::connections::TcpConnection;
         example_utils->connection = std::make_unique<TcpConnection>(port_or_hostname, port);
-#endif  // MIP_USE_EXTRAS
+#endif  // MIP_ENABLE_EXTRAS
 
         example_utils->device = std::make_unique<mip::Interface>(example_utils->connection.get(), example_utils->buffer, sizeof(example_utils->buffer), 1000, 2000);
-#else  // MIP_USE_TCP
-        throw std::runtime_error("This program was compiled without socket support. Recompile with -DMIP_USE_TCP=1");
-#endif // MIP_USE_TCP
+#else  // MICROSTRAIN_ENABLE_TCP
+        throw std::runtime_error("This program was compiled without socket support. Recompile with -DMICROSTRAIN_ENABLE_TCP=1");
+#endif // MICROSTRAIN_ENABLE_TCP
 
     }
     else  // Serial port
     {
 
-#ifdef MIP_USE_SERIAL
+#ifdef MICROSTRAIN_ENABLE_SERIAL
         uint32_t baud = std::strtoul(baud_or_port.c_str(), nullptr, 10);
         if( baud == 0 )
             throw std::runtime_error("Serial baud rate must be a decimal integer greater than 0.");
 
-#ifdef MIP_USE_EXTRAS
+#if defined MICROSTRAIN_ENABLE_SERIAL || defined MICROSTRAIN_ENABLE_TCP
         using RecordingSerialConnection = microstrain::connections::RecordingConnectionWrapper<microstrain::connections::SerialConnection>;
         example_utils->connection = std::make_unique<RecordingSerialConnection>(example_utils->recordedFile.get(), example_utils->recordedFile.get(), port_or_hostname, baud);
-#else  // MIP_USE_EXTRAS
+#else  // MIP_ENABLE_EXTRAS
         using SerialConnection = microstrain::connections::SerialConnection;
         example_utils->connection = std::make_unique<SerialConnection>(port_or_hostname, baud);
-#endif  // MIP_USE_EXTRAS
+#endif  // MIP_ENABLE_EXTRAS
 
         example_utils->device = std::make_unique<mip::Interface>(example_utils->connection.get(), example_utils->buffer, sizeof(example_utils->buffer), mip::C::mip_timeout_from_baudrate(baud), 500);
-#else  // MIP_USE_SERIAL
-        throw std::runtime_error("This program was compiled without serial support. Recompile with -DMIP_USE_SERIAL=1.\n");
-#endif //MIP_USE_SERIAL
+#else  // MICROSTRAIN_ENABLE_SERIAL
+        throw std::runtime_error("This program was compiled without serial support. Recompile with -DMICROSTRAIN_ENABLE_SERIAL=1.\n");
+#endif //MICROSTRAIN_ENABLE_SERIAL
     }
 
     if( !example_utils->connection->connect() )

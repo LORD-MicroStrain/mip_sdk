@@ -57,7 +57,7 @@ void microstrain_logging_log(microstrain_log_level level, const char* fmt, ...);
 ///@param level    The level that the MIP SDK should log at
 ///@param user     User data that will be passed to the callback every time it is excuted
 ///
-#ifdef MIP_ENABLE_LOGGING
+#ifdef MICROSTRAIN_ENABLE_LOGGING
 #define MIP_LOG_INIT(callback, level, user) microstrain_logging_init(callback, level, user)
 #else
 #define MIP_LOG_INIT(callback, level, user) (void)0
@@ -68,14 +68,14 @@ void microstrain_logging_log(microstrain_log_level level, const char* fmt, ...);
 ///       log level functions like MIP_LOG_INFO, etc. when possible.
 ///@copydetails mip::C::microstrain_log_callback
 ///
-#ifdef MIP_ENABLE_LOGGING
+#ifdef MICROSTRAIN_ENABLE_LOGGING
 #define MIP_LOG_LOG(level, ...) microstrain_logging_log(level, __VA_ARGS__)
 #else
 #define MIP_LOG_LOG(level, ...) (void)0
 #endif
 
-#ifndef MIP_LOGGING_MAX_LEVEL
-#define MIP_LOGGING_MAX_LEVEL MIP_LOG_LEVEL_WARN
+#ifndef MICROSTRAIN_LOGGING_MAX_LEVEL
+#define MICROSTRAIN_LOGGING_MAX_LEVEL MIP_LOG_LEVEL_WARN
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -85,7 +85,7 @@ void microstrain_logging_log(microstrain_log_level level, const char* fmt, ...);
 ///@param fmt     printf style format string
 ///@param ...     Variadic args used to populate the fmt string
 ///
-#if MIP_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOG_LEVEL_FATAL
+#if MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOG_LEVEL_FATAL
 #define MIP_LOG_FATAL(...) MIP_LOG_LOG(MICROSTRAIN_LOG_LEVEL_FATAL, __VA_ARGS__)
 #else
 #define MIP_LOG_FATAL(...) (void)0
@@ -94,7 +94,7 @@ void microstrain_logging_log(microstrain_log_level level, const char* fmt, ...);
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log data inside the MIP SDK at error level
 ///@copydetails mip::C::MIP_LOG_FATAL
-#if MIP_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOG_LEVEL_ERROR
+#if MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOG_LEVEL_ERROR
 #define MIP_LOG_ERROR(...) MIP_LOG_LOG(MICROSTRAIN_LOG_LEVEL_ERROR, __VA_ARGS__)
 #else
 #define MIP_LOG_ERROR(...) (void)0
@@ -103,7 +103,7 @@ void microstrain_logging_log(microstrain_log_level level, const char* fmt, ...);
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log data inside the MIP SDK at warn level
 ///@copydetails mip::C::MIP_LOG_FATAL
-#if MIP_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOG_LEVEL_WARN
+#if MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOG_LEVEL_WARN
 #define MIP_LOG_WARN(...) MIP_LOG_LOG(MICROSTRAIN_LOG_LEVEL_WARN, __VA_ARGS__)
 #else
 #define MIP_LOG_WARN(...) (void)0
@@ -112,7 +112,7 @@ void microstrain_logging_log(microstrain_log_level level, const char* fmt, ...);
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log data inside the MIP SDK at info level
 ///@copydetails mip::C::MIP_LOG_FATAL
-#if MIP_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOG_LEVEL_INFO
+#if MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOG_LEVEL_INFO
 #define MIP_LOG_INFO(...) MIP_LOG_LOG(MIP_LOG_LEVEL_INFO, __VA_ARGS__)
 #else
 #define MIP_LOG_INFO(...) (void)0
@@ -121,7 +121,7 @@ void microstrain_logging_log(microstrain_log_level level, const char* fmt, ...);
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log data inside the MIP SDK at debug level
 ///@copydetails mip::C::MIP_LOG_FATAL
-#if MIP_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOG_LEVEL_DEBUG
+#if MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOG_LEVEL_DEBUG
 #define MIP_LOG_DEBUG(...) MIP_LOG_LOG(MIP_LOG_LEVEL_DEBUG, __VA_ARGS__)
 #else
 #define MIP_LOG_DEBUG(...) (void)0
@@ -130,7 +130,7 @@ void microstrain_logging_log(microstrain_log_level level, const char* fmt, ...);
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log data inside the MIP SDK at trace level
 ///@copydetails mip::C::MIP_LOG_FATAL
-#if MIP_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOG_LEVEL_TRACE
+#if MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOG_LEVEL_TRACE
 #define MIP_LOG_TRACE(...) MIP_LOG_LOG(MIP_LOG_LEVEL_TRACE, __VA_ARGS__)
 #else
 #define MIP_LOG_TRACE(...) (void)0

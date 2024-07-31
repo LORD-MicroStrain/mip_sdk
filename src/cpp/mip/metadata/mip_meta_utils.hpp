@@ -1,6 +1,6 @@
 #pragma once
 
-#include "structures.hpp"
+#include "mip_structures.hpp"
 
 
 namespace mip::metadata::utils

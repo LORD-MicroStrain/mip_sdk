@@ -1,6 +1,6 @@
 #pragma once
 
-#include "microstrain/common/descriptor_id.hpp"
+#include "descriptor_id.hpp"
 
 #include "mip/mip_interface.hpp"
 #include "mip/mip_result.h"

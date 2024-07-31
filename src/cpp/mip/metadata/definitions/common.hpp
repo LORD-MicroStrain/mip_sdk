@@ -1,7 +1,7 @@
 #pragma once
 
 #include <mip/metadata/mip_metadata.hpp>
-#include <mip/metadata/utils.hpp>
+#include <mip/metadata/mip_meta_utils.hpp>
 
 #include <mip/definitions/common.hpp>
 

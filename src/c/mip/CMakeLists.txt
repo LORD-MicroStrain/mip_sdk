@@ -1,6 +1,6 @@
 
 
-option(MIP_ENABLE_DIAGNOSTICS "Enable various diagnostic counters in the mip library for debugging." OFF)
+#option(MIP_ENABLE_DIAGNOSTICS "Enable various diagnostic counters in the mip library for debugging." OFF)
 
 
 set(MIP_SOURCES
@@ -34,7 +34,7 @@ set(MIP_SOURCES
 )
 
 add_library(mip ${MIP_SOURCES})
-
+target_compile_features(mip PUBLIC c_std_11)
 
 set(MIPDEFS
     commands_3dm
@@ -91,8 +91,8 @@ if(${MIP_ENABLE_DIAGNOSTICS})
     list(APPEND MIP_DEFINES "MIP_ENABLE_DIAGNOSTICS")
 endif()
 
-if(${MIP_TIMESTAMP_TYPE})
-    list(APPEND MIP_DEFINES "MIP_TIMESTAMP_TYPE=${MIP_TIMESTAMP_TYPE}")
+if(${MICROSTRAIN_TIMESTAMP_TYPE})
+    list(APPEND MIP_DEFINES "MICROSTRAIN_TIMESTAMP_TYPE=${MICROSTRAIN_TIMESTAMP_TYPE}")
 endif()
 
 target_compile_definitions(mip PUBLIC "${MIP_DEFINES}")

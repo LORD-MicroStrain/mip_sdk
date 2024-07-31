@@ -23,7 +23,7 @@ add_mip_test(TestMipFields         "${TEST_DIR}/mip/test_mip_fields.c" TestMipFi
 add_mip_test(TestMipCpp            "${TEST_DIR}/mip/test_mip.cpp" TestMipCpp)
 add_mip_test(TestMipPerf           "${TEST_DIR}/mip/mip_parser_performance.cpp" TestMipPerf)
 
-#if(MIP_USE_SERIAL)
+#if(MICROSTRAIN_ENABLE_SERIAL)
 #    add_executable(TestSerial "${TEST_DIR}/test_serial.cpp")
 #    target_include_directories(TestSerial PUBLIC "${SRC_DIR}")
 #    target_link_libraries(TestSerial PUBLIC "serial")

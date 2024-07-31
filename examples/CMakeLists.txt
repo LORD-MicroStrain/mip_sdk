@@ -11,22 +11,22 @@ set(EXAMPLE_SOURCES
 
 set(EXAMPLE_LIBS )
 
-if(MIP_USE_SERIAL)
-    set(SERIAL_DEFS "MIP_USE_SERIAL")
+if(MICROSTRAIN_ENABLE_SERIAL)
+    set(SERIAL_DEFS "MICROSTRAIN_ENABLE_SERIAL")
     list(APPEND EXAMPLE_LIBS microstrain_serial)
 endif()
 
-if(MIP_USE_TCP)
-    set(TCP_DEFS "MIP_USE_TCP")
+if(MICROSTRAIN_ENABLE_TCP)
+    set(TCP_DEFS "MICROSTRAIN_ENABLE_TCP")
     list(APPEND EXAMPLE_LIBS microstrain_socket)
 endif()
 
-if(MIP_USE_SERIAL OR MIP_USE_TCP)
+if(MICROSTRAIN_ENABLE_SERIAL OR MICROSTRAIN_ENABLE_TCP)
     list(APPEND EXAMPLE_LIBS microstrain_recording_connection)
 endif()
 
-if(MIP_USE_EXTRAS)
-    set(EXTRAS_DEFS "MIP_USE_EXTRAS")
+if(MIP_ENABLE_EXTRAS)
+    set(EXTRAS_DEFS "MIP_ENABLE_EXTRAS")
 endif()
 
 set(MIP_EXAMPLE_DEFS ${MIP_DEFINES} ${SERIAL_DEFS} ${TCP_DEFS} ${EXTRAS_DEFS})
@@ -35,23 +35,26 @@ macro(add_mip_example name sources)
 
     add_executable(${name} ${sources})
 
-    target_link_libraries(${name} mip ${EXAMPLE_LIBS})
+    target_compile_features(${name} PUBLIC c_std_11 cxx_std_14)
+    target_link_libraries(${name} PUBLIC mip ${EXAMPLE_LIBS})
     target_compile_definitions(${name} PUBLIC ${MIP_EXAMPLE_DEFS})
     target_include_directories(${name} PRIVATE ${SRC_DIR} ${EXAMPLE_DIR})
 
 endmacro()
 
 # C++ examples need either serial or TCP support
-if(MIP_USE_SERIAL OR MIP_USE_TCP)
+if(MICROSTRAIN_ENABLE_SERIAL OR MICROSTRAIN_ENABLE_TCP)
 
-    if(NOT MIP_DISABLE_CPP)
+    if(NOT MICROSTRAIN_ENABLE_CPP)
 
         # Generic examples
         add_mip_example(DeviceInfo "${EXAMPLE_SOURCES};${EXAMPLE_DIR}/device_info.cpp")
         add_mip_example(WatchImu   "${EXAMPLE_SOURCES};${EXAMPLE_DIR}/watch_imu.cpp")
         add_mip_example(Threads    "${EXAMPLE_SOURCES};${EXAMPLE_DIR}/threading.cpp")
-        add_mip_example(CsvExample "${EXAMPLE_SOURCES};${EXAMPLE_DIR}/CSV/csv.cpp;${EXAMPLE_DIR}/CSV/stringify.cpp;${EXAMPLE_DIR}/CSV/stringify.hpp")
-        target_compile_features(CsvExample PUBLIC cxx_std_20)
+        if(MIP_ENABLE_METADATA)
+            add_mip_example(CsvExample "${EXAMPLE_SOURCES};${EXAMPLE_DIR}/CSV/csv.cpp;${EXAMPLE_DIR}/CSV/stringify.cpp;${EXAMPLE_DIR}/CSV/stringify.hpp")
+            target_link_libraries(CsvExample PRIVATE mip_metadata)
+        endif()
 
         # Product-specific examples
         add_mip_example(GQ7_Example                  "${EXAMPLE_SOURCES};${EXAMPLE_DIR}/GQ7/GQ7_example.cpp")
@@ -65,7 +68,7 @@ if(MIP_USE_SERIAL OR MIP_USE_TCP)
 endif()
 
 # C examples need serial support
-if(MIP_USE_SERIAL)
+if(MICROSTRAIN_ENABLE_SERIAL)
 
     add_mip_example(WatchImuC                  "${EXAMPLE_SOURCES};${EXAMPLE_DIR}/watch_imu.c")
     add_mip_example(GQ7_ExampleC               "${EXAMPLE_SOURCES};${EXAMPLE_DIR}/GQ7/GQ7_example.c")

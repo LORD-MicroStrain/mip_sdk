@@ -23,9 +23,9 @@ extern "C" {
 /// days, so the parser should be invoked at least every 25 days. Failure to observe
 /// this requirement may result in false timeouts or delays in getting parsed packets.
 ///
-#ifdef MIP_TIMESTAMP_TYPE
-    typedef MIP_TIMESTAMP_TYPE mip_timestamp;
-    static_assert( sizeof(mip_timestamp) >= 8 || (mip_timestamp)(-1) > 0, "MIP_TIMESTAMP_TYPE must be unsigned unless 64 bits.");
+#ifdef MICROSTRAIN_TIMESTAMP_TYPE
+    typedef MICROSTRAIN_TIMESTAMP_TYPE mip_timestamp;
+    static_assert( sizeof(mip_timestamp) >= 8 || (mip_timestamp)(-1) > 0, "MICROSTRAIN_TIMESTAMP_TYPE must be unsigned unless 64 bits.");
 #else
     typedef uint64_t mip_timestamp;
 #endif

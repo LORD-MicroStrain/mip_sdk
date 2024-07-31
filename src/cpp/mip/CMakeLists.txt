@@ -28,17 +28,12 @@ if(MICROSTRAIN_CMAKE_DEBUG)
     message("C++ definitions = ${MIPDEF_SOURCES}")
 endif()
 
-set(META_SOURCES
-    metadata/mip_all_definitions.hpp
-    metadata/mip_definitions.hpp
-    metadata/mip_definitions.cpp
-    metadata/mip_metadata.hpp
-    metadata/structures.hpp
-    metadata/utils.hpp
-    metadata/definitions/commands_base.hpp
-    metadata/definitions/commands_3dm.hpp
-    metadata/definitions/data_sensor.hpp
-    metadata/definitions/common.hpp
-)
+target_sources(mip PUBLIC ${MIPDEF_SOURCES})
 
-target_sources(mip PUBLIC ${MIPDEF_SOURCES} ${META_SOURCES})
+if(MIP_ENABLE_METADATA)
+    add_subdirectory(metadata)
+endif()
+
+if(MIP_ENABLE_EXTRAS)
+    add_subdirectory(extras)
+endif()
