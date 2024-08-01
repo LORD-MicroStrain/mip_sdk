@@ -35,7 +35,10 @@ macro(add_mip_example name sources)
 
     add_executable(${name} ${sources})
 
-    target_compile_features(${name} PUBLIC c_std_11 cxx_std_14)
+    target_compile_features(${name} PUBLIC c_std_11)
+    if(MICROSTRAIN_ENABLE_CPP)  # Technically should only do this for C++ examples but this is simpler
+        target_compile_features(${name} PUBLIC cxx_std_11)
+    endif()
     target_link_libraries(${name} PUBLIC mip ${EXAMPLE_LIBS})
     target_compile_definitions(${name} PUBLIC ${MIP_EXAMPLE_DEFS})
     target_include_directories(${name} PRIVATE ${SRC_DIR} ${EXAMPLE_DIR})
