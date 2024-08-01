@@ -43,7 +43,7 @@ void connect_interface(mip::Interface& device, microstrain::Connection& conn)
     };
     auto recv = [](C::mip_interface* device, uint8_t* buffer, size_t max_length, C::mip_timeout wait_time, size_t* length_out, C::mip_timestamp* timestamp_out)->bool
     {
-        return static_cast<Connection*>(C::mip_interface_user_pointer(device))->recvFromDevice(buffer, max_length, wait_time, length_out, timestamp_out);
+        return static_cast<Connection*>(C::mip_interface_user_pointer(device))->recvFromDevice(buffer, max_length, static_cast<unsigned int>(wait_time), length_out, timestamp_out);
     };
 
     C::mip_interface_set_user_pointer(&device, &conn);

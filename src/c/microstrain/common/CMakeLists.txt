@@ -19,7 +19,7 @@ target_compile_definitions(microstrain_common PUBLIC "MICROSTRAIN_TIMESTAMP_TYPE
 # Logging is a little weird since we need to install the header no matter what
 if(MICROSTRAIN_ENABLE_LOGGING)
     if(MICROSTRAIN_LOGGING_MAX_LEVEL STREQUAL "")
-        message(ERROR "MICROSTRAIN_LOGGING_MAX_LEVEL must be MICROSTRAIN_LOG_LEVEL_* or a number")
+        message(FATAL_ERROR "MICROSTRAIN_LOGGING_MAX_LEVEL must be MICROSTRAIN_LOG_LEVEL_* or a number")
     endif()
     target_sources(microstrain_common PRIVATE "../../../c/microstrain/common/logging.c")
     message("MicroStrain logging is enabled. Max level = '${MICROSTRAIN_LOGGING_MAX_LEVEL}'")

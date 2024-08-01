@@ -23,7 +23,7 @@ set(MIP_DIR "${SRC_DIR}/mip")
 
 option(MICROSTRAIN_ENABLE_LOGGING "Build with logging functions enabled" ON)
 
-set(MICROSTRAIN_LOGGING_MAX_LEVEL "" CACHE STRING "Max log level the SDK is allowed to log. If this is defined, any log level logged at a higher level than this will result in a noop regardless of runtime configuration.")
+set(MICROSTRAIN_LOGGING_MAX_LEVEL "MICROSTRAIN_LOG_LEVEL_INFO" CACHE STRING "Max log level the SDK is allowed to log. If this is defined, any log level logged at a higher level than this will result in a noop regardless of runtime configuration.")
 set(MICROSTRAIN_TIMESTAMP_TYPE "uint64_t" CACHE STRING "Override the type used for received data timestamps and timeouts (must be unsigned or at least 64 bits).")
 
 option(MICROSTRAIN_ENABLE_SERIAL "Build serial connection support into the library and examples" ON)
@@ -38,6 +38,7 @@ option(MIP_ENABLE_DIAGNOSTICS "Enable various diagnostic counters in the mip lib
 
 if(NOT DEFINED MIP_ENABLE_METADATA)
     include("${MIP_CMAKE_DIR}/check_metadata.cmake")
+    message("MIP_ENABLE_METADATA not set - compiler support: ${MIP_COMPILER_SUPPORTS_METADATA}")
 endif()
 option(MIP_ENABLE_METADATA "Build support for MIP protocol metadata in C++ (requires c++20)" MIP_COMPILER_SUPPORTS_METADATA)
 

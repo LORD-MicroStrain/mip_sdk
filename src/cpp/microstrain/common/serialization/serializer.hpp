@@ -316,10 +316,10 @@ typename std::enable_if<(sizeof...(Ts) > 1), size_t>::type
         return ( ... + insert(buffer, values) );
 }
 #else
-template<serialization::Endian E, typename T0, typename... Ts>
-size_t insert(Serializer<E>& serializer, T0 value0, Ts... values)
+template<serialization::Endian E, typename T0, typename T1, typename... Ts>
+size_t insert(Serializer<E>& serializer, const T0& value0, const T1& value1, Ts... values)
 {
-    return insert(serializer, value0) + insert(serializer, values...);
+    return insert(serializer, value0) + insert(serializer, value1, values...);
 }
 #endif
 
@@ -346,10 +346,10 @@ typename std::enable_if<(sizeof...(Ts) > 1), size_t>::type
         return ( ... + extract(buffer, values) );
 }
 #else
-template<serialization::Endian E, typename T0, typename... Ts>
-size_t extract(Serializer<E>& serializer, T0 value0, Ts... values)
+template<serialization::Endian E, typename T0, typename T1, typename... Ts>
+size_t extract(Serializer<E>& serializer, T0& value0, T1& value1, Ts&... values)
 {
-    return extract(serializer, value0) + extract(serializer, values...);
+    return extract(serializer, value0) + extract(serializer, value1, values...);
 }
 #endif
 
