@@ -48,7 +48,7 @@ endmacro()
 # C++ examples need either serial or TCP support
 if(MICROSTRAIN_ENABLE_SERIAL OR MICROSTRAIN_ENABLE_TCP)
 
-    if(NOT MICROSTRAIN_ENABLE_CPP)
+    if(MICROSTRAIN_ENABLE_CPP)
 
         # Generic examples
         add_mip_example(DeviceInfo "${EXAMPLE_SOURCES};${EXAMPLE_DIR}/device_info.cpp")

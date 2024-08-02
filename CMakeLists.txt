@@ -36,11 +36,12 @@ option(MICROSTRAIN_ENABLE_CPP_C_NAMESPACE "Wraps the C api in a C++ namespace to
 option(MIP_ENABLE_EXTRAS "Build extra support into the library including some things that might work at a higher level and use dynamically allocated memory" ON)
 option(MIP_ENABLE_DIAGNOSTICS "Enable various diagnostic counters in the mip library for debugging." OFF)
 
-if(NOT DEFINED MIP_ENABLE_METADATA)
-    include("${MIP_CMAKE_DIR}/check_metadata.cmake")
-    message("MIP_ENABLE_METADATA not set - compiler support: ${MIP_COMPILER_SUPPORTS_METADATA}")
+if("cxx_std_20" IN_LIST CMAKE_CXX_COMPILE_FEATURES)
+    set(MIP_COMPILER_SUPPORTS_METADATA ON)
+else()
+    set(MIP_COMPILER_SUPPORTS_METADATA OFF)
 endif()
-option(MIP_ENABLE_METADATA "Build support for MIP protocol metadata in C++ (requires c++20)" MIP_COMPILER_SUPPORTS_METADATA)
+option(MIP_ENABLE_METADATA "Build support for MIP protocol metadata in C++ (requires c++20)" ${MIP_COMPILER_SUPPORTS_METADATA})
 
 # Build options
 option(BUILD_PACKAGE "Whether to build a package from the resulting binaries" OFF)
