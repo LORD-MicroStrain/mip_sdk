@@ -36,10 +36,15 @@ option(MICROSTRAIN_ENABLE_CPP_C_NAMESPACE "Wraps the C api in a C++ namespace to
 option(MIP_ENABLE_EXTRAS "Build extra support into the library including some things that might work at a higher level and use dynamically allocated memory" ON)
 option(MIP_ENABLE_DIAGNOSTICS "Enable various diagnostic counters in the mip library for debugging." OFF)
 
-if("cxx_std_20" IN_LIST CMAKE_CXX_COMPILE_FEATURES)
-    set(MIP_COMPILER_SUPPORTS_METADATA ON)
-else()
-    set(MIP_COMPILER_SUPPORTS_METADATA OFF)
+# This fails with g++-9.4 as it can't find <span> despite cmake claiming c++20 support.
+#if("cxx_std_20" IN_LIST CMAKE_CXX_COMPILE_FEATURES)
+#    set(MIP_COMPILER_SUPPORTS_METADATA ON)
+#else()
+#    set(MIP_COMPILER_SUPPORTS_METADATA OFF)
+#endif()
+if(NOT DEFINED MIP_ENABLE_METADATA)
+    include("${MIP_CMAKE_DIR}/check_metadata.cmake")
+    message("MIP_ENABLE_METADATA not set - compiler support: ${MIP_COMPILER_SUPPORTS_METADATA}")
 endif()
 option(MIP_ENABLE_METADATA "Build support for MIP protocol metadata in C++ (requires c++20)" ${MIP_COMPILER_SUPPORTS_METADATA})
 
