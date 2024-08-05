@@ -34,6 +34,7 @@ set(MIP_EXAMPLE_DEFS ${MIP_DEFINES} ${SERIAL_DEFS} ${TCP_DEFS} ${EXTRAS_DEFS})
 
 target_compile_definitions(example_utils PUBLIC ${MIP_EXAMPLE_DEFS})
 target_include_directories(example_utils PRIVATE ${SRC_DIR})
+target_link_libraries(example_utils PUBLIC mip ${EXAMPLE_LIBS})
 
 
 macro(add_mip_example name sources)
