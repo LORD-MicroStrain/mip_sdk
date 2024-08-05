@@ -9,7 +9,7 @@ add_library(example_utils
     "${EXAMPLE_DIR}/example_utils.hpp"
 )
 
-set(EXAMPLE_LIBS example_utils)
+set(EXAMPLE_LIBS)
 
 if(MICROSTRAIN_ENABLE_SERIAL)
     set(SERIAL_DEFS "MICROSTRAIN_ENABLE_SERIAL")
@@ -36,6 +36,7 @@ target_compile_definitions(example_utils PUBLIC ${MIP_EXAMPLE_DEFS})
 target_include_directories(example_utils PRIVATE ${SRC_DIR})
 target_link_libraries(example_utils PUBLIC mip ${EXAMPLE_LIBS})
 
+list(APPEND EXAMPLE_LIBS example_utils)
 
 macro(add_mip_example name sources)
 
