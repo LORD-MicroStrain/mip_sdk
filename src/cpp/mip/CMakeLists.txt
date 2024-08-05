@@ -1,5 +1,5 @@
 
-target_sources(mip PUBLIC
+target_sources(mip PRIVATE
     mip.hpp
     mip_all.hpp
     mip_cmdqueue.hpp
@@ -28,7 +28,7 @@ if(MICROSTRAIN_CMAKE_DEBUG)
     message("C++ definitions = ${MIPDEF_SOURCES}")
 endif()
 
-target_sources(mip PUBLIC ${MIPDEF_SOURCES})
+target_sources(mip PRIVATE ${MIPDEF_SOURCES})
 
 if(MIP_ENABLE_METADATA)
     add_subdirectory(metadata)

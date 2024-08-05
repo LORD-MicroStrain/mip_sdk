@@ -65,7 +65,7 @@ if(MICROSTRAIN_CMAKE_DEBUG)
     message("C definitions = ${MIPDEF_SOURCES}")
 endif()
 
-target_sources(mip PUBLIC ${MIPDEF_SOURCES})
+target_sources(mip PRIVATE ${MIPDEF_SOURCES})
 
 #string(REGEX REPLACE "\.h(;|$)" ".hpp\\1" MIPDEF_HPP_SOURCES "${MIPDEF_SOURCES}")
 #string(REGEX REPLACE "\.c(;|$)" ".cpp\\1" MIPDEF_CPP_SOURCES "${MIPDEF_HPP_SOURCES}")
