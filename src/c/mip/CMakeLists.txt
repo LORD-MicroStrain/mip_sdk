@@ -2,6 +2,7 @@
 
 #option(MIP_ENABLE_DIAGNOSTICS "Enable various diagnostic counters in the mip library for debugging." OFF)
 
+set(MIP_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/..")
 
 set(MIP_SOURCES
     "${VERSION_OUT_FILE}"
@@ -35,6 +36,7 @@ set(MIP_SOURCES
 
 add_library(mip ${MIP_SOURCES})
 target_compile_features(mip PUBLIC c_std_11)
+target_include_directories(mip INTERFACE ${MIP_INCLUDE_DIR})
 
 set(MIPDEFS
     commands_3dm
@@ -49,9 +51,9 @@ set(MIPDEFS
     data_sensor
     data_shared
     data_system
-#    ${INTDEF_SOURCES}  # Todo
 )
 
+# Set this list as a target property so the C++ version can access it.
 set_target_properties(mip PROPERTIES definitions "${MIPDEFS}")
 
 set(MIPDEF_HEADERS ${MIPDEFS})
@@ -67,24 +69,6 @@ endif()
 
 target_sources(mip PRIVATE ${MIPDEF_SOURCES})
 
-#string(REGEX REPLACE "\.h(;|$)" ".hpp\\1" MIPDEF_HPP_SOURCES "${MIPDEF_SOURCES}")
-#string(REGEX REPLACE "\.c(;|$)" ".cpp\\1" MIPDEF_CPP_SOURCES "${MIPDEF_HPP_SOURCES}")
-#
-#set(ALL_MIP_SOURCES
-#    ${MIPDEF_SOURCES}
-#    ${MIPDEF_CPP_SOURCES}
-#    ${MIP_SOURCES_C}
-#    ${MIP_SOURCES_CPP}
-#    ${UTILS_SOURCES}
-#    ${MIP_CPP_HEADERS}
-#    ${MIP_INTERFACE_SOURCES}
-#    ${MIP_EXTRA_SOURCES}
-#)
-#
-#if(MIP_DISABLE_CPP)
-#    list(FILTER ALL_MIP_SOURCES EXCLUDE REGEX "[c|h]pp$")
-#endif()
-#
 
 
 if(${MIP_ENABLE_DIAGNOSTICS})
