@@ -1,26 +1,28 @@
 #include "scope_helper.hpp"
 
-namespace mip
+namespace microstrain
 {
-    namespace extras
+namespace extras
+{
+
+ScopeHelper::ScopeHelper(std::function<void()> scopeFunction) :
+    m_outOfScopeFunction(scopeFunction),
+    m_canceled(false)
+{
+}
+
+ScopeHelper::~ScopeHelper()
+{
+    if (!m_canceled)
     {
-        ScopeHelper::ScopeHelper(std::function<void()> scopeFunction) :
-            m_outOfScopeFunction(scopeFunction),
-            m_canceled(false)
-        {
-        }
+        m_outOfScopeFunction();
+    }
+}
 
-        ScopeHelper::~ScopeHelper()
-        {
-            if (!m_canceled)
-            {
-                m_outOfScopeFunction();
-            }
-        }
+void ScopeHelper::cancel()
+{
+    m_canceled = true;
+}
 
-        void ScopeHelper::cancel()
-        {
-            m_canceled = true;
-        }
-    } //namespace extras
-} //namespace mip
+} //namespace extras
+} //namespace microstrain

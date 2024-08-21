@@ -21,12 +21,12 @@ extern "C" {
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup mip_platform
+///@addtogroup microstrain_platform
 ///
 ///@{
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_tcp  TCP Client
+///@defgroup microstrain_tcp  TCP Client
 ///
 ///@brief Simple implementation for reading and writing to a tcp client socket
 ///
@@ -34,7 +34,7 @@ extern "C" {
 
 typedef struct tcp_socket
 {
-#ifdef WIN32
+#ifdef MICROSTRAIN_PLATFORM_WINDOWS
     SOCKET handle;
 #else
     int handle;

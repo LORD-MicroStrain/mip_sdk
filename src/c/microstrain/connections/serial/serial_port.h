@@ -28,12 +28,12 @@ extern "C" {
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup mip_platform  Platform specific utilities
+///@addtogroup microstrain_platform  Platform specific utilities
 ///
 ///@{
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_serial  Serial Port
+///@defgroup microstrain_serial  Serial Port
 ///
 ///@brief A simple implementation for reading and writing to/from a serial port.
 ///

@@ -15,12 +15,12 @@ namespace microstrain
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Represents a type of connection to a MIP device.
+///@brief Represents a type of connection.
 ///
 /// The following methods are pure virtual and must be implemented by a derived
-/// class. These functions map to the corresponding C functions.
-///@li `bool sendToDevice(const uint8_t* data, size_t length)` - corresponds to mip_interface_user_send_to_device.
-///@li `bool recvFromDevice(uint8_t* buffer, size_t maxLength, size_t* lengthOut, Timestamp* timestampOut)` - corresponds to mip_interface_user_recv_from_device.
+/// class:
+///@li `bool sendToDevice(const uint8_t* data, size_t length)`
+///@li `bool recvFromDevice(uint8_t* buffer, size_t maxLength, unsigned int wait_time_ms, size_t* lengthOut, EmbeddedTimestamp* timestampOut)`
 ///
 class Connection
 {

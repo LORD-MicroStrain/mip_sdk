@@ -1,5 +1,5 @@
 
-#include "device_models.h"
+#include "mip_device_models.h"
 
 #include <ctype.h>
 #include <stdlib.h>

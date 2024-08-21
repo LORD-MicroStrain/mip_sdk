@@ -3,29 +3,31 @@ set(MIP_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/..")
 
 set(MIP_SOURCES
     "${VERSION_OUT_FILE}"
-    mip_cmdqueue.c
-    mip_cmdqueue.h
-    mip_descriptors.c
-    mip_descriptors.h
-    mip_dispatch.c
-    mip_dispatch.h
-    mip_field.c
-    mip_field.h
-    mip_interface.c
-    mip_interface.h
-    mip_offsets.h
-    mip_packet.c
-    mip_packet.h
-    mip_parser.c
-    mip_parser.h
-    mip_result.c
-    mip_result.h
-    mip_types.h
-    mip_serialization.c
-    mip_serialization.h
-    definitions/common.c
-    definitions/common.h
-    mip_all.h
+    "mip_cmdqueue.c"
+    "mip_cmdqueue.h"
+    "mip_descriptors.c"
+    "mip_descriptors.h"
+    "mip_device_models.c"
+    "mip_device_models.h"
+    "mip_dispatch.c"
+    "mip_dispatch.h"
+    "mip_field.c"
+    "mip_field.h"
+    "mip_interface.c"
+    "mip_interface.h"
+    "mip_offsets.h"
+    "mip_packet.c"
+    "mip_packet.h"
+    "mip_parser.c"
+    "mip_parser.h"
+    "mip_result.c"
+    "mip_result.h"
+    "mip_types.h"
+    "mip_serialization.c"
+    "mip_serialization.h"
+    "definitions/common.c"
+    "definitions/common.h"
+    "mip_all.h"
 
     "utils/byte_ring.c"
     "utils/byte_ring.h"

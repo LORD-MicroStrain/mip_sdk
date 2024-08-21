@@ -63,7 +63,7 @@ void* microstrain_logging_user_data()
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Internal log function called by logging macros.
-///       Call MIP_LOG_* macros instead of using this function directly
+///       Call MICROSTRAIN_LOG_* macros instead of using this function directly
 ///@copydetails microstrain::C::microstrain_log_callback
 ///
 void microstrain_logging_log(microstrain_log_level level, const char* fmt, ...)

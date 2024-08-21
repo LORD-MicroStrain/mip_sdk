@@ -18,7 +18,7 @@ RecordingConnection::RecordingConnection(Connection* connection, std::ostream* r
     mType = TYPE;
 }
 
-///@copydoc mip::Connection::sendToDevice
+///@copydoc microstrain::Connection::sendToDevice
 bool RecordingConnection::sendToDevice(const uint8_t* data, size_t length)
 {
     const bool ok = mConnection->sendToDevice(data, length);
@@ -32,7 +32,7 @@ bool RecordingConnection::sendToDevice(const uint8_t* data, size_t length)
     return ok;
 }
 
-///@copydoc mip::Connection::recvFromDevice
+///@copydoc microstrain::Connection::recvFromDevice
 bool RecordingConnection::recvFromDevice(uint8_t* buffer, size_t max_length, unsigned int wait_time_ms, size_t* count_out, EmbeddedTimestamp* timestamp_out)
 {
     const bool ok = mConnection->recvFromDevice(buffer, max_length, wait_time_ms, count_out, timestamp_out);

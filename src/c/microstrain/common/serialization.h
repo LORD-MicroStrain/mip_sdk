@@ -5,12 +5,12 @@
 #include <stdbool.h>
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_serialization  MIP Serialization
+///@defgroup microstrain_serialization  MicroStrain Serialization
 ///
-///@brief Serialization Functions for reading and writing to byte buffers.
+///@brief Serialization functions for reading and writing to byte buffers.
 ///@{
-///@defgroup mip_serialization_c   MIP Serialization [C]
-///@defgroup mip_serialization_cpp MIP Serialization [CPP]
+///@defgroup microstrain_serialization_c   MicroStrain Serialization [C]
+///@defgroup microstrain_serialization_cpp MicroStrain Serialization [CPP]
 ///@}
 
 #ifdef __cplusplus
@@ -24,7 +24,7 @@ extern "C" {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup mip_serialization_c
+///@addtogroup microstrain_serialization_c
 ///
 ///@brief (De)serialization in C.
 ///
