@@ -3,7 +3,7 @@
 
 #include <stdarg.h>
 
-#include "microstrain/common/logging.h"
+#include <microstrain/common/logging.h>
 
 #include "example_utils.hpp"
 

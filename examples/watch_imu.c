@@ -1,34 +1,20 @@
 
 #include <mip/mip_dispatch.h>
-#include <mip/mip_field.h>
 #include <mip/mip_interface.h>
-#include <mip/mip_result.h>
-#include <mip/mip_types.h>
-#include "microstrain/common/logging.h"
-#include "microstrain/common/serialization.h"
+#include <microstrain/connections/serial/serial_port.h>
+#include <microstrain/common/logging.h>
 
-#include "mip/mip_descriptors.h"
 #include <mip/definitions/commands_base.h>
 #include <mip/definitions/commands_3dm.h>
 #include <mip/definitions/data_sensor.h>
 
-#include "microstrain/connections/serial/serial_port.h"
-
-#include "microstrain/common/logging.h"
-
 #include <stdio.h>
 #include <stdlib.h>
-#include <errno.h>
 #include <time.h>
-#include <stdarg.h>
-#include <inttypes.h>
 
-#ifdef WIN32
+#ifdef MICROSTRAIN_PLATFORM_WIN32
 #else
 #include <unistd.h>
-#include <fcntl.h>
-#include <sys/ioctl.h>
-#include <termios.h>
 #endif
 
 serial_port port;

@@ -1,14 +1,9 @@
 
 #include "example_utils.hpp"
 
-#include <mip/mip_result.h>
-#include <mip/mip_dispatch.h>
-#include "microstrain/common/serialization.hpp"
-
 #include <mip/definitions/commands_base.hpp>
 #include <mip/definitions/commands_3dm.hpp>
 #include <mip/definitions/data_sensor.hpp>
-#include <mip/mip.hpp>
 
 #include <stdexcept>
 #include <thread>
