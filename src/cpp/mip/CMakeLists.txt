@@ -1,4 +1,6 @@
 
+set(MIP_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/..")
+
 target_sources(mip PRIVATE
     mip.hpp
     mip_all.hpp
@@ -14,7 +16,9 @@ target_sources(mip PRIVATE
 )
 
 target_compile_features(mip PUBLIC cxx_std_11)
+target_include_directories(mip INTERFACE ${MIP_INCLUDE_DIR})
 
+# Get the mipdef list from the C version
 get_target_property(MIPDEFS mip definitions)
 
 set(MIPDEF_HEADERS ${MIPDEFS})

@@ -1,17 +1,29 @@
 
 
 set(META_SOURCES
-    mip_all_definitions.hpp
-    mip_definitions.hpp
-    mip_definitions.cpp
-    mip_metadata.hpp
-    mip_structures.hpp
-    mip_meta_utils.hpp
-    definitions/commands_base.hpp
-    definitions/commands_3dm.hpp
-    definitions/data_sensor.hpp
-    definitions/common.hpp
+    "mip_all_definitions.hpp"
+    "mip_definitions.hpp"
+    "mip_definitions.cpp"
+    "mip_metadata.hpp"
+    "mip_structures.hpp"
+    "mip_meta_utils.hpp"
 )
 
-add_library(mip_metadata ${META_SOURCES})
+# Get the mipdef list from the C version
+get_target_property(MIPDEFS mip definitions)
+
+set(MIPDEF_HEADERS ${MIPDEFS})
+list(TRANSFORM MIPDEF_HEADERS APPEND ".hpp")
+list(TRANSFORM MIPDEF_HEADERS PREPEND "definitions/")
+
+if(MICROSTRAIN_CMAKE_DEBUG)
+    message("C++ metadata definitions = ${MIPDEF_HEADERS}")
+endif()
+
+add_library(mip_metadata ${META_SOURCES} ${MIPDEF_HEADERS})
+
 target_compile_features(mip_metadata PUBLIC cxx_std_20)
+
+target_include_directories(mip_metadata INTERFACE ${MIP_INCLUDE_DIR})
+
+target_link_libraries(mip_metadata PUBLIC mip)

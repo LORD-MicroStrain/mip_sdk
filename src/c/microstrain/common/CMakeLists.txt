@@ -26,4 +26,4 @@ if(MICROSTRAIN_ENABLE_LOGGING)
     target_compile_definitions(microstrain_common PUBLIC "MICROSTRAIN_ENABLE_LOGGING" "MICROSTRAIN_LOGGING_MAX_LEVEL=${MICROSTRAIN_LOGGING_MAX_LEVEL}")  # TODO rename
 endif()
 
-#target_include_directories(microstrain_common PUBLIC ${CMAKE_CURRENT_LIST_DIR})
+target_include_directories(microstrain_common INTERFACE ${MICROSTRAIN_INCLUDE_DIR})

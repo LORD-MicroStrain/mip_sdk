@@ -113,10 +113,10 @@ configure_file(${VERSION_IN_FILE} ${VERSION_OUT_FILE})
 # Suppress warnings due to adding files with target_sources.
 cmake_policy(SET CMP0076 NEW)
 
-include_directories(src/c)
-if(MICROSTRAIN_ENABLE_CPP)
-    include_directories(src/cpp)
-endif()
+#include_directories(src/c)
+#if(MICROSTRAIN_ENABLE_CPP)
+#    include_directories(src/cpp)
+#endif()
 
 # Add all the C files (required even for C++ API)
 add_subdirectory(src/c/microstrain)
@@ -130,6 +130,7 @@ if(MICROSTRAIN_ENABLE_CPP)
     #target_compile_definitions(microstrain_common PUBLIC "MICROSTRAIN_ENABLE_CPP=1")
     target_compile_definitions(microstrain_common PUBLIC "MICROSTRAIN_ENABLE_CPP_C_NAMESPACE=${MICROSTRAIN_ENABLE_CPP_C_NAMESPACE}")
 endif()
+
 
 
 if(MIP_ENABLE_EXTRAS)
