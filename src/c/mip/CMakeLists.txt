@@ -1,7 +1,4 @@
 
-
-#option(MIP_ENABLE_DIAGNOSTICS "Enable various diagnostic counters in the mip library for debugging." OFF)
-
 set(MIP_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/..")
 
 set(MIP_SOURCES

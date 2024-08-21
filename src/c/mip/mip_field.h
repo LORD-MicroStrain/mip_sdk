@@ -5,7 +5,7 @@
 #include "mip_packet.h"
 
 #ifdef __cplusplus
-namespace mip{
+namespace mip {
 namespace C {
 extern "C" {
 #endif

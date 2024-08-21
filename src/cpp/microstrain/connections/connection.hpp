@@ -1,11 +1,12 @@
 #pragma once
 
 #include <microstrain/common/embedded_time.hpp>
+#include <microstrain/common/platform.hpp>
 
 #include <stdint.h>
 #include <stddef.h>
 
-#if __cpp_lib_span >= 202002L
+#if MICROSTRAIN_HAS_SPAN
 #include <span>
 #endif
 
@@ -33,7 +34,7 @@ public:
     virtual bool sendToDevice(const uint8_t* data, size_t length) = 0;
     virtual bool recvFromDevice(uint8_t* buffer, size_t max_length, unsigned int wait_time_ms, size_t* length_out, EmbeddedTimestamp* timestamp_out) = 0;
 
-#if __cpp_lib_span >= 202002L
+#if MICROSTRAIN_HAS_SPAN
     bool sendToDevice(std::span<const uint8_t> data) { return sendToDevice(data.data(), data.size()); }
     bool recvFromDevice(std::span<uint8_t>& buffer, unsigned int wait_time_ms, EmbeddedTimestamp* timestamp_out) {
         size_t length = 0;

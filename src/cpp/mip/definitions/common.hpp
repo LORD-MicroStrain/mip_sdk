@@ -100,10 +100,6 @@ struct Vector
     /// Get the size of the array
     size_t size() const { return N; }
 
-    ///// Pack vector into a raw byte buffer.
-    //size_t insert(Serializer& serializer) const { return serializer.insert(m_data); }
-    //size_t extract(Serializer& serializer) { return serializer.extract(m_data); }
-
 private:
     T m_data[N];
 };

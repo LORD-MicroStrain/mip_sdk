@@ -8,8 +8,3 @@
 #include <cstring>
 #include <type_traits>
 #include <tuple>
-
-namespace microstrain
-{
-
-} // namespace microstrain

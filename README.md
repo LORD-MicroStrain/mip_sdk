@@ -79,7 +79,7 @@ See the documentation page for [Command Results](https://lord-microstrain.github
 In order to implement command timeouts and provide time of arrival information, this library requires applications to
 provide the time of received data. The time must be provided as an unsigned integral value with a reasonable precision,
 typically milliseconds since program startup. By default the timestamp type is set to `uint64_t`, but some embedded
-applications may which to change this to `uint32_t` via the `MICROSTRAIN_TIMESTAMP_TYPE` define. Note that wraparound is
+applications may wish to change this to `uint32_t` via the `MICROSTRAIN_TIMESTAMP_TYPE` define. Note that wraparound is
 permissible if the wraparound period is longer than twice the longest timeout used by the application.
 
 See the documentation page for [Timestamps](https://lord-microstrain.github.io/mip_sdk_documentation/latest/timestamps.html).
@@ -114,11 +114,11 @@ How to Build
 
 * A working C compiler
   * C11 or later required
-* A working C++ compiler, if using any C++ features.
+* A working C++ compiler, if using any C++ features
   * Define `MICROSTRAIN_ENABLE_CPP=OFF` if you don't want to use any C++. Note that some features are only available in C++.
   * C++11 or later required for the mip library
   * C++14 or later for the examples
-  * C++20 or later for metadata and associated examples.
+  * C++20 or later for metadata and associated examples
 * CMake version 3.10 or later (technically this is optional, see below)
 * Doxygen, if building documentation
 
@@ -129,7 +129,7 @@ The following options may be specified when configuring the build with CMake (e.
 * MICROSTRAIN_ENABLE_TCP - Builds the included socket library (default enabled).
 * MICROSTRAIN_ENABLE_LOGGING - Builds logging functionality into the library. The user is responsible for configuring a logging callback (default enabled)
 * MICROSTRAIN_LOGGING_MAX_LEVEL - Max log level the SDK is allowed to log. If this is defined, any log level logged at a higher level than this will result in a noop regardless of runtime configuration. Useful if you want some logs, but do not want the overhead compiled into the code.
-* MICROSTRAIN_TIMESTAMP_TYPE - Overrides the default timestamp type. See the timestamps section in the documentation.
+* MICROSTRAIN_TIMESTAMP_TYPE - Overrides the default timestamp type. See [Timestamps](https://lord-microstrain.github.io/mip_sdk_documentation/latest/timestamps.html) in the documentation.
 * MICROSTRAIN_ENABLE_CPP - Causes the src/cpp directory to be included in the build (default enabled). Disable to turn off the C++ api.
 * MIP_ENABLE_EXTRAS - Builds some higher level utility classes and functions that may use dynamic memory.
 * MIP_ENABLE_DIAGNOSTICS - Adds some counters to various entities which can serve as a debugging aid.
@@ -156,10 +156,18 @@ If your target platform doesn't support CMake, you can build the project without
 include all the necessary files and define a few options.
 
 #### Minimum Required Files for building without CMake
-* Everything in `src/mip/definitions` (or at least all the descriptor sets you require)
-* All the .c, .h, .cpp, and .hpp files in `src/mip` (exclude the c++ files if you're using plain C)
-* The `byte_ring` and `serialization` .c/.h files in `src/mip/utils`
-* You may optionally include the platform-related connection files (`serial_port.h/.c`) as desired.
+##### C only
+* All source files in `src/c/microstrain/common`, except logging.c if logging is disabled
+* Source files in `src/c/microstrain/connections` for your required connection types
+* All source files in `src/c/mip` and `src/c/mip/utils`
+* All source files in `src/c/mip/definitions` (or at least all the required descriptor sets)
+##### C++
+* The C files indicated above, except those in `definitions` (they can be added too but aren't required)
+* Source files in `src/cpp/microstrain/connections` for your required connection types
+* All source files in `src/cpp/microstrain`
+* All source files in `src/cpp/mip/definitions` (or at least the required descriptor sets)
+* Source files in `src/cpp/mip/extras` as needed for your project
+* Source files in `src/cpp/mip/metadata` if using metadata
 
 #### Required #defines for building without CMake
 

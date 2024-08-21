@@ -15,7 +15,8 @@ namespace serialization
 {
     using namespace microstrain::serialization;
     using namespace microstrain::serialization::big_endian;
-}
+
+} // namespace serialization
 
 using microstrain::insert;
 using microstrain::extract;

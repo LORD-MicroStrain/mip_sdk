@@ -236,7 +236,7 @@ void Interface::setSendFunction()
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Sets the receive callback function (free function version).
 ///
-///@tparam Send A compile-time pointer to the callback function.
+///@tparam Recv A compile-time pointer to the callback function.
 ///
 template<bool (*Recv)(Interface&, uint8_t*, size_t, Timeout, size_t*, Timestamp*)>
 void Interface::setRecvFunction()
@@ -249,7 +249,7 @@ void Interface::setRecvFunction()
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Sets the update callback function (free function version).
 ///
-///@tparam Send A compile-time pointer to the callback function.
+///@tparam Update A compile-time pointer to the callback function.
 ///
 template<bool (*Update)(Interface&, Timeout)>
 void Interface::setUpdateFunction()

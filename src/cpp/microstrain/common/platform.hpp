@@ -3,9 +3,9 @@
 #include <microstrain/common/platform.h>
 
 #ifdef __has_include
-# if __has_include(<version>)
-#   include <version>
-# endif
+#if __has_include(<version>)
+#include <version>
+#endif
 #endif
 
 #if __cpp_inline_variables >= 201606L
@@ -22,8 +22,8 @@
 #endif
 
 #if __cpp_lib_optional >= 201606L || __cplusplus >= 201703L
-#define HAS_OPTIONAL
+#define MICROSTRAIN_HAS_OPTIONAL
 #endif
 #if __cpp_lib_span >= 202002L
-#define HAS_SPAN
+#define MICROSTRAIN_HAS_SPAN
 #endif

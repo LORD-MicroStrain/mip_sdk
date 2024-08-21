@@ -29,12 +29,12 @@ public:
     TcpConnection(const TcpConnection&) = delete;
     TcpConnection& operator=(const TcpConnection&) = delete;
 
-    bool recvFromDevice(uint8_t* buffer, size_t max_length, unsigned int wait_time, size_t* length_out, EmbeddedTimestamp* timestamp_out) final;
-    bool sendToDevice(const uint8_t* data, size_t length) final;
+    bool recvFromDevice(uint8_t* buffer, size_t max_length, unsigned int wait_time, size_t* length_out, EmbeddedTimestamp* timestamp_out) override;
+    bool sendToDevice(const uint8_t* data, size_t length) override;
 
-    bool isConnected() const final;
-    bool connect() final;
-    bool disconnect() final;
+    bool isConnected() const override;
+    bool connect() override;
+    bool disconnect() override;
 
     void connectionInfo(std::string &host_name, uint32_t &port) const
     {

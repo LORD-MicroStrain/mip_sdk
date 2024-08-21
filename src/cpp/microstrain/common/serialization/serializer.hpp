@@ -7,7 +7,7 @@
 #include <stdint.h>
 #include <stddef.h>
 
-#ifdef HAS_OPTIONAL
+#ifdef MICROSTRAIN_HAS_OPTIONAL
 #include <optional>
 #endif
 #ifdef HAS_SPAN
@@ -18,11 +18,8 @@
 #include <functional>
 #endif
 
-
-
 namespace microstrain
 {
-
 
 class SerializerBase
 {
@@ -201,6 +198,7 @@ typename std::enable_if<std::is_class<T>::value , size_t>::type
     return serializer.offset() - offset;
 }
 
+
 //
 // Arrays of runtime length
 //
@@ -263,6 +261,7 @@ size_t extract(Serializer<E>& serializer, std::span<const T> values)
     return extract(serializer, values.data(), values.size());
 }
 #endif
+
 
 //
 // Arrays of fixed size
@@ -375,15 +374,13 @@ bool extract(T& value, const uint8_t* buffer, size_t buffer_length, size_t offse
 }
 
 
-
 //
 // Special Deserialization
 //
 
-
 // Deserialize and return by value
 
-#ifdef HAS_OPTIONAL
+#ifdef MICROSTRAIN_HAS_OPTIONAL
 template<class T, serialization::Endian E>
 std::optional<T> extract(Serializer<E>& serializer)
 {
@@ -449,5 +446,6 @@ bool Serializer<E>::extract_count(T& count, S max_count)
 
     return false;
 }
+
 
 } // namespace microstrain

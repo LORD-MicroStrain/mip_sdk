@@ -54,7 +54,7 @@ bool SerialConnection::disconnect()
 
 
 
-///@copydoc mip::Connection::recvFromDevice
+///@copydoc microstrain::Connection::recvFromDevice
 bool SerialConnection::recvFromDevice(uint8_t* buffer, size_t max_length, unsigned int wait_time, size_t* length_out, EmbeddedTimestamp* timestamp)
 {
     *timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
@@ -62,7 +62,7 @@ bool SerialConnection::recvFromDevice(uint8_t* buffer, size_t max_length, unsign
     return serial_port_read(&mPort, buffer, max_length, wait_time, length_out);
 }
 
-///@copydoc mip::Connection::sendToDevice
+///@copydoc microstrain::Connection::sendToDevice
 bool SerialConnection::sendToDevice(const uint8_t* data, size_t length)
 {
     size_t length_out;

@@ -8,11 +8,11 @@
 #include <mip/metadata/definitions/commands_rtk.hpp>
 #include <mip/metadata/definitions/commands_system.hpp>
 
-#include <mip/metadata/definitions/data_filter.hpp>
-#include <mip/metadata/definitions/data_gnss.hpp>
-#include <mip/metadata/definitions/data_sensor.hpp>
-#include <mip/metadata/definitions/data_shared.hpp>
-#include <mip/metadata/definitions/data_system.hpp>
+#include "definitions/data_filter.hpp"
+#include "definitions/data_gnss.hpp"
+#include "definitions/data_sensor.hpp"
+#include "definitions/data_shared.hpp"
+#include "definitions/data_system.hpp"
 
 
 namespace mip::metadata

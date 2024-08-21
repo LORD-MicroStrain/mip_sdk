@@ -4,10 +4,10 @@
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Initializer a serialization struct for creation of a new field at the
+///@brief Initialize a serialization struct for creation of a new field at the
 ///       end of the packet.
 ///
-///@note Call microstrain_serializer_finiish_new_field after the data has been serialized.
+///@note Call microstrain_serializer_finish_new_field after the data has been serialized.
 ///
 ///@note Only one new field per packet can be in progress at a time.
 ///

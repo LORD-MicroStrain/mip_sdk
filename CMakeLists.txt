@@ -379,8 +379,8 @@ endif()
 if(BUILD_PACKAGE)
     # NOTE: CPack requires all these variables to be set before importing the module. Do not move them after the include(CPack) line
     set(CPACK_GENERATOR "${FOUND_CPACK_GENERATORS}")
-    set(CPACK_PACKAGE_VENDOR "Parker Hanifin")
-    set(CPACK_PACKAGE_CONTACT "Rob Fisher <rob.fisher@parker.com>")
+    set(CPACK_PACKAGE_VENDOR "MicroStrain by HBK")
+    set(CPACK_PACKAGE_CONTACT "MicroStrain Support <microstrainsupport@hbkworld.com>")
     set(CPACK_COMPONENTS_ALL "mip")
 
     set(CPACK_PACKAGE_VERSION ${MIP_GIT_VERSION_CLEAN})
