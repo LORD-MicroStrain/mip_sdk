@@ -1,6 +1,6 @@
 #pragma once
 
-#include <microstrain/common/platform.hpp>
+#include <microstrain/common/platform.h>
 
 #ifdef MICROSTRAIN_PLATFORM_WINDOWS
 
