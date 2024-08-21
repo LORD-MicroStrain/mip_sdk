@@ -4,7 +4,6 @@
 #include <stdint.h>
 
 
-
 #ifdef __cplusplus
 namespace microstrain {
 namespace C {

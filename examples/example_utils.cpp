@@ -115,7 +115,7 @@ std::unique_ptr<ExampleUtils> openFromArgs(const std::string& port_or_hostname, 
 std::unique_ptr<ExampleUtils> handleCommonArgs(int argc, const char* argv[], int maxArgs)
 {
     // Setup the logger for the MIP SDK
-    MIP_LOG_INIT(&customLog, MICROSTRAIN_LOG_LEVEL_DEBUG, nullptr);
+    MICROSTRAIN_LOG_INIT(&customLog, MICROSTRAIN_LOG_LEVEL_DEBUG, nullptr);
 
     if( argc < 3 || argc > maxArgs )
     {

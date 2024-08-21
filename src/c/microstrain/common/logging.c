@@ -17,11 +17,11 @@ void* microstrain_log_user_data_ = NULL;
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Initializes the logger with a callback and user data.
-///       Call MIP_LOG_INIT instead of using this function directly.
+///       Call MICROSTRAIN_LOG_INIT instead of using this function directly.
 ///       This function does not have to be called unless the user wants logging
 ///
 ///@param callback The callback to execute when there is data to log
-///@param level    The level that the MIP SDK should log at
+///@param level    The level that the MicroStrain SDK should log at
 ///@param user     User data that will be passed to the callback every time it is excuted
 ///
 void microstrain_logging_init(microstrain_log_callback callback, microstrain_log_level level, void* user)
@@ -64,7 +64,7 @@ void* microstrain_logging_user_data()
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Internal log function called by logging macros.
 ///       Call MIP_LOG_* macros instead of using this function directly
-///@copydetails mip::C::microstrain_log_callback
+///@copydetails microstrain::C::microstrain_log_callback
 ///
 void microstrain_logging_log(microstrain_log_level level, const char* fmt, ...)
 {

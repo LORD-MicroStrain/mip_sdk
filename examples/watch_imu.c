@@ -159,7 +159,7 @@ int main(int argc, const char* argv[])
         return usage(argv[0]);
 
     // Initialize the MIP logger before opening the port so we can print errors if they occur
-    MIP_LOG_INIT(&customLog, MICROSTRAIN_LOG_LEVEL_INFO, NULL);
+    MICROSTRAIN_LOG_INIT(&customLog, MICROSTRAIN_LOG_LEVEL_INFO, NULL);
 
     if( !open_port(argv[1], baudrate) )
         return 1;

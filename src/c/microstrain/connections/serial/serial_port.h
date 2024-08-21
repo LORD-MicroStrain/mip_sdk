@@ -1,6 +1,8 @@
 #pragma once
 
-#ifdef WIN32
+#include <microstrain/common/platform.hpp>
+
+#ifdef MICROSTRAIN_PLATFORM_WINDOWS
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
 #endif
@@ -39,7 +41,7 @@ extern "C" {
 
 typedef struct serial_port
 {
-#ifdef WIN32 //Windows
+#ifdef MICROSTRAIN_PLATFORM_WINDOWS
     HANDLE handle;
 #else //Linux
     int handle;

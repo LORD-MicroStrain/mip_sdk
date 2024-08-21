@@ -3,17 +3,17 @@
 
 #include "serial_port.h"
 
-#if defined WIN32
+#if defined MICROSTRAIN_PLATFORM_WINDOWS
 #include <stdlib.h>
 #include <ctype.h>
-#elif defined __APPLE__
+#elif defined MICROSTRAIN_PLATFORM_APPLE
 #include <IOKit/serial/ioss.h>
 #endif
 
 
 #define COM_PORT_BUFFER_SIZE  0x200
 
-#ifndef WIN32 //Unix only
+#if defined MICROSTRAIN_PLATFORM_APPLE || defined MICROSTRAIN_PLATFORM_LINUX
 
 #define INVALID_HANDLE_VALUE -1
 
@@ -33,7 +33,7 @@ speed_t baud_rate_to_speed(int baud_rate)
         return B115200;
     case 230400:
         return B230400;
-#ifdef __linux__ //Linux onnly baudrates
+#ifdef MICROSTRAIN_PLATFORM_LINUX //Linux onnly baudrates
     case 460800:
         return B460800;
     case 500000:
@@ -75,7 +75,7 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
     if(port_str == NULL)
         return false;
 
-    MIP_LOG_DEBUG("Opening serial port %s at %d\n", port_str, baudrate);
+    MICROSTRAIN_LOG_DEBUG("Opening serial port %s at %d\n", port_str, baudrate);
 #ifdef WIN32
     BOOL   ready;
     DCB    dcb;
@@ -118,14 +118,14 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
     //Check for an invalid handle
     if(port->handle == INVALID_HANDLE_VALUE)
     {
-        MIP_LOG_ERROR("Unable to open com port (%d)\n", last_error);
+        MICROSTRAIN_LOG_ERROR("Unable to open com port (%d)\n", last_error);
         return false;
     }
 
     //Setup the com port buffer sizes
     if(SetupComm(port->handle, COM_PORT_BUFFER_SIZE, COM_PORT_BUFFER_SIZE) == 0)
     {
-        MIP_LOG_ERROR("Unable to setup com port buffer size (%d)\n", last_error);
+        MICROSTRAIN_LOG_ERROR("Unable to setup com port buffer size (%d)\n", last_error);
         CloseHandle(port->handle);
         port->handle = INVALID_HANDLE_VALUE;
         return false;
@@ -151,7 +151,7 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
     //Close the serial port, mutex, and exit
     if(!ready)
     {
-        MIP_LOG_ERROR("Unable to get com state\n");
+        MICROSTRAIN_LOG_ERROR("Unable to get com state\n");
         CloseHandle(port->handle);
         port->handle = INVALID_HANDLE_VALUE;
         return false;
@@ -169,7 +169,7 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
     //Close the serial port and exit
     if(!ready)
     {
-        MIP_LOG_ERROR("Unable to set com state\n");
+        MICROSTRAIN_LOG_ERROR("Unable to set com state\n");
         CloseHandle(port->handle);
         port->handle = INVALID_HANDLE_VALUE;
         return false;
@@ -186,20 +186,20 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
 
     if (port->handle < 0)
     {
-        MIP_LOG_ERROR("Unable to open port (%d): %s\n", errno, strerror(errno));
+        MICROSTRAIN_LOG_ERROR("Unable to open port (%d): %s\n", errno, strerror(errno));
         return false;
     }
 
     if( ioctl(port->handle, TIOCEXCL) < 0 )
     {
-        MIP_LOG_WARN("Unable to set exclusive mode on serial port (%d): %s\n", errno, strerror(errno));
+        MICROSTRAIN_LOG_WARN("Unable to set exclusive mode on serial port (%d): %s\n", errno, strerror(errno));
     }
 
     // Set up baud rate and other serial device options
     struct termios serial_port_settings;
     if (tcgetattr(port->handle, &serial_port_settings) < 0)
     {
-        MIP_LOG_ERROR("Unable to get serial port settings (%d): %s\n", errno, strerror(errno));
+        MICROSTRAIN_LOG_ERROR("Unable to get serial port settings (%d): %s\n", errno, strerror(errno));
         close(port->handle);
         port->handle = -1;
         return false;
@@ -208,7 +208,7 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
 #ifndef __APPLE__
     if (cfsetispeed(&serial_port_settings, baud_rate_to_speed(baudrate)) < 0 || cfsetospeed(&serial_port_settings, baud_rate_to_speed(baudrate)) < 0)
     {
-        MIP_LOG_ERROR("Unable to set baud rate (%d): %s\n", errno, strerror(errno));
+        MICROSTRAIN_LOG_ERROR("Unable to set baud rate (%d): %s\n", errno, strerror(errno));
         close(port->handle);
         port->handle = -1;
         return false;
@@ -228,7 +228,7 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
     // Persist the settings
     if(tcsetattr(port->handle, TCSANOW, &serial_port_settings) < 0)
     {
-        MIP_LOG_ERROR("Unable to save serial port settings (%d): %s\n", errno, strerror(errno));
+        MICROSTRAIN_LOG_ERROR("Unable to save serial port settings (%d): %s\n", errno, strerror(errno));
         close(port->handle);
         port->handle = -1;
         return false;
@@ -239,7 +239,7 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
     speed_t speed = baudrate;
     if (ioctl(port->handle, IOSSIOSPEED, &speed) < 0)
     {
-        MIP_LOG_ERROR("Unable to set baud rate (%d): %s\n", errno, strerror(errno));
+        MICROSTRAIN_LOG_ERROR("Unable to set baud rate (%d): %s\n", errno, strerror(errno));
         close(port->handle);
         port->handle = -1;
         return false;
@@ -298,7 +298,7 @@ bool serial_port_write(serial_port *port, const void *buffer, size_t num_bytes, 
     if(*bytes_written == num_bytes)
         return true;
     else if(*bytes_written == (size_t)-1)
-        MIP_LOG_ERROR("Failed to write serial data (%d): %s\n", errno, strerror(errno));
+        MICROSTRAIN_LOG_ERROR("Failed to write serial data (%d): %s\n", errno, strerror(errno));
 
 #endif
 
@@ -314,14 +314,14 @@ bool serial_port_read(serial_port *port, void *buffer, size_t num_bytes, int wai
     if(!serial_port_is_open(port))
         return false;
 
-#ifdef WIN32 //Windows
+#ifdef MICROSTRAIN_PLATFORM_WINDOWS
 
     uint32_t bytes_available = serial_port_read_count(port);
 
     DWORD last_error = GetLastError();
     if (last_error != 0)
     {
-        MIP_LOG_ERROR("Failed to read serial port. Error: %lx\n", last_error);
+        MICROSTRAIN_LOG_ERROR("Failed to read serial port. Error: %lx\n", last_error);
         serial_port_close(port);
         return false;
     }
@@ -351,18 +351,18 @@ bool serial_port_read(serial_port *port, void *buffer, size_t num_bytes, int wai
     // Keep reading and polling while there is still data available
     if (poll_status == -1)
     {
-        MIP_LOG_ERROR("Failed to poll serial port (%d): %s\n", errno, strerror(errno));
+        MICROSTRAIN_LOG_ERROR("Failed to poll serial port (%d): %s\n", errno, strerror(errno));
         return false;
     }
     else if (poll_fd.revents & POLLHUP)
     {
-        MIP_LOG_ERROR("Poll encountered HUP, closing device");
+        MICROSTRAIN_LOG_ERROR("Poll encountered HUP, closing device");
         serial_port_close(port);
         return false;
     }
     else if (poll_fd.revents & POLLERR || poll_fd.revents & POLLNVAL)
     {
-        MIP_LOG_ERROR("Poll encountered error\n");
+        MICROSTRAIN_LOG_ERROR("Poll encountered error\n");
         return false;
     }
     else if (poll_status > 0 && poll_fd.revents & POLLIN)
@@ -371,7 +371,7 @@ bool serial_port_read(serial_port *port, void *buffer, size_t num_bytes, int wai
 
         if(local_bytes_read == (ssize_t)-1 && errno != EAGAIN)
         {
-            MIP_LOG_ERROR("Failed to read serial data (%d): %s\n", errno, strerror(errno));
+            MICROSTRAIN_LOG_ERROR("Failed to read serial data (%d): %s\n", errno, strerror(errno));
             return false;
         }
         if(local_bytes_read >= 0)
@@ -387,7 +387,7 @@ bool serial_port_read(serial_port *port, void *buffer, size_t num_bytes, int wai
 
 uint32_t serial_port_read_count(serial_port *port)
 {
-#ifdef WIN32 //Windows
+#ifdef MICROSTRAIN_PLATFORM_WINDOWS //Windows
     // Clear the last error, if any
     SetLastError(0);
 #endif
@@ -396,7 +396,7 @@ uint32_t serial_port_read_count(serial_port *port)
     if(!serial_port_is_open(port))
         return 0;
 
-#ifdef WIN32 //Windows
+#ifdef MICROSTRAIN_PLATFORM_WINDOWS //Windows
     COMSTAT com_status;
     DWORD   errors;
 
@@ -418,7 +418,7 @@ uint32_t serial_port_read_count(serial_port *port)
 
 bool serial_port_is_open(const serial_port *port)
 {
-#ifdef WIN32
+#ifdef MICROSTRAIN_PLATFORM_WINDOWS
     return port->handle != INVALID_HANDLE_VALUE;
 #else
     return port->handle >= 0;
