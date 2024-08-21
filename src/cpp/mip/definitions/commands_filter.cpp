@@ -88,6 +88,17 @@ void EstimationControl::extract(Serializer& serializer)
     }
 }
 
+void EstimationControl::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(enable);
+    
+}
+void EstimationControl::Response::extract(Serializer& serializer)
+{
+    serializer.extract(enable);
+    
+}
+
 TypedResult<EstimationControl> writeEstimationControl(C::mip_interface& device, EstimationControl::EnableFlags enable)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -324,6 +335,17 @@ void TareOrientation::extract(Serializer& serializer)
     }
 }
 
+void TareOrientation::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(axes);
+    
+}
+void TareOrientation::Response::extract(Serializer& serializer)
+{
+    serializer.extract(axes);
+    
+}
+
 TypedResult<TareOrientation> writeTareOrientation(C::mip_interface& device, TareOrientation::MipTareAxes axes)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -408,6 +430,17 @@ void VehicleDynamicsMode::extract(Serializer& serializer)
         serializer.extract(mode);
         
     }
+}
+
+void VehicleDynamicsMode::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(mode);
+    
+}
+void VehicleDynamicsMode::Response::extract(Serializer& serializer)
+{
+    serializer.extract(mode);
+    
 }
 
 TypedResult<VehicleDynamicsMode> writeVehicleDynamicsMode(C::mip_interface& device, VehicleDynamicsMode::DynamicsMode mode)
@@ -502,6 +535,25 @@ void SensorToVehicleRotationEuler::extract(Serializer& serializer)
         serializer.extract(yaw);
         
     }
+}
+
+void SensorToVehicleRotationEuler::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(roll);
+    
+    serializer.insert(pitch);
+    
+    serializer.insert(yaw);
+    
+}
+void SensorToVehicleRotationEuler::Response::extract(Serializer& serializer)
+{
+    serializer.extract(roll);
+    
+    serializer.extract(pitch);
+    
+    serializer.extract(yaw);
+    
 }
 
 TypedResult<SensorToVehicleRotationEuler> writeSensorToVehicleRotationEuler(C::mip_interface& device, float roll, float pitch, float yaw)
@@ -600,6 +652,17 @@ void SensorToVehicleRotationDcm::extract(Serializer& serializer)
     }
 }
 
+void SensorToVehicleRotationDcm::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(dcm);
+    
+}
+void SensorToVehicleRotationDcm::Response::extract(Serializer& serializer)
+{
+    serializer.extract(dcm);
+    
+}
+
 TypedResult<SensorToVehicleRotationDcm> writeSensorToVehicleRotationDcm(C::mip_interface& device, const float* dcm)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -687,6 +750,17 @@ void SensorToVehicleRotationQuaternion::extract(Serializer& serializer)
         serializer.extract(quat);
         
     }
+}
+
+void SensorToVehicleRotationQuaternion::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(quat);
+    
+}
+void SensorToVehicleRotationQuaternion::Response::extract(Serializer& serializer)
+{
+    serializer.extract(quat);
+    
 }
 
 TypedResult<SensorToVehicleRotationQuaternion> writeSensorToVehicleRotationQuaternion(C::mip_interface& device, const float* quat)
@@ -778,6 +852,17 @@ void SensorToVehicleOffset::extract(Serializer& serializer)
     }
 }
 
+void SensorToVehicleOffset::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(offset);
+    
+}
+void SensorToVehicleOffset::Response::extract(Serializer& serializer)
+{
+    serializer.extract(offset);
+    
+}
+
 TypedResult<SensorToVehicleOffset> writeSensorToVehicleOffset(C::mip_interface& device, const float* offset)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -865,6 +950,17 @@ void AntennaOffset::extract(Serializer& serializer)
         serializer.extract(offset);
         
     }
+}
+
+void AntennaOffset::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(offset);
+    
+}
+void AntennaOffset::Response::extract(Serializer& serializer)
+{
+    serializer.extract(offset);
+    
 }
 
 TypedResult<AntennaOffset> writeAntennaOffset(C::mip_interface& device, const float* offset)
@@ -956,6 +1052,17 @@ void GnssSource::extract(Serializer& serializer)
     }
 }
 
+void GnssSource::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(source);
+    
+}
+void GnssSource::Response::extract(Serializer& serializer)
+{
+    serializer.extract(source);
+    
+}
+
 TypedResult<GnssSource> writeGnssSource(C::mip_interface& device, GnssSource::Source source)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -1040,6 +1147,17 @@ void HeadingSource::extract(Serializer& serializer)
         serializer.extract(source);
         
     }
+}
+
+void HeadingSource::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(source);
+    
+}
+void HeadingSource::Response::extract(Serializer& serializer)
+{
+    serializer.extract(source);
+    
 }
 
 TypedResult<HeadingSource> writeHeadingSource(C::mip_interface& device, HeadingSource::Source source)
@@ -1128,6 +1246,17 @@ void AutoInitControl::extract(Serializer& serializer)
     }
 }
 
+void AutoInitControl::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(enable);
+    
+}
+void AutoInitControl::Response::extract(Serializer& serializer)
+{
+    serializer.extract(enable);
+    
+}
+
 TypedResult<AutoInitControl> writeAutoInitControl(C::mip_interface& device, uint8_t enable)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -1212,6 +1341,17 @@ void AccelNoise::extract(Serializer& serializer)
         serializer.extract(noise);
         
     }
+}
+
+void AccelNoise::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(noise);
+    
+}
+void AccelNoise::Response::extract(Serializer& serializer)
+{
+    serializer.extract(noise);
+    
 }
 
 TypedResult<AccelNoise> writeAccelNoise(C::mip_interface& device, const float* noise)
@@ -1301,6 +1441,17 @@ void GyroNoise::extract(Serializer& serializer)
         serializer.extract(noise);
         
     }
+}
+
+void GyroNoise::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(noise);
+    
+}
+void GyroNoise::Response::extract(Serializer& serializer)
+{
+    serializer.extract(noise);
+    
 }
 
 TypedResult<GyroNoise> writeGyroNoise(C::mip_interface& device, const float* noise)
@@ -1394,6 +1545,21 @@ void AccelBiasModel::extract(Serializer& serializer)
         serializer.extract(noise);
         
     }
+}
+
+void AccelBiasModel::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(beta);
+    
+    serializer.insert(noise);
+    
+}
+void AccelBiasModel::Response::extract(Serializer& serializer)
+{
+    serializer.extract(beta);
+    
+    serializer.extract(noise);
+    
 }
 
 TypedResult<AccelBiasModel> writeAccelBiasModel(C::mip_interface& device, const float* beta, const float* noise)
@@ -1497,6 +1663,21 @@ void GyroBiasModel::extract(Serializer& serializer)
     }
 }
 
+void GyroBiasModel::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(beta);
+    
+    serializer.insert(noise);
+    
+}
+void GyroBiasModel::Response::extract(Serializer& serializer)
+{
+    serializer.extract(beta);
+    
+    serializer.extract(noise);
+    
+}
+
 TypedResult<GyroBiasModel> writeGyroBiasModel(C::mip_interface& device, const float* beta, const float* noise)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -1594,6 +1775,17 @@ void AltitudeAiding::extract(Serializer& serializer)
     }
 }
 
+void AltitudeAiding::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(selector);
+    
+}
+void AltitudeAiding::Response::extract(Serializer& serializer)
+{
+    serializer.extract(selector);
+    
+}
+
 TypedResult<AltitudeAiding> writeAltitudeAiding(C::mip_interface& device, AltitudeAiding::AidingSelector selector)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -1678,6 +1870,17 @@ void PitchRollAiding::extract(Serializer& serializer)
         serializer.extract(source);
         
     }
+}
+
+void PitchRollAiding::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(source);
+    
+}
+void PitchRollAiding::Response::extract(Serializer& serializer)
+{
+    serializer.extract(source);
+    
 }
 
 TypedResult<PitchRollAiding> writePitchRollAiding(C::mip_interface& device, PitchRollAiding::AidingSource source)
@@ -1768,6 +1971,21 @@ void AutoZupt::extract(Serializer& serializer)
         serializer.extract(threshold);
         
     }
+}
+
+void AutoZupt::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(enable);
+    
+    serializer.insert(threshold);
+    
+}
+void AutoZupt::Response::extract(Serializer& serializer)
+{
+    serializer.extract(enable);
+    
+    serializer.extract(threshold);
+    
 }
 
 TypedResult<AutoZupt> writeAutoZupt(C::mip_interface& device, uint8_t enable, float threshold)
@@ -1863,6 +2081,21 @@ void AutoAngularZupt::extract(Serializer& serializer)
         serializer.extract(threshold);
         
     }
+}
+
+void AutoAngularZupt::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(enable);
+    
+    serializer.insert(threshold);
+    
+}
+void AutoAngularZupt::Response::extract(Serializer& serializer)
+{
+    serializer.extract(enable);
+    
+    serializer.extract(threshold);
+    
 }
 
 TypedResult<AutoAngularZupt> writeAutoAngularZupt(C::mip_interface& device, uint8_t enable, float threshold)
@@ -2013,6 +2246,17 @@ void GravityNoise::extract(Serializer& serializer)
     }
 }
 
+void GravityNoise::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(noise);
+    
+}
+void GravityNoise::Response::extract(Serializer& serializer)
+{
+    serializer.extract(noise);
+    
+}
+
 TypedResult<GravityNoise> writeGravityNoise(C::mip_interface& device, const float* noise)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -2102,6 +2346,17 @@ void PressureAltitudeNoise::extract(Serializer& serializer)
     }
 }
 
+void PressureAltitudeNoise::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(noise);
+    
+}
+void PressureAltitudeNoise::Response::extract(Serializer& serializer)
+{
+    serializer.extract(noise);
+    
+}
+
 TypedResult<PressureAltitudeNoise> writePressureAltitudeNoise(C::mip_interface& device, float noise)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -2186,6 +2441,17 @@ void HardIronOffsetNoise::extract(Serializer& serializer)
         serializer.extract(noise);
         
     }
+}
+
+void HardIronOffsetNoise::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(noise);
+    
+}
+void HardIronOffsetNoise::Response::extract(Serializer& serializer)
+{
+    serializer.extract(noise);
+    
 }
 
 TypedResult<HardIronOffsetNoise> writeHardIronOffsetNoise(C::mip_interface& device, const float* noise)
@@ -2277,6 +2543,17 @@ void SoftIronMatrixNoise::extract(Serializer& serializer)
     }
 }
 
+void SoftIronMatrixNoise::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(noise);
+    
+}
+void SoftIronMatrixNoise::Response::extract(Serializer& serializer)
+{
+    serializer.extract(noise);
+    
+}
+
 TypedResult<SoftIronMatrixNoise> writeSoftIronMatrixNoise(C::mip_interface& device, const float* noise)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -2364,6 +2641,17 @@ void MagNoise::extract(Serializer& serializer)
         serializer.extract(noise);
         
     }
+}
+
+void MagNoise::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(noise);
+    
+}
+void MagNoise::Response::extract(Serializer& serializer)
+{
+    serializer.extract(noise);
+    
 }
 
 TypedResult<MagNoise> writeMagNoise(C::mip_interface& device, const float* noise)
@@ -2457,6 +2745,21 @@ void InclinationSource::extract(Serializer& serializer)
         serializer.extract(inclination);
         
     }
+}
+
+void InclinationSource::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(source);
+    
+    serializer.insert(inclination);
+    
+}
+void InclinationSource::Response::extract(Serializer& serializer)
+{
+    serializer.extract(source);
+    
+    serializer.extract(inclination);
+    
 }
 
 TypedResult<InclinationSource> writeInclinationSource(C::mip_interface& device, FilterMagParamSource source, float inclination)
@@ -2554,6 +2857,21 @@ void MagneticDeclinationSource::extract(Serializer& serializer)
     }
 }
 
+void MagneticDeclinationSource::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(source);
+    
+    serializer.insert(declination);
+    
+}
+void MagneticDeclinationSource::Response::extract(Serializer& serializer)
+{
+    serializer.extract(source);
+    
+    serializer.extract(declination);
+    
+}
+
 TypedResult<MagneticDeclinationSource> writeMagneticDeclinationSource(C::mip_interface& device, FilterMagParamSource source, float declination)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -2647,6 +2965,21 @@ void MagFieldMagnitudeSource::extract(Serializer& serializer)
         serializer.extract(magnitude);
         
     }
+}
+
+void MagFieldMagnitudeSource::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(source);
+    
+    serializer.insert(magnitude);
+    
+}
+void MagFieldMagnitudeSource::Response::extract(Serializer& serializer)
+{
+    serializer.extract(source);
+    
+    serializer.extract(magnitude);
+    
 }
 
 TypedResult<MagFieldMagnitudeSource> writeMagFieldMagnitudeSource(C::mip_interface& device, FilterMagParamSource source, float magnitude)
@@ -2750,6 +3083,29 @@ void ReferencePosition::extract(Serializer& serializer)
         serializer.extract(altitude);
         
     }
+}
+
+void ReferencePosition::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(enable);
+    
+    serializer.insert(latitude);
+    
+    serializer.insert(longitude);
+    
+    serializer.insert(altitude);
+    
+}
+void ReferencePosition::Response::extract(Serializer& serializer)
+{
+    serializer.extract(enable);
+    
+    serializer.extract(latitude);
+    
+    serializer.extract(longitude);
+    
+    serializer.extract(altitude);
+    
 }
 
 TypedResult<ReferencePosition> writeReferencePosition(C::mip_interface& device, bool enable, double latitude, double longitude, double altitude)
@@ -2875,6 +3231,41 @@ void AccelMagnitudeErrorAdaptiveMeasurement::extract(Serializer& serializer)
         serializer.extract(minimum_uncertainty);
         
     }
+}
+
+void AccelMagnitudeErrorAdaptiveMeasurement::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(adaptive_measurement);
+    
+    serializer.insert(frequency);
+    
+    serializer.insert(low_limit);
+    
+    serializer.insert(high_limit);
+    
+    serializer.insert(low_limit_uncertainty);
+    
+    serializer.insert(high_limit_uncertainty);
+    
+    serializer.insert(minimum_uncertainty);
+    
+}
+void AccelMagnitudeErrorAdaptiveMeasurement::Response::extract(Serializer& serializer)
+{
+    serializer.extract(adaptive_measurement);
+    
+    serializer.extract(frequency);
+    
+    serializer.extract(low_limit);
+    
+    serializer.extract(high_limit);
+    
+    serializer.extract(low_limit_uncertainty);
+    
+    serializer.extract(high_limit_uncertainty);
+    
+    serializer.extract(minimum_uncertainty);
+    
 }
 
 TypedResult<AccelMagnitudeErrorAdaptiveMeasurement> writeAccelMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device, FilterAdaptiveMeasurement adaptiveMeasurement, float frequency, float lowLimit, float highLimit, float lowLimitUncertainty, float highLimitUncertainty, float minimumUncertainty)
@@ -3017,6 +3408,41 @@ void MagMagnitudeErrorAdaptiveMeasurement::extract(Serializer& serializer)
     }
 }
 
+void MagMagnitudeErrorAdaptiveMeasurement::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(adaptive_measurement);
+    
+    serializer.insert(frequency);
+    
+    serializer.insert(low_limit);
+    
+    serializer.insert(high_limit);
+    
+    serializer.insert(low_limit_uncertainty);
+    
+    serializer.insert(high_limit_uncertainty);
+    
+    serializer.insert(minimum_uncertainty);
+    
+}
+void MagMagnitudeErrorAdaptiveMeasurement::Response::extract(Serializer& serializer)
+{
+    serializer.extract(adaptive_measurement);
+    
+    serializer.extract(frequency);
+    
+    serializer.extract(low_limit);
+    
+    serializer.extract(high_limit);
+    
+    serializer.extract(low_limit_uncertainty);
+    
+    serializer.extract(high_limit_uncertainty);
+    
+    serializer.extract(minimum_uncertainty);
+    
+}
+
 TypedResult<MagMagnitudeErrorAdaptiveMeasurement> writeMagMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device, FilterAdaptiveMeasurement adaptiveMeasurement, float frequency, float lowLimit, float highLimit, float lowLimitUncertainty, float highLimitUncertainty, float minimumUncertainty)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -3149,6 +3575,33 @@ void MagDipAngleErrorAdaptiveMeasurement::extract(Serializer& serializer)
     }
 }
 
+void MagDipAngleErrorAdaptiveMeasurement::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(enable);
+    
+    serializer.insert(frequency);
+    
+    serializer.insert(high_limit);
+    
+    serializer.insert(high_limit_uncertainty);
+    
+    serializer.insert(minimum_uncertainty);
+    
+}
+void MagDipAngleErrorAdaptiveMeasurement::Response::extract(Serializer& serializer)
+{
+    serializer.extract(enable);
+    
+    serializer.extract(frequency);
+    
+    serializer.extract(high_limit);
+    
+    serializer.extract(high_limit_uncertainty);
+    
+    serializer.extract(minimum_uncertainty);
+    
+}
+
 TypedResult<MagDipAngleErrorAdaptiveMeasurement> writeMagDipAngleErrorAdaptiveMeasurement(C::mip_interface& device, bool enable, float frequency, float highLimit, float highLimitUncertainty, float minimumUncertainty)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -3257,6 +3710,21 @@ void AidingMeasurementEnable::extract(Serializer& serializer)
         serializer.extract(enable);
         
     }
+}
+
+void AidingMeasurementEnable::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(aiding_source);
+    
+    serializer.insert(enable);
+    
+}
+void AidingMeasurementEnable::Response::extract(Serializer& serializer)
+{
+    serializer.extract(aiding_source);
+    
+    serializer.extract(enable);
+    
 }
 
 TypedResult<AidingMeasurementEnable> writeAidingMeasurementEnable(C::mip_interface& device, AidingMeasurementEnable::AidingSource aidingSource, bool enable)
@@ -3376,6 +3844,25 @@ void KinematicConstraint::extract(Serializer& serializer)
         serializer.extract(angular_constraint_selection);
         
     }
+}
+
+void KinematicConstraint::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(acceleration_constraint_selection);
+    
+    serializer.insert(velocity_constraint_selection);
+    
+    serializer.insert(angular_constraint_selection);
+    
+}
+void KinematicConstraint::Response::extract(Serializer& serializer)
+{
+    serializer.extract(acceleration_constraint_selection);
+    
+    serializer.extract(velocity_constraint_selection);
+    
+    serializer.extract(angular_constraint_selection);
+    
 }
 
 TypedResult<KinematicConstraint> writeKinematicConstraint(C::mip_interface& device, uint8_t accelerationConstraintSelection, uint8_t velocityConstraintSelection, uint8_t angularConstraintSelection)
@@ -3504,6 +3991,49 @@ void InitializationConfiguration::extract(Serializer& serializer)
         serializer.extract(reference_frame_selector);
         
     }
+}
+
+void InitializationConfiguration::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(wait_for_run_command);
+    
+    serializer.insert(initial_cond_src);
+    
+    serializer.insert(auto_heading_alignment_selector);
+    
+    serializer.insert(initial_heading);
+    
+    serializer.insert(initial_pitch);
+    
+    serializer.insert(initial_roll);
+    
+    serializer.insert(initial_position);
+    
+    serializer.insert(initial_velocity);
+    
+    serializer.insert(reference_frame_selector);
+    
+}
+void InitializationConfiguration::Response::extract(Serializer& serializer)
+{
+    serializer.extract(wait_for_run_command);
+    
+    serializer.extract(initial_cond_src);
+    
+    serializer.extract(auto_heading_alignment_selector);
+    
+    serializer.extract(initial_heading);
+    
+    serializer.extract(initial_pitch);
+    
+    serializer.extract(initial_roll);
+    
+    serializer.extract(initial_position);
+    
+    serializer.extract(initial_velocity);
+    
+    serializer.extract(reference_frame_selector);
+    
 }
 
 TypedResult<InitializationConfiguration> writeInitializationConfiguration(C::mip_interface& device, uint8_t waitForRunCommand, InitializationConfiguration::InitialConditionSource initialCondSrc, InitializationConfiguration::AlignmentSelector autoHeadingAlignmentSelector, float initialHeading, float initialPitch, float initialRoll, const float* initialPosition, const float* initialVelocity, FilterReferenceFrame referenceFrameSelector)
@@ -3642,6 +4172,21 @@ void AdaptiveFilterOptions::extract(Serializer& serializer)
     }
 }
 
+void AdaptiveFilterOptions::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(level);
+    
+    serializer.insert(time_limit);
+    
+}
+void AdaptiveFilterOptions::Response::extract(Serializer& serializer)
+{
+    serializer.extract(level);
+    
+    serializer.extract(time_limit);
+    
+}
+
 TypedResult<AdaptiveFilterOptions> writeAdaptiveFilterOptions(C::mip_interface& device, uint8_t level, uint16_t timeLimit)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -3735,6 +4280,21 @@ void MultiAntennaOffset::extract(Serializer& serializer)
         serializer.extract(antenna_offset);
         
     }
+}
+
+void MultiAntennaOffset::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(receiver_id);
+    
+    serializer.insert(antenna_offset);
+    
+}
+void MultiAntennaOffset::Response::extract(Serializer& serializer)
+{
+    serializer.extract(receiver_id);
+    
+    serializer.extract(antenna_offset);
+    
 }
 
 TypedResult<MultiAntennaOffset> writeMultiAntennaOffset(C::mip_interface& device, uint8_t receiverId, const float* antennaOffset)
@@ -3846,6 +4406,25 @@ void RelPosConfiguration::extract(Serializer& serializer)
     }
 }
 
+void RelPosConfiguration::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(source);
+    
+    serializer.insert(reference_frame_selector);
+    
+    serializer.insert(reference_coordinates);
+    
+}
+void RelPosConfiguration::Response::extract(Serializer& serializer)
+{
+    serializer.extract(source);
+    
+    serializer.extract(reference_frame_selector);
+    
+    serializer.extract(reference_coordinates);
+    
+}
+
 TypedResult<RelPosConfiguration> writeRelPosConfiguration(C::mip_interface& device, uint8_t source, FilterReferenceFrame referenceFrameSelector, const double* referenceCoordinates)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -3947,6 +4526,21 @@ void RefPointLeverArm::extract(Serializer& serializer)
         serializer.extract(lever_arm_offset);
         
     }
+}
+
+void RefPointLeverArm::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(ref_point_sel);
+    
+    serializer.insert(lever_arm_offset);
+    
+}
+void RefPointLeverArm::Response::extract(Serializer& serializer)
+{
+    serializer.extract(ref_point_sel);
+    
+    serializer.extract(lever_arm_offset);
+    
 }
 
 TypedResult<RefPointLeverArm> writeRefPointLeverArm(C::mip_interface& device, RefPointLeverArm::ReferencePointSelector refPointSel, const float* leverArmOffset)
@@ -4087,6 +4681,21 @@ void SpeedLeverArm::extract(Serializer& serializer)
     }
 }
 
+void SpeedLeverArm::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(source);
+    
+    serializer.insert(lever_arm_offset);
+    
+}
+void SpeedLeverArm::Response::extract(Serializer& serializer)
+{
+    serializer.extract(source);
+    
+    serializer.extract(lever_arm_offset);
+    
+}
+
 TypedResult<SpeedLeverArm> writeSpeedLeverArm(C::mip_interface& device, uint8_t source, const float* leverArmOffset)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -4188,6 +4797,17 @@ void WheeledVehicleConstraintControl::extract(Serializer& serializer)
     }
 }
 
+void WheeledVehicleConstraintControl::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(enable);
+    
+}
+void WheeledVehicleConstraintControl::Response::extract(Serializer& serializer)
+{
+    serializer.extract(enable);
+    
+}
+
 TypedResult<WheeledVehicleConstraintControl> writeWheeledVehicleConstraintControl(C::mip_interface& device, uint8_t enable)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -4272,6 +4892,17 @@ void VerticalGyroConstraintControl::extract(Serializer& serializer)
         serializer.extract(enable);
         
     }
+}
+
+void VerticalGyroConstraintControl::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(enable);
+    
+}
+void VerticalGyroConstraintControl::Response::extract(Serializer& serializer)
+{
+    serializer.extract(enable);
+    
 }
 
 TypedResult<VerticalGyroConstraintControl> writeVerticalGyroConstraintControl(C::mip_interface& device, uint8_t enable)
@@ -4362,6 +4993,21 @@ void GnssAntennaCalControl::extract(Serializer& serializer)
         serializer.extract(max_offset);
         
     }
+}
+
+void GnssAntennaCalControl::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(enable);
+    
+    serializer.insert(max_offset);
+    
+}
+void GnssAntennaCalControl::Response::extract(Serializer& serializer)
+{
+    serializer.extract(enable);
+    
+    serializer.extract(max_offset);
+    
 }
 
 TypedResult<GnssAntennaCalControl> writeGnssAntennaCalControl(C::mip_interface& device, uint8_t enable, float maxOffset)

@@ -98,6 +98,49 @@ void FrameConfig::extract(Serializer& serializer)
     }
 }
 
+void FrameConfig::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(frame_id);
+    
+    serializer.insert(format);
+    
+    serializer.insert(tracking_enabled);
+    
+    serializer.insert(translation);
+    
+    if( format == FrameConfig::Format::EULER )
+    {
+        serializer.insert(rotation.euler);
+        
+    }
+    if( format == FrameConfig::Format::QUATERNION )
+    {
+        serializer.insert(rotation.quaternion);
+        
+    }
+}
+void FrameConfig::Response::extract(Serializer& serializer)
+{
+    serializer.extract(frame_id);
+    
+    serializer.extract(format);
+    
+    serializer.extract(tracking_enabled);
+    
+    serializer.extract(translation);
+    
+    if( format == FrameConfig::Format::EULER )
+    {
+        serializer.extract(rotation.euler);
+        
+    }
+    if( format == FrameConfig::Format::QUATERNION )
+    {
+        serializer.extract(rotation.quaternion);
+        
+    }
+}
+
 TypedResult<FrameConfig> writeFrameConfig(C::mip_interface& device, uint8_t frameId, FrameConfig::Format format, bool trackingEnabled, const float* translation, const FrameConfig::Rotation& rotation)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -228,6 +271,17 @@ void AidingEchoControl::extract(Serializer& serializer)
         serializer.extract(mode);
         
     }
+}
+
+void AidingEchoControl::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(mode);
+    
+}
+void AidingEchoControl::Response::extract(Serializer& serializer)
+{
+    serializer.extract(mode);
+    
 }
 
 TypedResult<AidingEchoControl> writeAidingEchoControl(C::mip_interface& device, AidingEchoControl::Mode mode)

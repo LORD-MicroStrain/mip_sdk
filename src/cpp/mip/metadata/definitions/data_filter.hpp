@@ -189,7 +189,7 @@ struct MetadataFor<data_filter::AttitudeDcm>
     static constexpr inline FieldInfo value = {
         /* .name        = */ "data_filter::AttitudeDcm",
         /* .title       = */ "None",
-        /* .docs        = */ "3x3 Direction Cosine Matrix EQSTART M_{ned}^{veh} EQEND describing the orientation of the device with respect to the NED local-level frame.\nThis matrix satisfies the following relationship:\n\nEQSTART v^{veh} = M_{ned}^{veh} v^{ned} EQEND<br/>\n\nWhere:<br/>\n\nEQSTART v^{ned} EQEND is a 3-element vector expressed in the NED frame. <br/>\nEQSTART v^{veh} EQEND is the same 3-element vector expressed in the vehicle frame.  <br/>\n<br/>\nThe matrix elements are stored is row-major order: EQSTART M_{ned}^{veh} = \\begin{bmatrix} M_{11}, M_{12}, M_{13}, M_{21}, M_{22}, M_{23}, M_{31}, M_{32}, M_{33} \\end{bmatrix} EQEND",
+        /* .docs        = */ "3x3 Direction Cosine Matrix EQSTART M_{ned}^{veh} EQEND describing the orientation of the device with respect to the NED local-level frame.\nThis matrix satisfies the following relationship:\n\nEQSTART v^{veh} = M_{ned}^{veh} v^{ned} EQEND<br/>\n\nWhere:<br/>\n\nEQSTART v^{ned} EQEND is a 3-element vector expressed in the NED frame. <br/>\nEQSTART v^{veh} EQEND is the same 3-element vector expressed in the vehicle frame.  <br/>\n<br/>\nThe matrix elements are stored is row-major order: EQSTART M_{ned}^{veh} = \begin{bmatrix} M_{11}, M_{12}, M_{13}, M_{21}, M_{22}, M_{23}, M_{31}, M_{32}, M_{33} \end{bmatrix} EQEND",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
@@ -2431,15 +2431,12 @@ struct MetadataFor<data_filter::FilterAidingMeasurementType>
         { 4, "PRESSURE", "" },
         { 5, "MAGNETOMETER", "" },
         { 6, "SPEED", "" },
-        { 33, "AIDING_POS_ECEF", "" },
-        { 34, "AIDING_POS_LLH", "" },
-        { 35, "AIDING_HEIGHT_ABOVE_ELLIPSOID", "" },
-        { 40, "AIDING_VEL_ECEF", "" },
-        { 41, "AIDING_VEL_NED", "" },
-        { 42, "AIDING_VEL_BODY_FRAME", "" },
-        { 49, "AIDING_HEADING_TRUE", "" },
-        { 50, "AIDING_MAGNETIC_FIELD", "" },
-        { 51, "AIDING_PRESSURE", "" },
+        { 33, "POS_ECEF", "" },
+        { 34, "POS_LLH", "" },
+        { 40, "VEL_ECEF", "" },
+        { 41, "VEL_NED", "" },
+        { 42, "VEL_VEHICLE_FRAME", "" },
+        { 49, "HEADING_TRUE", "" },
     };
 
     static constexpr inline EnumInfo value = {

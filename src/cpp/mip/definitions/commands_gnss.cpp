@@ -50,6 +50,22 @@ void ReceiverInfo::extract(Serializer& serializer)
     (void)serializer;
 }
 
+void ReceiverInfo::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(num_receivers);
+    
+    for(unsigned int i=0; i < num_receivers; i++)
+        serializer.insert(receiver_info[i]);
+    
+}
+void ReceiverInfo::Response::extract(Serializer& serializer)
+{
+    serializer.extract_count(num_receivers, sizeof(receiver_info)/sizeof(receiver_info[0]));
+    for(unsigned int i=0; i < num_receivers; i++)
+        serializer.extract(receiver_info[i]);
+    
+}
+
 TypedResult<ReceiverInfo> receiverInfo(C::mip_interface& device, uint8_t* numReceiversOut, uint8_t numReceiversOutMax, ReceiverInfo::Info* receiverInfoOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -108,6 +124,35 @@ void SignalConfiguration::extract(Serializer& serializer)
             serializer.extract(reserved[i]);
         
     }
+}
+
+void SignalConfiguration::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(gps_enable);
+    
+    serializer.insert(glonass_enable);
+    
+    serializer.insert(galileo_enable);
+    
+    serializer.insert(beidou_enable);
+    
+    for(unsigned int i=0; i < 4; i++)
+        serializer.insert(reserved[i]);
+    
+}
+void SignalConfiguration::Response::extract(Serializer& serializer)
+{
+    serializer.extract(gps_enable);
+    
+    serializer.extract(glonass_enable);
+    
+    serializer.extract(galileo_enable);
+    
+    serializer.extract(beidou_enable);
+    
+    for(unsigned int i=0; i < 4; i++)
+        serializer.extract(reserved[i]);
+    
 }
 
 TypedResult<SignalConfiguration> writeSignalConfiguration(C::mip_interface& device, uint8_t gpsEnable, uint8_t glonassEnable, uint8_t galileoEnable, uint8_t beidouEnable, const uint8_t* reserved)
@@ -223,6 +268,23 @@ void RtkDongleConfiguration::extract(Serializer& serializer)
             serializer.extract(reserved[i]);
         
     }
+}
+
+void RtkDongleConfiguration::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(enable);
+    
+    for(unsigned int i=0; i < 3; i++)
+        serializer.insert(reserved[i]);
+    
+}
+void RtkDongleConfiguration::Response::extract(Serializer& serializer)
+{
+    serializer.extract(enable);
+    
+    for(unsigned int i=0; i < 3; i++)
+        serializer.extract(reserved[i]);
+    
 }
 
 TypedResult<RtkDongleConfiguration> writeRtkDongleConfiguration(C::mip_interface& device, uint8_t enable, const uint8_t* reserved)

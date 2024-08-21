@@ -29,6 +29,17 @@ void GetStatusFlags::extract(Serializer& serializer)
     (void)serializer;
 }
 
+void GetStatusFlags::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(flags);
+    
+}
+void GetStatusFlags::Response::extract(Serializer& serializer)
+{
+    serializer.extract(flags);
+    
+}
+
 TypedResult<GetStatusFlags> getStatusFlags(C::mip_interface& device, GetStatusFlags::StatusFlags* flagsOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -55,6 +66,19 @@ void GetImei::insert(Serializer& serializer) const
 void GetImei::extract(Serializer& serializer)
 {
     (void)serializer;
+}
+
+void GetImei::Response::insert(Serializer& serializer) const
+{
+    for(unsigned int i=0; i < 32; i++)
+        serializer.insert(IMEI[i]);
+    
+}
+void GetImei::Response::extract(Serializer& serializer)
+{
+    for(unsigned int i=0; i < 32; i++)
+        serializer.extract(IMEI[i]);
+    
 }
 
 TypedResult<GetImei> getImei(C::mip_interface& device, char* imeiOut)
@@ -86,6 +110,19 @@ void GetImsi::extract(Serializer& serializer)
     (void)serializer;
 }
 
+void GetImsi::Response::insert(Serializer& serializer) const
+{
+    for(unsigned int i=0; i < 32; i++)
+        serializer.insert(IMSI[i]);
+    
+}
+void GetImsi::Response::extract(Serializer& serializer)
+{
+    for(unsigned int i=0; i < 32; i++)
+        serializer.extract(IMSI[i]);
+    
+}
+
 TypedResult<GetImsi> getImsi(C::mip_interface& device, char* imsiOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -113,6 +150,19 @@ void GetIccid::insert(Serializer& serializer) const
 void GetIccid::extract(Serializer& serializer)
 {
     (void)serializer;
+}
+
+void GetIccid::Response::insert(Serializer& serializer) const
+{
+    for(unsigned int i=0; i < 32; i++)
+        serializer.insert(ICCID[i]);
+    
+}
+void GetIccid::Response::extract(Serializer& serializer)
+{
+    for(unsigned int i=0; i < 32; i++)
+        serializer.extract(ICCID[i]);
+    
 }
 
 TypedResult<GetIccid> getIccid(C::mip_interface& device, char* iccidOut)
@@ -154,6 +204,17 @@ void ConnectedDeviceType::extract(Serializer& serializer)
         serializer.extract(devType);
         
     }
+}
+
+void ConnectedDeviceType::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(devType);
+    
+}
+void ConnectedDeviceType::Response::extract(Serializer& serializer)
+{
+    serializer.extract(devType);
+    
 }
 
 TypedResult<ConnectedDeviceType> writeConnectedDeviceType(C::mip_interface& device, ConnectedDeviceType::Type devtype)
@@ -230,6 +291,19 @@ void GetActCode::extract(Serializer& serializer)
     (void)serializer;
 }
 
+void GetActCode::Response::insert(Serializer& serializer) const
+{
+    for(unsigned int i=0; i < 32; i++)
+        serializer.insert(ActivationCode[i]);
+    
+}
+void GetActCode::Response::extract(Serializer& serializer)
+{
+    for(unsigned int i=0; i < 32; i++)
+        serializer.extract(ActivationCode[i]);
+    
+}
+
 TypedResult<GetActCode> getActCode(C::mip_interface& device, char* activationcodeOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -259,6 +333,19 @@ void GetModemFirmwareVersion::extract(Serializer& serializer)
     (void)serializer;
 }
 
+void GetModemFirmwareVersion::Response::insert(Serializer& serializer) const
+{
+    for(unsigned int i=0; i < 32; i++)
+        serializer.insert(ModemFirmwareVersion[i]);
+    
+}
+void GetModemFirmwareVersion::Response::extract(Serializer& serializer)
+{
+    for(unsigned int i=0; i < 32; i++)
+        serializer.extract(ModemFirmwareVersion[i]);
+    
+}
+
 TypedResult<GetModemFirmwareVersion> getModemFirmwareVersion(C::mip_interface& device, char* modemfirmwareversionOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -286,6 +373,25 @@ void GetRssi::insert(Serializer& serializer) const
 void GetRssi::extract(Serializer& serializer)
 {
     (void)serializer;
+}
+
+void GetRssi::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(valid);
+    
+    serializer.insert(rssi);
+    
+    serializer.insert(signalQuality);
+    
+}
+void GetRssi::Response::extract(Serializer& serializer)
+{
+    serializer.extract(valid);
+    
+    serializer.extract(rssi);
+    
+    serializer.extract(signalQuality);
+    
 }
 
 TypedResult<GetRssi> getRssi(C::mip_interface& device, bool* validOut, int32_t* rssiOut, int32_t* signalqualityOut)
@@ -325,6 +431,29 @@ void ServiceStatus::extract(Serializer& serializer)
     serializer.extract(reserved1);
     
     serializer.extract(reserved2);
+    
+}
+
+void ServiceStatus::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(flags);
+    
+    serializer.insert(receivedBytes);
+    
+    serializer.insert(lastBytes);
+    
+    serializer.insert(lastBytesTime);
+    
+}
+void ServiceStatus::Response::extract(Serializer& serializer)
+{
+    serializer.extract(flags);
+    
+    serializer.extract(receivedBytes);
+    
+    serializer.extract(lastBytes);
+    
+    serializer.extract(lastBytesTime);
     
 }
 

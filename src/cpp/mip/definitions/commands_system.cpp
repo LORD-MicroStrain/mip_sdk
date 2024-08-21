@@ -41,6 +41,17 @@ void CommMode::extract(Serializer& serializer)
     }
 }
 
+void CommMode::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(mode);
+    
+}
+void CommMode::Response::extract(Serializer& serializer)
+{
+    serializer.extract(mode);
+    
+}
+
 TypedResult<CommMode> writeCommMode(C::mip_interface& device, uint8_t mode)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
