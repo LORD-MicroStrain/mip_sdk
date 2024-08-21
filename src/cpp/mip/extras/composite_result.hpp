@@ -2,9 +2,9 @@
 
 #include "descriptor_id.hpp"
 
-#include "mip/mip_interface.hpp"
-#include "mip/mip_result.h"
-#include "mip/mip_descriptors.h"
+#include <mip/mip_interface.hpp>
+#include <mip/mip_result.hpp>
+#include <mip/mip_descriptors.hpp>
 
 
 #include <stddef.h>
@@ -123,7 +123,7 @@ namespace mip
 
 
     template<class Cmd, class... Args>
-    CompositeResult::Entry runCommandEx(DeviceInterface& device, const Cmd& cmd, Args&&... args)
+    CompositeResult::Entry runCommandEx(Interface& device, const Cmd& cmd, Args&&... args)
     {
         CmdResult result = device.runCommand(cmd, std::forward<Args>(args)...);
 

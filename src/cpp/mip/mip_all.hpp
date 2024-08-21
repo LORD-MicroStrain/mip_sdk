@@ -1,5 +1,8 @@
 #pragma once
 
+// mip_version from C
+#include <mip/mip_version.h>
+
 // MIP Core
 #include "mip_cmdqueue.hpp"
 #include "mip_descriptors.hpp"
@@ -8,7 +11,6 @@
 #include "mip_packet.hpp"
 #include "mip_parser.hpp"
 #include "mip_result.hpp"
-#include "mip/mip_version.h"
 
 // MIP Commands
 #include "definitions/commands_3dm.hpp"

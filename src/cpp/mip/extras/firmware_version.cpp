@@ -1,5 +1,5 @@
 
-#include "version.hpp"
+#include "firmware_version.hpp"
 
 #include <cstdio>
 

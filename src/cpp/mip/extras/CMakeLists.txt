@@ -2,8 +2,8 @@
 set(SOURCES
     composite_result.hpp
     descriptor_id.hpp
-    version.cpp
-    version.hpp
+    firmware_version.cpp
+    firmware_version.hpp
 )
 
 add_library(mip_extras ${SOURCES})

@@ -1,7 +1,8 @@
 #pragma once
 
 #include "mip_metadata.hpp"
-#include "../mip_descriptors.hpp"
+
+#include <mip/mip_descriptors.hpp>
 
 #include <set>
 #include <initializer_list>

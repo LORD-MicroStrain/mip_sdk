@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../mip_descriptors.hpp"
+#include <mip/mip_descriptors.hpp>
 
 
 namespace mip
