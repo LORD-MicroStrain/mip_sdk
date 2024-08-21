@@ -40,6 +40,17 @@ void extract_mip_system_comm_mode_command(microstrain_serializer* serializer, mi
     }
 }
 
+void insert_mip_system_comm_mode_response(microstrain_serializer* serializer, const mip_system_comm_mode_response* self)
+{
+    microstrain_insert_u8(serializer, self->mode);
+    
+}
+void extract_mip_system_comm_mode_response(microstrain_serializer* serializer, mip_system_comm_mode_response* self)
+{
+    microstrain_extract_u8(serializer, &self->mode);
+    
+}
+
 mip_cmd_result mip_system_write_comm_mode(mip_interface* device, uint8_t mode)
 {
     microstrain_serializer serializer;

@@ -209,7 +209,7 @@ TypedResult<FrameConfig> defaultFrameConfig(C::mip_interface& device, uint8_t fr
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_FRAME_CONFIG, buffer, (uint8_t)serializer.length());
 }
-void EchoControl::insert(Serializer& serializer) const
+void AidingEchoControl::insert(Serializer& serializer) const
 {
     serializer.insert(function);
     
@@ -219,7 +219,7 @@ void EchoControl::insert(Serializer& serializer) const
         
     }
 }
-void EchoControl::extract(Serializer& serializer)
+void AidingEchoControl::extract(Serializer& serializer)
 {
     serializer.extract(function);
     
@@ -230,7 +230,7 @@ void EchoControl::extract(Serializer& serializer)
     }
 }
 
-TypedResult<EchoControl> writeEchoControl(C::mip_interface& device, EchoControl::Mode mode)
+TypedResult<AidingEchoControl> writeAidingEchoControl(C::mip_interface& device, AidingEchoControl::Mode mode)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -242,7 +242,7 @@ TypedResult<EchoControl> writeEchoControl(C::mip_interface& device, EchoControl:
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ECHO_CONTROL, buffer, (uint8_t)serializer.length());
 }
-TypedResult<EchoControl> readEchoControl(C::mip_interface& device, EchoControl::Mode* modeOut)
+TypedResult<AidingEchoControl> readAidingEchoControl(C::mip_interface& device, AidingEchoControl::Mode* modeOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -251,7 +251,7 @@ TypedResult<EchoControl> readEchoControl(C::mip_interface& device, EchoControl::
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<EchoControl> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_ECHO_CONTROL, buffer, (uint8_t)serializer.length(), REPLY_ECHO_CONTROL, buffer, &responseLength);
+    TypedResult<AidingEchoControl> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_ECHO_CONTROL, buffer, (uint8_t)serializer.length(), REPLY_ECHO_CONTROL, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -265,7 +265,7 @@ TypedResult<EchoControl> readEchoControl(C::mip_interface& device, EchoControl::
     }
     return result;
 }
-TypedResult<EchoControl> saveEchoControl(C::mip_interface& device)
+TypedResult<AidingEchoControl> saveAidingEchoControl(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -275,7 +275,7 @@ TypedResult<EchoControl> saveEchoControl(C::mip_interface& device)
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ECHO_CONTROL, buffer, (uint8_t)serializer.length());
 }
-TypedResult<EchoControl> loadEchoControl(C::mip_interface& device)
+TypedResult<AidingEchoControl> loadAidingEchoControl(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -285,7 +285,7 @@ TypedResult<EchoControl> loadEchoControl(C::mip_interface& device)
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ECHO_CONTROL, buffer, (uint8_t)serializer.length());
 }
-TypedResult<EchoControl> defaultEchoControl(C::mip_interface& device)
+TypedResult<AidingEchoControl> defaultAidingEchoControl(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -295,7 +295,7 @@ TypedResult<EchoControl> defaultEchoControl(C::mip_interface& device)
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ECHO_CONTROL, buffer, (uint8_t)serializer.length());
 }
-void PosEcef::insert(Serializer& serializer) const
+void EcefPos::insert(Serializer& serializer) const
 {
     serializer.insert(time);
     
@@ -308,7 +308,7 @@ void PosEcef::insert(Serializer& serializer) const
     serializer.insert(valid_flags);
     
 }
-void PosEcef::extract(Serializer& serializer)
+void EcefPos::extract(Serializer& serializer)
 {
     serializer.extract(time);
     
@@ -322,7 +322,7 @@ void PosEcef::extract(Serializer& serializer)
     
 }
 
-TypedResult<PosEcef> posEcef(C::mip_interface& device, const Time& time, uint8_t frameId, const double* position, const float* uncertainty, PosEcef::ValidFlags validFlags)
+TypedResult<EcefPos> ecefPos(C::mip_interface& device, const Time& time, uint8_t frameId, const double* position, const float* uncertainty, EcefPos::ValidFlags validFlags)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -345,7 +345,7 @@ TypedResult<PosEcef> posEcef(C::mip_interface& device, const Time& time, uint8_t
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_POS_ECEF, buffer, (uint8_t)serializer.length());
 }
-void PosLlh::insert(Serializer& serializer) const
+void LlhPos::insert(Serializer& serializer) const
 {
     serializer.insert(time);
     
@@ -362,7 +362,7 @@ void PosLlh::insert(Serializer& serializer) const
     serializer.insert(valid_flags);
     
 }
-void PosLlh::extract(Serializer& serializer)
+void LlhPos::extract(Serializer& serializer)
 {
     serializer.extract(time);
     
@@ -380,7 +380,7 @@ void PosLlh::extract(Serializer& serializer)
     
 }
 
-TypedResult<PosLlh> posLlh(C::mip_interface& device, const Time& time, uint8_t frameId, double latitude, double longitude, double height, const float* uncertainty, PosLlh::ValidFlags validFlags)
+TypedResult<LlhPos> llhPos(C::mip_interface& device, const Time& time, uint8_t frameId, double latitude, double longitude, double height, const float* uncertainty, LlhPos::ValidFlags validFlags)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -405,7 +405,7 @@ TypedResult<PosLlh> posLlh(C::mip_interface& device, const Time& time, uint8_t f
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_POS_LLH, buffer, (uint8_t)serializer.length());
 }
-void HeightAboveEllipsoid::insert(Serializer& serializer) const
+void Height::insert(Serializer& serializer) const
 {
     serializer.insert(time);
     
@@ -418,7 +418,7 @@ void HeightAboveEllipsoid::insert(Serializer& serializer) const
     serializer.insert(valid_flags);
     
 }
-void HeightAboveEllipsoid::extract(Serializer& serializer)
+void Height::extract(Serializer& serializer)
 {
     serializer.extract(time);
     
@@ -432,7 +432,7 @@ void HeightAboveEllipsoid::extract(Serializer& serializer)
     
 }
 
-TypedResult<HeightAboveEllipsoid> heightAboveEllipsoid(C::mip_interface& device, const Time& time, uint8_t frameId, float height, float uncertainty, uint16_t validFlags)
+TypedResult<Height> height(C::mip_interface& device, const Time& time, uint8_t frameId, float height, float uncertainty, uint16_t validFlags)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -449,9 +449,9 @@ TypedResult<HeightAboveEllipsoid> heightAboveEllipsoid(C::mip_interface& device,
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HEIGHT_ABOVE_ELLIPSOID, buffer, (uint8_t)serializer.length());
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HEIGHT_ABS, buffer, (uint8_t)serializer.length());
 }
-void VelEcef::insert(Serializer& serializer) const
+void EcefVel::insert(Serializer& serializer) const
 {
     serializer.insert(time);
     
@@ -464,7 +464,7 @@ void VelEcef::insert(Serializer& serializer) const
     serializer.insert(valid_flags);
     
 }
-void VelEcef::extract(Serializer& serializer)
+void EcefVel::extract(Serializer& serializer)
 {
     serializer.extract(time);
     
@@ -478,7 +478,7 @@ void VelEcef::extract(Serializer& serializer)
     
 }
 
-TypedResult<VelEcef> velEcef(C::mip_interface& device, const Time& time, uint8_t frameId, const float* velocity, const float* uncertainty, VelEcef::ValidFlags validFlags)
+TypedResult<EcefVel> ecefVel(C::mip_interface& device, const Time& time, uint8_t frameId, const float* velocity, const float* uncertainty, EcefVel::ValidFlags validFlags)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -501,7 +501,7 @@ TypedResult<VelEcef> velEcef(C::mip_interface& device, const Time& time, uint8_t
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_VEL_ECEF, buffer, (uint8_t)serializer.length());
 }
-void VelNed::insert(Serializer& serializer) const
+void NedVel::insert(Serializer& serializer) const
 {
     serializer.insert(time);
     
@@ -514,7 +514,7 @@ void VelNed::insert(Serializer& serializer) const
     serializer.insert(valid_flags);
     
 }
-void VelNed::extract(Serializer& serializer)
+void NedVel::extract(Serializer& serializer)
 {
     serializer.extract(time);
     
@@ -528,7 +528,7 @@ void VelNed::extract(Serializer& serializer)
     
 }
 
-TypedResult<VelNed> velNed(C::mip_interface& device, const Time& time, uint8_t frameId, const float* velocity, const float* uncertainty, VelNed::ValidFlags validFlags)
+TypedResult<NedVel> nedVel(C::mip_interface& device, const Time& time, uint8_t frameId, const float* velocity, const float* uncertainty, NedVel::ValidFlags validFlags)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -551,7 +551,7 @@ TypedResult<VelNed> velNed(C::mip_interface& device, const Time& time, uint8_t f
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_VEL_NED, buffer, (uint8_t)serializer.length());
 }
-void VelBodyFrame::insert(Serializer& serializer) const
+void VehicleFixedFrameVelocity::insert(Serializer& serializer) const
 {
     serializer.insert(time);
     
@@ -564,7 +564,7 @@ void VelBodyFrame::insert(Serializer& serializer) const
     serializer.insert(valid_flags);
     
 }
-void VelBodyFrame::extract(Serializer& serializer)
+void VehicleFixedFrameVelocity::extract(Serializer& serializer)
 {
     serializer.extract(time);
     
@@ -578,7 +578,7 @@ void VelBodyFrame::extract(Serializer& serializer)
     
 }
 
-TypedResult<VelBodyFrame> velBodyFrame(C::mip_interface& device, const Time& time, uint8_t frameId, const float* velocity, const float* uncertainty, VelBodyFrame::ValidFlags validFlags)
+TypedResult<VehicleFixedFrameVelocity> vehicleFixedFrameVelocity(C::mip_interface& device, const Time& time, uint8_t frameId, const float* velocity, const float* uncertainty, VehicleFixedFrameVelocity::ValidFlags validFlags)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -599,9 +599,9 @@ TypedResult<VelBodyFrame> velBodyFrame(C::mip_interface& device, const Time& tim
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_VEL_BODY_FRAME, buffer, (uint8_t)serializer.length());
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_VEL_ODOM, buffer, (uint8_t)serializer.length());
 }
-void HeadingTrue::insert(Serializer& serializer) const
+void TrueHeading::insert(Serializer& serializer) const
 {
     serializer.insert(time);
     
@@ -614,7 +614,7 @@ void HeadingTrue::insert(Serializer& serializer) const
     serializer.insert(valid_flags);
     
 }
-void HeadingTrue::extract(Serializer& serializer)
+void TrueHeading::extract(Serializer& serializer)
 {
     serializer.extract(time);
     
@@ -628,7 +628,7 @@ void HeadingTrue::extract(Serializer& serializer)
     
 }
 
-TypedResult<HeadingTrue> headingTrue(C::mip_interface& device, const Time& time, uint8_t frameId, float heading, float uncertainty, uint16_t validFlags)
+TypedResult<TrueHeading> trueHeading(C::mip_interface& device, const Time& time, uint8_t frameId, float heading, float uncertainty, uint16_t validFlags)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));

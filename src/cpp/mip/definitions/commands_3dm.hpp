@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common.hpp"
+#include <mip/definitions/common.hpp>
 #include <mip/mip_descriptors.hpp>
 #include <mip/mip_result.hpp>
 #include <mip/mip_interface.hpp>
@@ -153,8 +153,8 @@ struct NmeaMessage
         VTG  = 5,  ///<  Course over Ground. Source can be the Filter or GNSS1/2 datasets.
         HDT  = 6,  ///<  Heading, True. Source can be the Filter or GNSS1/2 datasets.
         ZDA  = 7,  ///<  Time & Date. Source must be the GNSS1 or GNSS2 datasets.
-        MSRA = 129,  ///<  MicroStrain proprietary Euler angles. Source must be the Filter dataset. The talker ID must be set to IGNORED.
-        MSRR = 130,  ///<  MicroStrain proprietary Angular Rate/Acceleration. Source must be the Sensor dataset. The talker ID must be set to IGNORED.
+        PKRA = 129,  ///<  Parker proprietary Euler angles. Source must be the Filter dataset. The talker ID must be set to IGNORED.
+        PKRR = 130,  ///<  Parker proprietary Angular Rate/Acceleration. Source must be the Sensor dataset. The talker ID must be set to IGNORED.
     };
     
     enum class TalkerID : uint8_t
@@ -1445,8 +1445,6 @@ struct ConstellationSettings
         OptionFlags& operator|=(uint16_t val) { return *this = value | val; }
         OptionFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool l1saif() const { return (value & L1SAIF) > 0; }
-        void l1saif(bool val) { if(val) value |= L1SAIF; else value &= ~L1SAIF; }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -1571,12 +1569,6 @@ struct GnssSbasSettings
         SBASOptions& operator|=(uint16_t val) { return *this = value | val; }
         SBASOptions& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool enableRanging() const { return (value & ENABLE_RANGING) > 0; }
-        void enableRanging(bool val) { if(val) value |= ENABLE_RANGING; else value &= ~ENABLE_RANGING; }
-        bool enableCorrections() const { return (value & ENABLE_CORRECTIONS) > 0; }
-        void enableCorrections(bool val) { if(val) value |= ENABLE_CORRECTIONS; else value &= ~ENABLE_CORRECTIONS; }
-        bool applyIntegrity() const { return (value & APPLY_INTEGRITY) > 0; }
-        void applyIntegrity(bool val) { if(val) value |= APPLY_INTEGRITY; else value &= ~APPLY_INTEGRITY; }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -2097,12 +2089,6 @@ struct GpioConfig
         PinMode& operator|=(uint8_t val) { return *this = value | val; }
         PinMode& operator&=(uint8_t val) { return *this = value & val; }
         
-        bool openDrain() const { return (value & OPEN_DRAIN) > 0; }
-        void openDrain(bool val) { if(val) value |= OPEN_DRAIN; else value &= ~OPEN_DRAIN; }
-        bool pulldown() const { return (value & PULLDOWN) > 0; }
-        void pulldown(bool val) { if(val) value |= PULLDOWN; else value &= ~PULLDOWN; }
-        bool pullup() const { return (value & PULLUP) > 0; }
-        void pullup(bool val) { if(val) value |= PULLUP; else value &= ~PULLUP; }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -2592,12 +2578,6 @@ struct GetEventTriggerStatus
         Status& operator|=(uint8_t val) { return *this = value | val; }
         Status& operator&=(uint8_t val) { return *this = value & val; }
         
-        bool active() const { return (value & ACTIVE) > 0; }
-        void active(bool val) { if(val) value |= ACTIVE; else value &= ~ACTIVE; }
-        bool enabled() const { return (value & ENABLED) > 0; }
-        void enabled(bool val) { if(val) value |= ENABLED; else value &= ~ENABLED; }
-        bool test() const { return (value & TEST) > 0; }
-        void test(bool val) { if(val) value |= TEST; else value &= ~TEST; }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };

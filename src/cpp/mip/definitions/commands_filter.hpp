@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common.hpp"
+#include <mip/definitions/common.hpp>
 #include <mip/mip_descriptors.hpp>
 #include <mip/mip_result.hpp>
 #include <mip/mip_interface.hpp>
@@ -312,20 +312,6 @@ struct EstimationControl
         EnableFlags& operator|=(uint16_t val) { return *this = value | val; }
         EnableFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool gyroBias() const { return (value & GYRO_BIAS) > 0; }
-        void gyroBias(bool val) { if(val) value |= GYRO_BIAS; else value &= ~GYRO_BIAS; }
-        bool accelBias() const { return (value & ACCEL_BIAS) > 0; }
-        void accelBias(bool val) { if(val) value |= ACCEL_BIAS; else value &= ~ACCEL_BIAS; }
-        bool gyroScaleFactor() const { return (value & GYRO_SCALE_FACTOR) > 0; }
-        void gyroScaleFactor(bool val) { if(val) value |= GYRO_SCALE_FACTOR; else value &= ~GYRO_SCALE_FACTOR; }
-        bool accelScaleFactor() const { return (value & ACCEL_SCALE_FACTOR) > 0; }
-        void accelScaleFactor(bool val) { if(val) value |= ACCEL_SCALE_FACTOR; else value &= ~ACCEL_SCALE_FACTOR; }
-        bool antennaOffset() const { return (value & ANTENNA_OFFSET) > 0; }
-        void antennaOffset(bool val) { if(val) value |= ANTENNA_OFFSET; else value &= ~ANTENNA_OFFSET; }
-        bool autoMagHardIron() const { return (value & AUTO_MAG_HARD_IRON) > 0; }
-        void autoMagHardIron(bool val) { if(val) value |= AUTO_MAG_HARD_IRON; else value &= ~AUTO_MAG_HARD_IRON; }
-        bool autoMagSoftIron() const { return (value & AUTO_MAG_SOFT_IRON) > 0; }
-        void autoMagSoftIron(bool val) { if(val) value |= AUTO_MAG_SOFT_IRON; else value &= ~AUTO_MAG_SOFT_IRON; }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -594,12 +580,6 @@ struct TareOrientation
         MipTareAxes& operator|=(uint8_t val) { return *this = value | val; }
         MipTareAxes& operator&=(uint8_t val) { return *this = value & val; }
         
-        bool roll() const { return (value & ROLL) > 0; }
-        void roll(bool val) { if(val) value |= ROLL; else value &= ~ROLL; }
-        bool pitch() const { return (value & PITCH) > 0; }
-        void pitch(bool val) { if(val) value |= PITCH; else value &= ~PITCH; }
-        bool yaw() const { return (value & YAW) > 0; }
-        void yaw(bool val) { if(val) value |= YAW; else value &= ~YAW; }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -1162,13 +1142,9 @@ TypedResult<SensorToVehicleOffset> defaultSensorToVehicleOffset(C::mip_interface
 ///
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup cpp_filter_antenna_offset  (0x0D,0x13) Antenna Offset [CPP]
-/// Configure the GNSS antenna offset.
+/// Set the sensor to GNSS antenna offset.
 /// 
-/// For 5-series products, this is expressed in the sensor frame, from the sensor origin to the GNSS antenna RF center.
-/// 
-/// For 7-series products, this is expressed in the vehicle frame, from the sensor origin to the GNSS antenna RF center.
-/// 
-/// This command should also be used for CV7 / GV7-INS NMEA Input over GPIO.
+/// This is expressed in the sensor frame, from the sensor origin to the GNSS antenna RF center.
 /// 
 /// The magnitude of the offset vector is limited to 10 meters
 /// 
@@ -3085,7 +3061,7 @@ TypedResult<ReferencePosition> defaultReferencePosition(C::mip_interface& device
 /// 
 /// Adaptive measurements can be enabled/disabled without the need for providing the additional parameters.
 /// In this case, only the function selector and enable value are required; all other parameters will remain at their previous values.
-/// When ìauto-adaptiveî is selected, the filter and limit parameters are ignored.
+/// When ‚Äúauto-adaptive‚Äù is selected, the filter and limit parameters are ignored.
 /// Instead, aiding measurements which rely on the gravity vector will be automatically reweighted by the Kalman filter according to the perceived measurement quality.
 /// 
 ///
@@ -3389,7 +3365,7 @@ struct AidingMeasurementEnable
         EXTERNAL_HEADING      = 5,  ///<  External heading input
         EXTERNAL_ALTIMETER    = 6,  ///<  External pressure altimeter input
         EXTERNAL_MAGNETOMETER = 7,  ///<  External magnetomer input
-        BODY_FRAME_VEL        = 8,  ///<  External body frame velocity input
+        VEHICLE_FRAME_VEL     = 8,  ///<  External vehicle frame velocity input
         ALL                   = 65535,  ///<  Save/load/reset all options
     };
     
@@ -3622,14 +3598,6 @@ struct InitializationConfiguration
         AlignmentSelector& operator|=(uint8_t val) { return *this = value | val; }
         AlignmentSelector& operator&=(uint8_t val) { return *this = value & val; }
         
-        bool dualAntenna() const { return (value & DUAL_ANTENNA) > 0; }
-        void dualAntenna(bool val) { if(val) value |= DUAL_ANTENNA; else value &= ~DUAL_ANTENNA; }
-        bool kinematic() const { return (value & KINEMATIC) > 0; }
-        void kinematic(bool val) { if(val) value |= KINEMATIC; else value &= ~KINEMATIC; }
-        bool magnetometer() const { return (value & MAGNETOMETER) > 0; }
-        void magnetometer(bool val) { if(val) value |= MAGNETOMETER; else value &= ~MAGNETOMETER; }
-        bool external() const { return (value & EXTERNAL) > 0; }
-        void external(bool val) { if(val) value |= EXTERNAL; else value &= ~EXTERNAL; }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };

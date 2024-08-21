@@ -123,6 +123,17 @@ void extract_mip_rtk_connected_device_type_command(microstrain_serializer* seria
     }
 }
 
+void insert_mip_rtk_connected_device_type_response(microstrain_serializer* serializer, const mip_rtk_connected_device_type_response* self)
+{
+    insert_mip_rtk_connected_device_type_command_type(serializer, self->devType);
+    
+}
+void extract_mip_rtk_connected_device_type_response(microstrain_serializer* serializer, mip_rtk_connected_device_type_response* self)
+{
+    extract_mip_rtk_connected_device_type_command_type(serializer, &self->devType);
+    
+}
+
 mip_cmd_result mip_rtk_write_connected_device_type(mip_interface* device, mip_rtk_connected_device_type_command_type dev_type)
 {
     microstrain_serializer serializer;
@@ -279,6 +290,29 @@ void extract_mip_rtk_service_status_command(microstrain_serializer* serializer, 
     microstrain_extract_u32(serializer, &self->reserved1);
     
     microstrain_extract_u32(serializer, &self->reserved2);
+    
+}
+
+void insert_mip_rtk_service_status_response(microstrain_serializer* serializer, const mip_rtk_service_status_response* self)
+{
+    insert_mip_rtk_service_status_command_service_flags(serializer, self->flags);
+    
+    microstrain_insert_u32(serializer, self->receivedBytes);
+    
+    microstrain_insert_u32(serializer, self->lastBytes);
+    
+    microstrain_insert_u64(serializer, self->lastBytesTime);
+    
+}
+void extract_mip_rtk_service_status_response(microstrain_serializer* serializer, mip_rtk_service_status_response* self)
+{
+    extract_mip_rtk_service_status_command_service_flags(serializer, &self->flags);
+    
+    microstrain_extract_u32(serializer, &self->receivedBytes);
+    
+    microstrain_extract_u32(serializer, &self->lastBytes);
+    
+    microstrain_extract_u64(serializer, &self->lastBytesTime);
     
 }
 

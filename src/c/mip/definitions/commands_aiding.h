@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common.h"
+#include <mip/definitions/common.h>
 #include <mip/mip_descriptors.h>
 #include <mip/mip_result.h>
 #include <mip/mip_interface.h>
@@ -29,29 +29,29 @@ extern "C" {
 
 enum 
 {
-    MIP_AIDING_CMD_DESC_SET                    = 0x13,
+    MIP_AIDING_CMD_DESC_SET                = 0x13,
     
-    MIP_CMD_DESC_AIDING_FRAME_CONFIG           = 0x01,
-    MIP_CMD_DESC_AIDING_LOCAL_FRAME            = 0x03,
-    MIP_CMD_DESC_AIDING_ECHO_CONTROL           = 0x1F,
-    MIP_CMD_DESC_AIDING_POS_LOCAL              = 0x20,
-    MIP_CMD_DESC_AIDING_POS_ECEF               = 0x21,
-    MIP_CMD_DESC_AIDING_POS_LLH                = 0x22,
-    MIP_CMD_DESC_AIDING_HEIGHT_ABOVE_ELLIPSOID = 0x23,
-    MIP_CMD_DESC_AIDING_HEIGHT_REL             = 0x24,
-    MIP_CMD_DESC_AIDING_VEL_ECEF               = 0x28,
-    MIP_CMD_DESC_AIDING_VEL_NED                = 0x29,
-    MIP_CMD_DESC_AIDING_VEL_BODY_FRAME         = 0x2A,
-    MIP_CMD_DESC_AIDING_WHEELSPEED             = 0x2B,
-    MIP_CMD_DESC_AIDING_HEADING_TRUE           = 0x31,
-    MIP_CMD_DESC_AIDING_MAGNETIC_FIELD         = 0x32,
-    MIP_CMD_DESC_AIDING_PRESSURE               = 0x33,
-    MIP_CMD_DESC_AIDING_DELTA_POSITION         = 0x38,
-    MIP_CMD_DESC_AIDING_DELTA_ATTITUDE         = 0x39,
-    MIP_CMD_DESC_AIDING_ANGULAR_RATE_LOCAL     = 0x3A,
+    MIP_CMD_DESC_AIDING_FRAME_CONFIG       = 0x01,
+    MIP_CMD_DESC_AIDING_LOCAL_FRAME        = 0x03,
+    MIP_CMD_DESC_AIDING_ECHO_CONTROL       = 0x1F,
+    MIP_CMD_DESC_AIDING_POS_LOCAL          = 0x20,
+    MIP_CMD_DESC_AIDING_POS_ECEF           = 0x21,
+    MIP_CMD_DESC_AIDING_POS_LLH            = 0x22,
+    MIP_CMD_DESC_AIDING_HEIGHT_ABS         = 0x23,
+    MIP_CMD_DESC_AIDING_HEIGHT_REL         = 0x24,
+    MIP_CMD_DESC_AIDING_VEL_ECEF           = 0x28,
+    MIP_CMD_DESC_AIDING_VEL_NED            = 0x29,
+    MIP_CMD_DESC_AIDING_VEL_ODOM           = 0x2A,
+    MIP_CMD_DESC_AIDING_WHEELSPEED         = 0x2B,
+    MIP_CMD_DESC_AIDING_HEADING_TRUE       = 0x31,
+    MIP_CMD_DESC_AIDING_MAGNETIC_FIELD     = 0x32,
+    MIP_CMD_DESC_AIDING_PRESSURE           = 0x33,
+    MIP_CMD_DESC_AIDING_DELTA_POSITION     = 0x38,
+    MIP_CMD_DESC_AIDING_DELTA_ATTITUDE     = 0x39,
+    MIP_CMD_DESC_AIDING_LOCAL_ANGULAR_RATE = 0x3A,
     
-    MIP_REPLY_DESC_AIDING_FRAME_CONFIG         = 0x81,
-    MIP_REPLY_DESC_AIDING_ECHO_CONTROL         = 0x9F,
+    MIP_REPLY_DESC_AIDING_FRAME_CONFIG     = 0x81,
+    MIP_REPLY_DESC_AIDING_ECHO_CONTROL     = 0x9F,
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -96,9 +96,8 @@ void extract_mip_time(microstrain_serializer* serializer, mip_time* self);
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_aiding_frame_config  (0x13,0x01) Frame Config [C]
-/// Defines an aiding frame associated with a specific sensor frame ID.
-/// The frame ID used in this command should mirror the frame ID used in the aiding command
-/// (if that aiding measurement is measured in this reference frame).
+/// Defines an aiding frame associated with a specific sensor frame ID.  The frame ID used in this command
+/// should mirror the frame ID used in the aiding command (if that aiding measurement is measured in this reference frame)
 /// 
 /// This transform satisfies the following relationship:
 /// 
@@ -185,24 +184,24 @@ mip_cmd_result mip_aiding_default_frame_config(mip_interface* device, uint8_t fr
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_aiding_echo_control  (0x13,0x1F) Echo Control [C]
+///@defgroup c_aiding_aiding_echo_control  (0x13,0x1F) Aiding Echo Control [C]
 /// Controls command response behavior to external aiding commands
 ///
 ///@{
 
-enum mip_aiding_echo_control_command_mode
+enum mip_aiding_aiding_echo_control_command_mode
 {
-    MIP_AIDING_ECHO_CONTROL_COMMAND_MODE_SUPPRESS_ACK = 0,  ///<  Suppresses the usual command ack field for aiding messages.
-    MIP_AIDING_ECHO_CONTROL_COMMAND_MODE_STANDARD     = 1,  ///<  Normal ack/nack behavior.
-    MIP_AIDING_ECHO_CONTROL_COMMAND_MODE_RESPONSE     = 2,  ///<  Echo the data back as a response.
+    MIP_AIDING_AIDING_ECHO_CONTROL_COMMAND_MODE_SUPPRESS_ACK = 0,  ///<  Suppresses the usual command ack field for aiding messages.
+    MIP_AIDING_AIDING_ECHO_CONTROL_COMMAND_MODE_STANDARD     = 1,  ///<  Normal ack/nack behavior.
+    MIP_AIDING_AIDING_ECHO_CONTROL_COMMAND_MODE_RESPONSE     = 2,  ///<  Echo the data back as a response.
 };
-typedef enum mip_aiding_echo_control_command_mode mip_aiding_echo_control_command_mode;
+typedef enum mip_aiding_aiding_echo_control_command_mode mip_aiding_aiding_echo_control_command_mode;
 
-static inline void insert_mip_aiding_echo_control_command_mode(microstrain_serializer* serializer, const mip_aiding_echo_control_command_mode self)
+static inline void insert_mip_aiding_aiding_echo_control_command_mode(microstrain_serializer* serializer, const mip_aiding_aiding_echo_control_command_mode self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-static inline void extract_mip_aiding_echo_control_command_mode(microstrain_serializer* serializer, mip_aiding_echo_control_command_mode* self)
+static inline void extract_mip_aiding_aiding_echo_control_command_mode(microstrain_serializer* serializer, mip_aiding_aiding_echo_control_command_mode* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -210,50 +209,50 @@ static inline void extract_mip_aiding_echo_control_command_mode(microstrain_seri
 }
 
 
-struct mip_aiding_echo_control_command
+struct mip_aiding_aiding_echo_control_command
 {
     mip_function_selector function;
-    mip_aiding_echo_control_command_mode mode; ///< Controls data echoing.
+    mip_aiding_aiding_echo_control_command_mode mode; ///< Controls data echoing.
 };
-typedef struct mip_aiding_echo_control_command mip_aiding_echo_control_command;
+typedef struct mip_aiding_aiding_echo_control_command mip_aiding_aiding_echo_control_command;
 
-void insert_mip_aiding_echo_control_command(microstrain_serializer* serializer, const mip_aiding_echo_control_command* self);
-void extract_mip_aiding_echo_control_command(microstrain_serializer* serializer, mip_aiding_echo_control_command* self);
+void insert_mip_aiding_aiding_echo_control_command(microstrain_serializer* serializer, const mip_aiding_aiding_echo_control_command* self);
+void extract_mip_aiding_aiding_echo_control_command(microstrain_serializer* serializer, mip_aiding_aiding_echo_control_command* self);
 
-struct mip_aiding_echo_control_response
+struct mip_aiding_aiding_echo_control_response
 {
-    mip_aiding_echo_control_command_mode mode; ///< Controls data echoing.
+    mip_aiding_aiding_echo_control_command_mode mode; ///< Controls data echoing.
 };
-typedef struct mip_aiding_echo_control_response mip_aiding_echo_control_response;
+typedef struct mip_aiding_aiding_echo_control_response mip_aiding_aiding_echo_control_response;
 
-void insert_mip_aiding_echo_control_response(microstrain_serializer* serializer, const mip_aiding_echo_control_response* self);
-void extract_mip_aiding_echo_control_response(microstrain_serializer* serializer, mip_aiding_echo_control_response* self);
+void insert_mip_aiding_aiding_echo_control_response(microstrain_serializer* serializer, const mip_aiding_aiding_echo_control_response* self);
+void extract_mip_aiding_aiding_echo_control_response(microstrain_serializer* serializer, mip_aiding_aiding_echo_control_response* self);
 
-mip_cmd_result mip_aiding_write_echo_control(mip_interface* device, mip_aiding_echo_control_command_mode mode);
-mip_cmd_result mip_aiding_read_echo_control(mip_interface* device, mip_aiding_echo_control_command_mode* mode_out);
-mip_cmd_result mip_aiding_save_echo_control(mip_interface* device);
-mip_cmd_result mip_aiding_load_echo_control(mip_interface* device);
-mip_cmd_result mip_aiding_default_echo_control(mip_interface* device);
+mip_cmd_result mip_aiding_write_aiding_echo_control(mip_interface* device, mip_aiding_aiding_echo_control_command_mode mode);
+mip_cmd_result mip_aiding_read_aiding_echo_control(mip_interface* device, mip_aiding_aiding_echo_control_command_mode* mode_out);
+mip_cmd_result mip_aiding_save_aiding_echo_control(mip_interface* device);
+mip_cmd_result mip_aiding_load_aiding_echo_control(mip_interface* device);
+mip_cmd_result mip_aiding_default_aiding_echo_control(mip_interface* device);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_aiding_pos_ecef  (0x13,0x21) Pos Ecef [C]
+///@defgroup c_aiding_ecef_pos  (0x13,0x21) Ecef Pos [C]
 /// Cartesian vector position aiding command. Coordinates are given in the WGS84 ECEF system.
 ///
 ///@{
 
-typedef uint16_t mip_aiding_pos_ecef_command_valid_flags;
-static const mip_aiding_pos_ecef_command_valid_flags MIP_AIDING_POS_ECEF_COMMAND_VALID_FLAGS_NONE = 0x0000;
-static const mip_aiding_pos_ecef_command_valid_flags MIP_AIDING_POS_ECEF_COMMAND_VALID_FLAGS_X    = 0x0001; ///<  
-static const mip_aiding_pos_ecef_command_valid_flags MIP_AIDING_POS_ECEF_COMMAND_VALID_FLAGS_Y    = 0x0002; ///<  
-static const mip_aiding_pos_ecef_command_valid_flags MIP_AIDING_POS_ECEF_COMMAND_VALID_FLAGS_Z    = 0x0004; ///<  
-static const mip_aiding_pos_ecef_command_valid_flags MIP_AIDING_POS_ECEF_COMMAND_VALID_FLAGS_ALL  = 0x0007;
-static inline void insert_mip_aiding_pos_ecef_command_valid_flags(microstrain_serializer* serializer, const mip_aiding_pos_ecef_command_valid_flags self)
+typedef uint16_t mip_aiding_ecef_pos_command_valid_flags;
+static const mip_aiding_ecef_pos_command_valid_flags MIP_AIDING_ECEF_POS_COMMAND_VALID_FLAGS_NONE = 0x0000;
+static const mip_aiding_ecef_pos_command_valid_flags MIP_AIDING_ECEF_POS_COMMAND_VALID_FLAGS_X    = 0x0001; ///<  
+static const mip_aiding_ecef_pos_command_valid_flags MIP_AIDING_ECEF_POS_COMMAND_VALID_FLAGS_Y    = 0x0002; ///<  
+static const mip_aiding_ecef_pos_command_valid_flags MIP_AIDING_ECEF_POS_COMMAND_VALID_FLAGS_Z    = 0x0004; ///<  
+static const mip_aiding_ecef_pos_command_valid_flags MIP_AIDING_ECEF_POS_COMMAND_VALID_FLAGS_ALL  = 0x0007;
+static inline void insert_mip_aiding_ecef_pos_command_valid_flags(microstrain_serializer* serializer, const mip_aiding_ecef_pos_command_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-static inline void extract_mip_aiding_pos_ecef_command_valid_flags(microstrain_serializer* serializer, mip_aiding_pos_ecef_command_valid_flags* self)
+static inline void extract_mip_aiding_ecef_pos_command_valid_flags(microstrain_serializer* serializer, mip_aiding_ecef_pos_command_valid_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -261,42 +260,41 @@ static inline void extract_mip_aiding_pos_ecef_command_valid_flags(microstrain_s
 }
 
 
-struct mip_aiding_pos_ecef_command
+struct mip_aiding_ecef_pos_command
 {
     mip_time time; ///< Timestamp of the measurement.
     uint8_t frame_id; ///< Source ID for this estimate (source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate).
     mip_vector3d position; ///< ECEF position [m].
     mip_vector3f uncertainty; ///< ECEF position uncertainty [m]. Cannot be 0 unless the corresponding valid flags are 0.
-    mip_aiding_pos_ecef_command_valid_flags valid_flags; ///< Valid flags. Axes with 0 will be completely ignored.
+    mip_aiding_ecef_pos_command_valid_flags valid_flags; ///< Valid flags. Axes with 0 will be completely ignored.
 };
-typedef struct mip_aiding_pos_ecef_command mip_aiding_pos_ecef_command;
+typedef struct mip_aiding_ecef_pos_command mip_aiding_ecef_pos_command;
 
-void insert_mip_aiding_pos_ecef_command(microstrain_serializer* serializer, const mip_aiding_pos_ecef_command* self);
-void extract_mip_aiding_pos_ecef_command(microstrain_serializer* serializer, mip_aiding_pos_ecef_command* self);
+void insert_mip_aiding_ecef_pos_command(microstrain_serializer* serializer, const mip_aiding_ecef_pos_command* self);
+void extract_mip_aiding_ecef_pos_command(microstrain_serializer* serializer, mip_aiding_ecef_pos_command* self);
 
-mip_cmd_result mip_aiding_pos_ecef(mip_interface* device, const mip_time* time, uint8_t frame_id, const double* position, const float* uncertainty, mip_aiding_pos_ecef_command_valid_flags valid_flags);
+mip_cmd_result mip_aiding_ecef_pos(mip_interface* device, const mip_time* time, uint8_t frame_id, const double* position, const float* uncertainty, mip_aiding_ecef_pos_command_valid_flags valid_flags);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_aiding_pos_llh  (0x13,0x22) Pos Llh [C]
-/// Geodetic position aiding command.
-/// Coordinates are given in WGS84 geodetic latitude, longitude, and height above the ellipsoid.
+///@defgroup c_aiding_llh_pos  (0x13,0x22) Llh Pos [C]
+/// Geodetic position aiding command. Coordinates are given in WGS84 geodetic latitude, longitude, and height above the ellipsoid.
 /// Uncertainty is given in NED coordinates, which are parallel to incremental changes in latitude, longitude, and height.
 ///
 ///@{
 
-typedef uint16_t mip_aiding_pos_llh_command_valid_flags;
-static const mip_aiding_pos_llh_command_valid_flags MIP_AIDING_POS_LLH_COMMAND_VALID_FLAGS_NONE      = 0x0000;
-static const mip_aiding_pos_llh_command_valid_flags MIP_AIDING_POS_LLH_COMMAND_VALID_FLAGS_LATITUDE  = 0x0001; ///<  
-static const mip_aiding_pos_llh_command_valid_flags MIP_AIDING_POS_LLH_COMMAND_VALID_FLAGS_LONGITUDE = 0x0002; ///<  
-static const mip_aiding_pos_llh_command_valid_flags MIP_AIDING_POS_LLH_COMMAND_VALID_FLAGS_HEIGHT    = 0x0004; ///<  
-static const mip_aiding_pos_llh_command_valid_flags MIP_AIDING_POS_LLH_COMMAND_VALID_FLAGS_ALL       = 0x0007;
-static inline void insert_mip_aiding_pos_llh_command_valid_flags(microstrain_serializer* serializer, const mip_aiding_pos_llh_command_valid_flags self)
+typedef uint16_t mip_aiding_llh_pos_command_valid_flags;
+static const mip_aiding_llh_pos_command_valid_flags MIP_AIDING_LLH_POS_COMMAND_VALID_FLAGS_NONE      = 0x0000;
+static const mip_aiding_llh_pos_command_valid_flags MIP_AIDING_LLH_POS_COMMAND_VALID_FLAGS_LATITUDE  = 0x0001; ///<  
+static const mip_aiding_llh_pos_command_valid_flags MIP_AIDING_LLH_POS_COMMAND_VALID_FLAGS_LONGITUDE = 0x0002; ///<  
+static const mip_aiding_llh_pos_command_valid_flags MIP_AIDING_LLH_POS_COMMAND_VALID_FLAGS_HEIGHT    = 0x0004; ///<  
+static const mip_aiding_llh_pos_command_valid_flags MIP_AIDING_LLH_POS_COMMAND_VALID_FLAGS_ALL       = 0x0007;
+static inline void insert_mip_aiding_llh_pos_command_valid_flags(microstrain_serializer* serializer, const mip_aiding_llh_pos_command_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-static inline void extract_mip_aiding_pos_llh_command_valid_flags(microstrain_serializer* serializer, mip_aiding_pos_llh_command_valid_flags* self)
+static inline void extract_mip_aiding_llh_pos_command_valid_flags(microstrain_serializer* serializer, mip_aiding_llh_pos_command_valid_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -304,7 +302,7 @@ static inline void extract_mip_aiding_pos_llh_command_valid_flags(microstrain_se
 }
 
 
-struct mip_aiding_pos_llh_command
+struct mip_aiding_llh_pos_command
 {
     mip_time time; ///< Timestamp of the measurement.
     uint8_t frame_id; ///< Source ID for this estimate (source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate).
@@ -312,24 +310,24 @@ struct mip_aiding_pos_llh_command
     double longitude; ///< [deg]
     double height; ///< [m]
     mip_vector3f uncertainty; ///< NED position uncertainty. Cannot be 0 unless the corresponding valid flags are 0.
-    mip_aiding_pos_llh_command_valid_flags valid_flags; ///< Valid flags. Axes with 0 will be completely ignored.
+    mip_aiding_llh_pos_command_valid_flags valid_flags; ///< Valid flags. Axes with 0 will be completely ignored.
 };
-typedef struct mip_aiding_pos_llh_command mip_aiding_pos_llh_command;
+typedef struct mip_aiding_llh_pos_command mip_aiding_llh_pos_command;
 
-void insert_mip_aiding_pos_llh_command(microstrain_serializer* serializer, const mip_aiding_pos_llh_command* self);
-void extract_mip_aiding_pos_llh_command(microstrain_serializer* serializer, mip_aiding_pos_llh_command* self);
+void insert_mip_aiding_llh_pos_command(microstrain_serializer* serializer, const mip_aiding_llh_pos_command* self);
+void extract_mip_aiding_llh_pos_command(microstrain_serializer* serializer, mip_aiding_llh_pos_command* self);
 
-mip_cmd_result mip_aiding_pos_llh(mip_interface* device, const mip_time* time, uint8_t frame_id, double latitude, double longitude, double height, const float* uncertainty, mip_aiding_pos_llh_command_valid_flags valid_flags);
+mip_cmd_result mip_aiding_llh_pos(mip_interface* device, const mip_time* time, uint8_t frame_id, double latitude, double longitude, double height, const float* uncertainty, mip_aiding_llh_pos_command_valid_flags valid_flags);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_aiding_height_above_ellipsoid  (0x13,0x23) Height Above Ellipsoid [C]
-/// Estimated value of the height above ellipsoid.
+///@defgroup c_aiding_height  (0x13,0x23) Height [C]
+/// Estimated value of height.
 ///
 ///@{
 
-struct mip_aiding_height_above_ellipsoid_command
+struct mip_aiding_height_command
 {
     mip_time time; ///< Timestamp of the measurement.
     uint8_t frame_id; ///< Source ID for this estimate (source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate).
@@ -337,32 +335,32 @@ struct mip_aiding_height_above_ellipsoid_command
     float uncertainty; ///< [m]
     uint16_t valid_flags;
 };
-typedef struct mip_aiding_height_above_ellipsoid_command mip_aiding_height_above_ellipsoid_command;
+typedef struct mip_aiding_height_command mip_aiding_height_command;
 
-void insert_mip_aiding_height_above_ellipsoid_command(microstrain_serializer* serializer, const mip_aiding_height_above_ellipsoid_command* self);
-void extract_mip_aiding_height_above_ellipsoid_command(microstrain_serializer* serializer, mip_aiding_height_above_ellipsoid_command* self);
+void insert_mip_aiding_height_command(microstrain_serializer* serializer, const mip_aiding_height_command* self);
+void extract_mip_aiding_height_command(microstrain_serializer* serializer, mip_aiding_height_command* self);
 
-mip_cmd_result mip_aiding_height_above_ellipsoid(mip_interface* device, const mip_time* time, uint8_t frame_id, float height, float uncertainty, uint16_t valid_flags);
+mip_cmd_result mip_aiding_height(mip_interface* device, const mip_time* time, uint8_t frame_id, float height, float uncertainty, uint16_t valid_flags);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_aiding_vel_ecef  (0x13,0x28) Vel Ecef [C]
+///@defgroup c_aiding_ecef_vel  (0x13,0x28) Ecef Vel [C]
 /// ECEF velocity aiding command. Coordinates are given in the WGS84 ECEF frame.
 ///
 ///@{
 
-typedef uint16_t mip_aiding_vel_ecef_command_valid_flags;
-static const mip_aiding_vel_ecef_command_valid_flags MIP_AIDING_VEL_ECEF_COMMAND_VALID_FLAGS_NONE = 0x0000;
-static const mip_aiding_vel_ecef_command_valid_flags MIP_AIDING_VEL_ECEF_COMMAND_VALID_FLAGS_X    = 0x0001; ///<  
-static const mip_aiding_vel_ecef_command_valid_flags MIP_AIDING_VEL_ECEF_COMMAND_VALID_FLAGS_Y    = 0x0002; ///<  
-static const mip_aiding_vel_ecef_command_valid_flags MIP_AIDING_VEL_ECEF_COMMAND_VALID_FLAGS_Z    = 0x0004; ///<  
-static const mip_aiding_vel_ecef_command_valid_flags MIP_AIDING_VEL_ECEF_COMMAND_VALID_FLAGS_ALL  = 0x0007;
-static inline void insert_mip_aiding_vel_ecef_command_valid_flags(microstrain_serializer* serializer, const mip_aiding_vel_ecef_command_valid_flags self)
+typedef uint16_t mip_aiding_ecef_vel_command_valid_flags;
+static const mip_aiding_ecef_vel_command_valid_flags MIP_AIDING_ECEF_VEL_COMMAND_VALID_FLAGS_NONE = 0x0000;
+static const mip_aiding_ecef_vel_command_valid_flags MIP_AIDING_ECEF_VEL_COMMAND_VALID_FLAGS_X    = 0x0001; ///<  
+static const mip_aiding_ecef_vel_command_valid_flags MIP_AIDING_ECEF_VEL_COMMAND_VALID_FLAGS_Y    = 0x0002; ///<  
+static const mip_aiding_ecef_vel_command_valid_flags MIP_AIDING_ECEF_VEL_COMMAND_VALID_FLAGS_Z    = 0x0004; ///<  
+static const mip_aiding_ecef_vel_command_valid_flags MIP_AIDING_ECEF_VEL_COMMAND_VALID_FLAGS_ALL  = 0x0007;
+static inline void insert_mip_aiding_ecef_vel_command_valid_flags(microstrain_serializer* serializer, const mip_aiding_ecef_vel_command_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-static inline void extract_mip_aiding_vel_ecef_command_valid_flags(microstrain_serializer* serializer, mip_aiding_vel_ecef_command_valid_flags* self)
+static inline void extract_mip_aiding_ecef_vel_command_valid_flags(microstrain_serializer* serializer, mip_aiding_ecef_vel_command_valid_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -370,40 +368,40 @@ static inline void extract_mip_aiding_vel_ecef_command_valid_flags(microstrain_s
 }
 
 
-struct mip_aiding_vel_ecef_command
+struct mip_aiding_ecef_vel_command
 {
     mip_time time; ///< Timestamp of the measurement.
     uint8_t frame_id; ///< Source ID for this estimate (source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate).
     mip_vector3f velocity; ///< ECEF velocity [m/s].
     mip_vector3f uncertainty; ///< ECEF velocity uncertainty [m/s]. Cannot be 0 unless the corresponding valid flags are 0.
-    mip_aiding_vel_ecef_command_valid_flags valid_flags; ///< Valid flags. Axes with 0 will be completely ignored.
+    mip_aiding_ecef_vel_command_valid_flags valid_flags; ///< Valid flags. Axes with 0 will be completely ignored.
 };
-typedef struct mip_aiding_vel_ecef_command mip_aiding_vel_ecef_command;
+typedef struct mip_aiding_ecef_vel_command mip_aiding_ecef_vel_command;
 
-void insert_mip_aiding_vel_ecef_command(microstrain_serializer* serializer, const mip_aiding_vel_ecef_command* self);
-void extract_mip_aiding_vel_ecef_command(microstrain_serializer* serializer, mip_aiding_vel_ecef_command* self);
+void insert_mip_aiding_ecef_vel_command(microstrain_serializer* serializer, const mip_aiding_ecef_vel_command* self);
+void extract_mip_aiding_ecef_vel_command(microstrain_serializer* serializer, mip_aiding_ecef_vel_command* self);
 
-mip_cmd_result mip_aiding_vel_ecef(mip_interface* device, const mip_time* time, uint8_t frame_id, const float* velocity, const float* uncertainty, mip_aiding_vel_ecef_command_valid_flags valid_flags);
+mip_cmd_result mip_aiding_ecef_vel(mip_interface* device, const mip_time* time, uint8_t frame_id, const float* velocity, const float* uncertainty, mip_aiding_ecef_vel_command_valid_flags valid_flags);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_aiding_vel_ned  (0x13,0x29) Vel Ned [C]
+///@defgroup c_aiding_ned_vel  (0x13,0x29) Ned Vel [C]
 /// NED velocity aiding command. Coordinates are given in the local North-East-Down frame.
 ///
 ///@{
 
-typedef uint16_t mip_aiding_vel_ned_command_valid_flags;
-static const mip_aiding_vel_ned_command_valid_flags MIP_AIDING_VEL_NED_COMMAND_VALID_FLAGS_NONE = 0x0000;
-static const mip_aiding_vel_ned_command_valid_flags MIP_AIDING_VEL_NED_COMMAND_VALID_FLAGS_X    = 0x0001; ///<  
-static const mip_aiding_vel_ned_command_valid_flags MIP_AIDING_VEL_NED_COMMAND_VALID_FLAGS_Y    = 0x0002; ///<  
-static const mip_aiding_vel_ned_command_valid_flags MIP_AIDING_VEL_NED_COMMAND_VALID_FLAGS_Z    = 0x0004; ///<  
-static const mip_aiding_vel_ned_command_valid_flags MIP_AIDING_VEL_NED_COMMAND_VALID_FLAGS_ALL  = 0x0007;
-static inline void insert_mip_aiding_vel_ned_command_valid_flags(microstrain_serializer* serializer, const mip_aiding_vel_ned_command_valid_flags self)
+typedef uint16_t mip_aiding_ned_vel_command_valid_flags;
+static const mip_aiding_ned_vel_command_valid_flags MIP_AIDING_NED_VEL_COMMAND_VALID_FLAGS_NONE = 0x0000;
+static const mip_aiding_ned_vel_command_valid_flags MIP_AIDING_NED_VEL_COMMAND_VALID_FLAGS_X    = 0x0001; ///<  
+static const mip_aiding_ned_vel_command_valid_flags MIP_AIDING_NED_VEL_COMMAND_VALID_FLAGS_Y    = 0x0002; ///<  
+static const mip_aiding_ned_vel_command_valid_flags MIP_AIDING_NED_VEL_COMMAND_VALID_FLAGS_Z    = 0x0004; ///<  
+static const mip_aiding_ned_vel_command_valid_flags MIP_AIDING_NED_VEL_COMMAND_VALID_FLAGS_ALL  = 0x0007;
+static inline void insert_mip_aiding_ned_vel_command_valid_flags(microstrain_serializer* serializer, const mip_aiding_ned_vel_command_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-static inline void extract_mip_aiding_vel_ned_command_valid_flags(microstrain_serializer* serializer, mip_aiding_vel_ned_command_valid_flags* self)
+static inline void extract_mip_aiding_ned_vel_command_valid_flags(microstrain_serializer* serializer, mip_aiding_ned_vel_command_valid_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -411,40 +409,41 @@ static inline void extract_mip_aiding_vel_ned_command_valid_flags(microstrain_se
 }
 
 
-struct mip_aiding_vel_ned_command
+struct mip_aiding_ned_vel_command
 {
     mip_time time; ///< Timestamp of the measurement.
     uint8_t frame_id; ///< Source ID for this estimate (source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate).
     mip_vector3f velocity; ///< NED velocity [m/s].
     mip_vector3f uncertainty; ///< NED velocity uncertainty [m/s]. Cannot be 0 unless the corresponding valid flags are 0.
-    mip_aiding_vel_ned_command_valid_flags valid_flags; ///< Valid flags. Axes with 0 will be completely ignored.
+    mip_aiding_ned_vel_command_valid_flags valid_flags; ///< Valid flags. Axes with 0 will be completely ignored.
 };
-typedef struct mip_aiding_vel_ned_command mip_aiding_vel_ned_command;
+typedef struct mip_aiding_ned_vel_command mip_aiding_ned_vel_command;
 
-void insert_mip_aiding_vel_ned_command(microstrain_serializer* serializer, const mip_aiding_vel_ned_command* self);
-void extract_mip_aiding_vel_ned_command(microstrain_serializer* serializer, mip_aiding_vel_ned_command* self);
+void insert_mip_aiding_ned_vel_command(microstrain_serializer* serializer, const mip_aiding_ned_vel_command* self);
+void extract_mip_aiding_ned_vel_command(microstrain_serializer* serializer, mip_aiding_ned_vel_command* self);
 
-mip_cmd_result mip_aiding_vel_ned(mip_interface* device, const mip_time* time, uint8_t frame_id, const float* velocity, const float* uncertainty, mip_aiding_vel_ned_command_valid_flags valid_flags);
+mip_cmd_result mip_aiding_ned_vel(mip_interface* device, const mip_time* time, uint8_t frame_id, const float* velocity, const float* uncertainty, mip_aiding_ned_vel_command_valid_flags valid_flags);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_aiding_vel_body_frame  (0x13,0x2A) Vel Body Frame [C]
-/// Estimated of velocity of the vehicle in the frame associated with the given sensor ID, relative to the vehicle frame.
+///@defgroup c_aiding_vehicle_fixed_frame_velocity  (0x13,0x2A) Vehicle Fixed Frame Velocity [C]
+/// Estimate of velocity of the vehicle in the frame associated
+/// with the given sensor ID.
 ///
 ///@{
 
-typedef uint16_t mip_aiding_vel_body_frame_command_valid_flags;
-static const mip_aiding_vel_body_frame_command_valid_flags MIP_AIDING_VEL_BODY_FRAME_COMMAND_VALID_FLAGS_NONE = 0x0000;
-static const mip_aiding_vel_body_frame_command_valid_flags MIP_AIDING_VEL_BODY_FRAME_COMMAND_VALID_FLAGS_X    = 0x0001; ///<  
-static const mip_aiding_vel_body_frame_command_valid_flags MIP_AIDING_VEL_BODY_FRAME_COMMAND_VALID_FLAGS_Y    = 0x0002; ///<  
-static const mip_aiding_vel_body_frame_command_valid_flags MIP_AIDING_VEL_BODY_FRAME_COMMAND_VALID_FLAGS_Z    = 0x0004; ///<  
-static const mip_aiding_vel_body_frame_command_valid_flags MIP_AIDING_VEL_BODY_FRAME_COMMAND_VALID_FLAGS_ALL  = 0x0007;
-static inline void insert_mip_aiding_vel_body_frame_command_valid_flags(microstrain_serializer* serializer, const mip_aiding_vel_body_frame_command_valid_flags self)
+typedef uint16_t mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags;
+static const mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags MIP_AIDING_VEHICLE_FIXED_FRAME_VELOCITY_COMMAND_VALID_FLAGS_NONE = 0x0000;
+static const mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags MIP_AIDING_VEHICLE_FIXED_FRAME_VELOCITY_COMMAND_VALID_FLAGS_X    = 0x0001; ///<  
+static const mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags MIP_AIDING_VEHICLE_FIXED_FRAME_VELOCITY_COMMAND_VALID_FLAGS_Y    = 0x0002; ///<  
+static const mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags MIP_AIDING_VEHICLE_FIXED_FRAME_VELOCITY_COMMAND_VALID_FLAGS_Z    = 0x0004; ///<  
+static const mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags MIP_AIDING_VEHICLE_FIXED_FRAME_VELOCITY_COMMAND_VALID_FLAGS_ALL  = 0x0007;
+static inline void insert_mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags(microstrain_serializer* serializer, const mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-static inline void extract_mip_aiding_vel_body_frame_command_valid_flags(microstrain_serializer* serializer, mip_aiding_vel_body_frame_command_valid_flags* self)
+static inline void extract_mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags(microstrain_serializer* serializer, mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -452,29 +451,29 @@ static inline void extract_mip_aiding_vel_body_frame_command_valid_flags(microst
 }
 
 
-struct mip_aiding_vel_body_frame_command
+struct mip_aiding_vehicle_fixed_frame_velocity_command
 {
     mip_time time; ///< Timestamp of the measurement.
     uint8_t frame_id; ///< Source ID for this estimate (source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate).
     mip_vector3f velocity; ///< [m/s]
     mip_vector3f uncertainty; ///< [m/s] 1-sigma uncertainty. Cannot be 0 unless the corresponding valid flags are 0.
-    mip_aiding_vel_body_frame_command_valid_flags valid_flags; ///< Valid flags. Axes with 0 will be completely ignored.
+    mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags valid_flags; ///< Valid flags. Axes with 0 will be completely ignored.
 };
-typedef struct mip_aiding_vel_body_frame_command mip_aiding_vel_body_frame_command;
+typedef struct mip_aiding_vehicle_fixed_frame_velocity_command mip_aiding_vehicle_fixed_frame_velocity_command;
 
-void insert_mip_aiding_vel_body_frame_command(microstrain_serializer* serializer, const mip_aiding_vel_body_frame_command* self);
-void extract_mip_aiding_vel_body_frame_command(microstrain_serializer* serializer, mip_aiding_vel_body_frame_command* self);
+void insert_mip_aiding_vehicle_fixed_frame_velocity_command(microstrain_serializer* serializer, const mip_aiding_vehicle_fixed_frame_velocity_command* self);
+void extract_mip_aiding_vehicle_fixed_frame_velocity_command(microstrain_serializer* serializer, mip_aiding_vehicle_fixed_frame_velocity_command* self);
 
-mip_cmd_result mip_aiding_vel_body_frame(mip_interface* device, const mip_time* time, uint8_t frame_id, const float* velocity, const float* uncertainty, mip_aiding_vel_body_frame_command_valid_flags valid_flags);
+mip_cmd_result mip_aiding_vehicle_fixed_frame_velocity(mip_interface* device, const mip_time* time, uint8_t frame_id, const float* velocity, const float* uncertainty, mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags valid_flags);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_aiding_heading_true  (0x13,0x31) Heading True [C]
+///@defgroup c_aiding_true_heading  (0x13,0x31) True Heading [C]
 ///
 ///@{
 
-struct mip_aiding_heading_true_command
+struct mip_aiding_true_heading_command
 {
     mip_time time; ///< Timestamp of the measurement.
     uint8_t frame_id; ///< Source ID for this estimate (source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate).
@@ -482,12 +481,12 @@ struct mip_aiding_heading_true_command
     float uncertainty; ///< Cannot be 0 unless the valid flags are 0.
     uint16_t valid_flags;
 };
-typedef struct mip_aiding_heading_true_command mip_aiding_heading_true_command;
+typedef struct mip_aiding_true_heading_command mip_aiding_true_heading_command;
 
-void insert_mip_aiding_heading_true_command(microstrain_serializer* serializer, const mip_aiding_heading_true_command* self);
-void extract_mip_aiding_heading_true_command(microstrain_serializer* serializer, mip_aiding_heading_true_command* self);
+void insert_mip_aiding_true_heading_command(microstrain_serializer* serializer, const mip_aiding_true_heading_command* self);
+void extract_mip_aiding_true_heading_command(microstrain_serializer* serializer, mip_aiding_true_heading_command* self);
 
-mip_cmd_result mip_aiding_heading_true(mip_interface* device, const mip_time* time, uint8_t frame_id, float heading, float uncertainty, uint16_t valid_flags);
+mip_cmd_result mip_aiding_true_heading(mip_interface* device, const mip_time* time, uint8_t frame_id, float heading, float uncertainty, uint16_t valid_flags);
 
 ///@}
 ///

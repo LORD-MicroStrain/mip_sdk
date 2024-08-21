@@ -194,6 +194,25 @@ void extract_mip_3dm_imu_message_format_command(microstrain_serializer* serializ
     }
 }
 
+void insert_mip_3dm_imu_message_format_response(microstrain_serializer* serializer, const mip_3dm_imu_message_format_response* self)
+{
+    microstrain_insert_u8(serializer, self->num_descriptors);
+    
+    
+    for(unsigned int i=0; i < self->num_descriptors; i++)
+        insert_mip_descriptor_rate(serializer, &self->descriptors[i]);
+    
+}
+void extract_mip_3dm_imu_message_format_response(microstrain_serializer* serializer, mip_3dm_imu_message_format_response* self)
+{
+    assert(self->num_descriptors);
+    microstrain_extract_count(serializer, &self->num_descriptors, sizeof(self->descriptors)/sizeof(self->descriptors[0]));
+    
+    for(unsigned int i=0; i < self->num_descriptors; i++)
+        extract_mip_descriptor_rate(serializer, &self->descriptors[i]);
+    
+}
+
 mip_cmd_result mip_3dm_write_imu_message_format(mip_interface* device, uint8_t num_descriptors, const mip_descriptor_rate* descriptors)
 {
     microstrain_serializer serializer;
@@ -307,6 +326,25 @@ void extract_mip_3dm_gps_message_format_command(microstrain_serializer* serializ
     }
 }
 
+void insert_mip_3dm_gps_message_format_response(microstrain_serializer* serializer, const mip_3dm_gps_message_format_response* self)
+{
+    microstrain_insert_u8(serializer, self->num_descriptors);
+    
+    
+    for(unsigned int i=0; i < self->num_descriptors; i++)
+        insert_mip_descriptor_rate(serializer, &self->descriptors[i]);
+    
+}
+void extract_mip_3dm_gps_message_format_response(microstrain_serializer* serializer, mip_3dm_gps_message_format_response* self)
+{
+    assert(self->num_descriptors);
+    microstrain_extract_count(serializer, &self->num_descriptors, sizeof(self->descriptors)/sizeof(self->descriptors[0]));
+    
+    for(unsigned int i=0; i < self->num_descriptors; i++)
+        extract_mip_descriptor_rate(serializer, &self->descriptors[i]);
+    
+}
+
 mip_cmd_result mip_3dm_write_gps_message_format(mip_interface* device, uint8_t num_descriptors, const mip_descriptor_rate* descriptors)
 {
     microstrain_serializer serializer;
@@ -418,6 +456,25 @@ void extract_mip_3dm_filter_message_format_command(microstrain_serializer* seria
             extract_mip_descriptor_rate(serializer, &self->descriptors[i]);
         
     }
+}
+
+void insert_mip_3dm_filter_message_format_response(microstrain_serializer* serializer, const mip_3dm_filter_message_format_response* self)
+{
+    microstrain_insert_u8(serializer, self->num_descriptors);
+    
+    
+    for(unsigned int i=0; i < self->num_descriptors; i++)
+        insert_mip_descriptor_rate(serializer, &self->descriptors[i]);
+    
+}
+void extract_mip_3dm_filter_message_format_response(microstrain_serializer* serializer, mip_3dm_filter_message_format_response* self)
+{
+    assert(self->num_descriptors);
+    microstrain_extract_count(serializer, &self->num_descriptors, sizeof(self->descriptors)/sizeof(self->descriptors[0]));
+    
+    for(unsigned int i=0; i < self->num_descriptors; i++)
+        extract_mip_descriptor_rate(serializer, &self->descriptors[i]);
+    
 }
 
 mip_cmd_result mip_3dm_write_filter_message_format(mip_interface* device, uint8_t num_descriptors, const mip_descriptor_rate* descriptors)
@@ -622,6 +679,21 @@ void extract_mip_3dm_get_base_rate_command(microstrain_serializer* serializer, m
     
 }
 
+void insert_mip_3dm_get_base_rate_response(microstrain_serializer* serializer, const mip_3dm_get_base_rate_response* self)
+{
+    microstrain_insert_u8(serializer, self->desc_set);
+    
+    microstrain_insert_u16(serializer, self->rate);
+    
+}
+void extract_mip_3dm_get_base_rate_response(microstrain_serializer* serializer, mip_3dm_get_base_rate_response* self)
+{
+    microstrain_extract_u8(serializer, &self->desc_set);
+    
+    microstrain_extract_u16(serializer, &self->rate);
+    
+}
+
 mip_cmd_result mip_3dm_get_base_rate(mip_interface* device, uint8_t desc_set, uint16_t* rate_out)
 {
     microstrain_serializer serializer;
@@ -681,6 +753,29 @@ void extract_mip_3dm_message_format_command(microstrain_serializer* serializer, 
             extract_mip_descriptor_rate(serializer, &self->descriptors[i]);
         
     }
+}
+
+void insert_mip_3dm_message_format_response(microstrain_serializer* serializer, const mip_3dm_message_format_response* self)
+{
+    microstrain_insert_u8(serializer, self->desc_set);
+    
+    microstrain_insert_u8(serializer, self->num_descriptors);
+    
+    
+    for(unsigned int i=0; i < self->num_descriptors; i++)
+        insert_mip_descriptor_rate(serializer, &self->descriptors[i]);
+    
+}
+void extract_mip_3dm_message_format_response(microstrain_serializer* serializer, mip_3dm_message_format_response* self)
+{
+    microstrain_extract_u8(serializer, &self->desc_set);
+    
+    assert(self->num_descriptors);
+    microstrain_extract_count(serializer, &self->num_descriptors, sizeof(self->descriptors)/sizeof(self->descriptors[0]));
+    
+    for(unsigned int i=0; i < self->num_descriptors; i++)
+        extract_mip_descriptor_rate(serializer, &self->descriptors[i]);
+    
 }
 
 mip_cmd_result mip_3dm_write_message_format(mip_interface* device, uint8_t desc_set, uint8_t num_descriptors, const mip_descriptor_rate* descriptors)
@@ -849,6 +944,25 @@ void extract_mip_3dm_nmea_message_format_command(microstrain_serializer* seriali
     }
 }
 
+void insert_mip_3dm_nmea_message_format_response(microstrain_serializer* serializer, const mip_3dm_nmea_message_format_response* self)
+{
+    microstrain_insert_u8(serializer, self->count);
+    
+    
+    for(unsigned int i=0; i < self->count; i++)
+        insert_mip_nmea_message(serializer, &self->format_entries[i]);
+    
+}
+void extract_mip_3dm_nmea_message_format_response(microstrain_serializer* serializer, mip_3dm_nmea_message_format_response* self)
+{
+    assert(self->count);
+    microstrain_extract_count(serializer, &self->count, sizeof(self->format_entries)/sizeof(self->format_entries[0]));
+    
+    for(unsigned int i=0; i < self->count; i++)
+        extract_mip_nmea_message(serializer, &self->format_entries[i]);
+    
+}
+
 mip_cmd_result mip_3dm_write_nmea_message_format(mip_interface* device, uint8_t count, const mip_nmea_message* format_entries)
 {
     microstrain_serializer serializer;
@@ -1001,6 +1115,17 @@ void extract_mip_3dm_uart_baudrate_command(microstrain_serializer* serializer, m
     }
 }
 
+void insert_mip_3dm_uart_baudrate_response(microstrain_serializer* serializer, const mip_3dm_uart_baudrate_response* self)
+{
+    microstrain_insert_u32(serializer, self->baud);
+    
+}
+void extract_mip_3dm_uart_baudrate_response(microstrain_serializer* serializer, mip_3dm_uart_baudrate_response* self)
+{
+    microstrain_extract_u32(serializer, &self->baud);
+    
+}
+
 mip_cmd_result mip_3dm_write_uart_baudrate(mip_interface* device, uint32_t baud)
 {
     microstrain_serializer serializer;
@@ -1129,6 +1254,21 @@ void extract_mip_3dm_datastream_control_command(microstrain_serializer* serializ
         microstrain_extract_bool(serializer, &self->enable);
         
     }
+}
+
+void insert_mip_3dm_datastream_control_response(microstrain_serializer* serializer, const mip_3dm_datastream_control_response* self)
+{
+    microstrain_insert_u8(serializer, self->desc_set);
+    
+    microstrain_insert_bool(serializer, self->enabled);
+    
+}
+void extract_mip_3dm_datastream_control_response(microstrain_serializer* serializer, mip_3dm_datastream_control_response* self)
+{
+    microstrain_extract_u8(serializer, &self->desc_set);
+    
+    microstrain_extract_bool(serializer, &self->enabled);
+    
 }
 
 mip_cmd_result mip_3dm_write_datastream_control(mip_interface* device, uint8_t desc_set, bool enable)
@@ -1279,6 +1419,33 @@ void extract_mip_3dm_constellation_settings_command(microstrain_serializer* seri
     }
 }
 
+void insert_mip_3dm_constellation_settings_response(microstrain_serializer* serializer, const mip_3dm_constellation_settings_response* self)
+{
+    microstrain_insert_u16(serializer, self->max_channels_available);
+    
+    microstrain_insert_u16(serializer, self->max_channels_use);
+    
+    microstrain_insert_u8(serializer, self->config_count);
+    
+    
+    for(unsigned int i=0; i < self->config_count; i++)
+        insert_mip_3dm_constellation_settings_command_settings(serializer, &self->settings[i]);
+    
+}
+void extract_mip_3dm_constellation_settings_response(microstrain_serializer* serializer, mip_3dm_constellation_settings_response* self)
+{
+    microstrain_extract_u16(serializer, &self->max_channels_available);
+    
+    microstrain_extract_u16(serializer, &self->max_channels_use);
+    
+    assert(self->config_count);
+    microstrain_extract_count(serializer, &self->config_count, sizeof(self->settings)/sizeof(self->settings[0]));
+    
+    for(unsigned int i=0; i < self->config_count; i++)
+        extract_mip_3dm_constellation_settings_command_settings(serializer, &self->settings[i]);
+    
+}
+
 mip_cmd_result mip_3dm_write_constellation_settings(mip_interface* device, uint16_t max_channels, uint8_t config_count, const mip_3dm_constellation_settings_command_settings* settings)
 {
     microstrain_serializer serializer;
@@ -1408,6 +1575,33 @@ void extract_mip_3dm_gnss_sbas_settings_command(microstrain_serializer* serializ
     }
 }
 
+void insert_mip_3dm_gnss_sbas_settings_response(microstrain_serializer* serializer, const mip_3dm_gnss_sbas_settings_response* self)
+{
+    microstrain_insert_u8(serializer, self->enable_sbas);
+    
+    insert_mip_3dm_gnss_sbas_settings_command_sbasoptions(serializer, self->sbas_options);
+    
+    microstrain_insert_u8(serializer, self->num_included_prns);
+    
+    
+    for(unsigned int i=0; i < self->num_included_prns; i++)
+        microstrain_insert_u16(serializer, self->included_prns[i]);
+    
+}
+void extract_mip_3dm_gnss_sbas_settings_response(microstrain_serializer* serializer, mip_3dm_gnss_sbas_settings_response* self)
+{
+    microstrain_extract_u8(serializer, &self->enable_sbas);
+    
+    extract_mip_3dm_gnss_sbas_settings_command_sbasoptions(serializer, &self->sbas_options);
+    
+    assert(self->num_included_prns);
+    microstrain_extract_count(serializer, &self->num_included_prns, sizeof(self->included_prns)/sizeof(self->included_prns[0]));
+    
+    for(unsigned int i=0; i < self->num_included_prns; i++)
+        microstrain_extract_u16(serializer, &self->included_prns[i]);
+    
+}
+
 mip_cmd_result mip_3dm_write_gnss_sbas_settings(mip_interface* device, uint8_t enable_sbas, mip_3dm_gnss_sbas_settings_command_sbasoptions sbas_options, uint8_t num_included_prns, const uint16_t* included_prns)
 {
     microstrain_serializer serializer;
@@ -1527,6 +1721,21 @@ void extract_mip_3dm_gnss_assisted_fix_command(microstrain_serializer* serialize
     }
 }
 
+void insert_mip_3dm_gnss_assisted_fix_response(microstrain_serializer* serializer, const mip_3dm_gnss_assisted_fix_response* self)
+{
+    insert_mip_3dm_gnss_assisted_fix_command_assisted_fix_option(serializer, self->option);
+    
+    microstrain_insert_u8(serializer, self->flags);
+    
+}
+void extract_mip_3dm_gnss_assisted_fix_response(microstrain_serializer* serializer, mip_3dm_gnss_assisted_fix_response* self)
+{
+    extract_mip_3dm_gnss_assisted_fix_command_assisted_fix_option(serializer, &self->option);
+    
+    microstrain_extract_u8(serializer, &self->flags);
+    
+}
+
 mip_cmd_result mip_3dm_write_gnss_assisted_fix(mip_interface* device, mip_3dm_gnss_assisted_fix_command_assisted_fix_option option, uint8_t flags)
 {
     microstrain_serializer serializer;
@@ -1637,6 +1846,25 @@ void extract_mip_3dm_gnss_time_assistance_command(microstrain_serializer* serial
     }
 }
 
+void insert_mip_3dm_gnss_time_assistance_response(microstrain_serializer* serializer, const mip_3dm_gnss_time_assistance_response* self)
+{
+    microstrain_insert_double(serializer, self->tow);
+    
+    microstrain_insert_u16(serializer, self->week_number);
+    
+    microstrain_insert_float(serializer, self->accuracy);
+    
+}
+void extract_mip_3dm_gnss_time_assistance_response(microstrain_serializer* serializer, mip_3dm_gnss_time_assistance_response* self)
+{
+    microstrain_extract_double(serializer, &self->tow);
+    
+    microstrain_extract_u16(serializer, &self->week_number);
+    
+    microstrain_extract_float(serializer, &self->accuracy);
+    
+}
+
 mip_cmd_result mip_3dm_write_gnss_time_assistance(mip_interface* device, double tow, uint16_t week_number, float accuracy)
 {
     microstrain_serializer serializer;
@@ -1722,6 +1950,33 @@ void extract_mip_3dm_imu_lowpass_filter_command(microstrain_serializer* serializ
         microstrain_extract_u8(serializer, &self->reserved);
         
     }
+}
+
+void insert_mip_3dm_imu_lowpass_filter_response(microstrain_serializer* serializer, const mip_3dm_imu_lowpass_filter_response* self)
+{
+    microstrain_insert_u8(serializer, self->target_descriptor);
+    
+    microstrain_insert_bool(serializer, self->enable);
+    
+    microstrain_insert_bool(serializer, self->manual);
+    
+    microstrain_insert_u16(serializer, self->frequency);
+    
+    microstrain_insert_u8(serializer, self->reserved);
+    
+}
+void extract_mip_3dm_imu_lowpass_filter_response(microstrain_serializer* serializer, mip_3dm_imu_lowpass_filter_response* self)
+{
+    microstrain_extract_u8(serializer, &self->target_descriptor);
+    
+    microstrain_extract_bool(serializer, &self->enable);
+    
+    microstrain_extract_bool(serializer, &self->manual);
+    
+    microstrain_extract_u16(serializer, &self->frequency);
+    
+    microstrain_extract_u8(serializer, &self->reserved);
+    
 }
 
 mip_cmd_result mip_3dm_write_imu_lowpass_filter(mip_interface* device, uint8_t target_descriptor, bool enable, bool manual, uint16_t frequency, uint8_t reserved)
@@ -1848,6 +2103,17 @@ void extract_mip_3dm_pps_source_command(microstrain_serializer* serializer, mip_
     }
 }
 
+void insert_mip_3dm_pps_source_response(microstrain_serializer* serializer, const mip_3dm_pps_source_response* self)
+{
+    insert_mip_3dm_pps_source_command_source(serializer, self->source);
+    
+}
+void extract_mip_3dm_pps_source_response(microstrain_serializer* serializer, mip_3dm_pps_source_response* self)
+{
+    extract_mip_3dm_pps_source_command_source(serializer, &self->source);
+    
+}
+
 mip_cmd_result mip_3dm_write_pps_source(mip_interface* device, mip_3dm_pps_source_command_source source)
 {
     microstrain_serializer serializer;
@@ -1955,6 +2221,29 @@ void extract_mip_3dm_gpio_config_command(microstrain_serializer* serializer, mip
         extract_mip_3dm_gpio_config_command_pin_mode(serializer, &self->pin_mode);
         
     }
+}
+
+void insert_mip_3dm_gpio_config_response(microstrain_serializer* serializer, const mip_3dm_gpio_config_response* self)
+{
+    microstrain_insert_u8(serializer, self->pin);
+    
+    insert_mip_3dm_gpio_config_command_feature(serializer, self->feature);
+    
+    insert_mip_3dm_gpio_config_command_behavior(serializer, self->behavior);
+    
+    insert_mip_3dm_gpio_config_command_pin_mode(serializer, self->pin_mode);
+    
+}
+void extract_mip_3dm_gpio_config_response(microstrain_serializer* serializer, mip_3dm_gpio_config_response* self)
+{
+    microstrain_extract_u8(serializer, &self->pin);
+    
+    extract_mip_3dm_gpio_config_command_feature(serializer, &self->feature);
+    
+    extract_mip_3dm_gpio_config_command_behavior(serializer, &self->behavior);
+    
+    extract_mip_3dm_gpio_config_command_pin_mode(serializer, &self->pin_mode);
+    
 }
 
 mip_cmd_result mip_3dm_write_gpio_config(mip_interface* device, uint8_t pin, mip_3dm_gpio_config_command_feature feature, mip_3dm_gpio_config_command_behavior behavior, mip_3dm_gpio_config_command_pin_mode pin_mode)
@@ -2086,6 +2375,21 @@ void extract_mip_3dm_gpio_state_command(microstrain_serializer* serializer, mip_
     }
 }
 
+void insert_mip_3dm_gpio_state_response(microstrain_serializer* serializer, const mip_3dm_gpio_state_response* self)
+{
+    microstrain_insert_u8(serializer, self->pin);
+    
+    microstrain_insert_bool(serializer, self->state);
+    
+}
+void extract_mip_3dm_gpio_state_response(microstrain_serializer* serializer, mip_3dm_gpio_state_response* self)
+{
+    microstrain_extract_u8(serializer, &self->pin);
+    
+    microstrain_extract_bool(serializer, &self->state);
+    
+}
+
 mip_cmd_result mip_3dm_write_gpio_state(mip_interface* device, uint8_t pin, bool state)
 {
     microstrain_serializer serializer;
@@ -2159,6 +2463,25 @@ void extract_mip_3dm_odometer_command(microstrain_serializer* serializer, mip_3d
         microstrain_extract_float(serializer, &self->uncertainty);
         
     }
+}
+
+void insert_mip_3dm_odometer_response(microstrain_serializer* serializer, const mip_3dm_odometer_response* self)
+{
+    insert_mip_3dm_odometer_command_mode(serializer, self->mode);
+    
+    microstrain_insert_float(serializer, self->scaling);
+    
+    microstrain_insert_float(serializer, self->uncertainty);
+    
+}
+void extract_mip_3dm_odometer_response(microstrain_serializer* serializer, mip_3dm_odometer_response* self)
+{
+    extract_mip_3dm_odometer_command_mode(serializer, &self->mode);
+    
+    microstrain_extract_float(serializer, &self->scaling);
+    
+    microstrain_extract_float(serializer, &self->uncertainty);
+    
 }
 
 mip_cmd_result mip_3dm_write_odometer(mip_interface* device, mip_3dm_odometer_command_mode mode, float scaling, float uncertainty)
@@ -2273,6 +2596,33 @@ void extract_mip_3dm_get_event_support_command(microstrain_serializer* serialize
     
 }
 
+void insert_mip_3dm_get_event_support_response(microstrain_serializer* serializer, const mip_3dm_get_event_support_response* self)
+{
+    insert_mip_3dm_get_event_support_command_query(serializer, self->query);
+    
+    microstrain_insert_u8(serializer, self->max_instances);
+    
+    microstrain_insert_u8(serializer, self->num_entries);
+    
+    
+    for(unsigned int i=0; i < self->num_entries; i++)
+        insert_mip_3dm_get_event_support_command_info(serializer, &self->entries[i]);
+    
+}
+void extract_mip_3dm_get_event_support_response(microstrain_serializer* serializer, mip_3dm_get_event_support_response* self)
+{
+    extract_mip_3dm_get_event_support_command_query(serializer, &self->query);
+    
+    microstrain_extract_u8(serializer, &self->max_instances);
+    
+    assert(self->num_entries);
+    microstrain_extract_count(serializer, &self->num_entries, sizeof(self->entries)/sizeof(self->entries[0]));
+    
+    for(unsigned int i=0; i < self->num_entries; i++)
+        extract_mip_3dm_get_event_support_command_info(serializer, &self->entries[i]);
+    
+}
+
 mip_cmd_result mip_3dm_get_event_support(mip_interface* device, mip_3dm_get_event_support_command_query query, uint8_t* max_instances_out, uint8_t* num_entries_out, uint8_t num_entries_out_max, mip_3dm_get_event_support_command_info* entries_out)
 {
     microstrain_serializer serializer;
@@ -2331,6 +2681,21 @@ void extract_mip_3dm_event_control_command(microstrain_serializer* serializer, m
         extract_mip_3dm_event_control_command_mode(serializer, &self->mode);
         
     }
+}
+
+void insert_mip_3dm_event_control_response(microstrain_serializer* serializer, const mip_3dm_event_control_response* self)
+{
+    microstrain_insert_u8(serializer, self->instance);
+    
+    insert_mip_3dm_event_control_command_mode(serializer, self->mode);
+    
+}
+void extract_mip_3dm_event_control_response(microstrain_serializer* serializer, mip_3dm_event_control_response* self)
+{
+    microstrain_extract_u8(serializer, &self->instance);
+    
+    extract_mip_3dm_event_control_command_mode(serializer, &self->mode);
+    
 }
 
 mip_cmd_result mip_3dm_write_event_control(mip_interface* device, uint8_t instance, mip_3dm_event_control_command_mode mode)
@@ -2455,6 +2820,25 @@ void extract_mip_3dm_get_event_trigger_status_command(microstrain_serializer* se
     
 }
 
+void insert_mip_3dm_get_event_trigger_status_response(microstrain_serializer* serializer, const mip_3dm_get_event_trigger_status_response* self)
+{
+    microstrain_insert_u8(serializer, self->count);
+    
+    
+    for(unsigned int i=0; i < self->count; i++)
+        insert_mip_3dm_get_event_trigger_status_command_entry(serializer, &self->triggers[i]);
+    
+}
+void extract_mip_3dm_get_event_trigger_status_response(microstrain_serializer* serializer, mip_3dm_get_event_trigger_status_response* self)
+{
+    assert(self->count);
+    microstrain_extract_count(serializer, &self->count, sizeof(self->triggers)/sizeof(self->triggers[0]));
+    
+    for(unsigned int i=0; i < self->count; i++)
+        extract_mip_3dm_get_event_trigger_status_command_entry(serializer, &self->triggers[i]);
+    
+}
+
 mip_cmd_result mip_3dm_get_event_trigger_status(mip_interface* device, uint8_t requested_count, const uint8_t* requested_instances, uint8_t* count_out, uint8_t count_out_max, mip_3dm_get_event_trigger_status_command_entry* triggers_out)
 {
     microstrain_serializer serializer;
@@ -2520,6 +2904,25 @@ void extract_mip_3dm_get_event_action_status_command(microstrain_serializer* ser
     
     for(unsigned int i=0; i < self->requested_count; i++)
         microstrain_extract_u8(serializer, &self->requested_instances[i]);
+    
+}
+
+void insert_mip_3dm_get_event_action_status_response(microstrain_serializer* serializer, const mip_3dm_get_event_action_status_response* self)
+{
+    microstrain_insert_u8(serializer, self->count);
+    
+    
+    for(unsigned int i=0; i < self->count; i++)
+        insert_mip_3dm_get_event_action_status_command_entry(serializer, &self->actions[i]);
+    
+}
+void extract_mip_3dm_get_event_action_status_response(microstrain_serializer* serializer, mip_3dm_get_event_action_status_response* self)
+{
+    assert(self->count);
+    microstrain_extract_count(serializer, &self->count, sizeof(self->actions)/sizeof(self->actions[0]));
+    
+    for(unsigned int i=0; i < self->count; i++)
+        extract_mip_3dm_get_event_action_status_command_entry(serializer, &self->actions[i]);
     
 }
 
@@ -2704,6 +3107,51 @@ void extract_mip_3dm_event_trigger_command(microstrain_serializer* serializer, m
             extract_mip_3dm_event_trigger_command_combination_params(serializer, &self->parameters.combination);
             
         }
+    }
+}
+
+void insert_mip_3dm_event_trigger_response(microstrain_serializer* serializer, const mip_3dm_event_trigger_response* self)
+{
+    microstrain_insert_u8(serializer, self->instance);
+    
+    insert_mip_3dm_event_trigger_command_type(serializer, self->type);
+    
+    if( self->type == MIP_3DM_EVENT_TRIGGER_COMMAND_TYPE_GPIO )
+    {
+        insert_mip_3dm_event_trigger_command_gpio_params(serializer, &self->parameters.gpio);
+        
+    }
+    if( self->type == MIP_3DM_EVENT_TRIGGER_COMMAND_TYPE_THRESHOLD )
+    {
+        insert_mip_3dm_event_trigger_command_threshold_params(serializer, &self->parameters.threshold);
+        
+    }
+    if( self->type == MIP_3DM_EVENT_TRIGGER_COMMAND_TYPE_COMBINATION )
+    {
+        insert_mip_3dm_event_trigger_command_combination_params(serializer, &self->parameters.combination);
+        
+    }
+}
+void extract_mip_3dm_event_trigger_response(microstrain_serializer* serializer, mip_3dm_event_trigger_response* self)
+{
+    microstrain_extract_u8(serializer, &self->instance);
+    
+    extract_mip_3dm_event_trigger_command_type(serializer, &self->type);
+    
+    if( self->type == MIP_3DM_EVENT_TRIGGER_COMMAND_TYPE_GPIO )
+    {
+        extract_mip_3dm_event_trigger_command_gpio_params(serializer, &self->parameters.gpio);
+        
+    }
+    if( self->type == MIP_3DM_EVENT_TRIGGER_COMMAND_TYPE_THRESHOLD )
+    {
+        extract_mip_3dm_event_trigger_command_threshold_params(serializer, &self->parameters.threshold);
+        
+    }
+    if( self->type == MIP_3DM_EVENT_TRIGGER_COMMAND_TYPE_COMBINATION )
+    {
+        extract_mip_3dm_event_trigger_command_combination_params(serializer, &self->parameters.combination);
+        
     }
 }
 
@@ -2916,6 +3364,45 @@ void extract_mip_3dm_event_action_command(microstrain_serializer* serializer, mi
     }
 }
 
+void insert_mip_3dm_event_action_response(microstrain_serializer* serializer, const mip_3dm_event_action_response* self)
+{
+    microstrain_insert_u8(serializer, self->instance);
+    
+    microstrain_insert_u8(serializer, self->trigger);
+    
+    insert_mip_3dm_event_action_command_type(serializer, self->type);
+    
+    if( self->type == MIP_3DM_EVENT_ACTION_COMMAND_TYPE_GPIO )
+    {
+        insert_mip_3dm_event_action_command_gpio_params(serializer, &self->parameters.gpio);
+        
+    }
+    if( self->type == MIP_3DM_EVENT_ACTION_COMMAND_TYPE_MESSAGE )
+    {
+        insert_mip_3dm_event_action_command_message_params(serializer, &self->parameters.message);
+        
+    }
+}
+void extract_mip_3dm_event_action_response(microstrain_serializer* serializer, mip_3dm_event_action_response* self)
+{
+    microstrain_extract_u8(serializer, &self->instance);
+    
+    microstrain_extract_u8(serializer, &self->trigger);
+    
+    extract_mip_3dm_event_action_command_type(serializer, &self->type);
+    
+    if( self->type == MIP_3DM_EVENT_ACTION_COMMAND_TYPE_GPIO )
+    {
+        extract_mip_3dm_event_action_command_gpio_params(serializer, &self->parameters.gpio);
+        
+    }
+    if( self->type == MIP_3DM_EVENT_ACTION_COMMAND_TYPE_MESSAGE )
+    {
+        extract_mip_3dm_event_action_command_message_params(serializer, &self->parameters.message);
+        
+    }
+}
+
 mip_cmd_result mip_3dm_write_event_action(mip_interface* device, uint8_t instance, uint8_t trigger, mip_3dm_event_action_command_type type, const mip_3dm_event_action_command_parameters* parameters)
 {
     microstrain_serializer serializer;
@@ -3050,6 +3537,17 @@ void extract_mip_3dm_accel_bias_command(microstrain_serializer* serializer, mip_
     }
 }
 
+void insert_mip_3dm_accel_bias_response(microstrain_serializer* serializer, const mip_3dm_accel_bias_response* self)
+{
+    insert_mip_vector3f(serializer, self->bias);
+    
+}
+void extract_mip_3dm_accel_bias_response(microstrain_serializer* serializer, mip_3dm_accel_bias_response* self)
+{
+    extract_mip_vector3f(serializer, self->bias);
+    
+}
+
 mip_cmd_result mip_3dm_write_accel_bias(mip_interface* device, const float* bias)
 {
     microstrain_serializer serializer;
@@ -3150,6 +3648,17 @@ void extract_mip_3dm_gyro_bias_command(microstrain_serializer* serializer, mip_3
     }
 }
 
+void insert_mip_3dm_gyro_bias_response(microstrain_serializer* serializer, const mip_3dm_gyro_bias_response* self)
+{
+    insert_mip_vector3f(serializer, self->bias);
+    
+}
+void extract_mip_3dm_gyro_bias_response(microstrain_serializer* serializer, mip_3dm_gyro_bias_response* self)
+{
+    extract_mip_vector3f(serializer, self->bias);
+    
+}
+
 mip_cmd_result mip_3dm_write_gyro_bias(mip_interface* device, const float* bias)
 {
     microstrain_serializer serializer;
@@ -3240,6 +3749,17 @@ void extract_mip_3dm_capture_gyro_bias_command(microstrain_serializer* serialize
     
 }
 
+void insert_mip_3dm_capture_gyro_bias_response(microstrain_serializer* serializer, const mip_3dm_capture_gyro_bias_response* self)
+{
+    insert_mip_vector3f(serializer, self->bias);
+    
+}
+void extract_mip_3dm_capture_gyro_bias_response(microstrain_serializer* serializer, mip_3dm_capture_gyro_bias_response* self)
+{
+    extract_mip_vector3f(serializer, self->bias);
+    
+}
+
 mip_cmd_result mip_3dm_capture_gyro_bias(mip_interface* device, uint16_t averaging_time_ms, float* bias_out)
 {
     microstrain_serializer serializer;
@@ -3286,6 +3806,17 @@ void extract_mip_3dm_mag_hard_iron_offset_command(microstrain_serializer* serial
         extract_mip_vector3f(serializer, self->offset);
         
     }
+}
+
+void insert_mip_3dm_mag_hard_iron_offset_response(microstrain_serializer* serializer, const mip_3dm_mag_hard_iron_offset_response* self)
+{
+    insert_mip_vector3f(serializer, self->offset);
+    
+}
+void extract_mip_3dm_mag_hard_iron_offset_response(microstrain_serializer* serializer, mip_3dm_mag_hard_iron_offset_response* self)
+{
+    extract_mip_vector3f(serializer, self->offset);
+    
 }
 
 mip_cmd_result mip_3dm_write_mag_hard_iron_offset(mip_interface* device, const float* offset)
@@ -3388,6 +3919,17 @@ void extract_mip_3dm_mag_soft_iron_matrix_command(microstrain_serializer* serial
     }
 }
 
+void insert_mip_3dm_mag_soft_iron_matrix_response(microstrain_serializer* serializer, const mip_3dm_mag_soft_iron_matrix_response* self)
+{
+    insert_mip_matrix3f(serializer, self->offset);
+    
+}
+void extract_mip_3dm_mag_soft_iron_matrix_response(microstrain_serializer* serializer, mip_3dm_mag_soft_iron_matrix_response* self)
+{
+    extract_mip_matrix3f(serializer, self->offset);
+    
+}
+
 mip_cmd_result mip_3dm_write_mag_soft_iron_matrix(mip_interface* device, const float* offset)
 {
     microstrain_serializer serializer;
@@ -3486,6 +4028,17 @@ void extract_mip_3dm_coning_sculling_enable_command(microstrain_serializer* seri
         microstrain_extract_bool(serializer, &self->enable);
         
     }
+}
+
+void insert_mip_3dm_coning_sculling_enable_response(microstrain_serializer* serializer, const mip_3dm_coning_sculling_enable_response* self)
+{
+    microstrain_insert_bool(serializer, self->enable);
+    
+}
+void extract_mip_3dm_coning_sculling_enable_response(microstrain_serializer* serializer, mip_3dm_coning_sculling_enable_response* self)
+{
+    microstrain_extract_bool(serializer, &self->enable);
+    
 }
 
 mip_cmd_result mip_3dm_write_coning_sculling_enable(mip_interface* device, bool enable)
@@ -3591,6 +4144,25 @@ void extract_mip_3dm_sensor_2_vehicle_transform_euler_command(microstrain_serial
         microstrain_extract_float(serializer, &self->yaw);
         
     }
+}
+
+void insert_mip_3dm_sensor_2_vehicle_transform_euler_response(microstrain_serializer* serializer, const mip_3dm_sensor_2_vehicle_transform_euler_response* self)
+{
+    microstrain_insert_float(serializer, self->roll);
+    
+    microstrain_insert_float(serializer, self->pitch);
+    
+    microstrain_insert_float(serializer, self->yaw);
+    
+}
+void extract_mip_3dm_sensor_2_vehicle_transform_euler_response(microstrain_serializer* serializer, mip_3dm_sensor_2_vehicle_transform_euler_response* self)
+{
+    microstrain_extract_float(serializer, &self->roll);
+    
+    microstrain_extract_float(serializer, &self->pitch);
+    
+    microstrain_extract_float(serializer, &self->yaw);
+    
 }
 
 mip_cmd_result mip_3dm_write_sensor_2_vehicle_transform_euler(mip_interface* device, float roll, float pitch, float yaw)
@@ -3700,6 +4272,17 @@ void extract_mip_3dm_sensor_2_vehicle_transform_quaternion_command(microstrain_s
     }
 }
 
+void insert_mip_3dm_sensor_2_vehicle_transform_quaternion_response(microstrain_serializer* serializer, const mip_3dm_sensor_2_vehicle_transform_quaternion_response* self)
+{
+    insert_mip_quatf(serializer, self->q);
+    
+}
+void extract_mip_3dm_sensor_2_vehicle_transform_quaternion_response(microstrain_serializer* serializer, mip_3dm_sensor_2_vehicle_transform_quaternion_response* self)
+{
+    extract_mip_quatf(serializer, self->q);
+    
+}
+
 mip_cmd_result mip_3dm_write_sensor_2_vehicle_transform_quaternion(mip_interface* device, const float* q)
 {
     microstrain_serializer serializer;
@@ -3798,6 +4381,17 @@ void extract_mip_3dm_sensor_2_vehicle_transform_dcm_command(microstrain_serializ
         extract_mip_matrix3f(serializer, self->dcm);
         
     }
+}
+
+void insert_mip_3dm_sensor_2_vehicle_transform_dcm_response(microstrain_serializer* serializer, const mip_3dm_sensor_2_vehicle_transform_dcm_response* self)
+{
+    insert_mip_matrix3f(serializer, self->dcm);
+    
+}
+void extract_mip_3dm_sensor_2_vehicle_transform_dcm_response(microstrain_serializer* serializer, mip_3dm_sensor_2_vehicle_transform_dcm_response* self)
+{
+    extract_mip_matrix3f(serializer, self->dcm);
+    
 }
 
 mip_cmd_result mip_3dm_write_sensor_2_vehicle_transform_dcm(mip_interface* device, const float* dcm)
@@ -3910,6 +4504,29 @@ void extract_mip_3dm_complementary_filter_command(microstrain_serializer* serial
         microstrain_extract_float(serializer, &self->heading_time_constant);
         
     }
+}
+
+void insert_mip_3dm_complementary_filter_response(microstrain_serializer* serializer, const mip_3dm_complementary_filter_response* self)
+{
+    microstrain_insert_bool(serializer, self->pitch_roll_enable);
+    
+    microstrain_insert_bool(serializer, self->heading_enable);
+    
+    microstrain_insert_float(serializer, self->pitch_roll_time_constant);
+    
+    microstrain_insert_float(serializer, self->heading_time_constant);
+    
+}
+void extract_mip_3dm_complementary_filter_response(microstrain_serializer* serializer, mip_3dm_complementary_filter_response* self)
+{
+    microstrain_extract_bool(serializer, &self->pitch_roll_enable);
+    
+    microstrain_extract_bool(serializer, &self->heading_enable);
+    
+    microstrain_extract_float(serializer, &self->pitch_roll_time_constant);
+    
+    microstrain_extract_float(serializer, &self->heading_time_constant);
+    
 }
 
 mip_cmd_result mip_3dm_write_complementary_filter(mip_interface* device, bool pitch_roll_enable, bool heading_enable, float pitch_roll_time_constant, float heading_time_constant)
@@ -4028,6 +4645,21 @@ void extract_mip_3dm_sensor_range_command(microstrain_serializer* serializer, mi
     }
 }
 
+void insert_mip_3dm_sensor_range_response(microstrain_serializer* serializer, const mip_3dm_sensor_range_response* self)
+{
+    insert_mip_sensor_range_type(serializer, self->sensor);
+    
+    microstrain_insert_u8(serializer, self->setting);
+    
+}
+void extract_mip_3dm_sensor_range_response(microstrain_serializer* serializer, mip_3dm_sensor_range_response* self)
+{
+    extract_mip_sensor_range_type(serializer, &self->sensor);
+    
+    microstrain_extract_u8(serializer, &self->setting);
+    
+}
+
 mip_cmd_result mip_3dm_write_sensor_range(mip_interface* device, mip_sensor_range_type sensor, uint8_t setting)
 {
     microstrain_serializer serializer;
@@ -4142,6 +4774,29 @@ void extract_mip_3dm_calibrated_sensor_ranges_command(microstrain_serializer* se
     
 }
 
+void insert_mip_3dm_calibrated_sensor_ranges_response(microstrain_serializer* serializer, const mip_3dm_calibrated_sensor_ranges_response* self)
+{
+    insert_mip_sensor_range_type(serializer, self->sensor);
+    
+    microstrain_insert_u8(serializer, self->num_ranges);
+    
+    
+    for(unsigned int i=0; i < self->num_ranges; i++)
+        insert_mip_3dm_calibrated_sensor_ranges_command_entry(serializer, &self->ranges[i]);
+    
+}
+void extract_mip_3dm_calibrated_sensor_ranges_response(microstrain_serializer* serializer, mip_3dm_calibrated_sensor_ranges_response* self)
+{
+    extract_mip_sensor_range_type(serializer, &self->sensor);
+    
+    assert(self->num_ranges);
+    microstrain_extract_count(serializer, &self->num_ranges, sizeof(self->ranges)/sizeof(self->ranges[0]));
+    
+    for(unsigned int i=0; i < self->num_ranges; i++)
+        extract_mip_3dm_calibrated_sensor_ranges_command_entry(serializer, &self->ranges[i]);
+    
+}
+
 mip_cmd_result mip_3dm_calibrated_sensor_ranges(mip_interface* device, mip_sensor_range_type sensor, uint8_t* num_ranges_out, uint8_t num_ranges_out_max, mip_3dm_calibrated_sensor_ranges_command_entry* ranges_out)
 {
     microstrain_serializer serializer;
@@ -4209,6 +4864,33 @@ void extract_mip_3dm_lowpass_filter_command(microstrain_serializer* serializer, 
         microstrain_extract_float(serializer, &self->frequency);
         
     }
+}
+
+void insert_mip_3dm_lowpass_filter_response(microstrain_serializer* serializer, const mip_3dm_lowpass_filter_response* self)
+{
+    microstrain_insert_u8(serializer, self->desc_set);
+    
+    microstrain_insert_u8(serializer, self->field_desc);
+    
+    microstrain_insert_bool(serializer, self->enable);
+    
+    microstrain_insert_bool(serializer, self->manual);
+    
+    microstrain_insert_float(serializer, self->frequency);
+    
+}
+void extract_mip_3dm_lowpass_filter_response(microstrain_serializer* serializer, mip_3dm_lowpass_filter_response* self)
+{
+    microstrain_extract_u8(serializer, &self->desc_set);
+    
+    microstrain_extract_u8(serializer, &self->field_desc);
+    
+    microstrain_extract_bool(serializer, &self->enable);
+    
+    microstrain_extract_bool(serializer, &self->manual);
+    
+    microstrain_extract_float(serializer, &self->frequency);
+    
 }
 
 mip_cmd_result mip_3dm_write_lowpass_filter(mip_interface* device, uint8_t desc_set, uint8_t field_desc, bool enable, bool manual, float frequency)

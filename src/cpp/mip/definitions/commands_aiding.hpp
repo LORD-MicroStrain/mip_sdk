@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common.hpp"
+#include <mip/definitions/common.hpp>
 #include <mip/mip_descriptors.hpp>
 #include <mip/mip_result.hpp>
 #include <mip/mip_interface.hpp>
@@ -28,29 +28,29 @@ namespace commands_aiding {
 
 enum 
 {
-    DESCRIPTOR_SET             = 0x13,
+    DESCRIPTOR_SET         = 0x13,
     
-    CMD_FRAME_CONFIG           = 0x01,
-    CMD_LOCAL_FRAME            = 0x03,
-    CMD_ECHO_CONTROL           = 0x1F,
-    CMD_POS_LOCAL              = 0x20,
-    CMD_POS_ECEF               = 0x21,
-    CMD_POS_LLH                = 0x22,
-    CMD_HEIGHT_ABOVE_ELLIPSOID = 0x23,
-    CMD_HEIGHT_REL             = 0x24,
-    CMD_VEL_ECEF               = 0x28,
-    CMD_VEL_NED                = 0x29,
-    CMD_VEL_BODY_FRAME         = 0x2A,
-    CMD_WHEELSPEED             = 0x2B,
-    CMD_HEADING_TRUE           = 0x31,
-    CMD_MAGNETIC_FIELD         = 0x32,
-    CMD_PRESSURE               = 0x33,
-    CMD_DELTA_POSITION         = 0x38,
-    CMD_DELTA_ATTITUDE         = 0x39,
-    CMD_ANGULAR_RATE_LOCAL     = 0x3A,
+    CMD_FRAME_CONFIG       = 0x01,
+    CMD_LOCAL_FRAME        = 0x03,
+    CMD_ECHO_CONTROL       = 0x1F,
+    CMD_POS_LOCAL          = 0x20,
+    CMD_POS_ECEF           = 0x21,
+    CMD_POS_LLH            = 0x22,
+    CMD_HEIGHT_ABS         = 0x23,
+    CMD_HEIGHT_REL         = 0x24,
+    CMD_VEL_ECEF           = 0x28,
+    CMD_VEL_NED            = 0x29,
+    CMD_VEL_ODOM           = 0x2A,
+    CMD_WHEELSPEED         = 0x2B,
+    CMD_HEADING_TRUE       = 0x31,
+    CMD_MAGNETIC_FIELD     = 0x32,
+    CMD_PRESSURE           = 0x33,
+    CMD_DELTA_POSITION     = 0x38,
+    CMD_DELTA_ATTITUDE     = 0x39,
+    CMD_LOCAL_ANGULAR_RATE = 0x3A,
     
-    REPLY_FRAME_CONFIG         = 0x81,
-    REPLY_ECHO_CONTROL         = 0x9F,
+    REPLY_FRAME_CONFIG     = 0x81,
+    REPLY_ECHO_CONTROL     = 0x9F,
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -83,9 +83,8 @@ struct Time
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup cpp_aiding_frame_config  (0x13,0x01) Frame Config [CPP]
-/// Defines an aiding frame associated with a specific sensor frame ID.
-/// The frame ID used in this command should mirror the frame ID used in the aiding command
-/// (if that aiding measurement is measured in this reference frame).
+/// Defines an aiding frame associated with a specific sensor frame ID.  The frame ID used in this command
+/// should mirror the frame ID used in the aiding command (if that aiding measurement is measured in this reference frame)
 /// 
 /// This transform satisfies the following relationship:
 /// 
@@ -206,12 +205,12 @@ TypedResult<FrameConfig> defaultFrameConfig(C::mip_interface& device, uint8_t fr
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_aiding_echo_control  (0x13,0x1F) Echo Control [CPP]
+///@defgroup cpp_aiding_aiding_echo_control  (0x13,0x1F) Aiding Echo Control [CPP]
 /// Controls command response behavior to external aiding commands
 ///
 ///@{
 
-struct EchoControl
+struct AidingEchoControl
 {
     enum class Mode : uint8_t
     {
@@ -228,7 +227,7 @@ struct EchoControl
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_ECHO_CONTROL;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
-    static constexpr const char* NAME = "EchoControl";
+    static constexpr const char* NAME = "AidingEchoControl";
     static constexpr const char* DOC_NAME = "Aiding Command Echo Control";
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
     
@@ -242,9 +241,9 @@ struct EchoControl
         return std::make_tuple(std::ref(mode));
     }
     
-    static EchoControl create_sld_all(::mip::FunctionSelector function)
+    static AidingEchoControl create_sld_all(::mip::FunctionSelector function)
     {
-        EchoControl cmd;
+        AidingEchoControl cmd;
         cmd.function = function;
         return cmd;
     }
@@ -262,7 +261,7 @@ struct EchoControl
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::REPLY_ECHO_CONTROL;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
-        static constexpr const char* NAME = "EchoControl::Response";
+        static constexpr const char* NAME = "AidingEchoControl::Response";
         static constexpr const char* DOC_NAME = "Aiding Command Echo Control Response";
         static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
@@ -282,21 +281,21 @@ struct EchoControl
         
     };
 };
-TypedResult<EchoControl> writeEchoControl(C::mip_interface& device, EchoControl::Mode mode);
-TypedResult<EchoControl> readEchoControl(C::mip_interface& device, EchoControl::Mode* modeOut);
-TypedResult<EchoControl> saveEchoControl(C::mip_interface& device);
-TypedResult<EchoControl> loadEchoControl(C::mip_interface& device);
-TypedResult<EchoControl> defaultEchoControl(C::mip_interface& device);
+TypedResult<AidingEchoControl> writeAidingEchoControl(C::mip_interface& device, AidingEchoControl::Mode mode);
+TypedResult<AidingEchoControl> readAidingEchoControl(C::mip_interface& device, AidingEchoControl::Mode* modeOut);
+TypedResult<AidingEchoControl> saveAidingEchoControl(C::mip_interface& device);
+TypedResult<AidingEchoControl> loadAidingEchoControl(C::mip_interface& device);
+TypedResult<AidingEchoControl> defaultAidingEchoControl(C::mip_interface& device);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_aiding_pos_ecef  (0x13,0x21) Pos Ecef [CPP]
+///@defgroup cpp_aiding_ecef_pos  (0x13,0x21) Ecef Pos [CPP]
 /// Cartesian vector position aiding command. Coordinates are given in the WGS84 ECEF system.
 ///
 ///@{
 
-struct PosEcef
+struct EcefPos
 {
     struct ValidFlags : Bitfield<ValidFlags>
     {
@@ -319,12 +318,6 @@ struct PosEcef
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool x() const { return (value & X) > 0; }
-        void x(bool val) { if(val) value |= X; else value &= ~X; }
-        bool y() const { return (value & Y) > 0; }
-        void y(bool val) { if(val) value |= Y; else value &= ~Y; }
-        bool z() const { return (value & Z) > 0; }
-        void z(bool val) { if(val) value |= Z; else value &= ~Z; }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -339,7 +332,7 @@ struct PosEcef
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_POS_ECEF;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
-    static constexpr const char* NAME = "PosEcef";
+    static constexpr const char* NAME = "EcefPos";
     static constexpr const char* DOC_NAME = "ECEF Position";
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -359,19 +352,18 @@ struct PosEcef
     
     typedef void Response;
 };
-TypedResult<PosEcef> posEcef(C::mip_interface& device, const Time& time, uint8_t frameId, const double* position, const float* uncertainty, PosEcef::ValidFlags validFlags);
+TypedResult<EcefPos> ecefPos(C::mip_interface& device, const Time& time, uint8_t frameId, const double* position, const float* uncertainty, EcefPos::ValidFlags validFlags);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_aiding_pos_llh  (0x13,0x22) Pos Llh [CPP]
-/// Geodetic position aiding command.
-/// Coordinates are given in WGS84 geodetic latitude, longitude, and height above the ellipsoid.
+///@defgroup cpp_aiding_llh_pos  (0x13,0x22) Llh Pos [CPP]
+/// Geodetic position aiding command. Coordinates are given in WGS84 geodetic latitude, longitude, and height above the ellipsoid.
 /// Uncertainty is given in NED coordinates, which are parallel to incremental changes in latitude, longitude, and height.
 ///
 ///@{
 
-struct PosLlh
+struct LlhPos
 {
     struct ValidFlags : Bitfield<ValidFlags>
     {
@@ -394,12 +386,6 @@ struct PosLlh
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool latitude() const { return (value & LATITUDE) > 0; }
-        void latitude(bool val) { if(val) value |= LATITUDE; else value &= ~LATITUDE; }
-        bool longitude() const { return (value & LONGITUDE) > 0; }
-        void longitude(bool val) { if(val) value |= LONGITUDE; else value &= ~LONGITUDE; }
-        bool height() const { return (value & HEIGHT) > 0; }
-        void height(bool val) { if(val) value |= HEIGHT; else value &= ~HEIGHT; }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -416,7 +402,7 @@ struct PosLlh
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_POS_LLH;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
-    static constexpr const char* NAME = "PosLlh";
+    static constexpr const char* NAME = "LlhPos";
     static constexpr const char* DOC_NAME = "LLH Position";
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -436,17 +422,17 @@ struct PosLlh
     
     typedef void Response;
 };
-TypedResult<PosLlh> posLlh(C::mip_interface& device, const Time& time, uint8_t frameId, double latitude, double longitude, double height, const float* uncertainty, PosLlh::ValidFlags validFlags);
+TypedResult<LlhPos> llhPos(C::mip_interface& device, const Time& time, uint8_t frameId, double latitude, double longitude, double height, const float* uncertainty, LlhPos::ValidFlags validFlags);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_aiding_height_above_ellipsoid  (0x13,0x23) Height Above Ellipsoid [CPP]
-/// Estimated value of the height above ellipsoid.
+///@defgroup cpp_aiding_height  (0x13,0x23) Height [CPP]
+/// Estimated value of height.
 ///
 ///@{
 
-struct HeightAboveEllipsoid
+struct Height
 {
     /// Parameters
     Time time; ///< Timestamp of the measurement.
@@ -457,10 +443,10 @@ struct HeightAboveEllipsoid
     
     /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
-    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_HEIGHT_ABOVE_ELLIPSOID;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_HEIGHT_ABS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
-    static constexpr const char* NAME = "HeightAboveEllipsoid";
-    static constexpr const char* DOC_NAME = "Height Above Ellipsoid";
+    static constexpr const char* NAME = "Height";
+    static constexpr const char* DOC_NAME = "Height";
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
     auto asTuple() const
@@ -479,17 +465,17 @@ struct HeightAboveEllipsoid
     
     typedef void Response;
 };
-TypedResult<HeightAboveEllipsoid> heightAboveEllipsoid(C::mip_interface& device, const Time& time, uint8_t frameId, float height, float uncertainty, uint16_t validFlags);
+TypedResult<Height> height(C::mip_interface& device, const Time& time, uint8_t frameId, float height, float uncertainty, uint16_t validFlags);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_aiding_vel_ecef  (0x13,0x28) Vel Ecef [CPP]
+///@defgroup cpp_aiding_ecef_vel  (0x13,0x28) Ecef Vel [CPP]
 /// ECEF velocity aiding command. Coordinates are given in the WGS84 ECEF frame.
 ///
 ///@{
 
-struct VelEcef
+struct EcefVel
 {
     struct ValidFlags : Bitfield<ValidFlags>
     {
@@ -512,12 +498,6 @@ struct VelEcef
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool x() const { return (value & X) > 0; }
-        void x(bool val) { if(val) value |= X; else value &= ~X; }
-        bool y() const { return (value & Y) > 0; }
-        void y(bool val) { if(val) value |= Y; else value &= ~Y; }
-        bool z() const { return (value & Z) > 0; }
-        void z(bool val) { if(val) value |= Z; else value &= ~Z; }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -532,7 +512,7 @@ struct VelEcef
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_VEL_ECEF;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
-    static constexpr const char* NAME = "VelEcef";
+    static constexpr const char* NAME = "EcefVel";
     static constexpr const char* DOC_NAME = "ECEF Velocity";
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -552,17 +532,17 @@ struct VelEcef
     
     typedef void Response;
 };
-TypedResult<VelEcef> velEcef(C::mip_interface& device, const Time& time, uint8_t frameId, const float* velocity, const float* uncertainty, VelEcef::ValidFlags validFlags);
+TypedResult<EcefVel> ecefVel(C::mip_interface& device, const Time& time, uint8_t frameId, const float* velocity, const float* uncertainty, EcefVel::ValidFlags validFlags);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_aiding_vel_ned  (0x13,0x29) Vel Ned [CPP]
+///@defgroup cpp_aiding_ned_vel  (0x13,0x29) Ned Vel [CPP]
 /// NED velocity aiding command. Coordinates are given in the local North-East-Down frame.
 ///
 ///@{
 
-struct VelNed
+struct NedVel
 {
     struct ValidFlags : Bitfield<ValidFlags>
     {
@@ -585,12 +565,6 @@ struct VelNed
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool x() const { return (value & X) > 0; }
-        void x(bool val) { if(val) value |= X; else value &= ~X; }
-        bool y() const { return (value & Y) > 0; }
-        void y(bool val) { if(val) value |= Y; else value &= ~Y; }
-        bool z() const { return (value & Z) > 0; }
-        void z(bool val) { if(val) value |= Z; else value &= ~Z; }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -605,7 +579,7 @@ struct VelNed
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_VEL_NED;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
-    static constexpr const char* NAME = "VelNed";
+    static constexpr const char* NAME = "NedVel";
     static constexpr const char* DOC_NAME = "NED Velocity";
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -625,17 +599,18 @@ struct VelNed
     
     typedef void Response;
 };
-TypedResult<VelNed> velNed(C::mip_interface& device, const Time& time, uint8_t frameId, const float* velocity, const float* uncertainty, VelNed::ValidFlags validFlags);
+TypedResult<NedVel> nedVel(C::mip_interface& device, const Time& time, uint8_t frameId, const float* velocity, const float* uncertainty, NedVel::ValidFlags validFlags);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_aiding_vel_body_frame  (0x13,0x2A) Vel Body Frame [CPP]
-/// Estimated of velocity of the vehicle in the frame associated with the given sensor ID, relative to the vehicle frame.
+///@defgroup cpp_aiding_vehicle_fixed_frame_velocity  (0x13,0x2A) Vehicle Fixed Frame Velocity [CPP]
+/// Estimate of velocity of the vehicle in the frame associated
+/// with the given sensor ID.
 ///
 ///@{
 
-struct VelBodyFrame
+struct VehicleFixedFrameVelocity
 {
     struct ValidFlags : Bitfield<ValidFlags>
     {
@@ -658,12 +633,6 @@ struct VelBodyFrame
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool x() const { return (value & X) > 0; }
-        void x(bool val) { if(val) value |= X; else value &= ~X; }
-        bool y() const { return (value & Y) > 0; }
-        void y(bool val) { if(val) value |= Y; else value &= ~Y; }
-        bool z() const { return (value & Z) > 0; }
-        void z(bool val) { if(val) value |= Z; else value &= ~Z; }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -676,10 +645,10 @@ struct VelBodyFrame
     
     /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
-    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_VEL_BODY_FRAME;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_VEL_ODOM;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
-    static constexpr const char* NAME = "VelBodyFrame";
-    static constexpr const char* DOC_NAME = "Body Frame Velocity";
+    static constexpr const char* NAME = "VehicleFixedFrameVelocity";
+    static constexpr const char* DOC_NAME = "Vehicle Frame Velocity";
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
     auto asTuple() const
@@ -698,16 +667,16 @@ struct VelBodyFrame
     
     typedef void Response;
 };
-TypedResult<VelBodyFrame> velBodyFrame(C::mip_interface& device, const Time& time, uint8_t frameId, const float* velocity, const float* uncertainty, VelBodyFrame::ValidFlags validFlags);
+TypedResult<VehicleFixedFrameVelocity> vehicleFixedFrameVelocity(C::mip_interface& device, const Time& time, uint8_t frameId, const float* velocity, const float* uncertainty, VehicleFixedFrameVelocity::ValidFlags validFlags);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_aiding_heading_true  (0x13,0x31) Heading True [CPP]
+///@defgroup cpp_aiding_true_heading  (0x13,0x31) True Heading [CPP]
 ///
 ///@{
 
-struct HeadingTrue
+struct TrueHeading
 {
     /// Parameters
     Time time; ///< Timestamp of the measurement.
@@ -720,7 +689,7 @@ struct HeadingTrue
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_HEADING_TRUE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
-    static constexpr const char* NAME = "HeadingTrue";
+    static constexpr const char* NAME = "TrueHeading";
     static constexpr const char* DOC_NAME = "True Heading";
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -740,7 +709,7 @@ struct HeadingTrue
     
     typedef void Response;
 };
-TypedResult<HeadingTrue> headingTrue(C::mip_interface& device, const Time& time, uint8_t frameId, float heading, float uncertainty, uint16_t validFlags);
+TypedResult<TrueHeading> trueHeading(C::mip_interface& device, const Time& time, uint8_t frameId, float heading, float uncertainty, uint16_t validFlags);
 
 ///@}
 ///
@@ -773,12 +742,6 @@ struct MagneticField
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool x() const { return (value & X) > 0; }
-        void x(bool val) { if(val) value |= X; else value &= ~X; }
-        bool y() const { return (value & Y) > 0; }
-        void y(bool val) { if(val) value |= Y; else value &= ~Y; }
-        bool z() const { return (value & Z) > 0; }
-        void z(bool val) { if(val) value |= Z; else value &= ~Z; }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };

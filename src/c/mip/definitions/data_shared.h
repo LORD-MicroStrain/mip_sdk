@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common.h"
+#include <mip/definitions/common.h>
 #include <mip/mip_descriptors.h>
 #include <mip/mip_result.h>
 #include <mip/mip_interface.h>

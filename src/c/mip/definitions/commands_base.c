@@ -198,6 +198,21 @@ void extract_mip_base_comm_speed_command(microstrain_serializer* serializer, mip
     }
 }
 
+void insert_mip_base_comm_speed_response(microstrain_serializer* serializer, const mip_base_comm_speed_response* self)
+{
+    microstrain_insert_u8(serializer, self->port);
+    
+    microstrain_insert_u32(serializer, self->baud);
+    
+}
+void extract_mip_base_comm_speed_response(microstrain_serializer* serializer, mip_base_comm_speed_response* self)
+{
+    microstrain_extract_u8(serializer, &self->port);
+    
+    microstrain_extract_u32(serializer, &self->baud);
+    
+}
+
 mip_cmd_result mip_base_write_comm_speed(mip_interface* device, uint8_t port, uint32_t baud)
 {
     microstrain_serializer serializer;

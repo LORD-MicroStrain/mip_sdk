@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common.h"
+#include <mip/definitions/common.h>
 #include <mip/mip_descriptors.h>
 #include <mip/mip_result.h>
 #include <mip/mip_interface.h>
@@ -188,21 +188,18 @@ static inline void extract_mip_filter_status_flags(microstrain_serializer* seria
 
 enum mip_filter_aiding_measurement_type
 {
-    MIP_FILTER_AIDING_MEASUREMENT_TYPE_GNSS                          = 1,  ///<  
-    MIP_FILTER_AIDING_MEASUREMENT_TYPE_DUAL_ANTENNA                  = 2,  ///<  
-    MIP_FILTER_AIDING_MEASUREMENT_TYPE_HEADING                       = 3,  ///<  
-    MIP_FILTER_AIDING_MEASUREMENT_TYPE_PRESSURE                      = 4,  ///<  
-    MIP_FILTER_AIDING_MEASUREMENT_TYPE_MAGNETOMETER                  = 5,  ///<  
-    MIP_FILTER_AIDING_MEASUREMENT_TYPE_SPEED                         = 6,  ///<  
-    MIP_FILTER_AIDING_MEASUREMENT_TYPE_AIDING_POS_ECEF               = 33,  ///<  
-    MIP_FILTER_AIDING_MEASUREMENT_TYPE_AIDING_POS_LLH                = 34,  ///<  
-    MIP_FILTER_AIDING_MEASUREMENT_TYPE_AIDING_HEIGHT_ABOVE_ELLIPSOID = 35,  ///<  
-    MIP_FILTER_AIDING_MEASUREMENT_TYPE_AIDING_VEL_ECEF               = 40,  ///<  
-    MIP_FILTER_AIDING_MEASUREMENT_TYPE_AIDING_VEL_NED                = 41,  ///<  
-    MIP_FILTER_AIDING_MEASUREMENT_TYPE_AIDING_VEL_BODY_FRAME         = 42,  ///<  
-    MIP_FILTER_AIDING_MEASUREMENT_TYPE_AIDING_HEADING_TRUE           = 49,  ///<  
-    MIP_FILTER_AIDING_MEASUREMENT_TYPE_AIDING_MAGNETIC_FIELD         = 50,  ///<  
-    MIP_FILTER_AIDING_MEASUREMENT_TYPE_AIDING_PRESSURE               = 51,  ///<  
+    MIP_FILTER_AIDING_MEASUREMENT_TYPE_GNSS              = 1,  ///<  
+    MIP_FILTER_AIDING_MEASUREMENT_TYPE_DUAL_ANTENNA      = 2,  ///<  
+    MIP_FILTER_AIDING_MEASUREMENT_TYPE_HEADING           = 3,  ///<  
+    MIP_FILTER_AIDING_MEASUREMENT_TYPE_PRESSURE          = 4,  ///<  
+    MIP_FILTER_AIDING_MEASUREMENT_TYPE_MAGNETOMETER      = 5,  ///<  
+    MIP_FILTER_AIDING_MEASUREMENT_TYPE_SPEED             = 6,  ///<  
+    MIP_FILTER_AIDING_MEASUREMENT_TYPE_POS_ECEF          = 33,  ///<  
+    MIP_FILTER_AIDING_MEASUREMENT_TYPE_POS_LLH           = 34,  ///<  
+    MIP_FILTER_AIDING_MEASUREMENT_TYPE_VEL_ECEF          = 40,  ///<  
+    MIP_FILTER_AIDING_MEASUREMENT_TYPE_VEL_NED           = 41,  ///<  
+    MIP_FILTER_AIDING_MEASUREMENT_TYPE_VEL_VEHICLE_FRAME = 42,  ///<  
+    MIP_FILTER_AIDING_MEASUREMENT_TYPE_HEADING_TRUE      = 49,  ///<  
 };
 typedef enum mip_filter_aiding_measurement_type mip_filter_aiding_measurement_type;
 

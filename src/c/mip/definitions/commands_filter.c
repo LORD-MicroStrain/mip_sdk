@@ -79,6 +79,17 @@ void extract_mip_filter_estimation_control_command(microstrain_serializer* seria
     }
 }
 
+void insert_mip_filter_estimation_control_response(microstrain_serializer* serializer, const mip_filter_estimation_control_response* self)
+{
+    insert_mip_filter_estimation_control_command_enable_flags(serializer, self->enable);
+    
+}
+void extract_mip_filter_estimation_control_response(microstrain_serializer* serializer, mip_filter_estimation_control_response* self)
+{
+    extract_mip_filter_estimation_control_command_enable_flags(serializer, &self->enable);
+    
+}
+
 mip_cmd_result mip_filter_write_estimation_control(mip_interface* device, mip_filter_estimation_control_command_enable_flags enable)
 {
     microstrain_serializer serializer;
@@ -329,6 +340,17 @@ void extract_mip_filter_tare_orientation_command(microstrain_serializer* seriali
     }
 }
 
+void insert_mip_filter_tare_orientation_response(microstrain_serializer* serializer, const mip_filter_tare_orientation_response* self)
+{
+    insert_mip_filter_tare_orientation_command_mip_tare_axes(serializer, self->axes);
+    
+}
+void extract_mip_filter_tare_orientation_response(microstrain_serializer* serializer, mip_filter_tare_orientation_response* self)
+{
+    extract_mip_filter_tare_orientation_command_mip_tare_axes(serializer, &self->axes);
+    
+}
+
 mip_cmd_result mip_filter_write_tare_orientation(mip_interface* device, mip_filter_tare_orientation_command_mip_tare_axes axes)
 {
     microstrain_serializer serializer;
@@ -424,6 +446,17 @@ void extract_mip_filter_vehicle_dynamics_mode_command(microstrain_serializer* se
         extract_mip_filter_vehicle_dynamics_mode_command_dynamics_mode(serializer, &self->mode);
         
     }
+}
+
+void insert_mip_filter_vehicle_dynamics_mode_response(microstrain_serializer* serializer, const mip_filter_vehicle_dynamics_mode_response* self)
+{
+    insert_mip_filter_vehicle_dynamics_mode_command_dynamics_mode(serializer, self->mode);
+    
+}
+void extract_mip_filter_vehicle_dynamics_mode_response(microstrain_serializer* serializer, mip_filter_vehicle_dynamics_mode_response* self)
+{
+    extract_mip_filter_vehicle_dynamics_mode_command_dynamics_mode(serializer, &self->mode);
+    
 }
 
 mip_cmd_result mip_filter_write_vehicle_dynamics_mode(mip_interface* device, mip_filter_vehicle_dynamics_mode_command_dynamics_mode mode)
@@ -529,6 +562,25 @@ void extract_mip_filter_sensor_to_vehicle_rotation_euler_command(microstrain_ser
         microstrain_extract_float(serializer, &self->yaw);
         
     }
+}
+
+void insert_mip_filter_sensor_to_vehicle_rotation_euler_response(microstrain_serializer* serializer, const mip_filter_sensor_to_vehicle_rotation_euler_response* self)
+{
+    microstrain_insert_float(serializer, self->roll);
+    
+    microstrain_insert_float(serializer, self->pitch);
+    
+    microstrain_insert_float(serializer, self->yaw);
+    
+}
+void extract_mip_filter_sensor_to_vehicle_rotation_euler_response(microstrain_serializer* serializer, mip_filter_sensor_to_vehicle_rotation_euler_response* self)
+{
+    microstrain_extract_float(serializer, &self->roll);
+    
+    microstrain_extract_float(serializer, &self->pitch);
+    
+    microstrain_extract_float(serializer, &self->yaw);
+    
 }
 
 mip_cmd_result mip_filter_write_sensor_to_vehicle_rotation_euler(mip_interface* device, float roll, float pitch, float yaw)
@@ -638,6 +690,17 @@ void extract_mip_filter_sensor_to_vehicle_rotation_dcm_command(microstrain_seria
     }
 }
 
+void insert_mip_filter_sensor_to_vehicle_rotation_dcm_response(microstrain_serializer* serializer, const mip_filter_sensor_to_vehicle_rotation_dcm_response* self)
+{
+    insert_mip_matrix3f(serializer, self->dcm);
+    
+}
+void extract_mip_filter_sensor_to_vehicle_rotation_dcm_response(microstrain_serializer* serializer, mip_filter_sensor_to_vehicle_rotation_dcm_response* self)
+{
+    extract_mip_matrix3f(serializer, self->dcm);
+    
+}
+
 mip_cmd_result mip_filter_write_sensor_to_vehicle_rotation_dcm(mip_interface* device, const float* dcm)
 {
     microstrain_serializer serializer;
@@ -736,6 +799,17 @@ void extract_mip_filter_sensor_to_vehicle_rotation_quaternion_command(microstrai
         extract_mip_quatf(serializer, self->quat);
         
     }
+}
+
+void insert_mip_filter_sensor_to_vehicle_rotation_quaternion_response(microstrain_serializer* serializer, const mip_filter_sensor_to_vehicle_rotation_quaternion_response* self)
+{
+    insert_mip_quatf(serializer, self->quat);
+    
+}
+void extract_mip_filter_sensor_to_vehicle_rotation_quaternion_response(microstrain_serializer* serializer, mip_filter_sensor_to_vehicle_rotation_quaternion_response* self)
+{
+    extract_mip_quatf(serializer, self->quat);
+    
 }
 
 mip_cmd_result mip_filter_write_sensor_to_vehicle_rotation_quaternion(mip_interface* device, const float* quat)
@@ -838,6 +912,17 @@ void extract_mip_filter_sensor_to_vehicle_offset_command(microstrain_serializer*
     }
 }
 
+void insert_mip_filter_sensor_to_vehicle_offset_response(microstrain_serializer* serializer, const mip_filter_sensor_to_vehicle_offset_response* self)
+{
+    insert_mip_vector3f(serializer, self->offset);
+    
+}
+void extract_mip_filter_sensor_to_vehicle_offset_response(microstrain_serializer* serializer, mip_filter_sensor_to_vehicle_offset_response* self)
+{
+    extract_mip_vector3f(serializer, self->offset);
+    
+}
+
 mip_cmd_result mip_filter_write_sensor_to_vehicle_offset(mip_interface* device, const float* offset)
 {
     microstrain_serializer serializer;
@@ -936,6 +1021,17 @@ void extract_mip_filter_antenna_offset_command(microstrain_serializer* serialize
         extract_mip_vector3f(serializer, self->offset);
         
     }
+}
+
+void insert_mip_filter_antenna_offset_response(microstrain_serializer* serializer, const mip_filter_antenna_offset_response* self)
+{
+    insert_mip_vector3f(serializer, self->offset);
+    
+}
+void extract_mip_filter_antenna_offset_response(microstrain_serializer* serializer, mip_filter_antenna_offset_response* self)
+{
+    extract_mip_vector3f(serializer, self->offset);
+    
 }
 
 mip_cmd_result mip_filter_write_antenna_offset(mip_interface* device, const float* offset)
@@ -1038,6 +1134,17 @@ void extract_mip_filter_gnss_source_command(microstrain_serializer* serializer, 
     }
 }
 
+void insert_mip_filter_gnss_source_response(microstrain_serializer* serializer, const mip_filter_gnss_source_response* self)
+{
+    insert_mip_filter_gnss_source_command_source(serializer, self->source);
+    
+}
+void extract_mip_filter_gnss_source_response(microstrain_serializer* serializer, mip_filter_gnss_source_response* self)
+{
+    extract_mip_filter_gnss_source_command_source(serializer, &self->source);
+    
+}
+
 mip_cmd_result mip_filter_write_gnss_source(mip_interface* device, mip_filter_gnss_source_command_source source)
 {
     microstrain_serializer serializer;
@@ -1133,6 +1240,17 @@ void extract_mip_filter_heading_source_command(microstrain_serializer* serialize
         extract_mip_filter_heading_source_command_source(serializer, &self->source);
         
     }
+}
+
+void insert_mip_filter_heading_source_response(microstrain_serializer* serializer, const mip_filter_heading_source_response* self)
+{
+    insert_mip_filter_heading_source_command_source(serializer, self->source);
+    
+}
+void extract_mip_filter_heading_source_response(microstrain_serializer* serializer, mip_filter_heading_source_response* self)
+{
+    extract_mip_filter_heading_source_command_source(serializer, &self->source);
+    
 }
 
 mip_cmd_result mip_filter_write_heading_source(mip_interface* device, mip_filter_heading_source_command_source source)
@@ -1232,6 +1350,17 @@ void extract_mip_filter_auto_init_control_command(microstrain_serializer* serial
     }
 }
 
+void insert_mip_filter_auto_init_control_response(microstrain_serializer* serializer, const mip_filter_auto_init_control_response* self)
+{
+    microstrain_insert_u8(serializer, self->enable);
+    
+}
+void extract_mip_filter_auto_init_control_response(microstrain_serializer* serializer, mip_filter_auto_init_control_response* self)
+{
+    microstrain_extract_u8(serializer, &self->enable);
+    
+}
+
 mip_cmd_result mip_filter_write_auto_init_control(mip_interface* device, uint8_t enable)
 {
     microstrain_serializer serializer;
@@ -1327,6 +1456,17 @@ void extract_mip_filter_accel_noise_command(microstrain_serializer* serializer, 
         extract_mip_vector3f(serializer, self->noise);
         
     }
+}
+
+void insert_mip_filter_accel_noise_response(microstrain_serializer* serializer, const mip_filter_accel_noise_response* self)
+{
+    insert_mip_vector3f(serializer, self->noise);
+    
+}
+void extract_mip_filter_accel_noise_response(microstrain_serializer* serializer, mip_filter_accel_noise_response* self)
+{
+    extract_mip_vector3f(serializer, self->noise);
+    
 }
 
 mip_cmd_result mip_filter_write_accel_noise(mip_interface* device, const float* noise)
@@ -1427,6 +1567,17 @@ void extract_mip_filter_gyro_noise_command(microstrain_serializer* serializer, m
         extract_mip_vector3f(serializer, self->noise);
         
     }
+}
+
+void insert_mip_filter_gyro_noise_response(microstrain_serializer* serializer, const mip_filter_gyro_noise_response* self)
+{
+    insert_mip_vector3f(serializer, self->noise);
+    
+}
+void extract_mip_filter_gyro_noise_response(microstrain_serializer* serializer, mip_filter_gyro_noise_response* self)
+{
+    extract_mip_vector3f(serializer, self->noise);
+    
 }
 
 mip_cmd_result mip_filter_write_gyro_noise(mip_interface* device, const float* noise)
@@ -1531,6 +1682,21 @@ void extract_mip_filter_accel_bias_model_command(microstrain_serializer* seriali
         extract_mip_vector3f(serializer, self->noise);
         
     }
+}
+
+void insert_mip_filter_accel_bias_model_response(microstrain_serializer* serializer, const mip_filter_accel_bias_model_response* self)
+{
+    insert_mip_vector3f(serializer, self->beta);
+    
+    insert_mip_vector3f(serializer, self->noise);
+    
+}
+void extract_mip_filter_accel_bias_model_response(microstrain_serializer* serializer, mip_filter_accel_bias_model_response* self)
+{
+    extract_mip_vector3f(serializer, self->beta);
+    
+    extract_mip_vector3f(serializer, self->noise);
+    
 }
 
 mip_cmd_result mip_filter_write_accel_bias_model(mip_interface* device, const float* beta, const float* noise)
@@ -1645,6 +1811,21 @@ void extract_mip_filter_gyro_bias_model_command(microstrain_serializer* serializ
     }
 }
 
+void insert_mip_filter_gyro_bias_model_response(microstrain_serializer* serializer, const mip_filter_gyro_bias_model_response* self)
+{
+    insert_mip_vector3f(serializer, self->beta);
+    
+    insert_mip_vector3f(serializer, self->noise);
+    
+}
+void extract_mip_filter_gyro_bias_model_response(microstrain_serializer* serializer, mip_filter_gyro_bias_model_response* self)
+{
+    extract_mip_vector3f(serializer, self->beta);
+    
+    extract_mip_vector3f(serializer, self->noise);
+    
+}
+
 mip_cmd_result mip_filter_write_gyro_bias_model(mip_interface* device, const float* beta, const float* noise)
 {
     microstrain_serializer serializer;
@@ -1753,6 +1934,17 @@ void extract_mip_filter_altitude_aiding_command(microstrain_serializer* serializ
     }
 }
 
+void insert_mip_filter_altitude_aiding_response(microstrain_serializer* serializer, const mip_filter_altitude_aiding_response* self)
+{
+    insert_mip_filter_altitude_aiding_command_aiding_selector(serializer, self->selector);
+    
+}
+void extract_mip_filter_altitude_aiding_response(microstrain_serializer* serializer, mip_filter_altitude_aiding_response* self)
+{
+    extract_mip_filter_altitude_aiding_command_aiding_selector(serializer, &self->selector);
+    
+}
+
 mip_cmd_result mip_filter_write_altitude_aiding(mip_interface* device, mip_filter_altitude_aiding_command_aiding_selector selector)
 {
     microstrain_serializer serializer;
@@ -1848,6 +2040,17 @@ void extract_mip_filter_pitch_roll_aiding_command(microstrain_serializer* serial
         extract_mip_filter_pitch_roll_aiding_command_aiding_source(serializer, &self->source);
         
     }
+}
+
+void insert_mip_filter_pitch_roll_aiding_response(microstrain_serializer* serializer, const mip_filter_pitch_roll_aiding_response* self)
+{
+    insert_mip_filter_pitch_roll_aiding_command_aiding_source(serializer, self->source);
+    
+}
+void extract_mip_filter_pitch_roll_aiding_response(microstrain_serializer* serializer, mip_filter_pitch_roll_aiding_response* self)
+{
+    extract_mip_filter_pitch_roll_aiding_command_aiding_source(serializer, &self->source);
+    
 }
 
 mip_cmd_result mip_filter_write_pitch_roll_aiding(mip_interface* device, mip_filter_pitch_roll_aiding_command_aiding_source source)
@@ -1949,6 +2152,21 @@ void extract_mip_filter_auto_zupt_command(microstrain_serializer* serializer, mi
         microstrain_extract_float(serializer, &self->threshold);
         
     }
+}
+
+void insert_mip_filter_auto_zupt_response(microstrain_serializer* serializer, const mip_filter_auto_zupt_response* self)
+{
+    microstrain_insert_u8(serializer, self->enable);
+    
+    microstrain_insert_float(serializer, self->threshold);
+    
+}
+void extract_mip_filter_auto_zupt_response(microstrain_serializer* serializer, mip_filter_auto_zupt_response* self)
+{
+    microstrain_extract_u8(serializer, &self->enable);
+    
+    microstrain_extract_float(serializer, &self->threshold);
+    
 }
 
 mip_cmd_result mip_filter_write_auto_zupt(mip_interface* device, uint8_t enable, float threshold)
@@ -2055,6 +2273,21 @@ void extract_mip_filter_auto_angular_zupt_command(microstrain_serializer* serial
         microstrain_extract_float(serializer, &self->threshold);
         
     }
+}
+
+void insert_mip_filter_auto_angular_zupt_response(microstrain_serializer* serializer, const mip_filter_auto_angular_zupt_response* self)
+{
+    microstrain_insert_u8(serializer, self->enable);
+    
+    microstrain_insert_float(serializer, self->threshold);
+    
+}
+void extract_mip_filter_auto_angular_zupt_response(microstrain_serializer* serializer, mip_filter_auto_angular_zupt_response* self)
+{
+    microstrain_extract_u8(serializer, &self->enable);
+    
+    microstrain_extract_float(serializer, &self->threshold);
+    
 }
 
 mip_cmd_result mip_filter_write_auto_angular_zupt(mip_interface* device, uint8_t enable, float threshold)
@@ -2202,6 +2435,17 @@ void extract_mip_filter_gravity_noise_command(microstrain_serializer* serializer
     }
 }
 
+void insert_mip_filter_gravity_noise_response(microstrain_serializer* serializer, const mip_filter_gravity_noise_response* self)
+{
+    insert_mip_vector3f(serializer, self->noise);
+    
+}
+void extract_mip_filter_gravity_noise_response(microstrain_serializer* serializer, mip_filter_gravity_noise_response* self)
+{
+    extract_mip_vector3f(serializer, self->noise);
+    
+}
+
 mip_cmd_result mip_filter_write_gravity_noise(mip_interface* device, const float* noise)
 {
     microstrain_serializer serializer;
@@ -2302,6 +2546,17 @@ void extract_mip_filter_pressure_altitude_noise_command(microstrain_serializer* 
     }
 }
 
+void insert_mip_filter_pressure_altitude_noise_response(microstrain_serializer* serializer, const mip_filter_pressure_altitude_noise_response* self)
+{
+    microstrain_insert_float(serializer, self->noise);
+    
+}
+void extract_mip_filter_pressure_altitude_noise_response(microstrain_serializer* serializer, mip_filter_pressure_altitude_noise_response* self)
+{
+    microstrain_extract_float(serializer, &self->noise);
+    
+}
+
 mip_cmd_result mip_filter_write_pressure_altitude_noise(mip_interface* device, float noise)
 {
     microstrain_serializer serializer;
@@ -2397,6 +2652,17 @@ void extract_mip_filter_hard_iron_offset_noise_command(microstrain_serializer* s
         extract_mip_vector3f(serializer, self->noise);
         
     }
+}
+
+void insert_mip_filter_hard_iron_offset_noise_response(microstrain_serializer* serializer, const mip_filter_hard_iron_offset_noise_response* self)
+{
+    insert_mip_vector3f(serializer, self->noise);
+    
+}
+void extract_mip_filter_hard_iron_offset_noise_response(microstrain_serializer* serializer, mip_filter_hard_iron_offset_noise_response* self)
+{
+    extract_mip_vector3f(serializer, self->noise);
+    
 }
 
 mip_cmd_result mip_filter_write_hard_iron_offset_noise(mip_interface* device, const float* noise)
@@ -2499,6 +2765,17 @@ void extract_mip_filter_soft_iron_matrix_noise_command(microstrain_serializer* s
     }
 }
 
+void insert_mip_filter_soft_iron_matrix_noise_response(microstrain_serializer* serializer, const mip_filter_soft_iron_matrix_noise_response* self)
+{
+    insert_mip_matrix3f(serializer, self->noise);
+    
+}
+void extract_mip_filter_soft_iron_matrix_noise_response(microstrain_serializer* serializer, mip_filter_soft_iron_matrix_noise_response* self)
+{
+    extract_mip_matrix3f(serializer, self->noise);
+    
+}
+
 mip_cmd_result mip_filter_write_soft_iron_matrix_noise(mip_interface* device, const float* noise)
 {
     microstrain_serializer serializer;
@@ -2597,6 +2874,17 @@ void extract_mip_filter_mag_noise_command(microstrain_serializer* serializer, mi
         extract_mip_vector3f(serializer, self->noise);
         
     }
+}
+
+void insert_mip_filter_mag_noise_response(microstrain_serializer* serializer, const mip_filter_mag_noise_response* self)
+{
+    insert_mip_vector3f(serializer, self->noise);
+    
+}
+void extract_mip_filter_mag_noise_response(microstrain_serializer* serializer, mip_filter_mag_noise_response* self)
+{
+    extract_mip_vector3f(serializer, self->noise);
+    
 }
 
 mip_cmd_result mip_filter_write_mag_noise(mip_interface* device, const float* noise)
@@ -2701,6 +2989,21 @@ void extract_mip_filter_inclination_source_command(microstrain_serializer* seria
         microstrain_extract_float(serializer, &self->inclination);
         
     }
+}
+
+void insert_mip_filter_inclination_source_response(microstrain_serializer* serializer, const mip_filter_inclination_source_response* self)
+{
+    insert_mip_filter_mag_param_source(serializer, self->source);
+    
+    microstrain_insert_float(serializer, self->inclination);
+    
+}
+void extract_mip_filter_inclination_source_response(microstrain_serializer* serializer, mip_filter_inclination_source_response* self)
+{
+    extract_mip_filter_mag_param_source(serializer, &self->source);
+    
+    microstrain_extract_float(serializer, &self->inclination);
+    
 }
 
 mip_cmd_result mip_filter_write_inclination_source(mip_interface* device, mip_filter_mag_param_source source, float inclination)
@@ -2809,6 +3112,21 @@ void extract_mip_filter_magnetic_declination_source_command(microstrain_serializ
     }
 }
 
+void insert_mip_filter_magnetic_declination_source_response(microstrain_serializer* serializer, const mip_filter_magnetic_declination_source_response* self)
+{
+    insert_mip_filter_mag_param_source(serializer, self->source);
+    
+    microstrain_insert_float(serializer, self->declination);
+    
+}
+void extract_mip_filter_magnetic_declination_source_response(microstrain_serializer* serializer, mip_filter_magnetic_declination_source_response* self)
+{
+    extract_mip_filter_mag_param_source(serializer, &self->source);
+    
+    microstrain_extract_float(serializer, &self->declination);
+    
+}
+
 mip_cmd_result mip_filter_write_magnetic_declination_source(mip_interface* device, mip_filter_mag_param_source source, float declination)
 {
     microstrain_serializer serializer;
@@ -2913,6 +3231,21 @@ void extract_mip_filter_mag_field_magnitude_source_command(microstrain_serialize
         microstrain_extract_float(serializer, &self->magnitude);
         
     }
+}
+
+void insert_mip_filter_mag_field_magnitude_source_response(microstrain_serializer* serializer, const mip_filter_mag_field_magnitude_source_response* self)
+{
+    insert_mip_filter_mag_param_source(serializer, self->source);
+    
+    microstrain_insert_float(serializer, self->magnitude);
+    
+}
+void extract_mip_filter_mag_field_magnitude_source_response(microstrain_serializer* serializer, mip_filter_mag_field_magnitude_source_response* self)
+{
+    extract_mip_filter_mag_param_source(serializer, &self->source);
+    
+    microstrain_extract_float(serializer, &self->magnitude);
+    
 }
 
 mip_cmd_result mip_filter_write_mag_field_magnitude_source(mip_interface* device, mip_filter_mag_param_source source, float magnitude)
@@ -3027,6 +3360,29 @@ void extract_mip_filter_reference_position_command(microstrain_serializer* seria
         microstrain_extract_double(serializer, &self->altitude);
         
     }
+}
+
+void insert_mip_filter_reference_position_response(microstrain_serializer* serializer, const mip_filter_reference_position_response* self)
+{
+    microstrain_insert_bool(serializer, self->enable);
+    
+    microstrain_insert_double(serializer, self->latitude);
+    
+    microstrain_insert_double(serializer, self->longitude);
+    
+    microstrain_insert_double(serializer, self->altitude);
+    
+}
+void extract_mip_filter_reference_position_response(microstrain_serializer* serializer, mip_filter_reference_position_response* self)
+{
+    microstrain_extract_bool(serializer, &self->enable);
+    
+    microstrain_extract_double(serializer, &self->latitude);
+    
+    microstrain_extract_double(serializer, &self->longitude);
+    
+    microstrain_extract_double(serializer, &self->altitude);
+    
 }
 
 mip_cmd_result mip_filter_write_reference_position(mip_interface* device, bool enable, double latitude, double longitude, double altitude)
@@ -3163,6 +3519,41 @@ void extract_mip_filter_accel_magnitude_error_adaptive_measurement_command(micro
         microstrain_extract_float(serializer, &self->minimum_uncertainty);
         
     }
+}
+
+void insert_mip_filter_accel_magnitude_error_adaptive_measurement_response(microstrain_serializer* serializer, const mip_filter_accel_magnitude_error_adaptive_measurement_response* self)
+{
+    insert_mip_filter_adaptive_measurement(serializer, self->adaptive_measurement);
+    
+    microstrain_insert_float(serializer, self->frequency);
+    
+    microstrain_insert_float(serializer, self->low_limit);
+    
+    microstrain_insert_float(serializer, self->high_limit);
+    
+    microstrain_insert_float(serializer, self->low_limit_uncertainty);
+    
+    microstrain_insert_float(serializer, self->high_limit_uncertainty);
+    
+    microstrain_insert_float(serializer, self->minimum_uncertainty);
+    
+}
+void extract_mip_filter_accel_magnitude_error_adaptive_measurement_response(microstrain_serializer* serializer, mip_filter_accel_magnitude_error_adaptive_measurement_response* self)
+{
+    extract_mip_filter_adaptive_measurement(serializer, &self->adaptive_measurement);
+    
+    microstrain_extract_float(serializer, &self->frequency);
+    
+    microstrain_extract_float(serializer, &self->low_limit);
+    
+    microstrain_extract_float(serializer, &self->high_limit);
+    
+    microstrain_extract_float(serializer, &self->low_limit_uncertainty);
+    
+    microstrain_extract_float(serializer, &self->high_limit_uncertainty);
+    
+    microstrain_extract_float(serializer, &self->minimum_uncertainty);
+    
 }
 
 mip_cmd_result mip_filter_write_accel_magnitude_error_adaptive_measurement(mip_interface* device, mip_filter_adaptive_measurement adaptive_measurement, float frequency, float low_limit, float high_limit, float low_limit_uncertainty, float high_limit_uncertainty, float minimum_uncertainty)
@@ -3316,6 +3707,41 @@ void extract_mip_filter_mag_magnitude_error_adaptive_measurement_command(microst
     }
 }
 
+void insert_mip_filter_mag_magnitude_error_adaptive_measurement_response(microstrain_serializer* serializer, const mip_filter_mag_magnitude_error_adaptive_measurement_response* self)
+{
+    insert_mip_filter_adaptive_measurement(serializer, self->adaptive_measurement);
+    
+    microstrain_insert_float(serializer, self->frequency);
+    
+    microstrain_insert_float(serializer, self->low_limit);
+    
+    microstrain_insert_float(serializer, self->high_limit);
+    
+    microstrain_insert_float(serializer, self->low_limit_uncertainty);
+    
+    microstrain_insert_float(serializer, self->high_limit_uncertainty);
+    
+    microstrain_insert_float(serializer, self->minimum_uncertainty);
+    
+}
+void extract_mip_filter_mag_magnitude_error_adaptive_measurement_response(microstrain_serializer* serializer, mip_filter_mag_magnitude_error_adaptive_measurement_response* self)
+{
+    extract_mip_filter_adaptive_measurement(serializer, &self->adaptive_measurement);
+    
+    microstrain_extract_float(serializer, &self->frequency);
+    
+    microstrain_extract_float(serializer, &self->low_limit);
+    
+    microstrain_extract_float(serializer, &self->high_limit);
+    
+    microstrain_extract_float(serializer, &self->low_limit_uncertainty);
+    
+    microstrain_extract_float(serializer, &self->high_limit_uncertainty);
+    
+    microstrain_extract_float(serializer, &self->minimum_uncertainty);
+    
+}
+
 mip_cmd_result mip_filter_write_mag_magnitude_error_adaptive_measurement(mip_interface* device, mip_filter_adaptive_measurement adaptive_measurement, float frequency, float low_limit, float high_limit, float low_limit_uncertainty, float high_limit_uncertainty, float minimum_uncertainty)
 {
     microstrain_serializer serializer;
@@ -3459,6 +3885,33 @@ void extract_mip_filter_mag_dip_angle_error_adaptive_measurement_command(microst
     }
 }
 
+void insert_mip_filter_mag_dip_angle_error_adaptive_measurement_response(microstrain_serializer* serializer, const mip_filter_mag_dip_angle_error_adaptive_measurement_response* self)
+{
+    microstrain_insert_bool(serializer, self->enable);
+    
+    microstrain_insert_float(serializer, self->frequency);
+    
+    microstrain_insert_float(serializer, self->high_limit);
+    
+    microstrain_insert_float(serializer, self->high_limit_uncertainty);
+    
+    microstrain_insert_float(serializer, self->minimum_uncertainty);
+    
+}
+void extract_mip_filter_mag_dip_angle_error_adaptive_measurement_response(microstrain_serializer* serializer, mip_filter_mag_dip_angle_error_adaptive_measurement_response* self)
+{
+    microstrain_extract_bool(serializer, &self->enable);
+    
+    microstrain_extract_float(serializer, &self->frequency);
+    
+    microstrain_extract_float(serializer, &self->high_limit);
+    
+    microstrain_extract_float(serializer, &self->high_limit_uncertainty);
+    
+    microstrain_extract_float(serializer, &self->minimum_uncertainty);
+    
+}
+
 mip_cmd_result mip_filter_write_mag_dip_angle_error_adaptive_measurement(mip_interface* device, bool enable, float frequency, float high_limit, float high_limit_uncertainty, float minimum_uncertainty)
 {
     microstrain_serializer serializer;
@@ -3580,6 +4033,21 @@ void extract_mip_filter_aiding_measurement_enable_command(microstrain_serializer
     }
 }
 
+void insert_mip_filter_aiding_measurement_enable_response(microstrain_serializer* serializer, const mip_filter_aiding_measurement_enable_response* self)
+{
+    insert_mip_filter_aiding_measurement_enable_command_aiding_source(serializer, self->aiding_source);
+    
+    microstrain_insert_bool(serializer, self->enable);
+    
+}
+void extract_mip_filter_aiding_measurement_enable_response(microstrain_serializer* serializer, mip_filter_aiding_measurement_enable_response* self)
+{
+    extract_mip_filter_aiding_measurement_enable_command_aiding_source(serializer, &self->aiding_source);
+    
+    microstrain_extract_bool(serializer, &self->enable);
+    
+}
+
 mip_cmd_result mip_filter_write_aiding_measurement_enable(mip_interface* device, mip_filter_aiding_measurement_enable_command_aiding_source aiding_source, bool enable)
 {
     microstrain_serializer serializer;
@@ -3699,6 +4167,25 @@ void extract_mip_filter_kinematic_constraint_command(microstrain_serializer* ser
         microstrain_extract_u8(serializer, &self->angular_constraint_selection);
         
     }
+}
+
+void insert_mip_filter_kinematic_constraint_response(microstrain_serializer* serializer, const mip_filter_kinematic_constraint_response* self)
+{
+    microstrain_insert_u8(serializer, self->acceleration_constraint_selection);
+    
+    microstrain_insert_u8(serializer, self->velocity_constraint_selection);
+    
+    microstrain_insert_u8(serializer, self->angular_constraint_selection);
+    
+}
+void extract_mip_filter_kinematic_constraint_response(microstrain_serializer* serializer, mip_filter_kinematic_constraint_response* self)
+{
+    microstrain_extract_u8(serializer, &self->acceleration_constraint_selection);
+    
+    microstrain_extract_u8(serializer, &self->velocity_constraint_selection);
+    
+    microstrain_extract_u8(serializer, &self->angular_constraint_selection);
+    
 }
 
 mip_cmd_result mip_filter_write_kinematic_constraint(mip_interface* device, uint8_t acceleration_constraint_selection, uint8_t velocity_constraint_selection, uint8_t angular_constraint_selection)
@@ -3838,6 +4325,49 @@ void extract_mip_filter_initialization_configuration_command(microstrain_seriali
         extract_mip_filter_reference_frame(serializer, &self->reference_frame_selector);
         
     }
+}
+
+void insert_mip_filter_initialization_configuration_response(microstrain_serializer* serializer, const mip_filter_initialization_configuration_response* self)
+{
+    microstrain_insert_u8(serializer, self->wait_for_run_command);
+    
+    insert_mip_filter_initialization_configuration_command_initial_condition_source(serializer, self->initial_cond_src);
+    
+    insert_mip_filter_initialization_configuration_command_alignment_selector(serializer, self->auto_heading_alignment_selector);
+    
+    microstrain_insert_float(serializer, self->initial_heading);
+    
+    microstrain_insert_float(serializer, self->initial_pitch);
+    
+    microstrain_insert_float(serializer, self->initial_roll);
+    
+    insert_mip_vector3f(serializer, self->initial_position);
+    
+    insert_mip_vector3f(serializer, self->initial_velocity);
+    
+    insert_mip_filter_reference_frame(serializer, self->reference_frame_selector);
+    
+}
+void extract_mip_filter_initialization_configuration_response(microstrain_serializer* serializer, mip_filter_initialization_configuration_response* self)
+{
+    microstrain_extract_u8(serializer, &self->wait_for_run_command);
+    
+    extract_mip_filter_initialization_configuration_command_initial_condition_source(serializer, &self->initial_cond_src);
+    
+    extract_mip_filter_initialization_configuration_command_alignment_selector(serializer, &self->auto_heading_alignment_selector);
+    
+    microstrain_extract_float(serializer, &self->initial_heading);
+    
+    microstrain_extract_float(serializer, &self->initial_pitch);
+    
+    microstrain_extract_float(serializer, &self->initial_roll);
+    
+    extract_mip_vector3f(serializer, self->initial_position);
+    
+    extract_mip_vector3f(serializer, self->initial_velocity);
+    
+    extract_mip_filter_reference_frame(serializer, &self->reference_frame_selector);
+    
 }
 
 mip_cmd_result mip_filter_write_initialization_configuration(mip_interface* device, uint8_t wait_for_run_command, mip_filter_initialization_configuration_command_initial_condition_source initial_cond_src, mip_filter_initialization_configuration_command_alignment_selector auto_heading_alignment_selector, float initial_heading, float initial_pitch, float initial_roll, const float* initial_position, const float* initial_velocity, mip_filter_reference_frame reference_frame_selector)
@@ -3987,6 +4517,21 @@ void extract_mip_filter_adaptive_filter_options_command(microstrain_serializer* 
     }
 }
 
+void insert_mip_filter_adaptive_filter_options_response(microstrain_serializer* serializer, const mip_filter_adaptive_filter_options_response* self)
+{
+    microstrain_insert_u8(serializer, self->level);
+    
+    microstrain_insert_u16(serializer, self->time_limit);
+    
+}
+void extract_mip_filter_adaptive_filter_options_response(microstrain_serializer* serializer, mip_filter_adaptive_filter_options_response* self)
+{
+    microstrain_extract_u8(serializer, &self->level);
+    
+    microstrain_extract_u16(serializer, &self->time_limit);
+    
+}
+
 mip_cmd_result mip_filter_write_adaptive_filter_options(mip_interface* device, uint8_t level, uint16_t time_limit)
 {
     microstrain_serializer serializer;
@@ -4091,6 +4636,21 @@ void extract_mip_filter_multi_antenna_offset_command(microstrain_serializer* ser
         extract_mip_vector3f(serializer, self->antenna_offset);
         
     }
+}
+
+void insert_mip_filter_multi_antenna_offset_response(microstrain_serializer* serializer, const mip_filter_multi_antenna_offset_response* self)
+{
+    microstrain_insert_u8(serializer, self->receiver_id);
+    
+    insert_mip_vector3f(serializer, self->antenna_offset);
+    
+}
+void extract_mip_filter_multi_antenna_offset_response(microstrain_serializer* serializer, mip_filter_multi_antenna_offset_response* self)
+{
+    microstrain_extract_u8(serializer, &self->receiver_id);
+    
+    extract_mip_vector3f(serializer, self->antenna_offset);
+    
 }
 
 mip_cmd_result mip_filter_write_multi_antenna_offset(mip_interface* device, uint8_t receiver_id, const float* antenna_offset)
@@ -4213,6 +4773,25 @@ void extract_mip_filter_rel_pos_configuration_command(microstrain_serializer* se
     }
 }
 
+void insert_mip_filter_rel_pos_configuration_response(microstrain_serializer* serializer, const mip_filter_rel_pos_configuration_response* self)
+{
+    microstrain_insert_u8(serializer, self->source);
+    
+    insert_mip_filter_reference_frame(serializer, self->reference_frame_selector);
+    
+    insert_mip_vector3d(serializer, self->reference_coordinates);
+    
+}
+void extract_mip_filter_rel_pos_configuration_response(microstrain_serializer* serializer, mip_filter_rel_pos_configuration_response* self)
+{
+    microstrain_extract_u8(serializer, &self->source);
+    
+    extract_mip_filter_reference_frame(serializer, &self->reference_frame_selector);
+    
+    extract_mip_vector3d(serializer, self->reference_coordinates);
+    
+}
+
 mip_cmd_result mip_filter_write_rel_pos_configuration(mip_interface* device, uint8_t source, mip_filter_reference_frame reference_frame_selector, const double* reference_coordinates)
 {
     microstrain_serializer serializer;
@@ -4325,6 +4904,21 @@ void extract_mip_filter_ref_point_lever_arm_command(microstrain_serializer* seri
         extract_mip_vector3f(serializer, self->lever_arm_offset);
         
     }
+}
+
+void insert_mip_filter_ref_point_lever_arm_response(microstrain_serializer* serializer, const mip_filter_ref_point_lever_arm_response* self)
+{
+    insert_mip_filter_ref_point_lever_arm_command_reference_point_selector(serializer, self->ref_point_sel);
+    
+    insert_mip_vector3f(serializer, self->lever_arm_offset);
+    
+}
+void extract_mip_filter_ref_point_lever_arm_response(microstrain_serializer* serializer, mip_filter_ref_point_lever_arm_response* self)
+{
+    extract_mip_filter_ref_point_lever_arm_command_reference_point_selector(serializer, &self->ref_point_sel);
+    
+    extract_mip_vector3f(serializer, self->lever_arm_offset);
+    
 }
 
 mip_cmd_result mip_filter_write_ref_point_lever_arm(mip_interface* device, mip_filter_ref_point_lever_arm_command_reference_point_selector ref_point_sel, const float* lever_arm_offset)
@@ -4477,6 +5071,21 @@ void extract_mip_filter_speed_lever_arm_command(microstrain_serializer* serializ
     }
 }
 
+void insert_mip_filter_speed_lever_arm_response(microstrain_serializer* serializer, const mip_filter_speed_lever_arm_response* self)
+{
+    microstrain_insert_u8(serializer, self->source);
+    
+    insert_mip_vector3f(serializer, self->lever_arm_offset);
+    
+}
+void extract_mip_filter_speed_lever_arm_response(microstrain_serializer* serializer, mip_filter_speed_lever_arm_response* self)
+{
+    microstrain_extract_u8(serializer, &self->source);
+    
+    extract_mip_vector3f(serializer, self->lever_arm_offset);
+    
+}
+
 mip_cmd_result mip_filter_write_speed_lever_arm(mip_interface* device, uint8_t source, const float* lever_arm_offset)
 {
     microstrain_serializer serializer;
@@ -4589,6 +5198,17 @@ void extract_mip_filter_wheeled_vehicle_constraint_control_command(microstrain_s
     }
 }
 
+void insert_mip_filter_wheeled_vehicle_constraint_control_response(microstrain_serializer* serializer, const mip_filter_wheeled_vehicle_constraint_control_response* self)
+{
+    microstrain_insert_u8(serializer, self->enable);
+    
+}
+void extract_mip_filter_wheeled_vehicle_constraint_control_response(microstrain_serializer* serializer, mip_filter_wheeled_vehicle_constraint_control_response* self)
+{
+    microstrain_extract_u8(serializer, &self->enable);
+    
+}
+
 mip_cmd_result mip_filter_write_wheeled_vehicle_constraint_control(mip_interface* device, uint8_t enable)
 {
     microstrain_serializer serializer;
@@ -4684,6 +5304,17 @@ void extract_mip_filter_vertical_gyro_constraint_control_command(microstrain_ser
         microstrain_extract_u8(serializer, &self->enable);
         
     }
+}
+
+void insert_mip_filter_vertical_gyro_constraint_control_response(microstrain_serializer* serializer, const mip_filter_vertical_gyro_constraint_control_response* self)
+{
+    microstrain_insert_u8(serializer, self->enable);
+    
+}
+void extract_mip_filter_vertical_gyro_constraint_control_response(microstrain_serializer* serializer, mip_filter_vertical_gyro_constraint_control_response* self)
+{
+    microstrain_extract_u8(serializer, &self->enable);
+    
 }
 
 mip_cmd_result mip_filter_write_vertical_gyro_constraint_control(mip_interface* device, uint8_t enable)
@@ -4785,6 +5416,21 @@ void extract_mip_filter_gnss_antenna_cal_control_command(microstrain_serializer*
         microstrain_extract_float(serializer, &self->max_offset);
         
     }
+}
+
+void insert_mip_filter_gnss_antenna_cal_control_response(microstrain_serializer* serializer, const mip_filter_gnss_antenna_cal_control_response* self)
+{
+    microstrain_insert_u8(serializer, self->enable);
+    
+    microstrain_insert_float(serializer, self->max_offset);
+    
+}
+void extract_mip_filter_gnss_antenna_cal_control_response(microstrain_serializer* serializer, mip_filter_gnss_antenna_cal_control_response* self)
+{
+    microstrain_extract_u8(serializer, &self->enable);
+    
+    microstrain_extract_float(serializer, &self->max_offset);
+    
 }
 
 mip_cmd_result mip_filter_write_gnss_antenna_cal_control(mip_interface* device, uint8_t enable, float max_offset)

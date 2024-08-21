@@ -103,6 +103,35 @@ void extract_mip_gnss_signal_configuration_command(microstrain_serializer* seria
     }
 }
 
+void insert_mip_gnss_signal_configuration_response(microstrain_serializer* serializer, const mip_gnss_signal_configuration_response* self)
+{
+    microstrain_insert_u8(serializer, self->gps_enable);
+    
+    microstrain_insert_u8(serializer, self->glonass_enable);
+    
+    microstrain_insert_u8(serializer, self->galileo_enable);
+    
+    microstrain_insert_u8(serializer, self->beidou_enable);
+    
+    for(unsigned int i=0; i < 4; i++)
+        microstrain_insert_u8(serializer, self->reserved[i]);
+    
+}
+void extract_mip_gnss_signal_configuration_response(microstrain_serializer* serializer, mip_gnss_signal_configuration_response* self)
+{
+    microstrain_extract_u8(serializer, &self->gps_enable);
+    
+    microstrain_extract_u8(serializer, &self->glonass_enable);
+    
+    microstrain_extract_u8(serializer, &self->galileo_enable);
+    
+    microstrain_extract_u8(serializer, &self->beidou_enable);
+    
+    for(unsigned int i=0; i < 4; i++)
+        microstrain_extract_u8(serializer, &self->reserved[i]);
+    
+}
+
 mip_cmd_result mip_gnss_write_signal_configuration(mip_interface* device, uint8_t gps_enable, uint8_t glonass_enable, uint8_t galileo_enable, uint8_t beidou_enable, const uint8_t* reserved)
 {
     microstrain_serializer serializer;
@@ -227,6 +256,23 @@ void extract_mip_gnss_rtk_dongle_configuration_command(microstrain_serializer* s
             microstrain_extract_u8(serializer, &self->reserved[i]);
         
     }
+}
+
+void insert_mip_gnss_rtk_dongle_configuration_response(microstrain_serializer* serializer, const mip_gnss_rtk_dongle_configuration_response* self)
+{
+    microstrain_insert_u8(serializer, self->enable);
+    
+    for(unsigned int i=0; i < 3; i++)
+        microstrain_insert_u8(serializer, self->reserved[i]);
+    
+}
+void extract_mip_gnss_rtk_dongle_configuration_response(microstrain_serializer* serializer, mip_gnss_rtk_dongle_configuration_response* self)
+{
+    microstrain_extract_u8(serializer, &self->enable);
+    
+    for(unsigned int i=0; i < 3; i++)
+        microstrain_extract_u8(serializer, &self->reserved[i]);
+    
 }
 
 mip_cmd_result mip_gnss_write_rtk_dongle_configuration(mip_interface* device, uint8_t enable, const uint8_t* reserved)
