@@ -318,6 +318,12 @@ struct EcefPos
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool x() const { return (value & X) > 0; }
+        void x(bool val) { value &= ~X; if(val) value |= X; }
+        bool y() const { return (value & Y) > 0; }
+        void y(bool val) { value &= ~Y; if(val) value |= Y; }
+        bool z() const { return (value & Z) > 0; }
+        void z(bool val) { value &= ~Z; if(val) value |= Z; }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -386,6 +392,12 @@ struct LlhPos
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool latitude() const { return (value & LATITUDE) > 0; }
+        void latitude(bool val) { value &= ~LATITUDE; if(val) value |= LATITUDE; }
+        bool longitude() const { return (value & LONGITUDE) > 0; }
+        void longitude(bool val) { value &= ~LONGITUDE; if(val) value |= LONGITUDE; }
+        bool height() const { return (value & HEIGHT) > 0; }
+        void height(bool val) { value &= ~HEIGHT; if(val) value |= HEIGHT; }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -498,6 +510,12 @@ struct EcefVel
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool x() const { return (value & X) > 0; }
+        void x(bool val) { value &= ~X; if(val) value |= X; }
+        bool y() const { return (value & Y) > 0; }
+        void y(bool val) { value &= ~Y; if(val) value |= Y; }
+        bool z() const { return (value & Z) > 0; }
+        void z(bool val) { value &= ~Z; if(val) value |= Z; }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -565,6 +583,12 @@ struct NedVel
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool x() const { return (value & X) > 0; }
+        void x(bool val) { value &= ~X; if(val) value |= X; }
+        bool y() const { return (value & Y) > 0; }
+        void y(bool val) { value &= ~Y; if(val) value |= Y; }
+        bool z() const { return (value & Z) > 0; }
+        void z(bool val) { value &= ~Z; if(val) value |= Z; }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -633,6 +657,12 @@ struct VehicleFixedFrameVelocity
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool x() const { return (value & X) > 0; }
+        void x(bool val) { value &= ~X; if(val) value |= X; }
+        bool y() const { return (value & Y) > 0; }
+        void y(bool val) { value &= ~Y; if(val) value |= Y; }
+        bool z() const { return (value & Z) > 0; }
+        void z(bool val) { value &= ~Z; if(val) value |= Z; }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -742,6 +772,12 @@ struct MagneticField
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool x() const { return (value & X) > 0; }
+        void x(bool val) { value &= ~X; if(val) value |= X; }
+        bool y() const { return (value & Y) > 0; }
+        void y(bool val) { value &= ~Y; if(val) value |= Y; }
+        bool z() const { return (value & Z) > 0; }
+        void z(bool val) { value &= ~Z; if(val) value |= Z; }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };

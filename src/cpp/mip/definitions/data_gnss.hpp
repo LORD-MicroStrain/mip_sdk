@@ -198,6 +198,18 @@ struct PosLlh
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool latLon() const { return (value & LAT_LON) > 0; }
+        void latLon(bool val) { value &= ~LAT_LON; if(val) value |= LAT_LON; }
+        bool ellipsoidHeight() const { return (value & ELLIPSOID_HEIGHT) > 0; }
+        void ellipsoidHeight(bool val) { value &= ~ELLIPSOID_HEIGHT; if(val) value |= ELLIPSOID_HEIGHT; }
+        bool mslHeight() const { return (value & MSL_HEIGHT) > 0; }
+        void mslHeight(bool val) { value &= ~MSL_HEIGHT; if(val) value |= MSL_HEIGHT; }
+        bool horizontalAccuracy() const { return (value & HORIZONTAL_ACCURACY) > 0; }
+        void horizontalAccuracy(bool val) { value &= ~HORIZONTAL_ACCURACY; if(val) value |= HORIZONTAL_ACCURACY; }
+        bool verticalAccuracy() const { return (value & VERTICAL_ACCURACY) > 0; }
+        void verticalAccuracy(bool val) { value &= ~VERTICAL_ACCURACY; if(val) value |= VERTICAL_ACCURACY; }
+        uint16_t flags() const { return (value & FLAGS) >> 0; }
+        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -265,6 +277,12 @@ struct PosEcef
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool position() const { return (value & POSITION) > 0; }
+        void position(bool val) { value &= ~POSITION; if(val) value |= POSITION; }
+        bool positionAccuracy() const { return (value & POSITION_ACCURACY) > 0; }
+        void positionAccuracy(bool val) { value &= ~POSITION_ACCURACY; if(val) value |= POSITION_ACCURACY; }
+        uint16_t flags() const { return (value & FLAGS) >> 0; }
+        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -332,6 +350,20 @@ struct VelNed
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool velocity() const { return (value & VELOCITY) > 0; }
+        void velocity(bool val) { value &= ~VELOCITY; if(val) value |= VELOCITY; }
+        bool speed3d() const { return (value & SPEED_3D) > 0; }
+        void speed3d(bool val) { value &= ~SPEED_3D; if(val) value |= SPEED_3D; }
+        bool groundSpeed() const { return (value & GROUND_SPEED) > 0; }
+        void groundSpeed(bool val) { value &= ~GROUND_SPEED; if(val) value |= GROUND_SPEED; }
+        bool heading() const { return (value & HEADING) > 0; }
+        void heading(bool val) { value &= ~HEADING; if(val) value |= HEADING; }
+        bool speedAccuracy() const { return (value & SPEED_ACCURACY) > 0; }
+        void speedAccuracy(bool val) { value &= ~SPEED_ACCURACY; if(val) value |= SPEED_ACCURACY; }
+        bool headingAccuracy() const { return (value & HEADING_ACCURACY) > 0; }
+        void headingAccuracy(bool val) { value &= ~HEADING_ACCURACY; if(val) value |= HEADING_ACCURACY; }
+        uint16_t flags() const { return (value & FLAGS) >> 0; }
+        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -399,6 +431,12 @@ struct VelEcef
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool velocity() const { return (value & VELOCITY) > 0; }
+        void velocity(bool val) { value &= ~VELOCITY; if(val) value |= VELOCITY; }
+        bool velocityAccuracy() const { return (value & VELOCITY_ACCURACY) > 0; }
+        void velocityAccuracy(bool val) { value &= ~VELOCITY_ACCURACY; if(val) value |= VELOCITY_ACCURACY; }
+        uint16_t flags() const { return (value & FLAGS) >> 0; }
+        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -467,6 +505,22 @@ struct Dop
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool gdop() const { return (value & GDOP) > 0; }
+        void gdop(bool val) { value &= ~GDOP; if(val) value |= GDOP; }
+        bool pdop() const { return (value & PDOP) > 0; }
+        void pdop(bool val) { value &= ~PDOP; if(val) value |= PDOP; }
+        bool hdop() const { return (value & HDOP) > 0; }
+        void hdop(bool val) { value &= ~HDOP; if(val) value |= HDOP; }
+        bool vdop() const { return (value & VDOP) > 0; }
+        void vdop(bool val) { value &= ~VDOP; if(val) value |= VDOP; }
+        bool tdop() const { return (value & TDOP) > 0; }
+        void tdop(bool val) { value &= ~TDOP; if(val) value |= TDOP; }
+        bool ndop() const { return (value & NDOP) > 0; }
+        void ndop(bool val) { value &= ~NDOP; if(val) value |= NDOP; }
+        bool edop() const { return (value & EDOP) > 0; }
+        void edop(bool val) { value &= ~EDOP; if(val) value |= EDOP; }
+        uint16_t flags() const { return (value & FLAGS) >> 0; }
+        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -535,6 +589,12 @@ struct UtcTime
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool gnssDateTime() const { return (value & GNSS_DATE_TIME) > 0; }
+        void gnssDateTime(bool val) { value &= ~GNSS_DATE_TIME; if(val) value |= GNSS_DATE_TIME; }
+        bool leapSecondsKnown() const { return (value & LEAP_SECONDS_KNOWN) > 0; }
+        void leapSecondsKnown(bool val) { value &= ~LEAP_SECONDS_KNOWN; if(val) value |= LEAP_SECONDS_KNOWN; }
+        uint16_t flags() const { return (value & FLAGS) >> 0; }
+        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -603,6 +663,12 @@ struct GpsTime
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool tow() const { return (value & TOW) > 0; }
+        void tow(bool val) { value &= ~TOW; if(val) value |= TOW; }
+        bool weekNumber() const { return (value & WEEK_NUMBER) > 0; }
+        void weekNumber(bool val) { value &= ~WEEK_NUMBER; if(val) value |= WEEK_NUMBER; }
+        uint16_t flags() const { return (value & FLAGS) >> 0; }
+        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -667,6 +733,14 @@ struct ClockInfo
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool bias() const { return (value & BIAS) > 0; }
+        void bias(bool val) { value &= ~BIAS; if(val) value |= BIAS; }
+        bool drift() const { return (value & DRIFT) > 0; }
+        void drift(bool val) { value &= ~DRIFT; if(val) value |= DRIFT; }
+        bool accuracyEstimate() const { return (value & ACCURACY_ESTIMATE) > 0; }
+        void accuracyEstimate(bool val) { value &= ~ACCURACY_ESTIMATE; if(val) value |= ACCURACY_ESTIMATE; }
+        uint16_t flags() const { return (value & FLAGS) >> 0; }
+        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -742,6 +816,10 @@ struct FixInfo
         FixFlags& operator|=(uint16_t val) { return *this = value | val; }
         FixFlags& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool sbasUsed() const { return (value & SBAS_USED) > 0; }
+        void sbasUsed(bool val) { value &= ~SBAS_USED; if(val) value |= SBAS_USED; }
+        bool dgnssUsed() const { return (value & DGNSS_USED) > 0; }
+        void dgnssUsed(bool val) { value &= ~DGNSS_USED; if(val) value |= DGNSS_USED; }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -767,6 +845,14 @@ struct FixInfo
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool fixType() const { return (value & FIX_TYPE) > 0; }
+        void fixType(bool val) { value &= ~FIX_TYPE; if(val) value |= FIX_TYPE; }
+        bool numSv() const { return (value & NUM_SV) > 0; }
+        void numSv(bool val) { value &= ~NUM_SV; if(val) value |= NUM_SV; }
+        bool fixFlags() const { return (value & FIX_FLAGS) > 0; }
+        void fixFlags(bool val) { value &= ~FIX_FLAGS; if(val) value |= FIX_FLAGS; }
+        uint16_t flags() const { return (value & FLAGS) >> 0; }
+        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -832,6 +918,10 @@ struct SvInfo
         SVFlags& operator|=(uint16_t val) { return *this = value | val; }
         SVFlags& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool usedForNavigation() const { return (value & USED_FOR_NAVIGATION) > 0; }
+        void usedForNavigation(bool val) { value &= ~USED_FOR_NAVIGATION; if(val) value |= USED_FOR_NAVIGATION; }
+        bool healthy() const { return (value & HEALTHY) > 0; }
+        void healthy(bool val) { value &= ~HEALTHY; if(val) value |= HEALTHY; }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -860,6 +950,20 @@ struct SvInfo
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool channel() const { return (value & CHANNEL) > 0; }
+        void channel(bool val) { value &= ~CHANNEL; if(val) value |= CHANNEL; }
+        bool svId() const { return (value & SV_ID) > 0; }
+        void svId(bool val) { value &= ~SV_ID; if(val) value |= SV_ID; }
+        bool carrierNoiseRatio() const { return (value & CARRIER_NOISE_RATIO) > 0; }
+        void carrierNoiseRatio(bool val) { value &= ~CARRIER_NOISE_RATIO; if(val) value |= CARRIER_NOISE_RATIO; }
+        bool azimuth() const { return (value & AZIMUTH) > 0; }
+        void azimuth(bool val) { value &= ~AZIMUTH; if(val) value |= AZIMUTH; }
+        bool elevation() const { return (value & ELEVATION) > 0; }
+        void elevation(bool val) { value &= ~ELEVATION; if(val) value |= ELEVATION; }
+        bool svFlags() const { return (value & SV_FLAGS) > 0; }
+        void svFlags(bool val) { value &= ~SV_FLAGS; if(val) value |= SV_FLAGS; }
+        uint16_t flags() const { return (value & FLAGS) >> 0; }
+        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -951,6 +1055,14 @@ struct HwStatus
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool sensorState() const { return (value & SENSOR_STATE) > 0; }
+        void sensorState(bool val) { value &= ~SENSOR_STATE; if(val) value |= SENSOR_STATE; }
+        bool antennaState() const { return (value & ANTENNA_STATE) > 0; }
+        void antennaState(bool val) { value &= ~ANTENNA_STATE; if(val) value |= ANTENNA_STATE; }
+        bool antennaPower() const { return (value & ANTENNA_POWER) > 0; }
+        void antennaPower(bool val) { value &= ~ANTENNA_POWER; if(val) value |= ANTENNA_POWER; }
+        uint16_t flags() const { return (value & FLAGS) >> 0; }
+        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -1029,6 +1141,16 @@ struct DgpsInfo
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool age() const { return (value & AGE) > 0; }
+        void age(bool val) { value &= ~AGE; if(val) value |= AGE; }
+        bool baseStationId() const { return (value & BASE_STATION_ID) > 0; }
+        void baseStationId(bool val) { value &= ~BASE_STATION_ID; if(val) value |= BASE_STATION_ID; }
+        bool baseStationStatus() const { return (value & BASE_STATION_STATUS) > 0; }
+        void baseStationStatus(bool val) { value &= ~BASE_STATION_STATUS; if(val) value |= BASE_STATION_STATUS; }
+        bool numChannels() const { return (value & NUM_CHANNELS) > 0; }
+        void numChannels(bool val) { value &= ~NUM_CHANNELS; if(val) value |= NUM_CHANNELS; }
+        uint16_t flags() const { return (value & FLAGS) >> 0; }
+        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -1098,6 +1220,16 @@ struct DgpsChannel
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool id() const { return (value & ID) > 0; }
+        void id(bool val) { value &= ~ID; if(val) value |= ID; }
+        bool age() const { return (value & AGE) > 0; }
+        void age(bool val) { value &= ~AGE; if(val) value |= AGE; }
+        bool rangeCorrection() const { return (value & RANGE_CORRECTION) > 0; }
+        void rangeCorrection(bool val) { value &= ~RANGE_CORRECTION; if(val) value |= RANGE_CORRECTION; }
+        bool rangeRateCorrection() const { return (value & RANGE_RATE_CORRECTION) > 0; }
+        void rangeRateCorrection(bool val) { value &= ~RANGE_RATE_CORRECTION; if(val) value |= RANGE_RATE_CORRECTION; }
+        uint16_t flags() const { return (value & FLAGS) >> 0; }
+        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -1167,6 +1299,16 @@ struct ClockInfo2
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool bias() const { return (value & BIAS) > 0; }
+        void bias(bool val) { value &= ~BIAS; if(val) value |= BIAS; }
+        bool drift() const { return (value & DRIFT) > 0; }
+        void drift(bool val) { value &= ~DRIFT; if(val) value |= DRIFT; }
+        bool biasAccuracy() const { return (value & BIAS_ACCURACY) > 0; }
+        void biasAccuracy(bool val) { value &= ~BIAS_ACCURACY; if(val) value |= BIAS_ACCURACY; }
+        bool driftAccuracy() const { return (value & DRIFT_ACCURACY) > 0; }
+        void driftAccuracy(bool val) { value &= ~DRIFT_ACCURACY; if(val) value |= DRIFT_ACCURACY; }
+        uint16_t flags() const { return (value & FLAGS) >> 0; }
+        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -1230,6 +1372,8 @@ struct GpsLeapSeconds
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool leapSeconds() const { return (value & LEAP_SECONDS) > 0; }
+        void leapSeconds(bool val) { value &= ~LEAP_SECONDS; if(val) value |= LEAP_SECONDS; }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -1293,6 +1437,14 @@ struct SbasInfo
         SbasStatus& operator|=(uint8_t val) { return *this = value | val; }
         SbasStatus& operator&=(uint8_t val) { return *this = value & val; }
         
+        bool rangeAvailable() const { return (value & RANGE_AVAILABLE) > 0; }
+        void rangeAvailable(bool val) { value &= ~RANGE_AVAILABLE; if(val) value |= RANGE_AVAILABLE; }
+        bool correctionsAvailable() const { return (value & CORRECTIONS_AVAILABLE) > 0; }
+        void correctionsAvailable(bool val) { value &= ~CORRECTIONS_AVAILABLE; if(val) value |= CORRECTIONS_AVAILABLE; }
+        bool integrityAvailable() const { return (value & INTEGRITY_AVAILABLE) > 0; }
+        void integrityAvailable(bool val) { value &= ~INTEGRITY_AVAILABLE; if(val) value |= INTEGRITY_AVAILABLE; }
+        bool testMode() const { return (value & TEST_MODE) > 0; }
+        void testMode(bool val) { value &= ~TEST_MODE; if(val) value |= TEST_MODE; }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -1321,6 +1473,20 @@ struct SbasInfo
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool tow() const { return (value & TOW) > 0; }
+        void tow(bool val) { value &= ~TOW; if(val) value |= TOW; }
+        bool weekNumber() const { return (value & WEEK_NUMBER) > 0; }
+        void weekNumber(bool val) { value &= ~WEEK_NUMBER; if(val) value |= WEEK_NUMBER; }
+        bool sbasSystem() const { return (value & SBAS_SYSTEM) > 0; }
+        void sbasSystem(bool val) { value &= ~SBAS_SYSTEM; if(val) value |= SBAS_SYSTEM; }
+        bool sbasId() const { return (value & SBAS_ID) > 0; }
+        void sbasId(bool val) { value &= ~SBAS_ID; if(val) value |= SBAS_ID; }
+        bool count() const { return (value & COUNT) > 0; }
+        void count(bool val) { value &= ~COUNT; if(val) value |= COUNT; }
+        bool sbasStatus() const { return (value & SBAS_STATUS) > 0; }
+        void sbasStatus(bool val) { value &= ~SBAS_STATUS; if(val) value |= SBAS_STATUS; }
+        uint16_t flags() const { return (value & FLAGS) >> 0; }
+        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -1411,6 +1577,14 @@ struct SbasCorrection
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool udrei() const { return (value & UDREI) > 0; }
+        void udrei(bool val) { value &= ~UDREI; if(val) value |= UDREI; }
+        bool pseudorangeCorrection() const { return (value & PSEUDORANGE_CORRECTION) > 0; }
+        void pseudorangeCorrection(bool val) { value &= ~PSEUDORANGE_CORRECTION; if(val) value |= PSEUDORANGE_CORRECTION; }
+        bool ionoCorrection() const { return (value & IONO_CORRECTION) > 0; }
+        void ionoCorrection(bool val) { value &= ~IONO_CORRECTION; if(val) value |= IONO_CORRECTION; }
+        uint16_t flags() const { return (value & FLAGS) >> 0; }
+        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -1506,6 +1680,14 @@ struct RfErrorDetection
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool rfBand() const { return (value & RF_BAND) > 0; }
+        void rfBand(bool val) { value &= ~RF_BAND; if(val) value |= RF_BAND; }
+        bool jammingState() const { return (value & JAMMING_STATE) > 0; }
+        void jammingState(bool val) { value &= ~JAMMING_STATE; if(val) value |= JAMMING_STATE; }
+        bool spoofingState() const { return (value & SPOOFING_STATE) > 0; }
+        void spoofingState(bool val) { value &= ~SPOOFING_STATE; if(val) value |= SPOOFING_STATE; }
+        uint16_t flags() const { return (value & FLAGS) >> 0; }
+        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -1579,6 +1761,24 @@ struct BaseStationInfo
         IndicatorFlags& operator|=(uint16_t val) { return *this = value | val; }
         IndicatorFlags& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool gps() const { return (value & GPS) > 0; }
+        void gps(bool val) { value &= ~GPS; if(val) value |= GPS; }
+        bool glonass() const { return (value & GLONASS) > 0; }
+        void glonass(bool val) { value &= ~GLONASS; if(val) value |= GLONASS; }
+        bool galileo() const { return (value & GALILEO) > 0; }
+        void galileo(bool val) { value &= ~GALILEO; if(val) value |= GALILEO; }
+        bool beidou() const { return (value & BEIDOU) > 0; }
+        void beidou(bool val) { value &= ~BEIDOU; if(val) value |= BEIDOU; }
+        bool refStation() const { return (value & REF_STATION) > 0; }
+        void refStation(bool val) { value &= ~REF_STATION; if(val) value |= REF_STATION; }
+        bool singleReceiver() const { return (value & SINGLE_RECEIVER) > 0; }
+        void singleReceiver(bool val) { value &= ~SINGLE_RECEIVER; if(val) value |= SINGLE_RECEIVER; }
+        bool quarterCycleBit1() const { return (value & QUARTER_CYCLE_BIT1) > 0; }
+        void quarterCycleBit1(bool val) { value &= ~QUARTER_CYCLE_BIT1; if(val) value |= QUARTER_CYCLE_BIT1; }
+        bool quarterCycleBit2() const { return (value & QUARTER_CYCLE_BIT2) > 0; }
+        void quarterCycleBit2(bool val) { value &= ~QUARTER_CYCLE_BIT2; if(val) value |= QUARTER_CYCLE_BIT2; }
+        uint16_t quarterCycleBits() const { return (value & QUARTER_CYCLE_BITS) >> 6; }
+        void quarterCycleBits(uint16_t val) { value = (value & ~QUARTER_CYCLE_BITS) | (val << 6); }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -1607,6 +1807,20 @@ struct BaseStationInfo
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool tow() const { return (value & TOW) > 0; }
+        void tow(bool val) { value &= ~TOW; if(val) value |= TOW; }
+        bool weekNumber() const { return (value & WEEK_NUMBER) > 0; }
+        void weekNumber(bool val) { value &= ~WEEK_NUMBER; if(val) value |= WEEK_NUMBER; }
+        bool ecefPosition() const { return (value & ECEF_POSITION) > 0; }
+        void ecefPosition(bool val) { value &= ~ECEF_POSITION; if(val) value |= ECEF_POSITION; }
+        bool height() const { return (value & HEIGHT) > 0; }
+        void height(bool val) { value &= ~HEIGHT; if(val) value |= HEIGHT; }
+        bool stationId() const { return (value & STATION_ID) > 0; }
+        void stationId(bool val) { value &= ~STATION_ID; if(val) value |= STATION_ID; }
+        bool indicators() const { return (value & INDICATORS) > 0; }
+        void indicators(bool val) { value &= ~INDICATORS; if(val) value |= INDICATORS; }
+        uint16_t flags() const { return (value & FLAGS) >> 0; }
+        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -1679,6 +1893,24 @@ struct RtkCorrectionsStatus
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool tow() const { return (value & TOW) > 0; }
+        void tow(bool val) { value &= ~TOW; if(val) value |= TOW; }
+        bool weekNumber() const { return (value & WEEK_NUMBER) > 0; }
+        void weekNumber(bool val) { value &= ~WEEK_NUMBER; if(val) value |= WEEK_NUMBER; }
+        bool epochStatus() const { return (value & EPOCH_STATUS) > 0; }
+        void epochStatus(bool val) { value &= ~EPOCH_STATUS; if(val) value |= EPOCH_STATUS; }
+        bool dongleStatus() const { return (value & DONGLE_STATUS) > 0; }
+        void dongleStatus(bool val) { value &= ~DONGLE_STATUS; if(val) value |= DONGLE_STATUS; }
+        bool gpsLatency() const { return (value & GPS_LATENCY) > 0; }
+        void gpsLatency(bool val) { value &= ~GPS_LATENCY; if(val) value |= GPS_LATENCY; }
+        bool glonassLatency() const { return (value & GLONASS_LATENCY) > 0; }
+        void glonassLatency(bool val) { value &= ~GLONASS_LATENCY; if(val) value |= GLONASS_LATENCY; }
+        bool galileoLatency() const { return (value & GALILEO_LATENCY) > 0; }
+        void galileoLatency(bool val) { value &= ~GALILEO_LATENCY; if(val) value |= GALILEO_LATENCY; }
+        bool beidouLatency() const { return (value & BEIDOU_LATENCY) > 0; }
+        void beidouLatency(bool val) { value &= ~BEIDOU_LATENCY; if(val) value |= BEIDOU_LATENCY; }
+        uint16_t flags() const { return (value & FLAGS) >> 0; }
+        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -1709,6 +1941,24 @@ struct RtkCorrectionsStatus
         EpochStatus& operator|=(uint16_t val) { return *this = value | val; }
         EpochStatus& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool antennaLocationReceived() const { return (value & ANTENNA_LOCATION_RECEIVED) > 0; }
+        void antennaLocationReceived(bool val) { value &= ~ANTENNA_LOCATION_RECEIVED; if(val) value |= ANTENNA_LOCATION_RECEIVED; }
+        bool antennaDescriptionReceived() const { return (value & ANTENNA_DESCRIPTION_RECEIVED) > 0; }
+        void antennaDescriptionReceived(bool val) { value &= ~ANTENNA_DESCRIPTION_RECEIVED; if(val) value |= ANTENNA_DESCRIPTION_RECEIVED; }
+        bool gpsReceived() const { return (value & GPS_RECEIVED) > 0; }
+        void gpsReceived(bool val) { value &= ~GPS_RECEIVED; if(val) value |= GPS_RECEIVED; }
+        bool glonassReceived() const { return (value & GLONASS_RECEIVED) > 0; }
+        void glonassReceived(bool val) { value &= ~GLONASS_RECEIVED; if(val) value |= GLONASS_RECEIVED; }
+        bool galileoReceived() const { return (value & GALILEO_RECEIVED) > 0; }
+        void galileoReceived(bool val) { value &= ~GALILEO_RECEIVED; if(val) value |= GALILEO_RECEIVED; }
+        bool beidouReceived() const { return (value & BEIDOU_RECEIVED) > 0; }
+        void beidouReceived(bool val) { value &= ~BEIDOU_RECEIVED; if(val) value |= BEIDOU_RECEIVED; }
+        bool usingGpsMsmMessages() const { return (value & USING_GPS_MSM_MESSAGES) > 0; }
+        void usingGpsMsmMessages(bool val) { value &= ~USING_GPS_MSM_MESSAGES; if(val) value |= USING_GPS_MSM_MESSAGES; }
+        bool usingGlonassMsmMessages() const { return (value & USING_GLONASS_MSM_MESSAGES) > 0; }
+        void usingGlonassMsmMessages(bool val) { value &= ~USING_GLONASS_MSM_MESSAGES; if(val) value |= USING_GLONASS_MSM_MESSAGES; }
+        bool dongleStatusReadFailed() const { return (value & DONGLE_STATUS_READ_FAILED) > 0; }
+        void dongleStatusReadFailed(bool val) { value &= ~DONGLE_STATUS_READ_FAILED; if(val) value |= DONGLE_STATUS_READ_FAILED; }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -1784,6 +2034,22 @@ struct SatelliteStatus
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool tow() const { return (value & TOW) > 0; }
+        void tow(bool val) { value &= ~TOW; if(val) value |= TOW; }
+        bool weekNumber() const { return (value & WEEK_NUMBER) > 0; }
+        void weekNumber(bool val) { value &= ~WEEK_NUMBER; if(val) value |= WEEK_NUMBER; }
+        bool gnssId() const { return (value & GNSS_ID) > 0; }
+        void gnssId(bool val) { value &= ~GNSS_ID; if(val) value |= GNSS_ID; }
+        bool satelliteId() const { return (value & SATELLITE_ID) > 0; }
+        void satelliteId(bool val) { value &= ~SATELLITE_ID; if(val) value |= SATELLITE_ID; }
+        bool elevation() const { return (value & ELEVATION) > 0; }
+        void elevation(bool val) { value &= ~ELEVATION; if(val) value |= ELEVATION; }
+        bool azimuth() const { return (value & AZIMUTH) > 0; }
+        void azimuth(bool val) { value &= ~AZIMUTH; if(val) value |= AZIMUTH; }
+        bool health() const { return (value & HEALTH) > 0; }
+        void health(bool val) { value &= ~HEALTH; if(val) value |= HEALTH; }
+        uint16_t flags() const { return (value & FLAGS) >> 0; }
+        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -1878,6 +2144,40 @@ struct Raw
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool tow() const { return (value & TOW) > 0; }
+        void tow(bool val) { value &= ~TOW; if(val) value |= TOW; }
+        bool weekNumber() const { return (value & WEEK_NUMBER) > 0; }
+        void weekNumber(bool val) { value &= ~WEEK_NUMBER; if(val) value |= WEEK_NUMBER; }
+        bool receiverId() const { return (value & RECEIVER_ID) > 0; }
+        void receiverId(bool val) { value &= ~RECEIVER_ID; if(val) value |= RECEIVER_ID; }
+        bool trackingChannel() const { return (value & TRACKING_CHANNEL) > 0; }
+        void trackingChannel(bool val) { value &= ~TRACKING_CHANNEL; if(val) value |= TRACKING_CHANNEL; }
+        bool gnssId() const { return (value & GNSS_ID) > 0; }
+        void gnssId(bool val) { value &= ~GNSS_ID; if(val) value |= GNSS_ID; }
+        bool satelliteId() const { return (value & SATELLITE_ID) > 0; }
+        void satelliteId(bool val) { value &= ~SATELLITE_ID; if(val) value |= SATELLITE_ID; }
+        bool signalId() const { return (value & SIGNAL_ID) > 0; }
+        void signalId(bool val) { value &= ~SIGNAL_ID; if(val) value |= SIGNAL_ID; }
+        bool signalStrength() const { return (value & SIGNAL_STRENGTH) > 0; }
+        void signalStrength(bool val) { value &= ~SIGNAL_STRENGTH; if(val) value |= SIGNAL_STRENGTH; }
+        bool quality() const { return (value & QUALITY) > 0; }
+        void quality(bool val) { value &= ~QUALITY; if(val) value |= QUALITY; }
+        bool pseudorange() const { return (value & PSEUDORANGE) > 0; }
+        void pseudorange(bool val) { value &= ~PSEUDORANGE; if(val) value |= PSEUDORANGE; }
+        bool carrierPhase() const { return (value & CARRIER_PHASE) > 0; }
+        void carrierPhase(bool val) { value &= ~CARRIER_PHASE; if(val) value |= CARRIER_PHASE; }
+        bool doppler() const { return (value & DOPPLER) > 0; }
+        void doppler(bool val) { value &= ~DOPPLER; if(val) value |= DOPPLER; }
+        bool rangeUncertainty() const { return (value & RANGE_UNCERTAINTY) > 0; }
+        void rangeUncertainty(bool val) { value &= ~RANGE_UNCERTAINTY; if(val) value |= RANGE_UNCERTAINTY; }
+        bool carrierPhaseUncertainty() const { return (value & CARRIER_PHASE_UNCERTAINTY) > 0; }
+        void carrierPhaseUncertainty(bool val) { value &= ~CARRIER_PHASE_UNCERTAINTY; if(val) value |= CARRIER_PHASE_UNCERTAINTY; }
+        bool dopplerUncertainty() const { return (value & DOPPLER_UNCERTAINTY) > 0; }
+        void dopplerUncertainty(bool val) { value &= ~DOPPLER_UNCERTAINTY; if(val) value |= DOPPLER_UNCERTAINTY; }
+        bool lockTime() const { return (value & LOCK_TIME) > 0; }
+        void lockTime(bool val) { value &= ~LOCK_TIME; if(val) value |= LOCK_TIME; }
+        uint16_t flags() const { return (value & FLAGS) >> 0; }
+        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -1957,6 +2257,12 @@ struct GpsEphemeris
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool ephemeris() const { return (value & EPHEMERIS) > 0; }
+        void ephemeris(bool val) { value &= ~EPHEMERIS; if(val) value |= EPHEMERIS; }
+        bool modernData() const { return (value & MODERN_DATA) > 0; }
+        void modernData(bool val) { value &= ~MODERN_DATA; if(val) value |= MODERN_DATA; }
+        uint16_t flags() const { return (value & FLAGS) >> 0; }
+        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -2051,6 +2357,12 @@ struct GalileoEphemeris
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool ephemeris() const { return (value & EPHEMERIS) > 0; }
+        void ephemeris(bool val) { value &= ~EPHEMERIS; if(val) value |= EPHEMERIS; }
+        bool modernData() const { return (value & MODERN_DATA) > 0; }
+        void modernData(bool val) { value &= ~MODERN_DATA; if(val) value |= MODERN_DATA; }
+        uint16_t flags() const { return (value & FLAGS) >> 0; }
+        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -2144,6 +2456,10 @@ struct GloEphemeris
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool ephemeris() const { return (value & EPHEMERIS) > 0; }
+        void ephemeris(bool val) { value &= ~EPHEMERIS; if(val) value |= EPHEMERIS; }
+        bool flags() const { return (value & FLAGS) > 0; }
+        void flags(bool val) { value &= ~FLAGS; if(val) value |= FLAGS; }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -2231,6 +2547,16 @@ struct GpsIonoCorr
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool tow() const { return (value & TOW) > 0; }
+        void tow(bool val) { value &= ~TOW; if(val) value |= TOW; }
+        bool weekNumber() const { return (value & WEEK_NUMBER) > 0; }
+        void weekNumber(bool val) { value &= ~WEEK_NUMBER; if(val) value |= WEEK_NUMBER; }
+        bool alpha() const { return (value & ALPHA) > 0; }
+        void alpha(bool val) { value &= ~ALPHA; if(val) value |= ALPHA; }
+        bool beta() const { return (value & BETA) > 0; }
+        void beta(bool val) { value &= ~BETA; if(val) value |= BETA; }
+        uint16_t flags() const { return (value & FLAGS) >> 0; }
+        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };
@@ -2298,6 +2624,16 @@ struct GalileoIonoCorr
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
+        bool tow() const { return (value & TOW) > 0; }
+        void tow(bool val) { value &= ~TOW; if(val) value |= TOW; }
+        bool weekNumber() const { return (value & WEEK_NUMBER) > 0; }
+        void weekNumber(bool val) { value &= ~WEEK_NUMBER; if(val) value |= WEEK_NUMBER; }
+        bool alpha() const { return (value & ALPHA) > 0; }
+        void alpha(bool val) { value &= ~ALPHA; if(val) value |= ALPHA; }
+        bool disturbanceFlags() const { return (value & DISTURBANCE_FLAGS) > 0; }
+        void disturbanceFlags(bool val) { value &= ~DISTURBANCE_FLAGS; if(val) value |= DISTURBANCE_FLAGS; }
+        uint16_t flags() const { return (value & FLAGS) >> 0; }
+        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
     };

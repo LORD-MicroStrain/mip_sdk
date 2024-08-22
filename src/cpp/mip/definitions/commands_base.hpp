@@ -121,6 +121,60 @@ struct CommandedTestBitsGq7 : Bitfield<CommandedTestBitsGq7>
     CommandedTestBitsGq7& operator|=(uint32_t val) { return *this = value | val; }
     CommandedTestBitsGq7& operator&=(uint32_t val) { return *this = value & val; }
     
+    bool generalHardwareFault() const { return (value & GENERAL_HARDWARE_FAULT) > 0; }
+    void generalHardwareFault(bool val) { value &= ~GENERAL_HARDWARE_FAULT; if(val) value |= GENERAL_HARDWARE_FAULT; }
+    bool generalFirmwareFault() const { return (value & GENERAL_FIRMWARE_FAULT) > 0; }
+    void generalFirmwareFault(bool val) { value &= ~GENERAL_FIRMWARE_FAULT; if(val) value |= GENERAL_FIRMWARE_FAULT; }
+    bool timingOverload() const { return (value & TIMING_OVERLOAD) > 0; }
+    void timingOverload(bool val) { value &= ~TIMING_OVERLOAD; if(val) value |= TIMING_OVERLOAD; }
+    bool bufferOverrun() const { return (value & BUFFER_OVERRUN) > 0; }
+    void bufferOverrun(bool val) { value &= ~BUFFER_OVERRUN; if(val) value |= BUFFER_OVERRUN; }
+    uint32_t reserved() const { return (value & RESERVED) >> 4; }
+    void reserved(uint32_t val) { value = (value & ~RESERVED) | (val << 4); }
+    bool ipcImuFault() const { return (value & IPC_IMU_FAULT) > 0; }
+    void ipcImuFault(bool val) { value &= ~IPC_IMU_FAULT; if(val) value |= IPC_IMU_FAULT; }
+    bool ipcNavFault() const { return (value & IPC_NAV_FAULT) > 0; }
+    void ipcNavFault(bool val) { value &= ~IPC_NAV_FAULT; if(val) value |= IPC_NAV_FAULT; }
+    bool ipcGnssFault() const { return (value & IPC_GNSS_FAULT) > 0; }
+    void ipcGnssFault(bool val) { value &= ~IPC_GNSS_FAULT; if(val) value |= IPC_GNSS_FAULT; }
+    bool commsFault() const { return (value & COMMS_FAULT) > 0; }
+    void commsFault(bool val) { value &= ~COMMS_FAULT; if(val) value |= COMMS_FAULT; }
+    bool imuAccelFault() const { return (value & IMU_ACCEL_FAULT) > 0; }
+    void imuAccelFault(bool val) { value &= ~IMU_ACCEL_FAULT; if(val) value |= IMU_ACCEL_FAULT; }
+    bool imuGyroFault() const { return (value & IMU_GYRO_FAULT) > 0; }
+    void imuGyroFault(bool val) { value &= ~IMU_GYRO_FAULT; if(val) value |= IMU_GYRO_FAULT; }
+    bool imuMagFault() const { return (value & IMU_MAG_FAULT) > 0; }
+    void imuMagFault(bool val) { value &= ~IMU_MAG_FAULT; if(val) value |= IMU_MAG_FAULT; }
+    bool imuPressFault() const { return (value & IMU_PRESS_FAULT) > 0; }
+    void imuPressFault(bool val) { value &= ~IMU_PRESS_FAULT; if(val) value |= IMU_PRESS_FAULT; }
+    uint32_t imuReserved() const { return (value & IMU_RESERVED) >> 16; }
+    void imuReserved(uint32_t val) { value = (value & ~IMU_RESERVED) | (val << 16); }
+    bool imuCalError() const { return (value & IMU_CAL_ERROR) > 0; }
+    void imuCalError(bool val) { value &= ~IMU_CAL_ERROR; if(val) value |= IMU_CAL_ERROR; }
+    bool imuGeneralFault() const { return (value & IMU_GENERAL_FAULT) > 0; }
+    void imuGeneralFault(bool val) { value &= ~IMU_GENERAL_FAULT; if(val) value |= IMU_GENERAL_FAULT; }
+    uint32_t filtReserved() const { return (value & FILT_RESERVED) >> 20; }
+    void filtReserved(uint32_t val) { value = (value & ~FILT_RESERVED) | (val << 20); }
+    bool filtSolutionFault() const { return (value & FILT_SOLUTION_FAULT) > 0; }
+    void filtSolutionFault(bool val) { value &= ~FILT_SOLUTION_FAULT; if(val) value |= FILT_SOLUTION_FAULT; }
+    bool filtGeneralFault() const { return (value & FILT_GENERAL_FAULT) > 0; }
+    void filtGeneralFault(bool val) { value &= ~FILT_GENERAL_FAULT; if(val) value |= FILT_GENERAL_FAULT; }
+    bool gnssReceiver1Fault() const { return (value & GNSS_RECEIVER1_FAULT) > 0; }
+    void gnssReceiver1Fault(bool val) { value &= ~GNSS_RECEIVER1_FAULT; if(val) value |= GNSS_RECEIVER1_FAULT; }
+    bool gnssAntenna1Fault() const { return (value & GNSS_ANTENNA1_FAULT) > 0; }
+    void gnssAntenna1Fault(bool val) { value &= ~GNSS_ANTENNA1_FAULT; if(val) value |= GNSS_ANTENNA1_FAULT; }
+    bool gnssReceiver2Fault() const { return (value & GNSS_RECEIVER2_FAULT) > 0; }
+    void gnssReceiver2Fault(bool val) { value &= ~GNSS_RECEIVER2_FAULT; if(val) value |= GNSS_RECEIVER2_FAULT; }
+    bool gnssAntenna2Fault() const { return (value & GNSS_ANTENNA2_FAULT) > 0; }
+    void gnssAntenna2Fault(bool val) { value &= ~GNSS_ANTENNA2_FAULT; if(val) value |= GNSS_ANTENNA2_FAULT; }
+    bool gnssRtcmFailure() const { return (value & GNSS_RTCM_FAILURE) > 0; }
+    void gnssRtcmFailure(bool val) { value &= ~GNSS_RTCM_FAILURE; if(val) value |= GNSS_RTCM_FAILURE; }
+    bool gnssRtkFault() const { return (value & GNSS_RTK_FAULT) > 0; }
+    void gnssRtkFault(bool val) { value &= ~GNSS_RTK_FAULT; if(val) value |= GNSS_RTK_FAULT; }
+    bool gnssSolutionFault() const { return (value & GNSS_SOLUTION_FAULT) > 0; }
+    void gnssSolutionFault(bool val) { value &= ~GNSS_SOLUTION_FAULT; if(val) value |= GNSS_SOLUTION_FAULT; }
+    bool gnssGeneralFault() const { return (value & GNSS_GENERAL_FAULT) > 0; }
+    void gnssGeneralFault(bool val) { value &= ~GNSS_GENERAL_FAULT; if(val) value |= GNSS_GENERAL_FAULT; }
     bool allSet() const { return value == ALL; }
     void setAll() { value |= ALL; }
 };
