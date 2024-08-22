@@ -1162,9 +1162,13 @@ TypedResult<SensorToVehicleOffset> defaultSensorToVehicleOffset(C::mip_interface
 ///
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup cpp_filter_antenna_offset  (0x0D,0x13) Antenna Offset [CPP]
-/// Set the sensor to GNSS antenna offset.
+/// Configure the GNSS antenna offset.
 /// 
-/// This is expressed in the sensor frame, from the sensor origin to the GNSS antenna RF center.
+/// For 5-series products, this is expressed in the sensor frame, from the sensor origin to the GNSS antenna RF center.
+/// 
+/// For 7-series products, this is expressed in the vehicle frame, from the sensor origin to the GNSS antenna RF center.
+/// 
+/// This command should also be used for CV7 / GV7-INS NMEA Input over GPIO.
 /// 
 /// The magnitude of the offset vector is limited to 10 meters
 /// 
@@ -3385,7 +3389,7 @@ struct AidingMeasurementEnable
         EXTERNAL_HEADING      = 5,  ///<  External heading input
         EXTERNAL_ALTIMETER    = 6,  ///<  External pressure altimeter input
         EXTERNAL_MAGNETOMETER = 7,  ///<  External magnetomer input
-        VEHICLE_FRAME_VEL     = 8,  ///<  External vehicle frame velocity input
+        BODY_FRAME_VEL        = 8,  ///<  External body frame velocity input
         ALL                   = 65535,  ///<  Save/load/reset all options
     };
     

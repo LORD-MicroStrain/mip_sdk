@@ -45,12 +45,15 @@ enum
 
 static constexpr const uint16_t GNSS_GPS_ENABLE_L1CA = 0x0001;
 static constexpr const uint16_t GNSS_GPS_ENABLE_L2C = 0x0002;
+static constexpr const uint16_t GNSS_GPS_ENABLE_L5 = 0x0004;
 static constexpr const uint16_t GNSS_GLONASS_ENABLE_L1OF = 0x0001;
 static constexpr const uint16_t GNSS_GLONASS_ENABLE_L2OF = 0x0002;
 static constexpr const uint16_t GNSS_GALILEO_ENABLE_E1 = 0x0001;
 static constexpr const uint16_t GNSS_GALILEO_ENABLE_E5B = 0x0002;
+static constexpr const uint16_t GNSS_GALILEO_ENABLE_E5A = 0x0004;
 static constexpr const uint16_t GNSS_BEIDOU_ENABLE_B1 = 0x0001;
 static constexpr const uint16_t GNSS_BEIDOU_ENABLE_B2 = 0x0002;
+static constexpr const uint16_t GNSS_BEIDOU_ENABLE_B2A = 0x0004;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Mip Fields
@@ -144,10 +147,10 @@ struct SignalConfiguration
 {
     /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
-    uint8_t gps_enable = 0; ///< Bitfield 0: Enable L1CA, 1: Enable L2C
+    uint8_t gps_enable = 0; ///< Bitfield 0: Enable L1CA, 1: Enable L2C, 2: Enable L5
     uint8_t glonass_enable = 0; ///< Bitfield 0: Enable L1OF, 1: Enable L2OF
-    uint8_t galileo_enable = 0; ///< Bitfield 0: Enable E1,   1: Enable E5B
-    uint8_t beidou_enable = 0; ///< Bitfield 0: Enable B1,   1: Enable B2
+    uint8_t galileo_enable = 0; ///< Bitfield 0: Enable E1,   1: Enable E5B, 2: Enable E5A
+    uint8_t beidou_enable = 0; ///< Bitfield 0: Enable B1,   1: Enable B2,  2: Enable B2A
     uint8_t reserved[4] = {0};
     
     /// Descriptors
@@ -182,10 +185,10 @@ struct SignalConfiguration
     struct Response
     {
         /// Parameters
-        uint8_t gps_enable = 0; ///< Bitfield 0: Enable L1CA, 1: Enable L2C
+        uint8_t gps_enable = 0; ///< Bitfield 0: Enable L1CA, 1: Enable L2C, 2: Enable L5
         uint8_t glonass_enable = 0; ///< Bitfield 0: Enable L1OF, 1: Enable L2OF
-        uint8_t galileo_enable = 0; ///< Bitfield 0: Enable E1,   1: Enable E5B
-        uint8_t beidou_enable = 0; ///< Bitfield 0: Enable B1,   1: Enable B2
+        uint8_t galileo_enable = 0; ///< Bitfield 0: Enable E1,   1: Enable E5B, 2: Enable E5A
+        uint8_t beidou_enable = 0; ///< Bitfield 0: Enable B1,   1: Enable B2,  2: Enable B2A
         uint8_t reserved[4] = {0};
         
         /// Descriptors

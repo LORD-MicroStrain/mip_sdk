@@ -116,7 +116,7 @@ struct MetadataFor<commands_gnss::SignalConfiguration::Response>
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "gps_enable",
-            /* .docs          = */ "Bitfield 0: Enable L1CA, 1: Enable L2C",
+            /* .docs          = */ "Bitfield 0: Enable L1CA, 1: Enable L2C, 2: Enable L5",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::gps_enable>,
             /* .functions     = */ {true, false, false, false, false,  true},
@@ -134,7 +134,7 @@ struct MetadataFor<commands_gnss::SignalConfiguration::Response>
         },
         {
             /* .name          = */ "galileo_enable",
-            /* .docs          = */ "Bitfield 0: Enable E1,   1: Enable E5B",
+            /* .docs          = */ "Bitfield 0: Enable E1,   1: Enable E5B, 2: Enable E5A",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::galileo_enable>,
             /* .functions     = */ {true, false, false, false, false,  true},
@@ -143,7 +143,7 @@ struct MetadataFor<commands_gnss::SignalConfiguration::Response>
         },
         {
             /* .name          = */ "beidou_enable",
-            /* .docs          = */ "Bitfield 0: Enable B1,   1: Enable B2",
+            /* .docs          = */ "Bitfield 0: Enable B1,   1: Enable B2,  2: Enable B2A",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::beidou_enable>,
             /* .functions     = */ {true, false, false, false, false,  true},
@@ -182,7 +182,7 @@ struct MetadataFor<commands_gnss::SignalConfiguration>
         FUNCTION_SELECTOR_PARAM,
         {
             /* .name          = */ "gps_enable",
-            /* .docs          = */ "Bitfield 0: Enable L1CA, 1: Enable L2C",
+            /* .docs          = */ "Bitfield 0: Enable L1CA, 1: Enable L2C, 2: Enable L5",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::gps_enable>,
             /* .functions     = */ {true, false, false, false, false,  true},
@@ -200,7 +200,7 @@ struct MetadataFor<commands_gnss::SignalConfiguration>
         },
         {
             /* .name          = */ "galileo_enable",
-            /* .docs          = */ "Bitfield 0: Enable E1,   1: Enable E5B",
+            /* .docs          = */ "Bitfield 0: Enable E1,   1: Enable E5B, 2: Enable E5A",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::galileo_enable>,
             /* .functions     = */ {true, false, false, false, false,  true},
@@ -209,7 +209,7 @@ struct MetadataFor<commands_gnss::SignalConfiguration>
         },
         {
             /* .name          = */ "beidou_enable",
-            /* .docs          = */ "Bitfield 0: Enable B1,   1: Enable B2",
+            /* .docs          = */ "Bitfield 0: Enable B1,   1: Enable B2,  2: Enable B2A",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::beidou_enable>,
             /* .functions     = */ {true, false, false, false, false,  true},

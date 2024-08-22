@@ -226,18 +226,21 @@ struct FilterStatusFlags : Bitfield<FilterStatusFlags>
 };
 enum class FilterAidingMeasurementType : uint8_t
 {
-    GNSS              = 1,  ///<  
-    DUAL_ANTENNA      = 2,  ///<  
-    HEADING           = 3,  ///<  
-    PRESSURE          = 4,  ///<  
-    MAGNETOMETER      = 5,  ///<  
-    SPEED             = 6,  ///<  
-    POS_ECEF          = 33,  ///<  
-    POS_LLH           = 34,  ///<  
-    VEL_ECEF          = 40,  ///<  
-    VEL_NED           = 41,  ///<  
-    VEL_VEHICLE_FRAME = 42,  ///<  
-    HEADING_TRUE      = 49,  ///<  
+    GNSS                          = 1,  ///<  
+    DUAL_ANTENNA                  = 2,  ///<  
+    HEADING                       = 3,  ///<  
+    PRESSURE                      = 4,  ///<  
+    MAGNETOMETER                  = 5,  ///<  
+    SPEED                         = 6,  ///<  
+    AIDING_POS_ECEF               = 33,  ///<  
+    AIDING_POS_LLH                = 34,  ///<  
+    AIDING_HEIGHT_ABOVE_ELLIPSOID = 35,  ///<  
+    AIDING_VEL_ECEF               = 40,  ///<  
+    AIDING_VEL_NED                = 41,  ///<  
+    AIDING_VEL_BODY_FRAME         = 42,  ///<  
+    AIDING_HEADING_TRUE           = 49,  ///<  
+    AIDING_MAGNETIC_FIELD         = 50,  ///<  
+    AIDING_PRESSURE               = 51,  ///<  
 };
 
 struct FilterMeasurementIndicator : Bitfield<FilterMeasurementIndicator>

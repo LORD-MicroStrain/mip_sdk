@@ -152,8 +152,8 @@ enum mip_nmea_message_message_id
     MIP_NMEA_MESSAGE_MESSAGE_ID_VTG  = 5,  ///<  Course over Ground. Source can be the Filter or GNSS1/2 datasets.
     MIP_NMEA_MESSAGE_MESSAGE_ID_HDT  = 6,  ///<  Heading, True. Source can be the Filter or GNSS1/2 datasets.
     MIP_NMEA_MESSAGE_MESSAGE_ID_ZDA  = 7,  ///<  Time & Date. Source must be the GNSS1 or GNSS2 datasets.
-    MIP_NMEA_MESSAGE_MESSAGE_ID_PKRA = 129,  ///<  Parker proprietary Euler angles. Source must be the Filter dataset. The talker ID must be set to IGNORED.
-    MIP_NMEA_MESSAGE_MESSAGE_ID_PKRR = 130,  ///<  Parker proprietary Angular Rate/Acceleration. Source must be the Sensor dataset. The talker ID must be set to IGNORED.
+    MIP_NMEA_MESSAGE_MESSAGE_ID_MSRA = 129,  ///<  MicroStrain proprietary Euler angles. Source must be the Filter dataset. The talker ID must be set to IGNORED.
+    MIP_NMEA_MESSAGE_MESSAGE_ID_MSRR = 130,  ///<  MicroStrain proprietary Angular Rate/Acceleration. Source must be the Sensor dataset. The talker ID must be set to IGNORED.
 };
 typedef enum mip_nmea_message_message_id mip_nmea_message_message_id;
 
@@ -2040,7 +2040,7 @@ mip_cmd_result mip_3dm_capture_gyro_bias(mip_interface* device, uint16_t averagi
 /// 
 /// The values for this offset are determined empirically by external software algorithms
 /// based on calibration data taken after the device is installed in its application. These values
-/// can be obtained and set by using the LORD "MIP Iron Calibration" application.
+/// can be obtained and set by using Microstrain software tools.
 /// Alternatively, on some systems, the auto-mag calibration feature may be used to capture these values in-run.
 /// The offset is applied to the scaled magnetometer vector prior to output.
 ///
@@ -2079,7 +2079,7 @@ mip_cmd_result mip_3dm_default_mag_hard_iron_offset(mip_interface* device);
 /// 
 /// The values for this matrix are determined empirically by external software algorithms
 /// based on calibration data taken after the device is installed in its application. These values
-/// can be obtained and set by using the LORD "MIP Iron Calibration" application.
+/// can be obtained and set by using Microstrain software tools.
 /// Alternatively, on some systems, the auto-mag calibration feature may be used to capture these values in-run.
 /// The matrix is applied to the scaled magnetometer vector prior to output.
 /// 

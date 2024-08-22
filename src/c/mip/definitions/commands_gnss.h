@@ -46,12 +46,15 @@ enum
 
 enum { MIP_GNSS_GPS_ENABLE_L1CA = 0x0001 };
 enum { MIP_GNSS_GPS_ENABLE_L2C = 0x0002 };
+enum { MIP_GNSS_GPS_ENABLE_L5 = 0x0004 };
 enum { MIP_GNSS_GLONASS_ENABLE_L1OF = 0x0001 };
 enum { MIP_GNSS_GLONASS_ENABLE_L2OF = 0x0002 };
 enum { MIP_GNSS_GALILEO_ENABLE_E1 = 0x0001 };
 enum { MIP_GNSS_GALILEO_ENABLE_E5B = 0x0002 };
+enum { MIP_GNSS_GALILEO_ENABLE_E5A = 0x0004 };
 enum { MIP_GNSS_BEIDOU_ENABLE_B1 = 0x0001 };
 enum { MIP_GNSS_BEIDOU_ENABLE_B2 = 0x0002 };
+enum { MIP_GNSS_BEIDOU_ENABLE_B2A = 0x0004 };
 
 ////////////////////////////////////////////////////////////////////////////////
 // Mip Fields
@@ -102,10 +105,10 @@ mip_cmd_result mip_gnss_receiver_info(mip_interface* device, uint8_t* num_receiv
 struct mip_gnss_signal_configuration_command
 {
     mip_function_selector function;
-    uint8_t gps_enable; ///< Bitfield 0: Enable L1CA, 1: Enable L2C
+    uint8_t gps_enable; ///< Bitfield 0: Enable L1CA, 1: Enable L2C, 2: Enable L5
     uint8_t glonass_enable; ///< Bitfield 0: Enable L1OF, 1: Enable L2OF
-    uint8_t galileo_enable; ///< Bitfield 0: Enable E1,   1: Enable E5B
-    uint8_t beidou_enable; ///< Bitfield 0: Enable B1,   1: Enable B2
+    uint8_t galileo_enable; ///< Bitfield 0: Enable E1,   1: Enable E5B, 2: Enable E5A
+    uint8_t beidou_enable; ///< Bitfield 0: Enable B1,   1: Enable B2,  2: Enable B2A
     uint8_t reserved[4];
 };
 typedef struct mip_gnss_signal_configuration_command mip_gnss_signal_configuration_command;
@@ -115,10 +118,10 @@ void extract_mip_gnss_signal_configuration_command(microstrain_serializer* seria
 
 struct mip_gnss_signal_configuration_response
 {
-    uint8_t gps_enable; ///< Bitfield 0: Enable L1CA, 1: Enable L2C
+    uint8_t gps_enable; ///< Bitfield 0: Enable L1CA, 1: Enable L2C, 2: Enable L5
     uint8_t glonass_enable; ///< Bitfield 0: Enable L1OF, 1: Enable L2OF
-    uint8_t galileo_enable; ///< Bitfield 0: Enable E1,   1: Enable E5B
-    uint8_t beidou_enable; ///< Bitfield 0: Enable B1,   1: Enable B2
+    uint8_t galileo_enable; ///< Bitfield 0: Enable E1,   1: Enable E5B, 2: Enable E5A
+    uint8_t beidou_enable; ///< Bitfield 0: Enable B1,   1: Enable B2,  2: Enable B2A
     uint8_t reserved[4];
 };
 typedef struct mip_gnss_signal_configuration_response mip_gnss_signal_configuration_response;
