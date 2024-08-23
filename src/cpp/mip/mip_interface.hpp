@@ -67,7 +67,7 @@ public:
     }
 
     ///@copydoc mip::C::mip_interface_init
-    ///@param connection The connection object used to communicate with the device. This object must exist for the life of the DeviceInterface object
+    ///@param connection The connection object used to communicate with the device. This object must exist for the life of the Interface object
     Interface(microstrain::Connection* connection, uint8_t* parseBuffer, size_t parseBufferSize, Timeout parseTimeout, Timeout baseReplyTimeout) :
         Interface(parseBuffer, parseBufferSize, parseTimeout, baseReplyTimeout)
     {
@@ -263,11 +263,11 @@ void Interface::setUpdateFunction()
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Sets the send callback function (derived member function version).
 ///
-///@tparam Derived Derived class type. Must inherit from DeviceInterface.
+///@tparam Derived Derived class type. Must inherit from Interface.
 ///@tparam Send    Compile-time pointer to member function of Derived.
 ///
 ///@code{.cpp}
-/// class MyClass : public mip::DeviceInterface
+/// class MyClass : public mip::Interface
 /// {
 ///     bool sendToDevice(const uint8_t* data, size_t size);
 ///     bool recvFromDevice(uint8_t* data, size_t max_length, Timeout wait_time, size_t* length_out, Timestamp* timestamp_out);
@@ -297,10 +297,10 @@ void Interface::setSendFunction()
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Sets the receive callback function (derived member function version).
 ///
-///@tparam Derived Derived class type. Must inherit from DeviceInterface.
+///@tparam Derived Derived class type. Must inherit from Interface.
 ///@tparam Recv    Compile-time pointer to member function of Derived.
 ///
-///@see DeviceInterface::setSendFunction()
+///@see Interface::setSendFunction()
 ///
 template<class Derived, bool (Derived::*Recv)(uint8_t*, size_t, Timeout, size_t*, Timestamp*)>
 void Interface::setRecvFunction()
@@ -318,10 +318,10 @@ void Interface::setRecvFunction()
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Sets the update callback function (derived member function version).
 ///
-///@tparam Derived Derived class type. Must inherit from DeviceInterface.
+///@tparam Derived Derived class type. Must inherit from Interface.
 ///@tparam Update  Compile-time pointer to member function of Derived.
 ///
-///@see DeviceInterface::setSendFunction()
+///@see Interface::setSendFunction()
 ///
 template<class Derived, bool (Derived::*Update)(Timeout)>
 void Interface::setUpdateFunction()
@@ -369,7 +369,7 @@ void Interface::setUpdateFunction()
 /// };
 ///
 /// DeviceConnection connection;
-/// mip::DeviceInterface interface;
+/// mip::Interface interface;
 ///
 /// interface.setCallbacks<DeviceConnection, &DeviceConnection::send, &DeviceConnection::recv, nullptr>(&connection);
 ///@endcode
@@ -426,7 +426,7 @@ void Interface::setCallbacks(T* object)
 ///   // Use the packet data
 /// }
 ///
-/// DeviceInterface device;
+/// Interface device;
 /// DispatchHandler handler;
 ///
 /// void setup()
@@ -476,7 +476,7 @@ void Interface::registerPacketCallback(C::mip_dispatch_handler& handler, uint8_t
 ///     device.registerPacketHandler<MySystem, &MySystem::handlePacket>(packetHandler, descriptorSet, this);
 ///   }
 ///
-///   DeviceInterface device;
+///   Interface device;
 ///   DispatchHandler packetHandler;
 /// };
 ///@endcode
@@ -513,7 +513,7 @@ void Interface::registerPacketCallback(C::mip_dispatch_handler& handler, uint8_t
 ///   // Use the field data
 /// }
 ///
-/// DeviceInterface device;
+/// Interface device;
 /// DispatchHandler handler;
 ///
 /// void setup()
@@ -563,7 +563,7 @@ void Interface::registerFieldCallback(C::mip_dispatch_handler& handler, uint8_t 
 ///     device.registerFieldHandler<MySystem, &MySystem::handleField>(fieldHandler, descriptorSet, fieldDescriptor, this);
 ///   }
 ///
-///   DeviceInterface device;
+///   Interface device;
 ///   DispatchHandler fieldHandler;
 /// };
 ///@endcode
@@ -604,7 +604,7 @@ void Interface::registerFieldCallback(C::mip_dispatch_handler& handler, uint8_t 
 ///   // Use the packet data
 /// }
 ///
-/// DeviceInterface device;
+/// Interface device;
 /// DispatchHandler handler;
 ///
 /// void setup()
@@ -663,7 +663,7 @@ void Interface::registerDataCallback(C::mip_dispatch_handler& handler, void* use
 ///   // Use the packet data
 /// }
 ///
-/// DeviceInterface device;
+/// Interface device;
 /// DispatchHandler handler;
 ///
 /// void setup()
@@ -730,7 +730,7 @@ void Interface::registerDataCallback(C::mip_dispatch_handler& handler, void* use
 ///     device.registerDataHandler<ScaledAccel, MySystem, &MySystem::handleAccel>(accelHandler, this);
 ///   }
 ///
-///   DeviceInterface device;
+///   Interface device;
 ///   DispatchHandler accelHandler;
 /// };
 ///@endcode
@@ -791,7 +791,7 @@ void Interface::registerDataCallback(C::mip_dispatch_handler& handler, Object* o
 ///     device.registerDataHandler<ScaledAccel, MySystem, &MySystem::handleAccel>(accelHandler, this);
 ///   }
 ///
-///   DeviceInterface device;
+///   Interface device;
 ///   DispatchHandler accelHandler;
 /// };
 ///@endcode

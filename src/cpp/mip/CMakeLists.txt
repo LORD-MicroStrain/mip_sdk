@@ -38,6 +38,6 @@ if(MIP_ENABLE_METADATA)
     add_subdirectory(metadata)
 endif()
 
-if(MICROSTRAIN_ENABLE_EXTRAS)
+if(MIP_ENABLE_EXTRAS)
     add_subdirectory(extras)
 endif()
