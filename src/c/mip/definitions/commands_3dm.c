@@ -5005,8 +5005,8 @@ mip_cmd_result mip_3dm_default_lowpass_filter(mip_interface* device, uint8_t des
 }
 
 #ifdef __cplusplus
+} // extern "C"
 } // namespace C
 } // namespace mip
-} // extern "C"
 #endif // __cplusplus
 

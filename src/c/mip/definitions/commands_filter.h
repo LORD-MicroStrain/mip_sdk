@@ -2450,8 +2450,8 @@ mip_cmd_result mip_filter_set_initial_heading(mip_interface* device, float headi
 ///
 ////////////////////////////////////////////////////////////////////////////////
 #ifdef __cplusplus
+} // extern "C"
 } // namespace C
 } // namespace mip
-} // extern "C"
 #endif // __cplusplus
 

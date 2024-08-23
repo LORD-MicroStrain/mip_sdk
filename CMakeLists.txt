@@ -1,10 +1,10 @@
 
 cmake_minimum_required(VERSION 3.10)
 
-#set(CMAKE_CXX_STANDARD 14)
-#set(CMAKE_CXX_STANDARD_REQUIRED ON)
-#set(CMAKE_C_STANDARD 11)
-#set(CMAKE_C_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED ON)
 
 project(
     "MIP SDK"
@@ -27,21 +27,16 @@ set(MICROSTRAIN_LOGGING_MAX_LEVEL "MICROSTRAIN_LOG_LEVEL_INFO" CACHE STRING "Max
 set(MICROSTRAIN_TIMESTAMP_TYPE "uint64_t" CACHE STRING "Override the type used for received data timestamps and timeouts (must be unsigned or at least 64 bits).")
 
 option(MICROSTRAIN_ENABLE_SERIAL "Build serial connection support into the library and examples" ON)
-option(MICROSTRAIN_ENABLE_TCP "Build TCP connection support into the library and exampels" ON)
+option(MICROSTRAIN_ENABLE_TCP "Build TCP connection support into the library and examples" ON)
 
 option(MICROSTRAIN_ENABLE_CPP "Enables the C++ API. Turn off to avoid compiling the C++ API." ON)
-option(MICROSTRAIN_ENABLE_CPP_C_NAMESPACE "Wraps the C api in a C++ namespace to avoid global namespace pollution (e.g. microstrain::C::microstrain_serial_port)" ${MICROSTRAIN_ENABLE_CPP})
+#option(MICROSTRAIN_ENABLE_CPP_C_NAMESPACE "Wraps the C api in a C++ namespace to avoid global namespace pollution (e.g. microstrain::C::microstrain_serial_port)" ${MICROSTRAIN_ENABLE_CPP})
 
 # MIP options
 option(MIP_ENABLE_EXTRAS "Build extra support into the library including some things that might work at a higher level and use dynamically allocated memory" ON)
 option(MIP_ENABLE_DIAGNOSTICS "Enable various diagnostic counters in the mip library for debugging." OFF)
 
-# This fails with g++-9.4 as it can't find <span> despite cmake claiming c++20 support.
-#if("cxx_std_20" IN_LIST CMAKE_CXX_COMPILE_FEATURES)
-#    set(MIP_COMPILER_SUPPORTS_METADATA ON)
-#else()
-#    set(MIP_COMPILER_SUPPORTS_METADATA OFF)
-#endif()
+
 if(NOT DEFINED MIP_ENABLE_METADATA)
     include("${MIP_CMAKE_DIR}/check_metadata.cmake")
     message("MIP_ENABLE_METADATA not set - compiler support: ${MIP_COMPILER_SUPPORTS_METADATA}")
@@ -52,7 +47,7 @@ option(MIP_ENABLE_METADATA "Build support for MIP protocol metadata in C++ (requ
 option(BUILD_PACKAGE "Whether to build a package from the resulting binaries" OFF)
 option(BUILD_EXAMPLES "Builds the example programs." ON)
 # CTest defines this option to ON by default, so override it to OFF here.
-option(BUILD_TESTING "Build the testing tree." OFF)
+option(BUILD_TESTS "Build the testing tree." OFF)
 option(BUILD_DOCUMENTATION       "Build the documentation." OFF)
 option(BUILD_DOCUMENTATION_FULL  "Build the full (internal) documentation." OFF)
 option(BUILD_DOCUMENTATION_QUIET "Suppress doxygen standard output." ON)
@@ -113,58 +108,33 @@ configure_file(${VERSION_IN_FILE} ${VERSION_OUT_FILE})
 # Suppress warnings due to adding files with target_sources.
 cmake_policy(SET CMP0076 NEW)
 
-#include_directories(src/c)
-#if(MICROSTRAIN_ENABLE_CPP)
-#    include_directories(src/cpp)
-#endif()
 
 # Add all the C files (required even for C++ API)
+set(SRC_C_DIR "${CMAKE_CURRENT_LIST_DIR}/src/c")
+
 add_subdirectory(src/c/microstrain)
 add_subdirectory(src/c/mip)
 
 # Add all the C++ files (if C++ enabled)
 if(MICROSTRAIN_ENABLE_CPP)
+    set(SRC_CPP_DIR "${CMAKE_CURRENT_LIST_DIR}/src/cpp")
+
     add_subdirectory(src/cpp/microstrain)
     add_subdirectory(src/cpp/mip)
 
-    #target_compile_definitions(microstrain_common PUBLIC "MICROSTRAIN_ENABLE_CPP=1")
-    target_compile_definitions(microstrain_common PUBLIC "MICROSTRAIN_ENABLE_CPP_C_NAMESPACE=${MICROSTRAIN_ENABLE_CPP_C_NAMESPACE}")
+    #target_compile_definitions(microstrain_common PUBLIC "MICROSTRAIN_ENABLE_CPP_C_NAMESPACE=${MICROSTRAIN_ENABLE_CPP_C_NAMESPACE}")
 endif()
 
 
-
-if(MIP_ENABLE_EXTRAS)
-    list(APPEND MIP_DEFINES "MIP_ENABLE_EXTRAS")
-    set(MIP_EXTRAS_DIR "${MIP_DIR}/extras")
-    set(MIP_EXTRA_SOURCES
-        "${MIP_EXTRAS_DIR}/composite_result.hpp"
-        "${MIP_EXTRAS_DIR}/descriptor_id.hpp"
-        "${MIP_EXTRAS_DIR}/device_models.h"
-        "${MIP_EXTRAS_DIR}/device_models.c"
-        "${MIP_EXTRAS_DIR}/index.hpp"
-        "${MIP_EXTRAS_DIR}/recording_connection.hpp"
-        "${MIP_EXTRAS_DIR}/recording_connection.cpp"
-        "${MIP_EXTRAS_DIR}/scope_helper.hpp"
-        "${MIP_EXTRAS_DIR}/scope_helper.cpp"
-        "${MIP_EXTRAS_DIR}/version.hpp"
-        "${MIP_EXTRAS_DIR}/version.cpp"
-    )
-endif()
 
 #
 # Preprocessor definitions
 #
 
-# Disable windows defined min/max
-# Set Windows header version (0x0501 is _WIN32_WINNT_WINXP, required for TCP)
-if(WIN32)
-    add_compile_definitions("NOMINMAX=1" "_WIN32_WINNT=0x0501")
-endif()
-
 if(MSVC)
-  target_compile_options(mip PRIVATE /W4)
+    add_compile_options(/W4)
 else()
-  target_compile_options(mip PRIVATE -Wall -Wextra)
+    add_compile_options(-Wall -Wextra)
 endif()
 
 
@@ -178,7 +148,7 @@ endif()
 
 include(CTest)
 
-if(BUILD_TESTING)
+if(BUILD_TESTS)
     add_subdirectory("test")
 endif()
 

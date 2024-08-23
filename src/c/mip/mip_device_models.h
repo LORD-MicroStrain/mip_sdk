@@ -62,7 +62,7 @@ const char* get_model_name_from_number(mip_model_number model);
 using ModelNumber = C::mip_model_number;
 
 inline ModelNumber getModelFromString(const char* model_or_serial) { return C::get_model_from_string(model_or_serial); }
-inline const char* getModelNameFromNumber(ModelNumber model) { return get_model_name_from_number(model); }
+inline const char* getModelNameFromNumber(ModelNumber model) { return C::get_model_name_from_number(model); }
 
 
 } // namespace mip

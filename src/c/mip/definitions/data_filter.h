@@ -1585,8 +1585,8 @@ bool extract_mip_filter_aiding_frame_config_error_uncertainty_data_from_field(co
 ///
 ////////////////////////////////////////////////////////////////////////////////
 #ifdef __cplusplus
+} // extern "C"
 } // namespace C
 } // namespace mip
-} // extern "C"
 #endif // __cplusplus
 

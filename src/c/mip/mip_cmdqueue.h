@@ -136,7 +136,7 @@ uint16_t mip_cmd_queue_diagnostic_cmd_errors(const mip_cmd_queue* queue);
 ////////////////////////////////////////////////////////////////////////////////
 
 #ifdef __cplusplus
+} // extern "C"
 } // namespace C
 } // namespace mip
-} // extern "C"
 #endif

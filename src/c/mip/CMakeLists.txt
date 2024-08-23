@@ -1,8 +1,11 @@
 
-set(MIP_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/..")
+#
+# Core MIP C library
+#
 
-set(MIP_SOURCES
+add_library(mip
     "${VERSION_OUT_FILE}"
+
     "mip_cmdqueue.c"
     "mip_cmdqueue.h"
     "mip_descriptors.c"
@@ -33,9 +36,17 @@ set(MIP_SOURCES
     "utils/byte_ring.h"
 )
 
-add_library(mip ${MIP_SOURCES})
 target_compile_features(mip PUBLIC c_std_11)
-target_include_directories(mip INTERFACE ${MIP_INCLUDE_DIR})
+target_link_libraries(mip PUBLIC microstrain_common)
+
+if(${MIP_ENABLE_DIAGNOSTICS})
+    target_compile_definitions(mip PUBLIC "MIP_ENABLE_DIAGNOSTICS=1")
+endif()
+
+
+#
+# Mip definition files
+#
 
 set(MIPDEFS
     commands_3dm
@@ -67,19 +78,3 @@ if(MICROSTRAIN_CMAKE_DEBUG)
 endif()
 
 target_sources(mip PRIVATE ${MIPDEF_SOURCES})
-
-
-
-if(${MIP_ENABLE_DIAGNOSTICS})
-    list(APPEND MIP_DEFINES "MIP_ENABLE_DIAGNOSTICS")
-endif()
-
-if(${MICROSTRAIN_TIMESTAMP_TYPE})
-    list(APPEND MIP_DEFINES "MICROSTRAIN_TIMESTAMP_TYPE=${MICROSTRAIN_TIMESTAMP_TYPE}")
-endif()
-
-target_compile_definitions(mip PUBLIC "${MIP_DEFINES}")
-
-target_link_libraries(mip PUBLIC microstrain_common)
-
-#target_include_directories(mip INTERFACE ${CMAKE_CURRENT_LIST_DIR})

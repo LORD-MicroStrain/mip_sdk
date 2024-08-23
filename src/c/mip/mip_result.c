@@ -3,6 +3,7 @@
 
 #ifdef __cplusplus
 namespace mip {
+namespace C {
 extern "C" {
 #endif // __cplusplus
 
@@ -17,24 +18,24 @@ const char* mip_cmd_result_to_string(enum mip_cmd_result result)
 {
     switch(result)
     {
-    // Status codes
-    case MIP_STATUS_ERROR:          return "Error";
-    case MIP_STATUS_CANCELLED:      return "Canceled";
-    case MIP_STATUS_TIMEDOUT:       return "Timed out";
-    case MIP_STATUS_WAITING:        return "Waiting";
-    case MIP_STATUS_PENDING:        return "Pending";
-    case MIP_STATUS_NONE:           return "None";
-    // Device replies
-    case MIP_ACK_OK:                return "Ok";
-    case MIP_NACK_COMMAND_UNKNOWN:  return "Unknown Command";
+        // Status codes
+    case MIP_STATUS_ERROR: return "Error";
+    case MIP_STATUS_CANCELLED: return "Canceled";
+    case MIP_STATUS_TIMEDOUT: return "Timed out";
+    case MIP_STATUS_WAITING: return "Waiting";
+    case MIP_STATUS_PENDING: return "Pending";
+    case MIP_STATUS_NONE: return "None";
+        // Device replies
+    case MIP_ACK_OK: return "Ok";
+    case MIP_NACK_COMMAND_UNKNOWN: return "Unknown Command";
     case MIP_NACK_INVALID_CHECKSUM: return "Invalid Checksum";
-    case MIP_NACK_INVALID_PARAM:    return "Invalid Parameter";
-    case MIP_NACK_COMMAND_FAILED:   return "Command Failed";
-    case MIP_NACK_COMMAND_TIMEOUT:  return "Device Error";
+    case MIP_NACK_INVALID_PARAM: return "Invalid Parameter";
+    case MIP_NACK_COMMAND_FAILED: return "Command Failed";
+    case MIP_NACK_COMMAND_TIMEOUT: return "Device Error";
 
     default:
         if(mip_cmd_result_is_user(result)) return "User Status";
-        else                               return "Unknown";
+        else return "Unknown";
     }
 }
 
@@ -81,5 +82,6 @@ bool mip_cmd_result_is_ack(enum mip_cmd_result result)
 
 #ifdef __cplusplus
 } // extern "C"
+} // namespace C
 } // namespace mip
 #endif // __cplusplus

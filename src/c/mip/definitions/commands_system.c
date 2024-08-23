@@ -105,8 +105,8 @@ mip_cmd_result mip_system_default_comm_mode(mip_interface* device)
 }
 
 #ifdef __cplusplus
+} // extern "C"
 } // namespace C
 } // namespace mip
-} // extern "C"
 #endif // __cplusplus
 

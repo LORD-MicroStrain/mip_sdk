@@ -361,8 +361,8 @@ mip_cmd_result mip_gnss_default_rtk_dongle_configuration(mip_interface* device)
 }
 
 #ifdef __cplusplus
+} // extern "C"
 } // namespace C
 } // namespace mip
-} // extern "C"
 #endif // __cplusplus
 

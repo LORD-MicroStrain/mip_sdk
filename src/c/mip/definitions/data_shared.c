@@ -217,8 +217,8 @@ bool extract_mip_shared_external_time_delta_data_from_field(const mip_field_view
 
 
 #ifdef __cplusplus
+} // extern "C"
 } // namespace C
 } // namespace mip
-} // extern "C"
 #endif // __cplusplus
 

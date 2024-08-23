@@ -125,7 +125,7 @@ bool            mip_packet_is_data(const mip_packet_view* packet);
 ////////////////////////////////////////////////////////////////////////////////
 
 #ifdef __cplusplus
-} // namespace mip
-} // namespace C
 } // extern "C"
+} // namespace C
+} // namespace mip
 #endif

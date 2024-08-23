@@ -130,7 +130,7 @@ mip_timeout mip_timeout_from_baudrate(uint32_t baudrate);
 ////////////////////////////////////////////////////////////////////////////////
 
 #ifdef __cplusplus
-} // namespace mip
-} // namespace C
 } // extern "C"
+} // namespace C
+} // namespace mip
 #endif

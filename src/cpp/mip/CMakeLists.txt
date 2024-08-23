@@ -16,7 +16,7 @@ target_sources(mip PRIVATE
 )
 
 target_compile_features(mip PUBLIC cxx_std_11)
-target_include_directories(mip INTERFACE ${MIP_INCLUDE_DIR})
+target_include_directories(mip PRIVATE ${MIP_INCLUDE_DIR})
 
 # Get the mipdef list from the C version
 get_target_property(MIPDEFS mip definitions)
@@ -38,6 +38,6 @@ if(MIP_ENABLE_METADATA)
     add_subdirectory(metadata)
 endif()
 
-if(MIP_ENABLE_EXTRAS)
+if(MICROSTRAIN_ENABLE_EXTRAS)
     add_subdirectory(extras)
 endif()

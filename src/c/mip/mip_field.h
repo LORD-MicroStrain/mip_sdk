@@ -119,7 +119,7 @@ bool mip_field_next_in_packet(mip_field_view* field, const mip_packet_view* pack
 ///
 
 #ifdef __cplusplus
-} // namespace mip
-} // namespace C
 } // extern "C"
+} // namespace C
+} // namespace mip
 #endif

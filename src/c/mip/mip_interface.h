@@ -118,7 +118,7 @@ mip_cmd_queue* mip_interface_cmd_queue(mip_interface* device);
 ///@}
 
 #ifdef __cplusplus
-} // namespace mip
-} // namespace C
 } // extern "C"
+} // namespace C
+} // namespace mip
 #endif

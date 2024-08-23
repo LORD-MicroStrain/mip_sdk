@@ -165,6 +165,6 @@ void extract_mip_function_selector(microstrain_serializer* serializer, enum mip_
 
 
 #ifdef __cplusplus
-} // namespace mip
 } // extern "C"
+} // namespace mip
 #endif // __cplusplus

@@ -21,9 +21,6 @@ if(MICROSTRAIN_CMAKE_DEBUG)
 endif()
 
 add_library(mip_metadata ${META_SOURCES} ${MIPDEF_HEADERS})
-
 target_compile_features(mip_metadata PUBLIC cxx_std_20)
-
-target_include_directories(mip_metadata INTERFACE ${MIP_INCLUDE_DIR})
-
 target_link_libraries(mip_metadata PUBLIC mip)
+target_compile_definitions(mip_metadata PUBLIC "MIP_ENABLE_METADATA=1")

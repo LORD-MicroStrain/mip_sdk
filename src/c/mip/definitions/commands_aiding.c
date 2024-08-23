@@ -838,8 +838,8 @@ mip_cmd_result mip_aiding_pressure(mip_interface* device, const mip_time* time, 
 }
 
 #ifdef __cplusplus
+} // extern "C"
 } // namespace C
 } // namespace mip
-} // extern "C"
 #endif // __cplusplus
 

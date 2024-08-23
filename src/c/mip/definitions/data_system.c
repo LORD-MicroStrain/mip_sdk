@@ -111,8 +111,8 @@ bool extract_mip_system_gpio_analog_value_data_from_field(const mip_field_view* 
 
 
 #ifdef __cplusplus
+} // extern "C"
 } // namespace C
 } // namespace mip
-} // extern "C"
 #endif // __cplusplus
 

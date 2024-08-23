@@ -431,8 +431,8 @@ mip_cmd_result mip_rtk_modem_hard_reset(mip_interface* device)
 }
 
 #ifdef __cplusplus
+} // extern "C"
 } // namespace C
 } // namespace mip
-} // extern "C"
 #endif // __cplusplus
 

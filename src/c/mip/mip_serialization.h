@@ -16,7 +16,7 @@ void microstrain_serializer_finish_new_field(const microstrain_serializer* seria
 void microstrain_serializer_init_from_field(microstrain_serializer* serializer, const mip_field_view* field);
 
 #ifdef __cplusplus
-} // namespace mip
-} // namespace C
 } // extern "C"
+} // namespace C
+} // namespace mip
 #endif

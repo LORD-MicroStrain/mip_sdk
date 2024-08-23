@@ -519,8 +519,8 @@ bool extract_mip_sensor_odometer_data_data_from_field(const mip_field_view* fiel
 
 
 #ifdef __cplusplus
+} // extern "C"
 } // namespace C
 } // namespace mip
-} // extern "C"
 #endif // __cplusplus
 

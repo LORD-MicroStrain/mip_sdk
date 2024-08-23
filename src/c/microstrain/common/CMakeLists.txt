@@ -11,7 +11,6 @@ add_library(microstrain_common
 )
 
 target_compile_features(microstrain_common PUBLIC c_std_11)
-
 target_compile_definitions(microstrain_common PUBLIC "MICROSTRAIN_TIMESTAMP_TYPE=${MICROSTRAIN_TIMESTAMP_TYPE}")
 
 # Logging is a little weird since we need to install the header no matter what
@@ -24,4 +23,14 @@ if(MICROSTRAIN_ENABLE_LOGGING)
     target_compile_definitions(microstrain_common PUBLIC "MICROSTRAIN_ENABLE_LOGGING" "MICROSTRAIN_LOGGING_MAX_LEVEL=${MICROSTRAIN_LOGGING_MAX_LEVEL}")
 endif()
 
-target_include_directories(microstrain_common INTERFACE ${MICROSTRAIN_INCLUDE_DIR})
+target_include_directories(microstrain_common INTERFACE ${SRC_C_DIR})
+
+# Disable windows defined min/max
+# Set Windows header version (0x0501 is _WIN32_WINNT_WINXP, required for TCP)
+if(WIN32)
+    target_compile_definitions(microstrain_common
+        PUBLIC
+        "NOMINMAX=1"
+        "_WIN32_WINNT=_WIN32_WINNT_WINXP"
+    )
+endif()

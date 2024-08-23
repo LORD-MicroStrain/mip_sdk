@@ -1790,8 +1790,8 @@ bool extract_mip_gnss_galileo_iono_corr_data_from_field(const mip_field_view* fi
 ///
 ////////////////////////////////////////////////////////////////////////////////
 #ifdef __cplusplus
+} // extern "C"
 } // namespace C
 } // namespace mip
-} // extern "C"
 #endif // __cplusplus
 

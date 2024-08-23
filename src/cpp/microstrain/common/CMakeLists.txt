@@ -11,5 +11,4 @@ target_sources(microstrain_common PRIVATE
 )
 
 target_compile_features(microstrain_common PUBLIC cxx_std_11)
-target_include_directories(microstrain_common INTERFACE ${MICROSTRAIN_INCLUDE_DIR})
-
+target_include_directories(microstrain_common INTERFACE ${SRC_CPP_DIR})
