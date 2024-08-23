@@ -7,6 +7,8 @@ set(META_SOURCES
     "mip_metadata.hpp"
     "mip_structures.hpp"
     "mip_meta_utils.hpp"
+
+    "definitions/common.hpp"
 )
 
 # Get the mipdef list from the C version
