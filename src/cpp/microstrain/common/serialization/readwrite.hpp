@@ -7,25 +7,30 @@
 #include <stddef.h>
 #include <type_traits>
 
-#if __cpp_lib_endian >= 201907L
-#include <bit>
-#endif
+// Don't depend on C++ standard since it could be different between
+// compiling this lib and the user's project including this file.
+// In that case there would be two conflicting definitions of Endian!
+// Maybe use a CMake variable in the future.
+//
+//#if __cpp_lib_endian >= 201907L
+//#include <bit>
+//#endif
 
 namespace microstrain
 {
 namespace serialization
 {
 
-#if __cpp_lib_endian >= 201907L
-using Endian = std::endian;
-#else
+//#if __cpp_lib_endian >= 201907L
+//using Endian = std::endian;
+//#else
 enum class Endian
 {
     little,
     big,
-    //native = little,  // Todo
+    //native = little,
 };
-#endif
+//#endif
 
 //
 // Write to buffer

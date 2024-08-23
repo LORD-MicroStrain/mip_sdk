@@ -21,7 +21,7 @@
     #define IF_CONSTEXPR if
 #endif
 
-#if __cpp_lib_optional >= 201606L || __cplusplus >= 201703L
+#if __cpp_lib_optional >= 201606L
 #define MICROSTRAIN_HAS_OPTIONAL
 #endif
 #if __cpp_lib_span >= 202002L

@@ -26,16 +26,15 @@ option(MICROSTRAIN_ENABLE_LOGGING "Build with logging functions enabled" ON)
 set(MICROSTRAIN_LOGGING_MAX_LEVEL "MICROSTRAIN_LOG_LEVEL_INFO" CACHE STRING "Max log level the SDK is allowed to log. If this is defined, any log level logged at a higher level than this will result in a noop regardless of runtime configuration.")
 set(MICROSTRAIN_TIMESTAMP_TYPE "uint64_t" CACHE STRING "Override the type used for received data timestamps and timeouts (must be unsigned or at least 64 bits).")
 
-option(MICROSTRAIN_ENABLE_SERIAL "Build serial connection support into the library and examples" ON)
-option(MICROSTRAIN_ENABLE_TCP "Build TCP connection support into the library and examples" ON)
-
 option(MICROSTRAIN_ENABLE_CPP "Enables the C++ API. Turn off to avoid compiling the C++ API." ON)
 #option(MICROSTRAIN_ENABLE_CPP_C_NAMESPACE "Wraps the C api in a C++ namespace to avoid global namespace pollution (e.g. microstrain::C::microstrain_serial_port)" ${MICROSTRAIN_ENABLE_CPP})
 
-# MIP options
-option(MIP_ENABLE_EXTRAS "Build extra support into the library including some things that might work at a higher level and use dynamically allocated memory" ON)
-option(MIP_ENABLE_DIAGNOSTICS "Enable various diagnostic counters in the mip library for debugging." OFF)
+option(MICROSTRAIN_ENABLE_EXTRAS "Build extra support into the library including some things that might work at a higher level and use dynamically allocated memory" ON)
+option(MICROSTRAIN_ENABLE_SERIAL "Build serial connection support into the library and examples" ON)
+option(MICROSTRAIN_ENABLE_TCP "Build TCP connection support into the library and examples" ON)
 
+# MIP options
+option(MIP_ENABLE_DIAGNOSTICS "Enable various diagnostic counters in the mip library for debugging." OFF)
 
 if(NOT DEFINED MIP_ENABLE_METADATA)
     include("${MIP_CMAKE_DIR}/check_metadata.cmake")
@@ -105,6 +104,35 @@ set(VERSION_OUT_FILE "${SRC_DIR}/c/mip/mip_version.h")
 configure_file(${VERSION_IN_FILE} ${VERSION_OUT_FILE})
 
 
+#
+# Common preprocessor definitions
+#
+add_library(microstrain_private INTERFACE)
+
+# Disable windows defined min/max
+# Set Windows header version (0x0501 is _WIN32_WINNT_WINXP, required for TCP)
+if(WIN32)
+    target_compile_definitions(microstrain_private
+        PUBLIC
+        "NOMINMAX=1"
+        "_WIN32_WINNT=_WIN32_WINNT_WINXP"
+    )
+endif()
+
+if(MSVC)
+    target_compile_options(microstrain_private INTERFACE
+        "/W4"              # Enable warnings
+        "/Zc:__cplusplus"  # Enable updated __cplusplus value
+    )
+else()
+    target_compile_options(microstrain_private INTERFACE
+        "-Wall"    # Extra warnings
+        "-Wextra"
+    )
+endif()
+
+
+
 # Suppress warnings due to adding files with target_sources.
 cmake_policy(SET CMP0076 NEW)
 
@@ -125,17 +153,6 @@ if(MICROSTRAIN_ENABLE_CPP)
     #target_compile_definitions(microstrain_common PUBLIC "MICROSTRAIN_ENABLE_CPP_C_NAMESPACE=${MICROSTRAIN_ENABLE_CPP_C_NAMESPACE}")
 endif()
 
-
-
-#
-# Preprocessor definitions
-#
-
-if(MSVC)
-    add_compile_options(/W4)
-else()
-    add_compile_options(-Wall -Wextra)
-endif()
 
 
 #

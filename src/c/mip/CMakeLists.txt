@@ -36,6 +36,7 @@ add_library(mip
     "utils/byte_ring.h"
 )
 
+target_link_libraries(mip PRIVATE microstrain_private)
 target_compile_features(mip PUBLIC c_std_11)
 target_link_libraries(mip PUBLIC microstrain_common)
 

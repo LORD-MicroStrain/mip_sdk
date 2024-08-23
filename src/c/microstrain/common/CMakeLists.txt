@@ -9,7 +9,7 @@ add_library(microstrain_common
     "serialization.c"
     "serialization.h"
 )
-
+target_link_libraries(microstrain_common PRIVATE microstrain_private)
 target_compile_features(microstrain_common PUBLIC c_std_11)
 target_compile_definitions(microstrain_common PUBLIC "MICROSTRAIN_TIMESTAMP_TYPE=${MICROSTRAIN_TIMESTAMP_TYPE}")
 
@@ -24,13 +24,3 @@ if(MICROSTRAIN_ENABLE_LOGGING)
 endif()
 
 target_include_directories(microstrain_common INTERFACE ${SRC_C_DIR})
-
-# Disable windows defined min/max
-# Set Windows header version (0x0501 is _WIN32_WINNT_WINXP, required for TCP)
-if(WIN32)
-    target_compile_definitions(microstrain_common
-        PUBLIC
-        "NOMINMAX=1"
-        "_WIN32_WINNT=_WIN32_WINNT_WINXP"
-    )
-endif()
