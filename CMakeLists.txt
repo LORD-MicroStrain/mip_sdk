@@ -113,7 +113,7 @@ add_library(microstrain_private INTERFACE)
 # Set Windows header version (0x0501 is _WIN32_WINNT_WINXP, required for TCP)
 if(WIN32)
     target_compile_definitions(microstrain_private
-        PUBLIC
+        INTERFACE
         "NOMINMAX=1"
         "_WIN32_WINNT=_WIN32_WINNT_WINXP"
     )

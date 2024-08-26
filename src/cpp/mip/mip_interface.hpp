@@ -825,7 +825,7 @@ void Interface::registerDataCallback(C::mip_dispatch_handler& handler, Object* o
 template<class DataField>
 void Interface::registerExtractor(C::mip_dispatch_handler& handler, DataField* field, uint8_t descriptorSet)
 {
-    auto callback = [](void* pointer, const C::mip_field_view* field, Timestamp timestamp)
+    auto callback = [](void* pointer, const C::mip_field_view* field, Timestamp /*timestamp*/)
     {
         FieldView(*field).extract( *static_cast<DataField*>(pointer) );
     };
