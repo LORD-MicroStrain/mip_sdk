@@ -3,7 +3,7 @@
 #include <mip/mip_interface.h>
 #include <microstrain/connections/serial/serial_port.h>
 #include <microstrain/common/logging.h>
-#include <microstrain/common/platform.hpp>
+#include <microstrain/common/platform.h>
 
 #include <mip/definitions/commands_base.h>
 #include <mip/definitions/commands_3dm.h>
@@ -13,7 +13,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#ifdef MICROSTRAIN_PLATFORM_WIN32
+#ifdef MICROSTRAIN_PLATFORM_WINDOWS
 #else
 #include <unistd.h>
 #endif
