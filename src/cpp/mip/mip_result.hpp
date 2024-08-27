@@ -38,7 +38,7 @@ struct CmdResult
     static constexpr C::mip_cmd_result NACK_COMMAND_FAILED   = C::MIP_NACK_COMMAND_FAILED;   ///<@copydoc C::MIP_NACK_COMMAND_FAILED
     static constexpr C::mip_cmd_result NACK_COMMAND_TIMEOUT  = C::MIP_NACK_COMMAND_TIMEOUT;  ///<@copydoc C::MIP_NACK_COMMAND_TIMEOUT
 
-#ifndef _WIN32 // Avoid name conflict with windows.h
+#ifndef MICROSTRAIN_PLATFORM_WINDOWS // Avoid name conflict with windows.h
     static constexpr C::mip_cmd_result STATUS_PENDING = STATUS_QUEUED;
 #endif
 

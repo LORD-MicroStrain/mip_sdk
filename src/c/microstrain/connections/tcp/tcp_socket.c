@@ -53,7 +53,7 @@ static bool tcp_socket_open_common(tcp_socket* socket_ptr, const char* hostname,
     hints.ai_flags    = 0;
 
     char port_str[6];  // Maximum 5 digits
-    sprintf(port_str, "%d", port);
+    snprintf(port_str, sizeof(port_str), "%d", port);
 
     int result = getaddrinfo(hostname, port_str, &hints, &info);
     if( result != 0 )

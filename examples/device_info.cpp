@@ -65,7 +65,7 @@ int main(int argc, const char* argv[])
             printf("Error: command completed with NACK: %s (%d)\n", result.name(), result.value);
         }
     }
-    catch(const std::underflow_error& ex)
+    catch(const std::underflow_error&)
     {
         return printCommonUsage(argv);
     }

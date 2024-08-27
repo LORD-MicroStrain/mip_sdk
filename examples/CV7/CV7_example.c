@@ -73,8 +73,8 @@ const uint8_t FILTER_PITCH_EVENT_ACTION_ID = 2;
 //Required MIP interface user-defined functions
 mip_timestamp get_current_timestamp();
 
-bool mip_interface_user_recv_from_device(mip_interface* device, uint8_t* buffer, size_t max_length, mip_timeout wait_time, size_t* out_length, mip_timestamp* timestamp_out);
-bool mip_interface_user_send_to_device(mip_interface* device, const uint8_t* data, size_t length);
+bool mip_interface_user_recv_from_device(mip_interface* device_, uint8_t* buffer, size_t max_length, mip_timeout wait_time, size_t* out_length, mip_timestamp* timestamp_out);
+bool mip_interface_user_send_to_device(mip_interface* device_, const uint8_t* data, size_t length);
 
 int usage(const char* argv0);
 
@@ -360,6 +360,9 @@ int main(int argc, const char* argv[])
 
 void handle_filter_event_source(void* user, const mip_field_view* field, mip_timestamp timestamp)
 {
+    (void)user;
+    (void)timestamp;
+
     mip_shared_event_source_data data;
 
     if(extract_mip_shared_event_source_data_from_field(field, &data))
@@ -389,10 +392,12 @@ mip_timestamp get_current_timestamp()
 // MIP Interface User Recv Data Function
 ////////////////////////////////////////////////////////////////////////////////
 
-bool mip_interface_user_recv_from_device(mip_interface* device, uint8_t* buffer, size_t max_length, mip_timeout wait_time, size_t* out_length, mip_timestamp* timestamp_out)
+bool mip_interface_user_recv_from_device(mip_interface* device_, uint8_t* buffer, size_t max_length, mip_timeout wait_time, size_t* out_length, mip_timestamp* timestamp_out)
 {
+    (void)device_;
+
     *timestamp_out = get_current_timestamp();
-    return serial_port_read(&device_port, buffer, max_length, wait_time, out_length);
+    return serial_port_read(&device_port, buffer, max_length, (int)wait_time, out_length);
 }
 
 
@@ -400,8 +405,10 @@ bool mip_interface_user_recv_from_device(mip_interface* device, uint8_t* buffer,
 // MIP Interface User Send Data Function
 ////////////////////////////////////////////////////////////////////////////////
 
-bool mip_interface_user_send_to_device(mip_interface* device, const uint8_t* data, size_t length)
+bool mip_interface_user_send_to_device(mip_interface* device_, const uint8_t* data, size_t length)
 {
+    (void)device_;
+
     size_t bytes_written;
 
     return serial_port_write(&device_port, data, length, &bytes_written);
@@ -432,8 +439,8 @@ void exit_gracefully(const char *message)
     if(serial_port_is_open(&device_port))
         serial_port_close(&device_port);
 
-#ifdef _WIN32
-    int dummy = getchar();
+#ifdef MICROSTRAIN_PLATFORM_WINDOWS
+    getchar();
 #endif
 
     exit(0);

@@ -176,7 +176,7 @@ int main(int argc, const char* argv[])
                                                                     { data_system::DATA_TIME_SYNC_STATUS, system_data_decimation },
                                                             }};
 
-        if(commands_3dm::writeMessageFormat(*device, data_system::DESCRIPTOR_SET, system_data_descriptors.size(), system_data_descriptors.data()) != CmdResult::ACK_OK)
+        if(commands_3dm::writeMessageFormat(*device, data_system::DESCRIPTOR_SET, static_cast<uint8_t>(system_data_descriptors.size()), system_data_descriptors.data()) != CmdResult::ACK_OK)
             exit_gracefully("ERROR: Could not set system data message format!");
 
 
@@ -332,7 +332,7 @@ int main(int argc, const char* argv[])
                     printf("WARNING: Failed to send week number time update to CV7-INS\n");
 
                 // Send time of week update to device
-                uint32_t time_of_week_int = floor(pvt_message.time_of_week);
+                uint32_t time_of_week_int = static_cast<uint32_t>(floor(pvt_message.time_of_week));
                 if (!commands_base::writeGpsTimeUpdate(*device, commands_base::GpsTimeUpdate::FieldId::TIME_OF_WEEK, time_of_week_int))
                     printf("WARNING: Failed to send time of week update to CV7-INS\n");
 
@@ -371,7 +371,7 @@ int main(int argc, const char* argv[])
 
 uint64_t convert_gps_tow_to_nanoseconds(int week_number, float time_of_week)
 {
-    return floor(float(week_number) * 604800 * 1e9 + time_of_week * 1e9);
+    return static_cast<int64_t>(floor(float(week_number) * 604800 * 1e9 + time_of_week * 1e9));
 }
 
 time_t time_from_ymd(int year, int month, int day)
@@ -497,7 +497,7 @@ void exit_gracefully(const char *message)
     if(message)
         printf("%s\n", message);
 
-#ifdef _WIN32
+#ifdef MICROSTRAIN_PLATFORM_WINDOWS
     std::cout << "Press ENTER to exit..." << std::endl;
     int dummy = getchar();
 #endif

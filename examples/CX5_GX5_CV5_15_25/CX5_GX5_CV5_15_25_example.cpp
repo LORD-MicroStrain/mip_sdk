@@ -106,7 +106,7 @@ int main(int argc, const char* argv[])
     float gyro_bias[3] = {0, 0, 0};
 
     const uint32_t sampling_time = 2000; // The default is 15000 ms and longer sample times are recommended but shortened for convenience
-    const int32_t old_mip_sdk_timeout = device->baseReplyTimeout();
+    const Timeout old_mip_sdk_timeout = device->baseReplyTimeout();
     printf("Capturing gyro bias. This will take %d seconds \n", sampling_time/1000);
     device->setBaseReplyTimeout(sampling_time * 2);
 
@@ -149,7 +149,7 @@ int main(int argc, const char* argv[])
         { data_sensor::DATA_GYRO_SCALED,    sensor_decimation },
     }};
 
-    if(commands_3dm::writeImuMessageFormat(*device, sensor_descriptors.size(), sensor_descriptors.data()) != CmdResult::ACK_OK)
+    if(commands_3dm::writeImuMessageFormat(*device, static_cast<uint8_t>(sensor_descriptors.size()), sensor_descriptors.data()) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set sensor message format!");
 
 
@@ -173,7 +173,7 @@ int main(int argc, const char* argv[])
         { data_filter::DATA_COMPENSATED_ACCELERATION, filter_decimation },
     }};
 
-    if(commands_3dm::writeFilterMessageFormat(*device, filter_descriptors.size(), filter_descriptors.data()) != CmdResult::ACK_OK)
+    if(commands_3dm::writeFilterMessageFormat(*device, static_cast<uint8_t>(filter_descriptors.size()), filter_descriptors.data()) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set filter message format!");
 
 
@@ -293,7 +293,7 @@ void exit_gracefully(const char *message)
     if(message)
         printf("%s\n", message);
 
-#ifdef _WIN32
+#ifdef MICROSTRAIN_PLATFORM_WINDOWS
     int dummy = getchar();
 #endif
 

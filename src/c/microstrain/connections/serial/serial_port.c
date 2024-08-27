@@ -76,7 +76,7 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
         return false;
 
     MICROSTRAIN_LOG_DEBUG("Opening serial port %s at %d\n", port_str, baudrate);
-#ifdef WIN32
+#ifdef MICROSTRAIN_PLATFORM_WINDOWS
     BOOL   ready;
     DCB    dcb;
 
@@ -111,7 +111,7 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
     // If the port string was modified
     if (added_prefix)
     {
-        free(tmp_port_str);
+        free((char*)tmp_port_str);
         tmp_port_str = NULL;
     }
 
@@ -122,7 +122,7 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
         return false;
     }
 
-    //Setup the com port buffer sizes
+    // Set up the com port buffer sizes
     if(SetupComm(port->handle, COM_PORT_BUFFER_SIZE, COM_PORT_BUFFER_SIZE) == 0)
     {
         MICROSTRAIN_LOG_ERROR("Unable to setup com port buffer size (%d)\n", last_error);
@@ -260,7 +260,7 @@ bool serial_port_close(serial_port *port)
     if(!serial_port_is_open(port))
         return false;
 
-#ifdef WIN32 //Windows
+#ifdef MICROSTRAIN_PLATFORM_WINDOWS
     //Close the serial port
     CloseHandle(port->handle);
 #else //Linux & Mac
@@ -273,18 +273,17 @@ bool serial_port_close(serial_port *port)
 
 bool serial_port_write(serial_port *port, const void *buffer, size_t num_bytes, size_t *bytes_written)
 {
-
     *bytes_written = 0;
 
     //Check for a valid port handle
     if(!serial_port_is_open(port))
         return false;
 
-#ifdef WIN32 //Windows
+#ifdef MICROSTRAIN_PLATFORM_WINDOWS
     DWORD  local_bytes_written;
 
     //Call the windows write function
-    if(WriteFile(port->handle, buffer, num_bytes, &local_bytes_written, NULL))
+    if(WriteFile(port->handle, buffer, (DWORD)num_bytes, &local_bytes_written, NULL))
     {
         *bytes_written = local_bytes_written;
 
@@ -339,9 +338,9 @@ bool serial_port_read(serial_port *port, void *buffer, size_t num_bytes, int wai
     DWORD  local_bytes_read;
 
     //Call the windows read function
-    if(!ReadFile(port->handle, buffer, num_bytes, &local_bytes_read, NULL))
+    if(!ReadFile(port->handle, buffer, (DWORD)num_bytes, &local_bytes_read, NULL))
         return false;
-    *bytes_read = local_bytes_read;
+    *bytes_read = (size_t)local_bytes_read;
 
  #else //Linux
     // Poll the device before attempting to read any data, so we will only block for 10ms if there is no data available
@@ -387,7 +386,7 @@ bool serial_port_read(serial_port *port, void *buffer, size_t num_bytes, int wai
 
 uint32_t serial_port_read_count(serial_port *port)
 {
-#ifdef MICROSTRAIN_PLATFORM_WINDOWS //Windows
+#ifdef MICROSTRAIN_PLATFORM_WINDOWS
     // Clear the last error, if any
     SetLastError(0);
 #endif

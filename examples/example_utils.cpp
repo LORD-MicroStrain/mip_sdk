@@ -8,7 +8,7 @@
 #include "example_utils.hpp"
 
 
-#ifdef WIN32
+#ifdef MICROSTRAIN_PLATFORM_WINDOWS
     #define PORT_KEY "COM"
 #else
     #define PORT_KEY "/dev/"
@@ -20,7 +20,7 @@ mip::Timestamp getCurrentTimestamp()
     return duration_cast<milliseconds>( steady_clock::now().time_since_epoch() ).count();
 }
 
-void customLog(void* user, microstrain_log_level level, const char* fmt, va_list args)
+void customLog(void* /*user*/, microstrain_log_level level, const char* fmt, va_list args)
 {
     // Convert the varargs into a string
     std::string log;
@@ -72,7 +72,7 @@ std::unique_ptr<ExampleUtils> openFromArgs(const std::string& port_or_hostname, 
 
 #if defined MICROSTRAIN_ENABLE_SERIAL || defined MICROSTRAIN_ENABLE_TCP
         using RecordingTcpConnection = microstrain::connections::RecordingConnectionWrapper<microstrain::connections::TcpConnection>;
-        example_utils->connection.reset(new RecordingTcpConnection(example_utils->recordedFile.get(), example_utils->recordedFile.get(), port_or_hostname, port));
+        example_utils->connection.reset(new RecordingTcpConnection(example_utils->recordedFile.get(), example_utils->recordedFile.get(), port_or_hostname, uint16_t(port)));
 #else  // MIP_ENABLE_EXTRAS
         using TcpConnection = microstrain::connections::TcpConnection;
         example_utils->connection.reset(new TcpConnection(port_or_hostname, port));

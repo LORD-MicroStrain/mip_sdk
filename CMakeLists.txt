@@ -121,8 +121,9 @@ endif()
 
 if(MSVC)
     target_compile_options(microstrain_private INTERFACE
-        "/W4"              # Enable warnings
-        "/Zc:__cplusplus"  # Enable updated __cplusplus value
+        "/external:anglebrackets"  # Treat angle brackets as system includes
+        "/external:W0"             # No warnings from system includes
+        "/Zc:__cplusplus"          # Enable updated __cplusplus value
     )
 else()
     target_compile_options(microstrain_private INTERFACE

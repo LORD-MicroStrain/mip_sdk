@@ -48,10 +48,10 @@ uint8_t parse_buffer[1024];
 mip_interface device;
 
 //Sensor-to-vehicle frame rotation (Euler Angles)
-float sensor_to_vehicle_rotation_euler[3] = {0.0, 0.0, 0.0};
+float sensor_to_vehicle_rotation_euler[3] = {0.0f, 0.0f, 0.0f};
 
 //GNSS antenna offset
-float gnss_antenna_offset_meters[3] = {-0.25, 0.0, 0.0};
+float gnss_antenna_offset_meters[3] = {-0.25f, 0.0f, 0.0f};
 
 //Device data stores
 mip_sensor_gps_timestamp_data sensor_gps_time;
@@ -367,10 +367,12 @@ mip_timestamp get_current_timestamp()
 // MIP Interface User Recv Data Function
 ////////////////////////////////////////////////////////////////////////////////
 
-bool mip_interface_user_recv_from_device(mip_interface* device, uint8_t* buffer, size_t max_length, mip_timeout wait_time, size_t* out_length, mip_timestamp* timestamp_out)
+bool mip_interface_user_recv_from_device(mip_interface* device_, uint8_t* buffer, size_t max_length, mip_timeout wait_time, size_t* out_length, mip_timestamp* timestamp_out)
 {
+    (void)device_;
+
     *timestamp_out = get_current_timestamp();
-    return serial_port_read(&device_port, buffer, max_length, wait_time, out_length);
+    return serial_port_read(&device_port, buffer, max_length, (int)wait_time, out_length);
 }
 
 
@@ -378,8 +380,10 @@ bool mip_interface_user_recv_from_device(mip_interface* device, uint8_t* buffer,
 // MIP Interface User Send Data Function
 ////////////////////////////////////////////////////////////////////////////////
 
-bool mip_interface_user_send_to_device(mip_interface* device, const uint8_t* data, size_t length)
+bool mip_interface_user_send_to_device(mip_interface* device_, const uint8_t* data, size_t length)
 {
+    (void)device_;
+
     size_t bytes_written;
 
     return serial_port_write(&device_port, data, length, &bytes_written);
@@ -410,7 +414,7 @@ void exit_gracefully(const char *message)
     if(serial_port_is_open(&device_port))
         serial_port_close(&device_port);
 
-#ifdef _WIN32
+#ifdef MICROSTRAIN_PLATFORM_WINDOWS
     int dummy = getchar();
 #endif
 

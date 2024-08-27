@@ -41,10 +41,10 @@ namespace mip
             ck_a = 0;
             ck_b = 0;
 
-            int num_bytes = packet.size();
-            int num_bytes_without_checksum = num_bytes - 2;
+            size_t num_bytes = packet.size();
+            size_t num_bytes_without_checksum = num_bytes - 2;
 
-            for (int i = 2; i < num_bytes_without_checksum; i++) {
+            for (size_t i = 2; i < num_bytes_without_checksum; i++) {
                 ck_a += packet[i];
                 ck_b += ck_a;
             }

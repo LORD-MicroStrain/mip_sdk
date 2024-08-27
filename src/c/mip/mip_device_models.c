@@ -73,6 +73,7 @@ const char* get_model_name_from_number(mip_model_number model)
     case MODEL_3DM_CX5_25:    return "3DM-CX5-25";
     case MODEL_3DM_CX5_15:    return "3DM-CX5-15";
     case MODEL_3DM_CX5_10:    return "3DM-CX5-10";
+    case MODEL_3DM_CL5_10:    return "3DM-CL5-10";
     case MODEL_3DM_CL5_15:    return "3DM-CL5-15";
     case MODEL_3DM_CL5_25:    return "3DM-CL5-25";
     case MODEL_3DM_GQ7:       return "3DM-GQ7";

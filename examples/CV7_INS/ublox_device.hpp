@@ -108,24 +108,24 @@ namespace mip
             ublox_message.utc_year = ublox_message_raw.utc_year;
             ublox_message.utc_month = ublox_message_raw.utc_month;
             ublox_message.utc_day = ublox_message_raw.utc_day;
-            ublox_message.time_of_week = ublox_message_raw.iTOW * 1e-3;
+            ublox_message.time_of_week = ublox_message_raw.iTOW * 1e-3f;
             ublox_message.time_valid = ublox_message_raw.time_valid_flag;
 
             // LLH position
             ublox_message.latitude = ublox_message_raw.latitude * 1e-7;
             ublox_message.longitude = ublox_message_raw.longitude * 1e-7;;
             ublox_message.height_above_ellipsoid = ublox_message_raw.height_above_ellipsoid * 1e-3;
-            ublox_message.llh_position_uncertainty[0] = ublox_message_raw.horizontal_accuracy * 1e-3;
-            ublox_message.llh_position_uncertainty[1] = ublox_message_raw.horizontal_accuracy * 1e-3;
-            ublox_message.llh_position_uncertainty[2] = ublox_message_raw.vertical_accuracy * 1e-3;
+            ublox_message.llh_position_uncertainty[0] = float(ublox_message_raw.horizontal_accuracy) * 1e-3f;
+            ublox_message.llh_position_uncertainty[1] = float(ublox_message_raw.horizontal_accuracy) * 1e-3f;
+            ublox_message.llh_position_uncertainty[2] = float(ublox_message_raw.vertical_accuracy) * 1e-3f;
             ublox_message.llh_position_valid = !ublox_message_raw.llh_invalid_flag;
 
             // NED velocity
-            ublox_message.ned_velocity[0] = ublox_message_raw.north_velocity * 1e-3;
-            ublox_message.ned_velocity[1] = ublox_message_raw.east_velocity * 1e-3;
-            ublox_message.ned_velocity[2] = ublox_message_raw.down_velocity * 1e-3;
+            ublox_message.ned_velocity[0] = float(ublox_message_raw.north_velocity) * 1e-3f;
+            ublox_message.ned_velocity[1] = float(ublox_message_raw.east_velocity) * 1e-3f;
+            ublox_message.ned_velocity[2] = float(ublox_message_raw.down_velocity) * 1e-3f;
             for (int i = 0; i < 3; i++)
-                ublox_message.ned_velocity_uncertainty[i] = ublox_message_raw.speed_accuracy * 1e-3;
+                ublox_message.ned_velocity_uncertainty[i] = float(ublox_message_raw.speed_accuracy) * 1e-3f;
 
             return ublox_message;
         }

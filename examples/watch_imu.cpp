@@ -77,13 +77,13 @@ int run(mip::Interface& device)
             { mip::data_sensor::DATA_MAG_SCALED,   decimation },
         }};
 
-        result = mip::commands_3dm::writeMessageFormat(device, mip::data_sensor::DESCRIPTOR_SET, descriptors.size(), descriptors.data());
+        result = mip::commands_3dm::writeMessageFormat(device, mip::data_sensor::DESCRIPTOR_SET, static_cast<uint8_t>(descriptors.size()), descriptors.data());
 
         if( result == mip::CmdResult::NACK_COMMAND_FAILED )
         {
             // Failed to set message format - maybe this device doesn't have a magnetometer.
             // Try again without the last descriptor (scaled mag).
-            result = mip::commands_3dm::writeMessageFormat(device, mip::data_sensor::DESCRIPTOR_SET, descriptors.size()-1, descriptors.data());
+            result = mip::commands_3dm::writeMessageFormat(device, mip::data_sensor::DESCRIPTOR_SET, static_cast<uint8_t>(descriptors.size()-1), descriptors.data());
         }
         if( result != mip::CmdResult::ACK_OK )
             return fprintf(stderr, "Failed to set message format: %s (%d)\n", result.name(), result.value), 1;
@@ -134,7 +134,7 @@ int main(int argc, const char* argv[])
     {
         utils = handleCommonArgs(argc, argv);
     }
-    catch(const std::underflow_error& ex)
+    catch(const std::underflow_error&)
     {
         return printCommonUsage(argv);
     }

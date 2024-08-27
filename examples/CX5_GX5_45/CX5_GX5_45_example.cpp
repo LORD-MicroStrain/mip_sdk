@@ -87,7 +87,7 @@ int main(int argc, const char* argv[])
     std::unique_ptr<ExampleUtils> utils;
     try {
         utils = handleCommonArgs(argc, argv);
-    } catch(const std::underflow_error& ex) {
+    } catch(const std::underflow_error&) {
         return printCommonUsage(argv);
     } catch(const std::exception& ex) {
         fprintf(stderr, "Error: %s\n", ex.what());
@@ -143,7 +143,7 @@ int main(int argc, const char* argv[])
         { data_sensor::DATA_MAG_SCALED,     sensor_decimation },
     }};
 
-    if(commands_3dm::writeImuMessageFormat(*device, sensor_descriptors.size(), sensor_descriptors.data()) != CmdResult::ACK_OK)
+    if(commands_3dm::writeImuMessageFormat(*device, static_cast<uint8_t>(sensor_descriptors.size()), sensor_descriptors.data()) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set sensor message format!");
 
 
@@ -156,7 +156,7 @@ int main(int argc, const char* argv[])
     }};
 
     //GNSS
-    if(commands_3dm::writeGpsMessageFormat(*device, gnss_descriptors.size(), gnss_descriptors.data()) != CmdResult::ACK_OK)
+    if(commands_3dm::writeGpsMessageFormat(*device, static_cast<uint8_t>(gnss_descriptors.size()), gnss_descriptors.data()) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set GNSS1 message format!");
 
 
@@ -180,7 +180,7 @@ int main(int argc, const char* argv[])
         { data_filter::DATA_ATT_EULER_ANGLES, filter_decimation },
     }};
 
-    if(commands_3dm::writeFilterMessageFormat(*device, filter_descriptors.size(), filter_descriptors.data()) != CmdResult::ACK_OK)
+    if(commands_3dm::writeFilterMessageFormat(*device, static_cast<uint8_t>(filter_descriptors.size()), filter_descriptors.data()) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set filter message format!");
 
 
@@ -332,7 +332,7 @@ void exit_gracefully(const char *message)
     if(message)
         printf("%s\n", message);
 
-#ifdef _WIN32
+#ifdef MICROSTRAIN_PLATFORM_WINDOWS
     printf("Press ENTER to exit...\n");
     int dummy = getchar();
 #endif

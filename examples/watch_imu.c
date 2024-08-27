@@ -101,21 +101,21 @@ mip_timestamp get_current_timestamp()
 }
 
 
-bool mip_interface_user_recv_from_device(mip_interface* device, uint8_t* buffer, size_t max_length, mip_timeout wait_time, size_t* out_length, mip_timestamp* timestamp_out)
+bool mip_interface_user_recv_from_device(mip_interface* device_, uint8_t* buffer, size_t max_length, mip_timeout wait_time, size_t* out_length, mip_timestamp* timestamp_out)
 {
-    (void)device;
+    (void)device_;
 
     *timestamp_out = get_current_timestamp();
-    if( !serial_port_read(&port, buffer, max_length, wait_time, out_length) )
+    if( !serial_port_read(&port, buffer, max_length, (int)wait_time, out_length) )
         return false;
 
     return true;
 }
 
 
-bool mip_interface_user_send_to_device(mip_interface* device, const uint8_t* data, size_t length)
+bool mip_interface_user_send_to_device(mip_interface* device_, const uint8_t* data, size_t length)
 {
-    (void)device;
+    (void)device_;
 
     size_t bytes_written;
     if (!serial_port_write(&port, data, length, &bytes_written))
@@ -127,7 +127,7 @@ bool mip_interface_user_send_to_device(mip_interface* device, const uint8_t* dat
 
 bool open_port(const char* name, uint32_t baudrate)
 {
-    return serial_port_open(&port, name, baudrate);
+    return serial_port_open(&port, name, (int)baudrate);
 }
 
 int usage(const char* argv0)
@@ -215,7 +215,7 @@ int main(int argc, const char* argv[])
     // Process data for 3 seconds.
     for(unsigned int i=0; i<30; i++)
     {
-#ifdef WIN32
+#ifdef MICROSTRAIN_PLATFORM_WINDOWS
 #else
         usleep(100000);
 #endif

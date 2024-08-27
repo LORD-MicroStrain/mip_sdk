@@ -27,7 +27,7 @@ namespace microstrain
     class Index
     {
     private:
-        unsigned int INVALID = -1;
+        unsigned int INVALID = -1U;
 
     public:
         constexpr explicit Index(unsigned int index) : m_index(index) {}

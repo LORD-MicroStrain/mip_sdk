@@ -70,7 +70,7 @@ int main(int argc, const char* argv[])
     std::unique_ptr<ExampleUtils> utils;
     try {
         utils = handleCommonArgs(argc, argv);
-    } catch(const std::underflow_error& ex) {
+    } catch(const std::underflow_error&) {
         return printCommonUsage(argv);
     } catch(const std::exception& ex) {
         fprintf(stderr, "Error: %s\n", ex.what());
@@ -170,7 +170,7 @@ int main(int argc, const char* argv[])
         { data_filter::DATA_VEL_NED,          filter_decimation },
     }};
 
-    if(commands_3dm::writeMessageFormat(*device, data_filter::DESCRIPTOR_SET, filter_descriptors.size(), filter_descriptors.data()) != CmdResult::ACK_OK)
+    if(commands_3dm::writeMessageFormat(*device, data_filter::DESCRIPTOR_SET, static_cast<uint8_t>(filter_descriptors.size()), filter_descriptors.data()) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set filter message format!");
 
     //
@@ -250,8 +250,8 @@ int main(int argc, const char* argv[])
             external_measurement_time.nanoseconds = current_timestamp * uint64_t(1000000);
 
             // External heading command
-            float external_heading = 0.0;
-            float external_heading_uncertainty = 0.001;
+            float external_heading = 0.0f;
+            float external_heading_uncertainty = 0.001f;
             if(commands_aiding::headingTrue(*device, external_measurement_time, external_heading_sensor_id, external_heading, external_heading_uncertainty, 0x0001) != CmdResult::ACK_OK)
                 printf("WARNING: Failed to send external heading to CV7-INS\n");
 
@@ -264,14 +264,14 @@ int main(int argc, const char* argv[])
                 printf("WARNING: Failed to send external position to CV7-INS\n");
 
             // External global velocity command
-            float ned_velocity[3] = {0.0, 0.0, 0.0};
-            float ned_velocity_uncertainty[3] = {0.1, 0.1, 0.1};
+            float ned_velocity[3] = {0.0f, 0.0f, 0.0f};
+            float ned_velocity_uncertainty[3] = {0.1f, 0.1f, 0.1f};
             if(commands_aiding::velNed(*device, external_measurement_time,  gnss_antenna_sensor_id, ned_velocity, ned_velocity_uncertainty, 0x0007) != CmdResult::ACK_OK)
                 printf("WARNING: Failed to send external NED velocity to CV7-INS\n");
 
             // External vehicle frame velocity command
-            float vehicle_frame_velocity[3] = {0.0, 0.0, 0.0};
-            float vehicle_frame_velocity_uncertainty[3] = {0.1, 0.1, 0.1};
+            float vehicle_frame_velocity[3] = {0.0f, 0.0f, 0.0f};
+            float vehicle_frame_velocity_uncertainty[3] = {0.1f, 0.1f, 0.1f};
             if(commands_aiding::velBodyFrame(*device, external_measurement_time, vehicle_frame_velocity_sensor_id, vehicle_frame_velocity, vehicle_frame_velocity_uncertainty, 0x0007) != CmdResult::ACK_OK)
                 printf("WARNING: Failed to send external vehicle frame velocity to CV7-INS\n");
 
@@ -346,7 +346,7 @@ void exit_gracefully(const char *message)
     if(message)
         printf("%s\n", message);
 
-#ifdef _WIN32
+#ifdef MICROSTRAIN_PLATFORM_WINDOWS
     printf("Press ENTER to exit...\n");
     int dummy = getchar();
 #endif

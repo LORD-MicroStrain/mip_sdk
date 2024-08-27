@@ -25,7 +25,7 @@ bool RecordingConnection::sendToDevice(const uint8_t* data, size_t length)
 
     if( ok && mSendFile != nullptr)
     {
-        mSendFile->write(reinterpret_cast<const char *>(data), length);
+        mSendFile->write(reinterpret_cast<const char *>(data), static_cast<std::streamsize>(length));
         mSendFileWritten += length;
     }
 
@@ -39,7 +39,7 @@ bool RecordingConnection::recvFromDevice(uint8_t* buffer, size_t max_length, uns
 
     if (ok && mRecvFile != nullptr)
     {
-        mRecvFile->write(reinterpret_cast<char *>(buffer), *count_out);
+        mRecvFile->write(reinterpret_cast<char *>(buffer), static_cast<std::streamsize>(*count_out));
         mRecvFileWritten += *count_out;
     }
 

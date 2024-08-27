@@ -43,9 +43,9 @@ typedef void (*microstrain_log_callback)(void* user, microstrain_log_level level
 
 void microstrain_logging_init(microstrain_log_callback callback, microstrain_log_level level, void* user);
 
-microstrain_log_callback microstrain_logging_callback();
-microstrain_log_level microstrain_logging_level();
-void* microstrain_logging_user_data();
+microstrain_log_callback microstrain_logging_callback(void);
+microstrain_log_level microstrain_logging_level(void);
+void* microstrain_logging_user_data(void);
 
 void microstrain_logging_log(microstrain_log_level level, const char* fmt, ...);
 

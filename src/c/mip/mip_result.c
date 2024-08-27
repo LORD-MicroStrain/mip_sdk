@@ -33,6 +33,7 @@ const char* mip_cmd_result_to_string(enum mip_cmd_result result)
     case MIP_NACK_COMMAND_FAILED: return "Command Failed";
     case MIP_NACK_COMMAND_TIMEOUT: return "Device Error";
 
+    case MIP_STATUS_USER_START:
     default:
         if(mip_cmd_result_is_user(result)) return "User Status";
         else return "Unknown";

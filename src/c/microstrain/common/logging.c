@@ -26,9 +26,9 @@ void* microstrain_log_user_data_ = NULL;
 ///
 void microstrain_logging_init(microstrain_log_callback callback, microstrain_log_level level, void* user)
 {
-  microstrain_log_callback_  = callback;
-  microstrain_log_level_     = level;
-  microstrain_log_user_data_ = user;
+    microstrain_log_callback_  = callback;
+    microstrain_log_level_     = level;
+    microstrain_log_user_data_ = user;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -36,9 +36,9 @@ void microstrain_logging_init(microstrain_log_callback callback, microstrain_log
 ///
 ///@return The currently active logging callback
 ///
-microstrain_log_callback microstrain_logging_callback()
+microstrain_log_callback microstrain_logging_callback(void)
 {
-  return microstrain_log_callback_;
+    return microstrain_log_callback_;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -46,9 +46,9 @@ microstrain_log_callback microstrain_logging_callback()
 ///
 ///@return The currently active logging level
 ///
-microstrain_log_level microstrain_logging_level()
+microstrain_log_level microstrain_logging_level(void)
 {
-  return microstrain_log_level_;
+    return microstrain_log_level_;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -56,9 +56,9 @@ microstrain_log_level microstrain_logging_level()
 ///
 ///@return The currently active logging user data
 ///
-void* microstrain_logging_user_data()
+void* microstrain_logging_user_data(void)
 {
-  return microstrain_log_user_data_;
+    return microstrain_log_user_data_;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -68,13 +68,12 @@ void* microstrain_logging_user_data()
 ///
 void microstrain_logging_log(microstrain_log_level level, const char* fmt, ...)
 {
-  const microstrain_log_callback logging_callback = microstrain_logging_callback();
-  const microstrain_log_level            logging_level    = microstrain_logging_level();
-  if (logging_callback != NULL && logging_level >= level)
-  {
-    va_list args;
-    va_start(args, fmt);
-    logging_callback(microstrain_logging_user_data(), level, fmt, args);
-    va_end(args);
-  }
+    const microstrain_log_callback callback = microstrain_logging_callback();
+    if(callback != NULL && microstrain_logging_level() >= level)
+    {
+        va_list args;
+        va_start(args, fmt);
+        callback(microstrain_logging_user_data(), level, fmt, args);
+        va_end(args);
+    }
 }

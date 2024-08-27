@@ -149,7 +149,7 @@ int main(int argc, const char* argv[])
         deviceThread.join();
 #endif
     }
-    catch(const std::underflow_error& ex)
+    catch(const std::underflow_error&)
     {
         return printCommonUsage(argv);
     }
