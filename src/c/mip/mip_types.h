@@ -5,32 +5,24 @@
 #include <stdbool.h>
 
 #ifdef __cplusplus
+
+#include <microstrain/common/embedded_time.hpp>
+
 namespace mip {
 namespace C {
 extern "C" {
+
+typedef microstrain::C::microstrain_embedded_timestamp mip_timestamp;
+typedef microstrain::C::microstrain_embedded_timestamp mip_timeout;
+
 #else
-#include <assert.h>  // For static_assert in C11
+
+#include <microstrain/common/embedded_time.h>
+
+typedef microstrain_embedded_timestamp mip_timestamp;
+typedef microstrain_embedded_timestamp mip_timeout;
+
 #endif
-
-
-
-///@brief Type used for packet timestamps and timeouts.
-///
-/// Timestamps must be monotonic except for overflow at the maximum value back to 0.
-/// The units can be anything, but typically are milliseconds. Choose a long enough
-/// unit so that consecutive calls to the parser will not exceed half of the maximum
-/// value for this type. For milliseconds, the time to overflow is approximately 50
-/// days, so the parser should be invoked at least every 25 days. Failure to observe
-/// this requirement may result in false timeouts or delays in getting parsed packets.
-///
-#ifdef MICROSTRAIN_TIMESTAMP_TYPE
-    typedef MICROSTRAIN_TIMESTAMP_TYPE mip_timestamp;
-    static_assert( sizeof(mip_timestamp) >= 8 || (mip_timestamp)(-1) > 0, "MICROSTRAIN_TIMESTAMP_TYPE must be unsigned unless 64 bits.");
-#else
-    typedef uint64_t mip_timestamp;
-#endif
-
-typedef mip_timestamp mip_timeout;
 
 
 #ifdef MIP_ENABLE_DIAGNOSTICS
@@ -55,8 +47,8 @@ typedef mip_timestamp mip_timeout;
 } // extern "C"
 } // namespace C
 
-using Timestamp      = C::mip_timestamp;
-using Timeout        = C::mip_timeout;
+using Timestamp = microstrain::EmbeddedTimestamp;
+using Timeout   = microstrain::EmbeddedTimeout;
 
 } // namespace mip
 
