@@ -368,7 +368,7 @@ void exit_gracefully(const char *message)
 
 #ifdef MICROSTRAIN_PLATFORM_WINDOWS
     printf("Press ENTER to exit...\n");
-    int dummy = getchar();
+    getchar();
 #endif
 
     exit(0);

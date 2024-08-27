@@ -116,7 +116,6 @@ int main(int argc, const char* argv[])
     if(commands_3dm::saveGyroBias(*device) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not save gyro bias!");
 
-    const uint8_t fn_selector = 1;
     const uint8_t device_selector = 3;
     const uint8_t enable_flag = 1;
     if(commands_3dm::writeDatastreamControl(*device, device_selector, enable_flag) != CmdResult::ACK_OK)
@@ -294,7 +293,7 @@ void exit_gracefully(const char *message)
         printf("%s\n", message);
 
 #ifdef MICROSTRAIN_PLATFORM_WINDOWS
-    int dummy = getchar();
+    getchar();
 #endif
 
     exit(0);

@@ -21,6 +21,8 @@ mip::metadata::Definitions mipdefs{mip::metadata::ALL_FIELDS};
 
 void signal_handler(int signum)
 {
+    (void)signum;
+
     stop_flag = true;
 }
 

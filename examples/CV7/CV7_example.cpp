@@ -316,7 +316,7 @@ int main(int argc, const char* argv[])
 // Filter Event Source Field Handler
 ////////////////////////////////////////////////////////////////////////////////
 
-void handleFilterEventSource(void*, const mip::FieldView& field, mip::Timestamp timestamp)
+void handleFilterEventSource(void*, const mip::FieldView& field, mip::Timestamp)
 {
     mip::data_shared::EventSource data;
 
@@ -352,7 +352,7 @@ void exit_gracefully(const char *message)
 
 #ifdef MICROSTRAIN_PLATFORM_WINDOWS
     printf("Press ENTER to exit...\n");
-    int dummy = getchar();
+    getchar();
 #endif
 
     exit(0);

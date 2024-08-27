@@ -61,7 +61,7 @@ struct InputArguments
 
     bool enable_pps_sync = false;
 
-    int pps_input_pin_id = 1;
+    uint8_t pps_input_pin_id = 1;
 
     commands_filter::InitializationConfiguration::AlignmentSelector filter_heading_alignment_method = commands_filter::InitializationConfiguration::AlignmentSelector::KINEMATIC;
 
@@ -467,11 +467,11 @@ InputArguments parse_input_arguments(int argc, const char* argv[])
 
     // PPS sync enable
     if (argc >= 11)
-        input_arguments.enable_pps_sync = std::stoi(argv[10]);
+        input_arguments.enable_pps_sync = (uint8_t)std::strtoul(argv[10], nullptr, 10);
 
     // PPS input pin ID
     if (argc >= 12)
-        input_arguments.pps_input_pin_id = std::stoi(argv[11]);
+        input_arguments.pps_input_pin_id = (uint8_t)std::strtoul(argv[11], nullptr, 10);
 
     return input_arguments;
 }
@@ -499,7 +499,7 @@ void exit_gracefully(const char *message)
 
 #ifdef MICROSTRAIN_PLATFORM_WINDOWS
     std::cout << "Press ENTER to exit..." << std::endl;
-    int dummy = getchar();
+    getchar();
 #endif
 
     exit(0);

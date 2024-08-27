@@ -151,7 +151,7 @@ int main(int argc, const char* argv[])
     if(argc != 3)
         return usage(argv[0]);
 
-    uint32_t baudrate = strtol(argv[2], NULL, 10);
+    uint32_t baudrate = strtoul(argv[2], NULL, 10);
     if( baudrate == 0 )
         return usage(argv[0]);
 
