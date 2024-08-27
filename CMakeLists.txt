@@ -123,6 +123,7 @@ if(MSVC)
     target_compile_options(microstrain_private INTERFACE
         "/external:anglebrackets"  # Treat angle brackets as system includes
         "/external:W0"             # No warnings from system includes
+        "/W4"                      # More warnings
         "/Zc:__cplusplus"          # Enable updated __cplusplus value
     )
 else()

@@ -415,7 +415,7 @@ void exit_gracefully(const char *message)
         serial_port_close(&device_port);
 
 #ifdef MICROSTRAIN_PLATFORM_WINDOWS
-    int dummy = getchar();
+    getchar();
 #endif
 
     exit(0);

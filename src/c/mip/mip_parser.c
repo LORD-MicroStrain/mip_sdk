@@ -134,7 +134,7 @@ size_t mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t 
         // Copy as much data as will fit in the ring buffer.
         size_t count = byte_ring_copy_from_and_update(&parser->_ring, &input_buffer, &input_count);
 
-        MIP_DIAG_INC(parser->_diag_bytes_read, count);
+        MIP_DIAG_INC(parser->_diag_bytes_read, (uint32_t)count);
 
         mip_packet_view packet;
         while( mip_parser_parse_one_packet_from_ring(parser, &packet, timestamp) )
@@ -150,7 +150,7 @@ size_t mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t 
                 // Pull more data from the input buffer if possible.
                 count = byte_ring_copy_from_and_update(&parser->_ring, &input_buffer, &input_count);
 
-                MIP_DIAG_INC(parser->_diag_bytes_read, count);
+                MIP_DIAG_INC(parser->_diag_bytes_read, (uint32_t)count);
 
                 return input_count;
             }
@@ -380,7 +380,7 @@ size_t mip_parser_get_write_ptr(mip_parser* parser, uint8_t** const ptr_out)
 ///
 void mip_parser_process_written(mip_parser* parser, size_t count, mip_timestamp timestamp, unsigned int max_packets)
 {
-    MIP_DIAG_INC(parser->_diag_bytes_read, count);
+    MIP_DIAG_INC(parser->_diag_bytes_read, (uint32_t)count);
 
     byte_ring_notify_written(&parser->_ring, count);
     mip_parser_parse(parser, NULL, 0, timestamp, max_packets);

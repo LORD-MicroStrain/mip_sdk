@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <inttypes.h>
 
 #ifdef MICROSTRAIN_PLATFORM_WINDOWS
 #else
@@ -25,6 +26,8 @@ mip_sensor_scaled_accel_data scaled_accel;
 
 void customLog(void* user, microstrain_log_level level, const char* fmt, va_list args)
 {
+    (void)user;
+
     switch (level)
     {
         case MICROSTRAIN_LOG_LEVEL_FATAL:
@@ -40,6 +43,7 @@ void customLog(void* user, microstrain_log_level level, const char* fmt, va_list
 void handlePacket(void* unused, const mip_packet_view* packet, mip_timestamp timestamp)
 {
     (void)unused;
+    (void)timestamp;
 
     printf("\nGot packet with descriptor set 0x%02X:", mip_packet_descriptor_set(packet));
 
@@ -55,6 +59,8 @@ void handlePacket(void* unused, const mip_packet_view* packet, mip_timestamp tim
 void handleAccel(void* user, const mip_field_view* field, mip_timestamp timestamp)
 {
     (void)user;
+    (void)timestamp;
+
     mip_sensor_scaled_accel_data data;
 
     if(extract_mip_sensor_scaled_accel_data_from_field(field, &data))
@@ -72,6 +78,8 @@ void handleAccel(void* user, const mip_field_view* field, mip_timestamp timestam
 void handleGyro(void* user, const mip_field_view* field, mip_timestamp timestamp)
 {
     (void)user;
+    (void)timestamp;
+
     mip_sensor_scaled_gyro_data data;
 
     if(extract_mip_sensor_scaled_gyro_data_from_field(field, &data))
@@ -81,6 +89,8 @@ void handleGyro(void* user, const mip_field_view* field, mip_timestamp timestamp
 void handleMag(void* user, const mip_field_view* field, mip_timestamp timestamp)
 {
     (void)user;
+    (void)timestamp;
+
     mip_sensor_scaled_mag_data data;
 
     if(extract_mip_sensor_scaled_mag_data_from_field(field, &data))
@@ -141,7 +151,7 @@ int main(int argc, const char* argv[])
     if(argc != 3)
         return usage(argv[0]);
 
-    uint32_t baudrate = atoi(argv[2]);
+    uint32_t baudrate = strtol(argv[2], NULL, 10);
     if( baudrate == 0 )
         return usage(argv[0]);
 
