@@ -169,7 +169,7 @@ TypedResult<FrameConfig> writeFrameConfig(C::mip_interface& device, uint8_t fram
     }
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_FRAME_CONFIG, buffer, (uint8_t)serializer.length());
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_FRAME_CONFIG, buffer, (uint8_t)serializer.usedLength());
 }
 TypedResult<FrameConfig> readFrameConfig(C::mip_interface& device, uint8_t frameId, FrameConfig::Format format, bool* trackingEnabledOut, float* translationOut, FrameConfig::Rotation* rotationOut)
 {
@@ -184,7 +184,7 @@ TypedResult<FrameConfig> readFrameConfig(C::mip_interface& device, uint8_t frame
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<FrameConfig> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_FRAME_CONFIG, buffer, (uint8_t)serializer.length(), REPLY_FRAME_CONFIG, buffer, &responseLength);
+    TypedResult<FrameConfig> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_FRAME_CONFIG, buffer, (uint8_t)serializer.usedLength(), REPLY_FRAME_CONFIG, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -226,7 +226,7 @@ TypedResult<FrameConfig> saveFrameConfig(C::mip_interface& device, uint8_t frame
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_FRAME_CONFIG, buffer, (uint8_t)serializer.length());
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_FRAME_CONFIG, buffer, (uint8_t)serializer.usedLength());
 }
 TypedResult<FrameConfig> loadFrameConfig(C::mip_interface& device, uint8_t frameId)
 {
@@ -238,7 +238,7 @@ TypedResult<FrameConfig> loadFrameConfig(C::mip_interface& device, uint8_t frame
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_FRAME_CONFIG, buffer, (uint8_t)serializer.length());
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_FRAME_CONFIG, buffer, (uint8_t)serializer.usedLength());
 }
 TypedResult<FrameConfig> defaultFrameConfig(C::mip_interface& device, uint8_t frameId)
 {
@@ -250,7 +250,7 @@ TypedResult<FrameConfig> defaultFrameConfig(C::mip_interface& device, uint8_t fr
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_FRAME_CONFIG, buffer, (uint8_t)serializer.length());
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_FRAME_CONFIG, buffer, (uint8_t)serializer.usedLength());
 }
 void EchoControl::insert(Serializer& serializer) const
 {
@@ -294,7 +294,7 @@ TypedResult<EchoControl> writeEchoControl(C::mip_interface& device, EchoControl:
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ECHO_CONTROL, buffer, (uint8_t)serializer.length());
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ECHO_CONTROL, buffer, (uint8_t)serializer.usedLength());
 }
 TypedResult<EchoControl> readEchoControl(C::mip_interface& device, EchoControl::Mode* modeOut)
 {
@@ -305,7 +305,7 @@ TypedResult<EchoControl> readEchoControl(C::mip_interface& device, EchoControl::
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<EchoControl> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_ECHO_CONTROL, buffer, (uint8_t)serializer.length(), REPLY_ECHO_CONTROL, buffer, &responseLength);
+    TypedResult<EchoControl> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_ECHO_CONTROL, buffer, (uint8_t)serializer.usedLength(), REPLY_ECHO_CONTROL, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -327,7 +327,7 @@ TypedResult<EchoControl> saveEchoControl(C::mip_interface& device)
     serializer.insert(FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ECHO_CONTROL, buffer, (uint8_t)serializer.length());
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ECHO_CONTROL, buffer, (uint8_t)serializer.usedLength());
 }
 TypedResult<EchoControl> loadEchoControl(C::mip_interface& device)
 {
@@ -337,7 +337,7 @@ TypedResult<EchoControl> loadEchoControl(C::mip_interface& device)
     serializer.insert(FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ECHO_CONTROL, buffer, (uint8_t)serializer.length());
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ECHO_CONTROL, buffer, (uint8_t)serializer.usedLength());
 }
 TypedResult<EchoControl> defaultEchoControl(C::mip_interface& device)
 {
@@ -347,7 +347,7 @@ TypedResult<EchoControl> defaultEchoControl(C::mip_interface& device)
     serializer.insert(FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ECHO_CONTROL, buffer, (uint8_t)serializer.length());
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ECHO_CONTROL, buffer, (uint8_t)serializer.usedLength());
 }
 void PosEcef::insert(Serializer& serializer) const
 {
@@ -397,7 +397,7 @@ TypedResult<PosEcef> posEcef(C::mip_interface& device, const Time& time, uint8_t
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_POS_ECEF, buffer, (uint8_t)serializer.length());
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_POS_ECEF, buffer, (uint8_t)serializer.usedLength());
 }
 void PosLlh::insert(Serializer& serializer) const
 {
@@ -457,7 +457,7 @@ TypedResult<PosLlh> posLlh(C::mip_interface& device, const Time& time, uint8_t f
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_POS_LLH, buffer, (uint8_t)serializer.length());
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_POS_LLH, buffer, (uint8_t)serializer.usedLength());
 }
 void HeightAboveEllipsoid::insert(Serializer& serializer) const
 {
@@ -503,7 +503,7 @@ TypedResult<HeightAboveEllipsoid> heightAboveEllipsoid(C::mip_interface& device,
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HEIGHT_ABOVE_ELLIPSOID, buffer, (uint8_t)serializer.length());
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HEIGHT_ABOVE_ELLIPSOID, buffer, (uint8_t)serializer.usedLength());
 }
 void VelEcef::insert(Serializer& serializer) const
 {
@@ -553,7 +553,7 @@ TypedResult<VelEcef> velEcef(C::mip_interface& device, const Time& time, uint8_t
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_VEL_ECEF, buffer, (uint8_t)serializer.length());
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_VEL_ECEF, buffer, (uint8_t)serializer.usedLength());
 }
 void VelNed::insert(Serializer& serializer) const
 {
@@ -603,7 +603,7 @@ TypedResult<VelNed> velNed(C::mip_interface& device, const Time& time, uint8_t f
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_VEL_NED, buffer, (uint8_t)serializer.length());
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_VEL_NED, buffer, (uint8_t)serializer.usedLength());
 }
 void VelBodyFrame::insert(Serializer& serializer) const
 {
@@ -653,7 +653,7 @@ TypedResult<VelBodyFrame> velBodyFrame(C::mip_interface& device, const Time& tim
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_VEL_BODY_FRAME, buffer, (uint8_t)serializer.length());
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_VEL_BODY_FRAME, buffer, (uint8_t)serializer.usedLength());
 }
 void HeadingTrue::insert(Serializer& serializer) const
 {
@@ -699,7 +699,7 @@ TypedResult<HeadingTrue> headingTrue(C::mip_interface& device, const Time& time,
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HEADING_TRUE, buffer, (uint8_t)serializer.length());
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HEADING_TRUE, buffer, (uint8_t)serializer.usedLength());
 }
 void MagneticField::insert(Serializer& serializer) const
 {
@@ -749,7 +749,7 @@ TypedResult<MagneticField> magneticField(C::mip_interface& device, const Time& t
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAGNETIC_FIELD, buffer, (uint8_t)serializer.length());
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAGNETIC_FIELD, buffer, (uint8_t)serializer.usedLength());
 }
 void Pressure::insert(Serializer& serializer) const
 {
@@ -795,7 +795,7 @@ TypedResult<Pressure> pressure(C::mip_interface& device, const Time& time, uint8
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_PRESSURE, buffer, (uint8_t)serializer.length());
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_PRESSURE, buffer, (uint8_t)serializer.usedLength());
 }
 
 } // namespace commands_aiding

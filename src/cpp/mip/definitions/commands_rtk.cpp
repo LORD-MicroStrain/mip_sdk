@@ -227,7 +227,7 @@ TypedResult<ConnectedDeviceType> writeConnectedDeviceType(C::mip_interface& devi
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_CONNECTED_DEVICE_TYPE, buffer, (uint8_t)serializer.length());
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_CONNECTED_DEVICE_TYPE, buffer, (uint8_t)serializer.usedLength());
 }
 TypedResult<ConnectedDeviceType> readConnectedDeviceType(C::mip_interface& device, ConnectedDeviceType::Type* devtypeOut)
 {
@@ -238,7 +238,7 @@ TypedResult<ConnectedDeviceType> readConnectedDeviceType(C::mip_interface& devic
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<ConnectedDeviceType> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_CONNECTED_DEVICE_TYPE, buffer, (uint8_t)serializer.length(), REPLY_CONNECTED_DEVICE_TYPE, buffer, &responseLength);
+    TypedResult<ConnectedDeviceType> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_CONNECTED_DEVICE_TYPE, buffer, (uint8_t)serializer.usedLength(), REPLY_CONNECTED_DEVICE_TYPE, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -260,7 +260,7 @@ TypedResult<ConnectedDeviceType> saveConnectedDeviceType(C::mip_interface& devic
     serializer.insert(FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_CONNECTED_DEVICE_TYPE, buffer, (uint8_t)serializer.length());
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_CONNECTED_DEVICE_TYPE, buffer, (uint8_t)serializer.usedLength());
 }
 TypedResult<ConnectedDeviceType> loadConnectedDeviceType(C::mip_interface& device)
 {
@@ -270,7 +270,7 @@ TypedResult<ConnectedDeviceType> loadConnectedDeviceType(C::mip_interface& devic
     serializer.insert(FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_CONNECTED_DEVICE_TYPE, buffer, (uint8_t)serializer.length());
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_CONNECTED_DEVICE_TYPE, buffer, (uint8_t)serializer.usedLength());
 }
 TypedResult<ConnectedDeviceType> defaultConnectedDeviceType(C::mip_interface& device)
 {
@@ -280,7 +280,7 @@ TypedResult<ConnectedDeviceType> defaultConnectedDeviceType(C::mip_interface& de
     serializer.insert(FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_CONNECTED_DEVICE_TYPE, buffer, (uint8_t)serializer.length());
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_CONNECTED_DEVICE_TYPE, buffer, (uint8_t)serializer.usedLength());
 }
 void GetActCode::insert(Serializer& serializer) const
 {
@@ -469,7 +469,7 @@ TypedResult<ServiceStatus> serviceStatus(C::mip_interface& device, uint32_t rese
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<ServiceStatus> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_SERVICE_STATUS, buffer, (uint8_t)serializer.length(), REPLY_SERVICE_STATUS, buffer, &responseLength);
+    TypedResult<ServiceStatus> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_SERVICE_STATUS, buffer, (uint8_t)serializer.usedLength(), REPLY_SERVICE_STATUS, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -512,7 +512,7 @@ TypedResult<ProdEraseStorage> prodEraseStorage(C::mip_interface& device, MediaSe
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_PROD_ERASE_STORAGE, buffer, (uint8_t)serializer.length());
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_PROD_ERASE_STORAGE, buffer, (uint8_t)serializer.usedLength());
 }
 void LedControl::insert(Serializer& serializer) const
 {
@@ -560,7 +560,7 @@ TypedResult<LedControl> ledControl(C::mip_interface& device, const uint8_t* prim
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_CONTROL, buffer, (uint8_t)serializer.length());
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_CONTROL, buffer, (uint8_t)serializer.usedLength());
 }
 void ModemHardReset::insert(Serializer& serializer) const
 {

@@ -32,8 +32,8 @@ public:
 #endif
 
     size_t capacity() const { return m_size; }
-    size_t length() const { return m_size; }
     size_t offset() const { return m_offset; }
+    size_t usedLength() const { return offset(); }
     int remaining() const { return int(m_size - m_offset); }
 
     bool isOverrun() const { return m_offset > m_size; }
