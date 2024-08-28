@@ -1,26 +1,30 @@
+set(MICROSTRAIN_COMMON_LIBRARY "microstrain_common" CACHE INTERNAL "Name of the common MicroStrain library")
+mark_as_advanced(MICROSTRAIN_COMMON_LIBRARY)
 
 #option(MICROSTRAIN_ENABLE_LOGGING "Build with logging functions enabled" ON)
 set(MICROSTRAIN_LOGGING_MAX_LEVEL "MICROSTRAIN_LOG_LEVEL_WARN" CACHE STRING "Max log level the SDK is allowed to log. If this is defined, any call to logging functions with a higher level than this will be compiled out.")
 set(MICROSTRAIN_TIMESTAMP_TYPE "uint64_t" CACHE STRING "Override the type used for received data timestamps and timeouts (must be unsigned or at least 64 bits).")
 
-add_library(microstrain_common
+add_library(${MICROSTRAIN_COMMON_LIBRARY}
     "logging.h"
     "platform.h"
     "serialization.c"
     "serialization.h"
 )
-target_link_libraries(microstrain_common PRIVATE microstrain_private)
-target_compile_features(microstrain_common PUBLIC c_std_11)
-target_compile_definitions(microstrain_common PUBLIC "MICROSTRAIN_TIMESTAMP_TYPE=${MICROSTRAIN_TIMESTAMP_TYPE}")
+target_link_libraries(${MICROSTRAIN_COMMON_LIBRARY} PRIVATE ${MICROSTRAIN_PRIVATE_LIBRARY})
+target_compile_features(${MICROSTRAIN_COMMON_LIBRARY} PUBLIC c_std_11)
+target_compile_definitions(${MICROSTRAIN_COMMON_LIBRARY} PUBLIC "MICROSTRAIN_TIMESTAMP_TYPE=${MICROSTRAIN_TIMESTAMP_TYPE}")
 
 # Logging is a little weird since we need to install the header no matter what
 if(MICROSTRAIN_ENABLE_LOGGING)
     if(MICROSTRAIN_LOGGING_MAX_LEVEL STREQUAL "")
         message(FATAL_ERROR "MICROSTRAIN_LOGGING_MAX_LEVEL must be MICROSTRAIN_LOG_LEVEL_* or a number")
     endif()
-    target_sources(microstrain_common PRIVATE "${CMAKE_CURRENT_LIST_DIR}/logging.c")
+    target_sources(${MICROSTRAIN_COMMON_LIBRARY} PRIVATE "${CMAKE_CURRENT_LIST_DIR}/logging.c")
     message("MicroStrain logging is enabled. Max level = '${MICROSTRAIN_LOGGING_MAX_LEVEL}'")
-    target_compile_definitions(microstrain_common PUBLIC "MICROSTRAIN_ENABLE_LOGGING" "MICROSTRAIN_LOGGING_MAX_LEVEL=${MICROSTRAIN_LOGGING_MAX_LEVEL}")
+    target_compile_definitions(${MICROSTRAIN_COMMON_LIBRARY} PUBLIC "MICROSTRAIN_ENABLE_LOGGING" "MICROSTRAIN_LOGGING_MAX_LEVEL=${MICROSTRAIN_LOGGING_MAX_LEVEL}")
 endif()
 
-target_include_directories(microstrain_common INTERFACE ${SRC_C_DIR})
+target_include_directories(${MICROSTRAIN_COMMON_LIBRARY} INTERFACE ${SRC_C_DIR})
+
+target_link_libraries(${MICROSTRAIN_LIBRARIES} INTERFACE ${MICROSTRAIN_COMMON_LIBRARY})

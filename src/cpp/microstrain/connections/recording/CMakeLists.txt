@@ -1,11 +1,16 @@
+set(MICROSTRAIN_RECORDING_CONNECTION_LIBRARY "microstrain_recording_connection" CACHE INTERNAL "Name of the MicroStrain recording connections library")
+mark_as_advanced(MICROSTRAIN_RECORDING_CONNECTION_LIBRARY)
 
-
-add_library(microstrain_recording_connection
+add_library(${MICROSTRAIN_RECORDING_CONNECTION_LIBRARY}
     recording_connection.cpp
     recording_connection.hpp
     ../connection.hpp
 )
 
-target_link_libraries(microstrain_recording_connection PRIVATE microstrain_private)
-target_link_libraries(microstrain_recording_connection PUBLIC microstrain_common)
-target_compile_features(microstrain_recording_connection PUBLIC cxx_std_11)
+target_compile_features(${MICROSTRAIN_RECORDING_CONNECTION_LIBRARY} PUBLIC cxx_std_11)
+target_link_libraries(${MICROSTRAIN_RECORDING_CONNECTION_LIBRARY}
+    PRIVATE ${MICROSTRAIN_PRIVATE_LIBRARY}
+    PUBLIC ${MICROSTRAIN_COMMON_LIBRARY}
+)
+
+target_link_libraries(${MICROSTRAIN_LIBRARIES} INTERFACE ${MICROSTRAIN_RECORDING_CONNECTION_LIBRARY})

@@ -1,8 +1,7 @@
-
 set(EXAMPLE_DIR "${CMAKE_CURRENT_LIST_DIR}")
+set(MIP_EXAMPLE_UTILS_LIBRARY "example_utils")
 
-
-add_library(example_utils
+add_library(${MIP_EXAMPLE_UTILS_LIBRARY}
     "${EXAMPLE_DIR}/example_utils.c"
     "${EXAMPLE_DIR}/example_utils.h"
     "${EXAMPLE_DIR}/example_utils.cpp"
@@ -22,7 +21,7 @@ if(MICROSTRAIN_ENABLE_TCP)
 endif()
 
 if(MICROSTRAIN_ENABLE_SERIAL OR MICROSTRAIN_ENABLE_TCP)
-    list(APPEND EXAMPLE_LIBS microstrain_recording_connection)
+    list(APPEND EXAMPLE_LIBS ${MICROSTRAIN_RECORDING_CONNECTION_LIBRARY})
 endif()
 
 if(MIP_ENABLE_EXTRAS)
@@ -32,11 +31,11 @@ endif()
 set(MIP_EXAMPLE_DEFS ${MIP_DEFINES} ${SERIAL_DEFS} ${TCP_DEFS} ${EXTRAS_DEFS})
 
 
-target_compile_definitions(example_utils PUBLIC ${MIP_EXAMPLE_DEFS})
-#target_include_directories(example_utils PRIVATE ${SRC_DIR})
-target_link_libraries(example_utils PUBLIC mip ${EXAMPLE_LIBS} microstrain_private)
+target_compile_definitions(${MIP_EXAMPLE_UTILS_LIBRARY} PUBLIC ${MIP_EXAMPLE_DEFS})
+#target_include_directories(${MIP_EXAMPLE_UTILS_LIBRARY} PRIVATE ${SRC_DIR})
+target_link_libraries(${MIP_EXAMPLE_UTILS_LIBRARY} PUBLIC ${MIP_LIBRARY} ${EXAMPLE_LIBS} ${MICROSTRAIN_PRIVATE_LIBRARY})
 
-list(APPEND EXAMPLE_LIBS example_utils)
+list(APPEND EXAMPLE_LIBS ${MIP_EXAMPLE_UTILS_LIBRARY})
 
 macro(add_mip_example name sources)
 
@@ -46,7 +45,7 @@ macro(add_mip_example name sources)
     if(MICROSTRAIN_ENABLE_CPP)  # Technically should only do this for C++ examples but this is simpler
         target_compile_features(${name} PUBLIC cxx_std_11)
     endif()
-    target_link_libraries(${name} PUBLIC mip ${EXAMPLE_LIBS})
+    target_link_libraries(${name} PUBLIC ${MIP_LIBRARY} ${EXAMPLE_LIBS})
     target_compile_definitions(${name} PUBLIC ${MIP_EXAMPLE_DEFS})
     target_include_directories(${name} PRIVATE ${EXAMPLE_DIR})
 
@@ -64,7 +63,7 @@ if(MICROSTRAIN_ENABLE_CPP AND (MICROSTRAIN_ENABLE_SERIAL OR MICROSTRAIN_ENABLE_T
     endif()
     if(MIP_ENABLE_METADATA)
         add_mip_example(CsvExample "${EXAMPLE_SOURCES};${EXAMPLE_DIR}/CSV/csv.cpp;${EXAMPLE_DIR}/CSV/stringify.cpp;${EXAMPLE_DIR}/CSV/stringify.hpp")
-        target_link_libraries(CsvExample PRIVATE mip_metadata)
+        target_link_libraries(CsvExample PRIVATE ${MIP_METADATA_LIBRARY})
     endif()
 
     # Product-specific examples

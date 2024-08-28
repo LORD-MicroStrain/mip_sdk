@@ -1,4 +1,3 @@
-
 cmake_minimum_required(VERSION 3.10)
 
 set(CMAKE_CXX_STANDARD 14)
@@ -41,6 +40,7 @@ if(NOT DEFINED MIP_ENABLE_METADATA)
     message("MIP_ENABLE_METADATA not set - compiler support: ${MIP_COMPILER_SUPPORTS_METADATA}")
 endif()
 option(MIP_ENABLE_METADATA "Build support for MIP protocol metadata in C++ (requires c++20)" ${MIP_COMPILER_SUPPORTS_METADATA})
+option(MIP_ENABLE_EXTRAS "Build extra support into the library including some things that might work at a higher level and use dynamically allocated memory" ${MICROSTRAIN_ENABLE_EXTRAS})
 
 # Build options
 option(BUILD_PACKAGE "Whether to build a package from the resulting binaries" OFF)
@@ -62,24 +62,24 @@ mark_as_advanced(MICROSTRAIN_CMAKE_DEBUG)
 find_package(Git)
 set(DEFAULT_MIP_GIT_VERSION "v0.0.0")
 if(NOT GIT_FOUND)
-  message(STATUS "Unable to find git, will build with unknown version")
-  set(MIP_GIT_VERSION ${DEFAULT_MSCL_GIT_VERSION})
+    message(STATUS "Unable to find git, will build with unknown version")
+    set(MIP_GIT_VERSION ${DEFAULT_MSCL_GIT_VERSION})
 else()
-  execute_process(
-    COMMAND ${CMAKE_COMMAND} -E env ${GIT_EXECUTABLE} describe --tags
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-    OUTPUT_VARIABLE MIP_GIT_VERSION_OUT
-    ERROR_VARIABLE MIP_GIT_VERSION_ERR
-    RESULT_VARIABLE MIP_GIT_VERSION_RET
-  )
-  if(NOT ${MIP_GIT_VERSION_RET} EQUAL 0)
-    message(STATUS "Unable to determine version from Git, defaulting to version ${DEFAULT_MIP_GIT_VERSION}")
-    set(MIP_GIT_VERSION ${DEFAULT_MIP_GIT_VERSION})
-  else()
-    set(MIP_GIT_VERSION ${MIP_GIT_VERSION_OUT})
-    string(REGEX REPLACE "\n" "" MIP_GIT_VERSION "${MIP_GIT_VERSION}")
-    message(STATUS "MIP SDK Version: ${MIP_GIT_VERSION}")
-  endif()
+    execute_process(
+        COMMAND ${CMAKE_COMMAND} -E env ${GIT_EXECUTABLE} describe --tags
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        OUTPUT_VARIABLE MIP_GIT_VERSION_OUT
+        ERROR_VARIABLE MIP_GIT_VERSION_ERR
+        RESULT_VARIABLE MIP_GIT_VERSION_RET
+    )
+    if(NOT ${MIP_GIT_VERSION_RET} EQUAL 0)
+        message(STATUS "Unable to determine version from Git, defaulting to version ${DEFAULT_MIP_GIT_VERSION}")
+        set(MIP_GIT_VERSION ${DEFAULT_MIP_GIT_VERSION})
+    else()
+        set(MIP_GIT_VERSION ${MIP_GIT_VERSION_OUT})
+        string(REGEX REPLACE "\n" "" MIP_GIT_VERSION "${MIP_GIT_VERSION}")
+        message(STATUS "MIP SDK Version: ${MIP_GIT_VERSION}")
+    endif()
 endif()
 
 # Massage the version number a little so we can use it in a couple places
@@ -107,12 +107,14 @@ configure_file(${VERSION_IN_FILE} ${VERSION_OUT_FILE})
 #
 # Common preprocessor definitions
 #
-add_library(microstrain_private INTERFACE)
+set(MICROSTRAIN_PRIVATE_LIBRARY "microstrain_private")
+mark_as_advanced(MICROSTRAIN_PRIVATE_LIBRARY)
+add_library(${MICROSTRAIN_PRIVATE_LIBRARY} INTERFACE)
 
 # Disable windows defined min/max
 # Set Windows header version (0x0501 is _WIN32_WINNT_WINXP, required for TCP)
 if(WIN32)
-    target_compile_definitions(microstrain_private
+    target_compile_definitions(${MICROSTRAIN_PRIVATE_LIBRARY}
         INTERFACE
         "NOMINMAX=1"
         "_WIN32_WINNT=_WIN32_WINNT_WINXP"
@@ -120,23 +122,31 @@ if(WIN32)
 endif()
 
 if(MSVC)
-    target_compile_options(microstrain_private INTERFACE
+    target_compile_options(${MICROSTRAIN_PRIVATE_LIBRARY} INTERFACE
         "/external:anglebrackets"  # Treat angle brackets as system includes
         "/external:W0"             # No warnings from system includes
-        "/W4"                      # More warnings
+        "/W4"                      # Enable warnings
         "/Zc:__cplusplus"          # Enable updated __cplusplus value
     )
 else()
-    target_compile_options(microstrain_private INTERFACE
+    target_compile_options(${MICROSTRAIN_PRIVATE_LIBRARY} INTERFACE
         "-Wall"    # Extra warnings
         "-Wextra"
     )
 endif()
 
+# Create "catch-all" interface libraries
+set(MICROSTRAIN_LIBRARIES "microstrain_all" CACHE INTERNAL "Interface library to make linking all desired MicroStrain libraries easier")
+add_library(${MICROSTRAIN_LIBRARIES} INTERFACE)
 
+set(MIP_LIBRARIES "mip_all" CACHE INTERNAL "Interface library to make linking all desired MIP libraries easier")
+add_library(${MIP_LIBRARIES} INTERFACE)
 
 # Suppress warnings due to adding files with target_sources.
 cmake_policy(SET CMP0076 NEW)
+
+# Supress warnings due to linking libraries across directories
+cmake_policy(SET CMP0079 NEW)
 
 
 # Add all the C files (required even for C++ API)
@@ -152,10 +162,11 @@ if(MICROSTRAIN_ENABLE_CPP)
     add_subdirectory(src/cpp/microstrain)
     add_subdirectory(src/cpp/mip)
 
-    #target_compile_definitions(microstrain_common PUBLIC "MICROSTRAIN_ENABLE_CPP_C_NAMESPACE=${MICROSTRAIN_ENABLE_CPP_C_NAMESPACE}")
+    #target_compile_definitions(${MICROSTRAIN_COMMON_LIBRARY} PUBLIC "MICROSTRAIN_ENABLE_CPP_C_NAMESPACE=${MICROSTRAIN_ENABLE_CPP_C_NAMESPACE}")
 endif()
 
-
+# Link the MicroStrain SDK to allow for linkage of only the MIP SDK
+target_link_libraries(${MIP_LIBRARIES} INTERFACE ${MICROSTRAIN_LIBRARIES})
 
 #
 # Libraries
@@ -237,7 +248,7 @@ include(CMakePackageConfigHelpers)
 
 set(CONFIG_EXPORT_DIR "${CMAKE_INSTALL_DATADIR}/cmake/mip")
 
-set(EXPORT_TARGETS mip)
+set(EXPORT_TARGETS ${MIP_LIBRARY})
 configure_package_config_file(
     "${CMAKE_CURRENT_LIST_DIR}/cmake/mip-config.cmake.in"
     "${CMAKE_BINARY_DIR}/mip-config.cmake"
@@ -268,28 +279,28 @@ write_basic_package_version_file(
 #    install(
 #        FILES "${MIP_HEADER}"
 #        DESTINATION "${MIP_HEADER_DESTINATION}"
-#        COMPONENT mip
+#        COMPONENT ${MIP_LIBRARY}
 #    )
 #endforeach()
 #
 #install(TARGETS
-#    mip
+#    ${MIP_LIBRARY}
 #    EXPORT mip-targets
 #    ARCHIVE
-#    COMPONENT mip
+#    COMPONENT ${MIP_LIBRARY}
 #    DESTINATION "${CMAKE_INSTALL_LIBDIR}/"
 #)
 #
 #install(EXPORT
 #    mip-targets
-#    COMPONENT mip
+#    COMPONENT ${MIP_LIBRARY}
 #    DESTINATION "${CONFIG_EXPORT_DIR}"
 #)
 #
 #install(FILES
 #    "${CMAKE_BINARY_DIR}/mip-config.cmake"
 #    "${CMAKE_BINARY_DIR}/mip-config-version.cmake"
-#    COMPONENT mip
+#    COMPONENT ${MIP_LIBRARY}
 #    DESTINATION "${CONFIG_EXPORT_DIR}"
 #)
 
@@ -370,7 +381,7 @@ if(BUILD_PACKAGE)
     set(CPACK_GENERATOR "${FOUND_CPACK_GENERATORS}")
     set(CPACK_PACKAGE_VENDOR "MicroStrain by HBK")
     set(CPACK_PACKAGE_CONTACT "MicroStrain Support <microstrainsupport@hbkworld.com>")
-    set(CPACK_COMPONENTS_ALL "mip")
+    set(CPACK_COMPONENTS_ALL ${MIP_LIBRARY})
 
     set(CPACK_PACKAGE_VERSION ${MIP_GIT_VERSION_CLEAN})
 
@@ -405,8 +416,8 @@ if(BUILD_PACKAGE)
     # Finally include cpack which should have taken all of the previous variables into consideration
     include(CPack)
 
-    cpack_add_component(mip
+    cpack_add_component(${MIP_LIBRARY}
         DESCRIPTION "MIP SDK static library and header files"
-        GROUP mip
+        GROUP ${MIP_LIBRARY}
     )
 endif()

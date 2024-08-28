@@ -65,7 +65,7 @@ static bool tcp_socket_open_common(tcp_socket* socket_ptr, const char* hostname,
         if( socket_ptr->handle == INVALID_SOCKET )
             continue;
 
-        if( connect(socket_ptr->handle, addr->ai_addr, addr->ai_addrlen) == 0 )
+        if( connect(socket_ptr->handle, addr->ai_addr, (int)addr->ai_addrlen) == 0 )
             break;
 
 #ifdef MICROSTRAIN_PLATFORM_WINDOWS
@@ -141,7 +141,7 @@ bool tcp_socket_send(tcp_socket* socket_ptr, const void* buffer, size_t num_byte
 {
     for(*bytes_written = 0; *bytes_written < num_bytes; )
     {
-        ssize_t sent = send(socket_ptr->handle, buffer, num_bytes, SEND_FLAGS);
+        ssize_t sent = send(socket_ptr->handle, buffer, (int)num_bytes, SEND_FLAGS);
         if(sent < 0)
             return false;
 
@@ -152,7 +152,7 @@ bool tcp_socket_send(tcp_socket* socket_ptr, const void* buffer, size_t num_byte
 
 bool tcp_socket_recv(tcp_socket* socket_ptr, void* buffer, size_t num_bytes, size_t* bytes_read)
 {
-    ssize_t local_bytes_read = recv(socket_ptr->handle, buffer, num_bytes, SEND_FLAGS);
+    ssize_t local_bytes_read = recv(socket_ptr->handle, buffer, (int)num_bytes, SEND_FLAGS);
 
     if( local_bytes_read < 0 )
     {

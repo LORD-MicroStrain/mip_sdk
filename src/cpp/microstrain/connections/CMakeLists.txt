@@ -1,4 +1,3 @@
-
 if(MICROSTRAIN_ENABLE_SERIAL)
     add_subdirectory(serial)
 endif()

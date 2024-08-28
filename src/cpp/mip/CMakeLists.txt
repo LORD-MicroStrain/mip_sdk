@@ -1,7 +1,6 @@
-
 set(MIP_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/..")
 
-target_sources(mip PRIVATE
+target_sources(${MIP_LIBRARY} PRIVATE
     mip.hpp
     mip_all.hpp
     mip_cmdqueue.hpp
@@ -15,24 +14,24 @@ target_sources(mip PRIVATE
     mip_serialization.hpp
 )
 
-target_compile_features(mip PUBLIC cxx_std_11)
-target_include_directories(mip PRIVATE ${MIP_INCLUDE_DIR})
+target_compile_features(${MIP_LIBRARY} PUBLIC cxx_std_11)
+target_include_directories(${MIP_LIBRARY} PRIVATE ${MIP_INCLUDE_DIR})
 
 # Get the mipdef list from the C version
-get_target_property(MIPDEFS mip definitions)
+get_target_property(MIP_DEFS ${MIP_LIBRARY} definitions)
 
-set(MIPDEF_HEADERS ${MIPDEFS})
-set(MIPDEF_SOURCES ${MIPDEFS})
-list(TRANSFORM MIPDEF_HEADERS APPEND ".hpp")
-list(TRANSFORM MIPDEF_SOURCES APPEND ".cpp")
-list(APPEND MIPDEF_SOURCES ${MIPDEF_HEADERS})
-list(TRANSFORM MIPDEF_SOURCES PREPEND "definitions/")
+set(MIP_DEF_HEADERS ${MIP_DEFS})
+set(MIP_DEF_SOURCES ${MIP_DEFS})
+list(TRANSFORM MIP_DEF_HEADERS APPEND ".hpp")
+list(TRANSFORM MIP_DEF_SOURCES APPEND ".cpp")
+list(APPEND MIP_DEF_SOURCES ${MIP_DEF_HEADERS})
+list(TRANSFORM MIP_DEF_SOURCES PREPEND "definitions/")
 
 if(MICROSTRAIN_CMAKE_DEBUG)
-    message("C++ definitions = ${MIPDEF_SOURCES}")
+    message("C++ definitions = ${MIP_DEF_SOURCES}")
 endif()
 
-target_sources(mip PRIVATE ${MIPDEF_SOURCES})
+target_sources(${MIP_LIBRARY} PRIVATE ${MIP_DEF_SOURCES})
 
 if(MIP_ENABLE_METADATA)
     add_subdirectory(metadata)

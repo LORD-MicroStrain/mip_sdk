@@ -1,9 +1,11 @@
+set(MIP_LIBRARY "mip" CACHE INTERNAL "Name of the MIP library")
+mark_as_advanced(MIP_LIBRARY)
 
 #
 # Core MIP C library
 #
 
-add_library(mip
+add_library(${MIP_LIBRARY}
     "${VERSION_OUT_FILE}"
 
     "mip_cmdqueue.c"
@@ -36,12 +38,14 @@ add_library(mip
     "utils/byte_ring.h"
 )
 
-target_link_libraries(mip PRIVATE microstrain_private)
-target_compile_features(mip PUBLIC c_std_11)
-target_link_libraries(mip PUBLIC microstrain_common)
+target_compile_features(${MIP_LIBRARY} PUBLIC c_std_11)
+target_link_libraries(${MIP_LIBRARY}
+    PRIVATE ${MICROSTRAIN_PRIVATE_LIBRARY}
+    PUBLIC ${MICROSTRAIN_COMMON_LIBRARY}
+)
 
 if(${MIP_ENABLE_DIAGNOSTICS})
-    target_compile_definitions(mip PUBLIC "MIP_ENABLE_DIAGNOSTICS=1")
+    target_compile_definitions(${MIP_LIBRARY} PUBLIC "MIP_ENABLE_DIAGNOSTICS=1")
 endif()
 
 
@@ -49,7 +53,7 @@ endif()
 # Mip definition files
 #
 
-set(MIPDEFS
+set(MIP_DEFS
     commands_3dm
     commands_aiding
     commands_base
@@ -65,17 +69,19 @@ set(MIPDEFS
 )
 
 # Set this list as a target property so the C++ version can access it.
-set_target_properties(mip PROPERTIES definitions "${MIPDEFS}")
+set_target_properties(${MIP_LIBRARY} PROPERTIES definitions "${MIP_DEFS}")
 
-set(MIPDEF_HEADERS ${MIPDEFS})
-set(MIPDEF_SOURCES ${MIPDEFS})
-list(TRANSFORM MIPDEF_HEADERS APPEND ".h")
-list(TRANSFORM MIPDEF_SOURCES APPEND ".c")
-list(APPEND MIPDEF_SOURCES ${MIPDEF_HEADERS})
-list(TRANSFORM MIPDEF_SOURCES PREPEND "definitions/")
+set(MIP_DEF_HEADERS ${MIP_DEFS})
+set(MIP_DEF_SOURCES ${MIP_DEFS})
+list(TRANSFORM MIP_DEF_HEADERS APPEND ".h")
+list(TRANSFORM MIP_DEF_SOURCES APPEND ".c")
+list(APPEND MIP_DEF_SOURCES ${MIP_DEF_HEADERS})
+list(TRANSFORM MIP_DEF_SOURCES PREPEND "definitions/")
 
 if(MICROSTRAIN_CMAKE_DEBUG)
-    message("C definitions = ${MIPDEF_SOURCES}")
+    message("C definitions = ${MIP_DEF_SOURCES}")
 endif()
 
-target_sources(mip PRIVATE ${MIPDEF_SOURCES})
+target_sources(${MIP_LIBRARY} PRIVATE ${MIP_DEF_SOURCES})
+
+target_link_libraries(${MIP_LIBRARIES} INTERFACE ${MIP_LIBRARY})

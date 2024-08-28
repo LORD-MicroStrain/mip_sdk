@@ -1,6 +1,5 @@
-
 # microstrain_common is defined by the C api.
-target_sources(microstrain_common PRIVATE
+target_sources(${MICROSTRAIN_COMMON_LIBRARY} PRIVATE
     embedded_time.hpp
     index.hpp
     logging.hpp
@@ -10,5 +9,5 @@ target_sources(microstrain_common PRIVATE
     serialization/serializer.hpp
 )
 
-target_compile_features(microstrain_common PUBLIC cxx_std_11)
-target_include_directories(microstrain_common INTERFACE ${SRC_CPP_DIR})
+target_compile_features(${MICROSTRAIN_COMMON_LIBRARY} PUBLIC cxx_std_11)
+target_include_directories(${MICROSTRAIN_COMMON_LIBRARY} INTERFACE ${SRC_CPP_DIR})
