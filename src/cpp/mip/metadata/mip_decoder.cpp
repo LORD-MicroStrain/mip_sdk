@@ -2,6 +2,7 @@
 #include "mip_decoder.hpp"
 #include "mip_formatter.hpp"
 #include "mip_definitions.hpp"
+#include "mip/metadata/definitions/data_shared.hpp"
 
 #include <mip/mip_packet.hpp>
 #include <mip/mip_field.hpp>
@@ -47,7 +48,11 @@ void FieldByteFormatter::formatField(const mip::FieldView &field, const Definiti
 
 void FieldByteFormatter::formatField(const mip::FieldView &field, const DescriptorSet* descriptorSet)
 {
-    const FieldInfo* info = descriptorSet ? descriptorSet->findField(field.fieldDescriptor()) : nullptr;
+    const FieldInfo* info = nullptr;
+    if(descriptorSet)
+        info = descriptorSet->findField(field.fieldDescriptor());
+    if(!info && isDataDescriptorSet(field.descriptorSet()))
+        info = DATA_SHARED_DS.findField(field.fieldDescriptor());
 
     formatField(info, field);
 }

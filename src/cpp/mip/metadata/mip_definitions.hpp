@@ -16,16 +16,21 @@ public:
     using FieldPtr = const FieldInfo*;
 
     template<size_t N>
-    constexpr DescriptorSet(uint8_t descriptorSet, const char* name, const FieldPtr (&fields)[N]) :
-        mDescriptor(descriptorSet,0x00), mName(name), mFields(fields)
+    constexpr DescriptorSet(uint8_t descriptor, const char* name, const FieldPtr (&fields)[N]) :
+        mDescriptor(descriptor,0x00), mName(name), mFields(fields)
     {
     }
 
-    const char*         name()           const { return mName; }
-    uint8_t             value()          const { return mDescriptor.descriptorSet; }
-    CompositeDescriptor fullDescriptor() const { return mDescriptor; }
+    constexpr DescriptorSet(uint8_t descriptor, const char* name, std::span<const FieldPtr> fields) :
+        mDescriptor(descriptor, 0x00), mName(name), mFields(fields)
+    {
+    }
 
-    auto& allFields() const { return mFields; }
+    constexpr const char*         name()           const { return mName; }
+    constexpr uint8_t             value()          const { return mDescriptor.descriptorSet; }
+    constexpr CompositeDescriptor fullDescriptor() const { return mDescriptor; }
+
+    constexpr auto& allFields() const { return mFields; }
 
     auto allCommands() const -> std::span<const FieldPtr>;
     auto allResponses() const -> std::span<const FieldPtr>;
