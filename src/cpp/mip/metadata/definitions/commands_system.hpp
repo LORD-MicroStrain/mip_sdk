@@ -29,7 +29,7 @@ struct MetadataFor<commands_system::CommMode::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_system::CommMode::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -59,7 +59,7 @@ struct MetadataFor<commands_system::CommMode>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_system::CommMode",
-        /* .title       = */ "None",
+        /* .title       = */ "comm_mode",
         /* .docs        = */ "Advanced specialized communication modes.\n\nThis command allows the user to communicate directly with various subsystems which may be present in MIP devices (i.e. IMU, GNSS, etc.)\nPlease see the specific device's user manual for possible modes.\n\nThis command responds with an ACK/NACK just prior to switching to the new protocol.\nFor all functions except 0x01 (use new settings), the new communications mode value is ignored.\n\n",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -70,11 +70,12 @@ struct MetadataFor<commands_system::CommMode>
 };
 
 
-static constexpr inline std::initializer_list<const FieldInfo*> ALL_COMMANDS_SYSTEM = {
+static constexpr inline const FieldInfo* COMMANDS_SYSTEM_FIELDS[] = {
     &MetadataFor<commands_system::CommMode>::value,
     &MetadataFor<commands_system::CommMode::Response>::value,
 };
 
+static constexpr inline const DescriptorSet COMMANDS_SYSTEM_DS(commands_system::DESCRIPTOR_SET, "commands_system", COMMANDS_SYSTEM_FIELDS);
 
 } // namespace mip::metadata
 

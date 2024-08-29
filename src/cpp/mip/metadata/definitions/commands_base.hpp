@@ -133,7 +133,7 @@ struct MetadataFor<commands_base::GetDeviceInfo::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_base::GetDeviceInfo::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -179,7 +179,7 @@ struct MetadataFor<commands_base::GetDeviceDescriptors::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_base::GetDeviceDescriptors::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -225,7 +225,7 @@ struct MetadataFor<commands_base::BuiltInTest::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_base::BuiltInTest::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -288,7 +288,7 @@ struct MetadataFor<commands_base::GetExtendedDescriptors::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_base::GetExtendedDescriptors::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -334,7 +334,7 @@ struct MetadataFor<commands_base::ContinuousBit::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_base::ContinuousBit::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -389,7 +389,7 @@ struct MetadataFor<commands_base::CommSpeed::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_base::CommSpeed::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -514,26 +514,27 @@ struct MetadataFor<commands_base::SoftReset>
 };
 
 
-static constexpr inline std::initializer_list<const FieldInfo*> ALL_COMMANDS_BASE = {
+static constexpr inline const FieldInfo* COMMANDS_BASE_FIELDS[] = {
     &MetadataFor<commands_base::Ping>::value,
     &MetadataFor<commands_base::SetIdle>::value,
     &MetadataFor<commands_base::GetDeviceInfo>::value,
-    &MetadataFor<commands_base::GetDeviceInfo::Response>::value,
     &MetadataFor<commands_base::GetDeviceDescriptors>::value,
-    &MetadataFor<commands_base::GetDeviceDescriptors::Response>::value,
     &MetadataFor<commands_base::BuiltInTest>::value,
-    &MetadataFor<commands_base::BuiltInTest::Response>::value,
     &MetadataFor<commands_base::Resume>::value,
     &MetadataFor<commands_base::GetExtendedDescriptors>::value,
-    &MetadataFor<commands_base::GetExtendedDescriptors::Response>::value,
     &MetadataFor<commands_base::ContinuousBit>::value,
-    &MetadataFor<commands_base::ContinuousBit::Response>::value,
     &MetadataFor<commands_base::CommSpeed>::value,
-    &MetadataFor<commands_base::CommSpeed::Response>::value,
     &MetadataFor<commands_base::GpsTimeUpdate>::value,
     &MetadataFor<commands_base::SoftReset>::value,
+    &MetadataFor<commands_base::GetDeviceInfo::Response>::value,
+    &MetadataFor<commands_base::GetDeviceDescriptors::Response>::value,
+    &MetadataFor<commands_base::BuiltInTest::Response>::value,
+    &MetadataFor<commands_base::GetExtendedDescriptors::Response>::value,
+    &MetadataFor<commands_base::ContinuousBit::Response>::value,
+    &MetadataFor<commands_base::CommSpeed::Response>::value,
 };
 
+static constexpr inline const DescriptorSet COMMANDS_BASE_DS(commands_base::DESCRIPTOR_SET, "commands_base", COMMANDS_BASE_FIELDS);
 
 } // namespace mip::metadata
 

@@ -211,5 +211,11 @@ struct ParameterInfo
     Condition       condition;          ///< For conditionally-enabled parameters like those in unions.
 };
 
+struct DescriptorSetInfo
+{
+    CompositeDescriptor         descriptor = 0x0000;
+    const char*                 name  = nullptr;
+    std::span<const FieldInfo*> fields;
+};
 
 } // namespace mip::metadata

@@ -109,6 +109,10 @@ std::unique_ptr<ExampleUtils> openFromArgs(const std::string& port_or_hostname, 
     if( !example_utils->connection->connect() )
         throw std::runtime_error("Failed to open the connection");
 
+// #ifdef MICROSTRAIN_PLATFORM_WINDOWS
+// #else
+// #endif
+
     return example_utils;
 }
 
@@ -163,3 +167,50 @@ void displayFilterState(const mip::data_filter::FilterMode &filterState, std::st
         currentState = read_state;
     }
 }
+
+// #ifdef MICROSTRAIN_PLATFORM_WINDOWS
+// volatile bool stop_flag = false;
+//
+// void handleCtrlC()
+// {
+//     assert(!stop_flag);
+//
+//     // https://learn.microsoft.com/en-us/windows/console/registering-a-control-handler-function
+//     auto handler = +[](DWORD fdwCtrlType)
+//     {
+//         //std::cerr << "event: " << fdwCtrlType << '\n';
+//         switch(fdwCtrlType)
+//         {
+//         case CTRL_C_EVENT:
+//         case CTRL_CLOSE_EVENT:
+//         case CTRL_BREAK_EVENT:
+//             stop_flag = true;
+//             return TRUE;
+//         default:
+//             return FALSE;
+//         }
+//     };
+//
+//     SetConsoleCtrlHandler(handler, TRUE);
+// }
+//
+// #else
+
+volatile sig_atomic_t stop_flag = false;
+
+void handleCtrlC()
+{
+    assert(!stop_flag);
+
+    auto handler = +[](int signum)
+    {
+        (void)signum;
+        stop_flag = true;
+    };
+
+    // TODO: use sigaction as it's supposedly more portable
+    std::signal(SIGTERM, handler);
+    std::signal(SIGINT, handler);
+}
+
+// #endif

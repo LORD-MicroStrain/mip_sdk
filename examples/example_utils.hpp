@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include <microstrain/common/platform.hpp>
+
 #ifdef MICROSTRAIN_ENABLE_SERIAL
     #include "microstrain/connections/serial/serial_connection.hpp"
 #endif
@@ -38,3 +40,12 @@ int printCommonUsage(const char* argv[]);
 
 /// Displays current filter state for the connected device if it has changed.
 void displayFilterState(const mip::data_filter::FilterMode &filterState, std::string &currentState, bool isFiveSeries = false);
+
+// #ifdef MICROSTRAIN_PLATFORM_WINDOWS
+// extern volatile bool stop_flag;
+// #else
+#include <csignal>
+extern volatile sig_atomic_t stop_flag;
+// #endif
+
+void handleCtrlC();

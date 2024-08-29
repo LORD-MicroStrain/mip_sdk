@@ -13,41 +13,25 @@
 #include "definitions/data_shared.hpp"
 #include "definitions/data_system.hpp"
 
+#include "mip_definitions.hpp"
+
 namespace mip::metadata
 {
 
-static constexpr inline std::initializer_list< const std::initializer_list<const FieldInfo*>* > ALL_COMMANDS = {
-    &ALL_COMMANDS_3DM,
-    &ALL_COMMANDS_AIDING,
-    &ALL_COMMANDS_BASE,
-    &ALL_COMMANDS_FILTER,
-    &ALL_COMMANDS_GNSS,
-    &ALL_COMMANDS_RTK,
-    &ALL_COMMANDS_SYSTEM,
-};
-static constexpr inline std::initializer_list< const std::initializer_list<const FieldInfo*>* > ALL_DATA = {
-    &ALL_DATA_FILTER,
-    &ALL_DATA_GNSS,
-    &ALL_DATA_SENSOR,
-    &ALL_DATA_SHARED,
-    &ALL_DATA_SYSTEM,
+static constexpr inline const DescriptorSet* ALL_DESCRIPTOR_SETS[] = {
+    &COMMANDS_3DM_DS,
+    &COMMANDS_AIDING_DS,
+    &COMMANDS_BASE_DS,
+    &COMMANDS_FILTER_DS,
+    &COMMANDS_GNSS_DS,
+    &COMMANDS_RTK_DS,
+    &COMMANDS_SYSTEM_DS,
+    &DATA_FILTER_DS,
+    &DATA_GNSS_DS,
+    &DATA_SENSOR_DS,
+    &DATA_SYSTEM_DS,
 };
 
-static constexpr inline std::initializer_list< const std::initializer_list< const FieldInfo* >* > ALL_FIELDS = {
-    // Commands
-    &ALL_COMMANDS_3DM,
-    &ALL_COMMANDS_AIDING,
-    &ALL_COMMANDS_BASE,
-    &ALL_COMMANDS_FILTER,
-    &ALL_COMMANDS_GNSS,
-    &ALL_COMMANDS_RTK,
-    &ALL_COMMANDS_SYSTEM,
-    // Data
-    &ALL_DATA_FILTER,
-    &ALL_DATA_GNSS,
-    &ALL_DATA_SENSOR,
-    &ALL_DATA_SHARED,
-    &ALL_DATA_SYSTEM,
-};
+static constexpr inline Definitions definitions(ALL_DESCRIPTOR_SETS);
 
 } // namespace mip::metadata

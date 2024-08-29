@@ -117,7 +117,7 @@ struct MetadataFor<commands_filter::EstimationControl::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::EstimationControl::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -400,7 +400,7 @@ struct MetadataFor<commands_filter::TareOrientation::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::TareOrientation::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -480,7 +480,7 @@ struct MetadataFor<commands_filter::VehicleDynamicsMode::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::VehicleDynamicsMode::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -557,7 +557,7 @@ struct MetadataFor<commands_filter::SensorToVehicleRotationEuler::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::SensorToVehicleRotationEuler::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -634,7 +634,7 @@ struct MetadataFor<commands_filter::SensorToVehicleRotationDcm::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::SensorToVehicleRotationDcm::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -693,7 +693,7 @@ struct MetadataFor<commands_filter::SensorToVehicleRotationQuaternion::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::SensorToVehicleRotationQuaternion::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -752,7 +752,7 @@ struct MetadataFor<commands_filter::SensorToVehicleOffset::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::SensorToVehicleOffset::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -811,7 +811,7 @@ struct MetadataFor<commands_filter::AntennaOffset::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::AntennaOffset::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -891,7 +891,7 @@ struct MetadataFor<commands_filter::GnssSource::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::GnssSource::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -975,7 +975,7 @@ struct MetadataFor<commands_filter::HeadingSource::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::HeadingSource::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -1034,7 +1034,7 @@ struct MetadataFor<commands_filter::AutoInitControl::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::AutoInitControl::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -1093,7 +1093,7 @@ struct MetadataFor<commands_filter::AccelNoise::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::AccelNoise::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -1152,7 +1152,7 @@ struct MetadataFor<commands_filter::GyroNoise::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::GyroNoise::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -1220,7 +1220,7 @@ struct MetadataFor<commands_filter::AccelBiasModel::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::AccelBiasModel::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -1297,7 +1297,7 @@ struct MetadataFor<commands_filter::GyroBiasModel::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::GyroBiasModel::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -1384,7 +1384,7 @@ struct MetadataFor<commands_filter::AltitudeAiding::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::AltitudeAiding::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -1462,7 +1462,7 @@ struct MetadataFor<commands_filter::PitchRollAiding::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::PitchRollAiding::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -1530,7 +1530,7 @@ struct MetadataFor<commands_filter::AutoZupt::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::AutoZupt::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -1607,7 +1607,7 @@ struct MetadataFor<commands_filter::AutoAngularZupt::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::AutoAngularZupt::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -1731,7 +1731,7 @@ struct MetadataFor<commands_filter::GravityNoise::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::GravityNoise::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -1790,7 +1790,7 @@ struct MetadataFor<commands_filter::PressureAltitudeNoise::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::PressureAltitudeNoise::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -1849,7 +1849,7 @@ struct MetadataFor<commands_filter::HardIronOffsetNoise::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::HardIronOffsetNoise::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -1908,7 +1908,7 @@ struct MetadataFor<commands_filter::SoftIronMatrixNoise::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::SoftIronMatrixNoise::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -1967,7 +1967,7 @@ struct MetadataFor<commands_filter::MagNoise::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::MagNoise::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -2055,7 +2055,7 @@ struct MetadataFor<commands_filter::InclinationSource::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::InclinationSource::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -2132,7 +2132,7 @@ struct MetadataFor<commands_filter::MagneticDeclinationSource::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::MagneticDeclinationSource::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -2209,7 +2209,7 @@ struct MetadataFor<commands_filter::MagFieldMagnitudeSource::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::MagFieldMagnitudeSource::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -2304,7 +2304,7 @@ struct MetadataFor<commands_filter::ReferencePosition::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::ReferencePosition::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -2464,7 +2464,7 @@ struct MetadataFor<commands_filter::AccelMagnitudeErrorAdaptiveMeasurement::Resp
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::AccelMagnitudeErrorAdaptiveMeasurement::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -2549,7 +2549,7 @@ struct MetadataFor<commands_filter::AccelMagnitudeErrorAdaptiveMeasurement>
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::AccelMagnitudeErrorAdaptiveMeasurement",
         /* .title       = */ "Gravity Magnitude Error Adaptive Measurement",
-        /* .docs        = */ "Enable or disable the gravity magnitude error adaptive measurement.\nThis function can be used to tune the filter performance in the target application\n\nPick values that give you the least occurrence of invalid EF attitude output.\nThe default values are good for standard low dynamics applications.\nIncrease values for higher dynamic conditions, lower values for lower dynamic.\nToo low a value will result in excessive heading errors.\nHigher values increase heading errors when undergoing magnetic field anomalies caused by DC currents, magnets, steel structures,etc.\n\nAdaptive measurements can be enabled/disabled without the need for providing the additional parameters.\nIn this case, only the function selector and enable value are required; all other parameters will remain at their previous values.\nWhen ‚Äúauto-adaptive‚Äù is selected, the filter and limit parameters are ignored.\nInstead, aiding measurements which rely on the gravity vector will be automatically reweighted by the Kalman filter according to the perceived measurement quality.\n",
+        /* .docs        = */ "Enable or disable the gravity magnitude error adaptive measurement.\nThis function can be used to tune the filter performance in the target application\n\nPick values that give you the least occurrence of invalid EF attitude output.\nThe default values are good for standard low dynamics applications.\nIncrease values for higher dynamic conditions, lower values for lower dynamic.\nToo low a value will result in excessive heading errors.\nHigher values increase heading errors when undergoing magnetic field anomalies caused by DC currents, magnets, steel structures,etc.\n\nAdaptive measurements can be enabled/disabled without the need for providing the additional parameters.\nIn this case, only the function selector and enable value are required; all other parameters will remain at their previous values.\nWhen ìauto-adaptiveî is selected, the filter and limit parameters are ignored.\nInstead, aiding measurements which rely on the gravity vector will be automatically reweighted by the Kalman filter according to the perceived measurement quality.\n",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true,  true},
@@ -2631,7 +2631,7 @@ struct MetadataFor<commands_filter::MagMagnitudeErrorAdaptiveMeasurement::Respon
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::MagMagnitudeErrorAdaptiveMeasurement::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -2780,7 +2780,7 @@ struct MetadataFor<commands_filter::MagDipAngleErrorAdaptiveMeasurement::Respons
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::MagDipAngleErrorAdaptiveMeasurement::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -2911,7 +2911,7 @@ struct MetadataFor<commands_filter::AidingMeasurementEnable::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::AidingMeasurementEnable::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -3014,7 +3014,7 @@ struct MetadataFor<commands_filter::KinematicConstraint::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::KinematicConstraint::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -3224,7 +3224,7 @@ struct MetadataFor<commands_filter::InitializationConfiguration::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::InitializationConfiguration::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -3364,7 +3364,7 @@ struct MetadataFor<commands_filter::AdaptiveFilterOptions::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::AdaptiveFilterOptions::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -3441,7 +3441,7 @@ struct MetadataFor<commands_filter::MultiAntennaOffset::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::MultiAntennaOffset::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -3527,7 +3527,7 @@ struct MetadataFor<commands_filter::RelPosConfiguration::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::RelPosConfiguration::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -3631,7 +3631,7 @@ struct MetadataFor<commands_filter::RefPointLeverArm::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::RefPointLeverArm::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -3764,7 +3764,7 @@ struct MetadataFor<commands_filter::SpeedLeverArm::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::SpeedLeverArm::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -3832,7 +3832,7 @@ struct MetadataFor<commands_filter::WheeledVehicleConstraintControl::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::WheeledVehicleConstraintControl::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -3891,7 +3891,7 @@ struct MetadataFor<commands_filter::VerticalGyroConstraintControl::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::VerticalGyroConstraintControl::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -3959,7 +3959,7 @@ struct MetadataFor<commands_filter::GnssAntennaCalControl::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_filter::GnssAntennaCalControl::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -4038,104 +4038,105 @@ struct MetadataFor<commands_filter::SetInitialHeading>
 };
 
 
-static constexpr inline std::initializer_list<const FieldInfo*> ALL_COMMANDS_FILTER = {
+static constexpr inline const FieldInfo* COMMANDS_FILTER_FIELDS[] = {
     &MetadataFor<commands_filter::Reset>::value,
     &MetadataFor<commands_filter::SetInitialAttitude>::value,
+    &MetadataFor<commands_filter::SetInitialHeading>::value,
+    &MetadataFor<commands_filter::Run>::value,
+    &MetadataFor<commands_filter::VehicleDynamicsMode>::value,
+    &MetadataFor<commands_filter::SensorToVehicleRotationEuler>::value,
+    &MetadataFor<commands_filter::SensorToVehicleOffset>::value,
+    &MetadataFor<commands_filter::AntennaOffset>::value,
     &MetadataFor<commands_filter::EstimationControl>::value,
-    &MetadataFor<commands_filter::EstimationControl::Response>::value,
+    &MetadataFor<commands_filter::GnssSource>::value,
     &MetadataFor<commands_filter::ExternalGnssUpdate>::value,
     &MetadataFor<commands_filter::ExternalHeadingUpdate>::value,
-    &MetadataFor<commands_filter::ExternalHeadingUpdateWithTime>::value,
-    &MetadataFor<commands_filter::TareOrientation>::value,
-    &MetadataFor<commands_filter::TareOrientation::Response>::value,
-    &MetadataFor<commands_filter::VehicleDynamicsMode>::value,
-    &MetadataFor<commands_filter::VehicleDynamicsMode::Response>::value,
-    &MetadataFor<commands_filter::SensorToVehicleRotationEuler>::value,
-    &MetadataFor<commands_filter::SensorToVehicleRotationEuler::Response>::value,
-    &MetadataFor<commands_filter::SensorToVehicleRotationDcm>::value,
-    &MetadataFor<commands_filter::SensorToVehicleRotationDcm::Response>::value,
-    &MetadataFor<commands_filter::SensorToVehicleRotationQuaternion>::value,
-    &MetadataFor<commands_filter::SensorToVehicleRotationQuaternion::Response>::value,
-    &MetadataFor<commands_filter::SensorToVehicleOffset>::value,
-    &MetadataFor<commands_filter::SensorToVehicleOffset::Response>::value,
-    &MetadataFor<commands_filter::AntennaOffset>::value,
-    &MetadataFor<commands_filter::AntennaOffset::Response>::value,
-    &MetadataFor<commands_filter::GnssSource>::value,
-    &MetadataFor<commands_filter::GnssSource::Response>::value,
     &MetadataFor<commands_filter::HeadingSource>::value,
-    &MetadataFor<commands_filter::HeadingSource::Response>::value,
     &MetadataFor<commands_filter::AutoInitControl>::value,
-    &MetadataFor<commands_filter::AutoInitControl::Response>::value,
     &MetadataFor<commands_filter::AccelNoise>::value,
-    &MetadataFor<commands_filter::AccelNoise::Response>::value,
     &MetadataFor<commands_filter::GyroNoise>::value,
-    &MetadataFor<commands_filter::GyroNoise::Response>::value,
     &MetadataFor<commands_filter::AccelBiasModel>::value,
-    &MetadataFor<commands_filter::AccelBiasModel::Response>::value,
     &MetadataFor<commands_filter::GyroBiasModel>::value,
-    &MetadataFor<commands_filter::GyroBiasModel::Response>::value,
-    &MetadataFor<commands_filter::AltitudeAiding>::value,
-    &MetadataFor<commands_filter::AltitudeAiding::Response>::value,
-    &MetadataFor<commands_filter::PitchRollAiding>::value,
-    &MetadataFor<commands_filter::PitchRollAiding::Response>::value,
     &MetadataFor<commands_filter::AutoZupt>::value,
-    &MetadataFor<commands_filter::AutoZupt::Response>::value,
+    &MetadataFor<commands_filter::ExternalHeadingUpdateWithTime>::value,
     &MetadataFor<commands_filter::AutoAngularZupt>::value,
-    &MetadataFor<commands_filter::AutoAngularZupt::Response>::value,
+    &MetadataFor<commands_filter::TareOrientation>::value,
     &MetadataFor<commands_filter::CommandedZupt>::value,
     &MetadataFor<commands_filter::CommandedAngularZupt>::value,
+    &MetadataFor<commands_filter::ReferencePosition>::value,
     &MetadataFor<commands_filter::MagCaptureAutoCal>::value,
     &MetadataFor<commands_filter::GravityNoise>::value,
-    &MetadataFor<commands_filter::GravityNoise::Response>::value,
     &MetadataFor<commands_filter::PressureAltitudeNoise>::value,
-    &MetadataFor<commands_filter::PressureAltitudeNoise::Response>::value,
     &MetadataFor<commands_filter::HardIronOffsetNoise>::value,
-    &MetadataFor<commands_filter::HardIronOffsetNoise::Response>::value,
     &MetadataFor<commands_filter::SoftIronMatrixNoise>::value,
-    &MetadataFor<commands_filter::SoftIronMatrixNoise::Response>::value,
     &MetadataFor<commands_filter::MagNoise>::value,
-    &MetadataFor<commands_filter::MagNoise::Response>::value,
-    &MetadataFor<commands_filter::InclinationSource>::value,
-    &MetadataFor<commands_filter::InclinationSource::Response>::value,
     &MetadataFor<commands_filter::MagneticDeclinationSource>::value,
-    &MetadataFor<commands_filter::MagneticDeclinationSource::Response>::value,
-    &MetadataFor<commands_filter::MagFieldMagnitudeSource>::value,
-    &MetadataFor<commands_filter::MagFieldMagnitudeSource::Response>::value,
-    &MetadataFor<commands_filter::ReferencePosition>::value,
-    &MetadataFor<commands_filter::ReferencePosition::Response>::value,
     &MetadataFor<commands_filter::AccelMagnitudeErrorAdaptiveMeasurement>::value,
-    &MetadataFor<commands_filter::AccelMagnitudeErrorAdaptiveMeasurement::Response>::value,
     &MetadataFor<commands_filter::MagMagnitudeErrorAdaptiveMeasurement>::value,
-    &MetadataFor<commands_filter::MagMagnitudeErrorAdaptiveMeasurement::Response>::value,
     &MetadataFor<commands_filter::MagDipAngleErrorAdaptiveMeasurement>::value,
-    &MetadataFor<commands_filter::MagDipAngleErrorAdaptiveMeasurement::Response>::value,
+    &MetadataFor<commands_filter::AltitudeAiding>::value,
+    &MetadataFor<commands_filter::PitchRollAiding>::value,
+    &MetadataFor<commands_filter::InclinationSource>::value,
+    &MetadataFor<commands_filter::MagFieldMagnitudeSource>::value,
+    &MetadataFor<commands_filter::SensorToVehicleRotationDcm>::value,
+    &MetadataFor<commands_filter::SensorToVehicleRotationQuaternion>::value,
     &MetadataFor<commands_filter::AidingMeasurementEnable>::value,
-    &MetadataFor<commands_filter::AidingMeasurementEnable::Response>::value,
-    &MetadataFor<commands_filter::Run>::value,
     &MetadataFor<commands_filter::KinematicConstraint>::value,
-    &MetadataFor<commands_filter::KinematicConstraint::Response>::value,
     &MetadataFor<commands_filter::InitializationConfiguration>::value,
-    &MetadataFor<commands_filter::InitializationConfiguration::Response>::value,
     &MetadataFor<commands_filter::AdaptiveFilterOptions>::value,
-    &MetadataFor<commands_filter::AdaptiveFilterOptions::Response>::value,
     &MetadataFor<commands_filter::MultiAntennaOffset>::value,
-    &MetadataFor<commands_filter::MultiAntennaOffset::Response>::value,
     &MetadataFor<commands_filter::RelPosConfiguration>::value,
-    &MetadataFor<commands_filter::RelPosConfiguration::Response>::value,
     &MetadataFor<commands_filter::RefPointLeverArm>::value,
-    &MetadataFor<commands_filter::RefPointLeverArm::Response>::value,
     &MetadataFor<commands_filter::SpeedMeasurement>::value,
     &MetadataFor<commands_filter::SpeedLeverArm>::value,
-    &MetadataFor<commands_filter::SpeedLeverArm::Response>::value,
-    &MetadataFor<commands_filter::WheeledVehicleConstraintControl>::value,
-    &MetadataFor<commands_filter::WheeledVehicleConstraintControl::Response>::value,
     &MetadataFor<commands_filter::VerticalGyroConstraintControl>::value,
-    &MetadataFor<commands_filter::VerticalGyroConstraintControl::Response>::value,
+    &MetadataFor<commands_filter::WheeledVehicleConstraintControl>::value,
     &MetadataFor<commands_filter::GnssAntennaCalControl>::value,
+    &MetadataFor<commands_filter::VehicleDynamicsMode::Response>::value,
+    &MetadataFor<commands_filter::SensorToVehicleRotationEuler::Response>::value,
+    &MetadataFor<commands_filter::SensorToVehicleOffset::Response>::value,
+    &MetadataFor<commands_filter::AntennaOffset::Response>::value,
+    &MetadataFor<commands_filter::EstimationControl::Response>::value,
+    &MetadataFor<commands_filter::GnssSource::Response>::value,
+    &MetadataFor<commands_filter::HeadingSource::Response>::value,
+    &MetadataFor<commands_filter::AutoInitControl::Response>::value,
+    &MetadataFor<commands_filter::AccelNoise::Response>::value,
+    &MetadataFor<commands_filter::GyroNoise::Response>::value,
+    &MetadataFor<commands_filter::AccelBiasModel::Response>::value,
+    &MetadataFor<commands_filter::GyroBiasModel::Response>::value,
+    &MetadataFor<commands_filter::AutoZupt::Response>::value,
+    &MetadataFor<commands_filter::AutoAngularZupt::Response>::value,
+    &MetadataFor<commands_filter::ReferencePosition::Response>::value,
+    &MetadataFor<commands_filter::GravityNoise::Response>::value,
+    &MetadataFor<commands_filter::PressureAltitudeNoise::Response>::value,
+    &MetadataFor<commands_filter::HardIronOffsetNoise::Response>::value,
+    &MetadataFor<commands_filter::SoftIronMatrixNoise::Response>::value,
+    &MetadataFor<commands_filter::TareOrientation::Response>::value,
+    &MetadataFor<commands_filter::MagNoise::Response>::value,
+    &MetadataFor<commands_filter::MagneticDeclinationSource::Response>::value,
+    &MetadataFor<commands_filter::AccelMagnitudeErrorAdaptiveMeasurement::Response>::value,
+    &MetadataFor<commands_filter::MagMagnitudeErrorAdaptiveMeasurement::Response>::value,
+    &MetadataFor<commands_filter::MagDipAngleErrorAdaptiveMeasurement::Response>::value,
+    &MetadataFor<commands_filter::AltitudeAiding::Response>::value,
+    &MetadataFor<commands_filter::PitchRollAiding::Response>::value,
+    &MetadataFor<commands_filter::InclinationSource::Response>::value,
+    &MetadataFor<commands_filter::MagFieldMagnitudeSource::Response>::value,
+    &MetadataFor<commands_filter::SensorToVehicleRotationDcm::Response>::value,
+    &MetadataFor<commands_filter::SensorToVehicleRotationQuaternion::Response>::value,
+    &MetadataFor<commands_filter::AidingMeasurementEnable::Response>::value,
+    &MetadataFor<commands_filter::KinematicConstraint::Response>::value,
+    &MetadataFor<commands_filter::InitializationConfiguration::Response>::value,
+    &MetadataFor<commands_filter::AdaptiveFilterOptions::Response>::value,
+    &MetadataFor<commands_filter::MultiAntennaOffset::Response>::value,
+    &MetadataFor<commands_filter::RelPosConfiguration::Response>::value,
+    &MetadataFor<commands_filter::RefPointLeverArm::Response>::value,
+    &MetadataFor<commands_filter::SpeedLeverArm::Response>::value,
+    &MetadataFor<commands_filter::VerticalGyroConstraintControl::Response>::value,
+    &MetadataFor<commands_filter::WheeledVehicleConstraintControl::Response>::value,
     &MetadataFor<commands_filter::GnssAntennaCalControl::Response>::value,
-    &MetadataFor<commands_filter::SetInitialHeading>::value,
 };
 
+static constexpr inline const DescriptorSet COMMANDS_FILTER_DS(commands_filter::DESCRIPTOR_SET, "commands_filter", COMMANDS_FILTER_FIELDS);
 
 } // namespace mip::metadata
 

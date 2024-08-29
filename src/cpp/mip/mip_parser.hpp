@@ -26,6 +26,12 @@ public:
 
     Parser(uint8_t* buffer, size_t bufferSize, Timeout timeout) { C::mip_parser_init(this, buffer, bufferSize, nullptr, nullptr, timeout); }
 
+    template<bool (*Callback)(const PacketView&, Timestamp)>
+    void setCallback();
+
+    template<class T, bool (*Callback)(T&, const PacketView&, Timestamp)>
+    void setCallback(T& object);
+
     template<class T, bool (T::*Callback)(const PacketView&, Timestamp)>
     void setCallback(T& object);
 
@@ -45,6 +51,68 @@ public:
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Initializes the MIP Parser
 ///
+/// This version allows binding a free function without any context.
+/// Example:
+///@code{.cpp}
+/// void handlePacket(const PacketRef& packet, Timeout timeout);
+/// Parser parser;
+/// parser.setCallback<&handlePacket>();
+///@endcode
+///
+///@tparam T.
+///@tparam Callback A pointer to a function to be called when a
+///        packet is parsed.
+///
+///@param object
+///       This will be passed to the callback function for context.
+///
+template<bool (*Callback)(const PacketView&, Timestamp)>
+void Parser::setCallback()
+{
+    C::mip_packet_callback callback = [](void*, const C::mip_packet_view* pkt, Timestamp timestamp)->bool
+    {
+        return (*Callback)(PacketView(pkt), timestamp);
+    };
+
+    C::mip_parser_set_callback(this, callback, nullptr);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Initializes the MIP Parser
+///
+/// This version allows binding a free function with context instead of a C-style callback.
+/// Example:
+///@code{.cpp}
+/// struct Context
+/// {
+/// };
+/// void handlePacket(Context& context, const PacketRef& packet, Timeout timeout);
+/// Context context;
+/// Parser parser;
+/// parser.setCallback<Context, &handlePacket>(context);
+///@endcode
+///
+///@tparam T.
+///@tparam Callback A pointer to a function to be called when a
+///        packet is parsed.
+///
+///@param object
+///       This will be passed to the callback function for context.
+///
+template<class T, bool (T::*Callback)(const PacketView&, Timestamp)>
+void Parser::setCallback(T& object)
+{
+    C::mip_packet_callback callback = [](void* obj, const C::mip_packet_view* pkt, Timestamp timestamp)->bool
+    {
+        return (*Callback)(*static_cast<T*>(obj), PacketView(pkt), timestamp);
+    };
+
+    C::mip_parser_set_callback(this, callback, &object);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Initializes the MIP Parser
+///
 /// This version allows binding a member function instead of a C-style callback.
 /// Example:
 ///@code{.cpp}
@@ -53,7 +121,8 @@ public:
 ///     void handlePacket(const PacketRef& packet, Timeout timeout);
 /// };
 /// MyClass myInstance;
-/// Parser parser<MyClass, &MyClass::handlePacket>(myInstance);
+/// Parser parser;
+/// parser.setCallback<MyClass, &MyClass::handlePacket>(myInstance);
 ///@endcode
 ///
 ///@tparam T Class type containing the member function to be called.
@@ -63,7 +132,7 @@ public:
 ///@param object
 ///       Instance of T to call the callback.
 ///
-template<class T, bool (T::*Callback)(const PacketView&, Timestamp)>
+template<class T, bool (*Callback)(T& object, const PacketView&, Timestamp)>
 void Parser::setCallback(T& object)
 {
     C::mip_packet_callback callback = [](void* obj, const C::mip_packet_view* pkt, Timestamp timestamp)->bool
@@ -73,6 +142,7 @@ void Parser::setCallback(T& object)
 
     C::mip_parser_set_callback(this, callback, &object);
 }
+
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Read data from a source into the internal parsing buffer.
