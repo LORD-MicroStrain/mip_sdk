@@ -13,6 +13,32 @@
 namespace mip::metadata
 {
 
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Skips the "descriptor_set::" prefix on field names, if it exists.
+///
+static const char* fieldName(const char* qualifiedFieldName)
+{
+    const char* p=qualifiedFieldName;
+
+    // Search forward for ':'
+    while(*p != ':')
+    {
+        if(*p == '\0')
+            return qualifiedFieldName;
+        p++;
+    }
+
+    // Continuing search for NOT ':'
+    while(*(++p) == ':')
+    {
+        if(*p == '\0')
+            return qualifiedFieldName;
+    }
+
+    return p;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Constructs a formatter which writes to the give ostream.
 ///
@@ -52,7 +78,7 @@ bool BasicFormatter::formatFieldBegin(const FieldInfo* info)
 {
     // Todo: print descriptors (even if NULL?)
     if(info)
-        mStream << info->name << '{';
+        mStream << fieldName(info->name) << '{';
     else
         mStream << "<field>";
 

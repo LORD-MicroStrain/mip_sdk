@@ -246,7 +246,7 @@ struct MetadataFor<Matrix3f>
             .type = {Type::FLOAT},
             .accessor = nullptr,
             .functions = NO_FUNCTIONS,
-            .count = 3,
+            .count = 9,
             .condition = {},
         },
     };
