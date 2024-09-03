@@ -7,6 +7,8 @@
 #ifdef __cplusplus
 namespace microstrain {
 namespace C {
+#else
+#include <assert.h>
 #endif
 
 ///@brief Type used for packet timestamps and timeouts.
