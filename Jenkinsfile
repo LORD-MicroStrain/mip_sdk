@@ -1,3 +1,12 @@
+// Utility function for getting the real branch name even in a pull request
+def branchName() {
+  if (env.CHANGE_BRANCH) {
+    return env.CHANGE_BRANCH
+  } else {
+    return env.BRANCH_NAME
+  }
+}
+
 // Utility function for checking out the repo since we want all the branches and tags
 def checkoutRepo() {
   // Clean the workspace
@@ -5,11 +14,7 @@ def checkoutRepo() {
 
   // Handles both PRs and branches
   script {
-    if (env.CHANGE_BRANCH) {
-      BRANCH_NAME_REAL = env.CHANGE_BRANCH
-    } else {
-      BRANCH_NAME_REAL = env.BRANCH_NAME
-    }
+    BRANCH_NAME_REAL = branchName();
   }
 
   // Checkout the code from github
@@ -146,7 +151,7 @@ pipeline {
                 cd build_mac_arm64
                 cmake .. \
                   -DBUILD_PACKAGE=ON \
-                  -DCMAKE_BUILD_TYPE=RELEASE \
+                  -DCMAKE_BUILD_TYPE=RELEASE
                 cmake --build . -j $(sysctl -n hw.ncpu)
                 cmake --build . --target package
               '''
@@ -169,7 +174,7 @@ pipeline {
                 cd build_mac_intel
                 cmake .. \
                   -DBUILD_PACKAGE=ON \
-                  -DCMAKE_BUILD_TYPE=RELEASE \
+                  -DCMAKE_BUILD_TYPE=RELEASE
                 cmake --build . -j $(sysctl -n hw.ncpu)
                 cmake --build . --target package
               '''
