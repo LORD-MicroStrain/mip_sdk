@@ -45,21 +45,23 @@ pipeline {
             timeout(time: 5, activity: true, unit: 'MINUTES')
           }
           steps {
-            checkoutRepo()
-            env.setProperty('BRANCH_NAME', branchName())
-            powershell """
-              mkdir build_Win32
-              cd build_Win32
-              cmake .. `
-                -A "Win32" `
-                -T "v143" `
-                -DBUILD_DOCUMENTATION=ON `
-                -DBUILD_PACKAGE=ON
-              if(\$?) { cmake --build . }
-              if(\$?) { cmake --build . --target package }
-              if(\$?) { cmake --build . --target package_docs }
-            """
-            archiveArtifacts artifacts: 'build_Win32/mipsdk_*'
+            script {
+              checkoutRepo()
+              env.setProperty('BRANCH_NAME', branchName())
+              powershell """
+                mkdir build_Win32
+                cd build_Win32
+                cmake .. `
+                  -A "Win32" `
+                  -T "v143" `
+                  -DBUILD_DOCUMENTATION=ON `
+                  -DBUILD_PACKAGE=ON
+                if(\$?) { cmake --build . }
+                if(\$?) { cmake --build . --target package }
+                if(\$?) { cmake --build . --target package_docs }
+              """
+              archiveArtifacts artifacts: 'build_Win32/mipsdk_*'
+            }
           }
         }
         stage('Windows x64') {
@@ -69,19 +71,21 @@ pipeline {
             timeout(time: 5, activity: true, unit: 'MINUTES')
           }
           steps {
-            checkoutRepo()
-            env.setProperty('BRANCH_NAME', branchName())
-            powershell """
-              mkdir build_x64
-              cd build_x64
-              cmake .. `
-                -A "x64" `
-                -T "v143" `
-                -DBUILD_PACKAGE=ON
-              if(\$?) { cmake --build . }
-              if(\$?) { cmake --build . --target package }
-            """
-            archiveArtifacts artifacts: 'build_x64/mipsdk_*'
+            script {
+              checkoutRepo()
+              env.setProperty('BRANCH_NAME', branchName())
+              powershell """
+                mkdir build_x64
+                cd build_x64
+                cmake .. `
+                  -A "x64" `
+                  -T "v143" `
+                  -DBUILD_PACKAGE=ON
+                if(\$?) { cmake --build . }
+                if(\$?) { cmake --build . --target package }
+              """
+              archiveArtifacts artifacts: 'build_x64/mipsdk_*'
+            }
           }
         }
         stage('Ubuntu amd64') {
@@ -91,10 +95,12 @@ pipeline {
             timeout(time: 5, activity: true, unit: 'MINUTES')
           }
           steps {
-            checkoutRepo()
-            env.setProperty('BRANCH_NAME', branchName())
-            sh "./.devcontainer/docker_build.sh --os ubuntu --arch amd64"
-            archiveArtifacts artifacts: 'build_ubuntu_amd64/mipsdk_*'
+            script {
+              checkoutRepo()
+              env.setProperty('BRANCH_NAME', branchName())
+              sh "./.devcontainer/docker_build.sh --os ubuntu --arch amd64"
+              archiveArtifacts artifacts: 'build_ubuntu_amd64/mipsdk_*'
+            }
           }
         }
         stage('Centos amd64') {
@@ -104,10 +110,12 @@ pipeline {
             timeout(time: 5, activity: true, unit: 'MINUTES')
           }
           steps {
-            checkoutRepo()
-            env.setProperty('BRANCH_NAME', branchName())
-            sh "./.devcontainer/docker_build.sh --os centos --arch amd64"
-            archiveArtifacts artifacts: 'build_centos_amd64/mipsdk_*'
+            script {
+              checkoutRepo()
+              env.setProperty('BRANCH_NAME', branchName())
+              sh "./.devcontainer/docker_build.sh --os centos --arch amd64"
+              archiveArtifacts artifacts: 'build_centos_amd64/mipsdk_*'
+            }
           }
         }
         stage('Ubuntu arm64') {
@@ -117,10 +125,12 @@ pipeline {
             timeout(time: 5, activity: true, unit: 'MINUTES')
           }
           steps {
-            checkoutRepo()
-            env.setProperty('BRANCH_NAME', branchName())
-            sh "./.devcontainer/docker_build.sh --os ubuntu --arch arm64v8"
-            archiveArtifacts artifacts: 'build_ubuntu_arm64v8/mipsdk_*'
+            script {
+              checkoutRepo()
+              env.setProperty('BRANCH_NAME', branchName())
+              sh "./.devcontainer/docker_build.sh --os ubuntu --arch arm64v8"
+              archiveArtifacts artifacts: 'build_ubuntu_arm64v8/mipsdk_*'
+            }
           }
         }
         stage('Ubuntu arm32') {
@@ -130,10 +140,12 @@ pipeline {
             timeout(time: 5, activity: true, unit: 'MINUTES')
           }
           steps {
-            checkoutRepo()
-            env.setProperty('BRANCH_NAME', branchName())
-            sh "./.devcontainer/docker_build.sh --os ubuntu --arch arm32v7"
-            archiveArtifacts artifacts: 'build_ubuntu_arm32v7/mipsdk_*'
+            script {
+              checkoutRepo()
+              env.setProperty('BRANCH_NAME', branchName())
+              sh "./.devcontainer/docker_build.sh --os ubuntu --arch arm32v7"
+              archiveArtifacts artifacts: 'build_ubuntu_arm32v7/mipsdk_*'
+            }
           }
         }
         stage("Mac M2") {
