@@ -40,3 +40,9 @@ endif()
 if(MIP_ENABLE_EXTRAS)
     add_subdirectory(extras)
 endif()
+
+#
+# Installation
+#
+include(microstrain_utilities)
+microstrain_setup_install_headers(${MIP_LIBRARY})

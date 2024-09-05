@@ -24,10 +24,20 @@ add_library(${MIP_METADATA_LIBRARY}
 )
 
 target_compile_features(${MIP_METADATA_LIBRARY} PUBLIC cxx_std_20)
-target_link_libraries(${MIP_METADATA_LIBRARY}
-    PRIVATE ${MICROSTRAIN_PRIVATE_LIBRARY}
-    PUBLIC ${MIP_LIBRARY}
+
+target_link_libraries(${MIP_METADATA_LIBRARY} PUBLIC ${MIP_LIBRARY})
+
+target_compile_definitions(${MIP_METADATA_LIBRARY}
+    PUBLIC "MIP_ENABLE_METADATA=1"
+    PRIVATE ${MICROSTRAIN_PRIVATE_COMPILE_DEFINITIONS}
 )
-target_compile_definitions(${MIP_METADATA_LIBRARY} PUBLIC "MIP_ENABLE_METADATA=1")
+
+target_compile_options(${MIP_METADATA_LIBRARY} PRIVATE ${MICROSTRAIN_PRIVATE_COMPILE_OPTIONS})
 
 target_link_libraries(${MIP_LIBRARIES} INTERFACE ${MIP_METADATA_LIBRARY})
+
+#
+# Installation
+#
+include(microstrain_utilities)
+microstrain_setup_library_install(${MIP_METADATA_LIBRARY} ${MIP_LIBRARY})

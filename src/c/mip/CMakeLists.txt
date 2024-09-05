@@ -39,14 +39,15 @@ add_library(${MIP_LIBRARY}
 )
 
 target_compile_features(${MIP_LIBRARY} PUBLIC c_std_11)
-target_link_libraries(${MIP_LIBRARY}
-    PRIVATE ${MICROSTRAIN_PRIVATE_LIBRARY}
-    PUBLIC ${MICROSTRAIN_COMMON_LIBRARY}
-)
+target_link_libraries(${MIP_LIBRARY} PUBLIC ${MICROSTRAIN_COMMON_LIBRARY})
 
 if(${MIP_ENABLE_DIAGNOSTICS})
     target_compile_definitions(${MIP_LIBRARY} PUBLIC "MIP_ENABLE_DIAGNOSTICS=1")
 endif()
+
+target_compile_definitions(${MIP_LIBRARY} PRIVATE ${MICROSTRAIN_PRIVATE_COMPILE_DEFINITIONS})
+
+target_compile_options(${MIP_LIBRARY} PRIVATE ${MICROSTRAIN_PRIVATE_COMPILE_OPTIONS})
 
 
 #
@@ -85,3 +86,9 @@ endif()
 target_sources(${MIP_LIBRARY} PRIVATE ${MIP_DEF_SOURCES})
 
 target_link_libraries(${MIP_LIBRARIES} INTERFACE ${MIP_LIBRARY})
+
+#
+# Installation
+#
+include(microstrain_utilities)
+microstrain_setup_library_install(${MIP_LIBRARY} ${MIP_LIBRARY})

@@ -11,3 +11,9 @@ target_sources(${MICROSTRAIN_COMMON_LIBRARY} PRIVATE
 
 target_compile_features(${MICROSTRAIN_COMMON_LIBRARY} PUBLIC cxx_std_11)
 target_include_directories(${MICROSTRAIN_COMMON_LIBRARY} INTERFACE ${SRC_CPP_DIR})
+
+#
+# Installation
+#
+include(microstrain_utilities)
+microstrain_setup_install_headers(${MICROSTRAIN_COMMON_LIBRARY})

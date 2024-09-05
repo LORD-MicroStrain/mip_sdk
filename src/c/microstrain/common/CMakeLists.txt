@@ -11,9 +11,15 @@ add_library(${MICROSTRAIN_COMMON_LIBRARY}
     "serialization.c"
     "serialization.h"
 )
-target_link_libraries(${MICROSTRAIN_COMMON_LIBRARY} PRIVATE ${MICROSTRAIN_PRIVATE_LIBRARY})
+
 target_compile_features(${MICROSTRAIN_COMMON_LIBRARY} PUBLIC c_std_11)
-target_compile_definitions(${MICROSTRAIN_COMMON_LIBRARY} PUBLIC "MICROSTRAIN_TIMESTAMP_TYPE=${MICROSTRAIN_TIMESTAMP_TYPE}")
+
+target_compile_definitions(${MICROSTRAIN_COMMON_LIBRARY}
+    PUBLIC "MICROSTRAIN_TIMESTAMP_TYPE=${MICROSTRAIN_TIMESTAMP_TYPE}"
+    PRIVATE ${MICROSTRAIN_PRIVATE_COMPILE_DEFINITIONS}
+)
+
+target_compile_options(${MICROSTRAIN_COMMON_LIBRARY} PRIVATE ${MICROSTRAIN_PRIVATE_COMPILE_OPTIONS})
 
 # Logging is a little weird since we need to install the header no matter what
 if(MICROSTRAIN_ENABLE_LOGGING)
@@ -28,3 +34,9 @@ endif()
 target_include_directories(${MICROSTRAIN_COMMON_LIBRARY} INTERFACE ${SRC_C_DIR})
 
 target_link_libraries(${MICROSTRAIN_LIBRARIES} INTERFACE ${MICROSTRAIN_COMMON_LIBRARY})
+
+#
+# Installation
+#
+include(microstrain_utilities)
+microstrain_setup_library_install(${MICROSTRAIN_COMMON_LIBRARY} ${MICROSTRAIN_COMMON_LIBRARY})

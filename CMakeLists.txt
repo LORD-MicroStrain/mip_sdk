@@ -16,6 +16,8 @@ set(SRC_DIR "${CMAKE_CURRENT_LIST_DIR}/src")
 set(MIP_CMAKE_DIR "${CMAKE_CURRENT_LIST_DIR}/cmake")
 set(MIP_DIR "${SRC_DIR}/mip")
 
+list(APPEND CMAKE_MODULE_PATH ${MIP_CMAKE_DIR})
+
 #
 # Build options
 #
@@ -107,32 +109,30 @@ configure_file(${VERSION_IN_FILE} ${VERSION_OUT_FILE})
 #
 # Common preprocessor definitions
 #
-set(MICROSTRAIN_PRIVATE_LIBRARY "microstrain_private")
-mark_as_advanced(MICROSTRAIN_PRIVATE_LIBRARY)
-add_library(${MICROSTRAIN_PRIVATE_LIBRARY} INTERFACE)
 
-# Disable windows defined min/max
-# Set Windows header version (0x0501 is _WIN32_WINNT_WINXP, required for TCP)
 if(WIN32)
-    target_compile_definitions(${MICROSTRAIN_PRIVATE_LIBRARY}
-        INTERFACE
+    if(MSVC)
+        set(MICROSTRAIN_PRIVATE_COMPILE_OPTIONS
+            "/external:anglebrackets" # Treat angle brackets as system includes
+            "/external:W0"            # No warnings from system includes
+            "/W4"                     # Enable warnings
+            "/Zc:__cplusplus"         # Enable updated __cplusplus value
+        )
+    endif()
+
+    # Disable windows defined min/max
+    # Set Windows header version (0x0501 is _WIN32_WINNT_WINXP, required for TCP)
+    set(MICROSTRAIN_PRIVATE_COMPILE_DEFINITIONS
         "NOMINMAX=1"
         "_WIN32_WINNT=_WIN32_WINNT_WINXP"
     )
-endif()
-
-if(MSVC)
-    target_compile_options(${MICROSTRAIN_PRIVATE_LIBRARY} INTERFACE
-        "/external:anglebrackets"  # Treat angle brackets as system includes
-        "/external:W0"             # No warnings from system includes
-        "/W4"                      # Enable warnings
-        "/Zc:__cplusplus"          # Enable updated __cplusplus value
-    )
 else()
-    target_compile_options(${MICROSTRAIN_PRIVATE_LIBRARY} INTERFACE
-        "-Wall"    # Extra warnings
-        "-Wextra"
+    set(MICROSTRAIN_PRIVATE_COMPILE_OPTIONS
+        "-Wall"   # Enable warnings
+        "-Wextra" # Enable extra warnings
     )
+
+    set(MICROSTRAIN_PRIVATE_COMPILE_DEFINITIONS "")
 endif()
 
 # Create "catch-all" interface libraries
@@ -152,15 +152,15 @@ cmake_policy(SET CMP0079 NEW)
 # Add all the C files (required even for C++ API)
 set(SRC_C_DIR "${CMAKE_CURRENT_LIST_DIR}/src/c")
 
-add_subdirectory(src/c/microstrain)
-add_subdirectory(src/c/mip)
+add_subdirectory(${SRC_C_DIR}/microstrain)
+add_subdirectory(${SRC_C_DIR}/mip)
 
 # Add all the C++ files (if C++ enabled)
 if(MICROSTRAIN_ENABLE_CPP)
     set(SRC_CPP_DIR "${CMAKE_CURRENT_LIST_DIR}/src/cpp")
 
-    add_subdirectory(src/cpp/microstrain)
-    add_subdirectory(src/cpp/mip)
+    add_subdirectory(${SRC_CPP_DIR}/microstrain)
+    add_subdirectory(${SRC_CPP_DIR}/mip)
 
     #target_compile_definitions(${MICROSTRAIN_COMMON_LIBRARY} PUBLIC "MICROSTRAIN_ENABLE_CPP_C_NAMESPACE=${MICROSTRAIN_ENABLE_CPP_C_NAMESPACE}")
 endif()
@@ -342,46 +342,69 @@ endif()
 
 # If we were asked to package, find the generators we can use
 if(BUILD_PACKAGE)
+    # Get a list of libraries to package
+    get_target_property(MICROSTRAIN_PACKAGES ${MICROSTRAIN_LIBRARIES} INTERFACE_LINK_LIBRARIES)
+    get_target_property(MIP_PACKAGES ${MIP_LIBRARIES} INTERFACE_LINK_LIBRARIES)
+
+    # Filter out directory IDs from (INTERFACE_)LINK_LIBRARIES as well as the MicroStrain libraries from MIP
+    # https://cmake.org/cmake/help/latest/prop_tgt/LINK_LIBRARIES.html
+    set(REGEX_MATCH "(::@*)")
+    list(FILTER MICROSTRAIN_PACKAGES EXCLUDE REGEX ${REGEX_MATCH})
+    string(APPEND REGEX_MATCH "|(${MICROSTRAIN_LIBRARIES})")
+    list(FILTER MIP_PACKAGES EXCLUDE REGEX ${REGEX_MATCH})
+
     set(FOUND_CPACK_GENERATORS "")
-    set(7Z_ROOT "" CACHE STRING "Location of the 7zip executable")
-    set(DPKG_ROOT "" CACHE STRING "Location of the dpkg executable")
-    set(RPMBUILD_ROOT "" CACHE STRING "Location of the rpmbuild executable")
-    find_program(7Z_EXECUTABLE
-        NAMES 7z
-        PATHS ${7Z_ROOT}
-        DOC "7zip command line client"
-    )
-    if(NOT ${7Z_EXECUTABLE} STREQUAL "7Z_EXECUTABLE-NOTFOUND")
-        list(APPEND FOUND_CPACK_GENERATORS "7Z")
+
+    if(UNIX AND NOT APPLE)
+        set(DPKG_ROOT "" CACHE STRING "Location of the dpkg executable")
+        set(RPMBUILD_ROOT "" CACHE STRING "Location of the rpmbuild executable")
+
+        find_program(DPKG_EXECUTABLE
+            NAMES dpkg
+            PATHS ${DPKG_ROOT}
+            DOC "dpkg command line client"
+        )
+        if(NOT ${DPKG_EXECUTABLE} STREQUAL "DPKG_EXECUTABLE-NOTFOUND")
+            list(APPEND FOUND_CPACK_GENERATORS "DEB")
+        endif()
+
+        find_program(RPMBUILD_EXECUTABLE
+            NAMES rpmbuild
+            PATHS ${RPMBUILD_ROOT}
+            DOC "rpmbuild command line client"
+        )
+        if(NOT ${RPMBUILD_EXECUTABLE} STREQUAL "RPMBUILD_EXECUTABLE-NOTFOUND")
+            list(APPEND FOUND_CPACK_GENERATORS "RPM")
+        endif()
     endif()
-    find_program(DPKG_EXECUTABLE
-        NAMES dpkg
-        PATHS ${DPKG_ROOT}
-        DOC "dpkg command line client"
-    )
-    if(NOT ${DPKG_EXECUTABLE} STREQUAL "DPKG_EXECUTABLE-NOTFOUND")
-        list(APPEND FOUND_CPACK_GENERATORS "DEB")
+
+    # Windows always has zip installed, so only look for it on linux and mac
+    if(WIN32)
+        list(APPEND FOUND_CPACK_GENERATORS "ZIP")
+    else()
+        set(ZIP_ROOT "" CACHE STRING "Location of the zip executable")
+        find_program(ZIP_EXECUTABLE
+            NAMES zip
+            PATHS ${ZIP_ROOT}
+            DOC "zip command line client"
+        )
+        if(NOT ${ZIP_EXECUTABLE} STREQUAL "ZIP_EXECUTABLE-NOTFOUND")
+            list(APPEND FOUND_CPACK_GENERATORS "ZIP")
+        endif()
     endif()
-    find_program(RPMBUILD_EXECUTABLE
-        NAMES rpmbuild
-        PATHS ${RPMBUILD_ROOT}
-        DOC "rpmbuild command line client"
-    )
-    if(NOT ${RPMBUILD_EXECUTABLE} STREQUAL "RPMBUILD_EXECUTABLE-NOTFOUND")
-        list(APPEND FOUND_CPACK_GENERATORS "RPM")
-    endif()
+
     if(NOT FOUND_CPACK_GENERATORS)
         message(FATAL_ERROR "Unable to find a suitable package generator, but we were requested to build a package.")
+    else()
+        message(STATUS "Packaging using the following generators: ${FOUND_CPACK_GENERATORS}")
     endif()
-endif()
 
-# If we were asked to build packages, include CPack and set up packaging
-if(BUILD_PACKAGE)
+    # Packaging
     # NOTE: CPack requires all these variables to be set before importing the module. Do not move them after the include(CPack) line
     set(CPACK_GENERATOR "${FOUND_CPACK_GENERATORS}")
     set(CPACK_PACKAGE_VENDOR "MicroStrain by HBK")
     set(CPACK_PACKAGE_CONTACT "MicroStrain Support <microstrainsupport@hbkworld.com>")
-    set(CPACK_COMPONENTS_ALL ${MIP_LIBRARY})
+    set(CPACK_COMPONENTS_ALL ${MIP_LIBRARY} ${MIP_LIBRARIES})
 
     set(CPACK_PACKAGE_VERSION ${MIP_GIT_VERSION_CLEAN})
 
