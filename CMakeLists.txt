@@ -52,7 +52,7 @@ option(MIP_ENABLE_DIAGNOSTICS "Enable various diagnostic counters in the mip lib
 
 if(NOT DEFINED MIP_ENABLE_METADATA)
     include(check_metadata)
-    message("MIP_ENABLE_METADATA not set - compiler support: ${MIP_COMPILER_SUPPORTS_METADATA}")
+    message(STATUS "MIP_ENABLE_METADATA not set - compiler support: ${MIP_COMPILER_SUPPORTS_METADATA}")
 endif()
 option(MIP_ENABLE_METADATA "Build support for MIP protocol metadata in C++ (requires c++20)" ${MIP_COMPILER_SUPPORTS_METADATA})
 option(MIP_ENABLE_EXTRAS "Build extra support into the library including some things that might work at a higher level and use dynamically allocated memory" ${MICROSTRAIN_ENABLE_EXTRAS})

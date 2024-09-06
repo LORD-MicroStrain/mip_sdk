@@ -1,5 +1,9 @@
 # Install the headers in their
 macro(microstrain_setup_install_headers LIBRARY ROOT_DIR)
+    if(UNIX AND NOT APPLE)
+        include(GNUInstallDirs)
+    endif()
+
     # Only install headers that we build the source files for
     get_target_property(ALL_HEADERS ${LIBRARY} SOURCES)
     list(FILTER ALL_HEADERS INCLUDE REGEX "^.*\.(h|hpp)$")
