@@ -7,7 +7,7 @@ set(TEST_DIR "${CMAKE_CURRENT_LIST_DIR}")
 macro(add_mip_test name sources command)
     add_executable(${name} ${sources})
 
-    target_include_directories(${name} PRIVATE ${SRC_DIR})
+    target_include_directories(${name} PRIVATE ${MICROSTRAIN_SRC_DIR})
     target_link_libraries(${name} ${MIP_LIBRARY})
 
     add_test(${name} ${command} ${ARGN})

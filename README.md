@@ -125,20 +125,22 @@ How to Build
 ### CMake Build Configuration
 
 The following options may be specified when configuring the build with CMake (e.g. `cmake .. -DOPTION=VALUE`):
-* MICROSTRAIN_ENABLE_SERIAL - Builds the included serial port library (default enabled).
-* MICROSTRAIN_ENABLE_TCP - Builds the included socket library (default enabled).
 * MICROSTRAIN_ENABLE_LOGGING - Builds logging functionality into the library. The user is responsible for configuring a logging callback (default enabled)
 * MICROSTRAIN_LOGGING_MAX_LEVEL - Max log level the SDK is allowed to log. If this is defined, any log level logged at a higher level than this will result in a noop regardless of runtime configuration. Useful if you want some logs, but do not want the overhead compiled into the code.
 * MICROSTRAIN_TIMESTAMP_TYPE - Overrides the default timestamp type. See [Timestamps](https://lord-microstrain.github.io/mip_sdk_documentation/latest/timestamps.html) in the documentation.
 * MICROSTRAIN_ENABLE_CPP - Causes the src/cpp directory to be included in the build (default enabled). Disable to turn off the C++ api.
-* MIP_ENABLE_EXTRAS - Builds some higher level utility classes and functions that may use dynamic memory.
+* MICROSTRAIN_ENABLE_EXTRAS - Builds some higher level utility classes and functions that may use dynamic memory.
+* MICROSTRAIN_ENABLE_SERIAL - Builds the included serial port library (default enabled).
+* MICROSTRAIN_ENABLE_TCP - Builds the included socket library (default enabled).
+* MICROSTRAIN_BUILD_PACKAGE - Adds a `package` target to the project that will build a `.deb`, `.rpm`, or `.zip` file containing the library
+* MICROSTRAIN_BUILD_EXAMPLES - If enabled (`-DMICROSTRAIN_BUILD_EXAMPLES=ON`), the example projects will be built (default disabled).
+* MICROSTRAIN_BUILD_TESTING - If enabled (`-DMICROSTRAIN_BUILD_TESTING=ON`), the test programs in the /test directory will be compiled and linked. Run the tests with `ctest`.
+* MICROSTRAIN_BUILD_DOCUMENTATION - If enabled, the documentation will be built with doxygen. You must have doxygen installed.
+* MICROSTRAIN_BUILD_DOCUMENTATION_FULL - Builds internal documentation (default disabled).
+* MICROSTRAIN_BUILD_DOCUMENTATION_QUIET - Suppress standard doxygen output (default enabled).
 * MIP_ENABLE_DIAGNOSTICS - Adds some counters to various entities which can serve as a debugging aid.
-* BUILD_EXAMPLES - If enabled (`-DBUILD_EXAMPLES=ON`), the example projects will be built (default disabled).
-* BUILD_TESTING - If enabled (`-DBUILD_TESTING=ON`), the test programs in the /test directory will be compiled and linked. Run the tests with `ctest`.
-* BUILD_DOCUMENTATION - If enabled, the documentation will be built with doxygen. You must have doxygen installed.
-* BUILD_DOCUMENTATION_FULL - Builds internal documentation (default disabled).
-* BUILD_DOCUMENTATION_QUIET - Suppress standard doxygen output (default enabled).
-* BUILD_PACKAGE - Adds a `package` target to the project that will build a `.deb`, `.rpm`, or `.7z` file containing the library
+* MIP_ENABLE_METADATA - Builds metadata for MIP commands. If not set, the system will try to determine if C++20 is available to enable it. C++20 is required for the metadata module.
+* MIP_ENABLE_EXTRAS - Builds some higher level utility classes and functions that may use dynamic memory. (default MICROSTRAIN_ENABLE_EXTRAS)
 
 ### Compilation 
 
@@ -148,7 +150,7 @@ The following options may be specified when configuring the build with CMake (e.
    * You can use `cmake-gui ..` instead if you'd prefer to use the GUI tool (and have it installed).
    * An alternative generator may be used, such as ninja, code blocks, etc. by specifying `-G <generator>`
 3. Invoke `cmake --build .` in the build directory
-4. (Optional, if BUILD_PACKAGE was enabled) Run `cmake --build . --target package` to build the packages.
+4. (Optional, if MICROSTRAIN_BUILD_PACKAGE was enabled) Run `cmake --build . --target package` to build the packages.
 
 ### Building without CMake
 

@@ -2,9 +2,9 @@ set(MICROSTRAIN_RECORDING_CONNECTION_LIBRARY "microstrain_recording_connection" 
 mark_as_advanced(MICROSTRAIN_RECORDING_CONNECTION_LIBRARY)
 
 add_library(${MICROSTRAIN_RECORDING_CONNECTION_LIBRARY}
-    recording_connection.cpp
-    recording_connection.hpp
-    ../connection.hpp
+    "${CMAKE_CURRENT_LIST_DIR}/recording_connection.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/recording_connection.hpp"
+    "${CMAKE_CURRENT_LIST_DIR}/../connection.hpp"
 )
 
 target_compile_features(${MICROSTRAIN_RECORDING_CONNECTION_LIBRARY} PUBLIC cxx_std_11)
@@ -18,5 +18,6 @@ target_link_libraries(${MICROSTRAIN_LIBRARIES} INTERFACE ${MICROSTRAIN_RECORDING
 #
 # Installation
 #
+
 include(microstrain_utilities)
-microstrain_setup_library_install(${MICROSTRAIN_RECORDING_CONNECTION_LIBRARY} ${MICROSTRAIN_COMMON_LIBRARY})
+microstrain_setup_library_install(${MICROSTRAIN_RECORDING_CONNECTION_LIBRARY} ${MICROSTRAIN_SRC_DIR})

@@ -6,10 +6,10 @@ set(MICROSTRAIN_LOGGING_MAX_LEVEL "MICROSTRAIN_LOG_LEVEL_WARN" CACHE STRING "Max
 set(MICROSTRAIN_TIMESTAMP_TYPE "uint64_t" CACHE STRING "Override the type used for received data timestamps and timeouts (must be unsigned or at least 64 bits).")
 
 add_library(${MICROSTRAIN_COMMON_LIBRARY}
-    "logging.h"
-    "platform.h"
-    "serialization.c"
-    "serialization.h"
+    "${CMAKE_CURRENT_LIST_DIR}/logging.h"
+    "${CMAKE_CURRENT_LIST_DIR}/platform.h"
+    "${CMAKE_CURRENT_LIST_DIR}/serialization.c"
+    "${CMAKE_CURRENT_LIST_DIR}/serialization.h"
 )
 
 target_compile_features(${MICROSTRAIN_COMMON_LIBRARY} PUBLIC c_std_11)
@@ -31,12 +31,13 @@ if(MICROSTRAIN_ENABLE_LOGGING)
     target_compile_definitions(${MICROSTRAIN_COMMON_LIBRARY} PUBLIC "MICROSTRAIN_ENABLE_LOGGING" "MICROSTRAIN_LOGGING_MAX_LEVEL=${MICROSTRAIN_LOGGING_MAX_LEVEL}")
 endif()
 
-target_include_directories(${MICROSTRAIN_COMMON_LIBRARY} INTERFACE ${SRC_C_DIR})
+target_include_directories(${MICROSTRAIN_COMMON_LIBRARY} INTERFACE ${MICROSTRAIN_SRC_C_DIR})
 
 target_link_libraries(${MICROSTRAIN_LIBRARIES} INTERFACE ${MICROSTRAIN_COMMON_LIBRARY})
 
 #
 # Installation
 #
+
 include(microstrain_utilities)
-microstrain_setup_library_install(${MICROSTRAIN_COMMON_LIBRARY} ${MICROSTRAIN_COMMON_LIBRARY})
+microstrain_setup_library_install(${MICROSTRAIN_COMMON_LIBRARY} ${MICROSTRAIN_SRC_DIR})

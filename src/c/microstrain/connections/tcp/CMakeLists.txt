@@ -2,8 +2,8 @@ set(MICROSTRAIN_SOCKET_LIBRARY "microstrain_socket" CACHE INTERNAL "Name of the 
 mark_as_advanced(MICROSTRAIN_SOCKET_LIBRARY)
 
 add_library(${MICROSTRAIN_SOCKET_LIBRARY}
-    "tcp_socket.h"
-    "tcp_socket.c"
+    "${CMAKE_CURRENT_LIST_DIR}/tcp_socket.h"
+    "${CMAKE_CURRENT_LIST_DIR}/tcp_socket.c"
 )
 
 target_compile_features(${MICROSTRAIN_SOCKET_LIBRARY} PUBLIC c_std_11)
@@ -26,5 +26,6 @@ target_link_libraries(${MICROSTRAIN_LIBRARIES} INTERFACE ${MICROSTRAIN_SOCKET_LI
 #
 # Installation
 #
+
 include(microstrain_utilities)
-microstrain_setup_library_install(${MICROSTRAIN_SOCKET_LIBRARY} ${MICROSTRAIN_COMMON_LIBRARY})
+microstrain_setup_library_install(${MICROSTRAIN_SOCKET_LIBRARY} ${MICROSTRAIN_SRC_DIR})

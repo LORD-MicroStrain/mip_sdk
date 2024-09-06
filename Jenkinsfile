@@ -54,8 +54,8 @@ pipeline {
                 cmake .. `
                   -A "Win32" `
                   -T "v143" `
-                  -DBUILD_DOCUMENTATION=ON `
-                  -DBUILD_PACKAGE=ON
+                  -DMICROSTRAIN_BUILD_DOCUMENTATION=ON `
+                  -DMICROSTRAIN_BUILD_PACKAGE=ON
                 if(\$?) { cmake --build . }
                 if(\$?) { cmake --build . --target package }
                 if(\$?) { cmake --build . --target package_docs }
@@ -80,7 +80,7 @@ pipeline {
                 cmake .. `
                   -A "x64" `
                   -T "v143" `
-                  -DBUILD_PACKAGE=ON
+                  -DMICROSTRAIN_BUILD_PACKAGE=ON
                 if(\$?) { cmake --build . }
                 if(\$?) { cmake --build . --target package }
               """
@@ -162,7 +162,7 @@ pipeline {
                 mkdir build_mac_arm64
                 cd build_mac_arm64
                 cmake .. \
-                  -DBUILD_PACKAGE=ON \
+                  -DMICROSTRAIN_BUILD_PACKAGE=ON \
                   -DCMAKE_BUILD_TYPE=RELEASE
                 cmake --build . -j $(sysctl -n hw.ncpu)
                 cmake --build . --target package
@@ -185,7 +185,7 @@ pipeline {
                 mkdir build_mac_intel
                 cd build_mac_intel
                 cmake .. \
-                  -DBUILD_PACKAGE=ON \
+                  -DMICROSTRAIN_BUILD_PACKAGE=ON \
                   -DCMAKE_BUILD_TYPE=RELEASE
                 cmake --build . -j $(sysctl -n hw.ncpu)
                 cmake --build . --target package

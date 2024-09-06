@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.12)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -6,22 +6,22 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
 project(
-    "MIP SDK"
+    "MIP_SDK"
     VERSION "3.0.00"
     DESCRIPTION "MicroStrain Communications Library for embedded systems"
     LANGUAGES C CXX
 )
 
-set(SRC_DIR "${CMAKE_CURRENT_LIST_DIR}/src")
-set(MIP_CMAKE_DIR "${CMAKE_CURRENT_LIST_DIR}/cmake")
-set(MIP_DIR "${SRC_DIR}/mip")
+set(MICROSTRAIN_SRC_DIR "${CMAKE_CURRENT_LIST_DIR}/src")
 
-list(APPEND CMAKE_MODULE_PATH ${MIP_CMAKE_DIR})
+# Add our cmake directory to the available cmake modules path
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
 #
 # Build options
 #
 
+# MicroStrain options
 option(MICROSTRAIN_ENABLE_LOGGING "Build with logging functions enabled" ON)
 
 set(MICROSTRAIN_LOGGING_MAX_LEVEL "MICROSTRAIN_LOG_LEVEL_INFO" CACHE STRING "Max log level the SDK is allowed to log. If this is defined, any log level logged at a higher level than this will result in a noop regardless of runtime configuration.")
@@ -34,77 +34,31 @@ option(MICROSTRAIN_ENABLE_EXTRAS "Build extra support into the library including
 option(MICROSTRAIN_ENABLE_SERIAL "Build serial connection support into the library and examples" ON)
 option(MICROSTRAIN_ENABLE_TCP "Build TCP connection support into the library and examples" ON)
 
+option(MICROSTRAIN_BUILD_PACKAGE "Whether to build a package from the resulting binaries" OFF)
+option(MICROSTRAIN_BUILD_EXAMPLES "Builds the example programs." OFF)
+
+# CTest defines this option to ON by default, so override it to OFF here.
+option(MICROSTRAIN_BUILD_TESTS "Build the testing tree." OFF)
+
+option(MICROSTRAIN_BUILD_DOCUMENTATION       "Build the documentation." OFF)
+option(MICROSTRAIN_BUILD_DOCUMENTATION_FULL  "Build the full (internal) documentation." OFF)
+option(MICROSTRAIN_BUILD_DOCUMENTATION_QUIET "Suppress doxygen standard output." ON)
+
+option(MICROSTRAIN_CMAKE_DEBUG "If set, prints build system debug info such as source files and preprocessor definitions." ON)  # TODO: off by default
+mark_as_advanced(MICROSTRAIN_CMAKE_DEBUG)
+
 # MIP options
 option(MIP_ENABLE_DIAGNOSTICS "Enable various diagnostic counters in the mip library for debugging." OFF)
 
 if(NOT DEFINED MIP_ENABLE_METADATA)
-    include("${MIP_CMAKE_DIR}/check_metadata.cmake")
+    include(check_metadata)
     message("MIP_ENABLE_METADATA not set - compiler support: ${MIP_COMPILER_SUPPORTS_METADATA}")
 endif()
 option(MIP_ENABLE_METADATA "Build support for MIP protocol metadata in C++ (requires c++20)" ${MIP_COMPILER_SUPPORTS_METADATA})
 option(MIP_ENABLE_EXTRAS "Build extra support into the library including some things that might work at a higher level and use dynamically allocated memory" ${MICROSTRAIN_ENABLE_EXTRAS})
 
-# Build options
-option(BUILD_PACKAGE "Whether to build a package from the resulting binaries" OFF)
-option(BUILD_EXAMPLES "Builds the example programs." ON)
-# CTest defines this option to ON by default, so override it to OFF here.
-option(BUILD_TESTS "Build the testing tree." OFF)
-option(BUILD_DOCUMENTATION       "Build the documentation." OFF)
-option(BUILD_DOCUMENTATION_FULL  "Build the full (internal) documentation." OFF)
-option(BUILD_DOCUMENTATION_QUIET "Suppress doxygen standard output." ON)
-
-option(MICROSTRAIN_CMAKE_DEBUG "If set, prints build system debug info such as source files and preprocessor definitions." ON)  # TODO: off by default
-mark_as_advanced(MICROSTRAIN_CMAKE_DEBUG)
-
-#
-# Version numbering
-#
-
-# Use Git to find the version
-find_package(Git)
-set(DEFAULT_MIP_GIT_VERSION "v0.0.0")
-if(NOT GIT_FOUND)
-    message(STATUS "Unable to find git, will build with unknown version")
-    set(MIP_GIT_VERSION ${DEFAULT_MSCL_GIT_VERSION})
-else()
-    execute_process(
-        COMMAND ${CMAKE_COMMAND} -E env ${GIT_EXECUTABLE} describe --tags
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        OUTPUT_VARIABLE MIP_GIT_VERSION_OUT
-        ERROR_VARIABLE MIP_GIT_VERSION_ERR
-        RESULT_VARIABLE MIP_GIT_VERSION_RET
-    )
-    if(NOT ${MIP_GIT_VERSION_RET} EQUAL 0)
-        message(STATUS "Unable to determine version from Git, defaulting to version ${DEFAULT_MIP_GIT_VERSION}")
-        set(MIP_GIT_VERSION ${DEFAULT_MIP_GIT_VERSION})
-    else()
-        set(MIP_GIT_VERSION ${MIP_GIT_VERSION_OUT})
-        string(REGEX REPLACE "\n" "" MIP_GIT_VERSION "${MIP_GIT_VERSION}")
-        message(STATUS "MIP SDK Version: ${MIP_GIT_VERSION}")
-    endif()
-endif()
-
-# Massage the version number a little so we can use it in a couple places
-string(REGEX REPLACE "^v?([0-9]+)\\.([0-9]+)\\.([0-9]+).*" "\\1.\\2.\\3" MIP_GIT_VERSION_CLEAN ${MIP_GIT_VERSION})
-string(REPLACE "." ";" MIP_GIT_VERSION_LIST ${MIP_GIT_VERSION_CLEAN})
-list(LENGTH MIP_GIT_VERSION_LIST MIP_GIT_VERSION_LIST_LENGTH)
-if (MIP_GIT_VERSION_LIST_LENGTH GREATER_EQUAL 3)
-    list(GET MIP_GIT_VERSION_LIST 0 MIP_GIT_VERSION_MAJOR)
-    list(GET MIP_GIT_VERSION_LIST 1 MIP_GIT_VERSION_MINOR)
-    list(GET MIP_GIT_VERSION_LIST 2 MIP_GIT_VERSION_PATCH)
-else()
-    message(WARNING "MIP version cannot be parsed into a semantic version string.\nPlease run 'git fetch --tags' to get a properly tagged build")
-    set(MIP_GIT_VERSION_CLEAN "0.0.0")
-    set(MIP_GIT_VERSION_MAJOR 0)
-    set(MIP_GIT_VERSION_MINOR 0)
-    set(MIP_GIT_VERSION_PATCH 0)
-endif()
-
-# Generate the version header file
-set(VERSION_IN_FILE "${CMAKE_CURRENT_LIST_DIR}/cmake/mip_version.h.in")
-set(VERSION_OUT_FILE "${SRC_DIR}/c/mip/mip_version.h")
-configure_file(${VERSION_IN_FILE} ${VERSION_OUT_FILE})
-
+# Include some utilities used for MicroStrain projects
+include(microstrain_utilities)
 
 #
 # Common preprocessor definitions
@@ -150,17 +104,17 @@ cmake_policy(SET CMP0079 NEW)
 
 
 # Add all the C files (required even for C++ API)
-set(SRC_C_DIR "${CMAKE_CURRENT_LIST_DIR}/src/c")
+set(MICROSTRAIN_SRC_C_DIR "${MICROSTRAIN_SRC_DIR}/c")
 
-add_subdirectory(${SRC_C_DIR}/microstrain)
-add_subdirectory(${SRC_C_DIR}/mip)
+add_subdirectory(${MICROSTRAIN_SRC_C_DIR}/microstrain)
+add_subdirectory(${MICROSTRAIN_SRC_C_DIR}/mip)
 
 # Add all the C++ files (if C++ enabled)
 if(MICROSTRAIN_ENABLE_CPP)
-    set(SRC_CPP_DIR "${CMAKE_CURRENT_LIST_DIR}/src/cpp")
+    set(MICROSTRAIN_SRC_CPP_DIR "${MICROSTRAIN_SRC_DIR}/cpp")
 
-    add_subdirectory(${SRC_CPP_DIR}/microstrain)
-    add_subdirectory(${SRC_CPP_DIR}/mip)
+    add_subdirectory(${MICROSTRAIN_SRC_CPP_DIR}/microstrain)
+    add_subdirectory(${MICROSTRAIN_SRC_CPP_DIR}/mip)
 
     #target_compile_definitions(${MICROSTRAIN_COMMON_LIBRARY} PUBLIC "MICROSTRAIN_ENABLE_CPP_C_NAMESPACE=${MICROSTRAIN_ENABLE_CPP_C_NAMESPACE}")
 endif()
@@ -178,7 +132,7 @@ target_link_libraries(${MIP_LIBRARIES} INTERFACE ${MICROSTRAIN_LIBRARIES})
 
 include(CTest)
 
-if(BUILD_TESTS)
+if(MICROSTRAIN_BUILD_TESTS)
     add_subdirectory("test")
 endif()
 
@@ -186,22 +140,28 @@ endif()
 # EXAMPLES
 #
 
-if(BUILD_EXAMPLES)
+if(MICROSTRAIN_BUILD_EXAMPLES)
     add_subdirectory("examples")
 endif()
+
+#
+# Version numbering
+#
+
+microstrain_get_git_version(MICROSTRAIN_GIT_VERSION MICROSTRAIN_GIT_VERSION_CLEAN)
 
 #
 # DOCUMENTATION
 #
 
-find_package(Doxygen)
+if(MICROSTRAIN_BUILD_DOCUMENTATION)
+    find_package(Doxygen)
 
-if(BUILD_DOCUMENTATION)
     if(NOT DOXYGEN_FOUND)
         message(FATAL_ERROR "Doxygen is required to build documentation.")
     endif()
 
-    set(DOXYGEN_PROJECT_NUMBER "${MIP_GIT_VERSION}")
+    set(DOXYGEN_PROJECT_NUMBER "${MICROSTRAIN_GIT_VERSION}")
 
     set(DOXYGEN_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/documentation")
     set(DOXYGEN_IMAGE_PATH "${CMAKE_CURRENT_LIST_DIR}/docs")
@@ -214,7 +174,7 @@ if(BUILD_DOCUMENTATION)
 
     set(DOXYGEN_EXTRACT_ALL YES)
 
-    if(BUILD_DOCUMENTATION_FULL)
+    if(MICROSTRAIN_BUILD_DOCUMENTATION_FULL)
         set(DOXYGEN_INTERNAL_DOCS YES)
         # set(DOXYGEN_WARN_AS_ERROR YES)
     else()
@@ -222,12 +182,12 @@ if(BUILD_DOCUMENTATION)
         set(DOXYGEN_HIDE_UNDOC_CLASSES YES)
     endif()
 
-    if(BUILD_DOCUMENTATION_QUIET)
+    if(MICROSTRAIN_BUILD_DOCUMENTATION_QUIET)
         set(DOXYGEN_QUIET YES)
     endif()
 
     doxygen_add_docs(docs
-        "${SRC_DIR}" "${CMAKE_CURRENT_LIST_DIR}/docs"
+        "${MICROSTRAIN_SRC_DIR}" "${CMAKE_CURRENT_LIST_DIR}/docs"
         COMMENT "Generating documentation."
     )
 
@@ -235,9 +195,9 @@ if(BUILD_DOCUMENTATION)
     add_custom_target(package_docs
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/documentation/html
         DEPENDS docs
-        COMMAND ${CMAKE_COMMAND} -E tar "cf" "${CMAKE_CURRENT_BINARY_DIR}/mipsdk_${MIP_GIT_VERSION}_Documentation.zip" --format=zip "."
+        COMMAND ${CMAKE_COMMAND} -E tar "cf" "${CMAKE_CURRENT_BINARY_DIR}/mipsdk_${MICROSTRAIN_GIT_VERSION}_Documentation.zip" --format=zip "."
     )
-endif(BUILD_DOCUMENTATION)
+endif()
 
 #
 # Packaging
@@ -262,96 +222,9 @@ write_basic_package_version_file(
     COMPATIBILITY AnyNewerVersion
 )
 
-#
-# Installation
-#
-
-## Only install headers that we build the source files for
-#set(ALL_MIP_HEADERS "${ALL_MIP_SOURCES}")
-#list(FILTER ALL_MIP_HEADERS INCLUDE REGEX "^.*\.(h|hpp)$")
-#foreach(MIP_HEADER ${ALL_MIP_HEADERS})
-#    string(REPLACE "${SRC_DIR}/" "" MIP_HEADER_RELATIVE "${MIP_HEADER}")
-#    if(INT_DIR)
-#        string(REPLACE "${INT_DIR}/" "" MIP_HEADER_RELATIVE "${MIP_HEADER_RELATIVE}")
-#    endif()
-#    set(MIP_HEADER_DESTINATION_FULL "${CMAKE_INSTALL_INCLUDEDIR}/${MIP_HEADER_RELATIVE}")
-#    get_filename_component(MIP_HEADER_DESTINATION "${MIP_HEADER_DESTINATION_FULL}" DIRECTORY)
-#    install(
-#        FILES "${MIP_HEADER}"
-#        DESTINATION "${MIP_HEADER_DESTINATION}"
-#        COMPONENT ${MIP_LIBRARY}
-#    )
-#endforeach()
-#
-#install(TARGETS
-#    ${MIP_LIBRARY}
-#    EXPORT mip-targets
-#    ARCHIVE
-#    COMPONENT ${MIP_LIBRARY}
-#    DESTINATION "${CMAKE_INSTALL_LIBDIR}/"
-#)
-#
-#install(EXPORT
-#    mip-targets
-#    COMPONENT ${MIP_LIBRARY}
-#    DESTINATION "${CONFIG_EXPORT_DIR}"
-#)
-#
-#install(FILES
-#    "${CMAKE_BINARY_DIR}/mip-config.cmake"
-#    "${CMAKE_BINARY_DIR}/mip-config-version.cmake"
-#    COMPONENT ${MIP_LIBRARY}
-#    DESTINATION "${CONFIG_EXPORT_DIR}"
-#)
-
-# Try to determine what architecture we are building for based on the compiler output
-if(MSVC)
-    # Detect if this is a x64 or x86 build
-    if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-        set(MIP_ARCH "x64")
-    elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
-        set(MIP_ARCH "x86")
-    endif()
-elseif(UNIX)
-    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-        # The dumpmachine command from gcc should contain information on the architecture
-        execute_process(
-            COMMAND ${CMAKE_COMMAND} -E env /bin/bash -c "${CMAKE_CXX_COMPILER} -dumpmachine"
-            OUTPUT_VARIABLE GCC_ARCHITECTURE_OUT
-            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-            ERROR_VARIABLE GCC_ARCHITECTURE_ERR
-            RESULT_VARIABLE GCC_ARCHITECTURE_RET
-        )
-
-        # Convert the GCC architecture to the format that we use
-        if("${GCC_ARCHITECTURE_OUT}" MATCHES ".*x86_64.*")
-            set(MIP_ARCH "amd64")
-        elseif("${GCC_ARCHITECTURE_OUT}" MATCHES ".*aarch64.*")
-            set(MIP_ARCH "arm64")
-        elseif("${GCC_ARCHITECTURE_OUT}" MATCHES ".*arm.*")
-            set(MIP_ARCH "armhf")
-        else()
-            message(STATUS "Unrecognized GCC architecture ${GCC_ARCHITECTURE_OUT}. Using CMAKE_SYSTEM_PROCESSOR for architecture")
-        endif()
-    endif()
-endif()
-if(NOT DEFINED MIP_ARCH)
-    message(STATUS "Defaulting MIP_ARCH to ${CMAKE_SYSTEM_PROCESSOR}")
-    set(MIP_ARCH ${CMAKE_SYSTEM_PROCESSOR})
-endif()
-
 # If we were asked to package, find the generators we can use
-if(BUILD_PACKAGE)
-    # Get a list of libraries to package
-    get_target_property(MICROSTRAIN_PACKAGES ${MICROSTRAIN_LIBRARIES} INTERFACE_LINK_LIBRARIES)
-    get_target_property(MIP_PACKAGES ${MIP_LIBRARIES} INTERFACE_LINK_LIBRARIES)
-
-    # Filter out directory IDs from (INTERFACE_)LINK_LIBRARIES as well as the MicroStrain libraries from MIP
-    # https://cmake.org/cmake/help/latest/prop_tgt/LINK_LIBRARIES.html
-    set(REGEX_MATCH "(::@*)")
-    list(FILTER MICROSTRAIN_PACKAGES EXCLUDE REGEX ${REGEX_MATCH})
-    string(APPEND REGEX_MATCH "|(${MICROSTRAIN_LIBRARIES})")
-    list(FILTER MIP_PACKAGES EXCLUDE REGEX ${REGEX_MATCH})
+if(MICROSTRAIN_BUILD_PACKAGE)
+    microstrain_get_architecture(MICROSTRAIN_ARCH)
 
     set(FOUND_CPACK_GENERATORS "")
 
@@ -364,18 +237,32 @@ if(BUILD_PACKAGE)
             PATHS ${DPKG_ROOT}
             DOC "dpkg command line client"
         )
+
         if(NOT ${DPKG_EXECUTABLE} STREQUAL "DPKG_EXECUTABLE-NOTFOUND")
             list(APPEND FOUND_CPACK_GENERATORS "DEB")
         endif()
+
+        # DEB specific configuration
+        # Build different deb packages for each target
+        set(CPACK_DEBIAN_MIP_FILE_NAME "${MIP_FILE_NAME_PREFIX}.deb")
+        set(CPACK_DEB_COMPONENT_INSTALL ON)
+        set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
 
         find_program(RPMBUILD_EXECUTABLE
             NAMES rpmbuild
             PATHS ${RPMBUILD_ROOT}
             DOC "rpmbuild command line client"
         )
+
         if(NOT ${RPMBUILD_EXECUTABLE} STREQUAL "RPMBUILD_EXECUTABLE-NOTFOUND")
             list(APPEND FOUND_CPACK_GENERATORS "RPM")
         endif()
+
+        # RPM specific configuration
+        # Build different RPM packages for each target
+        set(CPACK_RPM_MIP_FILE_NAME "${MIP_FILE_NAME_PREFIX}.rpm")
+        set(CPACK_RPM_COMPONENT_INSTALL ON)
+        set(CPACK_RPM_PACKAGE_AUTOREQ ON)
     endif()
 
     # Windows always has zip installed, so only look for it on linux and mac
@@ -404,43 +291,29 @@ if(BUILD_PACKAGE)
     set(CPACK_GENERATOR "${FOUND_CPACK_GENERATORS}")
     set(CPACK_PACKAGE_VENDOR "MicroStrain by HBK")
     set(CPACK_PACKAGE_CONTACT "MicroStrain Support <microstrainsupport@hbkworld.com>")
-    set(CPACK_COMPONENTS_ALL ${MIP_LIBRARY} ${MIP_LIBRARIES})
 
-    set(CPACK_PACKAGE_VERSION ${MIP_GIT_VERSION_CLEAN})
+    set(CPACK_PACKAGE_VERSION ${MICROSTRAIN_GIT_VERSION_CLEAN})
 
     # Shared configuration
-    set(MIP_FILE_NAME_PREFIX "mipsdk_${MIP_GIT_VERSION}_${MIP_ARCH}")
-
-    # DEB specific configuration
-    # Build different deb packages for each target
-    set(CPACK_DEBIAN_MIP_FILE_NAME "${MIP_FILE_NAME_PREFIX}.deb")
-    set(CPACK_DEB_COMPONENT_INSTALL ON)
-    set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
-
-    # RPM specific configuration
-    # Build different RPM packages for each target
-    set(CPACK_RPM_MIP_FILE_NAME "${MIP_FILE_NAME_PREFIX}.rpm")
-    set(CPACK_RPM_COMPONENT_INSTALL ON)
-    set(CPACK_RPM_PACKAGE_AUTOREQ ON)
+    set(MIP_FILE_NAME_PREFIX "mipsdk_${MICROSTRAIN_GIT_VERSION}_${MICROSTRAIN_ARCH}")
 
     # Zip specific configuration
     # Build different zip packages for each target
     if(MSVC)
-        set(CPACK_ARCHIVE_MIP_FILE_NAME "${MIP_FILE_NAME_PREFIX}_MSVC_v${MSVC_TOOLSET_VERSION}")
+        set(CPACK_PACKAGE_FILE_NAME "${MIP_FILE_NAME_PREFIX}_MSVC_v${MSVC_TOOLSET_VERSION}")
     elseif(APPLE)
-        set(CPACK_ARCHIVE_MIP_FILE_NAME "${MIP_FILE_NAME_PREFIX}_OSX")
+        set(CPACK_PACKAGE_FILE_NAME "${MIP_FILE_NAME_PREFIX}_OSX")
     elseif(UNIX)
-        set(CPACK_ARCHIVE_MIP_FILE_NAME "${MIP_FILE_NAME_PREFIX}_Linux")
+        set(CPACK_PACKAGE_FILE_NAME "${MIP_FILE_NAME_PREFIX}_Linux")
     else()
-        set(CPACK_ARCHIVE_MIP_FILE_NAME "${MIP_FILE_NAME_PREFIX}")
+        set(CPACK_PACKAGE_FILE_NAME "${MIP_FILE_NAME_PREFIX}")
     endif()
+
     set(CPACK_ARCHIVE_COMPONENT_INSTALL ON)
+
+    # Package everything into a single group (includes all MIP and MicroStrain SDK files/libs in one package)
+    set(CPACK_COMPONENTS_GROUPING ALL_COMPONENTS_IN_ONE)
 
     # Finally include cpack which should have taken all of the previous variables into consideration
     include(CPack)
-
-    cpack_add_component(${MIP_LIBRARY}
-        DESCRIPTION "MIP SDK static library and header files"
-        GROUP ${MIP_LIBRARY}
-    )
 endif()

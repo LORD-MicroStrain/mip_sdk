@@ -6,20 +6,22 @@ get_target_property(MIP_DEFS ${MIP_LIBRARY} definitions)
 
 set(MIP_DEF_HEADERS ${MIP_DEFS})
 list(TRANSFORM MIP_DEF_HEADERS APPEND ".hpp")
-list(TRANSFORM MIP_DEF_HEADERS PREPEND "definitions/")
+list(TRANSFORM MIP_DEF_HEADERS PREPEND "${CMAKE_CURRENT_LIST_DIR}/definitions/")
 
 if(MICROSTRAIN_CMAKE_DEBUG)
-    message("C++ metadata definitions = ${MIP_DEF_HEADERS}")
+    set(INCLUDED_DEF_HEADERS ${MIP_DEF_HEADERS})
+    list(TRANSFORM INCLUDED_DEF_HEADERS REPLACE "${CMAKE_CURRENT_LIST_DIR}/" "")
+   message("C++ metadata definitions = ${INCLUDED_DEF_HEADERS}")
 endif()
 
 add_library(${MIP_METADATA_LIBRARY}
-    "mip_all_definitions.hpp"
-    "mip_definitions.hpp"
-    "mip_definitions.cpp"
-    "mip_metadata.hpp"
-    "mip_structures.hpp"
-    "mip_meta_utils.hpp"
-    "definitions/common.hpp"
+    "${CMAKE_CURRENT_LIST_DIR}/mip_all_definitions.hpp"
+    "${CMAKE_CURRENT_LIST_DIR}/mip_definitions.hpp"
+    "${CMAKE_CURRENT_LIST_DIR}/mip_definitions.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/mip_metadata.hpp"
+    "${CMAKE_CURRENT_LIST_DIR}/mip_structures.hpp"
+    "${CMAKE_CURRENT_LIST_DIR}/mip_meta_utils.hpp"
+    "${CMAKE_CURRENT_LIST_DIR}/definitions/common.hpp"
     ${MIP_DEF_HEADERS}
 )
 
@@ -39,5 +41,6 @@ target_link_libraries(${MIP_LIBRARIES} INTERFACE ${MIP_METADATA_LIBRARY})
 #
 # Installation
 #
+
 include(microstrain_utilities)
-microstrain_setup_library_install(${MIP_METADATA_LIBRARY} ${MIP_LIBRARY})
+microstrain_setup_library_install(${MIP_METADATA_LIBRARY} ${MICROSTRAIN_SRC_DIR})
