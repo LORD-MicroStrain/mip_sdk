@@ -56,8 +56,8 @@ pipeline {
                   -T "v143" `
                   -DMICROSTRAIN_BUILD_DOCUMENTATION=ON `
                   -DMICROSTRAIN_BUILD_PACKAGE=ON
-                if(\$?) { cmake --build . }
-                if(\$?) { cmake --build . --target package }
+                if(\$?) { cmake --build . --config Release }
+                if(\$?) { cmake --build . --config Release --target package }
                 if(\$?) { cmake --build . --target package_docs }
               """
               archiveArtifacts artifacts: 'build_Win32/mipsdk_*'
@@ -81,8 +81,8 @@ pipeline {
                   -A "x64" `
                   -T "v143" `
                   -DMICROSTRAIN_BUILD_PACKAGE=ON
-                if(\$?) { cmake --build . }
-                if(\$?) { cmake --build . --target package }
+                if(\$?) { cmake --build . --config Release }
+                if(\$?) { cmake --build . --config Release --target package }
               """
               archiveArtifacts artifacts: 'build_x64/mipsdk_*'
             }
