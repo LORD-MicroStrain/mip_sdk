@@ -3380,7 +3380,7 @@ TypedResult<MagHardIronOffset> defaultMagHardIronOffset(C::mip_interface& device
 /// The matrix is applied to the scaled magnetometer vector prior to output.
 /// 
 /// The matrix is in row major order:
-/// EQSTART M = \begin{bmatrix} 0 &amp; 1 &amp; 2 \\ 3 &amp; 4 &amp; 5 \\ 6 &amp; 7 &amp; 8 \end{bmatrix} EQEND
+/// EQSTART M = \\begin{bmatrix} 0 &amp; 1 &amp; 2 \\\\ 3 &amp; 4 &amp; 5 \\\\ 6 &amp; 7 &amp; 8 \\end{bmatrix} EQEND
 /// 
 ///
 ///@{
@@ -3763,7 +3763,7 @@ TypedResult<Sensor2VehicleTransformQuaternion> defaultSensor2VehicleTransformQua
 /// EQSTART v^{sen} EQEND is a 3-element vector expressed in the sensor body frame. <br/>
 /// EQSTART v^{veh} EQEND is the same 3-element vector expressed in the vehicle frame.  <br/>
 /// <br/>
-/// The matrix elements are stored is row-major order: EQSTART M_{sen}^{veh} = \begin{bmatrix} M_{11}, M_{12}, M_{13}, M_{21}, M_{22}, M_{23}, M_{31}, M_{32}, M_{33} \end{bmatrix} EQEND
+/// The matrix elements are stored is row-major order: EQSTART M_{sen}^{veh} = \\begin{bmatrix} M_{11}, M_{12}, M_{13}, M_{21}, M_{22}, M_{23}, M_{31}, M_{32}, M_{33} \\end{bmatrix} EQEND
 /// The transformation may be stored in the device as a matrix or a quaternion. When EQSTART M_{sen}^{veh} EQEND is read back from the device, it may not
 /// be exactly equal to array used to set the transformation, but it is functionally equivalent.<br/>
 /// <br/><br/>
