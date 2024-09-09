@@ -610,7 +610,7 @@ mip_cmd_result mip_filter_default_sensor_to_vehicle_rotation_euler(mip_interface
 /// <br/>
 /// Matrix element order:<br/><br/>
 /// 
-/// EQSTART T_{SEN}^{VEH} = \begin{bmatrix} 0 &amp; 1 &amp; 2\\  3 &amp; 4 &amp; 5\\ 6 &amp; 7 &amp; 8 \end{bmatrix} EQEND
+/// EQSTART T_{SEN}^{VEH} = \\begin{bmatrix} 0 &amp; 1 &amp; 2\\\\  3 &amp; 4 &amp; 5\\\\ 6 &amp; 7 &amp; 8 \\end{bmatrix} EQEND
 /// 
 /// <br/><br/>
 /// This rotation affects the following output quantities:<br/><br/>
@@ -671,7 +671,7 @@ mip_cmd_result mip_filter_default_sensor_to_vehicle_rotation_dcm(mip_interface* 
 /// <br/>
 /// Quaternion element definition:<br/><br/>
 /// <br/>
-/// EQSTART Q_{SEN}^{VEH} = \begin{bmatrix} q_{0} &amp; q_{1}*i  &amp; q_{2}*j  &amp; q_{3}*k \end{bmatrix} EQEND
+/// EQSTART Q_{SEN}^{VEH} = \\begin{bmatrix} q_{0} &amp; q_{1}*i  &amp; q_{2}*j  &amp; q_{3}*k \\end{bmatrix} EQEND
 /// <br/><br/>
 /// This rotation affects the following output quantities:<br/><br/>
 /// IMU:<br/>
