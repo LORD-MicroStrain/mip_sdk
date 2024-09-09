@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common.hpp"
+#include <mip/metadata/definitions/common.hpp>
 
 #include <mip/definitions/commands_3dm.hpp>
 

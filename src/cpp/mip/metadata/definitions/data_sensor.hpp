@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common.hpp"
+#include <mip/metadata/definitions/common.hpp>
 
 #include <mip/definitions/data_sensor.hpp>
 
