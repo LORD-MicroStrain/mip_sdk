@@ -173,9 +173,8 @@ pipeline {
               sh '''
                 mkdir build_mac_arm64
                 cd build_mac_arm64
-                cmake .. \
-                  -DMICROSTRAIN_BUILD_PACKAGE=ON \
-                  -DCMAKE_BUILD_TYPE=RELEASE
+                cmake .. -DMICROSTRAIN_BUILD_PACKAGE=ON -DCMAKE_BUILD_TYPE=RELEASE
+                cmake .. -DMICROSTRAIN_BUILD_PACKAGE=ON -DCMAKE_BUILD_TYPE=RELEASE # cmake does not configure correctly on the first pass for install
                 cmake --build . -j $(sysctl -n hw.ncpu)
                 cmake --build . --target package
               '''
@@ -196,9 +195,8 @@ pipeline {
               sh '''
                 mkdir build_mac_intel
                 cd build_mac_intel
-                cmake .. \
-                  -DMICROSTRAIN_BUILD_PACKAGE=ON \
-                  -DCMAKE_BUILD_TYPE=RELEASE
+                cmake .. -DMICROSTRAIN_BUILD_PACKAGE=ON -DCMAKE_BUILD_TYPE=RELEASE
+                cmake .. -DMICROSTRAIN_BUILD_PACKAGE=ON -DCMAKE_BUILD_TYPE=RELEASE # cmake does not configure correctly on the first pass for install
                 cmake --build . -j $(sysctl -n hw.ncpu)
                 cmake --build . --target package
               '''
