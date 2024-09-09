@@ -10,12 +10,12 @@
 namespace mip::metadata
 {
 
-struct EnumInfo;
-struct BitfieldInfo;
-struct UnionInfo;
-struct StructInfo;
-struct FieldInfo;
-struct ParameterInfo;
+//struct EnumInfo;
+//struct BitfieldInfo;
+//struct UnionInfo;
+//struct StructInfo;
+//struct FieldInfo;
+//struct ParameterInfo;
 
 
 enum class Type
@@ -78,7 +78,7 @@ struct EnumInfo
 struct BitfieldInfo : public EnumInfo {};
 
 
-struct ParameterInfo;  // Defined below
+//struct ParameterInfo;  // Defined below
 
 struct FuncBits
 {
@@ -107,6 +107,50 @@ struct FuncBits
 };
 static constexpr inline FuncBits ALL_FUNCTIONS = {true,true,true,true,true};
 static constexpr inline FuncBits NO_FUNCTIONS  = {false, false, false, false, false};
+
+
+    struct ParameterInfo
+    {
+        struct Count
+        {
+            constexpr Count() = default;
+            constexpr Count(uint8_t n) : count(n) {}
+            constexpr Count(uint8_t n, microstrain::Id id) : count(n), paramIdx(id) {}
+
+            uint8_t         count    = 1;  ///< Fixed size if paramIdx unassigned.
+            microstrain::Id paramIdx = {}; ///< If assigned, specifies parameter that holds the actual runtime count.
+
+            constexpr bool isFixed() const { return count > 0 && !paramIdx.isAssigned(); }
+            constexpr bool hasCounter() const { return paramIdx.isAssigned(); }
+        };
+
+        struct Condition
+        {
+            enum class Type : uint8_t
+            {
+                NONE     = 0,  ///< No condition, member always valid
+                ENUM     = 1,  ///< Enum value selector (e.g. for parameters in unions)
+                //PRODUCT = 2,  ///< Depends on product variant (TBD)
+                //OPTIONAL = 2,  ///< Parameter can be omitted (TBD)
+            };
+
+            Type            type     = Type::NONE; ///< Type of condition.
+            microstrain::Id paramIdx = {};         ///< Index of enum parameter identifying whether this parameter is enabled.
+            uint16_t        value    = 0;          ///< Value of the enum parameter which activates this parameter.
+
+            constexpr bool hasCondition() const { return type != Type::NONE; }
+        };
+
+        using Accessor = void* (*)(void*);
+
+        const char*     name = nullptr;     ///< Programmatic name (e.g. for printing or language bindings).
+        const char*     docs = nullptr;     ///< Human-readable documentation.
+        TypeInfo        type;               ///< Data type.
+        Accessor        accessor = nullptr; ///< Obtains a reference to the member variable.
+        FuncBits        functions;          ///< This parameter is required for the specified function selectors.
+        Count           count;              ///< Number of instances for arrays.
+        Condition       condition;          ///< For conditionally-enabled parameters like those in unions.
+    };
 
 
 struct StructInfo
@@ -166,50 +210,6 @@ constexpr size_t sizeForBasicType(Type type, const void* info=nullptr)
     }
 }
 constexpr size_t sizeForBasicType(const TypeInfo& type) { return sizeForBasicType(type.type, type.infoPtr); }
-
-
-struct ParameterInfo
-{
-    struct Count
-    {
-        constexpr Count() = default;
-        constexpr Count(uint8_t n) : count(n) {}
-        constexpr Count(uint8_t n, microstrain::Id id) : count(n), paramIdx(id) {}
-
-        uint8_t         count    = 1;  ///< Fixed size if paramIdx unassigned.
-        microstrain::Id paramIdx = {}; ///< If assigned, specifies parameter that holds the actual runtime count.
-
-        constexpr bool isFixed() const { return count > 0 && !paramIdx.isAssigned(); }
-        constexpr bool hasCounter() const { return paramIdx.isAssigned(); }
-    };
-
-    struct Condition
-    {
-        enum class Type : uint8_t
-        {
-            NONE     = 0,  ///< No condition, member always valid
-            ENUM     = 1,  ///< Enum value selector (e.g. for parameters in unions)
-            //PRODUCT = 2,  ///< Depends on product variant (TBD)
-            //OPTIONAL = 2,  ///< Parameter can be omitted (TBD)
-        };
-
-        Type            type     = Type::NONE; ///< Type of condition.
-        microstrain::Id paramIdx = {};         ///< Index of enum parameter identifying whether this parameter is enabled.
-        uint16_t        value    = 0;          ///< Value of the enum parameter which activates this parameter.
-
-        constexpr bool hasCondition() const { return type != Type::NONE; }
-    };
-
-    using Accessor = void* (*)(void*);
-
-    const char*     name = nullptr;     ///< Programmatic name (e.g. for printing or language bindings).
-    const char*     docs = nullptr;     ///< Human-readable documentation.
-    TypeInfo        type;               ///< Data type.
-    Accessor        accessor = nullptr; ///< Obtains a reference to the member variable.
-    FuncBits        functions;          ///< This parameter is required for the specified function selectors.
-    Count           count;              ///< Number of instances for arrays.
-    Condition       condition;          ///< For conditionally-enabled parameters like those in unions.
-};
 
 
 } // namespace mip::metadata
