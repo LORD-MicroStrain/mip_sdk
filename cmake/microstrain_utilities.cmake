@@ -1,8 +1,6 @@
 # Install the headers in their
 macro(microstrain_setup_install_headers LIBRARY ROOT_DIR)
-    if(UNIX AND NOT APPLE)
-        include(GNUInstallDirs)
-    endif()
+    include(GNUInstallDirs)
 
     # Only install headers that we build the source files for
     get_target_property(ALL_HEADERS ${LIBRARY} SOURCES)
@@ -24,14 +22,11 @@ macro(microstrain_setup_install_headers LIBRARY ROOT_DIR)
         install(
             FILES "${HEADER}"
             DESTINATION "${HEADER_DESTINATION}"
-            COMPONENT "${LIBRARY}"
         )
     endforeach()
 endmacro()
 
 macro(microstrain_setup_library_install LIBRARY ROOT_DIR)
-    microstrain_setup_install_headers(${LIBRARY} ${ROOT_DIR})
-
     install(
         TARGETS ${LIBRARY}
         EXPORT ${LIBRARY}-targets
@@ -39,6 +34,8 @@ macro(microstrain_setup_library_install LIBRARY ROOT_DIR)
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     )
+
+    microstrain_setup_install_headers(${LIBRARY} ${ROOT_DIR})
 
 #    include(CMakePackageConfigHelpers)
 
