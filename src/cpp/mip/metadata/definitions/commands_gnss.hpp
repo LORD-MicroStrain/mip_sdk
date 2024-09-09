@@ -81,7 +81,7 @@ struct MetadataFor<commands_gnss::ReceiverInfo::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_gnss::ReceiverInfo::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -98,7 +98,7 @@ struct MetadataFor<commands_gnss::ReceiverInfo>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_gnss::ReceiverInfo",
-        /* .title       = */ "None",
+        /* .title       = */ "receiver_info",
         /* .docs        = */ "Return information about the GNSS receivers in the device.\n",
         /* .parameters  = */ {},
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -116,7 +116,7 @@ struct MetadataFor<commands_gnss::SignalConfiguration::Response>
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "gps_enable",
-            /* .docs          = */ "Bitfield 0: Enable L1CA, 1: Enable L2C, 2: Enable L5",
+            /* .docs          = */ "Bitfield 0: Enable L1CA, 1: Enable L2C",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::gps_enable>,
             /* .functions     = */ {true, false, false, false, false,  true},
@@ -134,7 +134,7 @@ struct MetadataFor<commands_gnss::SignalConfiguration::Response>
         },
         {
             /* .name          = */ "galileo_enable",
-            /* .docs          = */ "Bitfield 0: Enable E1,   1: Enable E5B, 2: Enable E5A",
+            /* .docs          = */ "Bitfield 0: Enable E1,   1: Enable E5B",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::galileo_enable>,
             /* .functions     = */ {true, false, false, false, false,  true},
@@ -143,7 +143,7 @@ struct MetadataFor<commands_gnss::SignalConfiguration::Response>
         },
         {
             /* .name          = */ "beidou_enable",
-            /* .docs          = */ "Bitfield 0: Enable B1,   1: Enable B2,  2: Enable B2A",
+            /* .docs          = */ "Bitfield 0: Enable B1,   1: Enable B2",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::beidou_enable>,
             /* .functions     = */ {true, false, false, false, false,  true},
@@ -163,7 +163,7 @@ struct MetadataFor<commands_gnss::SignalConfiguration::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_gnss::SignalConfiguration::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -182,7 +182,7 @@ struct MetadataFor<commands_gnss::SignalConfiguration>
         FUNCTION_SELECTOR_PARAM,
         {
             /* .name          = */ "gps_enable",
-            /* .docs          = */ "Bitfield 0: Enable L1CA, 1: Enable L2C, 2: Enable L5",
+            /* .docs          = */ "Bitfield 0: Enable L1CA, 1: Enable L2C",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::gps_enable>,
             /* .functions     = */ {true, false, false, false, false,  true},
@@ -200,7 +200,7 @@ struct MetadataFor<commands_gnss::SignalConfiguration>
         },
         {
             /* .name          = */ "galileo_enable",
-            /* .docs          = */ "Bitfield 0: Enable E1,   1: Enable E5B, 2: Enable E5A",
+            /* .docs          = */ "Bitfield 0: Enable E1,   1: Enable E5B",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::galileo_enable>,
             /* .functions     = */ {true, false, false, false, false,  true},
@@ -209,7 +209,7 @@ struct MetadataFor<commands_gnss::SignalConfiguration>
         },
         {
             /* .name          = */ "beidou_enable",
-            /* .docs          = */ "Bitfield 0: Enable B1,   1: Enable B2,  2: Enable B2A",
+            /* .docs          = */ "Bitfield 0: Enable B1,   1: Enable B2",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::beidou_enable>,
             /* .functions     = */ {true, false, false, false, false,  true},
@@ -229,7 +229,7 @@ struct MetadataFor<commands_gnss::SignalConfiguration>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_gnss::SignalConfiguration",
-        /* .title       = */ "None",
+        /* .title       = */ "signal_configuration",
         /* .docs        = */ "Configure the GNSS signals used by the device.\n",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -267,7 +267,7 @@ struct MetadataFor<commands_gnss::RtkDongleConfiguration::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_gnss::RtkDongleConfiguration::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -306,7 +306,7 @@ struct MetadataFor<commands_gnss::RtkDongleConfiguration>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_gnss::RtkDongleConfiguration",
-        /* .title       = */ "None",
+        /* .title       = */ "rtk_dongle_configuration",
         /* .docs        = */ "Configure the communications with the RTK Dongle connected to the device.\n",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,

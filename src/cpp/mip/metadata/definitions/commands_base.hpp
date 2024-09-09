@@ -133,7 +133,7 @@ struct MetadataFor<commands_base::GetDeviceInfo::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_base::GetDeviceInfo::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -179,7 +179,7 @@ struct MetadataFor<commands_base::GetDeviceDescriptors::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_base::GetDeviceDescriptors::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -225,7 +225,7 @@ struct MetadataFor<commands_base::BuiltInTest::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_base::BuiltInTest::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -288,7 +288,7 @@ struct MetadataFor<commands_base::GetExtendedDescriptors::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_base::GetExtendedDescriptors::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -334,7 +334,7 @@ struct MetadataFor<commands_base::ContinuousBit::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_base::ContinuousBit::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -389,7 +389,7 @@ struct MetadataFor<commands_base::CommSpeed::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_base::CommSpeed::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,

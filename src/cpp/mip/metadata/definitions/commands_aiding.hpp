@@ -57,7 +57,7 @@ struct MetadataFor<commands_aiding::FrameConfig::Rotation>
 
     static constexpr inline StructInfo value = {
         /* .name        = */ "Rotation",
-        /* .title       = */ "None",
+        /* .title       = */ "Rotation",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
     };
@@ -118,7 +118,7 @@ struct MetadataFor<commands_aiding::FrameConfig::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_aiding::FrameConfig::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -233,7 +233,7 @@ struct MetadataFor<commands_aiding::EchoControl::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_aiding::EchoControl::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,

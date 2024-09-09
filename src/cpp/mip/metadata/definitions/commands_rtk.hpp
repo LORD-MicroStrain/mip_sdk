@@ -86,7 +86,7 @@ struct MetadataFor<commands_rtk::GetStatusFlags::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_rtk::GetStatusFlags::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -132,7 +132,7 @@ struct MetadataFor<commands_rtk::GetImei::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_rtk::GetImei::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -178,7 +178,7 @@ struct MetadataFor<commands_rtk::GetImsi::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_rtk::GetImsi::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -224,7 +224,7 @@ struct MetadataFor<commands_rtk::GetIccid::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_rtk::GetIccid::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -289,7 +289,7 @@ struct MetadataFor<commands_rtk::ConnectedDeviceType::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_rtk::ConnectedDeviceType::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -348,7 +348,7 @@ struct MetadataFor<commands_rtk::GetActCode::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_rtk::GetActCode::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -394,7 +394,7 @@ struct MetadataFor<commands_rtk::GetModemFirmwareVersion::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_rtk::GetModemFirmwareVersion::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -458,7 +458,7 @@ struct MetadataFor<commands_rtk::GetRssi::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_rtk::GetRssi::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -475,7 +475,7 @@ struct MetadataFor<commands_rtk::GetRssi>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_rtk::GetRssi",
-        /* .title       = */ "None",
+        /* .title       = */ "get_rssi",
         /* .docs        = */ "Get the RSSI and connected/disconnected status of modem",
         /* .parameters  = */ {},
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -551,7 +551,7 @@ struct MetadataFor<commands_rtk::ServiceStatus::Response>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_rtk::ServiceStatus::Response",
-        /* .title       = */ "None",
+        /* .title       = */ "response",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -589,7 +589,7 @@ struct MetadataFor<commands_rtk::ServiceStatus>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_rtk::ServiceStatus",
-        /* .title       = */ "None",
+        /* .title       = */ "service_status",
         /* .docs        = */ "The 3DMRTK will send this message to the server to indicate that the connection should remain open. The Server will respond with information and status.",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -637,7 +637,7 @@ struct MetadataFor<commands_rtk::ProdEraseStorage>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_rtk::ProdEraseStorage",
-        /* .title       = */ "None",
+        /* .title       = */ "prod_erase_storage",
         /* .docs        = */ "This command will erase the selected media to a raw and uninitialized state. ALL DATA WILL BE LOST.\nThis command is only available in calibration mode.",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -713,7 +713,7 @@ struct MetadataFor<commands_rtk::LedControl>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_rtk::LedControl",
-        /* .title       = */ "None",
+        /* .title       = */ "led_control",
         /* .docs        = */ "This command allows direct control of the LED on the 3DM RTK. This command is only available in calibration mode or Production Test Mode.",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -730,7 +730,7 @@ struct MetadataFor<commands_rtk::ModemHardReset>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_rtk::ModemHardReset",
-        /* .title       = */ "None",
+        /* .title       = */ "modem_hard_reset",
         /* .docs        = */ "This command will clear the modem flash.  THIS MUST NOT BE DONE OFTEN AS IT CAN DAMAGE THE FLASH!\nThis command is only available in calibration mode.",
         /* .parameters  = */ {},
         /* .descriptor  = */ type::DESCRIPTOR,

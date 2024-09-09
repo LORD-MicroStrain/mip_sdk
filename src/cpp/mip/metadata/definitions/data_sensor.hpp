@@ -29,7 +29,7 @@ struct MetadataFor<data_sensor::RawAccel>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "data_sensor::RawAccel",
-        /* .title       = */ "None",
+        /* .title       = */ "raw_accel",
         /* .docs        = */ "Three element vector representing the sensed acceleration.\nThis quantity is temperature compensated and expressed in the sensor body frame.",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -58,7 +58,7 @@ struct MetadataFor<data_sensor::RawGyro>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "data_sensor::RawGyro",
-        /* .title       = */ "None",
+        /* .title       = */ "raw_gyro",
         /* .docs        = */ "Three element vector representing the sensed angular rate.\nThis quantity is temperature compensated and expressed in the sensor body frame.",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -87,7 +87,7 @@ struct MetadataFor<data_sensor::RawMag>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "data_sensor::RawMag",
-        /* .title       = */ "None",
+        /* .title       = */ "raw_mag",
         /* .docs        = */ "Three element vector representing the sensed magnetic field.\nThis quantity is temperature compensated and expressed in the vehicle frame.",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -116,7 +116,7 @@ struct MetadataFor<data_sensor::RawPressure>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "data_sensor::RawPressure",
-        /* .title       = */ "None",
+        /* .title       = */ "raw_pressure",
         /* .docs        = */ "Scalar value representing the sensed ambient pressure.\nThis quantity is temperature compensated.",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -145,7 +145,7 @@ struct MetadataFor<data_sensor::ScaledAccel>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "data_sensor::ScaledAccel",
-        /* .title       = */ "None",
+        /* .title       = */ "scaled_accel",
         /* .docs        = */ "3-element vector representing the sensed acceleration.\nThis quantity is temperature compensated and expressed in the vehicle frame.",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -174,7 +174,7 @@ struct MetadataFor<data_sensor::ScaledGyro>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "data_sensor::ScaledGyro",
-        /* .title       = */ "None",
+        /* .title       = */ "scaled_gyro",
         /* .docs        = */ "3-element vector representing the sensed angular rate.\nThis quantity is temperature compensated and expressed in the vehicle frame.",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -203,7 +203,7 @@ struct MetadataFor<data_sensor::ScaledMag>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "data_sensor::ScaledMag",
-        /* .title       = */ "None",
+        /* .title       = */ "scaled_mag",
         /* .docs        = */ "3-element vector representing the sensed magnetic field.\nThis quantity is temperature compensated and expressed in the vehicle frame.",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -232,7 +232,7 @@ struct MetadataFor<data_sensor::ScaledPressure>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "data_sensor::ScaledPressure",
-        /* .title       = */ "None",
+        /* .title       = */ "scaled_pressure",
         /* .docs        = */ "Scalar value representing the sensed ambient pressure.",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -261,7 +261,7 @@ struct MetadataFor<data_sensor::DeltaTheta>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "data_sensor::DeltaTheta",
-        /* .title       = */ "None",
+        /* .title       = */ "delta_theta",
         /* .docs        = */ "3-element vector representing the time integral of angular rate.\nThis quantity is the integral of sensed angular rate over the period set by the IMU message format.  It is expressed in the vehicle frame.",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -290,7 +290,7 @@ struct MetadataFor<data_sensor::DeltaVelocity>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "data_sensor::DeltaVelocity",
-        /* .title       = */ "None",
+        /* .title       = */ "delta_velocity",
         /* .docs        = */ "3-element vector representing the time integral of acceleration.\nThis quantity is the integral of sensed acceleration over the period set by the IMU message format.  It is expressed in the vehicle frame.",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -453,7 +453,7 @@ struct MetadataFor<data_sensor::OrientationRawTemp>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "data_sensor::OrientationRawTemp",
-        /* .title       = */ "None",
+        /* .title       = */ "orientation_raw_temp",
         /* .docs        = */ "DEPRECATED!",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -482,7 +482,7 @@ struct MetadataFor<data_sensor::InternalTimestamp>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "data_sensor::InternalTimestamp",
-        /* .title       = */ "None",
+        /* .title       = */ "internal_timestamp",
         /* .docs        = */ "DEPRECATED!",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -589,7 +589,7 @@ struct MetadataFor<data_sensor::GpsTimestamp>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "data_sensor::GpsTimestamp",
-        /* .title       = */ "None",
+        /* .title       = */ "gps_timestamp",
         /* .docs        = */ "GPS timestamp of the SENSOR data\n\nShould the PPS become unavailable, the device will revert to its internal clock, which will cause the reported time to drift from true GPS time.\nUpon recovering from a PPS outage, the user should expect a jump in the reported GPS time due to the accumulation of internal clock error.\nIf synchronization to an external clock or onboard GNSS receiver (for products that have one) is disabled, this time is equivalent to internal system time.\n\nNote: this data field may be deprecated in the future. The more flexible shared data field (0x80, 0xD3) should be used instead.",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -665,7 +665,7 @@ struct MetadataFor<data_sensor::UpVector>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "data_sensor::UpVector",
-        /* .title       = */ "None",
+        /* .title       = */ "up_vector",
         /* .docs        = */ "Gyro-stabilized 3-element vector representing the complementary filter's estimated vertical direction.\nThis quantity is expressed in the vehicle frame.\n\nThis quantity is sensitive to non-gravitational accelerations, which may cause notable deviations from the true vertical direction.\n\nFor legacy reasons, this vector is the inverse of the gravity vector.\n",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -694,7 +694,7 @@ struct MetadataFor<data_sensor::NorthVector>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "data_sensor::NorthVector",
-        /* .title       = */ "None",
+        /* .title       = */ "north_vector",
         /* .docs        = */ "Gyro-stabilized 3-element vector representing the complementary filter's estimate of magnetic north.\nThis quantity is expressed in the vehicle frame.\n\nThis quantity is sensitive to local magnetic field perturbations, which may cause notable deviations from true magnetic north.",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -750,7 +750,7 @@ struct MetadataFor<data_sensor::OverrangeStatus>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "data_sensor::OverrangeStatus",
-        /* .title       = */ "None",
+        /* .title       = */ "overrange_status",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -797,7 +797,7 @@ struct MetadataFor<data_sensor::OdometerData>
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "data_sensor::OdometerData",
-        /* .title       = */ "None",
+        /* .title       = */ "odometer_data",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
