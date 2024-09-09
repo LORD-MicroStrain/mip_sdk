@@ -27,7 +27,7 @@ public:
     SerialConnection(std::string portName, uint32_t baudrate);
     ~SerialConnection();
 
-    bool recvFromDevice(uint8_t* buffer, size_t max_length, unsigned int wait_time, size_t* length_out, EmbeddedTimestamp* timestamp_out) final;
+    bool recvFromDevice(uint8_t* buffer, size_t max_length, unsigned int wait_time_ms, size_t* length_out, EmbeddedTimestamp* timestamp_out) final;
     bool sendToDevice(const uint8_t* data, size_t length) final;
 
     bool isConnected() const override;

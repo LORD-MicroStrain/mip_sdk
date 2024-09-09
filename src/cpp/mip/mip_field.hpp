@@ -67,9 +67,9 @@ public:
     ///@copydoc mip_field_is_valid
     bool isValid() const { return C::mip_field_is_valid(this); }
 
-    ///@copydoc mip_field_next_after
+    ///@copybrief mip_field_next_after
     FieldView nextAfter() const { return C::mip_field_next_after(this); }
-    ///@copydoc mip_field_next
+    ///@copybrief mip_field_next
     bool next() { return C::mip_field_next(this); }
 
     //

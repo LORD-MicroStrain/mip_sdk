@@ -25,8 +25,6 @@
 ///@param payload_length
 ///       The length of the payload. Cannot exceed MIP_FIELD_PAYLOAD_LENGTH_MAX.
 ///
-///@returns A %mip_field initialized with the specified values.
-///
 void mip_field_init(mip_field_view* field, uint8_t descriptor_set, uint8_t field_descriptor, const uint8_t* payload, uint8_t payload_length)
 {
     assert( payload_length <= MIP_FIELD_PAYLOAD_LENGTH_MAX );

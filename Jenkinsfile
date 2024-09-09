@@ -38,6 +38,26 @@ pipeline {
     stage('Build') {
       // Run all the builds in parallel
       parallel {
+        stage('Documentation') {
+          agent { label 'windows10' }
+          options {
+            skipDefaultCheckout()
+            timeout(time: 5, activity: true, unit: 'MINUTES')
+          }
+          steps {
+            script {
+              checkoutRepo()
+              env.setProperty('BRANCH_NAME', branchName())
+              powershell """
+                mkdir build_docs
+                cd build_docs
+                cmake .. -DMICROSTRAIN_BUILD_DOCUMENTATION=ON
+                cmake --build . --target package_docs
+              """
+              archiveArtifacts artifacts: 'build_docs/mipsdk_*'
+            }
+          }
+        }
         stage('Windows x86') {
           agent { label 'windows10' }
           options {
@@ -51,14 +71,9 @@ pipeline {
               powershell """
                 mkdir build_Win32
                 cd build_Win32
-                cmake .. `
-                  -A "Win32" `
-                  -T "v143" `
-                  -DMICROSTRAIN_BUILD_DOCUMENTATION=ON `
-                  -DMICROSTRAIN_BUILD_PACKAGE=ON
-                if(\$?) { cmake --build . --config Release }
-                if(\$?) { cmake --build . --config Release --target package }
-                if(\$?) { cmake --build . --target package_docs }
+                cmake .. -A "Win32" -DMICROSTRAIN_BUILD_PACKAGE=ON
+                cmake --build . --config Release
+                cmake --build . --config Release --target package
               """
               archiveArtifacts artifacts: 'build_Win32/mipsdk_*'
             }
@@ -77,12 +92,9 @@ pipeline {
               powershell """
                 mkdir build_x64
                 cd build_x64
-                cmake .. `
-                  -A "x64" `
-                  -T "v143" `
-                  -DMICROSTRAIN_BUILD_PACKAGE=ON
-                if(\$?) { cmake --build . --config Release }
-                if(\$?) { cmake --build . --config Release --target package }
+                cmake .. -DMICROSTRAIN_BUILD_PACKAGE=ON
+                cmake --build . --config Release
+                cmake --build . --config Release --target package
               """
               archiveArtifacts artifacts: 'build_x64/mipsdk_*'
             }
