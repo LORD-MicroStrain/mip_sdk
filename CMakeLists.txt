@@ -226,37 +226,36 @@ write_basic_package_version_file(
 if(MICROSTRAIN_BUILD_PACKAGE)
     microstrain_get_architecture(MICROSTRAIN_ARCH)
 
+    set(MIP_FILE_NAME_PREFIX "mipsdk_${MICROSTRAIN_GIT_VERSION}_${MICROSTRAIN_ARCH}")
+
     set(FOUND_CPACK_GENERATORS "")
 
-    if(UNIX AND NOT APPLE)
-        set(DPKG_ROOT "" CACHE STRING "Location of the dpkg executable")
-        set(RPMBUILD_ROOT "" CACHE STRING "Location of the rpmbuild executable")
+    set(DPKG_ROOT "" CACHE STRING "Location of the dpkg executable")
+    find_program(DPKG_EXECUTABLE
+        NAMES dpkg
+        PATHS ${DPKG_ROOT}
+        DOC "dpkg command line client"
+    )
 
-        find_program(DPKG_EXECUTABLE
-            NAMES dpkg
-            PATHS ${DPKG_ROOT}
-            DOC "dpkg command line client"
-        )
-
-        if(NOT ${DPKG_EXECUTABLE} STREQUAL "DPKG_EXECUTABLE-NOTFOUND")
-            list(APPEND FOUND_CPACK_GENERATORS "DEB")
-        endif()
+    if(NOT ${DPKG_EXECUTABLE} STREQUAL "DPKG_EXECUTABLE-NOTFOUND")
+        list(APPEND FOUND_CPACK_GENERATORS "DEB")
 
         # DEB specific configuration
         # Build different deb packages for each target
         set(CPACK_DEBIAN_MIP_FILE_NAME "${MIP_FILE_NAME_PREFIX}.deb")
         set(CPACK_DEB_COMPONENT_INSTALL ON)
         set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
+    endif()
 
-        find_program(RPMBUILD_EXECUTABLE
-            NAMES rpmbuild
-            PATHS ${RPMBUILD_ROOT}
-            DOC "rpmbuild command line client"
-        )
+    set(RPMBUILD_ROOT "" CACHE STRING "Location of the rpmbuild executable")
+    find_program(RPMBUILD_EXECUTABLE
+        NAMES rpmbuild
+        PATHS ${RPMBUILD_ROOT}
+        DOC "rpmbuild command line client"
+    )
 
-        if(NOT ${RPMBUILD_EXECUTABLE} STREQUAL "RPMBUILD_EXECUTABLE-NOTFOUND")
-            list(APPEND FOUND_CPACK_GENERATORS "RPM")
-        endif()
+    if(NOT ${RPMBUILD_EXECUTABLE} STREQUAL "RPMBUILD_EXECUTABLE-NOTFOUND")
+        list(APPEND FOUND_CPACK_GENERATORS "RPM")
 
         # RPM specific configuration
         # Build different RPM packages for each target
@@ -293,9 +292,6 @@ if(MICROSTRAIN_BUILD_PACKAGE)
     set(CPACK_PACKAGE_CONTACT "MicroStrain Support <microstrainsupport@hbkworld.com>")
 
     set(CPACK_PACKAGE_VERSION ${MICROSTRAIN_GIT_VERSION_CLEAN})
-
-    # Shared configuration
-    set(MIP_FILE_NAME_PREFIX "mipsdk_${MICROSTRAIN_GIT_VERSION}_${MICROSTRAIN_ARCH}")
 
     # Zip specific configuration
     # Build different zip packages for each target
