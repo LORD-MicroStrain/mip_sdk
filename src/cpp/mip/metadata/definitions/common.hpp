@@ -186,7 +186,7 @@ struct MetadataFor<Vector<T,N>>
     };
 
 
-    static constexpr inline StructInfo values_f[] = {
+    static constexpr inline StructInfo values_f[3] = {
         {
             .name = "Vector2f",
             .title = "Vector2f",
@@ -206,7 +206,7 @@ struct MetadataFor<Vector<T,N>>
             .parameters = {parameters, 4}
         },
     };
-    static constexpr inline StructInfo values_d[] = {
+    static constexpr inline StructInfo values_d[3] = {
         {
             .name = "Vector2d",
             .title = "Vector2d",
@@ -230,7 +230,7 @@ struct MetadataFor<Vector<T,N>>
     static_assert(std::is_floating_point_v<T>, "Expected either float or double");
     static_assert(N >= 2 && N <= 4, "N should be in the range [2,4].");
 
-    static constexpr inline const StructInfo& value = [](){ if constexpr( std::is_same_v<T,double> ) return values_d[N-2]; else return values_f[N-2]; }();
+    static constexpr inline const StructInfo& value = std::is_same_v<T,double> ? values_d[N-2] : values_f[N-2];
 };
 
 

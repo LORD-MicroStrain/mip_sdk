@@ -64,6 +64,7 @@ docker run \
     cmake ${docker_project_dir} \
         -DMICROSTRAIN_BUILD_PACKAGE=ON \
         -DCMAKE_BUILD_TYPE=RELEASE; \
+        -DMICROSTRAIN_BUILD_EXAMPLES=ON \
     cmake --build . -j; \
     cmake --build . --target package; \
   "
