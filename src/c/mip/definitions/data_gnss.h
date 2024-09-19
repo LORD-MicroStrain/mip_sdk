@@ -58,7 +58,6 @@ enum
     MIP_DATA_DESC_GNSS_GLONASS_EPHEMERIS       = 0x62,
     MIP_DATA_DESC_GNSS_GALILEO_EPHEMERIS       = 0x63,
     MIP_DATA_DESC_GNSS_GPS_IONO_CORR           = 0x71,
-    MIP_DATA_DESC_GNSS_GLONASS_IONO_CORR       = 0x72,
     MIP_DATA_DESC_GNSS_GALILEO_IONO_CORR       = 0x73,
     
 };
@@ -161,6 +160,7 @@ enum mip_gnss_signal_id
     MIP_GNSS_SIGNAL_ID_BEIDOU_B2I     = 166,  ///<  
     MIP_GNSS_SIGNAL_ID_BEIDOU_B2Q     = 167,  ///<  
     MIP_GNSS_SIGNAL_ID_BEIDOU_B2IQ    = 168,  ///<  
+    MIP_GNSS_SIGNAL_ID_BEIDOU_B2A     = 169,  ///<  
 };
 typedef enum mip_gnss_signal_id mip_gnss_signal_id;
 
@@ -1508,8 +1508,9 @@ typedef uint16_t mip_gnss_gps_ephemeris_data_valid_flags;
 static const mip_gnss_gps_ephemeris_data_valid_flags MIP_GNSS_GPS_EPHEMERIS_DATA_VALID_FLAGS_NONE        = 0x0000;
 static const mip_gnss_gps_ephemeris_data_valid_flags MIP_GNSS_GPS_EPHEMERIS_DATA_VALID_FLAGS_EPHEMERIS   = 0x0001; ///<  
 static const mip_gnss_gps_ephemeris_data_valid_flags MIP_GNSS_GPS_EPHEMERIS_DATA_VALID_FLAGS_MODERN_DATA = 0x0002; ///<  
-static const mip_gnss_gps_ephemeris_data_valid_flags MIP_GNSS_GPS_EPHEMERIS_DATA_VALID_FLAGS_FLAGS       = 0x0003; ///<  
-static const mip_gnss_gps_ephemeris_data_valid_flags MIP_GNSS_GPS_EPHEMERIS_DATA_VALID_FLAGS_ALL         = 0x0003;
+static const mip_gnss_gps_ephemeris_data_valid_flags MIP_GNSS_GPS_EPHEMERIS_DATA_VALID_FLAGS_ISC_L5      = 0x0004; ///<  
+static const mip_gnss_gps_ephemeris_data_valid_flags MIP_GNSS_GPS_EPHEMERIS_DATA_VALID_FLAGS_FLAGS       = 0x0007; ///<  
+static const mip_gnss_gps_ephemeris_data_valid_flags MIP_GNSS_GPS_EPHEMERIS_DATA_VALID_FLAGS_ALL         = 0x0007;
 static inline void insert_mip_gnss_gps_ephemeris_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_gps_ephemeris_data_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
@@ -1537,8 +1538,8 @@ struct mip_gnss_gps_ephemeris_data
     double af1; ///< Clock drift in [s/s].
     double af2; ///< Clock drift rate in [s/s^2].
     double t_gd; ///< T Group Delay [s].
-    double ISC_L1CA;
-    double ISC_L2C;
+    double ISC_L1CA; ///< Inter-signal correction (L1).
+    double ISC_L2C; ///< Inter-signal correction (L2, or L5 if isc_l5 flag is set).
     double t_oe; ///< Reference time for ephemeris in [s].
     double a; ///< Semi-major axis [m].
     double a_dot; ///< Semi-major axis rate [m/s].
@@ -1578,8 +1579,9 @@ typedef uint16_t mip_gnss_galileo_ephemeris_data_valid_flags;
 static const mip_gnss_galileo_ephemeris_data_valid_flags MIP_GNSS_GALILEO_EPHEMERIS_DATA_VALID_FLAGS_NONE        = 0x0000;
 static const mip_gnss_galileo_ephemeris_data_valid_flags MIP_GNSS_GALILEO_EPHEMERIS_DATA_VALID_FLAGS_EPHEMERIS   = 0x0001; ///<  
 static const mip_gnss_galileo_ephemeris_data_valid_flags MIP_GNSS_GALILEO_EPHEMERIS_DATA_VALID_FLAGS_MODERN_DATA = 0x0002; ///<  
-static const mip_gnss_galileo_ephemeris_data_valid_flags MIP_GNSS_GALILEO_EPHEMERIS_DATA_VALID_FLAGS_FLAGS       = 0x0003; ///<  
-static const mip_gnss_galileo_ephemeris_data_valid_flags MIP_GNSS_GALILEO_EPHEMERIS_DATA_VALID_FLAGS_ALL         = 0x0003;
+static const mip_gnss_galileo_ephemeris_data_valid_flags MIP_GNSS_GALILEO_EPHEMERIS_DATA_VALID_FLAGS_ISC_L5      = 0x0004; ///<  
+static const mip_gnss_galileo_ephemeris_data_valid_flags MIP_GNSS_GALILEO_EPHEMERIS_DATA_VALID_FLAGS_FLAGS       = 0x0007; ///<  
+static const mip_gnss_galileo_ephemeris_data_valid_flags MIP_GNSS_GALILEO_EPHEMERIS_DATA_VALID_FLAGS_ALL         = 0x0007;
 static inline void insert_mip_gnss_galileo_ephemeris_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_galileo_ephemeris_data_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
@@ -1607,8 +1609,8 @@ struct mip_gnss_galileo_ephemeris_data
     double af1; ///< Clock drift in [s/s].
     double af2; ///< Clock drift rate in [s/s^2].
     double t_gd; ///< T Group Delay [s].
-    double ISC_L1CA;
-    double ISC_L2C;
+    double ISC_L1CA; ///< Inter-signal correction (L1).
+    double ISC_L2C; ///< Inter-signal correction (L2, or L5 if isc_l5 flag is set).
     double t_oe; ///< Reference time for ephemeris in [s].
     double a; ///< Semi-major axis [m].
     double a_dot; ///< Semi-major axis rate [m/s].

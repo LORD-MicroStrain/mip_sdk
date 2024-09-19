@@ -16,17 +16,17 @@ struct MetadataFor<commands_rtk::GetStatusFlags::StatusFlagsLegacy>
     using type = commands_rtk::GetStatusFlags::StatusFlagsLegacy;
 
     static constexpr inline BitfieldInfo::Entry entries[] = {
-        { 7, "controllerState", "" },
-        { 248, "platformState", "" },
-        { 1792, "controllerStatusCode", "" },
-        { 14336, "platformStatusCode", "" },
-        { 49152, "resetCode", "" },
-        { 983040, "signalQuality", "" },
-        { 4293918720, "reserved", "" },
-        { 66060288, "rssi", "" },
-        { 201326592, "rsrp", "" },
-        { 805306368, "rsrq", "" },
-        { 3221225472, "sinr", "" },
+        { uint32_t(7), "controllerState", "" },
+        { uint32_t(248), "platformState", "" },
+        { uint32_t(1792), "controllerStatusCode", "" },
+        { uint32_t(14336), "platformStatusCode", "" },
+        { uint32_t(49152), "resetCode", "" },
+        { uint32_t(983040), "signalQuality", "" },
+        { uint32_t(4293918720), "reserved", "" },
+        { uint32_t(66060288), "rssi", "" },
+        { uint32_t(201326592), "rsrp", "" },
+        { uint32_t(805306368), "rsrq", "" },
+        { uint32_t(3221225472), "sinr", "" },
     };
 
     static constexpr inline BitfieldInfo value = {
@@ -44,18 +44,18 @@ struct MetadataFor<commands_rtk::GetStatusFlags::StatusFlags>
     using type = commands_rtk::GetStatusFlags::StatusFlags;
 
     static constexpr inline BitfieldInfo::Entry entries[] = {
-        { 15, "modem_state", "" },
-        { 240, "connection_type", "" },
-        { 65280, "rssi", "" },
-        { 983040, "signal_quality", "" },
-        { 15728640, "tower_change_indicator", "" },
-        { 16777216, "nmea_timeout", "" },
-        { 33554432, "server_timeout", "" },
-        { 67108864, "corrections_timeout", "" },
-        { 134217728, "device_out_of_range", "" },
-        { 268435456, "corrections_unavailable", "" },
-        { 536870912, "reserved", "" },
-        { 3221225472, "version", "" },
+        { uint32_t(15), "modem_state", "" },
+        { uint32_t(240), "connection_type", "" },
+        { uint32_t(65280), "rssi", "" },
+        { uint32_t(983040), "signal_quality", "" },
+        { uint32_t(15728640), "tower_change_indicator", "" },
+        { uint32_t(16777216), "nmea_timeout", "" },
+        { uint32_t(33554432), "server_timeout", "" },
+        { uint32_t(67108864), "corrections_timeout", "" },
+        { uint32_t(134217728), "device_out_of_range", "" },
+        { uint32_t(268435456), "corrections_unavailable", "" },
+        { uint32_t(536870912), "reserved", "" },
+        { uint32_t(3221225472), "version", "" },
     };
 
     static constexpr inline BitfieldInfo value = {
@@ -76,9 +76,9 @@ struct MetadataFor<commands_rtk::GetStatusFlags::Response>
         {
             /* .name          = */ "flags",
             /* .docs          = */ "Model number dependent. See above structures.",
-            /* .type          = */ {Type::BITFIELD, &MetadataFor<commands_rtk::GetStatusFlags::StatusFlags>::value},
+            /* .type          = */ {Type::BITS, &MetadataFor<commands_rtk::GetStatusFlags::StatusFlags>::value},
             /* .accessor      = */ utils::access<type, commands_rtk::GetStatusFlags::StatusFlags, &type::flags>,
-            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .attributes    = */ {true, false, false, false, false},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -124,7 +124,7 @@ struct MetadataFor<commands_rtk::GetImei::Response>
             /* .docs          = */ "",
             /* .type          = */ {Type::CHAR, nullptr},
             /* .accessor      = */ utils::access<type, char, &type::IMEI>,
-            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .attributes    = */ {true, false, false, false, false},
             /* .count         = */ 32,
             /* .condition     = */ {},
         },
@@ -170,7 +170,7 @@ struct MetadataFor<commands_rtk::GetImsi::Response>
             /* .docs          = */ "",
             /* .type          = */ {Type::CHAR, nullptr},
             /* .accessor      = */ utils::access<type, char, &type::IMSI>,
-            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .attributes    = */ {true, false, false, false, false},
             /* .count         = */ 32,
             /* .condition     = */ {},
         },
@@ -216,7 +216,7 @@ struct MetadataFor<commands_rtk::GetIccid::Response>
             /* .docs          = */ "",
             /* .type          = */ {Type::CHAR, nullptr},
             /* .accessor      = */ utils::access<type, char, &type::ICCID>,
-            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .attributes    = */ {true, false, false, false, false},
             /* .count         = */ 32,
             /* .condition     = */ {},
         },
@@ -257,8 +257,8 @@ struct MetadataFor<commands_rtk::ConnectedDeviceType::Type>
     using type = commands_rtk::ConnectedDeviceType::Type;
 
     static constexpr inline EnumInfo::Entry entries[] = {
-        { 0, "GENERIC", "" },
-        { 1, "GQ7", "" },
+        { uint32_t(0), "GENERIC", "" },
+        { uint32_t(1), "GQ7", "" },
     };
 
     static constexpr inline EnumInfo value = {
@@ -281,7 +281,7 @@ struct MetadataFor<commands_rtk::ConnectedDeviceType::Response>
             /* .docs          = */ "",
             /* .type          = */ {Type::ENUM, &MetadataFor<commands_rtk::ConnectedDeviceType::Type>::value},
             /* .accessor      = */ utils::access<type, commands_rtk::ConnectedDeviceType::Type, &type::devType>,
-            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .attributes    = */ {true, false, false, false, false},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -311,7 +311,7 @@ struct MetadataFor<commands_rtk::ConnectedDeviceType>
             /* .docs          = */ "",
             /* .type          = */ {Type::ENUM, &MetadataFor<commands_rtk::ConnectedDeviceType::Type>::value},
             /* .accessor      = */ utils::access<type, commands_rtk::ConnectedDeviceType::Type, &type::devType>,
-            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .attributes    = */ {true, false, false, false, false},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -323,7 +323,7 @@ struct MetadataFor<commands_rtk::ConnectedDeviceType>
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ {true, true, true, true, true,  true},
+        /* .functions   = */ {true, true, true, true, true},
         /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
@@ -340,7 +340,7 @@ struct MetadataFor<commands_rtk::GetActCode::Response>
             /* .docs          = */ "",
             /* .type          = */ {Type::CHAR, nullptr},
             /* .accessor      = */ utils::access<type, char, &type::ActivationCode>,
-            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .attributes    = */ {true, false, false, false, false},
             /* .count         = */ 32,
             /* .condition     = */ {},
         },
@@ -386,7 +386,7 @@ struct MetadataFor<commands_rtk::GetModemFirmwareVersion::Response>
             /* .docs          = */ "",
             /* .type          = */ {Type::CHAR, nullptr},
             /* .accessor      = */ utils::access<type, char, &type::ModemFirmwareVersion>,
-            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .attributes    = */ {true, false, false, false, false},
             /* .count         = */ 32,
             /* .condition     = */ {},
         },
@@ -432,7 +432,7 @@ struct MetadataFor<commands_rtk::GetRssi::Response>
             /* .docs          = */ "",
             /* .type          = */ {Type::BOOL, nullptr},
             /* .accessor      = */ utils::access<type, bool, &type::valid>,
-            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .attributes    = */ {true, false, false, false, false},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -441,7 +441,7 @@ struct MetadataFor<commands_rtk::GetRssi::Response>
             /* .docs          = */ "",
             /* .type          = */ {Type::S32, nullptr},
             /* .accessor      = */ utils::access<type, int32_t, &type::rssi>,
-            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .attributes    = */ {true, false, false, false, false},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -450,7 +450,7 @@ struct MetadataFor<commands_rtk::GetRssi::Response>
             /* .docs          = */ "",
             /* .type          = */ {Type::S32, nullptr},
             /* .accessor      = */ utils::access<type, int32_t, &type::signalQuality>,
-            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .attributes    = */ {true, false, false, false, false},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -491,9 +491,9 @@ struct MetadataFor<commands_rtk::ServiceStatus::ServiceFlags>
     using type = commands_rtk::ServiceStatus::ServiceFlags;
 
     static constexpr inline BitfieldInfo::Entry entries[] = {
-        { 1, "throttle", "" },
-        { 2, "corrections_unavailable", "" },
-        { 252, "reserved", "" },
+        { uint32_t(1), "throttle", "" },
+        { uint32_t(2), "corrections_unavailable", "" },
+        { uint32_t(252), "reserved", "" },
     };
 
     static constexpr inline BitfieldInfo value = {
@@ -514,9 +514,9 @@ struct MetadataFor<commands_rtk::ServiceStatus::Response>
         {
             /* .name          = */ "flags",
             /* .docs          = */ "",
-            /* .type          = */ {Type::BITFIELD, &MetadataFor<commands_rtk::ServiceStatus::ServiceFlags>::value},
+            /* .type          = */ {Type::BITS, &MetadataFor<commands_rtk::ServiceStatus::ServiceFlags>::value},
             /* .accessor      = */ utils::access<type, commands_rtk::ServiceStatus::ServiceFlags, &type::flags>,
-            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .attributes    = */ {true, false, false, false, false},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -525,7 +525,7 @@ struct MetadataFor<commands_rtk::ServiceStatus::Response>
             /* .docs          = */ "",
             /* .type          = */ {Type::U32, nullptr},
             /* .accessor      = */ utils::access<type, uint32_t, &type::receivedBytes>,
-            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .attributes    = */ {true, false, false, false, false},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -534,7 +534,7 @@ struct MetadataFor<commands_rtk::ServiceStatus::Response>
             /* .docs          = */ "",
             /* .type          = */ {Type::U32, nullptr},
             /* .accessor      = */ utils::access<type, uint32_t, &type::lastBytes>,
-            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .attributes    = */ {true, false, false, false, false},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -543,7 +543,7 @@ struct MetadataFor<commands_rtk::ServiceStatus::Response>
             /* .docs          = */ "",
             /* .type          = */ {Type::U64, nullptr},
             /* .accessor      = */ utils::access<type, uint64_t, &type::lastBytesTime>,
-            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .attributes    = */ {true, false, false, false, false},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -572,7 +572,7 @@ struct MetadataFor<commands_rtk::ServiceStatus>
             /* .docs          = */ "",
             /* .type          = */ {Type::U32, nullptr},
             /* .accessor      = */ utils::access<type, uint32_t, &type::reserved1>,
-            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .attributes    = */ {true, false, false, false, false},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -581,7 +581,7 @@ struct MetadataFor<commands_rtk::ServiceStatus>
             /* .docs          = */ "",
             /* .type          = */ {Type::U32, nullptr},
             /* .accessor      = */ utils::access<type, uint32_t, &type::reserved2>,
-            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .attributes    = */ {true, false, false, false, false},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -605,8 +605,8 @@ struct MetadataFor<commands_rtk::MediaSelector>
     using type = commands_rtk::MediaSelector;
 
     static constexpr inline EnumInfo::Entry entries[] = {
-        { 0, "MEDIA_ExternalFlash", "" },
-        { 1, "MEDIA_SD", "" },
+        { uint32_t(0), "MEDIA_ExternalFlash", "" },
+        { uint32_t(1), "MEDIA_SD", "" },
     };
 
     static constexpr inline EnumInfo value = {
@@ -629,7 +629,7 @@ struct MetadataFor<commands_rtk::ProdEraseStorage>
             /* .docs          = */ "",
             /* .type          = */ {Type::ENUM, &MetadataFor<commands_rtk::MediaSelector>::value},
             /* .accessor      = */ utils::access<type, commands_rtk::MediaSelector, &type::media>,
-            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .attributes    = */ {true, false, false, false, false},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -653,9 +653,9 @@ struct MetadataFor<commands_rtk::LedAction>
     using type = commands_rtk::LedAction;
 
     static constexpr inline EnumInfo::Entry entries[] = {
-        { 0, "LED_NONE", "" },
-        { 1, "LED_FLASH", "" },
-        { 2, "LED_PULSATE", "" },
+        { uint32_t(0), "LED_NONE", "" },
+        { uint32_t(1), "LED_FLASH", "" },
+        { uint32_t(2), "LED_PULSATE", "" },
     };
 
     static constexpr inline EnumInfo value = {
@@ -678,7 +678,7 @@ struct MetadataFor<commands_rtk::LedControl>
             /* .docs          = */ "",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::primaryColor>,
-            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .attributes    = */ {true, false, false, false, false},
             /* .count         = */ 3,
             /* .condition     = */ {},
         },
@@ -687,7 +687,7 @@ struct MetadataFor<commands_rtk::LedControl>
             /* .docs          = */ "",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::altColor>,
-            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .attributes    = */ {true, false, false, false, false},
             /* .count         = */ 3,
             /* .condition     = */ {},
         },
@@ -696,7 +696,7 @@ struct MetadataFor<commands_rtk::LedControl>
             /* .docs          = */ "",
             /* .type          = */ {Type::ENUM, &MetadataFor<commands_rtk::LedAction>::value},
             /* .accessor      = */ utils::access<type, commands_rtk::LedAction, &type::act>,
-            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .attributes    = */ {true, false, false, false, false},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -705,7 +705,7 @@ struct MetadataFor<commands_rtk::LedControl>
             /* .docs          = */ "",
             /* .type          = */ {Type::U32, nullptr},
             /* .accessor      = */ utils::access<type, uint32_t, &type::period>,
-            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .attributes    = */ {true, false, false, false, false},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -741,7 +741,7 @@ struct MetadataFor<commands_rtk::ModemHardReset>
 };
 
 
-static constexpr inline std::initializer_list<const FieldInfo*> ALL_COMMANDS_RTK = {
+static constexpr inline std::initializer_list<const FieldInfo*> COMMANDS_RTK = {
     &MetadataFor<commands_rtk::GetStatusFlags>::value,
     &MetadataFor<commands_rtk::GetStatusFlags::Response>::value,
     &MetadataFor<commands_rtk::GetImei>::value,

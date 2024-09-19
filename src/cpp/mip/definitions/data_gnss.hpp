@@ -57,7 +57,6 @@ enum
     DATA_GLONASS_EPHEMERIS       = 0x62,
     DATA_GALILEO_EPHEMERIS       = 0x63,
     DATA_GPS_IONO_CORR           = 0x71,
-    DATA_GLONASS_IONO_CORR       = 0x72,
     DATA_GALILEO_IONO_CORR       = 0x73,
     
 };
@@ -148,6 +147,7 @@ enum class GnssSignalId : uint8_t
     BEIDOU_B2I     = 166,  ///<  
     BEIDOU_B2Q     = 167,  ///<  
     BEIDOU_B2IQ    = 168,  ///<  
+    BEIDOU_B2A     = 169,  ///<  
 };
 
 enum class SbasSystem : uint8_t
@@ -2244,8 +2244,9 @@ struct GpsEphemeris
             NONE        = 0x0000,
             EPHEMERIS   = 0x0001,  ///<  
             MODERN_DATA = 0x0002,  ///<  
-            FLAGS       = 0x0003,  ///<  
-            ALL         = 0x0003,
+            ISC_L5      = 0x0004,  ///<  
+            FLAGS       = 0x0007,  ///<  
+            ALL         = 0x0007,
         };
         uint16_t value = NONE;
         
@@ -2261,6 +2262,8 @@ struct GpsEphemeris
         void ephemeris(bool val) { value &= ~EPHEMERIS; if(val) value |= EPHEMERIS; }
         bool modernData() const { return (value & MODERN_DATA) > 0; }
         void modernData(bool val) { value &= ~MODERN_DATA; if(val) value |= MODERN_DATA; }
+        bool iscL5() const { return (value & ISC_L5) > 0; }
+        void iscL5(bool val) { value &= ~ISC_L5; if(val) value |= ISC_L5; }
         uint16_t flags() const { return (value & FLAGS) >> 0; }
         void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
         bool allSet() const { return value == ALL; }
@@ -2280,8 +2283,8 @@ struct GpsEphemeris
     double af1 = 0; ///< Clock drift in [s/s].
     double af2 = 0; ///< Clock drift rate in [s/s^2].
     double t_gd = 0; ///< T Group Delay [s].
-    double ISC_L1CA = 0;
-    double ISC_L2C = 0;
+    double ISC_L1CA = 0; ///< Inter-signal correction (L1).
+    double ISC_L2C = 0; ///< Inter-signal correction (L2, or L5 if isc_l5 flag is set).
     double t_oe = 0; ///< Reference time for ephemeris in [s].
     double a = 0; ///< Semi-major axis [m].
     double a_dot = 0; ///< Semi-major axis rate [m/s].
@@ -2307,7 +2310,7 @@ struct GpsEphemeris
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GPS_EPHEMERIS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "GpsEphemeris";
-    static constexpr const char* DOC_NAME = "GpsEphemeris";
+    static constexpr const char* DOC_NAME = "GPS Ephemeris";
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
     auto asTuple() const
@@ -2344,8 +2347,9 @@ struct GalileoEphemeris
             NONE        = 0x0000,
             EPHEMERIS   = 0x0001,  ///<  
             MODERN_DATA = 0x0002,  ///<  
-            FLAGS       = 0x0003,  ///<  
-            ALL         = 0x0003,
+            ISC_L5      = 0x0004,  ///<  
+            FLAGS       = 0x0007,  ///<  
+            ALL         = 0x0007,
         };
         uint16_t value = NONE;
         
@@ -2361,6 +2365,8 @@ struct GalileoEphemeris
         void ephemeris(bool val) { value &= ~EPHEMERIS; if(val) value |= EPHEMERIS; }
         bool modernData() const { return (value & MODERN_DATA) > 0; }
         void modernData(bool val) { value &= ~MODERN_DATA; if(val) value |= MODERN_DATA; }
+        bool iscL5() const { return (value & ISC_L5) > 0; }
+        void iscL5(bool val) { value &= ~ISC_L5; if(val) value |= ISC_L5; }
         uint16_t flags() const { return (value & FLAGS) >> 0; }
         void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
         bool allSet() const { return value == ALL; }
@@ -2380,8 +2386,8 @@ struct GalileoEphemeris
     double af1 = 0; ///< Clock drift in [s/s].
     double af2 = 0; ///< Clock drift rate in [s/s^2].
     double t_gd = 0; ///< T Group Delay [s].
-    double ISC_L1CA = 0;
-    double ISC_L2C = 0;
+    double ISC_L1CA = 0; ///< Inter-signal correction (L1).
+    double ISC_L2C = 0; ///< Inter-signal correction (L2, or L5 if isc_l5 flag is set).
     double t_oe = 0; ///< Reference time for ephemeris in [s].
     double a = 0; ///< Semi-major axis [m].
     double a_dot = 0; ///< Semi-major axis rate [m/s].
@@ -2407,7 +2413,7 @@ struct GalileoEphemeris
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GALILEO_EPHEMERIS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "GalileoEphemeris";
-    static constexpr const char* DOC_NAME = "GalileoEphemeris";
+    static constexpr const char* DOC_NAME = "Galileo Ephemeris";
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     
     auto asTuple() const

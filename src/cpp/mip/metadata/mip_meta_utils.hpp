@@ -23,7 +23,7 @@ template<> struct ParamType<uint64_t, void> { static constexpr inline auto value
 template<> struct ParamType< int64_t, void> { static constexpr inline auto value = Type::S64;    };
 template<> struct ParamType<float,    void> { static constexpr inline auto value = Type::FLOAT;  };
 template<> struct ParamType<double,   void> { static constexpr inline auto value = Type::DOUBLE; };
-template<class T> struct ParamType<Bitfield<T>, void> { static constexpr inline auto value = Type::BITFIELD; };
+template<class T> struct ParamType<Bitfield<T>, void> { static constexpr inline auto value = Type::BITS; };
 template<class T> struct ParamType<T, typename std::enable_if<std::is_enum<T>::value, T>::type>  { static constexpr inline auto value = Type::ENUM;   };
 template<class T> struct ParamType<T, typename EnableForFieldTypes<T>::type>                     { static constexpr inline auto value = Type::STRUCT; };
 template<class T> struct ParamType<T, typename std::enable_if<std::is_union<T>::value, T>::type> { static constexpr inline auto value = Type::UNION;  };

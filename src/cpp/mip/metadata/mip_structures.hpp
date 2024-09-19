@@ -36,7 +36,7 @@ enum class Type
     DOUBLE,
 
     ENUM,
-    BITFIELD,
+    BITS,
     STRUCT,
     UNION,
 };
@@ -80,77 +80,89 @@ struct BitfieldInfo : public EnumInfo {};
 
 //struct ParameterInfo;  // Defined below
 
-struct FuncBits
+struct Attributes
 {
-    constexpr FuncBits() = default;
-    constexpr FuncBits(bool w, bool r, bool s, bool l, bool d, bool e=false) : bits(0x00) { write(w); read(r); save(s); load(l); reset(d); echo(e); }
+    constexpr Attributes() = default;
+    constexpr Attributes(bool w, bool r, bool s, bool l, bool d, bool e=false, bool x=false) : bits(0x00)
+    {
+        setCanWrite(w);
+        setCanRead(r);
+        setCanSave(s);
+        setCanLoad(l);
+        setCanReset(d);
+        setNotSerialized(x);
+        setIsEchoed(e);
+    }
 
     constexpr bool any() const { return bits > 0; }
 
-    constexpr bool write() const { return bits & 0b00000001; }
-    constexpr bool read()  const { return bits & 0b00000010; }
-    constexpr bool save()  const { return bits & 0b00000100; }
-    constexpr bool load()  const { return bits & 0b00001000; }
-    constexpr bool reset() const { return bits & 0b00010000; }
-    constexpr bool echo()  const { return bits & 0b10000000; }
+    constexpr bool canWrite() const { return bits & 0b00000001; }
+    constexpr bool canRead()  const { return bits & 0b00000010; }
+    constexpr bool canSave()  const { return bits & 0b00000100; }
+    constexpr bool canLoad()  const { return bits & 0b00001000; }
+    constexpr bool canReset() const { return bits & 0b00010000; }
+    constexpr bool isNotSerialized()    const { return bits & 0b01000000; }
+    constexpr bool isEchoed()           const { return bits & 0b10000000; }
+    constexpr bool isSerialized() const { return !isNotSerialized(); }
 
-    constexpr FuncBits& write(bool w) { bits = (bits & 0b11111110) | (uint8_t(w)<<0); return *this; }
-    constexpr FuncBits& read (bool r) { bits = (bits & 0b11111101) | (uint8_t(r)<<1); return *this; }
-    constexpr FuncBits& save (bool s) { bits = (bits & 0b11111011) | (uint8_t(s)<<2); return *this; }
-    constexpr FuncBits& load (bool l) { bits = (bits & 0b11110111) | (uint8_t(l)<<3); return *this; }
-    constexpr FuncBits& reset(bool d) { bits = (bits & 0b11101111) | (uint8_t(d)<<4); return *this; }
-    constexpr FuncBits& echo (bool e) { bits = (bits & 0b01111111) | (uint8_t(e)<<7); return *this; }
+    constexpr Attributes& setCanWrite      (bool w) { bits = (bits & 0b11111110) | (uint8_t(w)<<0); return *this; }
+    constexpr Attributes& setCanRead       (bool r) { bits = (bits & 0b11111101) | (uint8_t(r)<<1); return *this; }
+    constexpr Attributes& setCanSave       (bool s) { bits = (bits & 0b11111011) | (uint8_t(s)<<2); return *this; }
+    constexpr Attributes& setCanLoad       (bool l) { bits = (bits & 0b11110111) | (uint8_t(l)<<3); return *this; }
+    constexpr Attributes& setCanReset      (bool d) { bits = (bits & 0b11101111) | (uint8_t(d)<<4); return *this; }
+    constexpr Attributes& setNotSerialized (bool x) { bits = (bits & 0b10111111) | (uint8_t(x)<<6); return *this; }
+    constexpr Attributes& setIsEchoed      (bool e) { bits = (bits & 0b01111111) | (uint8_t(e)<<7); return *this; }
 
     constexpr bool has(mip::FunctionSelector function) const { return (bits >> (static_cast<uint8_t>(function) - static_cast<uint8_t>(mip::FunctionSelector::WRITE))) & 1; }
 
     uint8_t bits = 0x00;
 };
-static constexpr inline FuncBits ALL_FUNCTIONS = {true,true,true,true,true};
-static constexpr inline FuncBits NO_FUNCTIONS  = {false, false, false, false, false};
+static constexpr inline Attributes ALL_FUNCTIONS = {true, true, true, true, true};
+static constexpr inline Attributes NO_FUNCTIONS  = {false, false, false, false, false};
 
 
-    struct ParameterInfo
+struct ParameterInfo
+{
+    struct Count
     {
-        struct Count
-        {
-            constexpr Count() = default;
-            constexpr Count(uint8_t n) : count(n) {}
-            constexpr Count(uint8_t n, microstrain::Id id) : count(n), paramIdx(id) {}
+        constexpr Count() = default;
+        constexpr Count(uint8_t n) : count(n) {}
+        constexpr Count(uint8_t n, microstrain::Id id) : count(n), paramIdx(id) {}
 
-            uint8_t         count    = 1;  ///< Fixed size if paramIdx unassigned.
-            microstrain::Id paramIdx = {}; ///< If assigned, specifies parameter that holds the actual runtime count.
+        uint8_t         count    = 1;  ///< Fixed size if paramIdx unassigned.
+        microstrain::Id paramIdx = {}; ///< If assigned, specifies parameter that holds the actual runtime count.
 
-            constexpr bool isFixed() const { return count > 0 && !paramIdx.isAssigned(); }
-            constexpr bool hasCounter() const { return paramIdx.isAssigned(); }
-        };
-
-        struct Condition
-        {
-            enum class Type : uint8_t
-            {
-                NONE     = 0,  ///< No condition, member always valid
-                ENUM     = 1,  ///< Enum value selector (e.g. for parameters in unions)
-                //PRODUCT = 2,  ///< Depends on product variant (TBD)
-                //OPTIONAL = 2,  ///< Parameter can be omitted (TBD)
-            };
-
-            Type            type     = Type::NONE; ///< Type of condition.
-            microstrain::Id paramIdx = {};         ///< Index of enum parameter identifying whether this parameter is enabled.
-            uint16_t        value    = 0;          ///< Value of the enum parameter which activates this parameter.
-
-            constexpr bool hasCondition() const { return type != Type::NONE; }
-        };
-
-        using Accessor = void* (*)(void*);
-
-        const char*     name = nullptr;     ///< Programmatic name (e.g. for printing or language bindings).
-        const char*     docs = nullptr;     ///< Human-readable documentation.
-        TypeInfo        type;               ///< Data type.
-        Accessor        accessor = nullptr; ///< Obtains a reference to the member variable.
-        FuncBits        functions;          ///< This parameter is required for the specified function selectors.
-        Count           count;              ///< Number of instances for arrays.
-        Condition       condition;          ///< For conditionally-enabled parameters like those in unions.
+        constexpr bool isFixed() const { return count > 0 && !paramIdx.isAssigned(); }
+        constexpr bool hasCounter() const { return paramIdx.isAssigned(); }
     };
+
+    struct Condition
+    {
+        enum class Type : uint8_t
+        {
+            NONE     = 0,  ///< No condition, member always valid
+            ENUM     = 1,  ///< Enum value selector (e.g. for parameters in unions)
+            //PRODUCT = 2,  ///< Depends on product variant (TBD)
+            //OPTIONAL = 2,  ///< Parameter can be omitted (TBD)
+        };
+
+        Type            type     = Type::NONE; ///< Type of condition.
+        microstrain::Id paramIdx = {};         ///< Index of enum parameter identifying whether this parameter is enabled.
+        uint16_t        value    = 0;          ///< Value of the enum parameter which activates this parameter.
+
+        constexpr bool hasCondition() const { return type != Type::NONE; }
+    };
+
+    using Accessor = void* (*)(void*);
+
+    const char* name = nullptr;     ///< Programmatic name (e.g. for printing or language bindings).
+    const char* docs = nullptr;     ///< Human-readable documentation.
+    TypeInfo    type;               ///< Data type.
+    Accessor    accessor = nullptr; ///< Obtains a reference to the member variable.
+    Attributes  attributes;         ///< This parameter is required for the specified function selectors.
+    Count       count;              ///< Number of instances for arrays.
+    Condition   condition;          ///< For conditionally-enabled parameters like those in unions.
+};
 
 
 struct StructInfo
@@ -166,7 +178,7 @@ struct UnionInfo : public StructInfo {};
 struct FieldInfo : public StructInfo
 {
     CompositeDescriptor descriptor  = {0x00, 0x00};
-    FuncBits            functions   = {false, false, false, false, false};
+    Attributes          functions   = {false, false, false, false, false};
     bool                proprietary = false;
     const FieldInfo*    response    = nullptr;
 };
@@ -200,7 +212,7 @@ constexpr size_t sizeForBasicType(Type type, const void* info=nullptr)
             return 0;
         return sizeForBasicType(static_cast<const EnumInfo *>(info)->type);
 
-    case Type::BITFIELD:
+    case Type::BITS:
         if(!info)
             return 0;
         return sizeForBasicType(static_cast<const BitfieldInfo *>(info)->type);

@@ -29,7 +29,7 @@ static_assert( sizeof(microstrain_embedded_timestamp) >= 8 || (microstrain_embed
 typedef uint64_t microstrain_embedded_timestamp;
 #else
 // If the platform isn't known, assume u32 timestamps.
-typedef uint32_t microstrain_timestamp;
+typedef uint32_t microstrain_embedded_timestamp;
 #endif
 
 // Timeouts are just an alias for timestamps
