@@ -39,7 +39,7 @@ pipeline {
       // Run all the builds in parallel
       parallel {
         stage('Documentation') {
-          agent { label 'linux-amd64' }
+          agent { label 'windows10' }
           options {
             skipDefaultCheckout()
             timeout(time: 5, activity: true, unit: 'MINUTES')
