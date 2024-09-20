@@ -14,7 +14,7 @@ using namespace mip::C;
 uint8_t packetBuffer[PACKET_LENGTH_MAX];
 uint8_t parseBuffer[1024];
 
-Field fields[MIP_PACKET_PAYLOAD_LENGTH_MAX / MIP_FIELD_LENGTH_MIN];
+FieldView fields[MIP_PACKET_PAYLOAD_LENGTH_MAX / MIP_FIELD_LENGTH_MIN];
 unsigned int numFields = 0;
 
 unsigned int numErrors = 0;
@@ -23,11 +23,11 @@ int main(int argc, const char* argv[])
 {
     srand(0);
 
-    auto callback = [](void*, const PacketRef* parsedPacket, Timestamp timestamp)->bool
+    auto callback = [](void*, const PacketView* parsedPacket, Timestamp timestamp)->bool
     {
         unsigned int parsedFields = 0;
         bool error = false;
-        for(Field field : *parsedPacket)
+        for(FieldView field : *parsedPacket)
         {
             if( field.descriptorSet() != fields[parsedFields].descriptorSet() )
             {
@@ -78,23 +78,25 @@ int main(int argc, const char* argv[])
 
     for(unsigned int i=0; i<NUM_ITERATIONS; i++)
     {
-        PacketRef packet(packetBuffer, sizeof(packetBuffer), 0x80);
+        PacketView packet(packetBuffer, sizeof(packetBuffer), 0x80);
 
         for(numFields = 0; ; numFields++)
         {
             const uint8_t fieldDescriptor = (rand() % 255) + 1;
             const uint8_t payloadLength = (rand() % MIP_FIELD_PAYLOAD_LENGTH_MAX) + 1;
 
-            uint8_t* payload;
-            int rem = packet.allocField(fieldDescriptor, payloadLength, &payload);
+            auto field = packet.createField(fieldDescriptor);
 
-            if( rem < 0 )
+            uint8_t* ptr = field.pointer(payloadLength);
+            if(!ptr)
                 break;
 
             for(unsigned int p=0; p<payloadLength; p++)
-                payload[p] = rand() & 0xFF;
+                ptr[p] = rand() & 0xFF;
 
-            fields[numFields] = Field(packet.descriptorSet(), fieldDescriptor, payload, payloadLength);
+            field.commit();
+
+            fields[numFields] = FieldView(packet.descriptorSet(), fieldDescriptor, ptr, payloadLength);
         }
 
         packet.finalize();

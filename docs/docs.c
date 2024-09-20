@@ -22,12 +22,12 @@
 /// All C++ functions and classes reside within the mip namespace.
 /// The C functions can be accessed via the mip::C namespace.
 ///
-///@li @ref mip::DeviceInterface Top-level MIP interface class.
-///@li @ref mip::PacketRef       An interface to a MIP packet for either transmission or reception.
-///@li @ref mip::PacketBuf       Similar to PacketRef but includes the data buffer.
-///@li @ref mip::Field           An interface to a MIP field within a packet.
-///@li @ref mip::Parser          MIP parser class for converting received bytes into packets.
-///@li @ref mip::CmdResult       Stores the status or result of a MIP command.
+///@li @ref mip::Interface  Top-level MIP interface class.
+///@li @ref mip::PacketView An interface to a MIP packet for either transmission or reception.
+///@li @ref mip::PacketBuf  Similar to PacketRef but includes the data buffer.
+///@li @ref mip::FieldView  An interface to a MIP field within a packet.
+///@li @ref mip::Parser     MIP parser class for converting received bytes into packets.
+///@li @ref mip::CmdResult  Stores the status or result of a MIP command.
 ///
 ///@section quickref_c Quick Reference [C]
 ///
@@ -63,9 +63,9 @@
 /// will return a status code.
 ///
 /// Sending and receiving to or from the device occurs via two functions:
-///@li mip::DeviceInterface::sendToDevice() or
+///@li mip::Interface::sendToDevice() or
 ///    mip_interface_send_to_device() for transmission and
-///@li mip::DeviceInterface::recvFromDevice() or
+///@li mip::Interface::recvFromDevice() or
 ///    mip_interface_recv_from_device() for reception.
 ///
 /// Each of these has a corresponding callback to the application. The
@@ -132,7 +132,7 @@
 ///@par Packet callbacks
 ///
 ///@code{.cpp}
-/// void packet_callback(void* userdata, const mip::PacketRef& packet, Timestamp parseTime)
+/// void packet_callback(void* userdata, const mip::PacketView& packet, Timestamp parseTime)
 ///@endcode
 ///
 /// Packet callbacks are invoked when a packet is received which matches the
@@ -149,7 +149,7 @@
 ///@par Field callbacks
 ///
 ///@code{.cpp}
-/// void field_callback(void* userdata, const mip::Field& field, Timestamp parseTime)
+/// void field_callback(void* userdata, const mip::FieldView& field, Timestamp parseTime)
 ///@endcode
 ///
 /// Similar to packet callbacks, field callbacks are invoked when a MIP
@@ -537,7 +537,7 @@
 ///@li Set a high overall device timeout. This is the easiest solution but may cause excess
 ///    delays in your application if the device is unplugged, not powered, etc.
 ///@li Temporarily set the timeout higher, and restore it after running the long command.
-///@li If using C++, use the `mip::DeviceInterface::runCommand` function and pass a large enough
+///@li If using C++, use the `mip::Interface::runCommand` function and pass a large enough
 ///    value for the `additionalTime` parameter. This raises the timeout specifically for that
 ///    one command instance and is the recommended option.
 ///

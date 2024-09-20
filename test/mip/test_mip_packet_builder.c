@@ -62,7 +62,7 @@ bool check_equal(int a, int b, const char* fmt, ...)
 
 void test_init()
 {
-    struct mip_packet packet;
+    struct mip_packet_view packet;
     mip_packet_from_buffer(&packet, buffer, sizeof(buffer));
 
     check(packet._buffer == buffer && packet._buffer_length == sizeof(buffer)-EXTRA, "mip_packet_init is broken");
@@ -70,7 +70,7 @@ void test_init()
 
 void test_create()
 {
-    struct mip_packet packet;
+    struct mip_packet_view packet;
 
     uint8_t descriptors[] = {0x80, 0x01, 0x0C};
 
@@ -85,7 +85,7 @@ void test_create()
 
 void test_add_fields()
 {
-    struct mip_packet packet;
+    struct mip_packet_view packet;
 
     mip_packet_create(&packet, buffer, sizeof(buffer), 0x80);
 
@@ -140,7 +140,7 @@ void test_add_fields()
 
 void test_short_buffer()
 {
-    struct mip_packet packet;
+    struct mip_packet_view packet;
 
     mip_packet_create(&packet, buffer, MIP_PACKET_LENGTH_MIN+4, 0x80);
 

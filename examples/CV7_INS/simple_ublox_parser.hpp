@@ -11,7 +11,7 @@
 //!
 //! THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING
 //! CUSTOMERS WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER
-//! FOR THEM TO SAVE TIME. AS A RESULT, HBK MICROSTRAIN SHALL NOT BE HELD
+//! FOR THEM TO SAVE TIME. AS A RESULT, MICROSTRAIN BY HBK SHALL NOT BE HELD
 //! LIABLE FOR ANY DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY
 //! CLAIMS ARISING FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS
 //! OF THE CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
@@ -41,10 +41,10 @@ namespace mip
             ck_a = 0;
             ck_b = 0;
 
-            int num_bytes = packet.size();
-            int num_bytes_without_checksum = num_bytes - 2;
+            size_t num_bytes = packet.size();
+            size_t num_bytes_without_checksum = num_bytes - 2;
 
-            for (int i = 2; i < num_bytes_without_checksum; i++) {
+            for (size_t i = 2; i < num_bytes_without_checksum; i++) {
                 ck_a += packet[i];
                 ck_b += ck_a;
             }
