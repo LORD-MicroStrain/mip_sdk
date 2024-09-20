@@ -20,14 +20,19 @@
 
 #include <bit>
 
-namespace microstrain::serialization
+namespace microstrain
+{
+namespace serialization
 {
     using Endian = std::endian;
-} // namespace microstrain::serialization
+} // namespace serialization
+} // namespace microstrain
 
 #else // MICROSTRAIN_USE_STD_ENDIAN
 
-namespace microstrain::serialization
+namespace microstrain
+{
+namespace serialization
 {
 
 enum class Endian
@@ -37,11 +42,14 @@ enum class Endian
     //native = little,
 };
 
-} // namespace microstrain::serialization
+} // namespace serialization
+} // namespace microstrain
 
 #endif // MICROSTRAIN_USE_STD_ENDIAN
 
-namespace microstrain::serialization
+namespace microstrain
+{
+namespace serialization
 {
 
 //
@@ -194,4 +202,5 @@ T read(const uint8_t* buffer)
     return value;
 }
 
-} // namespace microstrain::serialization
+} // namespace serialization
+} // namespace microstrain
