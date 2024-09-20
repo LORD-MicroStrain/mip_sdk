@@ -2,6 +2,7 @@
 
 #include <stdint.h>
 #include <stddef.h>
+#include <climits>
 
 namespace microstrain
 {
@@ -27,7 +28,7 @@ namespace microstrain
     class Index
     {
     private:
-        unsigned int INVALID = -1U;
+        unsigned int INVALID = UINT_MAX;
 
     public:
         constexpr explicit Index(unsigned int index) : m_index(index) {}

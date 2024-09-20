@@ -187,7 +187,7 @@ void Formatter::formatParameter(const mip::metadata::ParameterInfo &param, const
         formatEnum(static_cast<const EnumInfo *>(param.type.infoPtr));
         break;
 
-    case Type::BITFIELD:
+    case Type::BITS:
         formatBitfield(static_cast<const BitfieldInfo *>(param.type.infoPtr));
         break;
 
