@@ -115,21 +115,6 @@ pipeline {
             }
           }
         }
-        stage('Centos amd64') {
-          agent { label 'linux-amd64' }
-          options {
-            skipDefaultCheckout()
-            timeout(time: 5, activity: true, unit: 'MINUTES')
-          }
-          steps {
-            script {
-              checkoutRepo()
-              env.setProperty('BRANCH_NAME', branchName())
-              sh "./.devcontainer/docker_build.sh --os centos --arch amd64"
-              archiveArtifacts artifacts: 'build_centos_amd64/mipsdk_*'
-            }
-          }
-        }
         stage('Ubuntu arm64') {
           agent { label 'linux-arm64' }
           options {
