@@ -9,7 +9,7 @@ include(CheckCXXSourceCompiles)
 
 check_cxx_source_compiles("
 
-#if __cpp_constexpr < 201907L
+#if __cpp_constexpr < 201603L
 #error \"Metadata not supported\"
 #endif
 
