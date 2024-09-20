@@ -1,5 +1,5 @@
 ARG ARCH="amd64"
-ARG CENTOS_VERSION="7"
+ARG CENTOS_VERSION="8"
 FROM ${ARCH}/centos:${CENTOS_VERSION}
 
 # Add some CA certificates
