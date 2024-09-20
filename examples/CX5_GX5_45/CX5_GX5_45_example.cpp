@@ -33,8 +33,6 @@
 
 #include "example_utils.hpp"
 
-using namespace mip;
-
 
 ////////////////////////////////////////////////////////////////////////////////
 // Global Variables
@@ -48,20 +46,20 @@ float sensor_to_vehicle_rotation_euler[3] = {0.0, 0.0, 0.0};
 float gnss_antenna_offset_meters[3] = {-0.25, 0.0, 0.0};
 
 //Device data stores
-data_sensor::GpsTimestamp sensor_gps_time;
-data_sensor::ScaledAccel  sensor_accel;
-data_sensor::ScaledGyro   sensor_gyro;
-data_sensor::ScaledMag    sensor_mag;
+mip::data_sensor::GpsTimestamp sensor_gps_time;
+mip::data_sensor::ScaledAccel  sensor_accel;
+mip::data_sensor::ScaledGyro   sensor_gyro;
+mip::data_sensor::ScaledMag    sensor_mag;
 
-data_gnss::FixInfo        gnss_fix_info;
+mip::data_gnss::FixInfo        gnss_fix_info;
 
 bool gnss_fix_info_valid = false;
 
-data_filter::Timestamp    filter_gps_time;
-data_filter::Status       filter_status;
-data_filter::PositionLlh  filter_position_llh;
-data_filter::VelocityNed  filter_velocity_ned;
-data_filter::EulerAngles  filter_euler_angles;
+mip::data_filter::Timestamp    filter_gps_time;
+mip::data_filter::Status       filter_status;
+mip::data_filter::PositionLlh  filter_position_llh;
+mip::data_filter::VelocityNed  filter_velocity_ned;
+mip::data_filter::EulerAngles  filter_euler_angles;
 
 bool filter_state_running = false;
 
@@ -101,7 +99,7 @@ int main(int argc, const char* argv[])
     //Ping the device (note: this is good to do to make sure the device is present)
     //
 
-    if(commands_base::ping(*device) != CmdResult::ACK_OK)
+    if(mip::commands_base::ping(*device) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not ping the device!");
 
 
@@ -109,7 +107,7 @@ int main(int argc, const char* argv[])
     //Idle the device (note: this is good to do during setup)
     //
 
-    if(commands_base::setIdle(*device) != CmdResult::ACK_OK)
+    if(mip::commands_base::setIdle(*device) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set the device to idle!");
 
 
@@ -117,7 +115,7 @@ int main(int argc, const char* argv[])
     //Load the device default settings (so the device is in a known state)
     //
 
-    if(commands_3dm::defaultDeviceSettings(*device) != CmdResult::ACK_OK)
+    if(mip::commands_3dm::defaultDeviceSettings(*device) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not load default device settings!");
 
 
@@ -130,20 +128,20 @@ int main(int argc, const char* argv[])
     //Note: Querying the device base rate is only one way to calculate the descriptor decimation.
     //We could have also set it directly with information from the datasheet (shown in GNSS setup).
 
-    if(commands_3dm::imuGetBaseRate(*device, &sensor_base_rate) != CmdResult::ACK_OK)
+    if(mip::commands_3dm::imuGetBaseRate(*device, &sensor_base_rate) != mip::CmdResult::ACK_OK)
          exit_gracefully("ERROR: Could not get sensor base rate format!");
 
     const uint16_t sensor_sample_rate = 100; // Hz
     const uint16_t sensor_decimation = sensor_base_rate / sensor_sample_rate;
 
-    std::array<DescriptorRate, 4> sensor_descriptors = {{
-        { data_sensor::DATA_TIME_STAMP_GPS, sensor_decimation },
-        { data_sensor::DATA_ACCEL_SCALED,   sensor_decimation },
-        { data_sensor::DATA_GYRO_SCALED,    sensor_decimation },
-        { data_sensor::DATA_MAG_SCALED,     sensor_decimation },
+    std::array<mip::DescriptorRate, 4> sensor_descriptors = {{
+        { mip::data_sensor::DATA_TIME_STAMP_GPS, sensor_decimation },
+        { mip::data_sensor::DATA_ACCEL_SCALED,   sensor_decimation },
+        { mip::data_sensor::DATA_GYRO_SCALED,    sensor_decimation },
+        { mip::data_sensor::DATA_MAG_SCALED,     sensor_decimation },
     }};
 
-    if(commands_3dm::writeImuMessageFormat(*device, static_cast<uint8_t>(sensor_descriptors.size()), sensor_descriptors.data()) != CmdResult::ACK_OK)
+    if(mip::commands_3dm::writeImuMessageFormat(*device, static_cast<uint8_t>(sensor_descriptors.size()), sensor_descriptors.data()) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set sensor message format!");
 
 
@@ -151,12 +149,12 @@ int main(int argc, const char* argv[])
     //Setup GNSS data format to 4 Hz (decimation of 1)
     //
 
-    std::array<DescriptorRate, 1> gnss_descriptors = {{
-        { data_gnss::DATA_FIX_INFO, 1 }
+    std::array<mip::DescriptorRate, 1> gnss_descriptors = {{
+        { mip::data_gnss::DATA_FIX_INFO, 1 }
     }};
 
     //GNSS
-    if(commands_3dm::writeGpsMessageFormat(*device, static_cast<uint8_t>(gnss_descriptors.size()), gnss_descriptors.data()) != CmdResult::ACK_OK)
+    if(mip::commands_3dm::writeGpsMessageFormat(*device, static_cast<uint8_t>(gnss_descriptors.size()), gnss_descriptors.data()) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set GNSS1 message format!");
 
 
@@ -166,21 +164,21 @@ int main(int argc, const char* argv[])
 
     uint16_t filter_base_rate;
 
-    if(commands_3dm::filterGetBaseRate(*device, &filter_base_rate) != CmdResult::ACK_OK)
+    if(mip::commands_3dm::filterGetBaseRate(*device, &filter_base_rate) != mip::CmdResult::ACK_OK)
          exit_gracefully("ERROR: Could not get filter base rate format!");
 
     const uint16_t filter_sample_rate = 100; // Hz
     const uint16_t filter_decimation = filter_base_rate / filter_sample_rate;
 
-    std::array<DescriptorRate, 5> filter_descriptors = {{
-        { data_filter::DATA_FILTER_TIMESTAMP, filter_decimation },
-        { data_filter::DATA_FILTER_STATUS,    filter_decimation },
-        { data_filter::DATA_POS_LLH,          filter_decimation },
-        { data_filter::DATA_VEL_NED,          filter_decimation },
-        { data_filter::DATA_ATT_EULER_ANGLES, filter_decimation },
+    std::array<mip::DescriptorRate, 5> filter_descriptors = {{
+        { mip::data_filter::DATA_FILTER_TIMESTAMP, filter_decimation },
+        { mip::data_filter::DATA_FILTER_STATUS,    filter_decimation },
+        { mip::data_filter::DATA_POS_LLH,          filter_decimation },
+        { mip::data_filter::DATA_VEL_NED,          filter_decimation },
+        { mip::data_filter::DATA_ATT_EULER_ANGLES, filter_decimation },
     }};
 
-    if(commands_3dm::writeFilterMessageFormat(*device, static_cast<uint8_t>(filter_descriptors.size()), filter_descriptors.data()) != CmdResult::ACK_OK)
+    if(mip::commands_3dm::writeFilterMessageFormat(*device, static_cast<uint8_t>(filter_descriptors.size()), filter_descriptors.data()) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set filter message format!");
 
 
@@ -188,7 +186,7 @@ int main(int argc, const char* argv[])
     //Setup the sensor to vehicle rotation
     //
 
-    if(commands_filter::writeSensorToVehicleRotationEuler(*device, sensor_to_vehicle_rotation_euler[0], sensor_to_vehicle_rotation_euler[1], sensor_to_vehicle_rotation_euler[2]) != CmdResult::ACK_OK)
+    if(mip::commands_filter::writeSensorToVehicleRotationEuler(*device, sensor_to_vehicle_rotation_euler[0], sensor_to_vehicle_rotation_euler[1], sensor_to_vehicle_rotation_euler[2]) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set sensor-2-vehicle rotation!");
 
 
@@ -196,15 +194,15 @@ int main(int argc, const char* argv[])
     //Setup the GNSS antenna offset
     //
 
-    if(commands_filter::writeAntennaOffset(*device, gnss_antenna_offset_meters) != CmdResult::ACK_OK)
+    if(mip::commands_filter::writeAntennaOffset(*device, gnss_antenna_offset_meters) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set GNSS1 antenna offset!");
-   
+
 
     //
     //Setup heading update control
     //
 
-    if(commands_filter::writeHeadingSource(*device, commands_filter::HeadingSource::Source::GNSS_VEL_AND_MAG) != CmdResult::ACK_OK)
+    if(mip::commands_filter::writeHeadingSource(*device, mip::commands_filter::HeadingSource::Source::GNSS_VEL_AND_MAG) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set filter heading update control!");
 
 
@@ -212,7 +210,7 @@ int main(int argc, const char* argv[])
     //Enable filter auto-initialization
     //
 
-    if(commands_filter::writeAutoInitControl(*device, 1) != CmdResult::ACK_OK)
+    if(mip::commands_filter::writeAutoInitControl(*device, 1) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set filter autoinit control!");
 
 
@@ -221,7 +219,7 @@ int main(int argc, const char* argv[])
     //Reset the filter (note: this is good to do after filter setup is complete)
     //
 
-    if(commands_filter::reset(*device) != CmdResult::ACK_OK)
+    if(mip::commands_filter::reset(*device) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not reset the filter!");
 
 
@@ -230,7 +228,7 @@ int main(int argc, const char* argv[])
     //
 
     //Sensor Data
-    DispatchHandler sensor_data_handlers[4];
+    mip::DispatchHandler sensor_data_handlers[4];
 
     device->registerExtractor(sensor_data_handlers[0], &sensor_gps_time);
     device->registerExtractor(sensor_data_handlers[1], &sensor_accel);
@@ -238,12 +236,12 @@ int main(int argc, const char* argv[])
     device->registerExtractor(sensor_data_handlers[3], &sensor_mag);
 
     //GNSS Data
-    DispatchHandler gnss_data_handlers[1];
+    mip::DispatchHandler gnss_data_handlers[1];
 
     device->registerExtractor(gnss_data_handlers[0], &gnss_fix_info);
- 
+
     //Filter Data
-    DispatchHandler filter_data_handlers[5];
+    mip::DispatchHandler filter_data_handlers[5];
 
     device->registerExtractor(filter_data_handlers[0], &filter_gps_time);
     device->registerExtractor(filter_data_handlers[1], &filter_status);
@@ -255,7 +253,7 @@ int main(int argc, const char* argv[])
     //Resume the device
     //
 
-    if(commands_base::resume(*device) != CmdResult::ACK_OK)
+    if(mip::commands_base::resume(*device) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not resume the device!");
 
 
@@ -275,15 +273,15 @@ int main(int argc, const char* argv[])
         displayFilterState(filter_status.filter_state, current_state, true);
 
         //Check GNSS fixes and alert the user when they become valid
-        if((gnss_fix_info_valid == false) && (gnss_fix_info.fix_type == data_gnss::FixInfo::FixType::FIX_3D) &&
-            (gnss_fix_info.valid_flags & data_gnss::FixInfo::ValidFlags::FIX_TYPE))
+        if((gnss_fix_info_valid == false) && (gnss_fix_info.fix_type == mip::data_gnss::FixInfo::FixType::FIX_3D) &&
+            (gnss_fix_info.valid_flags & mip::data_gnss::FixInfo::ValidFlags::FIX_TYPE))
         {
             printf("NOTE: GNSS fix info valid.\n");
             gnss_fix_info_valid = true;
         }
- 
+
         //Check Filter State
-        if((!filter_state_running) && ((filter_status.filter_state == data_filter::FilterMode::GX5_RUN_SOLUTION_ERROR) || (filter_status.filter_state == data_filter::FilterMode::GX5_RUN_SOLUTION_VALID)))
+        if((!filter_state_running) && ((filter_status.filter_state == mip::data_filter::FilterMode::GX5_RUN_SOLUTION_ERROR) || (filter_status.filter_state == mip::data_filter::FilterMode::GX5_RUN_SOLUTION_VALID)))
         {
             printf("NOTE: Filter has entered running mode.\n");
             filter_state_running = true;
@@ -350,4 +348,3 @@ bool should_exit()
   return false;
 
 }
-

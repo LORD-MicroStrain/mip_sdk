@@ -17,9 +17,7 @@
 #error "Needs optional support"
 #endif
 
-using namespace mip::metadata;
-
-extern Definitions mipdefs;
+extern mip::metadata::Definitions mipdefs;
 
 
 struct Formatter
@@ -30,12 +28,12 @@ struct Formatter
     std::ostream& ss;
     std::array<uint8_t, MAX_PARAMETERS> offsets;
 
-    std::ostream& formatEnum(const EnumInfo* info);
-    std::ostream& formatBitfield(const BitfieldInfo* info);
-    std::ostream& formatUnion(const UnionInfo* info, const StructInfo& parent, size_t offset_index);
-    std::ostream& formatStruct(const StructInfo* info, size_t offset_index=0);
+    std::ostream& formatEnum(const mip::metadata::EnumInfo* info);
+    std::ostream& formatBitfield(const mip::metadata::BitfieldInfo* info);
+    std::ostream& formatUnion(const mip::metadata::UnionInfo* info, const mip::metadata::StructInfo& parent, size_t offset_index);
+    std::ostream& formatStruct(const mip::metadata::StructInfo* info, size_t offset_index=0);
 
-    void formatParameter(const ParameterInfo& param, const StructInfo& parent, size_t offset_index=0);
+    void formatParameter(const mip::metadata::ParameterInfo& param, const mip::metadata::StructInfo& parent, size_t offset_index=0);
 
     template<class T>
     std::ostream& formatBasicType();
@@ -77,18 +75,18 @@ std::ostream& Formatter::formatBasicType()
 ///@returns A uint64_t containing the value. All smaller integers are converted to this type.
 ///@returns std::nullopt (no value) if the offset/size is beyond the end of the buffer.
 ///
-static std::optional<uint64_t> readIntegralValue(Type type, mip::Serializer& serializer)
+static std::optional<uint64_t> readIntegralValue(mip::metadata::Type type, mip::Serializer& serializer)
 {
     switch(type)
     {
-    case Type::U8:  return microstrain::extract< uint8_t>(serializer);
-    case Type::S8:  return microstrain::extract<  int8_t>(serializer);
-    case Type::U16: return microstrain::extract<uint16_t>(serializer);
-    case Type::S16: return microstrain::extract< int32_t>(serializer);
-    case Type::U32: return microstrain::extract<uint32_t>(serializer);
-    case Type::S32: return microstrain::extract< int64_t>(serializer);
-    case Type::U64: return microstrain::extract<uint64_t>(serializer);
-    case Type::S64: return microstrain::extract< int64_t>(serializer);
+    case mip::metadata::Type::U8:  return microstrain::extract< uint8_t>(serializer);
+    case mip::metadata::Type::S8:  return microstrain::extract<  int8_t>(serializer);
+    case mip::metadata::Type::U16: return microstrain::extract<uint16_t>(serializer);
+    case mip::metadata::Type::S16: return microstrain::extract< int32_t>(serializer);
+    case mip::metadata::Type::U32: return microstrain::extract<uint32_t>(serializer);
+    case mip::metadata::Type::S32: return microstrain::extract< int64_t>(serializer);
+    case mip::metadata::Type::U64: return microstrain::extract<uint64_t>(serializer);
+    case mip::metadata::Type::S64: return microstrain::extract< int64_t>(serializer);
     default: return std::nullopt;
     }
 }
@@ -104,7 +102,7 @@ static std::optional<uint64_t> readIntegralValue(Type type, mip::Serializer& ser
 ///
 ///@returns ss
 ///
-std::ostream& Formatter::formatEnum(const EnumInfo* info)
+std::ostream& Formatter::formatEnum(const mip::metadata::EnumInfo* info)
 {
     if(!info)
         return ss << "<enum>";
@@ -116,7 +114,7 @@ std::ostream& Formatter::formatEnum(const EnumInfo* info)
 
     auto it = std::find_if(
         info->entries.begin(), info->entries.end(),
-        [value](const auto& entry){ return entry.value == value; }
+        [value](const mip::metadata::EnumInfo::Entry& entry){ return entry.value == value; }
     );
     const char* name = (it != info->entries.end()) ? it->name : "?";
 
@@ -134,7 +132,7 @@ std::ostream& Formatter::formatEnum(const EnumInfo* info)
 ///
 ///@returns ss
 ///
-std::ostream& Formatter::formatBitfield(const BitfieldInfo* info)
+std::ostream& Formatter::formatBitfield(const mip::metadata::BitfieldInfo* info)
 {
     if(!info)
         return ss << "<bitfield>";
@@ -146,7 +144,7 @@ std::ostream& Formatter::formatBitfield(const BitfieldInfo* info)
 
     ss << '{';
     size_t i=0;
-    for(const auto& entry : info->entries)
+    for(const mip::metadata::EnumInfo::Entry& entry : info->entries)
     {
         if(i > 0)
             ss << ", ";
@@ -162,41 +160,41 @@ std::ostream& Formatter::formatBitfield(const BitfieldInfo* info)
     return ss;
 }
 
-void Formatter::formatParameter(const mip::metadata::ParameterInfo &param, const StructInfo& parent, size_t offset_index)
+void Formatter::formatParameter(const mip::metadata::ParameterInfo &param, const mip::metadata::StructInfo& parent, size_t offset_index)
 {
     switch(param.type.type)
     {
-    case Type::NONE:
+    case mip::metadata::Type::NONE:
         ss << "-";
         break;
 
-    case Type::CHAR:   formatBasicType<char    >(); break;
-    case Type::BOOL:   formatBasicType<bool    >(); break;
-    case Type::U8:     formatBasicType<uint8_t >(); break;
-    case Type::S8:     formatBasicType< int8_t >(); break;
-    case Type::U16:    formatBasicType<uint16_t>(); break;
-    case Type::S16:    formatBasicType< int16_t>(); break;
-    case Type::U32:    formatBasicType<uint32_t>(); break;
-    case Type::S32:    formatBasicType< int32_t>(); break;
-    case Type::U64:    formatBasicType<uint64_t>(); break;
-    case Type::S64:    formatBasicType< int64_t>(); break;
-    case Type::FLOAT:  formatBasicType<float   >(); break;
-    case Type::DOUBLE: formatBasicType<double  >(); break;
+    case mip::metadata::Type::CHAR:   formatBasicType<char    >(); break;
+    case mip::metadata::Type::BOOL:   formatBasicType<bool    >(); break;
+    case mip::metadata::Type::U8:     formatBasicType<uint8_t >(); break;
+    case mip::metadata::Type::S8:     formatBasicType< int8_t >(); break;
+    case mip::metadata::Type::U16:    formatBasicType<uint16_t>(); break;
+    case mip::metadata::Type::S16:    formatBasicType< int16_t>(); break;
+    case mip::metadata::Type::U32:    formatBasicType<uint32_t>(); break;
+    case mip::metadata::Type::S32:    formatBasicType< int32_t>(); break;
+    case mip::metadata::Type::U64:    formatBasicType<uint64_t>(); break;
+    case mip::metadata::Type::S64:    formatBasicType< int64_t>(); break;
+    case mip::metadata::Type::FLOAT:  formatBasicType<float   >(); break;
+    case mip::metadata::Type::DOUBLE: formatBasicType<double  >(); break;
 
-    case Type::ENUM:
-        formatEnum(static_cast<const EnumInfo *>(param.type.infoPtr));
+    case mip::metadata::Type::ENUM:
+        formatEnum(static_cast<const mip::metadata::EnumInfo *>(param.type.infoPtr));
         break;
 
-    case Type::BITS:
-        formatBitfield(static_cast<const BitfieldInfo *>(param.type.infoPtr));
+    case mip::metadata::Type::BITS:
+        formatBitfield(static_cast<const mip::metadata::BitfieldInfo *>(param.type.infoPtr));
         break;
 
-    case Type::STRUCT:
-        formatStruct(static_cast<const StructInfo *>(param.type.infoPtr), offset_index);
+    case mip::metadata::Type::STRUCT:
+        formatStruct(static_cast<const mip::metadata::StructInfo *>(param.type.infoPtr), offset_index);
         break;
 
-    case Type::UNION:
-        formatUnion(static_cast<const UnionInfo *>(param.type.infoPtr), parent, offset_index);
+    case mip::metadata::Type::UNION:
+        formatUnion(static_cast<const mip::metadata::UnionInfo *>(param.type.infoPtr), parent, offset_index);
         break;
     }
 }
@@ -213,7 +211,7 @@ void Formatter::formatParameter(const mip::metadata::ParameterInfo &param, const
 ///
 ///@returns ss
 ///
-std::ostream& Formatter::formatUnion(const UnionInfo* info, const StructInfo& parent, size_t offset_index)
+std::ostream& Formatter::formatUnion(const mip::metadata::UnionInfo* info, const mip::metadata::StructInfo& parent, size_t offset_index)
 {
     if(!info)
         return ss << "<union>";
@@ -222,14 +220,14 @@ std::ostream& Formatter::formatUnion(const UnionInfo* info, const StructInfo& pa
 
     ss << info->name << '{';
 
-    for(const auto& param : info->parameters)
+    for(const mip::metadata::ParameterInfo& param : info->parameters)
     {
         // Enum condition, where the active union member depends on a previous parameter's value.
-        if(param.condition.type == ParameterInfo::Condition::Type::ENUM)
+        if(param.condition.type == mip::metadata::ParameterInfo::Condition::Type::ENUM)
         {
             // Parameter index is within the parent's parameter array.
             assert(param.condition.paramIdx.isValid(parent.parameters.size()));
-            const ParameterInfo &discriminant = parent.parameters[param.condition.paramIdx.index()];
+            const mip::metadata::ParameterInfo &discriminant = parent.parameters[param.condition.paramIdx.index()];
 
             // Index is within the offset array relative to the parent.
             assert(offset_index+param.condition.paramIdx.index() < MAX_PARAMETERS);
@@ -270,7 +268,7 @@ std::ostream& Formatter::formatUnion(const UnionInfo* info, const StructInfo& pa
 ///
 ///@returns ss
 ///
-std::ostream& Formatter::formatStruct(const StructInfo* info, size_t offset_index)
+std::ostream& Formatter::formatStruct(const mip::metadata::StructInfo* info, size_t offset_index)
 {
     if(!info)
         return ss << "<struct>";
@@ -296,7 +294,7 @@ std::ostream& Formatter::formatStruct(const StructInfo* info, size_t offset_inde
 
     for(size_t i=0; i<info->parameters.size(); i++)
     {
-        const auto& param = info->parameters[i];
+        const mip::metadata::ParameterInfo& param = info->parameters[i];
         if(i > 0)
             ss << ", ";
 
@@ -313,7 +311,7 @@ std::ostream& Formatter::formatStruct(const StructInfo* info, size_t offset_inde
         {
             assert(param.count.paramIdx.isValid(i));  // Array size can't come after the array
 
-            const ParameterInfo& counter = info->parameters[param.count.paramIdx.index()];
+            const mip::metadata::ParameterInfo& counter = info->parameters[param.count.paramIdx.index()];
             const size_t counterOffset = offsets[offset_index+param.count.paramIdx.index()];
 
             // Counters must be arithmetic types and can't be arrays.
@@ -334,17 +332,17 @@ std::ostream& Formatter::formatStruct(const StructInfo* info, size_t offset_inde
             count = (uint8_t)*counterValue;
         }
         if(param.count.count != 1)
-            ss << (param.type.type == Type::CHAR ? '"' : '[');
+            ss << (param.type.type == mip::metadata::Type::CHAR ? '"' : '[');
 
         for(uint8_t j=0; j<count || (count==0 && serializer.isOk()); j++)
         {
-            if(j > 0 && param.type.type != Type::CHAR)
+            if(j > 0 && param.type.type != mip::metadata::Type::CHAR)
                 ss << ", ";
 
             formatParameter(param, *info, offset_index+i);
         }
         if(param.count.count != 1)
-            ss << (param.type.type == Type::CHAR ? '"' : ']');
+            ss << (param.type.type == mip::metadata::Type::CHAR ? '"' : ']');
     }
     ss << '}';
 
@@ -361,7 +359,7 @@ std::ostream& Formatter::formatStruct(const StructInfo* info, size_t offset_inde
 ///
 std::ostream& formatField(std::ostream& ss, const mip::FieldView& field)
 {
-    const FieldInfo* info = mipdefs.findField(field.descriptor());
+    const mip::metadata::FieldInfo* info = mipdefs.findField(field.descriptor());
 
     if(!info)
     {
@@ -380,7 +378,7 @@ std::ostream& formatField(std::ostream& ss, const mip::FieldView& field)
             ss,
         };
 
-        formatter.formatStruct(static_cast<const StructInfo *>(info));
+        formatter.formatStruct(static_cast<const mip::metadata::StructInfo *>(info));
     }
     return ss;
 }
