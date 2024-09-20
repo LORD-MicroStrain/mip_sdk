@@ -52,16 +52,21 @@ template<> struct ParamEnum<Type::DOUBLE> { using type = double;   };
 
 // Gets a void pointer to the member identified by Ptr, given an
 // instance of field passed by void pointer.
-template<class Field, class T, T Field::*Ptr>
+/*template<class Field, class T, T Field::*Ptr>
 void* access(void* p)
 {
     return &(static_cast<Field*>(p)->*Ptr);
 }
 
-template<class Field, class T, T (Field::*Ptr)[]>
+template<class Field, class T, auto Ptr>
 void* access(void* p)
 {
-    return static_cast<Field*>(p)->*Ptr;
-}
+    Field* f = static_cast<Field*>(p);
+    auto& param = f->*Ptr;
+    return &param;
+}*/
+
+template<class Field, class T, auto Ptr>
+void* access(void* p);
 
 } // namespace mip::metadata

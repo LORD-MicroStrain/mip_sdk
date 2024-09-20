@@ -1,14 +1,16 @@
 #pragma once
 
 #include <microstrain/common/index.hpp>
+#include <microstrain/common/span.hpp>
 #include <mip/mip_descriptors.hpp>
 
-#include <span>
 #include <stdint.h>
 
 
 namespace mip::metadata
 {
+  template<class T>
+  using Span = microstrain::Span<T>;
 
 //struct EnumInfo;
 //struct BitfieldInfo;
@@ -72,7 +74,8 @@ struct EnumInfo
     const char*   name    = nullptr;
     const char*   docs    = nullptr;
     Type          type    = Type::NONE;
-    std::span<const Entry> entries;
+
+    Span<const Entry> entries;
 };
 
 struct BitfieldInfo : public EnumInfo {};
@@ -170,7 +173,8 @@ struct StructInfo
     const char* name  = nullptr;
     const char* title = nullptr;
     const char* docs  = nullptr;
-    std::span<const ParameterInfo> parameters;
+
+    Span<const ParameterInfo> parameters;
 };
 
 struct UnionInfo : public StructInfo {};

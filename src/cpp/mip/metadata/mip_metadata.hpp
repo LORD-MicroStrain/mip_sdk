@@ -29,10 +29,10 @@ struct MetadataFor<FunctionSelector>
     };
 
     static constexpr inline EnumInfo value = {
-        .name = "FunctionSelector",
-        .docs = "",
-        .type = Type::U8,
-        .entries = entries,
+        /*.name    =*/ "FunctionSelector",
+        /*.docs    =*/ "",
+        /*.type    =*/ Type::U8,
+        /*.entries =*/ entries,
     };
 };
 

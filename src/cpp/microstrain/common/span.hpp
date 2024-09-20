@@ -54,6 +54,11 @@ struct Span
     [[nodiscard]] constexpr size_t size() const noexcept { return extent; }
     [[nodiscard]] constexpr bool empty() const noexcept { return extent == 0; }
 
+    [[nodiscard]] constexpr Span<T, DYNAMIC_EXTENT> subspan(size_t index, size_t length) const { return {m_ptr+index, length}; }
+    [[nodiscard]] constexpr Span<T, DYNAMIC_EXTENT> subspan(size_t index) const { return {m_ptr+index, extent-index}; }
+    template<size_t Offset, size_t Count = DYNAMIC_EXTENT>
+    [[nodiscard]] constexpr Span<T, Count == DYNAMIC_EXTENT ? DYNAMIC_EXTENT : Extent-Count> subspan() const { return {m_ptr+Offset}; }
+
 private:
     const pointer m_ptr = nullptr;
 };
@@ -70,7 +75,10 @@ struct Span<T, DYNAMIC_EXTENT>
     using const_pointer = const T*;
     using const_reference = const T&;
 
-    Span(pointer ptr, size_t cnt) : m_ptr(ptr), m_cnt(cnt) {}
+    constexpr Span() = default;
+    constexpr Span(pointer ptr, size_t cnt) : m_ptr(ptr), m_cnt(cnt) {}
+    template<size_t N>
+    constexpr Span(const T (&arr)[N]) : m_ptr(arr), m_cnt(N) {}
 
     constexpr pointer begin() const noexcept { return m_ptr; }
     constexpr pointer end() const noexcept { return m_ptr+m_cnt; }
@@ -85,6 +93,11 @@ struct Span<T, DYNAMIC_EXTENT>
 
     [[nodiscard]] constexpr size_t size() const noexcept { return m_cnt; }
     [[nodiscard]] constexpr bool empty() const noexcept { return m_cnt == 0; }
+
+    [[nodiscard]] constexpr Span<T, DYNAMIC_EXTENT> subspan(size_t index, size_t length) const { return {m_ptr+index, length}; }
+    [[nodiscard]] constexpr Span<T, DYNAMIC_EXTENT> subspan(size_t index) const { return {m_ptr+index, m_cnt-index}; }
+    template<size_t Offset, size_t Count = DYNAMIC_EXTENT>
+    [[nodiscard]] constexpr Span<T, Count> subspan() const { return {m_ptr+Offset, Count}; }
 
 private:
     pointer const m_ptr   = nullptr;
