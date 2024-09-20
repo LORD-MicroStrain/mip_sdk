@@ -2,6 +2,8 @@
 
 #include "readwrite.hpp"
 
+#include "../span.hpp"
+
 #include <array>
 
 #include <stdint.h>
@@ -9,9 +11,6 @@
 
 #ifdef MICROSTRAIN_HAS_OPTIONAL
 #include <optional>
-#endif
-#ifdef HAS_SPAN
-#include <span>
 #endif
 
 #if __cpp_lib_apply >= 201603L
@@ -27,9 +26,7 @@ public:
     SerializerBase() = default;
     SerializerBase(uint8_t* ptr, size_t capacity, size_t offset=0) : m_ptr(ptr), m_size(capacity), m_offset(offset) {}
     SerializerBase(const uint8_t* ptr, size_t size, size_t offset=0) : m_ptr(const_cast<uint8_t*>(ptr)), m_size(size), m_offset(offset) {}
-#ifdef HAS_SPAN
-    SerializerBase(std::span<const uint8_t> buffer, size_t offset=0) : m_ptr(const_cast<uint8_t*>(buffer.data())), m_size(buffer.size()), m_offset(offset) {}
-#endif
+    SerializerBase(microstrain::Span<const uint8_t> buffer, size_t offset=0) : m_ptr(const_cast<uint8_t*>(buffer.data())), m_size(buffer.size()), m_offset(offset) {}
 
     size_t capacity() const { return m_size; }
     size_t offset() const { return m_offset; }
@@ -249,18 +246,16 @@ size_t extract(Serializer<E>& serializer, T* values, size_t count)
     }
 }
 
-#ifdef HAS_SPAN
 template<serialization::Endian E, class T>
-size_t insert(Serializer<E>& serializer, std::span<const T> values)
+size_t insert(Serializer<E>& serializer, microstrain::Span<const T> values)
 {
     return insert(serializer, values.data(), values.size());
 }
 template<serialization::Endian E, class T>
-size_t extract(Serializer<E>& serializer, std::span<const T> values)
+size_t extract(Serializer<E>& serializer, microstrain::Span<const T> values)
 {
     return extract(serializer, values.data(), values.size());
 }
-#endif
 
 
 //
