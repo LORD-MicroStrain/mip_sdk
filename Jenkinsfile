@@ -39,7 +39,7 @@ pipeline {
       // Run all the builds in parallel
       parallel {
         stage('Documentation') {
-          agent { label 'windows10' }
+          agent { label 'linux-amd64' }
           options {
             skipDefaultCheckout()
             timeout(time: 5, activity: true, unit: 'MINUTES')
@@ -71,7 +71,8 @@ pipeline {
               powershell """
                 mkdir build_Win32
                 cd build_Win32
-                cmake .. -A "Win32" -DMICROSTRAIN_BUILD_PACKAGE=ON -DMICROSTRAIN_BUILD_EXAMPLES=ON
+                cmake .. -A "Win32" -DMICROSTRAIN_BUILD_EXAMPLES=ON -DMICROSTRAIN_BUILD_PACKAGE=ON
+                cmake --build . --config Release
                 cmake --build . --config Release --target package
               """
               archiveArtifacts artifacts: 'build_Win32/mipsdk_*'
@@ -91,7 +92,8 @@ pipeline {
               powershell """
                 mkdir build_x64
                 cd build_x64
-                cmake .. -DMICROSTRAIN_BUILD_PACKAGE=ON -DMICROSTRAIN_BUILD_EXAMPLES=ON
+                cmake .. -DMICROSTRAIN_BUILD_EXAMPLES=ON -DMICROSTRAIN_BUILD_PACKAGE=ON
+                cmake --build . --config Release
                 cmake --build . --config Release --target package
               """
               archiveArtifacts artifacts: 'build_x64/mipsdk_*'
@@ -171,7 +173,7 @@ pipeline {
               sh '''
                 mkdir build_mac_arm64
                 cd build_mac_arm64
-                cmake .. -DMICROSTRAIN_BUILD_PACKAGE=ON -DCMAKE_BUILD_TYPE=RELEASE -DMICROSTRAIN_BUILD_EXAMPLES=ON
+                cmake .. -DMICROSTRAIN_BUILD_EXAMPLES=ON -DMICROSTRAIN_BUILD_PACKAGE=ON -DCMAKE_BUILD_TYPE=RELEASE
                 cmake --build . -j $(sysctl -n hw.ncpu)
                 cmake --build . --target package
               '''
@@ -192,7 +194,7 @@ pipeline {
               sh '''
                 mkdir build_mac_intel
                 cd build_mac_intel
-                cmake .. -DMICROSTRAIN_BUILD_PACKAGE=ON -DCMAKE_BUILD_TYPE=RELEASE -DMICROSTRAIN_BUILD_EXAMPLES=ON
+                cmake .. -DMICROSTRAIN_BUILD_EXAMPLES=ON -DMICROSTRAIN_BUILD_PACKAGE=ON -DCMAKE_BUILD_TYPE=RELEASE
                 cmake --build . -j $(sysctl -n hw.ncpu)
                 cmake --build . --target package
               '''

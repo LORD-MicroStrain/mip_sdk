@@ -44,7 +44,11 @@ int main(int argc, const char* argv[])
             auto print_info = [](const char* name, const char info[16])
             {
                 char msg[17] = {0};
+#ifdef _WIN32
+                strncpy_s(msg, info, 16);
+#else
                 std::strncpy(msg, info, 16);
+#endif
                 printf("  %s%s\n", name, msg);
             };
 

@@ -1,9 +1,7 @@
 cmake_minimum_required(VERSION 3.12)
 
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD 20) # CMake decays this to the highest supported by the compiler
 set(CMAKE_C_STANDARD 11)
-set(CMAKE_C_STANDARD_REQUIRED ON)
 
 project(
     "MIP_SDK"
@@ -79,6 +77,7 @@ if(WIN32)
             "/external:W0"            # No warnings from system includes
             "/W4"                     # Enable warnings
             "/Zc:__cplusplus"         # Enable updated __cplusplus value
+            "/MP"                     # Multi-process compilation
         )
     endif()
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#if MICROSTRAIN_USE_STD_SPAN
+#ifdef MICROSTRAIN_USE_STD_SPAN
 
 #include <span>
 
@@ -12,7 +12,7 @@ namespace microstrain
     template<class T, size_t Size=DYNAMIC_EXTENT>
     using Span = std::span<T, Size>;
 
-}
+} // namespace microstrain
 
 #else // MICROSTRAIN_USE_STD_SPAN
 
@@ -105,6 +105,6 @@ private:
 };
 
 
-}  // namespace microstrain
+} // namespace microstrain
 
 #endif // MICROSTRAIN_USE_STD_SPAN

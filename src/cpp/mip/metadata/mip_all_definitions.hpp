@@ -17,37 +17,37 @@ namespace mip::metadata
 {
 
 static constexpr inline std::initializer_list< const std::initializer_list<const FieldInfo*>* > ALL_COMMANDS = {
-    &ALL_COMMANDS_3DM,
-    &ALL_COMMANDS_AIDING,
-    &ALL_COMMANDS_BASE,
-    &ALL_COMMANDS_FILTER,
-    &ALL_COMMANDS_GNSS,
-    &ALL_COMMANDS_RTK,
-    &ALL_COMMANDS_SYSTEM,
+    &COMMANDS_3DM,
+    &COMMANDS_AIDING,
+    &COMMANDS_BASE,
+    &COMMANDS_FILTER,
+    &COMMANDS_GNSS,
+    &COMMANDS_RTK,
+    &COMMANDS_SYSTEM,
 };
 static constexpr inline std::initializer_list< const std::initializer_list<const FieldInfo*>* > ALL_DATA = {
-    &ALL_DATA_FILTER,
-    &ALL_DATA_GNSS,
-    &ALL_DATA_SENSOR,
-    &ALL_DATA_SHARED,
-    &ALL_DATA_SYSTEM,
+    &DATA_FILTER,
+    &DATA_GNSS,
+    &DATA_SENSOR,
+    &DATA_SHARED,
+    &DATA_SYSTEM,
 };
 
 static constexpr inline std::initializer_list< const std::initializer_list< const FieldInfo* >* > ALL_FIELDS = {
     // Commands
-    &ALL_COMMANDS_3DM,
-    &ALL_COMMANDS_AIDING,
-    &ALL_COMMANDS_BASE,
-    &ALL_COMMANDS_FILTER,
-    &ALL_COMMANDS_GNSS,
-    &ALL_COMMANDS_RTK,
-    &ALL_COMMANDS_SYSTEM,
+    &COMMANDS_3DM,
+    &COMMANDS_AIDING,
+    &COMMANDS_BASE,
+    &COMMANDS_FILTER,
+    &COMMANDS_GNSS,
+    &COMMANDS_RTK,
+    &COMMANDS_SYSTEM,
     // Data
-    &ALL_DATA_FILTER,
-    &ALL_DATA_GNSS,
-    &ALL_DATA_SENSOR,
-    &ALL_DATA_SHARED,
-    &ALL_DATA_SYSTEM,
+    &DATA_FILTER,
+    &DATA_GNSS,
+    &DATA_SENSOR,
+    &DATA_SHARED,
+    &DATA_SYSTEM,
 };
 
 } // namespace mip::metadata
