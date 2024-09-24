@@ -750,7 +750,7 @@ bool insert(const T& value, uint8_t* buffer, size_t buffer_length, size_t offset
 ///@param buffer        Pointer to first element of the byte buffer.
 ///@param buffer_length Length/size of buffer.
 ///@param offset        Starting offset (default 0).
-///@param exact_size    Returns true only if exactly buffer_length-offset bytes are written. Default false.
+///@param exact_size    Returns true only if exactly buffer_length-offset bytes are read. Default false.
 ///
 ///@returns False if the buffer doesn't have enough data.
 ///@returns False if exact_size is true and the number of bytes read plus offset didn't equal buffer_length.
@@ -764,6 +764,58 @@ bool extract(T& value, const uint8_t* buffer, size_t buffer_length, size_t offse
     return exact_size ? serializer.isFinished() : serializer.isOk();
 }
 
+
+//
+// Raw buffer - Span version
+//
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Serializes a value to a raw byte buffer (span version).
+///
+/// Use this overload to write a single value without needing to
+/// manually construct a Serializer object.
+///
+///@tparam E Endianness of buffer. Must be manually specified.
+///@tparam T Type of value. Automatically deduced from the value parameter.
+///
+///@param value         Parameter to serialize. This can be any serializable type.
+///@param buffer        Source buffer span.
+///@param offset        Starting offset. Default 0.
+///@param exact_size    Returns true only if exactly buffer.size()-offset bytes are written. Default false.
+///
+///@returns False if the buffer isn't large enough.
+///@returns False if exact_size is true and the number of bytes written didn't equal buffer_length.
+///@returns True otherwise.
+///
+template<serialization::Endian E, class T>
+bool insert(T value, microstrain::Span<uint8_t> buffer, size_t offset=0, bool exact_size=false)
+{
+    return insert<E,T>(value, buffer.data(), buffer.size(), offset, exact_size);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Deserializes a value from a raw byte buffer (span version).
+///
+/// Use this overload to read a single value without needing to
+/// manually construct a Serializer object.
+///
+///@tparam E Endianness of buffer. Must be manually specified.
+///@tparam T Type of value. Automatically deduced from the value parameter.
+///
+///@param value         Parameter to deserialize. This can be any serializable type.
+///@param buffer        Source buffer span.
+///@param offset        Starting offset (default 0).
+///@param exact_size    Returns true only if exactly buffer.size()-offset bytes are read. Default false.
+///
+///@returns False if the buffer doesn't have enough data.
+///@returns False if exact_size is true and the number of bytes read plus offset didn't equal buffer_length.
+///@returns True otherwise.
+///
+template<serialization::Endian E, class T>
+bool extract(T& value, microstrain::Span<const uint8_t> buffer, size_t offset=0, bool exact_size=false)
+{
+    return extract<E,T>(value, buffer.data(), buffer.size(), offset, exact_size);
+}
 
 //
 // Special Deserialization
@@ -814,6 +866,32 @@ std::optional<T> extract(const uint8_t* buffer, size_t length, size_t offset, bo
 {
     T value;
     if(extract<E,T>(value, buffer, length, offset, exact_size))
+        return value;
+    else
+        return std::nullopt;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Reads a value from a raw byte span and returns it via std::optional.
+///
+/// This overload is only enabled if std::optional is supported.
+///
+///@see bool extract(T& value, microstrain::Span<const uint8_t> buffer, size_t offset=0, bool exact_size=false)
+///
+///@tparam E Endianness of buffer. Must be manually specified.
+///@tparam T Type of value. Must be manually specified.
+///
+///@param buffer        Source buffer span.
+///@param offset        Starting offset (default 0).
+///@param exact_size    Returns a value only if exactly buffer.size()-offset bytes are read. Default false.
+///
+///@returns The value read from the buffer, or std::nullopt if it couldn't be read.
+///
+template<class T, serialization::Endian E>
+std::optional<T> extract(microstrain::Span<const uint8_t> buffer, size_t offset, bool exact_size=false)
+{
+    T value;
+    if(extract<E,T>(value, buffer.data(), buffer.size(), offset, exact_size))
         return value;
     else
         return std::nullopt;
