@@ -12,13 +12,13 @@ struct mip_parser parser;
 unsigned int num_errors = 0;
 
 unsigned int num_packets_parsed = 0;
-timestamp_type parsed_packet_timestamp = 0;
+mip_timestamp parsed_packet_timestamp = 0;
 size_t parsed_packet_length = 0;
 uint8_t parsed_buffer[MIP_PACKET_LENGTH_MAX];
 mip_packet parsed_packet = { ._buffer=parsed_buffer, ._buffer_length=0, };
 
 
-void print_packet(FILE* out, const mip_packet* packet)
+void print_packet(FILE* out, const struct mip_packet_view* packet)
 {
     size_t size = mip_packet_total_length(packet);
     const uint8_t* ptr = mip_packet_pointer(packet);
@@ -31,7 +31,7 @@ void print_packet(FILE* out, const mip_packet* packet)
 }
 
 
-void handle_packet(void* p, const struct mip_packet* packet, timestamp_type timestamp)
+void handle_packet(void* p, const struct mip_packet_view* packet, mip_timestamp timestamp)
 {
     (void)p;
 
@@ -57,7 +57,7 @@ int main(int argc, const char* argv[])
 
     srand(0);
 
-    timestamp_type start_time = rand() % 500;
+    mip_timestamp start_time = rand() % 500;
 
     const unsigned int NUM_ITERATIONS = 100*1000*1000;
 
@@ -90,7 +90,7 @@ int main(int argc, const char* argv[])
             const uint8_t field_desc = (rand() % 255) + 1;  // Random field descriptor.
 
             uint8_t* payload;
-            remaining_count available = mip_packet_alloc_field(&packet, field_desc, paylen, &payload);
+            int available = mip_packet_alloc_field(&packet, field_desc, paylen, &payload);
 
             if( available < 0 )
             {
@@ -141,10 +141,10 @@ int main(int argc, const char* argv[])
 
         // Keep track of offsets and timestamps for debug purposes.
         size_t offsets[MIP_PACKET_PAYLOAD_LENGTH_MAX / MIP_FIELD_HEADER_LENGTH] = {0};
-        timestamp_type timestamps[MIP_PACKET_PAYLOAD_LENGTH_MAX / MIP_FIELD_HEADER_LENGTH] = {0};
+        mip_timestamp timestamps[MIP_PACKET_PAYLOAD_LENGTH_MAX / MIP_FIELD_HEADER_LENGTH] = {0};
         unsigned int c = 0;
 
-        timestamp_type timestamp = start_time;
+        mip_timestamp timestamp = start_time;
         size_t sent = 0;
         bool error = false;
 

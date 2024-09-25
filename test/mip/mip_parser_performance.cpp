@@ -121,7 +121,7 @@ struct ChunkStats
 
 ChunkStats chunked_test(const Test& test, size_t chunk_size)
 {
-    auto callback = +[](void* v, const mip::PacketRef* p, mip::Timestamp)
+    auto callback = +[](void* v, const mip::PacketView* p, mip::Timestamp)
     {
         *static_cast<size_t*>(v) += 1;
     };

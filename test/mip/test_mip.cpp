@@ -14,7 +14,7 @@ using namespace mip::C;
 uint8_t packetBuffer[PACKET_LENGTH_MAX];
 uint8_t parseBuffer[1024];
 
-Field fields[MIP_PACKET_PAYLOAD_LENGTH_MAX / MIP_FIELD_LENGTH_MIN];
+FieldView fields[(unsigned int)MIP_PACKET_PAYLOAD_LENGTH_MAX / (unsigned int)MIP_FIELD_LENGTH_MIN];
 unsigned int numFields = 0;
 
 unsigned int numErrors = 0;
@@ -23,11 +23,13 @@ int main(int argc, const char* argv[])
 {
     srand(0);
 
-    auto callback = [](void*, const PacketRef* parsedPacket, Timestamp timestamp)
+    auto callback = [](void*, const PacketView* parsedPacket, Timestamp timestamp)
     {
+        (void)timestamp;
+
         unsigned int parsedFields = 0;
         bool error = false;
-        for(Field field : *parsedPacket)
+        for(FieldView field : *parsedPacket)
         {
             if( field.descriptorSet() != fields[parsedFields].descriptorSet() )
             {
@@ -76,23 +78,27 @@ int main(int argc, const char* argv[])
 
     for(unsigned int i=0; i<NUM_ITERATIONS; i++)
     {
-        PacketRef packet(packetBuffer, sizeof(packetBuffer), 0x80);
+        PacketView packet(packetBuffer, sizeof(packetBuffer), 0x80);
 
         for(numFields = 0; ; numFields++)
         {
             const uint8_t fieldDescriptor = (rand() % 255) + 1;
             const uint8_t payloadLength = (rand() % MIP_FIELD_PAYLOAD_LENGTH_MAX) + 1;
 
-            uint8_t* payload;
-            RemainingCount rem = packet.allocField(fieldDescriptor, payloadLength, &payload);
-
-            if( rem < 0 )
+            auto payload = packet.createField(fieldDescriptor, payloadLength);
+            if(!payload.hasRemaining())
                 break;
 
             for(unsigned int p=0; p<payloadLength; p++)
-                payload[p] = rand() & 0xFF;
+                payload.insert<uint8_t>(rand() & 0xFF);
 
-            fields[numFields] = Field(packet.descriptorSet(), fieldDescriptor, payload, payloadLength);
+            if(!payload.isFinished())
+            {
+                numErrors++;
+                fprintf(stderr, "Field %u did not have the right size (wrote %zu, expected %u, max %zu).\n", numFields, payload.offset(), payloadLength, payload.capacity());
+            }
+
+            fields[numFields] = FieldView(packet.descriptorSet(), fieldDescriptor, payload.basePointer(), payloadLength);
         }
 
         packet.finalize();

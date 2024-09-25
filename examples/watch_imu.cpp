@@ -1,14 +1,9 @@
 
 #include "example_utils.hpp"
 
-#include <mip/mip_result.h>
-#include <mip/mip_dispatch.h>
-#include <mip/utils/serialization.h>
-
 #include <mip/definitions/commands_base.hpp>
 #include <mip/definitions/commands_3dm.hpp>
 #include <mip/definitions/data_sensor.hpp>
-#include <mip/mip.hpp>
 
 #include <stdexcept>
 #include <thread>
@@ -19,20 +14,20 @@
 
 mip::data_sensor::ScaledAccel scaled_accel;
 
-void handlePacket(void*, const mip::PacketRef& packet, mip::Timestamp timestamp)
+void handlePacket(void*, const mip::PacketView& packet, mip::Timestamp)
 {
     // if(packet.descriptorSet() != mip::MIP_SENSOR_DATA_DESC_SET)
     //     return;
 
     printf("\nGot packet with descriptor set 0x%02X:", packet.descriptorSet());
 
-    for(mip::Field field : packet)
+    for(mip::FieldView field : packet)
         printf(" %02X", field.fieldDescriptor());
 
     printf("\n");
 }
 
-void handleAccel(void*, const mip::Field& field, mip::Timestamp timestamp)
+void handleAccel(void*, const mip::FieldView& field, mip::Timestamp)
 {
     mip::data_sensor::ScaledAccel data;
 
@@ -48,18 +43,18 @@ void handleAccel(void*, const mip::Field& field, mip::Timestamp timestamp)
     }
 }
 
-void handleGyro(void*, const mip::data_sensor::ScaledGyro& data, mip::Timestamp timestamp)
+void handleGyro(void*, const mip::data_sensor::ScaledGyro& data, mip::Timestamp)
 {
     printf("Gyro Data:  %f, %f, %f\n", data.scaled_gyro[0], data.scaled_gyro[1], data.scaled_gyro[2]);
 }
 
-void handleMag(void*, const mip::data_sensor::ScaledMag& data, mip::Timestamp timestamp)
+void handleMag(void*, const mip::data_sensor::ScaledMag& data, mip::Timestamp)
 {
     printf("Mag Data:   %f, %f, %f\n", data.scaled_mag[0], data.scaled_mag[1], data.scaled_mag[2]);
 }
 
 
-int run(mip::DeviceInterface& device)
+int run(mip::Interface& device)
 {
         mip::CmdResult result;
 
@@ -82,13 +77,13 @@ int run(mip::DeviceInterface& device)
             { mip::data_sensor::DATA_MAG_SCALED,   decimation },
         }};
 
-        result = mip::commands_3dm::writeMessageFormat(device, mip::data_sensor::DESCRIPTOR_SET, descriptors.size(), descriptors.data());
+        result = mip::commands_3dm::writeMessageFormat(device, mip::data_sensor::DESCRIPTOR_SET, static_cast<uint8_t>(descriptors.size()), descriptors.data());
 
         if( result == mip::CmdResult::NACK_COMMAND_FAILED )
         {
             // Failed to set message format - maybe this device doesn't have a magnetometer.
             // Try again without the last descriptor (scaled mag).
-            result = mip::commands_3dm::writeMessageFormat(device, mip::data_sensor::DESCRIPTOR_SET, descriptors.size()-1, descriptors.data());
+            result = mip::commands_3dm::writeMessageFormat(device, mip::data_sensor::DESCRIPTOR_SET, static_cast<uint8_t>(descriptors.size()-1), descriptors.data());
         }
         if( result != mip::CmdResult::ACK_OK )
             return fprintf(stderr, "Failed to set message format: %s (%d)\n", result.name(), result.value), 1;
@@ -139,7 +134,7 @@ int main(int argc, const char* argv[])
     {
         utils = handleCommonArgs(argc, argv);
     }
-    catch(const std::underflow_error& ex)
+    catch(const std::underflow_error&)
     {
         return printCommonUsage(argv);
     }

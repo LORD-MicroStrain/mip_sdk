@@ -1,34 +1,22 @@
 
 #include <mip/mip_dispatch.h>
-#include <mip/mip_field.h>
 #include <mip/mip_interface.h>
-#include <mip/mip_result.h>
-#include <mip/mip_types.h>
-#include <mip/mip_logging.h>
-#include <mip/utils/serialization.h>
+#include <microstrain/connections/serial/serial_port.h>
+#include <microstrain/common/logging.h>
+#include <microstrain/common/platform.h>
 
-#include <mip/definitions/descriptors.h>
 #include <mip/definitions/commands_base.h>
 #include <mip/definitions/commands_3dm.h>
 #include <mip/definitions/data_sensor.h>
 
-#include <mip/utils/serial_port.h>
-
-#include <mip/mip_logging.h>
-
 #include <stdio.h>
 #include <stdlib.h>
-#include <errno.h>
 #include <time.h>
-#include <stdarg.h>
 #include <inttypes.h>
 
-#ifdef WIN32
+#ifdef MICROSTRAIN_PLATFORM_WINDOWS
 #else
 #include <unistd.h>
-#include <fcntl.h>
-#include <sys/ioctl.h>
-#include <termios.h>
 #endif
 
 serial_port port;
@@ -36,12 +24,14 @@ uint8_t parse_buffer[1024];
 mip_interface device;
 mip_sensor_scaled_accel_data scaled_accel;
 
-void customLog(void* user, mip_log_level level, const char* fmt, va_list args)
+void customLog(void* user, microstrain_log_level level, const char* fmt, va_list args)
 {
+    (void)user;
+
     switch (level)
     {
-        case MIP_LOG_LEVEL_FATAL:
-        case MIP_LOG_LEVEL_ERROR:
+        case MICROSTRAIN_LOG_LEVEL_FATAL:
+        case MICROSTRAIN_LOG_LEVEL_ERROR:
             vfprintf(stderr, fmt, args);
             break;
         default:
@@ -50,13 +40,14 @@ void customLog(void* user, mip_log_level level, const char* fmt, va_list args)
     }
 }
 
-void handlePacket(void* unused, const mip_packet* packet, mip_timestamp timestamp)
+void handlePacket(void* unused, const mip_packet_view* packet, mip_timestamp timestamp)
 {
     (void)unused;
+    (void)timestamp;
 
     printf("\nGot packet with descriptor set 0x%02X:", mip_packet_descriptor_set(packet));
 
-    mip_field field;
+    mip_field_view field;
     mip_field_init_empty(&field);
     while( mip_field_next_in_packet(&field, packet) )
     {
@@ -65,9 +56,11 @@ void handlePacket(void* unused, const mip_packet* packet, mip_timestamp timestam
     printf("\n");
 }
 
-void handleAccel(void* user, const mip_field* field, mip_timestamp timestamp)
+void handleAccel(void* user, const mip_field_view* field, mip_timestamp timestamp)
 {
     (void)user;
+    (void)timestamp;
+
     mip_sensor_scaled_accel_data data;
 
     if(extract_mip_sensor_scaled_accel_data_from_field(field, &data))
@@ -82,18 +75,22 @@ void handleAccel(void* user, const mip_field* field, mip_timestamp timestamp)
     }
 }
 
-void handleGyro(void* user, const mip_field* field, mip_timestamp timestamp)
+void handleGyro(void* user, const mip_field_view* field, mip_timestamp timestamp)
 {
     (void)user;
+    (void)timestamp;
+
     mip_sensor_scaled_gyro_data data;
 
     if(extract_mip_sensor_scaled_gyro_data_from_field(field, &data))
         printf("Gyro Data:  %f, %f, %f\n", data.scaled_gyro[0], data.scaled_gyro[1], data.scaled_gyro[2]);
 }
 
-void handleMag(void* user, const mip_field* field, mip_timestamp timestamp)
+void handleMag(void* user, const mip_field_view* field, mip_timestamp timestamp)
 {
     (void)user;
+    (void)timestamp;
+
     mip_sensor_scaled_mag_data data;
 
     if(extract_mip_sensor_scaled_mag_data_from_field(field, &data))
@@ -114,8 +111,10 @@ mip_timestamp get_current_timestamp()
 }
 
 
-bool mip_interface_user_recv_from_device(mip_interface* device, mip_timeout wait_time, bool from_cmd, mip_timestamp* timestamp_out)
+bool mip_interface_user_recv_from_device(mip_interface* device_, mip_timeout wait_time, bool from_cmd, mip_timestamp* timestamp_out)
 {
+    (void)from_cmd;
+
     *timestamp_out = get_current_timestamp();
 
     size_t length;
@@ -123,14 +122,14 @@ bool mip_interface_user_recv_from_device(mip_interface* device, mip_timeout wait
     if( !serial_port_read(&port, parse_buffer, sizeof(parse_buffer), wait_time, &length) )
         return false;
 
-    mip_interface_input_bytes(device, parse_buffer, length, *timestamp_out);
+    mip_interface_input_bytes(device_, parse_buffer, length, *timestamp_out);
     return true;
 }
 
 
-bool mip_interface_user_send_to_device(mip_interface* device, const uint8_t* data, size_t length)
+bool mip_interface_user_send_to_device(mip_interface* device_, const uint8_t* data, size_t length)
 {
-    (void)device;
+    (void)device_;
 
     size_t bytes_written;
     if (!serial_port_write(&port, data, length, &bytes_written))
@@ -142,7 +141,7 @@ bool mip_interface_user_send_to_device(mip_interface* device, const uint8_t* dat
 
 bool open_port(const char* name, uint32_t baudrate)
 {
-    return serial_port_open(&port, name, baudrate);
+    return serial_port_open(&port, name, (int)baudrate);
 }
 
 int usage(const char* argv0)
@@ -156,12 +155,12 @@ int main(int argc, const char* argv[])
     if(argc != 3)
         return usage(argv[0]);
 
-    uint32_t baudrate = atoi(argv[2]);
+    uint32_t baudrate = strtoul(argv[2], NULL, 10);
     if( baudrate == 0 )
         return usage(argv[0]);
 
     // Initialize the MIP logger before opening the port so we can print errors if they occur
-    MIP_LOG_INIT(&customLog, MIP_LOG_LEVEL_INFO, NULL);
+    MICROSTRAIN_LOG_INIT(&customLog, MICROSTRAIN_LOG_LEVEL_INFO, NULL);
 
     if( !open_port(argv[1], baudrate) )
         return 1;
@@ -230,7 +229,7 @@ int main(int argc, const char* argv[])
     // Process data for 3 seconds.
     for(unsigned int i=0; i<30; i++)
     {
-#ifdef WIN32
+#ifdef MICROSTRAIN_PLATFORM_WINDOWS
 #else
         usleep(100000);
 #endif

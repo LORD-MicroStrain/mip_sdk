@@ -15,7 +15,7 @@
 //!
 //! THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING
 //! CUSTOMERS WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER
-//! FOR THEM TO SAVE TIME. AS A RESULT, HBK MICROSTRAIN SHALL NOT BE HELD
+//! FOR THEM TO SAVE TIME. AS A RESULT, MICROSTRAIN BY HBK SHALL NOT BE HELD
 //! LIABLE FOR ANY DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY
 //! CLAIMS ARISING FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS
 //! OF THE CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
@@ -28,7 +28,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <mip/mip_all.h>
-#include <mip/utils/serial_port.h>
+#include <microstrain/connections/serial/serial_port.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -73,15 +73,15 @@ const uint8_t FILTER_PITCH_EVENT_ACTION_ID = 2;
 //Required MIP interface user-defined functions
 mip_timestamp get_current_timestamp();
 
-bool mip_interface_user_recv_from_device(mip_interface* device, mip_timeout wait_time, bool from_cmd, mip_timestamp* timestamp_out);
-bool mip_interface_user_send_to_device(mip_interface* device, const uint8_t* data, size_t length);
+bool mip_interface_user_recv_from_device(mip_interface* device_, mip_timeout wait_time, bool from_cmd, mip_timestamp* timestamp_out);
+bool mip_interface_user_send_to_device(mip_interface* device_, const uint8_t* data, size_t length);
 
 int usage(const char* argv0);
 
 void exit_gracefully(const char *message);
 bool should_exit();
 
-void handle_filter_event_source(void* user, const mip_field* field, mip_timestamp timestamp);
+void handle_filter_event_source(void* user, const mip_field_view* field, mip_timestamp timestamp);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -358,8 +358,11 @@ int main(int argc, const char* argv[])
 // Filter Event Source Field Handler
 ////////////////////////////////////////////////////////////////////////////////
 
-void handle_filter_event_source(void* user, const mip_field* field, mip_timestamp timestamp)
+void handle_filter_event_source(void* user, const mip_field_view* field, mip_timestamp timestamp)
 {
+    (void)user;
+    (void)timestamp;
+
     mip_shared_event_source_data data;
 
     if(extract_mip_shared_event_source_data_from_field(field, &data))
@@ -389,16 +392,18 @@ mip_timestamp get_current_timestamp()
 // MIP Interface User Recv Data Function
 ////////////////////////////////////////////////////////////////////////////////
 
-bool mip_interface_user_recv_from_device(mip_interface* device, mip_timeout wait_time, bool from_cmd, mip_timestamp* timestamp_out)
+bool mip_interface_user_recv_from_device(mip_interface* device_, mip_timeout wait_time, bool from_cmd, mip_timestamp* timestamp_out)
 {
+    (void)device_;
+
     *timestamp_out = get_current_timestamp();
 
     size_t length;
 
-    if( !serial_port_read(&device_port, parse_buffer, sizeof(parse_buffer), wait_time, &length) )
+    if( !serial_port_read(&device_port, parse_buffer, sizeof(parse_buffer), (int)wait_time, &length) )
         return false;
 
-    mip_interface_input_bytes(device, parse_buffer, length, *timestamp_out);
+    mip_interface_input_bytes(device_, parse_buffer, length, *timestamp_out);
     return true;
 }
 
@@ -407,8 +412,10 @@ bool mip_interface_user_recv_from_device(mip_interface* device, mip_timeout wait
 // MIP Interface User Send Data Function
 ////////////////////////////////////////////////////////////////////////////////
 
-bool mip_interface_user_send_to_device(mip_interface* device, const uint8_t* data, size_t length)
+bool mip_interface_user_send_to_device(mip_interface* device_, const uint8_t* data, size_t length)
 {
+    (void)device_;
+
     size_t bytes_written;
 
     return serial_port_write(&device_port, data, length, &bytes_written);
@@ -439,8 +446,8 @@ void exit_gracefully(const char *message)
     if(serial_port_is_open(&device_port))
         serial_port_close(&device_port);
 
-#ifdef _WIN32
-    int dummy = getchar();
+#ifdef MICROSTRAIN_PLATFORM_WINDOWS
+    getchar();
 #endif
 
     exit(0);

@@ -16,7 +16,7 @@ unsigned int num_errors = 0;
 size_t bytesRead = 0;
 size_t bytes_parsed = 0;
 
-void handle_packet(void* p, const struct mip_packet* packet, timestamp_type t)
+bool handle_packet(void* p, const struct mip_packet_view* packet, mip_timestamp t)
 {
     (void)t;
 
