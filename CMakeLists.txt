@@ -193,6 +193,8 @@ if(MICROSTRAIN_BUILD_DOCUMENTATION)
         set(DOXYGEN_QUIET YES)
     endif()
 
+    set(DOXYGEN_HTML_EXTRA_STYLESHEET "${CMAKE_CURRENT_LIST_DIR}/docs/style.css")
+
     doxygen_add_docs(docs
         "${MICROSTRAIN_SRC_DIR}" "${CMAKE_CURRENT_LIST_DIR}/docs"
         COMMENT "Generating documentation."

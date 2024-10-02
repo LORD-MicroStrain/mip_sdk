@@ -252,6 +252,8 @@ public:
 template<size_t BufferSize>
 class SizedPacketBuf : public PacketView
 {
+    static_assert(BufferSize >= PACKET_LENGTH_MIN, "BufferSize must be at least PACKET_LENGTH_MIN bytes");
+
 public:
     SizedPacketBuf(uint8_t descriptorSet=INVALID_DESCRIPTOR_SET) : PacketView(mData, sizeof(mData), descriptorSet) {}
 

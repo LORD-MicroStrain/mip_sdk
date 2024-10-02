@@ -7,14 +7,15 @@ Serialization in C  {#serialization_c}
 Serialization infrastructure in C is very basic and is currently limited to built-in types and big-endian protocols.
 
 To (de)serialize a buffer, follow these steps:
-1. Create a serializer and initialize it via `microstrain_serializer_init_insertion` or `microstrain_serializer_init_extraction`, depending on whether you're 
+1. Create a serializer and initialize it via @ref microstrain_serializer_init_insertion
+   or @ref microstrain_serializer_init_extraction, depending on whether you're 
    writing or reading data.
-2. Call `microstrain_insert_*` or `microstrain_extract_*` for each parameter.
-3. Call `microstrain_serializer_is_ok` to check if all the data was written/read successfully (i.e. fit in the buffer).
-   Alternatively, to verify if exactly buffer_size bytes were read/written, use `microstrain_serializer_is_complete`.
+2. Call `microstrain_insert_*` or `microstrain_extract_*` for each parameter. E.g. @ref microstrain_extract_u32.
+3. Call @ref microstrain_serializer_is_ok to check if all the data was written/read successfully (i.e. fit in the buffer).
+   Alternatively, to verify if exactly buffer_size bytes were read/written, use @ref microstrain_serializer_is_complete.
 4. Transmit the written buffer or use the deserialized parameters.
 
-When reading an array length from a buffer, it is recommended to use `microstrain_extract_count` to specify a maximum
+When reading an array length from a buffer, it is recommended to use @ref microstrain_extract_count to specify a maximum
 length. This helps avoid buffer overrun bugs and associated security vulnerabilities.
 
 Serialization in C++  {#serialization_cpp}
@@ -28,12 +29,12 @@ defined types.
 To (de)serialize a buffer, follow these steps:
 1. Create a microstrain::Serializer, passing in a pointer to your buffer and the size. A starting offset may also be
    specified for convenience.
-2. Call `serializer.insert` or `serializer.extract` with the values to be (de)serialized. Multiple calls may be made to
+2. Call microstrain::Serializer::insert or microstrain::Serializer.extract with the values to be (de)serialized. Multiple calls may be made to
    these functions if needed. When reading an array length from a buffer, it is recommended to use
-   `Serializer::extract_count` to specify a maximum count. This helps avoid buffer overrun bugs and associated security
+   microstrain::Serializer::extract_count to specify a maximum count. This helps avoid buffer overrun bugs and associated security
    vulnerabilities.
-3. Check if the data was written/read successfully (i.e. fit in the buffer) by calling `Serializer::isOk` or
-   `Serializer::isFinished` (use the latter if the entire buffer should have been used).
+3. Check if the data was written/read successfully (i.e. fit in the buffer) by calling microstrain::Serializer::isOk or
+   microstrain::Serializer::isFinished (use the latter if the entire buffer should have been used).
 4. Transmit the written buffer or use the deserialized parameters.
 
 Example:

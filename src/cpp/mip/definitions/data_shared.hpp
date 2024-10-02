@@ -16,9 +16,9 @@ struct mip_interface;
 namespace data_shared {
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipData_cpp  MIP Data [CPP]
+///@addtogroup MipData_cpp
 ///@{
-///@defgroup shared_data_cpp  Shared Data [CPP]
+///@defgroup shared_data_cpp  Shared Data
 ///
 ///@{
 
@@ -54,7 +54,7 @@ static constexpr const uint8_t MIP_DATA_DESC_SHARED_START = 0xD0;
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_shared_event_source  (0xFF,0xD0) Event Source [CPP]
+///@defgroup shared_event_source_cpp  (0xFF,0xD0) Event Source
 /// Identifies which event trigger caused this packet to be emitted.
 /// 
 /// Generally this is used to determine whether a packet was emitted
@@ -94,7 +94,7 @@ struct EventSource
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_shared_ticks  (0xFF,0xD1) Ticks [CPP]
+///@defgroup shared_ticks_cpp  (0xFF,0xD1) Ticks
 /// Time since powerup in multiples of the base rate.
 /// 
 /// The counter will wrap around to 0 after approximately 50 days.
@@ -134,7 +134,7 @@ struct Ticks
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_shared_delta_ticks  (0xFF,0xD2) Delta Ticks [CPP]
+///@defgroup shared_delta_ticks_cpp  (0xFF,0xD2) Delta Ticks
 /// Ticks since the last output of this field.
 /// 
 /// This field can be used to track the amount of time passed between
@@ -175,7 +175,7 @@ struct DeltaTicks
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_shared_gps_timestamp  (0xFF,0xD3) Gps Timestamp [CPP]
+///@defgroup shared_gps_timestamp_cpp  (0xFF,0xD3) Gps Timestamp
 /// Outputs the current GPS system time in time-of-week and week number format.
 /// 
 /// For events, this is the time of the event trigger.
@@ -247,7 +247,7 @@ struct GpsTimestamp
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_shared_delta_time  (0xFF,0xD4) Delta Time [CPP]
+///@defgroup shared_delta_time_cpp  (0xFF,0xD4) Delta Time
 /// Time in the synchronized clock domain since the last output of this field within the same descriptor set and event instance.
 /// 
 /// This can be used to track the amount of time passed between
@@ -293,7 +293,7 @@ struct DeltaTime
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_shared_reference_timestamp  (0xFF,0xD5) Reference Timestamp [CPP]
+///@defgroup shared_reference_timestamp_cpp  (0xFF,0xD5) Reference Timestamp
 /// Internal reference timestamp.
 /// 
 /// This timestamp represents the time at which the corresponding
@@ -337,7 +337,7 @@ struct ReferenceTimestamp
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_shared_reference_time_delta  (0xFF,0xD6) Reference Time Delta [CPP]
+///@defgroup shared_reference_time_delta_cpp  (0xFF,0xD6) Reference Time Delta
 /// Delta time since the last packet.
 /// 
 /// Difference between the time as reported by the shared reference time field, 0xD5,
@@ -383,7 +383,7 @@ struct ReferenceTimeDelta
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_shared_external_timestamp  (0xFF,0xD7) External Timestamp [CPP]
+///@defgroup shared_external_timestamp_cpp  (0xFF,0xD7) External Timestamp
 /// External timestamp in nanoseconds.
 /// 
 /// This timestamp represents the time at which the corresponding
@@ -453,7 +453,7 @@ struct ExternalTimestamp
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_shared_external_time_delta  (0xFF,0xD8) External Time Delta [CPP]
+///@defgroup shared_external_time_delta_cpp  (0xFF,0xD8) External Time Delta
 /// Delta time since the last packet containing delta external (0xFF,0xD4) or delta gps time (0xFF,0xD8).
 /// 
 /// Difference between the time as reported by the shared external time field, 0xD7,

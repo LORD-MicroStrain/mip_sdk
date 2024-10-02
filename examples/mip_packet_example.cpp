@@ -330,11 +330,10 @@ void create_packet_from_buffer()
             }
             case mip::data_sensor::ScaledAccel::FIELD_DESCRIPTOR:
             {
-                // Extract the 3-vector.
-                float x,y,z;
+                mip::data_sensor::ScaledAccel data;
 
-                if(serializer.extract(x,y,z))
-                    printf("  Scaled Accel = (%f, %f, %f)\n", x, y, z);
+                if(serializer.extract(data))
+                    printf("  Scaled Accel = (%f, %f, %f)\n", data.scaled_accel[0], data.scaled_accel[1], data.scaled_accel[2]);
 
                 break;
             }
@@ -342,7 +341,9 @@ void create_packet_from_buffer()
             {
                 mip::data_sensor::ScaledGyro data;
 
-                if(serializer.extract(data))
+                // This calls the FieldView::extract helper function which handles deserialization directly.
+                // This is the simplest and preferred method.
+                if(field.extract(data))
                     printf("  Scaled Gyro = (%f, %f, %f)\n", data.scaled_gyro[0], data.scaled_gyro[1], data.scaled_gyro[2]);
 
                 break;

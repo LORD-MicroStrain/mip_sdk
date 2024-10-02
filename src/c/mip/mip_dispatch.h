@@ -21,7 +21,7 @@ extern "C" {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup MipDispatch_c  Mip Dispatch [C]
+///@defgroup MipDispatch_c  Mip Dispatch
 ///
 ///@brief System for issuing callbacks from MIP packets or fields.
 ///

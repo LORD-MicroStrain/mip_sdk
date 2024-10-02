@@ -167,7 +167,7 @@ mip_field_view mip_field_first_from_packet(const mip_packet_view* packet)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Gets the next field after the specified field._
+///@brief Gets the next field after the specified field.
 ///
 ///@param field
 ///       An existing MIP field in a packet. Can be invalid, in which case the

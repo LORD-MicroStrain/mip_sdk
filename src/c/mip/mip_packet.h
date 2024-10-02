@@ -23,9 +23,9 @@ struct microstrain_serializer;
 ///@{
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_packet_c Mip Packet [C]
+///@defgroup mip_packet_c Mip Packet
 ///
-///@brief Functions for handling MIP packets.
+///@brief Functions for building and processing MIP packets.
 ///
 /// A MIP Packet is represented by the mip_packet_view struct.
 ///
@@ -55,7 +55,7 @@ typedef struct mip_packet_view
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup PacketBuilding  Packet Building [C]
+///@defgroup PacketBuilding  Packet Building
 ///
 ///@brief Functions for building new MIP packets.
 ///
@@ -77,7 +77,9 @@ void mip_packet_reset(mip_packet_view* packet, uint8_t descriptor_set);
 
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup Accessors  Accessors - Functions for accessing information about an existing MIP packet.
+///@defgroup Accessors_c  Accessors
+///
+///@brief Functions for accessing information about an existing MIP packet.
 ///
 /// Use these functions to get information about a MIP packet after it has been
 /// parsed. Generally, first the descriptor set would be inspected followed by
@@ -86,6 +88,9 @@ void mip_packet_reset(mip_packet_view* packet, uint8_t descriptor_set);
 /// With the exception of mip_packet_checksum_value() (and any function which
 /// calls it, e.g. mip_packet_is_valid()), these functions may also be used on
 /// packets which are under construction via the PacketBuilding functions.
+///
+///@caution Do not call the packet-building functions unless you know the
+///         input buffer is not const.
 ///
 ///@{
 
