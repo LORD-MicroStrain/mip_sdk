@@ -34,8 +34,8 @@ struct mip_interface;
 
 // Documentation is in source file.
 typedef bool (*mip_send_callback)(struct mip_interface* device, const uint8_t* data, size_t length);
-typedef bool (*mip_recv_callback)(struct mip_interface* device, uint8_t* buffer, size_t max_length, mip_timeout wait_time, size_t* length_out, mip_timestamp* timestamp_out);
-typedef bool (*mip_update_callback)(struct mip_interface* device, mip_timeout timeout);
+typedef bool (*mip_recv_callback)(struct mip_interface* device, mip_timeout wait_time, bool from_cmd, mip_timestamp* timestamp_out);
+typedef bool (*mip_update_callback)(struct mip_interface* device, mip_timeout wait_time, bool from_cmd);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -46,7 +46,7 @@ typedef struct mip_interface
     mip_parser          _parser;          ///<@private MIP Parser for incoming MIP packets.
     mip_cmd_queue       _queue;           ///<@private Queue for checking command replies.
     mip_dispatcher      _dispatcher;      ///<@private Dispatcher for data callbacks.
-    unsigned int        _max_update_pkts; ///<@private Max number of MIP packets to parse at once.
+    //unsigned int        _max_update_pkts; ///<@private Max number of MIP packets to parse at once.
     mip_send_callback   _send_callback;   ///<@private Optional function which is called to send raw bytes to the device.
     mip_recv_callback   _recv_callback;   ///<@private Optional function which is called to receive raw bytes from the device.
     mip_update_callback _update_callback; ///<@private Optional function to call during updates.
@@ -55,7 +55,7 @@ typedef struct mip_interface
 
 
 void mip_interface_init(
-    mip_interface* device, uint8_t* parse_buffer, size_t parse_buffer_size,
+    mip_interface* device,
     mip_timeout parse_timeout, mip_timeout base_reply_timeout,
     mip_send_callback send, mip_recv_callback recv,
     mip_update_callback update, void* user_pointer
@@ -66,14 +66,15 @@ void mip_interface_init(
 //
 
 bool mip_interface_send_to_device(mip_interface* device, const uint8_t* data, size_t length);
-bool mip_interface_recv_from_device(mip_interface* device, uint8_t* buffer, size_t max_length, mip_timeout timeout, size_t* length_out, mip_timestamp* now);
-bool mip_interface_update(mip_interface* device, mip_timeout wait_time);
+bool mip_interface_recv_from_device(mip_interface* device, mip_timeout wait_time, bool from_cmd, mip_timestamp* timestamp_out);
+bool mip_interface_update(mip_interface* device, mip_timeout wait_time, bool from_cmd);
 
-bool mip_interface_default_update(mip_interface* device, mip_timeout wait_time);
-size_t mip_interface_receive_bytes(mip_interface* device, const uint8_t* data, size_t length, mip_timestamp timestamp);
-void mip_interface_process_unparsed_packets(mip_interface* device);
-bool mip_interface_parse_callback(void* device, const mip_packet_view* packet, mip_timestamp timestamp);
-void mip_interface_receive_packet(mip_interface* device, const mip_packet_view* packet, mip_timestamp timestamp);
+bool mip_interface_default_update(mip_interface* device, mip_timeout wait_time, bool from_cmd);
+
+void mip_interface_input_bytes(mip_interface* device, const uint8_t* data, size_t length, mip_timestamp timestamp);
+void mip_interface_input_packet(mip_interface* device, const mip_packet_view* packet, mip_timestamp timestamp);
+
+void mip_interface_parse_callback(void* device, const mip_packet_view* packet, mip_timestamp timestamp);
 
 //
 // Commands
@@ -102,9 +103,6 @@ void mip_interface_set_recv_function(mip_interface* device, mip_recv_callback fu
 void mip_interface_set_send_function(mip_interface* device, mip_send_callback function);
 void mip_interface_set_update_function(mip_interface* device, mip_update_callback function);
 void mip_interface_set_user_pointer(mip_interface* device, void* pointer);
-
-void mip_interface_set_max_packets_per_update(mip_interface* device, unsigned int max_packets);
-unsigned int mip_interface_max_packets_per_update(const mip_interface* device);
 
 mip_recv_callback   mip_interface_recv_function(const mip_interface* device);
 mip_send_callback   mip_interface_send_function(const mip_interface* device);

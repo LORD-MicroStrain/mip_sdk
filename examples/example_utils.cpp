@@ -1,3 +1,4 @@
+#include <memory>
 #include <vector>
 #include <stdexcept>
 
@@ -78,7 +79,7 @@ std::unique_ptr<ExampleUtils> openFromArgs(const std::string& port_or_hostname, 
         example_utils->connection.reset(new TcpConnection(port_or_hostname, port));
 #endif  // MIP_ENABLE_EXTRAS
 
-        example_utils->device.reset(new mip::Interface(example_utils->connection.get(), example_utils->buffer, sizeof(example_utils->buffer), 1000, 2000));
+        example_utils->device.reset(new mip::Interface(example_utils->connection.get(), 1000, 2000));
 #else  // MICROSTRAIN_ENABLE_TCP
         throw std::runtime_error("This program was compiled without socket support. Recompile with -DMICROSTRAIN_ENABLE_TCP=1");
 #endif // MICROSTRAIN_ENABLE_TCP
@@ -100,7 +101,7 @@ std::unique_ptr<ExampleUtils> openFromArgs(const std::string& port_or_hostname, 
         example_utils->connection.reset(new SerialConnection(port_or_hostname, baud));
 #endif  // MIP_ENABLE_EXTRAS
 
-        example_utils->device.reset(new mip::Interface(example_utils->connection.get(), example_utils->buffer, sizeof(example_utils->buffer), mip::C::mip_timeout_from_baudrate(baud), 500));
+        example_utils->device.reset(new mip::Interface(example_utils->connection.get(), mip::C::mip_timeout_from_baudrate(baud), 500));
 #else  // MICROSTRAIN_ENABLE_SERIAL
         throw std::runtime_error("This program was compiled without serial support. Recompile with -DMICROSTRAIN_ENABLE_SERIAL=1.\n");
 #endif //MICROSTRAIN_ENABLE_SERIAL
@@ -123,7 +124,7 @@ std::unique_ptr<ExampleUtils> handleCommonArgs(int argc, const char* argv[], int
     }
 
     // If we were passed a file name, record the data in that file
-    std::string binary_file_path = "";
+    const char* binary_file_path = "";
     if (argc >= 4)
         binary_file_path = argv[3];
 

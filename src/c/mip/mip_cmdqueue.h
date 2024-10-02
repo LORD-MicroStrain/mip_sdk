@@ -43,9 +43,9 @@ typedef struct mip_pending_cmd
     struct mip_pending_cmd*     _next;                 ///<@private Next command in the queue.
     uint8_t*                    _response_buffer;      ///<@private Buffer for response data if response_descriptor != 0x00.
     union {                                            ///<@private
-        mip_timeout   _extra_timeout;        ///<@private If MIP_STATUS_PENDING:   Duration to wait for reply, excluding base timeout time from the queue object.
-        mip_timestamp _timeout_time;         ///<@private If MIP_STATUS_WAITING:   timestamp_type after which the command will be timed out.
-        mip_timestamp _reply_time;           ///<@private If MIP_STATUS_COMPLETED: timestamp_type from the packet containing the ack/nack.
+        mip_timeout             _extra_timeout;        ///<@private If MIP_STATUS_PENDING:   Duration to wait for reply, excluding base timeout time from the queue object.
+        mip_timestamp           _timeout_time;         ///<@private If MIP_STATUS_WAITING:   Timestamp after which the command will be timed out.
+        mip_timestamp           _reply_time;           ///<@private If MIP_STATUS_COMPLETED: Timestamp from the packet containing the ack/nack.
     };
     uint8_t                     _descriptor_set;       ///<@private Command descriptor set.
     uint8_t                     _field_descriptor;     ///<@private Command field descriptor.
@@ -93,7 +93,7 @@ bool mip_pending_cmd_check_timeout(const mip_pending_cmd* cmd, mip_timestamp now
 typedef struct mip_cmd_queue
 {
     mip_pending_cmd* _first_pending_cmd;
-    mip_timeout _base_timeout;
+    mip_timeout      _base_timeout;
 
 #ifdef MIP_ENABLE_DIAGNOSTICS
     uint16_t         _diag_cmds_queued;    ///<@private Number of queued commands.

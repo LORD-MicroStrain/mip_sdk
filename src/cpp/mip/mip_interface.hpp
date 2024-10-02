@@ -61,15 +61,15 @@ public:
 
     ///@copydoc mip::C::mip_interface_init
     /// The interface callbacks must be assigned separately (e.g. with Connection::connect_interface())
-    Interface(uint8_t* parseBuffer, size_t parseBufferSize, Timeout parseTimeout, Timeout baseReplyTimeout)
+    Interface(Timeout parseTimeout, Timeout baseReplyTimeout)
     {
-        C::mip_interface_init(this, parseBuffer, parseBufferSize, parseTimeout, baseReplyTimeout, nullptr, nullptr, &C::mip_interface_default_update, nullptr);
+        C::mip_interface_init(this, parseTimeout, baseReplyTimeout, nullptr, nullptr, &C::mip_interface_default_update, nullptr);
     }
 
     ///@copydoc mip::C::mip_interface_init
-    ///@param connection The connection object used to communicate with the device. This object must exist for the life of the Interface object
-    Interface(microstrain::Connection* connection, uint8_t* parseBuffer, size_t parseBufferSize, Timeout parseTimeout, Timeout baseReplyTimeout) :
-        Interface(parseBuffer, parseBufferSize, parseTimeout, baseReplyTimeout)
+    ///@param connection The connection object used to communicate with the device. This object must exist for the life of the DeviceInterface object
+    Interface(microstrain::Connection* connection, Timeout parseTimeout, Timeout baseReplyTimeout) :
+        Interface(parseTimeout, baseReplyTimeout)
     {
         if(connection)
             connect_interface(*this, *connection);
@@ -102,7 +102,7 @@ public:
     template<bool (*Recv)(Interface&, uint8_t*, size_t, Timeout, size_t*, Timestamp*)>
     void setRecvFunction();
 
-    template<bool (*Update)(Interface&, Timeout)>
+    template<bool (*Update)(Interface&, Timeout, bool)>
     void setUpdateFunction();
 
     // derived member function callbacks
@@ -113,7 +113,7 @@ public:
     template<class Derived, bool (Derived::*Recv)(uint8_t*, size_t, Timeout, size_t*, Timestamp*)>
     void setRecvFunction();
 
-    template<class Derived, bool (Derived::*Update)(Timeout)>
+    template<class Derived, bool (Derived::*Update)(Timeout, bool)>
     void setUpdateFunction();
 
     // Separate class object callbacks
@@ -121,8 +121,8 @@ public:
     template<
         class T,
         bool (T::*Send)(const uint8_t*, size_t),
-        bool (T::*Recv)(uint8_t*, size_t, Timeout, size_t*, Timestamp*),
-        bool (T::*Update)(Timeout) = nullptr
+        bool (T::*Recv)(Timeout, bool, Timestamp*),
+        bool (T::*Update)(Timeout, bool) = nullptr
     >
     void setCallbacks(T* object);
 
@@ -130,8 +130,8 @@ public:
     // General accessors
     //
 
-    void setMaxPacketsPerPoll(unsigned int maxPackets) { C::mip_interface_set_max_packets_per_update(this, maxPackets); }
-    unsigned int maxPacketsPerPoll() const             { return C::mip_interface_max_packets_per_update(this); }
+    //void setMaxPacketsPerPoll(unsigned int maxPackets) { C::mip_interface_set_max_packets_per_update(this, maxPackets); }
+    //unsigned int maxPacketsPerPoll() const             { return C::mip_interface_max_packets_per_update(this); }
 
     Timeout baseReplyTimeout() const          { return C::mip_cmd_queue_base_reply_timeout(&cmdQueue()); }
     void setBaseReplyTimeout(Timeout timeout) { C::mip_cmd_queue_set_base_reply_timeout(&cmdQueue(), timeout); }
@@ -147,17 +147,16 @@ public:
     // Communications
     //
 
-    bool           sendToDevice(const uint8_t* data, size_t length) { return C::mip_interface_send_to_device(this, data, length); }
-    bool           sendToDevice(const C::mip_packet_view& packet) { return sendToDevice(C::mip_packet_pointer(&packet), C::mip_packet_total_length(&packet)); }
-    bool           recvFromDevice(uint8_t* buffer, size_t max_length, Timeout wait_time, size_t* length_out, Timestamp* timestamp) { return C::mip_interface_recv_from_device(this, buffer, max_length, wait_time, length_out, timestamp); }
-    bool           update(Timeout wait_time=0) { return C::mip_interface_update(this, wait_time); }
-    bool           defaultUpdate(Timeout wait_time=0) { return C::mip_interface_default_update(this, wait_time); }
+    bool sendToDevice(const uint8_t* data, size_t length) { return C::mip_interface_send_to_device(this, data, length); }
+    bool sendToDevice(const C::mip_packet_view& packet) { return sendToDevice(C::mip_packet_pointer(&packet), C::mip_packet_total_length(&packet)); }
+    bool recvFromDevice(Timeout wait_time, size_t* length_out, Timestamp* timestamp_out) { return C::mip_interface_recv_from_device(this, wait_time, length_out, timestamp_out); }
+    bool update(Timeout wait_time=0, bool from_cmd=false) { return C::mip_interface_update(this, wait_time, from_cmd); }
 
-    size_t         receiveBytes(const uint8_t* data, size_t length, Timestamp timestamp) { return C::mip_interface_receive_bytes(this, data, length, timestamp); }
-    void           receivePacket(const C::mip_packet_view& packet, Timestamp timestamp) { C::mip_interface_receive_packet(this, &packet, timestamp); }
-    void           processUnparsedPackets() { C::mip_interface_process_unparsed_packets(this); }
+    bool defaultUpdate(Timeout wait_time=0, bool from_cmd=false) { return C::mip_interface_default_update(this, wait_time, from_cmd); }
+    void inputBytes(const uint8_t* data, size_t length, Timestamp timestamp) { C::mip_interface_input_bytes(this, data, length, timestamp); }
+    void inputPacket(const C::mip_packet_view& packet, Timestamp timestamp) { C::mip_interface_input_packet(this, &packet, timestamp); }
 
-    CmdResult      waitForReply(C::mip_pending_cmd& cmd) { return C::mip_interface_wait_for_reply(this, &cmd); }
+    CmdResult waitForReply(C::mip_pending_cmd& cmd) { return C::mip_interface_wait_for_reply(this, &cmd); }
 
     //
     // Data Callbacks
@@ -251,11 +250,11 @@ void Interface::setRecvFunction()
 ///
 ///@tparam Update A compile-time pointer to the callback function.
 ///
-template<bool (*Update)(Interface&, Timeout)>
+template<bool (*Update)(Interface&, Timeout, bool)>
 void Interface::setUpdateFunction()
 {
-    setUpdateFunction([](C::mip_interface* device, C::mip_timeout wait_time){
-        return (*Update)(*static_cast<Interface*>(device), wait_time);
+    setUpdateFunction([](C::mip_interface* device, C::mip_timeout wait_time, bool from_cmd){
+        return (*Update)(*static_cast<Interface*>(device), wait_time, from_cmd);
     });
 }
 
@@ -323,15 +322,15 @@ void Interface::setRecvFunction()
 ///
 ///@see Interface::setSendFunction()
 ///
-template<class Derived, bool (Derived::*Update)(Timeout)>
+template<class Derived, bool (Derived::*Update)(Timeout, bool)>
 void Interface::setUpdateFunction()
 {
     static_assert(std::is_base_of<C::mip_interface, Derived>::value, "Derived must be derived from C::mip_interface.");
 
     setUpdateFunction(
-        [](C::mip_interface* device, C::mip_timeout wait_time)->bool
+        [](C::mip_interface* device, C::mip_timeout wait_time, bool from_cmd)->bool
         {
-            return (static_cast<Derived*>(device)->*Update)(wait_time);
+            return (static_cast<Derived*>(device)->*Update)(wait_time, from_cmd);
         }
     );
 }
@@ -377,8 +376,8 @@ void Interface::setUpdateFunction()
 template<
     class T,
     bool (T::*Send)(const uint8_t*, size_t),
-    bool (T::*Recv)(uint8_t*, size_t, Timeout, size_t*, Timestamp*),
-    bool (T::*Update)(Timeout)
+    bool (T::*Recv)(Timeout, bool, Timestamp*),
+    bool (T::*Update)(Timeout, bool)
 >
 void Interface::setCallbacks(T* object)
 {
@@ -386,13 +385,13 @@ void Interface::setCallbacks(T* object)
     {
         return (static_cast<T*>(mip_interface_user_pointer(device))->*Send)(data, size);
     };
-    auto recv = [](C::mip_interface* device, uint8_t* buffer, size_t max_length, C::mip_timeout wait_time, size_t* length_out, C::mip_timestamp* timestamp_out)
+    auto recv = [](C::mip_interface* device, C::mip_timeout wait_time, bool from_cmd, C::mip_timestamp* timestamp_out)
     {
-        return (static_cast<T*>(mip_interface_user_pointer(device))->*Recv)(buffer, max_length, wait_time, length_out, timestamp_out);
+        return (static_cast<T*>(mip_interface_user_pointer(device))->*Recv)(wait_time, from_cmd, timestamp_out);
     };
-    auto update = [](C::mip_interface* device, C::mip_timeout wait_time)
+    auto update = [](C::mip_interface* device, C::mip_timeout wait_time, bool from_cmd)
     {
-        return (static_cast<T*>(mip_interface_user_pointer(device))->*Update)(wait_time);
+        return (static_cast<T*>(mip_interface_user_pointer(device))->*Update)(wait_time, from_cmd);
     };
 
     C::mip_interface_set_user_pointer(this, object);
