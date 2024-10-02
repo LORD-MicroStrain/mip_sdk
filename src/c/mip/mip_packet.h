@@ -67,8 +67,8 @@ typedef struct mip_packet_view
 void mip_packet_create(mip_packet_view* packet, uint8_t* buffer, size_t buffer_size, uint8_t descriptor_set);
 
 bool mip_packet_add_field(mip_packet_view* packet, uint8_t field_descriptor, const uint8_t* payload, uint8_t payload_length);
-int  mip_packet_alloc_field(mip_packet_view* packet, uint8_t field_descriptor, uint8_t payload_length, uint8_t** payload_ptr_out);
-int  mip_packet_realloc_last_field(mip_packet_view* packet, uint8_t* payload_ptr, uint8_t new_payload_length);
+int  mip_packet_create_field(mip_packet_view* packet, uint8_t field_descriptor, uint8_t payload_length, uint8_t** payload_ptr_out);
+int  mip_packet_update_last_field_length(mip_packet_view* packet, uint8_t* payload_ptr, uint8_t new_payload_length);
 int  mip_packet_cancel_last_field(mip_packet_view* packet, uint8_t* payload_ptr);
 
 void mip_packet_finalize(mip_packet_view* packet);
@@ -89,7 +89,7 @@ void mip_packet_reset(mip_packet_view* packet, uint8_t descriptor_set);
 ///
 ///@{
 
-void mip_packet_from_buffer(mip_packet_view* packet, uint8_t* buffer, size_t length);
+void mip_packet_from_buffer(mip_packet_view* packet, const uint8_t* buffer, size_t length);
 
 uint8_t         mip_packet_descriptor_set(const mip_packet_view* packet);
 uint_least16_t  mip_packet_total_length(const mip_packet_view* packet);
@@ -111,15 +111,7 @@ int             mip_packet_remaining_space(const mip_packet_view* packet);
 bool            mip_packet_is_data(const mip_packet_view* packet);
 
 ///@}
-////////////////////////////////////////////////////////////////////////////////
-///@defgroup Serialization  Serializers - Functions for serializing a MIP packet.
-///
-///@{
 
-//void microstrain_serializer_init_new_field(microstrain_serializer* serializer, mip_packet_view* packet, uint8_t field_descriptor);
-//void microstrain_serializer_finish_new_field(const microstrain_serializer* serializer, mip_packet_view* packet);
-
-///@}
 ///@}
 ///@}
 ////////////////////////////////////////////////////////////////////////////////

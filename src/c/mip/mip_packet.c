@@ -35,7 +35,7 @@
 ///      MIP_PACKET_LENGTH_MIN bytes, calling the accessor functions is undefined
 ///      behavior.
 ///
-void mip_packet_from_buffer(mip_packet_view* packet, uint8_t* buffer, size_t length)
+void mip_packet_from_buffer(mip_packet_view* packet, const uint8_t* buffer, size_t length)
 {
     assert(buffer != NULL);
 
@@ -43,7 +43,7 @@ void mip_packet_from_buffer(mip_packet_view* packet, uint8_t* buffer, size_t len
     if( length > MIP_PACKET_LENGTH_MAX )
         length = MIP_PACKET_LENGTH_MAX;
 
-    packet->_buffer        = buffer;
+    packet->_buffer        = (uint8_t*)buffer;
     packet->_buffer_length = (uint_least16_t)length;
 }
 
@@ -291,7 +291,7 @@ bool mip_packet_is_data(const mip_packet_view* packet)
 bool mip_packet_add_field(mip_packet_view* packet, uint8_t field_descriptor, const uint8_t* payload, uint8_t payload_length)
 {
     uint8_t* payload_buffer;
-    int remaining = mip_packet_alloc_field(packet, field_descriptor, payload_length, &payload_buffer);
+    int remaining = mip_packet_create_field(packet, field_descriptor, payload_length, &payload_buffer);
     if( remaining < 0 )
         return false;
 
@@ -330,7 +330,7 @@ bool mip_packet_add_field(mip_packet_view* packet, uint8_t field_descriptor, con
 ///         is negative, the field could not be allocated and the payload must
 ///         not be written.
 ///
-int mip_packet_alloc_field(mip_packet_view* packet, uint8_t field_descriptor, uint8_t payload_length, uint8_t** const payload_ptr_out)
+int mip_packet_create_field(mip_packet_view* packet, uint8_t field_descriptor, uint8_t payload_length, uint8_t** payload_ptr_out)
 {
     assert(payload_ptr_out != NULL);
     assert( payload_length <= MIP_FIELD_PAYLOAD_LENGTH_MAX );
@@ -359,7 +359,7 @@ int mip_packet_alloc_field(mip_packet_view* packet, uint8_t field_descriptor, ui
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Changes the size of the last field in the packet.
 ///
-/// Use this in conjunction with mip_packet_alloc_field() when the size of the
+/// Use this in conjunction with mip_packet_create_field() when the size of the
 /// field is not known in advance. Pass a payload size of 0 to alloc_field and
 /// check that the returned available space is sufficient, then write the
 /// payload and call this function with the actual space used.
@@ -377,7 +377,7 @@ int mip_packet_alloc_field(mip_packet_view* packet, uint8_t field_descriptor, ui
 ///@returns The space remaining in the packet after changing the field size.
 ///         This will be negative if the new length did not fit.
 ///
-int mip_packet_realloc_last_field(mip_packet_view* packet, uint8_t* payload_ptr, uint8_t new_payload_length)
+int mip_packet_update_last_field_length(mip_packet_view* packet, uint8_t* payload_ptr, uint8_t new_payload_length)
 {
     assert(payload_ptr != NULL);
     assert( new_payload_length <= MIP_FIELD_PAYLOAD_LENGTH_MAX );
@@ -402,7 +402,7 @@ int mip_packet_realloc_last_field(mip_packet_view* packet, uint8_t* payload_ptr,
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Removes the last field from the packet after having allocated it.
 ///
-/// Use only after allocating a field with mip_packet_alloc_field to cancel it.
+/// Use only after allocating a field with mip_packet_create_field to cancel it.
 /// E.g. if it turns out that there isn't enough buffer space to write the
 /// payload.
 ///
