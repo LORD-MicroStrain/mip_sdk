@@ -1,12 +1,12 @@
 #pragma once
 
-#include "mip/utils/time/durations.hpp"
-#include "mip/utils/time/standards.hpp"
+#include "mip/extras/time/durations.hpp"
+#include "mip/extras/time/standards.hpp"
 
 namespace mip
 {
     /// Converts time duration from one time standard to another.
-    /// 
+    ///
     /// @throws std::logic_error If time < 0 after conversion (corresponding time duration
     ///         doesn't exist in the other standard).
     ///
@@ -35,9 +35,9 @@ namespace mip
         {
             throw std::logic_error("Converted time < 0. Add exception handling with desired response!");
         }
-        
+
         return std::chrono::duration_cast<DurationOut>(converted);
-        
+
     }
 
     template<typename T, typename DurationIn>

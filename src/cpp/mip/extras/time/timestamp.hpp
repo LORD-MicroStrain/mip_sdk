@@ -2,16 +2,16 @@
 
 #include <stdexcept>
 
-#include "mip/utils/time/durations.hpp"
-#include "mip/utils/time/standards.hpp"
+#include "mip/extras/time/durations.hpp"
+#include "mip/extras/time/standards.hpp"
 
 namespace mip
 {
     /// Manages a timestamp in nanoseconds since epoch.
     ///
-    /// Provides various unit of time conversions, timestamp comparisons + tracking, synchronizing 
+    /// Provides various unit of time conversions, timestamp comparisons + tracking, synchronizing
     /// to a coordinated time standard, etc.
-    /// 
+    ///
     /// Notes:
     /// ----------------------------------------------------------------------------------
     ///     * Currently supports std::chrono:duration for time inputs.
@@ -37,7 +37,7 @@ namespace mip
         ///
         /// @throws std::invalid_argument If time > 0 nanoseconds.
         ///
-        template<class DurationIn> 
+        template<class DurationIn>
         TimestampNew(const mip::TimeStandard &standard, DurationIn time);
 
         /// Synchronizes time since epoch with the time standard's time since epoch.
@@ -49,7 +49,7 @@ namespace mip
         /// Increments time since epoch by the time difference between two timestamps.
         ///
         /// Useful for incrementing a manual timestamp with respect to an actual coordinated
-        /// time standard, among other things. 
+        /// time standard, among other things.
         ///
         /// @param reference_new Timestamp to use as up-to-date reference.
         /// @param reference_old Timestamp to use as old reference to subtract from up-to-date reference.
@@ -66,7 +66,7 @@ namespace mip
         /// timestamp.getTimestamp();
         ///
         /// // Increment: 5 ns + (600 ns - 500 ns) = 105 nanoseconds
-        /// timestamp.increment(reference, old); 
+        /// timestamp.increment(reference, old);
         ///
         /// // Now outputs 105 nanoseconds.
         /// timestamp.getTimestamp();
@@ -144,7 +144,7 @@ namespace mip
 
         /// Sets a new week number for the timestamp.
         ///
-        /// The resulting time since epoch is calculated using the old time of week and 
+        /// The resulting time since epoch is calculated using the old time of week and
         /// the new week number.
         ///
         /// @throws std::invalid_argument If week < 0.
@@ -153,20 +153,20 @@ namespace mip
 
         /// Sets a new time of week for the timestamp.
         ///
-        /// The resulting time since epoch is calculated using the old week number and 
+        /// The resulting time since epoch is calculated using the old week number and
         /// the new time of week.
         ///
         /// @throws std::invalid_argument If time < 0 nanoseconds, or if time >= 1 week.
         ///
-        template<typename DurationIn> 
+        template<typename DurationIn>
         void setTimeOfWeek(DurationIn time);
         void setTimeOfWeek(Nanoseconds time);
 
         /// Returns raw time since epoch.
-        template<typename DurationOut> 
+        template<typename DurationOut>
         DurationOut getTimestamp() const;
         Nanoseconds getTimestamp() const;
-        
+
         /// Returns raw time since the start of the timestamp's current week.
         template<typename DurationOut>
         DurationOut getTimeOfWeek() const;
@@ -183,7 +183,7 @@ namespace mip
     /*       no new declarations following this statement.                                */
     /**************************************************************************************/
 
-    template<class DurationIn> 
+    template<class DurationIn>
     inline TimestampNew::TimestampNew(const mip::TimeStandard &standard, DurationIn time) :
         m_standard(standard)
     {
@@ -194,7 +194,7 @@ namespace mip
 
         m_timestamp = time;
     }
-    
+
     template<typename DurationElapsed>
     inline bool TimestampNew::timeElapsed(const TimestampNew &reference)
     {
@@ -203,7 +203,7 @@ namespace mip
         {
             throw std::invalid_argument("Timestamp < reference timestamp.");
         }
-        
+
         return m_timestamp - m_reference >= DurationElapsed(1);
     }
 
@@ -230,8 +230,8 @@ namespace mip
     {
         setTimeOfWeek(std::chrono::duration_cast<Nanoseconds>(time));
     }
-    
-    template<typename DurationOut> 
+
+    template<typename DurationOut>
     inline DurationOut TimestampNew::getTimestamp() const
     {
         return std::chrono::duration_cast<DurationOut>(getTimestamp());
@@ -242,7 +242,7 @@ namespace mip
     {
         if (DurationOut(1) >= Weeks(1))
         {
-            throw std::invalid_argument("Duration >= one week.");            
+            throw std::invalid_argument("Duration >= one week.");
         }
 
         return std::chrono::duration_cast<DurationOut>(getTimeOfWeek());

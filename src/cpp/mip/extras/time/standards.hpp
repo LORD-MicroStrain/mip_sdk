@@ -1,6 +1,6 @@
 #pragma once
 
-#include "mip/utils/time/durations.hpp"
+#include "mip/extras/time/durations.hpp"
 
 namespace mip
 {
@@ -9,26 +9,26 @@ namespace mip
     {
         /// Should return the currently most up-to-date time duration in this standard.
         virtual Nanoseconds now() const = 0;
-        
+
         /// Should convert the given time duration in this standard to the corresponding time in
         /// the base standard.
         virtual Nanoseconds convertToBase(Nanoseconds time) const = 0;
-        
+
         /// Should convert the given time duration in the base standard to the corresponding
         /// time in this standard.
         virtual Nanoseconds convertFromBase(Nanoseconds time) const = 0;
     };
-    
+
     /** Common standards ****************************************************************/
 
-    struct UnixTime : TimeStandard 
+    struct UnixTime : TimeStandard
     {
         Nanoseconds now() const override;
         Nanoseconds convertToBase(Nanoseconds time) const override;
         Nanoseconds convertFromBase(Nanoseconds time) const override;
     };
-    
-    struct GpsTime : TimeStandard 
+
+    struct GpsTime : TimeStandard
     {
         Nanoseconds now() const override;
         Nanoseconds convertToBase(Nanoseconds time) const override;
