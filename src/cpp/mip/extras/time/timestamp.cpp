@@ -1,6 +1,6 @@
-#include "mip/utils/time/timestamp.hpp"
+#include "mip/extras/time/timestamp.hpp"
 
-#include "mip/utils/time/misc.hpp"
+#include "mip/extras/time/misc.hpp"
 
 namespace mip
 {
@@ -23,7 +23,7 @@ namespace mip
         {
             throw std::invalid_argument("New reference timestamp < old reference timestamp.");
         }
-        
+
         m_timestamp += (m_synced - m_old);
     }
 
@@ -44,7 +44,7 @@ namespace mip
 
     void TimestampNew::setWeek(Weeks week)
     {
-        if (week < Weeks(0))         
+        if (week < Weeks(0))
         {
             throw std::invalid_argument("Week < 0.");
         }
