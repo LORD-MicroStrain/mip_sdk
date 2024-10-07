@@ -16,7 +16,7 @@ size_t        parsed_packet_length    = 0;
 mip_timestamp parsed_packet_timestamp = 0;
 
 
-void print_packet(FILE* out, const struct mip_packet* packet)
+void print_packet(FILE* out, const struct mip_packet_view* packet)
 {
     size_t size = mip_packet_total_length(packet);
     const uint8_t* ptr = mip_packet_pointer(packet);
@@ -29,7 +29,7 @@ void print_packet(FILE* out, const struct mip_packet* packet)
 }
 
 
-bool handle_packet(void* p, const struct mip_packet* packet, mip_timestamp timestamp)
+bool handle_packet(void* p, const struct mip_packet_view* packet, mip_timestamp timestamp)
 {
     (void)p;
 
@@ -55,7 +55,7 @@ int main(int argc, const char* argv[])
         uint8_t desc_set = (rand() % 255) + 1;  // Random descriptor set.
 
         uint8_t buffer[MIP_PACKET_LENGTH_MAX];
-        struct mip_packet packet;
+        struct mip_packet_view packet;
         mip_packet_create(&packet, buffer, sizeof(buffer), desc_set);
 
         for(unsigned int f=0; ; f++)

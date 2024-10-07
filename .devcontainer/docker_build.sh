@@ -62,7 +62,9 @@ docker run \
     mkdir ${docker_project_dir}/${build_dir_name}; \
     cd ${docker_project_dir}/${build_dir_name}; \
     cmake ${docker_project_dir} \
-        -DBUILD_PACKAGE=ON; \
-    cmake --build . -j; \
+        -DMICROSTRAIN_BUILD_EXAMPLES=ON \
+        -DMICROSTRAIN_BUILD_PACKAGE=ON \
+        -DCMAKE_BUILD_TYPE=RELEASE; \
+    cmake --build . -j$(nproc); \
     cmake --build . --target package; \
   "
