@@ -6,3 +6,6 @@ int/
 .vs/
 
 src/c/mip/mip_version.h
+
+# Tests
+Testing/
