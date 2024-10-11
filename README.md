@@ -3,6 +3,8 @@ MIP SDK
 
 Welcome to the official MIP Software Development Kit.
 
+If you have any questions or run into any issues, please let us know! [MicroStrain Support Portal](https://support.microstrain.com)
+
 
 Features
 --------
