@@ -17,9 +17,9 @@ extern "C" {
 #endif // __cplusplus
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipCommands_c  MIP Commands [C]
+///@addtogroup MipCommands_c
 ///@{
-///@defgroup 3dm_commands_c  3dm Commands [C]
+///@defgroup 3dm_commands_c  3dm Commands
 ///
 ///@{
 
@@ -229,7 +229,7 @@ static inline void extract_mip_sensor_range_type(microstrain_serializer* seriali
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_poll_imu_message  (0x0C,0x01) Poll Imu Message [C]
+///@defgroup 3dm_poll_imu_message_c  (0x0C,0x01) Poll Imu Message
 /// Poll the device for an IMU message with the specified format
 /// 
 /// This function polls for an IMU message using the provided format. The resulting message
@@ -257,7 +257,7 @@ mip_cmd_result mip_3dm_poll_imu_message(mip_interface* device, bool suppress_ack
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_poll_gnss_message  (0x0C,0x02) Poll Gnss Message [C]
+///@defgroup 3dm_poll_gnss_message_c  (0x0C,0x02) Poll Gnss Message
 /// Poll the device for an GNSS message with the specified format
 /// 
 /// This function polls for a GNSS message using the provided format. The resulting message
@@ -285,7 +285,7 @@ mip_cmd_result mip_3dm_poll_gnss_message(mip_interface* device, bool suppress_ac
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_poll_filter_message  (0x0C,0x03) Poll Filter Message [C]
+///@defgroup 3dm_poll_filter_message_c  (0x0C,0x03) Poll Filter Message
 /// Poll the device for an Estimation Filter message with the specified format
 /// 
 /// This function polls for an Estimation Filter message using the provided format. The resulting message
@@ -313,7 +313,7 @@ mip_cmd_result mip_3dm_poll_filter_message(mip_interface* device, bool suppress_
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_imu_message_format  (0x0C,0x08) Imu Message Format [C]
+///@defgroup 3dm_imu_message_format_c  (0x0C,0x08) Imu Message Format
 /// Set, read, or save the format of the IMU data packet.
 /// 
 /// The resulting data messages will maintain the order of descriptors sent in the command.
@@ -350,7 +350,7 @@ mip_cmd_result mip_3dm_default_imu_message_format(mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_gps_message_format  (0x0C,0x09) Gps Message Format [C]
+///@defgroup 3dm_gps_message_format_c  (0x0C,0x09) Gps Message Format
 /// Set, read, or save the format of the GNSS data packet.
 /// 
 /// The resulting data messages will maintain the order of descriptors sent in the command.
@@ -387,7 +387,7 @@ mip_cmd_result mip_3dm_default_gps_message_format(mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_filter_message_format  (0x0C,0x0A) Filter Message Format [C]
+///@defgroup 3dm_filter_message_format_c  (0x0C,0x0A) Filter Message Format
 /// Set, read, or save the format of the Estimation Filter data packet.
 /// 
 /// The resulting data messages will maintain the order of descriptors sent in the command.
@@ -424,7 +424,7 @@ mip_cmd_result mip_3dm_default_filter_message_format(mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_imu_get_base_rate  (0x0C,0x06) Imu Get Base Rate [C]
+///@defgroup 3dm_imu_get_base_rate_c  (0x0C,0x06) Imu Get Base Rate
 /// Get the base rate for the IMU data in Hz
 /// 
 /// This is the fastest rate for this type of data available on the device.
@@ -448,7 +448,7 @@ mip_cmd_result mip_3dm_imu_get_base_rate(mip_interface* device, uint16_t* rate_o
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_gps_get_base_rate  (0x0C,0x07) Gps Get Base Rate [C]
+///@defgroup 3dm_gps_get_base_rate_c  (0x0C,0x07) Gps Get Base Rate
 /// Get the base rate for the GNSS data in Hz
 /// 
 /// This is the fastest rate for this type of data available on the device.
@@ -472,7 +472,7 @@ mip_cmd_result mip_3dm_gps_get_base_rate(mip_interface* device, uint16_t* rate_o
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_filter_get_base_rate  (0x0C,0x0B) Filter Get Base Rate [C]
+///@defgroup 3dm_filter_get_base_rate_c  (0x0C,0x0B) Filter Get Base Rate
 /// Get the base rate for the Estimation Filter data in Hz
 /// 
 /// This is the fastest rate for this type of data available on the device.
@@ -496,7 +496,7 @@ mip_cmd_result mip_3dm_filter_get_base_rate(mip_interface* device, uint16_t* rat
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_poll_data  (0x0C,0x0D) Poll Data [C]
+///@defgroup 3dm_poll_data_c  (0x0C,0x0D) Poll Data
 /// Poll the device for a message with the specified descriptor set and format.
 /// 
 /// This function polls for a message using the provided format. The resulting message
@@ -525,7 +525,7 @@ mip_cmd_result mip_3dm_poll_data(mip_interface* device, uint8_t desc_set, bool s
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_get_base_rate  (0x0C,0x0E) Get Base Rate [C]
+///@defgroup 3dm_get_base_rate_c  (0x0C,0x0E) Get Base Rate
 /// Get the base rate for the specified descriptor set in Hz.
 ///
 ///@{
@@ -554,7 +554,7 @@ mip_cmd_result mip_3dm_get_base_rate(mip_interface* device, uint8_t desc_set, ui
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_message_format  (0x0C,0x0F) Message Format [C]
+///@defgroup 3dm_message_format_c  (0x0C,0x0F) Message Format
 /// Set, read, or save the format for a given data packet.
 /// 
 /// The resulting data messages will maintain the order of descriptors sent in the command.
@@ -593,7 +593,7 @@ mip_cmd_result mip_3dm_default_message_format(mip_interface* device, uint8_t des
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_nmea_poll_data  (0x0C,0x04) Nmea Poll Data [C]
+///@defgroup 3dm_nmea_poll_data_c  (0x0C,0x04) Nmea Poll Data
 /// Poll the device for a NMEA message with the specified format.
 /// 
 /// This function polls for a NMEA message using the provided format.
@@ -620,7 +620,7 @@ mip_cmd_result mip_3dm_nmea_poll_data(mip_interface* device, bool suppress_ack, 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_nmea_message_format  (0x0C,0x0C) Nmea Message Format [C]
+///@defgroup 3dm_nmea_message_format_c  (0x0C,0x0C) Nmea Message Format
 /// Set, read, or save the NMEA message format.
 ///
 ///@{
@@ -655,7 +655,7 @@ mip_cmd_result mip_3dm_default_nmea_message_format(mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_device_settings  (0x0C,0x30) Device Settings [C]
+///@defgroup 3dm_device_settings_c  (0x0C,0x30) Device Settings
 /// Save, Load, or Reset to Default the values for all device settings.
 /// 
 /// When a save current settings command is issued, a brief data disturbance may occur while all settings are written to non-volatile memory.
@@ -680,7 +680,7 @@ mip_cmd_result mip_3dm_default_device_settings(mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_uart_baudrate  (0x0C,0x40) Uart Baudrate [C]
+///@defgroup 3dm_uart_baudrate_c  (0x0C,0x40) Uart Baudrate
 /// Read, Save, Load, or Reset to Default the baud rate of the main communication channel.
 /// 
 /// For all functions except 0x01 (use new settings), the new baud rate value is ignored.
@@ -727,7 +727,7 @@ mip_cmd_result mip_3dm_default_uart_baudrate(mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_factory_streaming  (0x0C,0x10) Factory Streaming [C]
+///@defgroup 3dm_factory_streaming_c  (0x0C,0x10) Factory Streaming
 /// Configures the device for recording data for technical support.
 /// 
 /// This command will configure all available data streams to predefined
@@ -770,7 +770,7 @@ mip_cmd_result mip_3dm_factory_streaming(mip_interface* device, mip_3dm_factory_
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_datastream_control  (0x0C,0x11) Datastream Control [C]
+///@defgroup 3dm_datastream_control_c  (0x0C,0x11) Datastream Control
 /// Enable/disable the selected data stream.
 /// 
 /// Each data stream (descriptor set) can be enabled or disabled.
@@ -815,7 +815,7 @@ mip_cmd_result mip_3dm_default_datastream_control(mip_interface* device, uint8_t
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_constellation_settings  (0x0C,0x21) Constellation Settings [C]
+///@defgroup 3dm_constellation_settings_c  (0x0C,0x21) Constellation Settings
 /// This command configures which satellite constellations are enabled and how many channels are dedicated to tracking each constellation.
 /// 
 /// Maximum number of tracking channels to use (total for all constellations):
@@ -921,7 +921,7 @@ mip_cmd_result mip_3dm_default_constellation_settings(mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_gnss_sbas_settings  (0x0C,0x22) Gnss Sbas Settings [C]
+///@defgroup 3dm_gnss_sbas_settings_c  (0x0C,0x22) Gnss Sbas Settings
 /// Configure the SBAS subsystem
 /// 
 /// 
@@ -981,7 +981,7 @@ mip_cmd_result mip_3dm_default_gnss_sbas_settings(mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_gnss_assisted_fix  (0x0C,0x23) Gnss Assisted Fix [C]
+///@defgroup 3dm_gnss_assisted_fix_c  (0x0C,0x23) Gnss Assisted Fix
 /// Set the options for assisted GNSS fix.
 /// 
 /// Devices that implement this command have a dedicated GNSS flash memory and a non-volatile FRAM.
@@ -1045,7 +1045,7 @@ mip_cmd_result mip_3dm_default_gnss_assisted_fix(mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_gnss_time_assistance  (0x0C,0x24) Gnss Time Assistance [C]
+///@defgroup 3dm_gnss_time_assistance_c  (0x0C,0x24) Gnss Time Assistance
 /// Provide the GNSS subsystem with initial time information.
 /// 
 /// This message is required immediately after power up if GNSS Assist was enabled when the device was powered off.
@@ -1082,7 +1082,7 @@ mip_cmd_result mip_3dm_read_gnss_time_assistance(mip_interface* device, double* 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_imu_lowpass_filter  (0x0C,0x50) Imu Lowpass Filter [C]
+///@defgroup 3dm_imu_lowpass_filter_c  (0x0C,0x50) Imu Lowpass Filter
 /// Advanced configuration for the IMU data quantity low-pass filters.
 /// 
 /// Deprecated, use the lowpass filter (0x0C,0x54) command instead.
@@ -1138,7 +1138,7 @@ mip_cmd_result mip_3dm_default_imu_lowpass_filter(mip_interface* device, uint8_t
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_pps_source  (0x0C,0x28) Pps Source [C]
+///@defgroup 3dm_pps_source_c  (0x0C,0x28) Pps Source
 /// Controls the Pulse Per Second (PPS) source.
 ///
 ///@{
@@ -1193,7 +1193,7 @@ mip_cmd_result mip_3dm_default_pps_source(mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_gpio_config  (0x0C,0x41) Gpio Config [C]
+///@defgroup 3dm_gpio_config_c  (0x0C,0x41) Gpio Config
 /// Configures the user GPIO pins on the connector for use with several built-in functions or for general input or output.
 /// 
 /// GPIO pins are device-dependent. Some features are only available on
@@ -1319,7 +1319,7 @@ mip_cmd_result mip_3dm_default_gpio_config(mip_interface* device, uint8_t pin);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_gpio_state  (0x0C,0x42) Gpio State [C]
+///@defgroup 3dm_gpio_state_c  (0x0C,0x42) Gpio State
 /// Allows the state of the pin to be read or controlled.
 /// 
 /// This command serves two purposes: 1) To allow reading the state of a pin via command,
@@ -1366,7 +1366,7 @@ mip_cmd_result mip_3dm_read_gpio_state(mip_interface* device, uint8_t pin, bool*
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_odometer  (0x0C,0x43) Odometer [C]
+///@defgroup 3dm_odometer_c  (0x0C,0x43) Odometer
 /// Configures the hardware odometer interface.
 /// 
 ///
@@ -1423,7 +1423,7 @@ mip_cmd_result mip_3dm_default_odometer(mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_get_event_support  (0x0C,0x2A) Get Event Support [C]
+///@defgroup 3dm_get_event_support_c  (0x0C,0x2A) Get Event Support
 /// Lists the available trigger or action types.
 /// 
 /// There are a limited number of trigger and action slots available
@@ -1499,7 +1499,7 @@ mip_cmd_result mip_3dm_get_event_support(mip_interface* device, mip_3dm_get_even
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_event_control  (0x0C,0x2B) Event Control [C]
+///@defgroup 3dm_event_control_c  (0x0C,0x2B) Event Control
 /// Enables or disables event triggers.
 /// 
 /// Triggers can be disabled, enabled, and tested. While disabled, a trigger will
@@ -1564,7 +1564,7 @@ mip_cmd_result mip_3dm_default_event_control(mip_interface* device, uint8_t inst
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_get_event_trigger_status  (0x0C,0x2C) Get Event Trigger Status [C]
+///@defgroup 3dm_get_event_trigger_status_c  (0x0C,0x2C) Get Event Trigger Status
 ///
 ///@{
 
@@ -1621,7 +1621,7 @@ mip_cmd_result mip_3dm_get_event_trigger_status(mip_interface* device, uint8_t r
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_get_event_action_status  (0x0C,0x2D) Get Event Action Status [C]
+///@defgroup 3dm_get_event_action_status_c  (0x0C,0x2D) Get Event Action Status
 ///
 ///@{
 
@@ -1661,7 +1661,7 @@ mip_cmd_result mip_3dm_get_event_action_status(mip_interface* device, uint8_t re
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_event_trigger  (0x0C,0x2E) Event Trigger [C]
+///@defgroup 3dm_event_trigger_c  (0x0C,0x2E) Event Trigger
 /// Configures various types of event triggers.
 ///
 ///@{
@@ -1822,7 +1822,7 @@ mip_cmd_result mip_3dm_default_event_trigger(mip_interface* device, uint8_t inst
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_event_action  (0x0C,0x2F) Event Action [C]
+///@defgroup 3dm_event_action_c  (0x0C,0x2F) Event Action
 /// Configures various types of event actions.
 ///
 ///@{
@@ -1932,7 +1932,7 @@ mip_cmd_result mip_3dm_default_event_action(mip_interface* device, uint8_t insta
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_accel_bias  (0x0C,0x37) Accel Bias [C]
+///@defgroup 3dm_accel_bias_c  (0x0C,0x37) Accel Bias
 /// Configures the user specified accelerometer bias
 /// 
 /// The user specified bias is subtracted from the calibrated accelerometer output.  Value is input in the sensor frame.
@@ -1967,7 +1967,7 @@ mip_cmd_result mip_3dm_default_accel_bias(mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_gyro_bias  (0x0C,0x38) Gyro Bias [C]
+///@defgroup 3dm_gyro_bias_c  (0x0C,0x38) Gyro Bias
 /// Configures the user specified gyroscope bias
 /// 
 /// The user specified bias is subtracted from the calibrated angular rate output.  Value is input in the sensor frame.
@@ -2002,7 +2002,7 @@ mip_cmd_result mip_3dm_default_gyro_bias(mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_capture_gyro_bias  (0x0C,0x39) Capture Gyro Bias [C]
+///@defgroup 3dm_capture_gyro_bias_c  (0x0C,0x39) Capture Gyro Bias
 /// Samples gyro for a specified time range and writes the averaged result to the Gyro Bias vector in RAM
 /// 
 /// The device will average the gyro output for the duration of "averaging_time_ms." To store the resulting vector
@@ -2035,7 +2035,7 @@ mip_cmd_result mip_3dm_capture_gyro_bias(mip_interface* device, uint16_t averagi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_mag_hard_iron_offset  (0x0C,0x3A) Mag Hard Iron Offset [C]
+///@defgroup 3dm_mag_hard_iron_offset_c  (0x0C,0x3A) Mag Hard Iron Offset
 /// Configure the user specified magnetometer hard iron offset vector
 /// 
 /// The values for this offset are determined empirically by external software algorithms
@@ -2074,7 +2074,7 @@ mip_cmd_result mip_3dm_default_mag_hard_iron_offset(mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_mag_soft_iron_matrix  (0x0C,0x3B) Mag Soft Iron Matrix [C]
+///@defgroup 3dm_mag_soft_iron_matrix_c  (0x0C,0x3B) Mag Soft Iron Matrix
 /// Configure the user specified magnetometer soft iron offset matrix
 /// 
 /// The values for this matrix are determined empirically by external software algorithms
@@ -2117,7 +2117,7 @@ mip_cmd_result mip_3dm_default_mag_soft_iron_matrix(mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_coning_sculling_enable  (0x0C,0x3E) Coning Sculling Enable [C]
+///@defgroup 3dm_coning_sculling_enable_c  (0x0C,0x3E) Coning Sculling Enable
 /// Controls the Coning and Sculling Compenstation setting.
 ///
 ///@{
@@ -2150,7 +2150,7 @@ mip_cmd_result mip_3dm_default_coning_sculling_enable(mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_sensor_2_vehicle_transform_euler  (0x0C,0x31) Sensor 2 Vehicle Transform Euler [C]
+///@defgroup 3dm_sensor_2_vehicle_transform_euler_c  (0x0C,0x31) Sensor 2 Vehicle Transform Euler
 /// Sets the sensor-to-vehicle frame transformation using Yaw, Pitch, Roll Euler angles.
 /// These are the Yaw, Pitch, and Roll mounting angles of the sensor with respect to vehicle frame of reference,
 /// and describe the transformation of vectors from the sensor body frame to the vehicle frame.<br/>
@@ -2211,7 +2211,7 @@ mip_cmd_result mip_3dm_default_sensor_2_vehicle_transform_euler(mip_interface* d
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_sensor_2_vehicle_transform_quaternion  (0x0C,0x32) Sensor 2 Vehicle Transform Quaternion [C]
+///@defgroup 3dm_sensor_2_vehicle_transform_quaternion_c  (0x0C,0x32) Sensor 2 Vehicle Transform Quaternion
 /// Set the sensor to vehicle frame transformation using unit length quaternion.
 /// 
 /// Note: This is the transformation, the inverse of the rotation.
@@ -2276,7 +2276,7 @@ mip_cmd_result mip_3dm_default_sensor_2_vehicle_transform_quaternion(mip_interfa
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_sensor_2_vehicle_transform_dcm  (0x0C,0x33) Sensor 2 Vehicle Transform Dcm [C]
+///@defgroup 3dm_sensor_2_vehicle_transform_dcm_c  (0x0C,0x33) Sensor 2 Vehicle Transform Dcm
 /// Set the sensor to vehicle frame transformation using a using a 3 x 3 direction cosine matrix EQSTART M_{ned}^{veh} EQEND, stored in row-major order in a 9-element array.
 /// 
 /// These angles define the transformation of vectors from the sensor body frame to the fixed vehicle frame, according to:<br/>
@@ -2339,7 +2339,7 @@ mip_cmd_result mip_3dm_default_sensor_2_vehicle_transform_dcm(mip_interface* dev
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_complementary_filter  (0x0C,0x51) Complementary Filter [C]
+///@defgroup 3dm_complementary_filter_c  (0x0C,0x51) Complementary Filter
 /// Configure the settings for the complementary filter which produces the following (0x80) descriptor set values: attitude matrix (0x80,09), quaternion (0x80,0A), and  Euler angle (0x80,0C) outputs.
 /// 
 /// The filter can be configured to correct for pitch and roll using the accelerometer (with the assumption that linear acceleration is minimal),
@@ -2382,7 +2382,7 @@ mip_cmd_result mip_3dm_default_complementary_filter(mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_sensor_range  (0x0C,0x52) Sensor Range [C]
+///@defgroup 3dm_sensor_range_c  (0x0C,0x52) Sensor Range
 /// Changes the IMU sensor gain.
 /// 
 /// This allows you to optimize the range to get the best accuracy and performance
@@ -2424,7 +2424,7 @@ mip_cmd_result mip_3dm_default_sensor_range(mip_interface* device, mip_sensor_ra
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_calibrated_sensor_ranges  (0x0C,0x53) Calibrated Sensor Ranges [C]
+///@defgroup 3dm_calibrated_sensor_ranges_c  (0x0C,0x53) Calibrated Sensor Ranges
 /// Returns the supported sensor ranges which may be used with the 3DM Sensor Range (0x0C,0x52) command.
 /// 
 /// The response includes an array of (u8, float) pairs which map each allowed setting
@@ -2468,7 +2468,7 @@ mip_cmd_result mip_3dm_calibrated_sensor_ranges(mip_interface* device, mip_senso
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_lowpass_filter  (0x0C,0x54) Lowpass Filter [C]
+///@defgroup 3dm_lowpass_filter_c  (0x0C,0x54) Lowpass Filter
 /// This command controls the low-pass anti-aliasing filter supported data quantities.
 /// 
 /// See the device user manual for data quantities which support the anti-aliasing filter.

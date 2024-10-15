@@ -16,9 +16,9 @@ struct mip_interface;
 namespace commands_aiding {
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipCommands_cpp  MIP Commands [CPP]
+///@addtogroup MipCommands_cpp
 ///@{
-///@defgroup aiding_commands_cpp  Aiding Commands [CPP]
+///@defgroup aiding_commands_cpp  Aiding Commands
 ///
 ///@{
 
@@ -82,7 +82,7 @@ struct Time
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_aiding_frame_config  (0x13,0x01) Frame Config [CPP]
+///@defgroup aiding_frame_config_cpp  (0x13,0x01) Frame Config
 /// Defines an aiding frame associated with a specific sensor frame ID.
 /// The frame ID used in this command should mirror the frame ID used in the aiding command
 /// (if that aiding measurement is measured in this reference frame).
@@ -206,7 +206,7 @@ TypedResult<FrameConfig> defaultFrameConfig(C::mip_interface& device, uint8_t fr
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_aiding_echo_control  (0x13,0x1F) Echo Control [CPP]
+///@defgroup aiding_echo_control_cpp  (0x13,0x1F) Echo Control
 /// Controls command response behavior to external aiding commands
 ///
 ///@{
@@ -291,7 +291,7 @@ TypedResult<EchoControl> defaultEchoControl(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_aiding_pos_ecef  (0x13,0x21) Pos Ecef [CPP]
+///@defgroup aiding_pos_ecef_cpp  (0x13,0x21) Pos Ecef
 /// Cartesian vector position aiding command. Coordinates are given in the WGS84 ECEF system.
 ///
 ///@{
@@ -364,7 +364,7 @@ TypedResult<PosEcef> posEcef(C::mip_interface& device, const Time& time, uint8_t
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_aiding_pos_llh  (0x13,0x22) Pos Llh [CPP]
+///@defgroup aiding_pos_llh_cpp  (0x13,0x22) Pos Llh
 /// Geodetic position aiding command.
 /// Coordinates are given in WGS84 geodetic latitude, longitude, and height above the ellipsoid.
 /// Uncertainty is given in NED coordinates, which are parallel to incremental changes in latitude, longitude, and height.
@@ -441,7 +441,7 @@ TypedResult<PosLlh> posLlh(C::mip_interface& device, const Time& time, uint8_t f
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_aiding_height_above_ellipsoid  (0x13,0x23) Height Above Ellipsoid [CPP]
+///@defgroup aiding_height_above_ellipsoid_cpp  (0x13,0x23) Height Above Ellipsoid
 /// Estimated value of the height above ellipsoid.
 ///
 ///@{
@@ -484,7 +484,7 @@ TypedResult<HeightAboveEllipsoid> heightAboveEllipsoid(C::mip_interface& device,
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_aiding_vel_ecef  (0x13,0x28) Vel Ecef [CPP]
+///@defgroup aiding_vel_ecef_cpp  (0x13,0x28) Vel Ecef
 /// ECEF velocity aiding command. Coordinates are given in the WGS84 ECEF frame.
 ///
 ///@{
@@ -557,7 +557,7 @@ TypedResult<VelEcef> velEcef(C::mip_interface& device, const Time& time, uint8_t
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_aiding_vel_ned  (0x13,0x29) Vel Ned [CPP]
+///@defgroup aiding_vel_ned_cpp  (0x13,0x29) Vel Ned
 /// NED velocity aiding command. Coordinates are given in the local North-East-Down frame.
 ///
 ///@{
@@ -630,7 +630,7 @@ TypedResult<VelNed> velNed(C::mip_interface& device, const Time& time, uint8_t f
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_aiding_vel_body_frame  (0x13,0x2A) Vel Body Frame [CPP]
+///@defgroup aiding_vel_body_frame_cpp  (0x13,0x2A) Vel Body Frame
 /// Estimated of velocity of the vehicle in the frame associated with the given sensor ID, relative to the vehicle frame.
 ///
 ///@{
@@ -703,7 +703,7 @@ TypedResult<VelBodyFrame> velBodyFrame(C::mip_interface& device, const Time& tim
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_aiding_heading_true  (0x13,0x31) Heading True [CPP]
+///@defgroup aiding_heading_true_cpp  (0x13,0x31) Heading True
 ///
 ///@{
 
@@ -745,7 +745,7 @@ TypedResult<HeadingTrue> headingTrue(C::mip_interface& device, const Time& time,
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_aiding_magnetic_field  (0x13,0x32) Magnetic Field [CPP]
+///@defgroup aiding_magnetic_field_cpp  (0x13,0x32) Magnetic Field
 /// Estimate of magnetic field in the frame associated with the given sensor ID.
 ///
 ///@{
@@ -818,7 +818,7 @@ TypedResult<MagneticField> magneticField(C::mip_interface& device, const Time& t
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_aiding_pressure  (0x13,0x33) Pressure [CPP]
+///@defgroup aiding_pressure_cpp  (0x13,0x33) Pressure
 /// Estimated value of air pressure.
 ///
 ///@{

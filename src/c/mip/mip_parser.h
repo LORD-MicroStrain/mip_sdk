@@ -21,7 +21,7 @@ extern "C" {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_parser_c mip_parser [C]
+///@defgroup mip_parser_c Mip Parser
 ///
 ///@brief Functions for parsing MIP packets
 ///

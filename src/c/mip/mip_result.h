@@ -22,6 +22,8 @@ extern "C" {
 /// Values at or below MIP_STATUS_USER_START (negative values) are reserved for
 /// status codes from user code.
 ///
+/// See @ref command_results
+///
 typedef enum mip_cmd_result
 {
     MIP_STATUS_USER_START = -10, ///< Values defined by user code must be less than or equal to this value.

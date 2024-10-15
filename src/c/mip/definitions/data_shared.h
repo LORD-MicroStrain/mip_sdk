@@ -17,9 +17,9 @@ extern "C" {
 #endif // __cplusplus
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipData_c  MIP Data [C]
+///@addtogroup MipData_c
 ///@{
-///@defgroup shared_data_c  Shared Data [C]
+///@defgroup shared_data_c  Shared Data
 ///
 ///@{
 
@@ -55,7 +55,7 @@ enum { MIP_DATA_DESC_SHARED_START = 0xD0 };
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_shared_event_source  (0xFF,0xD0) Event Source [C]
+///@defgroup shared_event_source_c  (0xFF,0xD0) Event Source
 /// Identifies which event trigger caused this packet to be emitted.
 /// 
 /// Generally this is used to determine whether a packet was emitted
@@ -77,7 +77,7 @@ bool extract_mip_shared_event_source_data_from_field(const mip_field_view* field
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_shared_ticks  (0xFF,0xD1) Ticks [C]
+///@defgroup shared_ticks_c  (0xFF,0xD1) Ticks
 /// Time since powerup in multiples of the base rate.
 /// 
 /// The counter will wrap around to 0 after approximately 50 days.
@@ -99,7 +99,7 @@ bool extract_mip_shared_ticks_data_from_field(const mip_field_view* field, void*
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_shared_delta_ticks  (0xFF,0xD2) Delta Ticks [C]
+///@defgroup shared_delta_ticks_c  (0xFF,0xD2) Delta Ticks
 /// Ticks since the last output of this field.
 /// 
 /// This field can be used to track the amount of time passed between
@@ -122,7 +122,7 @@ bool extract_mip_shared_delta_ticks_data_from_field(const mip_field_view* field,
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_shared_gps_timestamp  (0xFF,0xD3) Gps Timestamp [C]
+///@defgroup shared_gps_timestamp_c  (0xFF,0xD3) Gps Timestamp
 /// Outputs the current GPS system time in time-of-week and week number format.
 /// 
 /// For events, this is the time of the event trigger.
@@ -164,7 +164,7 @@ bool extract_mip_shared_gps_timestamp_data_from_field(const mip_field_view* fiel
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_shared_delta_time  (0xFF,0xD4) Delta Time [C]
+///@defgroup shared_delta_time_c  (0xFF,0xD4) Delta Time
 /// Time in the synchronized clock domain since the last output of this field within the same descriptor set and event instance.
 /// 
 /// This can be used to track the amount of time passed between
@@ -192,7 +192,7 @@ bool extract_mip_shared_delta_time_data_from_field(const mip_field_view* field, 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_shared_reference_timestamp  (0xFF,0xD5) Reference Timestamp [C]
+///@defgroup shared_reference_timestamp_c  (0xFF,0xD5) Reference Timestamp
 /// Internal reference timestamp.
 /// 
 /// This timestamp represents the time at which the corresponding
@@ -218,7 +218,7 @@ bool extract_mip_shared_reference_timestamp_data_from_field(const mip_field_view
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_shared_reference_time_delta  (0xFF,0xD6) Reference Time Delta [C]
+///@defgroup shared_reference_time_delta_c  (0xFF,0xD6) Reference Time Delta
 /// Delta time since the last packet.
 /// 
 /// Difference between the time as reported by the shared reference time field, 0xD5,
@@ -246,7 +246,7 @@ bool extract_mip_shared_reference_time_delta_data_from_field(const mip_field_vie
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_shared_external_timestamp  (0xFF,0xD7) External Timestamp [C]
+///@defgroup shared_external_timestamp_c  (0xFF,0xD7) External Timestamp
 /// External timestamp in nanoseconds.
 /// 
 /// This timestamp represents the time at which the corresponding
@@ -290,7 +290,7 @@ bool extract_mip_shared_external_timestamp_data_from_field(const mip_field_view*
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_shared_external_time_delta  (0xFF,0xD8) External Time Delta [C]
+///@defgroup shared_external_time_delta_c  (0xFF,0xD8) External Time Delta
 /// Delta time since the last packet containing delta external (0xFF,0xD4) or delta gps time (0xFF,0xD8).
 /// 
 /// Difference between the time as reported by the shared external time field, 0xD7,

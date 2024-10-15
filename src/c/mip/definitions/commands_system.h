@@ -17,9 +17,9 @@ extern "C" {
 #endif // __cplusplus
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipCommands_c  MIP Commands [C]
+///@addtogroup MipCommands_c
 ///@{
-///@defgroup system_commands_c  System Commands [C]
+///@defgroup system_commands_c  System Commands
 ///
 ///@{
 
@@ -55,7 +55,7 @@ enum { MIP_SYSTEM_COMMAND_COMM_MODE_GPS = 0x03 };
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_system_comm_mode  (0x7F,0x10) Comm Mode [C]
+///@defgroup system_comm_mode_c  (0x7F,0x10) Comm Mode
 /// Advanced specialized communication modes.
 /// 
 /// This command allows the user to communicate directly with various subsystems which may be present in MIP devices (i.e. IMU, GNSS, etc.)

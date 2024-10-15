@@ -5,7 +5,7 @@ All of the command functions in the MIP SDK return a Command Result. Command res
 type in both C and C++:
 
 * [mip_command_result (C)](@ref mip::C::mip_cmd_result)
-* [CmdResult (C++)](@ref mip::CmdResult)
+* [mip::CmdResult (C++)](@ref mip::CmdResult)
 
 Command results are divided into two categories, reply codes and status
 codes. Reply codes are returned by the device directly:

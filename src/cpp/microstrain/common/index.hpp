@@ -14,12 +14,12 @@ namespace microstrain
     /// Use this to help avoid off-by-one errors when using indices into arrays at
     /// the same time as referring to MIP values which typically start at 1.
     ///
-    /// Use the .index() or .id() methods to get the actual value, depending on
+    /// Use the index() or id() methods to get the actual value, depending on
     /// what you need. The index() method returns an unsigned int in the range [0,N-1]
     /// while the id() method returns an unsigned int in the range [1,N]
     ///
     /// isAssigned() can be used to see if the value is valid, i.e. initialized.
-    /// isValid(N) can be used to check if the value is within a maximum count.
+    /// isValid() can be used to check if the value is within a maximum count.
     ///
     /// The default value with no initialization is INVALID.
     ///
@@ -70,7 +70,7 @@ namespace microstrain
     ////////////////////////////////////////////////////////////////////////////////
     ///@brief Representes an ID number ranging from 1..N including N.
     ///
-    /// This is interchangeable with the Index class above.
+    /// This is interchangeable with the Index class.
     ///
     class Id
     {

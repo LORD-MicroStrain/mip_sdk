@@ -20,7 +20,7 @@ bool add_random_field()
     const uint8_t field_desc = (rand() % 255) + 1;
 
     uint8_t* payload;
-    if( !mip_packet_alloc_field(&packet, field_desc, length, &payload) )
+    if( !mip_packet_create_field(&packet, field_desc, length, &payload) )
         return false;
 
     for(unsigned int i=0; i<length; i++)

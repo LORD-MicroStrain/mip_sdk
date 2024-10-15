@@ -1,0 +1,29 @@
+a[href*="cpp.html"], a[href^="class"], a[href*="mip_1_1"], a[href*="microstrain_1_1"] {
+    filter: hue-rotate(-90deg) saturate(50%);
+}
+a[href^="group__c"], a[href*="_c.html"], a[href*="_1_1C_"] {
+    /*filter: brightness(120%);*/
+    filter: hue-rotate(90deg) saturate(50%);
+}
+
+/*.directory td.entry:has(> a) {*/
+/*    background-color: aquamarine;*/
+/*}*/
+
+/*td.entry:has(a.el[href="group__MipCommandQueue__c.html"]) {*/
+/*    background-color: green;*/
+/*}*/
+
+
+/*td.entry:has(a.el[href$="__c.html"]) {*/
+/*    !*background-color: #ebecf0;*!*/
+/*    filter: brightness(90%);*/
+/*}*/
+/*td.entry:has(a.el[href$="__cpp.html"]) {*/
+/*    !*background-color: #ebecf0;*!*/
+/*    filter: brightness(90%);*/
+/*}*/
+/*td.entry.even:has(a.el[href$="__c.html"]) {*/
+/*    !*background-color: #F7F8FB;*!*/
+/*    background-color: #ebecf0;*/
+/*}*/

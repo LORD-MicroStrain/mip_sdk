@@ -16,7 +16,7 @@ extern "C" {
 ///@{
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_field_c  Mip Fields [C]
+///@defgroup mip_field_c  Mip Fields
 ///
 ///@brief Functions for processing received MIP fields.
 ///

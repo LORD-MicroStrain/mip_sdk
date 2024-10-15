@@ -17,9 +17,9 @@ extern "C" {
 ///@addtogroup mip_c
 ///@{
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_interface_c  Mip Interface [C]
+///@defgroup mip_interface_c  Mip Interface
 ///
-///@brief High-level C functions for controlling a MIP device.
+///@brief High-level %C functions for controlling a MIP device.
 ///
 /// This module contains functions and classes for communicating with a
 /// MIP device in C.

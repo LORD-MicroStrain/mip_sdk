@@ -16,9 +16,9 @@ struct mip_interface;
 namespace commands_gnss {
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipCommands_cpp  MIP Commands [CPP]
+///@addtogroup MipCommands_cpp
 ///@{
-///@defgroup gnss_commands_cpp  Gnss Commands [CPP]
+///@defgroup gnss_commands_cpp  Gnss Commands
 ///
 ///@{
 
@@ -60,7 +60,7 @@ static constexpr const uint16_t GNSS_BEIDOU_ENABLE_B2A = 0x0004;
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_receiver_info  (0x0E,0x01) Receiver Info [CPP]
+///@defgroup gnss_receiver_info_cpp  (0x0E,0x01) Receiver Info
 /// Return information about the GNSS receivers in the device.
 /// 
 ///
@@ -137,7 +137,7 @@ TypedResult<ReceiverInfo> receiverInfo(C::mip_interface& device, uint8_t* numRec
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_signal_configuration  (0x0E,0x02) Signal Configuration [CPP]
+///@defgroup gnss_signal_configuration_cpp  (0x0E,0x02) Signal Configuration
 /// Configure the GNSS signals used by the device.
 /// 
 ///
@@ -224,7 +224,7 @@ TypedResult<SignalConfiguration> defaultSignalConfiguration(C::mip_interface& de
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_rtk_dongle_configuration  (0x0E,0x10) Rtk Dongle Configuration [CPP]
+///@defgroup gnss_rtk_dongle_configuration_cpp  (0x0E,0x10) Rtk Dongle Configuration
 /// Configure the communications with the RTK Dongle connected to the device.
 /// 
 ///

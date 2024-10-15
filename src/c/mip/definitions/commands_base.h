@@ -17,9 +17,9 @@ extern "C" {
 #endif // __cplusplus
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipCommands_c  MIP Commands [C]
+///@addtogroup MipCommands_c
 ///@{
-///@defgroup base_commands_c  Base Commands [C]
+///@defgroup base_commands_c  Base Commands
 ///
 ///@{
 
@@ -135,7 +135,7 @@ static inline void extract_mip_commanded_test_bits_gq7(microstrain_serializer* s
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_base_ping  (0x01,0x01) Ping [C]
+///@defgroup base_ping_c  (0x01,0x01) Ping
 /// Test Communications with a device.
 /// 
 /// The Device will respond with an ACK, if present and operating correctly.
@@ -151,7 +151,7 @@ mip_cmd_result mip_base_ping(mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_base_set_idle  (0x01,0x02) Set Idle [C]
+///@defgroup base_set_idle_c  (0x01,0x02) Set Idle
 /// Turn off all device data streams.
 /// 
 /// The Device will respond with an ACK, if present and operating correctly.
@@ -167,7 +167,7 @@ mip_cmd_result mip_base_set_idle(mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_base_get_device_info  (0x01,0x03) Get Device Info [C]
+///@defgroup base_get_device_info_c  (0x01,0x03) Get Device Info
 /// Get the device ID strings and firmware version number.
 ///
 ///@{
@@ -188,7 +188,7 @@ mip_cmd_result mip_base_get_device_info(mip_interface* device, mip_base_device_i
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_base_get_device_descriptors  (0x01,0x04) Get Device Descriptors [C]
+///@defgroup base_get_device_descriptors_c  (0x01,0x04) Get Device Descriptors
 /// Get the command and data descriptors supported by the device.
 /// 
 /// Reply has two fields: "ACK/NACK" and "Descriptors". The "Descriptors" field is an array of 16 bit values.
@@ -213,7 +213,7 @@ mip_cmd_result mip_base_get_device_descriptors(mip_interface* device, uint16_t* 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_base_built_in_test  (0x01,0x05) Built In Test [C]
+///@defgroup base_built_in_test_c  (0x01,0x05) Built In Test
 /// Run the device Built-In Test (BIT).
 /// 
 /// The Built-In Test command always returns a 32 bit value.
@@ -239,7 +239,7 @@ mip_cmd_result mip_base_built_in_test(mip_interface* device, uint32_t* result_ou
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_base_resume  (0x01,0x06) Resume [C]
+///@defgroup base_resume_c  (0x01,0x06) Resume
 /// Take the device out of idle mode.
 /// 
 /// The device responds with ACK upon success.
@@ -253,7 +253,7 @@ mip_cmd_result mip_base_resume(mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_base_get_extended_descriptors  (0x01,0x07) Get Extended Descriptors [C]
+///@defgroup base_get_extended_descriptors_c  (0x01,0x07) Get Extended Descriptors
 /// Get the command and data descriptors supported by the device.
 /// 
 /// Reply has two fields: "ACK/NACK" and "Descriptors". The "Descriptors" field is an array of 16 bit values.
@@ -278,7 +278,7 @@ mip_cmd_result mip_base_get_extended_descriptors(mip_interface* device, uint16_t
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_base_continuous_bit  (0x01,0x08) Continuous Bit [C]
+///@defgroup base_continuous_bit_c  (0x01,0x08) Continuous Bit
 /// Report result of continuous built-in test.
 /// 
 /// This test is non-disruptive but is not as thorough as the commanded BIT.
@@ -301,7 +301,7 @@ mip_cmd_result mip_base_continuous_bit(mip_interface* device, uint8_t* result_ou
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_base_comm_speed  (0x01,0x09) Comm Speed [C]
+///@defgroup base_comm_speed_c  (0x01,0x09) Comm Speed
 /// Controls the baud rate of a specific port on the device.
 /// 
 /// Please see the device user manual for supported baud rates on each port.
@@ -351,7 +351,7 @@ mip_cmd_result mip_base_default_comm_speed(mip_interface* device, uint8_t port);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_base_gps_time_update  (0x01,0x72) Gps Time Update [C]
+///@defgroup base_gps_time_update_c  (0x01,0x72) Gps Time Update
 /// Set device internal GPS time
 /// When combined with a PPS input signal applied to the I/O connector, this command enables complete synchronization of data outputs
 /// with an external time base, such as GPS system time. Since the hardware PPS synchronization can only detect the fractional number of seconds when pulses arrive,
@@ -394,7 +394,7 @@ mip_cmd_result mip_base_write_gps_time_update(mip_interface* device, mip_base_gp
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_base_soft_reset  (0x01,0x7E) Soft Reset [C]
+///@defgroup base_soft_reset_c  (0x01,0x7E) Soft Reset
 /// Resets the device.
 /// 
 /// Device responds with ACK and immediately resets.

@@ -952,7 +952,9 @@ bool Serializer<E>::extract(Ts&... values)
     // https://stackoverflow.com/questions/13407205/calling-nonmember-instead-of-member-function
     using microstrain::extract;
 
-    return extract(*this, values...);
+    extract(*this, values...);
+
+    return isOk();
 }
 
 ////////////////////////////////////////////////////////////////////////////////

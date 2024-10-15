@@ -17,9 +17,9 @@ extern "C" {
 #endif // __cplusplus
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipCommands_c  MIP Commands [C]
+///@addtogroup MipCommands_c
 ///@{
-///@defgroup rtk_commands_c  Rtk Commands [C]
+///@defgroup rtk_commands_c  Rtk Commands
 ///
 ///@{
 
@@ -102,7 +102,7 @@ static inline void extract_mip_led_action(microstrain_serializer* serializer, mi
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_rtk_get_status_flags  (0x0F,0x01) Get Status Flags [C]
+///@defgroup rtk_get_status_flags_c  (0x0F,0x01) Get Status Flags
 ///
 ///@{
 
@@ -174,7 +174,7 @@ mip_cmd_result mip_rtk_get_status_flags(mip_interface* device, mip_rtk_get_statu
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_rtk_get_imei  (0x0F,0x02) Get Imei [C]
+///@defgroup rtk_get_imei_c  (0x0F,0x02) Get Imei
 ///
 ///@{
 
@@ -194,7 +194,7 @@ mip_cmd_result mip_rtk_get_imei(mip_interface* device, char* imei_out);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_rtk_get_imsi  (0x0F,0x03) Get Imsi [C]
+///@defgroup rtk_get_imsi_c  (0x0F,0x03) Get Imsi
 ///
 ///@{
 
@@ -214,7 +214,7 @@ mip_cmd_result mip_rtk_get_imsi(mip_interface* device, char* imsi_out);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_rtk_get_iccid  (0x0F,0x04) Get Iccid [C]
+///@defgroup rtk_get_iccid_c  (0x0F,0x04) Get Iccid
 ///
 ///@{
 
@@ -234,7 +234,7 @@ mip_cmd_result mip_rtk_get_iccid(mip_interface* device, char* iccid_out);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_rtk_connected_device_type  (0x0F,0x06) Connected Device Type [C]
+///@defgroup rtk_connected_device_type_c  (0x0F,0x06) Connected Device Type
 ///
 ///@{
 
@@ -285,7 +285,7 @@ mip_cmd_result mip_rtk_default_connected_device_type(mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_rtk_get_act_code  (0x0F,0x07) Get Act Code [C]
+///@defgroup rtk_get_act_code_c  (0x0F,0x07) Get Act Code
 ///
 ///@{
 
@@ -305,7 +305,7 @@ mip_cmd_result mip_rtk_get_act_code(mip_interface* device, char* activation_code
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_rtk_get_modem_firmware_version  (0x0F,0x08) Get Modem Firmware Version [C]
+///@defgroup rtk_get_modem_firmware_version_c  (0x0F,0x08) Get Modem Firmware Version
 ///
 ///@{
 
@@ -325,7 +325,7 @@ mip_cmd_result mip_rtk_get_modem_firmware_version(mip_interface* device, char* m
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_rtk_get_rssi  (0x0F,0x05) Get Rssi [C]
+///@defgroup rtk_get_rssi_c  (0x0F,0x05) Get Rssi
 /// Get the RSSI and connected/disconnected status of modem
 ///
 ///@{
@@ -348,7 +348,7 @@ mip_cmd_result mip_rtk_get_rssi(mip_interface* device, bool* valid_out, int32_t*
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_rtk_service_status  (0x0F,0x0A) Service Status [C]
+///@defgroup rtk_service_status_c  (0x0F,0x0A) Service Status
 /// The 3DMRTK will send this message to the server to indicate that the connection should remain open. The Server will respond with information and status.
 ///
 ///@{
@@ -398,7 +398,7 @@ mip_cmd_result mip_rtk_service_status(mip_interface* device, uint32_t reserved1,
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_rtk_prod_erase_storage  (0x0F,0x20) Prod Erase Storage [C]
+///@defgroup rtk_prod_erase_storage_c  (0x0F,0x20) Prod Erase Storage
 /// This command will erase the selected media to a raw and uninitialized state. ALL DATA WILL BE LOST.
 /// This command is only available in calibration mode.
 ///
@@ -418,7 +418,7 @@ mip_cmd_result mip_rtk_prod_erase_storage(mip_interface* device, mip_media_selec
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_rtk_led_control  (0x0F,0x21) Led Control [C]
+///@defgroup rtk_led_control_c  (0x0F,0x21) Led Control
 /// This command allows direct control of the LED on the 3DM RTK. This command is only available in calibration mode or Production Test Mode.
 ///
 ///@{
@@ -440,7 +440,7 @@ mip_cmd_result mip_rtk_led_control(mip_interface* device, const uint8_t* primary
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_rtk_modem_hard_reset  (0x0F,0x22) Modem Hard Reset [C]
+///@defgroup rtk_modem_hard_reset_c  (0x0F,0x22) Modem Hard Reset
 /// This command will clear the modem flash.  THIS MUST NOT BE DONE OFTEN AS IT CAN DAMAGE THE FLASH!
 /// This command is only available in calibration mode.
 ///

@@ -1,5 +1,18 @@
 #pragma once
 
+////////////////////////////////////////////////////////////////////////////////
+///@addtogroup mip_c
+///@{
+///
+///@defgroup MipCommands_c Mip Commands
+///@brief Contains all MIP command definitions.
+///
+///@defgroup MipData_c Mip Data
+///@brief Contains all MIP data definitions.
+///
+///@}
+////////////////////////////////////////////////////////////////////////////////
+
 #include <microstrain/common/serialization.h>
 #include "../mip_field.h"
 

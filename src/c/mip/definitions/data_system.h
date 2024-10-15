@@ -17,9 +17,9 @@ extern "C" {
 #endif // __cplusplus
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipData_c  MIP Data [C]
+///@addtogroup MipData_c
 ///@{
-///@defgroup system_data_c  System Data [C]
+///@defgroup system_data_c  System Data
 ///
 ///@{
 
@@ -48,7 +48,7 @@ enum
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_system_built_in_test  (0xA0,0x01) Built In Test [C]
+///@defgroup system_built_in_test_c  (0xA0,0x01) Built In Test
 /// Contains the continuous built-in-test (BIT) results.
 /// 
 /// Due to the large size of this field, it is recommended to stream it at
@@ -85,7 +85,7 @@ bool extract_mip_system_built_in_test_data_from_field(const mip_field_view* fiel
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_system_time_sync_status  (0xA0,0x02) Time Sync Status [C]
+///@defgroup system_time_sync_status_c  (0xA0,0x02) Time Sync Status
 /// Indicates whether a sync has been achieved using the PPS signal.
 ///
 ///@{
@@ -105,7 +105,7 @@ bool extract_mip_system_time_sync_status_data_from_field(const mip_field_view* f
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_system_gpio_state  (0xA0,0x03) Gpio State [C]
+///@defgroup system_gpio_state_c  (0xA0,0x03) Gpio State
 /// Indicates the state of all of the user GPIO pins.
 /// 
 /// This message can be used to correlate external signals
@@ -142,7 +142,7 @@ bool extract_mip_system_gpio_state_data_from_field(const mip_field_view* field, 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_system_gpio_analog_value  (0xA0,0x04) Gpio Analog Value [C]
+///@defgroup system_gpio_analog_value_c  (0xA0,0x04) Gpio Analog Value
 /// Indicates the analog value of the given user GPIO.
 /// The pin must be configured for analog input.
 ///
