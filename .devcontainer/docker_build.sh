@@ -57,7 +57,7 @@ if [ ${build_docs} = true ]; then
   build_dir_name="build_docs"
   configure_flags="\
   -DMICROSTRAIN_BUILD_DOCUMENTATION=ON \
-  -MICROSTRAIN_BUILD_DOCUMENTATION_QUIET=OFF \
+  -DMICROSTRAIN_BUILD_DOCUMENTATION_QUIET=OFF \
   -DCMAKE_BUILD_TYPE=RELEASE"
   build_target="package_docs"
 else
