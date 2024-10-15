@@ -36,14 +36,7 @@ script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 project_dir="${script_dir}/.."
 docker_project_dir="/home/microstrain/mipsdk"
 dockerfile="${script_dir}/Dockerfile.${os}"
-
-if [ ${build_docs} = true ]; then
-  build_dir_name="build_docs"
-  image_name="microstrain/mipsdk_docs_builder:${arch}"
-else
-  build_dir_name="build_${os}_${arch}"
-  image_name="microstrain/mipsdk_${os}_builder:${arch}"
-fi
+image_name="microstrain/mipsdk_${os}_builder:${arch}"
 
 
 # Build the docker image
@@ -61,9 +54,14 @@ if [ "${ISHUDSONBUILD}" != "True" ]; then
 fi
 
 if [ ${build_docs} = true ]; then
-  configure_flags="-DMICROSTRAIN_BUILD_DOCUMENTATION=ON"
+  build_dir_name="build_docs"
+  configure_flags="\
+  -DMICROSTRAIN_BUILD_DOCUMENTATION=ON \
+  -MICROSTRAIN_BUILD_DOCUMENTATION_QUIET=OFF \
+  -DCMAKE_BUILD_TYPE=RELEASE"
   build_target="package_docs"
 else
+  build_dir_name="build_${os}_${arch}"
   configure_flags="\
     -DMICROSTRAIN_BUILD_EXAMPLES=ON \
     -DMICROSTRAIN_BUILD_PACKAGE=ON \

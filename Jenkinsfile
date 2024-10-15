@@ -48,7 +48,7 @@ pipeline {
             script {
               checkoutRepo()
               env.setProperty('BRANCH_NAME', branchName())
-              sh "./.devcontainer/docker_build.sh --docs"
+              sh "./.devcontainer/docker_build.sh --os ubuntu --arch amd64 --docs"
               archiveArtifacts artifacts: 'build_docs/mipsdk_*'
             }
           }
