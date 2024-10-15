@@ -39,7 +39,7 @@ pipeline {
       // Run all the builds in parallel
       parallel {
         stage('Documentation') {
-          agent { label 'windows10' }
+          agent { label 'linux-amd64' }
           options {
             skipDefaultCheckout()
             timeout(time: 5, activity: true, unit: 'MINUTES')
@@ -48,12 +48,7 @@ pipeline {
             script {
               checkoutRepo()
               env.setProperty('BRANCH_NAME', branchName())
-              powershell """
-                mkdir build_docs
-                cd build_docs
-                cmake .. -DMICROSTRAIN_BUILD_DOCUMENTATION=ON
-                cmake --build . --target package_docs
-              """
+              sh "./.devcontainer/docker_build.sh --docs"
               archiveArtifacts artifacts: 'build_docs/mipsdk_*'
             }
           }
