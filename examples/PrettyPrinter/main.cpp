@@ -1,12 +1,8 @@
 
 #include "../example_utils.hpp"
 
-#include <mip/metadata/mip_definitions.hpp>
-
-// #include <mip/definitions/commands_base.hpp>
-// #include <mip/metadata/definitions/data_sensor.hpp>
 #include <mip/metadata/mip_all_definitions.hpp>
-#include <mip/metadata/mip_decoder.hpp>
+#include <mip/metadata/mip_format_bytes.hpp>
 #include <mip/metadata/mip_formatter.hpp>
 
 #ifdef MICROSTRAIN_ENABLE_SERIAL
@@ -22,8 +18,6 @@
 #include <cstring>
 
 
-// mip::metadata::Definitions mipdefs{mip::metadata::ALL_FIELDS};
-
 mip::metadata::BasicFormatter formatter(std::cout);
 mip::metadata::FieldByteFormatter decoder(formatter);
 
@@ -36,13 +30,6 @@ bool handlePacket(const mip::PacketView& packet, mip::Timestamp)
 {
     decoder.formatPacket(packet, mip::metadata::definitions);
     std::cout << '\n';
-
-    // for(mip::FieldView field : packet)
-    // {
-    //     std::cout << '\t';
-    //     decoder.formatField(field, mip::metadata::all_definitions);
-    //     std::cout << '\n';
-    // }
 
     return !stop_flag;
 }
@@ -68,7 +55,11 @@ int runFromFile(const char* filename)
         uint8_t* ptr;
         size_t count = mip::C::mip_parser_get_write_ptr(&parser, &ptr);
         if( std::fread(ptr, 1, count, file) != count )
-            break;
+        {
+            auto err = errno;
+            std::cerr << "Error reading from file: " << std::strerror(err) << '\n';
+            return 2;
+        }
 
         mip::C::mip_parser_process_written(&parser, count, 0, MIPPARSER_UNLIMITED_PACKETS);
     }
@@ -156,34 +147,5 @@ int main(int argc, const char* argv[])
 #endif
     else
         return usage();
-
-    //
-    //
-    //
-    //
-    // std::unique_ptr<mip::Interface>& device = utils->device;
-    //
-    // if(mip::CmdResult result = mip::commands_base::resume(*device); !result)
-    // {
-    //     fprintf(stderr, "Error: Resume command failed: %d %s\n", result.value, result.name());
-    //     return 1;
-    // }
-    //
-    // mip::DispatchHandler handler;
-    // device->registerFieldCallback<&handleField>(handler, 0x00, mip::INVALID_FIELD_DESCRIPTOR);
-    //
-    // mip::commands_base::BaseDeviceInfo info;
-    // mip::commands_base::getDeviceInfo(*device, &info);
-    //
-    // std::signal(SIGTERM, &signal_handler);
-    //
-    // while(!stop_flag)
-    // {
-    //     device->update(100);
-    // }
-    //
-    // std::cout << "Stopped.\n";
-    //
-    // return 0;
 }
 

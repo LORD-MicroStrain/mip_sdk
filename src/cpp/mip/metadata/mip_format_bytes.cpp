@@ -1,5 +1,5 @@
 
-#include "mip_decoder.hpp"
+#include "mip_format_bytes.hpp"
 #include "mip_formatter.hpp"
 #include "mip_definitions.hpp"
 #include "mip/metadata/definitions/data_shared.hpp"
@@ -131,7 +131,7 @@ void FieldByteFormatter::formatStructContents(const StructInfo* info, size_t off
         }
 
         // Check if this is a character string (no NULL terminator!).
-        if(param.type.type == Type::CHAR && param.count.count != 1)
+        if(param.type.type == Type::CHAR && count != 1)
         {
             const uint8_t* ptr = mSerializer.pointer(count);
             if(ptr)
@@ -154,7 +154,7 @@ void FieldByteFormatter::formatStructContents(const StructInfo* info, size_t off
 
             // End of array?
             if(param.count.count != 1)
-                mFormatter.formatEnd(param.type.type);
+                mFormatter.formatEnd(Type::NONE);
         }
     }
 }

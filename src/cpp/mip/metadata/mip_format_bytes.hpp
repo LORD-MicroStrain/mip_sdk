@@ -4,7 +4,6 @@
 
 #include <mip/mip_serialization.hpp>
 
-#include <ostream>
 
 namespace mip
 {

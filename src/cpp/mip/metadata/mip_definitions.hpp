@@ -10,42 +10,6 @@
 namespace mip::metadata
 {
 
-class DescriptorSet
-{
-public:
-    using FieldPtr = const FieldInfo*;
-
-    template<size_t N>
-    constexpr DescriptorSet(uint8_t descriptor, const char* name, const FieldPtr (&fields)[N]) :
-        mDescriptor(descriptor,0x00), mName(name), mFields(fields)
-    {
-    }
-
-    constexpr DescriptorSet(uint8_t descriptor, const char* name, std::span<const FieldPtr> fields) :
-        mDescriptor(descriptor, 0x00), mName(name), mFields(fields)
-    {
-    }
-
-    constexpr const char*         name()           const { return mName; }
-    constexpr uint8_t             value()          const { return mDescriptor.descriptorSet; }
-    constexpr CompositeDescriptor fullDescriptor() const { return mDescriptor; }
-
-    constexpr auto& allFields() const { return mFields; }
-
-    auto allCommands() const -> std::span<const FieldPtr>;
-    auto allResponses() const -> std::span<const FieldPtr>;
-
-    const FieldInfo* findField(uint8_t fieldDescriptor) const;
-
-private:
-    std::span<const FieldPtr>::iterator findIter(uint8_t fieldDescriptor) const;
-
-private:
-    CompositeDescriptor       mDescriptor = 0x0000;
-    const char*               mName = nullptr;
-    std::span<const FieldPtr> mFields;
-};
-
 
 class Definitions
 {

@@ -5,6 +5,13 @@
 #include <mip/extras/descriptor_id.hpp>
 #include <mip/mip_interface.hpp>
 
+#ifdef MIP_ENABLE_METADATA
+#include <mip/metadata/mip_format_bytes.hpp>
+#include <mip/metadata/mip_all_definitions.hpp>
+
+#include <sstream>
+#endif
+
 
 class SettingBase
 {
@@ -44,7 +51,13 @@ public:
     void print() const override
     {
         mip::DescriptorId index = id();
-        std::printf("(%02X,%02X)[%d] = TBD\n", index.descriptor().descriptorSet, index.descriptor().fieldDescriptor, index.index());
+#ifdef MIP_ENABLE_METADATA
+        std::stringstream ss;
+        mip::metadata::
+        std::printf("(%02X,%02X)[%d] = %s\n", index.descriptor().descriptorSet, index.descriptor().fieldDescriptor, index.index(), ss.str().c_str());
+#else
+        std::printf("(%02X,%02X)[%d] = %s\n", index.descriptor().descriptorSet, index.descriptor().fieldDescriptor, index.index(), ss.str().c_str());
+#endif
     }
 
 public:
