@@ -21,7 +21,7 @@ extern "C" {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup MipDispatch_c  Mip Dispatch
+///@defgroup MipDispatch_c  Mip Data Dispatch System
 ///
 ///@brief System for issuing callbacks from MIP packets or fields.
 ///
@@ -69,7 +69,7 @@ enum {
 };
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_dispatch_handler mip_dispatch_handler
+///@defgroup mip_dispatch_handler Mip Data Dispatch Handler
 ///
 /// This represents a binding between a MIP descriptor pair and a callback
 /// function.
@@ -112,7 +112,7 @@ bool mip_dispatch_handler_is_enabled(mip_dispatch_handler* handler);
 
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup MipDispatchHandler mip_dispatch_handler - Represents a callback
+///@defgroup MipDispatcher Mip Data Dispatcher
 ///
 ///@{
 

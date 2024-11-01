@@ -35,7 +35,7 @@ void print_packet(const mip::PacketView& packet, const char* name)
     );
 
     // Print each byte in the packet, including header and checksum.
-    for(size_t i=0; i<packet.totalLength(); i++)
+    for(size_t i=0; i < packet.totalLength(); i++)
     {
         std::printf("%02X", packet[i]);
     }
@@ -49,7 +49,7 @@ void print_packet(const mip::PacketView& packet, const char* name)
         std::printf("    (%02X,%02X): payload=[", field.descriptorSet(), field.fieldDescriptor());
 
         // Print field payload bytes.
-        for(size_t i=0; i<field.payloadLength(); i++)
+        for(size_t i=0; i < field.payloadLength(); i++)
         {
             // Note: this indexes the payload, excluding the header, whereas packet[i] indexes the whole packet.
             std::printf("%02X", field[i]);
@@ -65,7 +65,7 @@ void print_packet(const mip::PacketView& packet, const char* name)
 // what's happening "under the hood".
 void create_packet_from_scratch()
 {
-    puts("\nCreate packet from scratch");
+    std::puts("\nCreate packet from scratch");
 
     // Create a mip packet with a built-in buffer.
     // A PacketBuf is the combination of a PacketView and a buffer.
@@ -263,7 +263,7 @@ void create_packet_from_scratch()
 
 void create_packet_from_buffer()
 {
-    puts("\nCreate packet from buffer");
+    std::puts("\nCreate packet from buffer");
 
     const uint8_t buffer[] = {
         0x75, 0x65, 0x80, 0x4c, 0x0a, 0xd5, 0x00, 0x00, 0x00, 0x05, 0x5e, 0xe6, 0x7c, 0xc0, 0x0a, 0xd6,
@@ -311,7 +311,7 @@ void create_packet_from_buffer()
     // Is this a sensor data packet?
     if(packet1.descriptorSet() == mip::data_sensor::DESCRIPTOR_SET)
     {
-        puts("Sensor Data packet:");
+        std::puts("Sensor Data packet:");
 
         for(mip::FieldView field : packet1)
         {
@@ -324,7 +324,7 @@ void create_packet_from_buffer()
                 uint64_t nanoseconds;
 
                 if(serializer.extract(nanoseconds))
-                    printf("  Ref Time = %lu\n", nanoseconds);
+                    std::printf("  Ref Time = %lu\n", nanoseconds);
 
                 break;
             }
@@ -333,7 +333,7 @@ void create_packet_from_buffer()
                 mip::data_sensor::ScaledAccel data;
 
                 if(serializer.extract(data))
-                    printf("  Scaled Accel = (%f, %f, %f)\n", data.scaled_accel[0], data.scaled_accel[1], data.scaled_accel[2]);
+                    std::printf("  Scaled Accel = (%f, %f, %f)\n", data.scaled_accel[0], data.scaled_accel[1], data.scaled_accel[2]);
 
                 break;
             }
@@ -344,7 +344,7 @@ void create_packet_from_buffer()
                 // This calls the FieldView::extract helper function which handles deserialization directly.
                 // This is the simplest and preferred method.
                 if(field.extract(data))
-                    printf("  Scaled Gyro = (%f, %f, %f)\n", data.scaled_gyro[0], data.scaled_gyro[1], data.scaled_gyro[2]);
+                    std::printf("  Scaled Gyro = (%f, %f, %f)\n", data.scaled_gyro[0], data.scaled_gyro[1], data.scaled_gyro[2]);
 
                 break;
             }

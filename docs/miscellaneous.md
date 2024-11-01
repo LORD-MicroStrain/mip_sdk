@@ -6,9 +6,9 @@ Known Issues and Workarounds  {#known_issues}
 
 ### suppress_ack parameters are not supported
 
-Some commands accept a parameter named `suppress_ack` which acts to prevent
+Some commands accept a parameter named `suppress_ack` which prevents
 the standard ack/nack reply from being returned by the device, e.g. the
-3DM Poll Data command. Use of this parameter is not directly supported by the MIP SDK
+3DM Poll Data command. Use of this parameter is not fully supported by the MIP SDK
 and will cause the command to appear to time out after a short delay.
 
 If you wish to use this feature, (i.e. just send the command without waiting for an ACK/NACK),

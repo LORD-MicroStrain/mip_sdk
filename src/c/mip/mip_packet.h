@@ -62,6 +62,7 @@ typedef struct mip_packet_view
 /// Use these functions to create a new packet, add fields, and write the
 /// checksum.
 ///
+///@ingroup
 ///@{
 
 void mip_packet_create(mip_packet_view* packet, uint8_t* buffer, size_t buffer_size, uint8_t descriptor_set);

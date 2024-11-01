@@ -58,7 +58,7 @@ public:
 
     ///@brief Create a reference to an existing MIP packet.
     ///@param buffer Buffer containing an existing MIP packet.
-    ///@caution Do not call functions which modify the packet (addField, finalize, reset, etc) unless you know the buffer is not const.
+    ///@warning Do not call functions which modify the packet (addField, finalize, reset, etc) unless you know the buffer is not const.
     PacketView(microstrain::Span<const uint8_t> buffer) { C::mip_packet_from_buffer(this, const_cast<uint8_t*>(buffer.data()), buffer.size()); }
 
     //

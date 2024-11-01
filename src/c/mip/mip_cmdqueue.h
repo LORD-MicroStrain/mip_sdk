@@ -18,7 +18,7 @@ extern "C" {
 ///@{
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup MipCommandQueue_c Mip Command Queue
+///@defgroup MipCommandHandling_c Mip Command Handling
 ///
 ///@brief Functions for handling command responses.
 ///
@@ -26,7 +26,7 @@ extern "C" {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup PendingCommand_c  mip_pending_cmd functions
+///@defgroup PendingCommand_c  Mip Pending Command Functions
 ///
 ///@{
 
@@ -72,7 +72,7 @@ bool mip_pending_cmd_check_timeout(const mip_pending_cmd* cmd, mip_timestamp now
 
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup CommandQueue_c  mip_cmd_queue functions
+///@defgroup CommandQueue_c  Mip Command Queue Functions
 ///
 ///@note This should be considered an "opaque" structure; its members should be
 /// considered an internal implementation detail. Avoid accessing them directly
