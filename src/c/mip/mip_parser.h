@@ -13,7 +13,7 @@ extern "C" {
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup mip_c  MIP C API
+///@addtogroup mip_c
 ///
 ///@brief This module contains all of the C submodules.
 ///

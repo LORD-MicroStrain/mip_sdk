@@ -81,7 +81,7 @@ As an example, for a 115200 baud serial link a timeout of 30 ms would be
 about right. You can use the mip_timeout_from_baudrate() function to
 compute an appropriate timeout.
 
-See ["mip_timestamp (C)"](@ref mip_timestamp) or [mip::Timestamp (C++)](@ref mip::Timestamp)
+See ["microstrain_embedded_timestamp (C)"](@ref microstrain::C::microstrain_embedded_timestamp) or microstrain::EmbeddedTimestamp (C++)
 
 The Packet Parsing Process  {#parsing_process}
 --------------------------

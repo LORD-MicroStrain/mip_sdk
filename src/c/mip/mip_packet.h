@@ -55,7 +55,7 @@ typedef struct mip_packet_view
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup PacketBuilding  Packet Building
+///@defgroup MipPacketBuilding_c  Packet Building
 ///
 ///@brief Functions for building new MIP packets.
 ///
@@ -78,7 +78,7 @@ void mip_packet_reset(mip_packet_view* packet, uint8_t descriptor_set);
 
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup Accessors_c  Accessors
+///@defgroup MipPacketAccessors_c  Packet Inspection
 ///
 ///@brief Functions for accessing information about an existing MIP packet.
 ///
@@ -90,7 +90,7 @@ void mip_packet_reset(mip_packet_view* packet, uint8_t descriptor_set);
 /// calls it, e.g. mip_packet_is_valid()), these functions may also be used on
 /// packets which are under construction via the PacketBuilding functions.
 ///
-///@caution Do not call the packet-building functions unless you know the
+///@warning Do not call the packet-building functions unless you know the
 ///         input buffer is not const.
 ///
 ///@{

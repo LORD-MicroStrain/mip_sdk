@@ -4,7 +4,7 @@
 ///@defgroup mip  MIP
 ///@{
 ///
-///@defgroup mip_c C API
+///@defgroup mip_c MIP C API
 ///@brief This module contains functions and classes for communicating with a
 ///       MIP device in %C.
 ///

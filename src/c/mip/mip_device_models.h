@@ -2,8 +2,7 @@
 
 #ifdef __cplusplus
 namespace mip {
-namespace C
-{
+namespace C {
 extern "C" {
 #endif // __cplusplus
 

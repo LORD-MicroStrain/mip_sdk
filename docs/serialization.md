@@ -10,7 +10,7 @@ To (de)serialize a buffer, follow these steps:
 1. Create a serializer and initialize it via @ref microstrain_serializer_init_insertion
    or @ref microstrain_serializer_init_extraction, depending on whether you're 
    writing or reading data.
-2. Call `microstrain_insert_*` or `microstrain_extract_*` for each parameter. E.g. [microstrain_extract_u32](@ref mip::C::microstrain_extract_u32].
+2. Call `microstrain_insert_*` or `microstrain_extract_*` for each parameter. E.g. [microstrain_extract_u32](@ref microstrain::C::microstrain_extract_u32).
 3. Call @ref microstrain_serializer_is_ok to check if all the data was written/read successfully (i.e. fit in the buffer).
    Alternatively, to verify if exactly buffer_size bytes were read/written, use @ref microstrain_serializer_is_complete.
 4. Transmit the written buffer or use the deserialized parameters.

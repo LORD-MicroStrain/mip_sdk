@@ -9,6 +9,12 @@
 #include <string.h>
 #include <assert.h>
 
+#ifdef __cplusplus
+namespace mip {
+namespace C {
+extern "C" {
+#endif
+
 
 //
 // Initialization
@@ -465,3 +471,9 @@ void mip_packet_reset(mip_packet_view* packet, uint8_t descriptor_set)
     mip_packet_create(packet, mip_packet_buffer(packet), mip_packet_buffer_size(packet), descriptor_set);
 }
 
+
+#ifdef __cplusplus
+} // extern "C"
+} // namespace C
+} // namespace mip
+#endif

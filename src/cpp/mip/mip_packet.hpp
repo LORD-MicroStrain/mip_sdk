@@ -44,7 +44,7 @@ public:
 public:
     ///@copydoc mip::C::mip_packet_create
     PacketView(uint8_t* buffer, size_t bufferSize, uint8_t descriptorSet) { C::mip_packet_create(this, buffer, bufferSize, descriptorSet); }
-    ///@copydoc mip_packet_from_buffer
+    ///@copydoc mip::C::mip_packet_from_buffer
     PacketView(const uint8_t* buffer, size_t length) { C::mip_packet_from_buffer(this, const_cast<uint8_t*>(buffer), length); }
     /// Constructs a C++ %PacketRef class from the base C object.
     PacketView(const C::mip_packet_view* other) { std::memcpy(static_cast<C::mip_packet_view*>(this), other, sizeof(*this)); }

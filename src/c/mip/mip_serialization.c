@@ -4,6 +4,12 @@
 
 #include <assert.h>
 
+#ifdef __cplusplus
+namespace mip {
+namespace C {
+extern "C" {
+#endif
+
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Initialize a serialization struct for creation of a new field at the
@@ -65,3 +71,10 @@ void microstrain_serializer_init_from_field(mip_serializer* serializer, const mi
 {
     microstrain_serializer_init_extraction(serializer, mip_field_payload(field), mip_field_payload_length(field));
 }
+
+
+#ifdef __cplusplus
+} // extern "C"
+} // namespace C
+} // namespace mip
+#endif

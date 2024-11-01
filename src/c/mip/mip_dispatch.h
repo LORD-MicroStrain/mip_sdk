@@ -21,9 +21,15 @@ extern "C" {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup MipDispatch_c  Mip Data Dispatch System
+///@defgroup MipDispatch_c  Data Dispatch
 ///
 ///@brief System for issuing callbacks from MIP packets or fields.
+///
+/// The user's application may register handlers in the dispatcher to receive
+/// callbacks for reception of various types of data. Packets, fields, and
+/// deserialized data callbacks may be registered.
+///
+///@see mip_dispatch
 ///
 ///@{
 
@@ -69,7 +75,7 @@ enum {
 };
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_dispatch_handler Mip Data Dispatch Handler
+///@defgroup MipDispatchHandler_c  Dispatch Handler
 ///
 /// This represents a binding between a MIP descriptor pair and a callback
 /// function.
@@ -112,7 +118,9 @@ bool mip_dispatch_handler_is_enabled(mip_dispatch_handler* handler);
 
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup MipDispatcher Mip Data Dispatcher
+///@defgroup MipDispatcher_c  Mip Dispatcher
+///
+/// This is included in the Mip Interface to allow the registration of callbacks.
 ///
 ///@{
 
