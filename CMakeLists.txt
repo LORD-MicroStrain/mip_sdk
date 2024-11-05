@@ -96,17 +96,10 @@ else()
     set(MICROSTRAIN_PRIVATE_COMPILE_DEFINITIONS "")
 endif()
 
-# Create "catch-all" interface libraries
-set(MICROSTRAIN_LIBRARIES "microstrain_all" CACHE INTERNAL "Interface library to make linking all desired MicroStrain libraries easier")
-add_library(${MICROSTRAIN_LIBRARIES} INTERFACE)
-
-set(MIP_LIBRARIES "mip_all" CACHE INTERNAL "Interface library to make linking all desired MIP libraries easier")
-add_library(${MIP_LIBRARIES} INTERFACE)
-
 # Suppress warnings due to adding files with target_sources.
 cmake_policy(SET CMP0076 NEW)
 
-# Supress warnings due to linking libraries across directories
+# Suppress warnings due to linking libraries across directories
 cmake_policy(SET CMP0079 NEW)
 
 
@@ -126,8 +119,10 @@ if(MICROSTRAIN_ENABLE_CPP)
     #target_compile_definitions(${MICROSTRAIN_COMMON_LIBRARY} PUBLIC "MICROSTRAIN_ENABLE_CPP_C_NAMESPACE=${MICROSTRAIN_ENABLE_CPP_C_NAMESPACE}")
 endif()
 
-# Link the MicroStrain SDK to allow for linkage of only the MIP SDK
-target_link_libraries(${MIP_LIBRARIES} INTERFACE ${MICROSTRAIN_LIBRARIES})
+# Create list of requested libraries for easier linking
+# Use the PARENT_SCOPE option when adding new modules and make sure it propagates up all levels
+set(MICROSTRAIN_LIBRARIES ${MICROSTRAIN_LIBRARIES_TMP} CACHE STRING "List of all requested MicroStrain libraries to make linking easier" FORCE)
+set(MIP_LIBRARIES ${MIP_LIBRARIES_TMP} CACHE STRING "List of all requested MIP libraries to make linking easier" FORCE)
 
 #
 # Libraries
@@ -192,6 +187,8 @@ if(MICROSTRAIN_BUILD_DOCUMENTATION)
     if(MICROSTRAIN_BUILD_DOCUMENTATION_QUIET)
         set(DOXYGEN_QUIET YES)
     endif()
+
+    set(DOXYGEN_HTML_EXTRA_STYLESHEET "${CMAKE_CURRENT_LIST_DIR}/docs/style.css")
 
     doxygen_add_docs(docs
         "${MICROSTRAIN_SRC_DIR}" "${CMAKE_CURRENT_LIST_DIR}/docs"

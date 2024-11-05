@@ -122,7 +122,7 @@ void test_add_fields()
     uint8_t* p2;
 
     check_equal( mip_packet_remaining_space(&packet), 245, "Field 2 - Remaining count is wrong beforehand");
-    check_equal( mip_packet_alloc_field(&packet, 0x06, sizeof(payload2), &p2), 245-2-sizeof(payload2), "Field 2 - Remaining count is wrong after allocation");
+    check_equal(mip_packet_create_field(&packet, 0x06, sizeof(payload2), &p2), 245-2-sizeof(payload2), "Field 2 - Remaining count is wrong after allocation");
     const uint8_t* expected_p2 = &mip_packet_payload(&packet)[payload_size + MIP_INDEX_FIELD_PAYLOAD];
     check( p2 == expected_p2, "Field 2 - payload ptr is wrong (%p != %p)", p2, expected_p2 );
     memcpy(p2, payload2, sizeof(payload2));
@@ -146,11 +146,11 @@ void test_short_buffer()
     mip_packet_create(&packet, buffer, MIP_PACKET_LENGTH_MIN+MIP_FIELD_HEADER_LENGTH+payload_space, 0x80);
 
     uint8_t* p;
-    check_equal( mip_packet_alloc_field(&packet, 0x04, 3, &p), -1, "Wrong remaining count after allocating 1 too many bytes" );
-    check_equal( mip_packet_alloc_field(&packet, 0x04, MIP_FIELD_PAYLOAD_LENGTH_MAX, &p), payload_space-MIP_FIELD_PAYLOAD_LENGTH_MAX, "Wrong remaining count after allocating max payload" );
-    check_equal( mip_packet_alloc_field(&packet, 0x04, 253, &p), payload_space-253, "Wrong remaining count after allocating excessive payload" );
-    check_equal( mip_packet_alloc_field(&packet, 0x05, 1, &p), 1, "Wrong remaining size after allocating 3 bytes" );
-    check_equal( mip_packet_alloc_field(&packet, 0x06, 1, &p), payload_space-3-1, "Wrong remaining size after allocating 3 more bytes" );
+    check_equal( mip_packet_create_field(&packet, 0x04, 3, &p), -1, "Wrong remaining count after allocating 1 too many bytes" );
+    check_equal( mip_packet_create_field(&packet, 0x04, MIP_FIELD_PAYLOAD_LENGTH_MAX, &p), payload_space-MIP_FIELD_PAYLOAD_LENGTH_MAX, "Wrong remaining count after allocating max payload" );
+    check_equal( mip_packet_create_field(&packet, 0x04, 253, &p), payload_space-253, "Wrong remaining count after allocating excessive payload" );
+    check_equal( mip_packet_create_field(&packet, 0x05, 1, &p), 1, "Wrong remaining size after allocating 3 bytes" );
+    check_equal( mip_packet_create_field(&packet, 0x06, 1, &p), payload_space-3-1, "Wrong remaining size after allocating 3 more bytes" );
 }
 
 int main(int argc, const char* argv[])

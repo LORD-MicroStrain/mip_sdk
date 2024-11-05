@@ -25,6 +25,17 @@ namespace microstrain
 
 static constexpr size_t DYNAMIC_EXTENT = -1;
 
+////////////////////////////////////////////////////////////////////////////////
+///@brief Implementation of std::span from C++20.
+///
+/// This class represents a pointer and length. It provides the minimum
+/// functionality required by this SDK while trying to be interchangeable
+/// with std::span.
+///
+/// https://en.cppreference.com/w/cpp/container/span
+///
+/// See @ref cpp_standards
+///
 template<class T, size_t Extent=DYNAMIC_EXTENT>
 struct Span
 {
@@ -38,7 +49,7 @@ struct Span
     using const_pointer = const T*;
     using const_reference = const T&;
 
-    Span(pointer ptr) : m_ptr(ptr) {}
+    constexpr Span(pointer ptr) : m_ptr(ptr) {}
 
     constexpr pointer begin() const noexcept { return m_ptr; }
     constexpr pointer end() const noexcept { return m_ptr+extent; }
@@ -60,7 +71,7 @@ struct Span
     [[nodiscard]] constexpr Span<T, Count == DYNAMIC_EXTENT ? DYNAMIC_EXTENT : Extent-Count> subspan() const { return {m_ptr+Offset}; }
 
 private:
-    const pointer m_ptr = nullptr;
+    pointer m_ptr = nullptr;
 };
 
 
@@ -100,8 +111,8 @@ struct Span<T, DYNAMIC_EXTENT>
     [[nodiscard]] constexpr Span<T, Count> subspan() const { return {m_ptr+Offset, Count}; }
 
 private:
-    pointer const m_ptr   = nullptr;
-    size_t  const m_cnt = 0;
+    pointer m_ptr   = nullptr;
+    size_t  m_cnt = 0;
 };
 
 

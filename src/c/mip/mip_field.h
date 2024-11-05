@@ -16,7 +16,7 @@ extern "C" {
 ///@{
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_field_c  Mip Fields [C]
+///@defgroup MipFields_c  Mip Fields
 ///
 ///@brief Functions for processing received MIP fields.
 ///
@@ -42,7 +42,7 @@ extern "C" {
 ///
 /// This structure references the original packet data and does not contain a
 /// copy of the field payload. Therefore, the data buffer must exist as long as
-/// there are %mip_field instances which reference it (even if the field payload
+/// there are instances which reference it (even if the field payload
 /// itself is not used directly).
 ///
 ///@note This should be considered an "opaque" structure; its members should be
@@ -62,7 +62,7 @@ typedef struct mip_field_view
 void mip_field_init(mip_field_view* field, uint8_t descriptor_set, uint8_t field_descriptor, const uint8_t* payload, uint8_t payload_length);
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup FieldAccess  Field Accessors [C]
+///@defgroup MipFieldAccess_c  Mip Field Accessors
 ///
 ///@brief Functions for inspecting a MIP field.
 ///
@@ -77,7 +77,7 @@ bool mip_field_is_valid(const mip_field_view* field);
 
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup FieldIteration_c  Field Iteration [C]
+///@defgroup MipFieldIteration_c  Mip Field Iteration
 ///
 ///@brief Functions for iterating over fields in a MIP packet.
 ///

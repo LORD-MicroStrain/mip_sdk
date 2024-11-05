@@ -14,19 +14,16 @@ extern "C" {
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup mip_c
-///@{
-
-////////////////////////////////////////////////////////////////////////////////
-///@defgroup MipCommandQueue_c Mip Command Queue [C]
+///@defgroup MipCommandHandling_c  Mip Command Handling
+///@ingroup mip_c
 ///
-///@brief Functions for handling command responses.
+///@brief Functions for processing command responses.
 ///
 ///@{
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup PendingCommand  mip_pending_cmd functions [C]
+///@defgroup MipPendingCommand_c  Pending Mip Commands
 ///
 ///@{
 
@@ -37,7 +34,6 @@ extern "C" {
 /// considered an internal implementation detail. Avoid accessing them directly
 /// as they are subject to change in future versions of this software.
 ///
-
 typedef struct mip_pending_cmd
 {
     struct mip_pending_cmd*     _next;                 ///<@private Next command in the queue.
@@ -72,7 +68,7 @@ bool mip_pending_cmd_check_timeout(const mip_pending_cmd* cmd, mip_timestamp now
 
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup CommandQueue  mip_cmd_queue functions [C]
+///@defgroup MipCommandQueue_c  Mip Command Queue
 ///
 ///@note This should be considered an "opaque" structure; its members should be
 /// considered an internal implementation detail. Avoid accessing them directly
@@ -89,11 +85,10 @@ bool mip_pending_cmd_check_timeout(const mip_pending_cmd* cmd, mip_timestamp now
 /// considered an internal implementation detail. Avoid accessing them directly
 /// as they are subject to change in future versions of this software.
 ///
-
 typedef struct mip_cmd_queue
 {
-    mip_pending_cmd* _first_pending_cmd;
-    mip_timeout      _base_timeout;
+    mip_pending_cmd* _first_pending_cmd;  ///<@private Pointer to the first pending command, if any.
+    mip_timeout      _base_timeout;       ///<@private Base command timeout.
 
 #ifdef MIP_ENABLE_DIAGNOSTICS
     uint16_t         _diag_cmds_queued;    ///<@private Number of queued commands.
@@ -130,7 +125,6 @@ uint16_t mip_cmd_queue_diagnostic_cmd_timeouts(const mip_cmd_queue* queue);
 uint16_t mip_cmd_queue_diagnostic_cmd_errors(const mip_cmd_queue* queue);
 #endif // MIP_ENABLE_DIAGNOSTICS
 
-///@}
 ///@}
 ///@}
 ////////////////////////////////////////////////////////////////////////////////

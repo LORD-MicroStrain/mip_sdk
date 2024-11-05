@@ -44,13 +44,22 @@ public:
 public:
     ///@copydoc mip::C::mip_packet_create
     PacketView(uint8_t* buffer, size_t bufferSize, uint8_t descriptorSet) { C::mip_packet_create(this, buffer, bufferSize, descriptorSet); }
-    ///@copydoc mip_packet_from_buffer
-    PacketView(uint8_t* buffer, size_t length) { C::mip_packet_from_buffer(this, buffer, length); }
+    ///@copydoc mip::C::mip_packet_from_buffer
+    PacketView(const uint8_t* buffer, size_t length) { C::mip_packet_from_buffer(this, const_cast<uint8_t*>(buffer), length); }
     /// Constructs a C++ %PacketRef class from the base C object.
     PacketView(const C::mip_packet_view* other) { std::memcpy(static_cast<C::mip_packet_view*>(this), other, sizeof(*this)); }
     /// Constructs a C++ %PacketRef class from the base C object.
     PacketView(const C::mip_packet_view& other) { std::memcpy(static_cast<C::mip_packet_view*>(this), &other, sizeof(*this)); }
 
+    ///@brief Create a new MIP packet in an existing buffer.
+    ///@param buffer        Place to store the MIP packet bytes.
+    ///@param descriptorSet Initializes the packet to this descriptor set.
+    PacketView(microstrain::Span<uint8_t> buffer, uint8_t descriptorSet) { C::mip_packet_create(this, buffer.data(), buffer.size(), descriptorSet); }
+
+    ///@brief Create a reference to an existing MIP packet.
+    ///@param buffer Buffer containing an existing MIP packet.
+    ///@warning Do not call functions which modify the packet (addField, finalize, reset, etc) unless you know the buffer is not const.
+    PacketView(microstrain::Span<const uint8_t> buffer) { C::mip_packet_from_buffer(this, const_cast<uint8_t*>(buffer.data()), buffer.size()); }
 
     //
     // C function wrappers
@@ -76,7 +85,7 @@ public:
     int remainingSpace() const { return C::mip_packet_remaining_space(this); }  ///<@copydoc mip::C::mip_packet_remaining_space
 
     bool addField(uint8_t fieldDescriptor, const uint8_t* payload, uint8_t payloadLength) { return C::mip_packet_add_field(this, fieldDescriptor, payload, payloadLength); }  ///<@copydoc mip::C::mip_packet_add_field
-    Serializer createField(uint8_t fieldDescriptor, uint8_t length) { uint8_t* ptr; if(C::mip_packet_alloc_field(this, fieldDescriptor, length, &ptr) < 0) length =0; return Serializer{ptr, length}; }
+    Serializer createField(uint8_t fieldDescriptor, uint8_t length) { uint8_t* ptr; if(C::mip_packet_create_field(this, fieldDescriptor, length, &ptr) < 0) length =0; return Serializer{ptr, length}; }
     //std::tuple<uint8_t*, size_t> createField(uint8_t fieldDescriptor) { uint8_t* ptr; int max_size = C::mip_packet_alloc_field(this, fieldDescriptor, 0, &ptr); return max_size >= 0 ? std::make_tuple(ptr, max_size) : std::make_tuple(nullptr, 0); }  ///<@copydoc mip::C::mip_packet_alloc_field
     //int finishLastField(uint8_t* payloadPtr, uint8_t newPayloadLength) { return C::mip_packet_realloc_last_field(this, payloadPtr, newPayloadLength); }  ///<@copydoc mip::C::mip_packet_realloc_last_field
     //int cancelLastField(uint8_t* payloadPtr) { return C::mip_packet_cancel_last_field(this, payloadPtr); }  ///<@copydoc mip::C::mip_packet_cancel_last_field
@@ -103,7 +112,7 @@ public:
             bool ok = isOk();
 
             if(ok)
-                ok &= C::mip_packet_realloc_last_field(&m_packet, basePointer(), (uint8_t)usedLength()) >= 0;
+                ok &= C::mip_packet_update_last_field_length(&m_packet, basePointer(), (uint8_t) usedLength()) >= 0;
 
             if(!ok)
                 C::mip_packet_cancel_last_field(&m_packet, basePointer());
@@ -120,7 +129,7 @@ public:
     AllocatedField createField(uint8_t fieldDescriptor)
     {
         uint8_t* ptr;
-        size_t max_size = std::max<int>(0, C::mip_packet_alloc_field(this, fieldDescriptor, 0, &ptr));
+        size_t max_size = std::max<int>(0, C::mip_packet_create_field(this, fieldDescriptor, 0, &ptr));
         return {*this, ptr, max_size};
     }
 
@@ -258,6 +267,8 @@ public:
 template<size_t BufferSize>
 class SizedPacketBuf : public PacketView
 {
+    static_assert(BufferSize >= PACKET_LENGTH_MIN, "BufferSize must be at least PACKET_LENGTH_MIN bytes");
+
 public:
     SizedPacketBuf(uint8_t descriptorSet=INVALID_DESCRIPTOR_SET) : PacketView(mData, sizeof(mData), descriptorSet) {}
 
@@ -288,7 +299,14 @@ public:
     ///@param fieldDescriptor If specified (not INVALID_FIELD_DESCRIPTOR), overrides the field descriptor.
     ///
     template<class FieldType>
-    SizedPacketBuf(const FieldType& field, uint8_t fieldDescriptor=INVALID_FIELD_DESCRIPTOR) : PacketView(mData, sizeof(mData)) { createFromField<FieldType>(mData, sizeof(mData), field, fieldDescriptor); }
+    SizedPacketBuf(
+        const FieldType& field,
+        uint8_t fieldDescriptor=INVALID_FIELD_DESCRIPTOR,
+        typename std::enable_if<std::is_class<FieldType>::value, void>::type* = nullptr
+    ) : PacketView(mData, sizeof(mData))
+    {
+        createFromField<FieldType>(mData, sizeof(mData), field, fieldDescriptor);
+    }
 
 
     ///@brief Explicitly obtains a reference to the packet data.

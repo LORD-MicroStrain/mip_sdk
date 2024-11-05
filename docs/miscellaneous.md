@@ -4,21 +4,21 @@ Other Considerations  {#other}
 Known Issues and Workarounds  {#known_issues}
 ----------------------------
 
-### `suppress_ack` parameters are not supported
+### suppress_ack parameters are not supported
 
-Some commands accept a parameter named `suppress_ack` which acts to prevent
+Some commands accept a parameter named `suppress_ack` which prevents
 the standard ack/nack reply from being returned by the device, e.g. the
-3DM Poll Data command. Use of this parameter is not supported in the MIP SDK
+3DM Poll Data command. Use of this parameter is not fully supported by the MIP SDK
 and will cause the command to appear to time out after a short delay.
 
-If you do not wish to wait for a reply (i.e. just send the command and continue)
-you can build and send the command yourself:
+If you wish to use this feature, (i.e. just send the command without waiting for an ACK/NACK),
+you can build and send the command manually:
 ~~~~~~~~{.cpp}
 // Create the command with required parameters.
 mip::commands_3dm::PollData cmd;
 
 cmd.desc_set = mip::data_sensor::DESCRIPTOR_SET;
-cmd.suppress_ack = true;
+cmd.suppress_ack = true;  // We can set this since we're not calling the standard cmd handling functions.
 cmd.num_descriptors = 2;
 cmd.descriptors[0] = mip::data_sensor::ScaledAccel::FIELD_DESCRIPTOR;
 cmd.descriptors[1] = mip::data_sensor::ScaledGyro::FIELD_DESCRIPTOR;

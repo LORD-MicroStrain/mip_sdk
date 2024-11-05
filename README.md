@@ -3,6 +3,8 @@ MIP SDK
 
 Welcome to the official MIP Software Development Kit.
 
+If you have any questions or run into any issues, please let us know! [MicroStrain Support Portal](https://support.microstrain.com)
+
 
 Features
 --------
@@ -26,20 +28,20 @@ Features
 Examples
 --------
 
-<!-- NOTE: I commented out the descriptions below as they seemed like they would
-           be better suited to being in the example code files themselves. Feel
-           free to uncomment these again if you want, or remove them completely.
--->
-* Get device information [[C++](./examples/device_info.cpp)] <!-- - Queries the device strings and prints them to stdout. -->
-* Watch IMU [[C](./examples/watch_imu.c) | [C++](./examples/watch_imu.cpp)] <!-- - Configures the IMU for streaming and prints the data to stdout. -->
-* Threading [[C++](./examples/threading.cpp)]
-* Ping [[C++](./examples/ping.cpp)]
-* Product-specific examples:
-  * GQ7 setup [[C](./examples/GQ7/GQ7_example.c) | [C++](./examples/GQ7/GQ7_example.cpp)] <!-- - Configures a GQ7 device for typical usage in a wheeled-vehicle application. -->
-  * CV7 setup [[C](./examples/CV7/CV7_example.c) | [C++](./examples/CV7/CV7_example.cpp)] <!-- - Configures a CV7 device for typical usage and includes an example of using the event system. -->
-  * GX5-45 setup [[C](./examples/GX5_45/GX5_45_example.c) | [C++](./examples/GX5_45/GX5_45_example.cpp)] <!-- - Configures a GX5-45 device for typical usage in a wheeled-vehicle application. -->
-  * CV7_INS setup [[C++](./examples/CV7_INS/CV7_INS_simple_example.cpp)] <!-- - Configures a CV7_INS device for typical usage. -->
-  * CV7_INS with UBlox setup [[C++](./examples/CV7_INS/CV7_INS_simple_ublox_example.cpp)] <!-- - Configures a CV7_INS device for typical usage. -->
+| Example                          |                                                                   |                                                              | Description                                                                                  |
+|----------------------------------|-------------------------------------------------------------------|--------------------------------------------------------------|----------------------------------------------------------------------------------------------|
+| <b>Generic Examples</b>          |                                                                   |                                                              |                                                                                              |
+| Get device information           | [C++](./examples/device_info.cpp)                                 |                                                              | Queries the device strings and prints them to stdout.                                        |
+| Watch IMU                        | [C++](./examples/watch_imu.cpp)                                   | [C](./examples/watch_imu.c)                                  | Configures the IMU for streaming and prints the data to stdout.                              |
+| Threading                        | [C++](./examples/threading.cpp)                                   |                                                              |                                                                                              |
+| Ping                             | [C++](./examples/ping.cpp)                                        |                                                              |                                                                                              |
+| <b>Product-specific examples</b> |                                                                   |                                                              |                                                                                              |
+| CV7 setup                        | [C++](./examples/CV7/CV7_example.cpp)                             | [C](./examples/CV7/CV7_example.c)                            | Configures a CV7 device for typical usage and includes an example of using the event system. |
+| CV7_INS setup                    | [C++](./examples/CV7_INS/CV7_INS_simple_example.cpp)              |                                                              | Configures a CV7_INS device for typical usage.                                               |
+| CV7_INS with UBlox setup         | [C++](./examples/CV7_INS/CV7_INS_simple_ublox_example.cpp)        |                                                              | Configures a CV7_INS device for typical usage with aiding data from a UBlox GNSS receiver.   |
+| GQ7 setup                        | [C++](./examples/GQ7/GQ7_example.cpp)                             | [C](./examples/GQ7/GQ7_example.c)                            | Configures a GQ7 device for typical usage in a wheeled-vehicle application.                  |
+| GX5-45 setup                     | [C++](./examples/GX5_45/GX5_45_example.cpp)                       | [C](./examples/GX5_45/GX5_45_example.c)                      | Configures a GX5-45 device for typical usage in a wheeled-vehicle application.               |
+| GX5/CX5/CV5 -15 or -25 setup     | [C++](./examples/CX5_GX5_CV5_15_25/CX5_GX5_CV5_15_25_example.cpp) | [C](./examples/CX5_GX5_CV5_15_25/CX5_GX5_CV5_15_25_example.c) | Configures a GX5-45 device for typical usage in a wheeled-vehicle application.               |
 
 You'll need to enable at least one of the [communications interfaces](#communications-interfaces) in the CMake configuration to use the examples.
 
@@ -114,10 +116,9 @@ How to Build
 
 * A working C compiler
   * C11 or later required
-* A working C++ compiler, if using any C++ features
   * Define `MICROSTRAIN_ENABLE_CPP=OFF` if you don't want to use any C++. Note that some features are only available in C++.
-  * C++11 or later required for the mip library
-  * C++14 or later for the examples
+* A working C++ compiler, if using any C++ features
+  * C++14 or later is required.
   * C++20 or later for metadata and associated examples
 * CMake version 3.10 or later (technically this is optional, see below)
 * Doxygen, if building documentation
@@ -125,22 +126,25 @@ How to Build
 ### CMake Build Configuration
 
 The following options may be specified when configuring the build with CMake (e.g. `cmake .. -DOPTION=VALUE`):
-* MICROSTRAIN_ENABLE_LOGGING - Builds logging functionality into the library. The user is responsible for configuring a logging callback (default enabled)
-* MICROSTRAIN_LOGGING_MAX_LEVEL - Max log level the SDK is allowed to log. If this is defined, any log level logged at a higher level than this will result in a noop regardless of runtime configuration. Useful if you want some logs, but do not want the overhead compiled into the code.
-* MICROSTRAIN_TIMESTAMP_TYPE - Overrides the default timestamp type. See [Timestamps](https://lord-microstrain.github.io/mip_sdk_documentation/latest/timestamps.html) in the documentation.
-* MICROSTRAIN_ENABLE_CPP - Causes the src/cpp directory to be included in the build (default enabled). Disable to turn off the C++ api.
-* MICROSTRAIN_ENABLE_EXTRAS - Builds some higher level utility classes and functions that may use dynamic memory.
-* MICROSTRAIN_ENABLE_SERIAL - Builds the included serial port library (default enabled).
-* MICROSTRAIN_ENABLE_TCP - Builds the included socket library (default enabled).
-* MICROSTRAIN_BUILD_PACKAGE - Adds a `package` target to the project that will build a `.deb`, `.rpm`, or `.zip` file containing the library
-* MICROSTRAIN_BUILD_EXAMPLES - If enabled (`-DMICROSTRAIN_BUILD_EXAMPLES=ON`), the example projects will be built (default disabled).
-* MICROSTRAIN_BUILD_TESTING - If enabled (`-DMICROSTRAIN_BUILD_TESTING=ON`), the test programs in the /test directory will be compiled and linked. Run the tests with `ctest`.
-* MICROSTRAIN_BUILD_DOCUMENTATION - If enabled, the documentation will be built with doxygen. You must have doxygen installed.
-* MICROSTRAIN_BUILD_DOCUMENTATION_FULL - Builds internal documentation (default disabled).
-* MICROSTRAIN_BUILD_DOCUMENTATION_QUIET - Suppress standard doxygen output (default enabled).
-* MIP_ENABLE_DIAGNOSTICS - Adds some counters to various entities which can serve as a debugging aid.
-* MIP_ENABLE_METADATA - Builds metadata for MIP commands. If not set, the system will try to determine if C++20 is available to enable it. C++20 is required for the metadata module.
-* MIP_ENABLE_EXTRAS - Builds some higher level utility classes and functions that may use dynamic memory. (default MICROSTRAIN_ENABLE_EXTRAS)
+
+| CMake Option                          | Default                    | Description                                                                                                                                                                                                                                                 |
+|---------------------------------------|----------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| MICROSTRAIN_ENABLE_LOGGING            | ON                         | Builds logging functionality into the library. The user is responsible for configuring a logging callback.                                                                                                                                                  |
+| MICROSTRAIN_LOGGING_MAX_LEVEL         | MICROSTRAIN_LOG_LEVEL_WARN | Max log level the SDK is allowed to log. If this is defined, any log level logged at a higher level than this will result in a noop regardless of runtime configuration. Useful if you want some logs, but do not want the overhead compiled into the code. |
+| MICROSTRAIN_TIMESTAMP_TYPE            | uint64_t                   | Overrides the default timestamp type. See [Timestamps](https://lord-microstrain.github.io/mip_sdk_documentation/latest/timestamps.html) in the documentation.                                                                                                                                                                           |
+| MICROSTRAIN_ENABLE_CPP                | ON                         | Causes the src/cpp directory to be included in the build. Disable to turn off the C++ api.                                                                                                                                                                  |
+| MICROSTRAIN_ENABLE_EXTRAS             | ON                         | Builds some higher level utility classes and functions that may use dynamic memory.                                                                                                                                                                         |
+| MICROSTRAIN_ENABLE_SERIAL             | ON                         | Builds the included serial port library.                                                                                                                                                                                                                    |
+| MICROSTRAIN_ENABLE_TCP                | ON                         | Builds the included socket library (default enabled).                                                                                                                                                                                                       |
+| MICROSTRAIN_BUILD_PACKAGE             | OFF                        | Adds a `package` target to the project that will build a `.deb`, `.rpm`, or `.zip` file containing the library                                                                                                                                              |
+| MICROSTRAIN_BUILD_EXAMPLES            | OFF                        | If enabled, the example projects will be built.                                                                                                                                                                                                             |
+| MICROSTRAIN_BUILD_TESTS               | OFF                        | If enabled, the test programs in the /test directory will be compiled and linked. Run the tests with `ctest`.                                                                                                                                               |
+| MICROSTRAIN_BUILD_DOCUMENTATION       | OFF                        | If enabled, the documentation will be built with doxygen. You must have doxygen installed.                                                                                                                                                                  |
+| MICROSTRAIN_BUILD_DOCUMENTATION_FULL  | OFF                        | Builds internal documentation.                                                                                                                                                                                                                              |
+| MICROSTRAIN_BUILD_DOCUMENTATION_QUIET | ON                         | Suppress standard doxygen output.                                                                                                                                                                                                                           |
+| MIP_ENABLE_DIAGNOSTICS                | ON                         | Adds some counters to various entities which can serve as a debugging aid.                                                                                                                                                                                  |
+| MIP_ENABLE_METADATA                   | ON if supported            | Builds metadata for MIP commands. If not set, the system will try to determine if C++20 is available to enable it. C++20 is required for the metadata module.                                                                                               |
+| MIP_ENABLE_EXTRAS                     | MICROSTRAIN_ENABLE_EXTRAS  | Builds some higher level utility classes and functions that may use dynamic memory. (default MICROSTRAIN_ENABLE_EXTRAS)                                                                                                                                     |
 
 ### Compilation 
 
@@ -175,9 +179,17 @@ include all the necessary files and define a few options.
 
 Pass these to your compiler as appropriate, e.g. `arm-none-eabi-gcc -DMICROSTRAIN_TIMESTAMP_TYPE=uint32_t -DMICROSTRAIN_ENABLE_LOGGING=0`
 
-* MICROSTRAIN_ENABLE_LOGGING (and MICROSTRAIN_LOGGING_MAX_LEVEL) - default is enabled
-* MICROSTRAIN_TIMESTAMP_TYPE - defaults to uint64_t if not specified
-* MIP_ENABLE_DIAGNOSTICS - Supported on embedded platforms to aid debugging
+These defines must be set when building the MIP SDK sources and for any code that includes
+MIP SDK headers.
+
+| Name                          | Description                                                                          | 
+|-------------------------------|--------------------------------------------------------------------------------------|
+| MICROSTRAIN_ENABLE_LOGGING    | Enables logging facilities (e.g. via printf).                                        |
+| MICROSTRAIN_LOGGING_MAX_LEVEL | Disables logging more detailed messages (e.g. debug tracing) to improve performance. |
+| MICROSTRAIN_TIMESTAMP_TYPE    | Type to use for mip::Timestamp / mip::Timeout. Defaults to uint64_t if not defined.  |
+| MICROSTRAIN_USE_STD_ENDIAN    | Define to 1 to enable the use of std::span from C++20.                               |
+| MICROSTRAIN_USE_STD_SPAN      | Define to 1 to enable the use of std::endian from C++20.                             |
+| MIP_ENABLE_DIAGNOSTICS        | Enables diagnostic counters.                                                         |
 
 These options affect the compiled code interface and sizes of various structs. They
 MUST be consistent between compiling the MIP SDK and any other code which includes
@@ -187,7 +199,7 @@ rebuilt properly. Normally CMake takes care of this for you).
 Known Issues
 ------------
 
-* `suppress_ack=true` is not supported
-* The commanded BIT, device settings, and capture gyro bias commands can time out unless the timeout is increased
+* `suppress_ack=true` is not supported.
+* The commanded BIT, device settings, and capture gyro bias commands can time out unless the timeout is increased.
 
 See the documentation page for [Known Issues](https://lord-microstrain.github.io/mip_sdk_documentation/latest/other.html#known_issues).

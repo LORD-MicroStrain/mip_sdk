@@ -43,6 +43,8 @@ if(MIP_ENABLE_EXTRAS)
     add_subdirectory(extras)
 endif()
 
+set(MIP_LIBRARIES_TMP ${MIP_LIBRARIES_TMP} PARENT_SCOPE)
+
 #
 # Installation
 #
