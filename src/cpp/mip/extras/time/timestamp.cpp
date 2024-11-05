@@ -4,18 +4,18 @@
 
 namespace mip
 {
-    TimestampNew::TimestampNew(const mip::TimeStandard &standard) :
+    TimestampManager::TimestampManager(const mip::TimeStandard &standard) :
         m_standard(standard)
     {
         synchronize();
     }
 
-    void TimestampNew::synchronize()
+    void TimestampManager::synchronize()
     {
         m_timestamp = m_standard.now();
     }
 
-    void TimestampNew::increment(const TimestampNew &reference_new, const TimestampNew &reference_old)
+    void TimestampManager::increment(const TimestampManager &reference_new, const TimestampManager &reference_old)
     {
         mip::Nanoseconds m_synced = reference_new.getTimestamp();
         mip::Nanoseconds m_old = reference_old.getTimestamp();
@@ -27,7 +27,7 @@ namespace mip
         m_timestamp += (m_synced - m_old);
     }
 
-    void TimestampNew::setTimestamp(Nanoseconds time)
+    void TimestampManager::setTimestamp(Nanoseconds time)
     {
         if (time < Nanoseconds(0))
         {
@@ -37,12 +37,12 @@ namespace mip
         m_timestamp = time;
     }
 
-    void TimestampNew::setTimestamp(const TimestampNew &from)
+    void TimestampManager::setTimestamp(const TimestampManager &from)
     {
         m_timestamp = convert(from.getTimestamp(), m_standard, from.m_standard);
     }
 
-    void TimestampNew::setWeek(Weeks week)
+    void TimestampManager::setWeek(Weeks week)
     {
         if (week < Weeks(0))
         {
@@ -52,7 +52,7 @@ namespace mip
         m_timestamp = week + getTimeOfWeek();
     }
 
-    void TimestampNew::setTimeOfWeek(Nanoseconds time)
+    void TimestampManager::setTimeOfWeek(Nanoseconds time)
     {
         if (time < Nanoseconds(0))
         {
@@ -66,12 +66,12 @@ namespace mip
         m_timestamp = std::chrono::duration_cast<Weeks>(m_timestamp) + time;
     }
 
-    Nanoseconds TimestampNew::getTimestamp() const
+    Nanoseconds TimestampManager::getTimestamp() const
     {
         return m_timestamp;
     }
 
-    Nanoseconds TimestampNew::getTimeOfWeek() const
+    Nanoseconds TimestampManager::getTimeOfWeek() const
     {
         return m_timestamp % Weeks(1);
     }

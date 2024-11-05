@@ -100,52 +100,52 @@ const mip::UnixTime unix{};
 const MockUnixTime mock_unix{};
 const MockTimeConvertOneSecond mock_time_convert_one_second{};
 
-mip::TimestampNew setupTimestampZero()
+mip::TimestampManager setupTimestampZero()
 {
     return {unix, mip::Nanoseconds(0)};
 }
 
-mip::TimestampNew setupTimestampOneNanosecond()
+mip::TimestampManager setupTimestampOneNanosecond()
 {
     return {unix, mip::Nanoseconds(1)};
 }
 
-mip::TimestampNew setupTimestampOneSecond()
+mip::TimestampManager setupTimestampOneSecond()
 {
     return {unix, mip::Seconds(1)};
 }
 
-mip::TimestampNew setupTimestampOneSecondPlusNanosecond()
+mip::TimestampManager setupTimestampOneSecondPlusNanosecond()
 {
     return {unix, nanoseconds_in_second + mip::Nanoseconds(1)};
 }
 
-mip::TimestampNew setupTimestampOneWeek()
+mip::TimestampManager setupTimestampOneWeek()
 {
     return {unix, mip::Weeks(1)};
 }
 
-mip::TimestampNew setupTimestampHalfWeek()
+mip::TimestampManager setupTimestampHalfWeek()
 {
     return {unix, nanoseconds_in_week / 2};
 }
 
-mip::TimestampNew setupTimestampMoreThanWeek()
+mip::TimestampManager setupTimestampMoreThanWeek()
 {
     return {unix, more_than_week};
 }
 
-mip::TimestampNew setupTimestampMockUnixZero()
+mip::TimestampManager setupTimestampMockUnixZero()
 {
     return {mock_unix, mip::Nanoseconds(0)};
 }
 
-mip::TimestampNew setupTimestampMockUnixSynced()
+mip::TimestampManager setupTimestampMockUnixSynced()
 {
     return {mock_unix};
 }
 
-mip::TimestampNew setupTimestampMockConvertOneSecond(mip::Nanoseconds time = mip::Nanoseconds(0))
+mip::TimestampManager setupTimestampMockConvertOneSecond(mip::Nanoseconds time = mip::Nanoseconds(0))
 {
     return {mock_time_convert_one_second, time};
 }
@@ -165,7 +165,7 @@ int main(int argc, const char* argv[])
     {
         return invalidInputTestCase<std::invalid_argument>([]() -> void
         {
-            mip::TimestampNew(mip::UnixTime{}, invalid_nanoseconds);
+            mip::TimestampManager(mip::UnixTime{}, invalid_nanoseconds);
         });
     });
 
@@ -173,7 +173,7 @@ int main(int argc, const char* argv[])
     {
         return invalidInputTestCase<std::invalid_argument>([]() -> void
         {
-            mip::TimestampNew(mip::UnixTime{}, invalid_seconds);
+            mip::TimestampManager(mip::UnixTime{}, invalid_seconds);
         });
     });
 
@@ -475,7 +475,7 @@ int main(int argc, const char* argv[])
 
     suite.addTest("TimeElapsedOneBase", []() -> bool
     {
-        mip::TimestampNew higher(mip::UnixTime{}, mip::Nanoseconds(2));
+        mip::TimestampManager higher(mip::UnixTime{}, mip::Nanoseconds(2));
         auto lower = setupTimestampOneNanosecond();
 
         return getterTestCase(higher.timeElapsed(lower), true);
@@ -483,7 +483,7 @@ int main(int argc, const char* argv[])
 
     suite.addTest("TimeElapsedOneTemplate", []() -> bool
     {
-        mip::TimestampNew higher(mip::UnixTime{}, mip::Seconds(2));
+        mip::TimestampManager higher(mip::UnixTime{}, mip::Seconds(2));
         auto lower = setupTimestampOneSecond();
 
         return getterTestCase(higher.timeElapsed<mip::Seconds>(lower), true);
@@ -491,7 +491,7 @@ int main(int argc, const char* argv[])
 
     suite.addTest("TimeElapsedArbitrary", []() -> bool
     {
-        mip::TimestampNew higher(mip::UnixTime{}, nanoseconds_in_second + mip::Nanoseconds(1));
+        mip::TimestampManager higher(mip::UnixTime{}, nanoseconds_in_second + mip::Nanoseconds(1));
         auto lower = setupTimestampOneSecond();
 
         bool success = true;
@@ -540,7 +540,7 @@ int main(int argc, const char* argv[])
 
     suite.addTest("TimeChangedOneBase", []() -> bool
     {
-        mip::TimestampNew higher(mip::UnixTime{}, mip::Nanoseconds(2));
+        mip::TimestampManager higher(mip::UnixTime{}, mip::Nanoseconds(2));
         auto lower = setupTimestampOneNanosecond();
 
         return getterTestCase(higher.timeChanged(lower), true);
@@ -548,7 +548,7 @@ int main(int argc, const char* argv[])
 
     suite.addTest("TimeChangedOneTemplate", []() -> bool
     {
-        mip::TimestampNew higher(mip::UnixTime{}, mip::Seconds(2));
+        mip::TimestampManager higher(mip::UnixTime{}, mip::Seconds(2));
         auto lower = setupTimestampOneSecond();
 
         return getterTestCase(higher.timeChanged<mip::Seconds>(lower), true);
@@ -568,7 +568,7 @@ int main(int argc, const char* argv[])
     suite.addTest("TimeElapsedChangedDifferentiation", []() -> bool
     {
         auto higher = setupTimestampOneSecondPlusNanosecond();
-        mip::TimestampNew lower(mip::UnixTime{}, nanoseconds_in_second - mip::Nanoseconds(1));
+        mip::TimestampManager lower(mip::UnixTime{}, nanoseconds_in_second - mip::Nanoseconds(1));
 
         // Should be false for timeElapsed() (since a full second doesn't elapse).
         // Should be true for timeChanged() though, since they are in different second intervals.
