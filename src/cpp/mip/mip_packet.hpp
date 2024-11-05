@@ -285,8 +285,9 @@ public:
     ///
     template<class FieldType>
     SizedPacketBuf(
-        const typename std::enable_if<std::is_class<FieldType>::value>::type& field,
-        uint8_t fieldDescriptor=INVALID_FIELD_DESCRIPTOR
+        const FieldType& field,
+        uint8_t fieldDescriptor=INVALID_FIELD_DESCRIPTOR,
+        typename std::enable_if<std::is_class<FieldType>::value, void>::type* = nullptr
     ) : PacketView(mData, sizeof(mData))
     {
         createFromField<FieldType>(mData, sizeof(mData), field, fieldDescriptor);
