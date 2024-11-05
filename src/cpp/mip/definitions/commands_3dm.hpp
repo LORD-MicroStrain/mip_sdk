@@ -16,9 +16,9 @@ struct mip_interface;
 namespace commands_3dm {
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipCommands_cpp  MIP Commands [CPP]
+///@addtogroup MipCommands_cpp
 ///@{
-///@defgroup 3dm_commands_cpp  3dm Commands [CPP]
+///@defgroup 3dm_commands_cpp  3dm Commands
 ///
 ///@{
 
@@ -192,7 +192,7 @@ enum class SensorRangeType : uint8_t
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_poll_imu_message  (0x0C,0x01) Poll Imu Message [CPP]
+///@defgroup 3dm_poll_imu_message_cpp  (0x0C,0x01) Poll Imu Message
 /// Poll the device for an IMU message with the specified format
 /// 
 /// This function polls for an IMU message using the provided format. The resulting message
@@ -240,7 +240,7 @@ TypedResult<PollImuMessage> pollImuMessage(C::mip_interface& device, bool suppre
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_poll_gnss_message  (0x0C,0x02) Poll Gnss Message [CPP]
+///@defgroup 3dm_poll_gnss_message_cpp  (0x0C,0x02) Poll Gnss Message
 /// Poll the device for an GNSS message with the specified format
 /// 
 /// This function polls for a GNSS message using the provided format. The resulting message
@@ -288,7 +288,7 @@ TypedResult<PollGnssMessage> pollGnssMessage(C::mip_interface& device, bool supp
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_poll_filter_message  (0x0C,0x03) Poll Filter Message [CPP]
+///@defgroup 3dm_poll_filter_message_cpp  (0x0C,0x03) Poll Filter Message
 /// Poll the device for an Estimation Filter message with the specified format
 /// 
 /// This function polls for an Estimation Filter message using the provided format. The resulting message
@@ -336,7 +336,7 @@ TypedResult<PollFilterMessage> pollFilterMessage(C::mip_interface& device, bool 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_imu_message_format  (0x0C,0x08) Imu Message Format [CPP]
+///@defgroup 3dm_imu_message_format_cpp  (0x0C,0x08) Imu Message Format
 /// Set, read, or save the format of the IMU data packet.
 /// 
 /// The resulting data messages will maintain the order of descriptors sent in the command.
@@ -418,7 +418,7 @@ TypedResult<ImuMessageFormat> defaultImuMessageFormat(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_gps_message_format  (0x0C,0x09) Gps Message Format [CPP]
+///@defgroup 3dm_gps_message_format_cpp  (0x0C,0x09) Gps Message Format
 /// Set, read, or save the format of the GNSS data packet.
 /// 
 /// The resulting data messages will maintain the order of descriptors sent in the command.
@@ -500,7 +500,7 @@ TypedResult<GpsMessageFormat> defaultGpsMessageFormat(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_filter_message_format  (0x0C,0x0A) Filter Message Format [CPP]
+///@defgroup 3dm_filter_message_format_cpp  (0x0C,0x0A) Filter Message Format
 /// Set, read, or save the format of the Estimation Filter data packet.
 /// 
 /// The resulting data messages will maintain the order of descriptors sent in the command.
@@ -582,7 +582,7 @@ TypedResult<FilterMessageFormat> defaultFilterMessageFormat(C::mip_interface& de
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_imu_get_base_rate  (0x0C,0x06) Imu Get Base Rate [CPP]
+///@defgroup 3dm_imu_get_base_rate_cpp  (0x0C,0x06) Imu Get Base Rate
 /// Get the base rate for the IMU data in Hz
 /// 
 /// This is the fastest rate for this type of data available on the device.
@@ -648,7 +648,7 @@ TypedResult<ImuGetBaseRate> imuGetBaseRate(C::mip_interface& device, uint16_t* r
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_gps_get_base_rate  (0x0C,0x07) Gps Get Base Rate [CPP]
+///@defgroup 3dm_gps_get_base_rate_cpp  (0x0C,0x07) Gps Get Base Rate
 /// Get the base rate for the GNSS data in Hz
 /// 
 /// This is the fastest rate for this type of data available on the device.
@@ -714,7 +714,7 @@ TypedResult<GpsGetBaseRate> gpsGetBaseRate(C::mip_interface& device, uint16_t* r
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_filter_get_base_rate  (0x0C,0x0B) Filter Get Base Rate [CPP]
+///@defgroup 3dm_filter_get_base_rate_cpp  (0x0C,0x0B) Filter Get Base Rate
 /// Get the base rate for the Estimation Filter data in Hz
 /// 
 /// This is the fastest rate for this type of data available on the device.
@@ -780,7 +780,7 @@ TypedResult<FilterGetBaseRate> filterGetBaseRate(C::mip_interface& device, uint1
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_poll_data  (0x0C,0x0D) Poll Data [CPP]
+///@defgroup 3dm_poll_data_cpp  (0x0C,0x0D) Poll Data
 /// Poll the device for a message with the specified descriptor set and format.
 /// 
 /// This function polls for a message using the provided format. The resulting message
@@ -829,7 +829,7 @@ TypedResult<PollData> pollData(C::mip_interface& device, uint8_t descSet, bool s
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_get_base_rate  (0x0C,0x0E) Get Base Rate [CPP]
+///@defgroup 3dm_get_base_rate_cpp  (0x0C,0x0E) Get Base Rate
 /// Get the base rate for the specified descriptor set in Hz.
 ///
 ///@{
@@ -896,7 +896,7 @@ TypedResult<GetBaseRate> getBaseRate(C::mip_interface& device, uint8_t descSet, 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_message_format  (0x0C,0x0F) Message Format [CPP]
+///@defgroup 3dm_message_format_cpp  (0x0C,0x0F) Message Format
 /// Set, read, or save the format for a given data packet.
 /// 
 /// The resulting data messages will maintain the order of descriptors sent in the command.
@@ -981,7 +981,7 @@ TypedResult<MessageFormat> defaultMessageFormat(C::mip_interface& device, uint8_
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_nmea_poll_data  (0x0C,0x04) Nmea Poll Data [CPP]
+///@defgroup 3dm_nmea_poll_data_cpp  (0x0C,0x04) Nmea Poll Data
 /// Poll the device for a NMEA message with the specified format.
 /// 
 /// This function polls for a NMEA message using the provided format.
@@ -1028,7 +1028,7 @@ TypedResult<NmeaPollData> nmeaPollData(C::mip_interface& device, bool suppressAc
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_nmea_message_format  (0x0C,0x0C) Nmea Message Format [CPP]
+///@defgroup 3dm_nmea_message_format_cpp  (0x0C,0x0C) Nmea Message Format
 /// Set, read, or save the NMEA message format.
 ///
 ///@{
@@ -1108,7 +1108,7 @@ TypedResult<NmeaMessageFormat> defaultNmeaMessageFormat(C::mip_interface& device
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_device_settings  (0x0C,0x30) Device Settings [CPP]
+///@defgroup 3dm_device_settings_cpp  (0x0C,0x30) Device Settings
 /// Save, Load, or Reset to Default the values for all device settings.
 /// 
 /// When a save current settings command is issued, a brief data disturbance may occur while all settings are written to non-volatile memory.
@@ -1160,7 +1160,7 @@ TypedResult<DeviceSettings> defaultDeviceSettings(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_uart_baudrate  (0x0C,0x40) Uart Baudrate [CPP]
+///@defgroup 3dm_uart_baudrate_cpp  (0x0C,0x40) Uart Baudrate
 /// Read, Save, Load, or Reset to Default the baud rate of the main communication channel.
 /// 
 /// For all functions except 0x01 (use new settings), the new baud rate value is ignored.
@@ -1252,7 +1252,7 @@ TypedResult<UartBaudrate> defaultUartBaudrate(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_factory_streaming  (0x0C,0x10) Factory Streaming [CPP]
+///@defgroup 3dm_factory_streaming_cpp  (0x0C,0x10) Factory Streaming
 /// Configures the device for recording data for technical support.
 /// 
 /// This command will configure all available data streams to predefined
@@ -1302,7 +1302,7 @@ TypedResult<FactoryStreaming> factoryStreaming(C::mip_interface& device, Factory
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_datastream_control  (0x0C,0x11) Datastream Control [CPP]
+///@defgroup 3dm_datastream_control_cpp  (0x0C,0x11) Datastream Control
 /// Enable/disable the selected data stream.
 /// 
 /// Each data stream (descriptor set) can be enabled or disabled.
@@ -1392,7 +1392,7 @@ TypedResult<DatastreamControl> defaultDatastreamControl(C::mip_interface& device
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_constellation_settings  (0x0C,0x21) Constellation Settings [CPP]
+///@defgroup 3dm_constellation_settings_cpp  (0x0C,0x21) Constellation Settings
 /// This command configures which satellite constellations are enabled and how many channels are dedicated to tracking each constellation.
 /// 
 /// Maximum number of tracking channels to use (total for all constellations):
@@ -1540,7 +1540,7 @@ TypedResult<ConstellationSettings> defaultConstellationSettings(C::mip_interface
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_gnss_sbas_settings  (0x0C,0x22) Gnss Sbas Settings [CPP]
+///@defgroup 3dm_gnss_sbas_settings_cpp  (0x0C,0x22) Gnss Sbas Settings
 /// Configure the SBAS subsystem
 /// 
 /// 
@@ -1657,7 +1657,7 @@ TypedResult<GnssSbasSettings> defaultGnssSbasSettings(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_gnss_assisted_fix  (0x0C,0x23) Gnss Assisted Fix [CPP]
+///@defgroup 3dm_gnss_assisted_fix_cpp  (0x0C,0x23) Gnss Assisted Fix
 /// Set the options for assisted GNSS fix.
 /// 
 /// Devices that implement this command have a dedicated GNSS flash memory and a non-volatile FRAM.
@@ -1753,7 +1753,7 @@ TypedResult<GnssAssistedFix> defaultGnssAssistedFix(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_gnss_time_assistance  (0x0C,0x24) Gnss Time Assistance [CPP]
+///@defgroup 3dm_gnss_time_assistance_cpp  (0x0C,0x24) Gnss Time Assistance
 /// Provide the GNSS subsystem with initial time information.
 /// 
 /// This message is required immediately after power up if GNSS Assist was enabled when the device was powered off.
@@ -1835,7 +1835,7 @@ TypedResult<GnssTimeAssistance> readGnssTimeAssistance(C::mip_interface& device,
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_imu_lowpass_filter  (0x0C,0x50) Imu Lowpass Filter [CPP]
+///@defgroup 3dm_imu_lowpass_filter_cpp  (0x0C,0x50) Imu Lowpass Filter
 /// Advanced configuration for the IMU data quantity low-pass filters.
 /// 
 /// Deprecated, use the lowpass filter (0x0C,0x54) command instead.
@@ -1937,7 +1937,7 @@ TypedResult<ImuLowpassFilter> defaultImuLowpassFilter(C::mip_interface& device, 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_pps_source  (0x0C,0x28) Pps Source [CPP]
+///@defgroup 3dm_pps_source_cpp  (0x0C,0x28) Pps Source
 /// Controls the Pulse Per Second (PPS) source.
 ///
 ///@{
@@ -2024,7 +2024,7 @@ TypedResult<PpsSource> defaultPpsSource(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_gpio_config  (0x0C,0x41) Gpio Config [CPP]
+///@defgroup 3dm_gpio_config_cpp  (0x0C,0x41) Gpio Config
 /// Configures the user GPIO pins on the connector for use with several built-in functions or for general input or output.
 /// 
 /// GPIO pins are device-dependent. Some features are only available on
@@ -2184,7 +2184,7 @@ TypedResult<GpioConfig> defaultGpioConfig(C::mip_interface& device, uint8_t pin)
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_gpio_state  (0x0C,0x42) Gpio State [CPP]
+///@defgroup 3dm_gpio_state_cpp  (0x0C,0x42) Gpio State
 /// Allows the state of the pin to be read or controlled.
 /// 
 /// This command serves two purposes: 1) To allow reading the state of a pin via command,
@@ -2276,7 +2276,7 @@ TypedResult<GpioState> readGpioState(C::mip_interface& device, uint8_t pin, bool
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_odometer  (0x0C,0x43) Odometer [CPP]
+///@defgroup 3dm_odometer_cpp  (0x0C,0x43) Odometer
 /// Configures the hardware odometer interface.
 /// 
 ///
@@ -2365,7 +2365,7 @@ TypedResult<Odometer> defaultOdometer(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_get_event_support  (0x0C,0x2A) Get Event Support [CPP]
+///@defgroup 3dm_get_event_support_cpp  (0x0C,0x2A) Get Event Support
 /// Lists the available trigger or action types.
 /// 
 /// There are a limited number of trigger and action slots available
@@ -2467,7 +2467,7 @@ TypedResult<GetEventSupport> getEventSupport(C::mip_interface& device, GetEventS
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_event_control  (0x0C,0x2B) Event Control [CPP]
+///@defgroup 3dm_event_control_cpp  (0x0C,0x2B) Event Control
 /// Enables or disables event triggers.
 /// 
 /// Triggers can be disabled, enabled, and tested. While disabled, a trigger will
@@ -2565,7 +2565,7 @@ TypedResult<EventControl> defaultEventControl(C::mip_interface& device, uint8_t 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_get_event_trigger_status  (0x0C,0x2C) Get Event Trigger Status [CPP]
+///@defgroup 3dm_get_event_trigger_status_cpp  (0x0C,0x2C) Get Event Trigger Status
 ///
 ///@{
 
@@ -2673,7 +2673,7 @@ TypedResult<GetEventTriggerStatus> getEventTriggerStatus(C::mip_interface& devic
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_get_event_action_status  (0x0C,0x2D) Get Event Action Status [CPP]
+///@defgroup 3dm_get_event_action_status_cpp  (0x0C,0x2D) Get Event Action Status
 ///
 ///@{
 
@@ -2751,7 +2751,7 @@ TypedResult<GetEventActionStatus> getEventActionStatus(C::mip_interface& device,
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_event_trigger  (0x0C,0x2E) Event Trigger [CPP]
+///@defgroup 3dm_event_trigger_cpp  (0x0C,0x2E) Event Trigger
 /// Configures various types of event triggers.
 ///
 ///@{
@@ -2922,7 +2922,7 @@ TypedResult<EventTrigger> defaultEventTrigger(C::mip_interface& device, uint8_t 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_event_action  (0x0C,0x2F) Event Action [CPP]
+///@defgroup 3dm_event_action_cpp  (0x0C,0x2F) Event Action
 /// Configures various types of event actions.
 ///
 ///@{
@@ -3055,7 +3055,7 @@ TypedResult<EventAction> defaultEventAction(C::mip_interface& device, uint8_t in
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_accel_bias  (0x0C,0x37) Accel Bias [CPP]
+///@defgroup 3dm_accel_bias_cpp  (0x0C,0x37) Accel Bias
 /// Configures the user specified accelerometer bias
 /// 
 /// The user specified bias is subtracted from the calibrated accelerometer output.  Value is input in the sensor frame.
@@ -3135,7 +3135,7 @@ TypedResult<AccelBias> defaultAccelBias(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_gyro_bias  (0x0C,0x38) Gyro Bias [CPP]
+///@defgroup 3dm_gyro_bias_cpp  (0x0C,0x38) Gyro Bias
 /// Configures the user specified gyroscope bias
 /// 
 /// The user specified bias is subtracted from the calibrated angular rate output.  Value is input in the sensor frame.
@@ -3215,7 +3215,7 @@ TypedResult<GyroBias> defaultGyroBias(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_capture_gyro_bias  (0x0C,0x39) Capture Gyro Bias [CPP]
+///@defgroup 3dm_capture_gyro_bias_cpp  (0x0C,0x39) Capture Gyro Bias
 /// Samples gyro for a specified time range and writes the averaged result to the Gyro Bias vector in RAM
 /// 
 /// The device will average the gyro output for the duration of "averaging_time_ms." To store the resulting vector
@@ -3286,7 +3286,7 @@ TypedResult<CaptureGyroBias> captureGyroBias(C::mip_interface& device, uint16_t 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_mag_hard_iron_offset  (0x0C,0x3A) Mag Hard Iron Offset [CPP]
+///@defgroup 3dm_mag_hard_iron_offset_cpp  (0x0C,0x3A) Mag Hard Iron Offset
 /// Configure the user specified magnetometer hard iron offset vector
 /// 
 /// The values for this offset are determined empirically by external software algorithms
@@ -3370,7 +3370,7 @@ TypedResult<MagHardIronOffset> defaultMagHardIronOffset(C::mip_interface& device
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_mag_soft_iron_matrix  (0x0C,0x3B) Mag Soft Iron Matrix [CPP]
+///@defgroup 3dm_mag_soft_iron_matrix_cpp  (0x0C,0x3B) Mag Soft Iron Matrix
 /// Configure the user specified magnetometer soft iron offset matrix
 /// 
 /// The values for this matrix are determined empirically by external software algorithms
@@ -3458,7 +3458,7 @@ TypedResult<MagSoftIronMatrix> defaultMagSoftIronMatrix(C::mip_interface& device
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_coning_sculling_enable  (0x0C,0x3E) Coning Sculling Enable [CPP]
+///@defgroup 3dm_coning_sculling_enable_cpp  (0x0C,0x3E) Coning Sculling Enable
 /// Controls the Coning and Sculling Compenstation setting.
 ///
 ///@{
@@ -3536,7 +3536,7 @@ TypedResult<ConingScullingEnable> defaultConingScullingEnable(C::mip_interface& 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_sensor_2_vehicle_transform_euler  (0x0C,0x31) Sensor 2 Vehicle Transform Euler [CPP]
+///@defgroup 3dm_sensor_2_vehicle_transform_euler_cpp  (0x0C,0x31) Sensor 2 Vehicle Transform Euler
 /// Sets the sensor-to-vehicle frame transformation using Yaw, Pitch, Roll Euler angles.
 /// These are the Yaw, Pitch, and Roll mounting angles of the sensor with respect to vehicle frame of reference,
 /// and describe the transformation of vectors from the sensor body frame to the vehicle frame.<br/>
@@ -3642,7 +3642,7 @@ TypedResult<Sensor2VehicleTransformEuler> defaultSensor2VehicleTransformEuler(C:
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_sensor_2_vehicle_transform_quaternion  (0x0C,0x32) Sensor 2 Vehicle Transform Quaternion [CPP]
+///@defgroup 3dm_sensor_2_vehicle_transform_quaternion_cpp  (0x0C,0x32) Sensor 2 Vehicle Transform Quaternion
 /// Set the sensor to vehicle frame transformation using unit length quaternion.
 /// 
 /// Note: This is the transformation, the inverse of the rotation.
@@ -3752,7 +3752,7 @@ TypedResult<Sensor2VehicleTransformQuaternion> defaultSensor2VehicleTransformQua
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_sensor_2_vehicle_transform_dcm  (0x0C,0x33) Sensor 2 Vehicle Transform Dcm [CPP]
+///@defgroup 3dm_sensor_2_vehicle_transform_dcm_cpp  (0x0C,0x33) Sensor 2 Vehicle Transform Dcm
 /// Set the sensor to vehicle frame transformation using a using a 3 x 3 direction cosine matrix EQSTART M_{ned}^{veh} EQEND, stored in row-major order in a 9-element array.
 /// 
 /// These angles define the transformation of vectors from the sensor body frame to the fixed vehicle frame, according to:<br/>
@@ -3860,7 +3860,7 @@ TypedResult<Sensor2VehicleTransformDcm> defaultSensor2VehicleTransformDcm(C::mip
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_complementary_filter  (0x0C,0x51) Complementary Filter [CPP]
+///@defgroup 3dm_complementary_filter_cpp  (0x0C,0x51) Complementary Filter
 /// Configure the settings for the complementary filter which produces the following (0x80) descriptor set values: attitude matrix (0x80,09), quaternion (0x80,0A), and  Euler angle (0x80,0C) outputs.
 /// 
 /// The filter can be configured to correct for pitch and roll using the accelerometer (with the assumption that linear acceleration is minimal),
@@ -3948,7 +3948,7 @@ TypedResult<ComplementaryFilter> defaultComplementaryFilter(C::mip_interface& de
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_sensor_range  (0x0C,0x52) Sensor Range [CPP]
+///@defgroup 3dm_sensor_range_cpp  (0x0C,0x52) Sensor Range
 /// Changes the IMU sensor gain.
 /// 
 /// This allows you to optimize the range to get the best accuracy and performance
@@ -4036,7 +4036,7 @@ TypedResult<SensorRange> defaultSensorRange(C::mip_interface& device, SensorRang
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_calibrated_sensor_ranges  (0x0C,0x53) Calibrated Sensor Ranges [CPP]
+///@defgroup 3dm_calibrated_sensor_ranges_cpp  (0x0C,0x53) Calibrated Sensor Ranges
 /// Returns the supported sensor ranges which may be used with the 3DM Sensor Range (0x0C,0x52) command.
 /// 
 /// The response includes an array of (u8, float) pairs which map each allowed setting
@@ -4118,7 +4118,7 @@ TypedResult<CalibratedSensorRanges> calibratedSensorRanges(C::mip_interface& dev
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_lowpass_filter  (0x0C,0x54) Lowpass Filter [CPP]
+///@defgroup 3dm_lowpass_filter_cpp  (0x0C,0x54) Lowpass Filter
 /// This command controls the low-pass anti-aliasing filter supported data quantities.
 /// 
 /// See the device user manual for data quantities which support the anti-aliasing filter.

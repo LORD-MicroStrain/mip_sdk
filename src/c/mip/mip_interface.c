@@ -9,6 +9,12 @@
 
 #include <stdio.h>
 
+#ifdef __cplusplus
+namespace mip {
+namespace C {
+extern "C" {
+#endif
+
 ////////////////////////////////////////////////////////////////////////////////
 ///@typedef mip::C::mip_send_callback
 ///
@@ -730,3 +736,10 @@ void mip_interface_register_extractor(
     mip_dispatch_handler_init_extractor(handler, descriptor_set, field_descriptor, extractor, field_ptr);
     mip_dispatcher_add_handler(&device->_dispatcher, handler);
 }
+
+
+#ifdef __cplusplus
+} // extern "C"
+} // namespace C
+} // namespace mip
+#endif

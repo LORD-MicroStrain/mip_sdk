@@ -10,7 +10,9 @@
 #ifdef __cplusplus
 namespace mip {
 namespace C {
+extern "C" {
 #endif
+
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Type of dispatch callback.
@@ -363,6 +365,7 @@ void mip_dispatcher_dispatch_packet(mip_dispatcher* self, const mip_packet_view*
 }
 
 #ifdef __cplusplus
+} // extern "C"
 } // namespace C
 } // namespace mip
 #endif

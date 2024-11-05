@@ -16,9 +16,9 @@ struct mip_interface;
 namespace data_gnss {
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipData_cpp  MIP Data [CPP]
+///@addtogroup MipData_cpp
 ///@{
-///@defgroup gnss_data_cpp  Gnss Data [CPP]
+///@defgroup gnss_data_cpp  Gnss Data
 ///
 ///@{
 
@@ -167,7 +167,7 @@ static constexpr const uint32_t GNSS_SV_INFO_MAX_SV_NUMBER = 32;
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_pos_llh  (0x81,0x03) Pos Llh [CPP]
+///@defgroup gnss_pos_llh_cpp  (0x81,0x03) Pos Llh
 /// GNSS reported position in the WGS84 geodetic frame
 ///
 ///@{
@@ -249,7 +249,7 @@ struct PosLlh
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_pos_ecef  (0x81,0x04) Pos Ecef [CPP]
+///@defgroup gnss_pos_ecef_cpp  (0x81,0x04) Pos Ecef
 /// GNSS reported position in the Earth-centered, Earth-Fixed (ECEF) frame
 ///
 ///@{
@@ -318,7 +318,7 @@ struct PosEcef
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_vel_ned  (0x81,0x05) Vel Ned [CPP]
+///@defgroup gnss_vel_ned_cpp  (0x81,0x05) Vel Ned
 /// GNSS reported velocity in the NED frame
 ///
 ///@{
@@ -403,7 +403,7 @@ struct VelNed
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_vel_ecef  (0x81,0x06) Vel Ecef [CPP]
+///@defgroup gnss_vel_ecef_cpp  (0x81,0x06) Vel Ecef
 /// GNSS reported velocity in the Earth-centered, Earth-Fixed (ECEF) frame
 ///
 ///@{
@@ -472,7 +472,7 @@ struct VelEcef
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_dop  (0x81,0x07) Dop [CPP]
+///@defgroup gnss_dop_cpp  (0x81,0x07) Dop
 /// GNSS reported dilution of precision information.
 ///
 ///@{
@@ -561,7 +561,7 @@ struct Dop
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_utc_time  (0x81,0x08) Utc Time [CPP]
+///@defgroup gnss_utc_time_cpp  (0x81,0x08) Utc Time
 /// GNSS reported Coordinated Universal Time
 ///
 ///@{
@@ -635,7 +635,7 @@ struct UtcTime
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_gps_time  (0x81,0x09) Gps Time [CPP]
+///@defgroup gnss_gps_time_cpp  (0x81,0x09) Gps Time
 /// GNSS reported GPS Time
 ///
 ///@{
@@ -704,7 +704,7 @@ struct GpsTime
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_clock_info  (0x81,0x0A) Clock Info [CPP]
+///@defgroup gnss_clock_info_cpp  (0x81,0x0A) Clock Info
 /// GNSS reported receiver clock parameters
 ///
 ///@{
@@ -777,7 +777,7 @@ struct ClockInfo
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_fix_info  (0x81,0x0B) Fix Info [CPP]
+///@defgroup gnss_fix_info_cpp  (0x81,0x0B) Fix Info
 /// GNSS reported position fix type
 ///
 ///@{
@@ -889,7 +889,7 @@ struct FixInfo
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_sv_info  (0x81,0x0C) Sv Info [CPP]
+///@defgroup gnss_sv_info_cpp  (0x81,0x0C) Sv Info
 /// GNSS reported space vehicle information
 /// 
 /// When enabled, these fields will arrive in separate MIP packets
@@ -1003,7 +1003,7 @@ struct SvInfo
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_hw_status  (0x81,0x0D) Hw Status [CPP]
+///@defgroup gnss_hw_status_cpp  (0x81,0x0D) Hw Status
 /// GNSS reported hardware status
 ///
 ///@{
@@ -1099,7 +1099,7 @@ struct HwStatus
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_dgps_info  (0x81,0x0E) Dgps Info [CPP]
+///@defgroup gnss_dgps_info_cpp  (0x81,0x0E) Dgps Info
 /// GNSS reported DGNSS status
 /// 
 /// <pre>Possible Base Station Status Values:</pre>
@@ -1188,7 +1188,7 @@ struct DgpsInfo
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_dgps_channel  (0x81,0x0F) Dgps Channel [CPP]
+///@defgroup gnss_dgps_channel_cpp  (0x81,0x0F) Dgps Channel
 /// GNSS reported DGPS Channel Status status
 /// 
 /// When enabled, a separate field for each active space vehicle will be sent in the packet.
@@ -1267,7 +1267,7 @@ struct DgpsChannel
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_clock_info_2  (0x81,0x10) Clock Info 2 [CPP]
+///@defgroup gnss_clock_info_2_cpp  (0x81,0x10) Clock Info 2
 /// GNSS reported receiver clock parameters
 /// 
 /// This supersedes MIP_DATA_DESC_GNSS_CLOCK_INFO with additional information.
@@ -1346,7 +1346,7 @@ struct ClockInfo2
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_gps_leap_seconds  (0x81,0x11) Gps Leap Seconds [CPP]
+///@defgroup gnss_gps_leap_seconds_cpp  (0x81,0x11) Gps Leap Seconds
 /// GNSS reported leap seconds (difference between GPS and UTC Time)
 ///
 ///@{
@@ -1408,7 +1408,7 @@ struct GpsLeapSeconds
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_sbas_info  (0x81,0x12) Sbas Info [CPP]
+///@defgroup gnss_sbas_info_cpp  (0x81,0x12) Sbas Info
 /// GNSS SBAS status
 ///
 ///@{
@@ -1526,7 +1526,7 @@ struct SbasInfo
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_sbas_correction  (0x81,0x13) Sbas Correction [CPP]
+///@defgroup gnss_sbas_correction_cpp  (0x81,0x13) Sbas Correction
 /// GNSS calculated SBAS Correction
 /// 
 /// UDREI - the variance of a normal distribution associated with the user differential range errors for a
@@ -1627,7 +1627,7 @@ struct SbasCorrection
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_rf_error_detection  (0x81,0x14) Rf Error Detection [CPP]
+///@defgroup gnss_rf_error_detection_cpp  (0x81,0x14) Rf Error Detection
 /// GNSS Error Detection subsystem status
 ///
 ///@{
@@ -1725,7 +1725,7 @@ struct RfErrorDetection
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_base_station_info  (0x81,0x30) Base Station Info [CPP]
+///@defgroup gnss_base_station_info_cpp  (0x81,0x30) Base Station Info
 /// RTCM reported base station information (sourced from RTCM Message 1005 or 1006)
 /// 
 /// Valid Flag Mapping:
@@ -1860,7 +1860,7 @@ struct BaseStationInfo
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_rtk_corrections_status  (0x81,0x31) Rtk Corrections Status [CPP]
+///@defgroup gnss_rtk_corrections_status_cpp  (0x81,0x31) Rtk Corrections Status
 ///
 ///@{
 
@@ -2001,7 +2001,7 @@ struct RtkCorrectionsStatus
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_satellite_status  (0x81,0x20) Satellite Status [CPP]
+///@defgroup gnss_satellite_status_cpp  (0x81,0x20) Satellite Status
 /// Status information for a GNSS satellite.
 ///
 ///@{
@@ -2092,7 +2092,7 @@ struct SatelliteStatus
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_raw  (0x81,0x22) Raw [CPP]
+///@defgroup gnss_raw_cpp  (0x81,0x22) Raw
 /// GNSS Raw observation.
 ///
 ///@{
@@ -2229,7 +2229,7 @@ struct Raw
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_gps_ephemeris  (0x81,0x61) Gps Ephemeris [CPP]
+///@defgroup gnss_gps_ephemeris_cpp  (0x81,0x61) Gps Ephemeris
 /// GPS Ephemeris Data
 ///
 ///@{
@@ -2332,7 +2332,7 @@ struct GpsEphemeris
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_galileo_ephemeris  (0x81,0x63) Galileo Ephemeris [CPP]
+///@defgroup gnss_galileo_ephemeris_cpp  (0x81,0x63) Galileo Ephemeris
 /// Galileo Ephemeris Data
 ///
 ///@{
@@ -2435,7 +2435,7 @@ struct GalileoEphemeris
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_glo_ephemeris  (0x81,0x62) Glo Ephemeris [CPP]
+///@defgroup gnss_glo_ephemeris_cpp  (0x81,0x62) Glo Ephemeris
 /// Glonass Ephemeris Data
 ///
 ///@{
@@ -2523,7 +2523,7 @@ struct GloEphemeris
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_gps_iono_corr  (0x81,0x71) Gps Iono Corr [CPP]
+///@defgroup gnss_gps_iono_corr_cpp  (0x81,0x71) Gps Iono Corr
 /// Ionospheric Correction Terms for GNSS
 ///
 ///@{
@@ -2600,7 +2600,7 @@ struct GpsIonoCorr
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_galileo_iono_corr  (0x81,0x73) Galileo Iono Corr [CPP]
+///@defgroup gnss_galileo_iono_corr_cpp  (0x81,0x73) Galileo Iono Corr
 /// Ionospheric Correction Terms for Galileo
 ///
 ///@{

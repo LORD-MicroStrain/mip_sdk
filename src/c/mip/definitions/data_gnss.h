@@ -17,9 +17,9 @@ extern "C" {
 #endif // __cplusplus
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipData_c  MIP Data [C]
+///@addtogroup MipData_c
 ///@{
-///@defgroup gnss_data_c  Gnss Data [C]
+///@defgroup gnss_data_c  Gnss Data
 ///
 ///@{
 
@@ -204,7 +204,7 @@ enum { MIP_GNSS_SV_INFO_MAX_SV_NUMBER = 32 };
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_pos_llh  (0x81,0x03) Pos Llh [C]
+///@defgroup gnss_pos_llh_c  (0x81,0x03) Pos Llh
 /// GNSS reported position in the WGS84 geodetic frame
 ///
 ///@{
@@ -250,7 +250,7 @@ bool extract_mip_gnss_pos_llh_data_from_field(const mip_field_view* field, void*
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_pos_ecef  (0x81,0x04) Pos Ecef [C]
+///@defgroup gnss_pos_ecef_c  (0x81,0x04) Pos Ecef
 /// GNSS reported position in the Earth-centered, Earth-Fixed (ECEF) frame
 ///
 ///@{
@@ -289,7 +289,7 @@ bool extract_mip_gnss_pos_ecef_data_from_field(const mip_field_view* field, void
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_vel_ned  (0x81,0x05) Vel Ned [C]
+///@defgroup gnss_vel_ned_c  (0x81,0x05) Vel Ned
 /// GNSS reported velocity in the NED frame
 ///
 ///@{
@@ -336,7 +336,7 @@ bool extract_mip_gnss_vel_ned_data_from_field(const mip_field_view* field, void*
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_vel_ecef  (0x81,0x06) Vel Ecef [C]
+///@defgroup gnss_vel_ecef_c  (0x81,0x06) Vel Ecef
 /// GNSS reported velocity in the Earth-centered, Earth-Fixed (ECEF) frame
 ///
 ///@{
@@ -375,7 +375,7 @@ bool extract_mip_gnss_vel_ecef_data_from_field(const mip_field_view* field, void
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_dop  (0x81,0x07) Dop [C]
+///@defgroup gnss_dop_c  (0x81,0x07) Dop
 /// GNSS reported dilution of precision information.
 ///
 ///@{
@@ -424,7 +424,7 @@ bool extract_mip_gnss_dop_data_from_field(const mip_field_view* field, void* ptr
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_utc_time  (0x81,0x08) Utc Time [C]
+///@defgroup gnss_utc_time_c  (0x81,0x08) Utc Time
 /// GNSS reported Coordinated Universal Time
 ///
 ///@{
@@ -468,7 +468,7 @@ bool extract_mip_gnss_utc_time_data_from_field(const mip_field_view* field, void
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_gps_time  (0x81,0x09) Gps Time [C]
+///@defgroup gnss_gps_time_c  (0x81,0x09) Gps Time
 /// GNSS reported GPS Time
 ///
 ///@{
@@ -507,7 +507,7 @@ bool extract_mip_gnss_gps_time_data_from_field(const mip_field_view* field, void
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_clock_info  (0x81,0x0A) Clock Info [C]
+///@defgroup gnss_clock_info_c  (0x81,0x0A) Clock Info
 /// GNSS reported receiver clock parameters
 ///
 ///@{
@@ -548,7 +548,7 @@ bool extract_mip_gnss_clock_info_data_from_field(const mip_field_view* field, vo
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_fix_info  (0x81,0x0B) Fix Info [C]
+///@defgroup gnss_fix_info_c  (0x81,0x0B) Fix Info
 /// GNSS reported position fix type
 ///
 ///@{
@@ -629,7 +629,7 @@ bool extract_mip_gnss_fix_info_data_from_field(const mip_field_view* field, void
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_sv_info  (0x81,0x0C) Sv Info [C]
+///@defgroup gnss_sv_info_c  (0x81,0x0C) Sv Info
 /// GNSS reported space vehicle information
 /// 
 /// When enabled, these fields will arrive in separate MIP packets
@@ -694,7 +694,7 @@ bool extract_mip_gnss_sv_info_data_from_field(const mip_field_view* field, void*
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_hw_status  (0x81,0x0D) Hw Status [C]
+///@defgroup gnss_hw_status_c  (0x81,0x0D) Hw Status
 /// GNSS reported hardware status
 ///
 ///@{
@@ -794,7 +794,7 @@ bool extract_mip_gnss_hw_status_data_from_field(const mip_field_view* field, voi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_dgps_info  (0x81,0x0E) Dgps Info [C]
+///@defgroup gnss_dgps_info_c  (0x81,0x0E) Dgps Info
 /// GNSS reported DGNSS status
 /// 
 /// <pre>Possible Base Station Status Values:</pre>
@@ -849,7 +849,7 @@ bool extract_mip_gnss_dgps_info_data_from_field(const mip_field_view* field, voi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_dgps_channel  (0x81,0x0F) Dgps Channel [C]
+///@defgroup gnss_dgps_channel_c  (0x81,0x0F) Dgps Channel
 /// GNSS reported DGPS Channel Status status
 /// 
 /// When enabled, a separate field for each active space vehicle will be sent in the packet.
@@ -894,7 +894,7 @@ bool extract_mip_gnss_dgps_channel_data_from_field(const mip_field_view* field, 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_clock_info_2  (0x81,0x10) Clock Info 2 [C]
+///@defgroup gnss_clock_info_2_c  (0x81,0x10) Clock Info 2
 /// GNSS reported receiver clock parameters
 /// 
 /// This supersedes MIP_DATA_DESC_GNSS_CLOCK_INFO with additional information.
@@ -939,7 +939,7 @@ bool extract_mip_gnss_clock_info_2_data_from_field(const mip_field_view* field, 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_gps_leap_seconds  (0x81,0x11) Gps Leap Seconds [C]
+///@defgroup gnss_gps_leap_seconds_c  (0x81,0x11) Gps Leap Seconds
 /// GNSS reported leap seconds (difference between GPS and UTC Time)
 ///
 ///@{
@@ -975,7 +975,7 @@ bool extract_mip_gnss_gps_leap_seconds_data_from_field(const mip_field_view* fie
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_sbas_info  (0x81,0x12) Sbas Info [C]
+///@defgroup gnss_sbas_info_c  (0x81,0x12) Sbas Info
 /// GNSS SBAS status
 ///
 ///@{
@@ -1040,7 +1040,7 @@ bool extract_mip_gnss_sbas_info_data_from_field(const mip_field_view* field, voi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_sbas_correction  (0x81,0x13) Sbas Correction [C]
+///@defgroup gnss_sbas_correction_c  (0x81,0x13) Sbas Correction
 /// GNSS calculated SBAS Correction
 /// 
 /// UDREI - the variance of a normal distribution associated with the user differential range errors for a
@@ -1109,7 +1109,7 @@ bool extract_mip_gnss_sbas_correction_data_from_field(const mip_field_view* fiel
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_rf_error_detection  (0x81,0x14) Rf Error Detection [C]
+///@defgroup gnss_rf_error_detection_c  (0x81,0x14) Rf Error Detection
 /// GNSS Error Detection subsystem status
 ///
 ///@{
@@ -1211,7 +1211,7 @@ bool extract_mip_gnss_rf_error_detection_data_from_field(const mip_field_view* f
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_base_station_info  (0x81,0x30) Base Station Info [C]
+///@defgroup gnss_base_station_info_c  (0x81,0x30) Base Station Info
 /// RTCM reported base station information (sourced from RTCM Message 1005 or 1006)
 /// 
 /// Valid Flag Mapping:
@@ -1283,7 +1283,7 @@ bool extract_mip_gnss_base_station_info_data_from_field(const mip_field_view* fi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_rtk_corrections_status  (0x81,0x31) Rtk Corrections Status [C]
+///@defgroup gnss_rtk_corrections_status_c  (0x81,0x31) Rtk Corrections Status
 ///
 ///@{
 
@@ -1357,7 +1357,7 @@ bool extract_mip_gnss_rtk_corrections_status_data_from_field(const mip_field_vie
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_satellite_status  (0x81,0x20) Satellite Status [C]
+///@defgroup gnss_satellite_status_c  (0x81,0x20) Satellite Status
 /// Status information for a GNSS satellite.
 ///
 ///@{
@@ -1408,7 +1408,7 @@ bool extract_mip_gnss_satellite_status_data_from_field(const mip_field_view* fie
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_raw  (0x81,0x22) Raw [C]
+///@defgroup gnss_raw_c  (0x81,0x22) Raw
 /// GNSS Raw observation.
 ///
 ///@{
@@ -1499,7 +1499,7 @@ bool extract_mip_gnss_raw_data_from_field(const mip_field_view* field, void* ptr
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_gps_ephemeris  (0x81,0x61) Gps Ephemeris [C]
+///@defgroup gnss_gps_ephemeris_c  (0x81,0x61) Gps Ephemeris
 /// GPS Ephemeris Data
 ///
 ///@{
@@ -1570,7 +1570,7 @@ bool extract_mip_gnss_gps_ephemeris_data_from_field(const mip_field_view* field,
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_galileo_ephemeris  (0x81,0x63) Galileo Ephemeris [C]
+///@defgroup gnss_galileo_ephemeris_c  (0x81,0x63) Galileo Ephemeris
 /// Galileo Ephemeris Data
 ///
 ///@{
@@ -1641,7 +1641,7 @@ bool extract_mip_gnss_galileo_ephemeris_data_from_field(const mip_field_view* fi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_glo_ephemeris  (0x81,0x62) Glo Ephemeris [C]
+///@defgroup gnss_glo_ephemeris_c  (0x81,0x62) Glo Ephemeris
 /// Glonass Ephemeris Data
 ///
 ///@{
@@ -1701,7 +1701,7 @@ bool extract_mip_gnss_glo_ephemeris_data_from_field(const mip_field_view* field,
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_gps_iono_corr  (0x81,0x71) Gps Iono Corr [C]
+///@defgroup gnss_gps_iono_corr_c  (0x81,0x71) Gps Iono Corr
 /// Ionospheric Correction Terms for GNSS
 ///
 ///@{
@@ -1744,7 +1744,7 @@ bool extract_mip_gnss_gps_iono_corr_data_from_field(const mip_field_view* field,
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_galileo_iono_corr  (0x81,0x73) Galileo Iono Corr [C]
+///@defgroup gnss_galileo_iono_corr_c  (0x81,0x73) Galileo Iono Corr
 /// Ionospheric Correction Terms for Galileo
 ///
 ///@{

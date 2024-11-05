@@ -13,6 +13,12 @@
 #define MIP_INDEX_REPLY_DESCRIPTOR 0
 #define MIP_INDEX_REPLY_ACK_CODE   1
 
+#ifdef __cplusplus
+namespace mip {
+namespace C {
+extern "C" {
+#endif
+
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Initialize a pending command with no reponse data or additional time.
@@ -556,3 +562,9 @@ uint16_t mip_cmd_queue_diagnostic_cmd_errors(const mip_cmd_queue* queue)
 }
 
 #endif // MIP_ENABLE_DIAGNOSTICS
+
+#ifdef __cplusplus
+} // extern "C"
+} // namespace C
+} // namespace mip
+#endif
