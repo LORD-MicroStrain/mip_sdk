@@ -96,7 +96,7 @@ endif()
 
 target_sources(${MIP_LIBRARY} PRIVATE ${MIP_DEF_SOURCES})
 
-target_link_libraries(${MIP_LIBRARIES} INTERFACE ${MIP_LIBRARY})
+set(MIP_LIBRARIES_TMP ${MIP_LIBRARIES_TMP} ${MIP_LIBRARY} PARENT_SCOPE)
 
 #
 # Installation
