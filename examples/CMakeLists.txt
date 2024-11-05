@@ -75,8 +75,8 @@ if(MICROSTRAIN_ENABLE_CPP)
             target_link_libraries(Threads PUBLIC pthread)
         endif()
         if(MIP_ENABLE_METADATA)
-            add_mip_example(CsvExample "${EXAMPLE_SOURCES};${EXAMPLE_DIR}/CSV/csv.cpp;${EXAMPLE_DIR}/CSV/stringify.cpp;${EXAMPLE_DIR}/CSV/stringify.hpp")
-            target_link_libraries(CsvExample PRIVATE ${MIP_METADATA_LIBRARY})
+            add_mip_example(PrettyPrinter "${EXAMPLE_SOURCES};${EXAMPLE_DIR}/PrettyPrinter/pretty_printer.cpp;${EXAMPLE_DIR}/PrettyPrinter/stringify.cpp;${EXAMPLE_DIR}/PrettyPrinter/stringify.hpp")
+            target_link_libraries(PrettyPrinter PRIVATE ${MIP_METADATA_LIBRARY})
         endif()
 
         # Product-specific examples
