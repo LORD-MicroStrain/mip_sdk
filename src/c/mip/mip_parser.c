@@ -5,6 +5,12 @@
 
 #include <assert.h>
 
+#ifdef __cplusplus
+namespace mip {
+namespace C {
+extern "C" {
+#endif
+
 
 #define MIPPARSER_RESET_LENGTH 1
 
@@ -482,3 +488,10 @@ mip_timeout mip_timeout_from_baudrate(uint32_t baudrate)
     // timeout [ms] = (packet_time [s]) * (1000 [ms/s]) * tolerance
     return num_symbols * 1500 / baudrate;
 }
+
+
+#ifdef __cplusplus
+} // extern "C"
+} // namespace C
+} // namespace mip
+#endif

@@ -58,32 +58,39 @@ macro(add_mip_example name sources)
 
 endmacro()
 
-# C++ examples need either serial or TCP support
-if(MICROSTRAIN_ENABLE_CPP AND (MICROSTRAIN_ENABLE_SERIAL OR MICROSTRAIN_ENABLE_TCP))
+add_mip_example(MipPacketC "${EXAMPLE_DIR}/mip_packet_example.c")
 
-    # Generic examples
-    add_mip_example(DeviceInfo "${EXAMPLE_DIR}/device_info.cpp")
-    add_mip_example(WatchImu   "${EXAMPLE_DIR}/watch_imu.cpp")
-    add_mip_example(Threads    "${EXAMPLE_DIR}/threading.cpp")
-    if(UNIX)
-        target_link_libraries(Threads PUBLIC pthread)
+if(MICROSTRAIN_ENABLE_CPP)
+
+    add_mip_example(MipPacket "${EXAMPLE_DIR}/mip_packet_example.cpp")
+
+    # C++ examples that need either serial or TCP support
+    if(MICROSTRAIN_ENABLE_SERIAL OR MICROSTRAIN_ENABLE_TCP)
+
+        # Generic examples
+        add_mip_example(DeviceInfo "${EXAMPLE_DIR}/device_info.cpp")
+        add_mip_example(WatchImu   "${EXAMPLE_DIR}/watch_imu.cpp")
+        add_mip_example(Threads    "${EXAMPLE_DIR}/threading.cpp")
+        if(UNIX)
+            target_link_libraries(Threads PUBLIC pthread)
+        endif()
+        if(MIP_ENABLE_METADATA)
+            add_mip_example(PrettyPrinter "${EXAMPLE_SOURCES};${EXAMPLE_DIR}/PrettyPrinter/pretty_printer.cpp;${EXAMPLE_DIR}/PrettyPrinter/stringify.cpp;${EXAMPLE_DIR}/PrettyPrinter/stringify.hpp")
+            target_link_libraries(PrettyPrinter PRIVATE ${MIP_METADATA_LIBRARY})
+        endif()
+
+        # Product-specific examples
+        add_mip_example(GQ7_Example                  "${EXAMPLE_DIR}/GQ7/GQ7_example.cpp")
+        add_mip_example(CV7_Example                  "${EXAMPLE_DIR}/CV7/CV7_example.cpp")
+        add_mip_example(CV7_INS_Simple_Example       "${EXAMPLE_DIR}/CV7_INS/CV7_INS_simple_example.cpp")
+        add_mip_example(CV7_INS_Simple_Ublox_Example "${EXAMPLE_DIR}/CV7_INS/CV7_INS_simple_ublox_example.cpp")
+        add_mip_example(CX5_GX5_45_Example           "${EXAMPLE_DIR}/CX5_GX5_45/CX5_GX5_45_example.cpp")
+        add_mip_example(CX5_GX5_CV5_15_25_Example    "${EXAMPLE_DIR}/CX5_GX5_CV5_15_25/CX5_GX5_CV5_15_25_example.cpp")
+
     endif()
-    if(MIP_ENABLE_METADATA)
-        add_mip_example(CsvExample "${EXAMPLE_SOURCES};${EXAMPLE_DIR}/CSV/csv.cpp;${EXAMPLE_DIR}/CSV/stringify.cpp;${EXAMPLE_DIR}/CSV/stringify.hpp")
-        target_link_libraries(CsvExample PRIVATE ${MIP_METADATA_LIBRARY})
-    endif()
-
-    # Product-specific examples
-    add_mip_example(GQ7_Example                  "${EXAMPLE_DIR}/GQ7/GQ7_example.cpp")
-    add_mip_example(CV7_Example                  "${EXAMPLE_DIR}/CV7/CV7_example.cpp")
-    add_mip_example(CV7_INS_Simple_Example       "${EXAMPLE_DIR}/CV7_INS/CV7_INS_simple_example.cpp")
-    add_mip_example(CV7_INS_Simple_Ublox_Example "${EXAMPLE_DIR}/CV7_INS/CV7_INS_simple_ublox_example.cpp")
-    add_mip_example(CX5_GX5_45_Example           "${EXAMPLE_DIR}/CX5_GX5_45/CX5_GX5_45_example.cpp")
-    add_mip_example(CX5_GX5_CV5_15_25_Example    "${EXAMPLE_DIR}/CX5_GX5_CV5_15_25/CX5_GX5_CV5_15_25_example.cpp")
-
 endif()
 
-# C examples need serial support
+# C examples that need serial support
 if(MICROSTRAIN_ENABLE_SERIAL)
 
     add_mip_example(WatchImuC                  "${EXAMPLE_DIR}/watch_imu.c")

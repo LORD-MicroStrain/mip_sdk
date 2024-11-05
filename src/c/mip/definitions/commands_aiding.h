@@ -17,9 +17,9 @@ extern "C" {
 #endif // __cplusplus
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipCommands_c  MIP Commands [C]
+///@addtogroup MipCommands_c
 ///@{
-///@defgroup aiding_commands_c  Aiding Commands [C]
+///@defgroup aiding_commands_c  Aiding Commands
 ///
 ///@{
 
@@ -95,7 +95,7 @@ void extract_mip_time(microstrain_serializer* serializer, mip_time* self);
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_aiding_frame_config  (0x13,0x01) Frame Config [C]
+///@defgroup aiding_frame_config_c  (0x13,0x01) Frame Config
 /// Defines an aiding frame associated with a specific sensor frame ID.
 /// The frame ID used in this command should mirror the frame ID used in the aiding command
 /// (if that aiding measurement is measured in this reference frame).
@@ -185,7 +185,7 @@ mip_cmd_result mip_aiding_default_frame_config(mip_interface* device, uint8_t fr
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_aiding_echo_control  (0x13,0x1F) Echo Control [C]
+///@defgroup aiding_echo_control_c  (0x13,0x1F) Echo Control
 /// Controls command response behavior to external aiding commands
 ///
 ///@{
@@ -238,7 +238,7 @@ mip_cmd_result mip_aiding_default_echo_control(mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_aiding_pos_ecef  (0x13,0x21) Pos Ecef [C]
+///@defgroup aiding_pos_ecef_c  (0x13,0x21) Pos Ecef
 /// Cartesian vector position aiding command. Coordinates are given in the WGS84 ECEF system.
 ///
 ///@{
@@ -279,7 +279,7 @@ mip_cmd_result mip_aiding_pos_ecef(mip_interface* device, const mip_time* time, 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_aiding_pos_llh  (0x13,0x22) Pos Llh [C]
+///@defgroup aiding_pos_llh_c  (0x13,0x22) Pos Llh
 /// Geodetic position aiding command.
 /// Coordinates are given in WGS84 geodetic latitude, longitude, and height above the ellipsoid.
 /// Uncertainty is given in NED coordinates, which are parallel to incremental changes in latitude, longitude, and height.
@@ -324,7 +324,7 @@ mip_cmd_result mip_aiding_pos_llh(mip_interface* device, const mip_time* time, u
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_aiding_height_above_ellipsoid  (0x13,0x23) Height Above Ellipsoid [C]
+///@defgroup aiding_height_above_ellipsoid_c  (0x13,0x23) Height Above Ellipsoid
 /// Estimated value of the height above ellipsoid.
 ///
 ///@{
@@ -347,7 +347,7 @@ mip_cmd_result mip_aiding_height_above_ellipsoid(mip_interface* device, const mi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_aiding_vel_ecef  (0x13,0x28) Vel Ecef [C]
+///@defgroup aiding_vel_ecef_c  (0x13,0x28) Vel Ecef
 /// ECEF velocity aiding command. Coordinates are given in the WGS84 ECEF frame.
 ///
 ///@{
@@ -388,7 +388,7 @@ mip_cmd_result mip_aiding_vel_ecef(mip_interface* device, const mip_time* time, 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_aiding_vel_ned  (0x13,0x29) Vel Ned [C]
+///@defgroup aiding_vel_ned_c  (0x13,0x29) Vel Ned
 /// NED velocity aiding command. Coordinates are given in the local North-East-Down frame.
 ///
 ///@{
@@ -429,7 +429,7 @@ mip_cmd_result mip_aiding_vel_ned(mip_interface* device, const mip_time* time, u
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_aiding_vel_body_frame  (0x13,0x2A) Vel Body Frame [C]
+///@defgroup aiding_vel_body_frame_c  (0x13,0x2A) Vel Body Frame
 /// Estimated of velocity of the vehicle in the frame associated with the given sensor ID, relative to the vehicle frame.
 ///
 ///@{
@@ -470,7 +470,7 @@ mip_cmd_result mip_aiding_vel_body_frame(mip_interface* device, const mip_time* 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_aiding_heading_true  (0x13,0x31) Heading True [C]
+///@defgroup aiding_heading_true_c  (0x13,0x31) Heading True
 ///
 ///@{
 
@@ -492,7 +492,7 @@ mip_cmd_result mip_aiding_heading_true(mip_interface* device, const mip_time* ti
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_aiding_magnetic_field  (0x13,0x32) Magnetic Field [C]
+///@defgroup aiding_magnetic_field_c  (0x13,0x32) Magnetic Field
 /// Estimate of magnetic field in the frame associated with the given sensor ID.
 ///
 ///@{
@@ -533,7 +533,7 @@ mip_cmd_result mip_aiding_magnetic_field(mip_interface* device, const mip_time* 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_aiding_pressure  (0x13,0x33) Pressure [C]
+///@defgroup aiding_pressure_c  (0x13,0x33) Pressure
 /// Estimated value of air pressure.
 ///
 ///@{

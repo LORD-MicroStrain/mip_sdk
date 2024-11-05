@@ -13,7 +13,7 @@ extern "C" {
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup mip_c  MIP C API
+///@addtogroup mip_c
 ///
 ///@brief This module contains all of the C submodules.
 ///
@@ -21,7 +21,7 @@ extern "C" {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_parser_c mip_parser [C]
+///@defgroup mip_parser_c Mip Parser
 ///
 ///@brief Functions for parsing MIP packets
 ///

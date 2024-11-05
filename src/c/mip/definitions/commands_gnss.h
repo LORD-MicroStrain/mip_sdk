@@ -17,9 +17,9 @@ extern "C" {
 #endif // __cplusplus
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipCommands_c  MIP Commands [C]
+///@addtogroup MipCommands_c
 ///@{
-///@defgroup gnss_commands_c  Gnss Commands [C]
+///@defgroup gnss_commands_c  Gnss Commands
 ///
 ///@{
 
@@ -61,7 +61,7 @@ enum { MIP_GNSS_BEIDOU_ENABLE_B2A = 0x0004 };
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_receiver_info  (0x0E,0x01) Receiver Info [C]
+///@defgroup gnss_receiver_info_c  (0x0E,0x01) Receiver Info
 /// Return information about the GNSS receivers in the device.
 /// 
 ///
@@ -96,7 +96,7 @@ mip_cmd_result mip_gnss_receiver_info(mip_interface* device, uint8_t* num_receiv
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_signal_configuration  (0x0E,0x02) Signal Configuration [C]
+///@defgroup gnss_signal_configuration_c  (0x0E,0x02) Signal Configuration
 /// Configure the GNSS signals used by the device.
 /// 
 ///
@@ -138,7 +138,7 @@ mip_cmd_result mip_gnss_default_signal_configuration(mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_rtk_dongle_configuration  (0x0E,0x10) Rtk Dongle Configuration [C]
+///@defgroup gnss_rtk_dongle_configuration_c  (0x0E,0x10) Rtk Dongle Configuration
 /// Configure the communications with the RTK Dongle connected to the device.
 /// 
 ///
