@@ -15,7 +15,7 @@ unsigned int num_packets_parsed = 0;
 mip_timestamp parsed_packet_timestamp = 0;
 size_t parsed_packet_length = 0;
 uint8_t parsed_buffer[MIP_PACKET_LENGTH_MAX];
-mip_packet parsed_packet = { ._buffer=parsed_buffer, ._buffer_length=0, };
+mip_packet_view parsed_packet = { ._buffer=parsed_buffer, ._buffer_length=0, };
 
 
 void print_packet(FILE* out, const struct mip_packet_view* packet)
@@ -65,8 +65,8 @@ int main(int argc, const char* argv[])
 
     uint8_t buffer     [MIP_PACKET_LENGTH_MAX];
     uint8_t prev_buffer[MIP_PACKET_LENGTH_MAX];
-    mip_packet packet      = { ._buffer=buffer,      ._buffer_length=sizeof(buffer) };
-    mip_packet prev_packet = { ._buffer=prev_buffer, ._buffer_length=sizeof(buffer) };
+    mip_packet_view packet      = { ._buffer=buffer,      ._buffer_length=sizeof(buffer) };
+    mip_packet_view prev_packet = { ._buffer=prev_buffer, ._buffer_length=sizeof(buffer) };
 
     bool prev_timeout = false;
 
