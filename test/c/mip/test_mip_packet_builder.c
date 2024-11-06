@@ -1,6 +1,9 @@
 
+#include "test.h"
+
 #include <mip/mip_packet.h>
 #include <mip/mip_offsets.h>
+
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -8,56 +11,6 @@
 
 #define EXTRA 1
 uint8_t buffer[MIP_PACKET_LENGTH_MAX+EXTRA];
-
-int num_errors = 0;
-
-void print_buffer(FILE* file)
-{
-    for(unsigned int i=0; i<sizeof(buffer); i++)
-    {
-        fprintf(file, " %02X", buffer[i]);
-    }
-
-    fputc('\n', stderr);
-}
-
-bool check(bool condition, const char* fmt, ...)
-{
-    if( condition )
-        return true;
-
-    va_list argptr;
-    va_start(argptr, fmt);
-    vfprintf(stderr, fmt, argptr);
-    va_end(argptr);
-
-    fputc('\n', stderr);
-
-    print_buffer(stderr);
-
-    num_errors++;
-    return false;
-}
-
-bool check_equal(int a, int b, const char* fmt, ...)
-{
-    if( a == b )
-        return true;
-
-    va_list argptr;
-    va_start(argptr, fmt);
-    vfprintf(stderr, fmt, argptr);
-    va_end(argptr);
-
-    fprintf(stderr, " (%d != %d)", a, b);
-
-    fputc('\n', stderr);
-
-    print_buffer(stderr);
-
-    num_errors++;
-    return false;
-}
 
 
 void test_init()
@@ -147,7 +100,7 @@ void test_short_buffer()
     uint8_t* p;
     check_equal(mip_packet_create_field(&packet, 0x04, 3, &p), -1, "Wrong remaining count after allocating 1 too many bytes" );
     check_equal(mip_packet_create_field(&packet, 0x04, MIP_FIELD_PAYLOAD_LENGTH_MAX, &p), 2-MIP_FIELD_PAYLOAD_LENGTH_MAX, "Wrong remaining count after allocating max payload" );
-    check_equal(mip_packet_create_field(&packet, 0x04, 255, &p), -253, "Wrong remaining count after allocating excessive payload" );
+    check_equal(mip_packet_create_field(&packet, 0x04, 253, &p), -251, "Wrong remaining count after allocating excessive payload" );
     check_equal(mip_packet_create_field(&packet, 0x05, 1, &p), 1, "Wrong remaining size after allocating 3 bytes" );
     check_equal(mip_packet_create_field(&packet, 0x06, 1, &p), -2, "Wrong remaining size after allocating 3 more bytes" );
 }

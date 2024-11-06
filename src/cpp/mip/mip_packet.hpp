@@ -90,6 +90,24 @@ public:
     //int finishLastField(uint8_t* payloadPtr, uint8_t newPayloadLength) { return C::mip_packet_realloc_last_field(this, payloadPtr, newPayloadLength); }  ///<@copydoc mip::C::mip_packet_realloc_last_field
     //int cancelLastField(uint8_t* payloadPtr) { return C::mip_packet_cancel_last_field(this, payloadPtr); }  ///<@copydoc mip::C::mip_packet_cancel_last_field
 
+    void finalize() { C::mip_packet_finalize(this); }  ///<@copydoc mip::C::mip_packet_finalize
+
+    void reset(uint8_t descSet) { C::mip_packet_reset(this, descSet); }  ///<@copydoc mip::C::mip_packet_reset
+    void reset() { reset(descriptorSet()); }  ///<@brief Resets the packet using the same descriptor set.
+
+    //
+    // C++ additions
+    //
+
+    ///@brief Gets a span over the whole packet.
+    ///
+    microstrain::Span<const uint8_t> totalSpan() const { return {pointer(), totalLength()}; }
+
+    ///@brief Gets a span over just the payload.
+    ///
+    microstrain::Span<const uint8_t> payloadSpan() const { return {payload(), payloadLength()}; }
+
+
     class AllocatedField : public Serializer
     {
     public:
@@ -112,16 +130,13 @@ public:
             return ok;
         }
 
+        void cancel() { if(basePointer()) C::mip_packet_cancel_last_field(&m_packet, basePointer()); }
+
     private:
         PacketView& m_packet;
     };
 
     AllocatedField createField(uint8_t fieldDescriptor) { uint8_t* ptr; size_t max_size = std::max<int>(0, C::mip_packet_create_field(this, fieldDescriptor, 0, &ptr)); return {*this, ptr, max_size}; }
-
-    void finalize() { C::mip_packet_finalize(this); }  ///<@copydoc mip::C::mip_packet_finalize
-
-    void reset(uint8_t descSet) { C::mip_packet_reset(this, descSet); }  ///<@copydoc mip::C::mip_packet_reset
-    void reset() { reset(descriptorSet()); }  ///<@brief Resets the packet using the same descriptor set.
 
     uint8_t operator[](unsigned int index) const { return pointer()[index]; }
 
@@ -243,6 +258,28 @@ public:
         FieldView mField;
     };
 
+    ///@brief Copies this packet to an external buffer.
+    ///
+    /// This packet must be sane (see isSane()). Undefined behavior otherwise due to lookup of totalLength().
+    ///
+    ///@param buffer    Data is copied into this location.
+    ///@param maxLength Maximum number of bytes to copy.
+    ///
+    ///@returns true if successful.
+    ///@returns false if maxLength is too short.
+    ///
+    bool copyPacketTo(uint8_t* buffer, size_t maxLength) { assert(isSane()); size_t copyLength = this->totalLength(); if(copyLength > maxLength) return false; std::memcpy(buffer, pointer(), copyLength); return true; }
+
+    ///@brief Copies this packet to an external buffer (span version).
+    ///
+    /// This packet must be sane (see isSane()). Undefined behavior otherwise due to lookup of totalLength().
+    ///
+    ///@param buffer Data is copied to this buffer.
+    ///
+    ///@returns true if successful.
+    ///@returns false if maxLength is too short.
+    ///
+    bool copyPacketTo(microstrain::Span<uint8_t> buffer) { return copyPacketTo(buffer.data(), buffer.size()); }
 };
 
 
@@ -262,8 +299,12 @@ public:
     explicit SizedPacketBuf(const uint8_t* data, size_t length) : PacketView(mData, sizeof(mData)) { copyFrom(data, length); }
     explicit SizedPacketBuf(const PacketView& packet) : PacketView(mData, sizeof(mData)) { copyFrom(packet); }
 
+    ///@brief Construct from a span.
+    explicit SizedPacketBuf(microstrain::Span<const uint8_t> data) : SizedPacketBuf(data.data(), data.size()) {}
+
     ///@brief Copy constructor
     SizedPacketBuf(const SizedPacketBuf& other) : PacketView(mData, sizeof(mData)) { copyFrom(other); }
+
 
     ///@brief Copy constructor (required to insert packets into std::vector in some cases).
     template<size_t OtherSize>
@@ -306,6 +347,10 @@ public:
     /// This is technically the same as PacketRef::pointer but is writable.
     uint8_t* buffer() { return mData; }
 
+    ///@brief Returns a Span covering the entire buffer.
+    ///
+    microstrain::Span<uint8_t, BufferSize> bufferSpan() { return microstrain::Span<uint8_t, BufferSize>{buffer(), BufferSize}; }
+
     ///@brief Copies the data from the pointer to this buffer. The data is not inspected.
     ///
     ///@param data   Pointer to the start of the packet.
@@ -318,18 +363,6 @@ public:
     ///@param packet A "sane" (isSane()) mip packet.
     ///
     void copyFrom(const PacketView& packet) { assert(packet.isSane()); copyFrom(packet.pointer(), packet.totalLength()); }
-
-    ///@brief Copies this packet to an external buffer.
-    ///
-    /// This packet must be sane (see isSane()). Undefined behavior otherwise due to lookup of totalLength().
-    ///
-    ///@param buffer    Data is copied into this location.
-    ///@param maxLength Maximum number of bytes to copy.
-    ///
-    ///@returns true if successful.
-    ///@returns false if maxLength is too short.
-    ///
-    bool copyTo(uint8_t* buffer, size_t maxLength) { assert(isSane()); size_t copyLength = this->totalLength(); if(copyLength > maxLength) return false; std::memcpy(buffer, mData, copyLength); return true; }
 
 private:
     uint8_t mData[BufferSize];
