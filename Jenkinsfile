@@ -22,7 +22,7 @@ def checkoutRepo() {
     branches: [
         [name: 'refs/heads/' + BRANCH_NAME_REAL]
     ],
-    userRemoteConfigs: [[credentialsId: 'Github_User_And_Token', url: 'https://github.com/LORD-MicroStrain/libmip.git']],
+    userRemoteConfigs: [[credentialsId: 'Github_User_And_Token', url: 'https://github.com/LORD-MicroStrain/mip_sdk.git']],
     extensions: [
     ]
   ])
