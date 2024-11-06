@@ -66,6 +66,16 @@ option(MIP_ENABLE_EXTRAS "Build extra support into the library including some th
 # Include some utilities used for MicroStrain projects
 include(microstrain_utilities)
 
+# TODO: Figure out if need to do anything with these
+# set(UTILS_SUBDIR_TIME "${UTILS_DIR}/time")
+# set(UTILS_TIME_SOURCES
+#     "${UTILS_SUBDIR_TIME}/durations.hpp"
+#     "${UTILS_SUBDIR_TIME}/misc.hpp"
+#     "${UTILS_SUBDIR_TIME}/standards.cpp"
+#     "${UTILS_SUBDIR_TIME}/standards.hpp"
+#     "${UTILS_SUBDIR_TIME}/timestamp.cpp"
+#     "${UTILS_SUBDIR_TIME}/timestamp.hpp"
+
 #
 # Common preprocessor definitions
 #
