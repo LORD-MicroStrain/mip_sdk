@@ -3,12 +3,12 @@
 
 #include <stdarg.h>
 
-#include <mip/mip_logging.h>
+#include <microstrain/common/logging.h>
 
 #include "example_utils.hpp"
 
 
-#ifdef WIN32
+#ifdef MICROSTRAIN_PLATFORM_WINDOWS
     #define PORT_KEY "COM"
 #else
     #define PORT_KEY "/dev/"
@@ -20,7 +20,7 @@ mip::Timestamp getCurrentTimestamp()
     return duration_cast<milliseconds>( steady_clock::now().time_since_epoch() ).count();
 }
 
-void customLog(void* user, mip_log_level level, const char* fmt, va_list args)
+void customLog(void* /*user*/, microstrain_log_level level, const char* fmt, va_list args)
 {
     // Convert the varargs into a string
     std::string log;
@@ -37,8 +37,8 @@ void customLog(void* user, mip_log_level level, const char* fmt, va_list args)
     // Print to the proper stream
     switch (level)
     {
-        case MIP_LOG_LEVEL_FATAL:
-        case MIP_LOG_LEVEL_ERROR:
+        case MICROSTRAIN_LOG_LEVEL_FATAL:
+        case MICROSTRAIN_LOG_LEVEL_ERROR:
             std::cerr << log;
             break;
         default:
@@ -49,61 +49,61 @@ void customLog(void* user, mip_log_level level, const char* fmt, va_list args)
 
 std::unique_ptr<ExampleUtils> openFromArgs(const std::string& port_or_hostname, const std::string& baud_or_port, const std::string& binary_file_path)
 {
-    auto example_utils = std::unique_ptr<ExampleUtils>(new ExampleUtils());
+    std::unique_ptr<ExampleUtils> example_utils(new ExampleUtils());
 
     if( !binary_file_path.empty() )
     {
-#ifdef MIP_USE_EXTRAS
-        example_utils->recordedFile = std::unique_ptr<std::ofstream>(new std::ofstream(binary_file_path));
+#if defined MICROSTRAIN_ENABLE_SERIAL || defined MICROSTRAIN_ENABLE_TCP
+        example_utils->recordedFile.reset(new std::ofstream(binary_file_path));
         if( !example_utils->recordedFile->is_open() )
             throw std::runtime_error("Unable to open binary file");
-#else  // MIP_USE_EXTRAS
-        throw std::runtime_error("The program was compiled without binary file recording support. Recompile with -DMIP_USE_EXTRAS=ON");
-#endif  // MIP_USE_EXTRAS
+#else  // MIP_ENABLE_EXTRAS
+        throw std::runtime_error("The program was compiled without binary file recording support. Recompile with -DMIP_ENABLE_EXTRAS=ON");
+#endif  // MIP_ENABLE_EXTRAS
     }
 
     if(port_or_hostname.find(PORT_KEY) == std::string::npos)  // Not a serial port
     {
 
-#ifdef MIP_USE_TCP
+#ifdef MICROSTRAIN_ENABLE_TCP
         uint32_t port = std::strtoul(baud_or_port.c_str(), nullptr, 10);
         if( port < 1024 || port > 65535 )
             throw std::runtime_error("Invalid TCP port (must be between 1024 and 65535.");
 
-#ifdef MIP_USE_EXTRAS
-        using RecordingTcpConnection = mip::extras::RecordingConnectionWrapper<mip::platform::TcpConnection>;
-        example_utils->connection = std::unique_ptr<RecordingTcpConnection>(new RecordingTcpConnection(example_utils->recordedFile.get(), example_utils->recordedFile.get(), port_or_hostname, port));
-#else  // MIP_USE_EXTRAS
-        using TcpConnection = mip::platform::TcpConnection;
-        example_utils->connection = std::unique_ptr<TcpConnection>(new TcpConnection(port_or_hostname, port));
-#endif  // MIP_USE_EXTRAS
+#if defined MICROSTRAIN_ENABLE_SERIAL || defined MICROSTRAIN_ENABLE_TCP
+        using RecordingTcpConnection = microstrain::connections::RecordingConnectionWrapper<microstrain::connections::TcpConnection>;
+        example_utils->connection.reset(new RecordingTcpConnection(example_utils->recordedFile.get(), example_utils->recordedFile.get(), port_or_hostname, uint16_t(port)));
+#else  // MIP_ENABLE_EXTRAS
+        using TcpConnection = microstrain::connections::TcpConnection;
+        example_utils->connection.reset(new TcpConnection(port_or_hostname, port));
+#endif  // MIP_ENABLE_EXTRAS
 
-        example_utils->device = std::unique_ptr<mip::DeviceInterface>(new mip::DeviceInterface(example_utils->connection.get(), example_utils->buffer, sizeof(example_utils->buffer), 1000, 2000));
-#else  // MIP_USE_TCP
-        throw std::runtime_error("This program was compiled without socket support. Recompile with -DMIP_USE_TCP=1");
-#endif // MIP_USE_TCP
+        example_utils->device.reset(new mip::Interface(example_utils->connection.get(), example_utils->buffer, sizeof(example_utils->buffer), 1000, 2000));
+#else  // MICROSTRAIN_ENABLE_TCP
+        throw std::runtime_error("This program was compiled without socket support. Recompile with -DMICROSTRAIN_ENABLE_TCP=1");
+#endif // MICROSTRAIN_ENABLE_TCP
 
     }
     else  // Serial port
     {
 
-#ifdef MIP_USE_SERIAL
+#ifdef MICROSTRAIN_ENABLE_SERIAL
         uint32_t baud = std::strtoul(baud_or_port.c_str(), nullptr, 10);
         if( baud == 0 )
             throw std::runtime_error("Serial baud rate must be a decimal integer greater than 0.");
 
-#ifdef MIP_USE_EXTRAS
-        using RecordingSerialConnection = mip::extras::RecordingConnectionWrapper<mip::platform::SerialConnection>;
-        example_utils->connection = std::unique_ptr<RecordingSerialConnection>(new RecordingSerialConnection(example_utils->recordedFile.get(), example_utils->recordedFile.get(), port_or_hostname, baud));
-#else  // MIP_USE_EXTRAS
-        using SerialConnection = mip::platform::SerialConnection;
-        example_utils->connection = std::unique_ptr<SerialConnection>(new SerialConnection(port_or_hostname, baud));
-#endif  // MIP_USE_EXTRAS
+#if defined MICROSTRAIN_ENABLE_SERIAL || defined MICROSTRAIN_ENABLE_TCP
+        using RecordingSerialConnection = microstrain::connections::RecordingConnectionWrapper<microstrain::connections::SerialConnection>;
+        example_utils->connection.reset(new RecordingSerialConnection(example_utils->recordedFile.get(), example_utils->recordedFile.get(), port_or_hostname, baud));
+#else  // MIP_ENABLE_EXTRAS
+        using SerialConnection = microstrain::connections::SerialConnection;
+        example_utils->connection.reset(new SerialConnection(port_or_hostname, baud));
+#endif  // MIP_ENABLE_EXTRAS
 
-        example_utils->device = std::unique_ptr<mip::DeviceInterface>(new mip::DeviceInterface(example_utils->connection.get(), example_utils->buffer, sizeof(example_utils->buffer), mip::C::mip_timeout_from_baudrate(baud), 500));
-#else  // MIP_USE_SERIAL
-        throw std::runtime_error("This program was compiled without serial support. Recompile with -DMIP_USE_SERIAL=1.\n");
-#endif //MIP_USE_SERIAL
+        example_utils->device.reset(new mip::Interface(example_utils->connection.get(), example_utils->buffer, sizeof(example_utils->buffer), mip::C::mip_timeout_from_baudrate(baud), 500));
+#else  // MICROSTRAIN_ENABLE_SERIAL
+        throw std::runtime_error("This program was compiled without serial support. Recompile with -DMICROSTRAIN_ENABLE_SERIAL=1.\n");
+#endif //MICROSTRAIN_ENABLE_SERIAL
     }
 
     if( !example_utils->connection->connect() )
@@ -115,7 +115,7 @@ std::unique_ptr<ExampleUtils> openFromArgs(const std::string& port_or_hostname, 
 std::unique_ptr<ExampleUtils> handleCommonArgs(int argc, const char* argv[], int maxArgs)
 {
     // Setup the logger for the MIP SDK
-    MIP_LOG_INIT(&customLog, MIP_LOG_LEVEL_DEBUG, nullptr);
+    MICROSTRAIN_LOG_INIT(&customLog, MICROSTRAIN_LOG_LEVEL_DEBUG, nullptr);
 
     if( argc < 3 || argc > maxArgs )
     {

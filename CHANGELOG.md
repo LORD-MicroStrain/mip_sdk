@@ -24,6 +24,36 @@ Forthcoming
 ### Interface Changes
 ### Bug Fixes
 
+v3.0.0
+------
+
+### New Features
+* Metadata for C++ template programming (beta)
+* Pretty-printing example (beta)
+* Packet processing examples
+* `microstrain::Span` implementation of `std::span` (interchangeable, see readme/documentation)
+* Improved serialization system in c++
+
+### Interface Changes
+* Reorganized directory structure and libraries
+  * Separated base ‘microstrain’ library from ‘mip’ library
+  * Separated C and C++ code
+  * Migration:
+    * #include .h files for C and .hpp files for C++.
+    * Add these include paths to your project:
+      * `src/c`
+      * `src/cpp`
+    * Include files as `#include <mip/mip_*.h>` or `#include <microstrain/*.h>`, or .hpp for c++.
+    * Most files have just been moved, but a few things have been broken out into new files
+* Introduced microstrain namespace
+  * Used for common code that’s not mip-specific
+  * Which namespace to use depends on the location of the corresponding #include file
+* Renamed some CMake variables (see readme)
+
+### Bug Fixes
+* Revamped C++ serialization system to avoid huge error messages due to large number of insert/extract overloads.
+* Improved CMake scripts
+* Cleaned up warnings
 
 v2.0.0
 ------

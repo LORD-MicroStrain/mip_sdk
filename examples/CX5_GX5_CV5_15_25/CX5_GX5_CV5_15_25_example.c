@@ -15,7 +15,7 @@
 //!
 //! THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING
 //! CUSTOMERS WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER
-//! FOR THEM TO SAVE TIME. AS A RESULT, HBK MICROSTRAIN SHALL NOT BE HELD
+//! FOR THEM TO SAVE TIME. AS A RESULT, MICROSTRAIN BY HBK SHALL NOT BE HELD
 //! LIABLE FOR ANY DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY
 //! CLAIMS ARISING FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS
 //! OF THE CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
@@ -28,7 +28,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <mip/mip_all.h>
-#include <mip/utils/serial_port.h>
+#include <microstrain/connections/serial/serial_port.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -155,7 +155,7 @@ int main(int argc, const char* argv[])
 
     const uint16_t sampling_time = 2000; // The default is 15000 ms and longer sample times are recommended but shortened for convenience
     mip_cmd_queue* queue = mip_interface_cmd_queue(&device);
-    const int16_t old_mip_sdk_timeout = mip_cmd_queue_base_reply_timeout(queue);
+    const mip_timeout old_mip_sdk_timeout = mip_cmd_queue_base_reply_timeout(queue);
     printf("Capturing gyro bias. This will take %d seconds. \n", sampling_time/1000);
     mip_cmd_queue_set_base_reply_timeout(queue, sampling_time * 2);    
     float gyro_bias[3] = {0, 0, 0};
@@ -317,10 +317,12 @@ mip_timestamp get_current_timestamp()
 // MIP Interface User Recv Data Function
 ////////////////////////////////////////////////////////////////////////////////
 
-bool mip_interface_user_recv_from_device(mip_interface* device, uint8_t* buffer, size_t max_length, mip_timeout wait_time, size_t* out_length, mip_timestamp* timestamp_out)
+bool mip_interface_user_recv_from_device(mip_interface* device_, uint8_t* buffer, size_t max_length, mip_timeout wait_time, size_t* out_length, mip_timestamp* timestamp_out)
 {
+    (void)device_;
+
     *timestamp_out = get_current_timestamp();
-    return serial_port_read(&device_port, buffer, max_length, wait_time, out_length);
+    return serial_port_read(&device_port, buffer, max_length, (int)wait_time, out_length);
 }
 
 
@@ -328,8 +330,10 @@ bool mip_interface_user_recv_from_device(mip_interface* device, uint8_t* buffer,
 // MIP Interface User Send Data Function
 ////////////////////////////////////////////////////////////////////////////////
 
-bool mip_interface_user_send_to_device(mip_interface* device, const uint8_t* data, size_t length)
+bool mip_interface_user_send_to_device(mip_interface* device_, const uint8_t* data, size_t length)
 {
+    (void)device_;
+
     size_t bytes_written;
 
     return serial_port_write(&device_port, data, length, &bytes_written);
@@ -360,8 +364,8 @@ void exit_gracefully(const char *message)
     if(serial_port_is_open(&device_port))
         serial_port_close(&device_port);
 
-#ifdef _WIN32
-    int dummy = getchar();
+#ifdef MICROSTRAIN_PLATFORM_WINDOWS
+    getchar();
 #endif
 
     exit(0);

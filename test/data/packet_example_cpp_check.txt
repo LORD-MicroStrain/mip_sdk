@@ -1,0 +1,48 @@
+
+Create packet from scratch
+Empty, un-finalized packet: desc_set=0x01 tot_len=6 pay_len=0 chk=invalid [756501000000]
+Empty packet with checksum: desc_set=0x01 tot_len=6 pay_len=0 chk=valid [75650100DB05]
+Unfinished packet with 2 fields: desc_set=0x01 tot_len=16 pay_len=10 chk=invalid [7565010A0201080901010001C2000000]
+    (01,01): payload=[]
+    (01,09): payload=[01010001C200]
+Unfinished packet with 3 fields: desc_set=0x01 tot_len=24 pay_len=18 chk=invalid [756501120201080901010001C200080901010001C2000000]
+    (01,01): payload=[]
+    (01,09): payload=[01010001C200]
+    (01,09): payload=[01010001C200]
+Finished packet with 4 fields: desc_set=0x01 tot_len=32 pay_len=26 chk=valid [7565011A0201080901010001C200080901010001C200080901010001C2007A91]
+    (01,01): payload=[]
+    (01,09): payload=[01010001C200]
+    (01,09): payload=[01010001C200]
+    (01,09): payload=[01010001C200]
+Empty packet after reset: desc_set=0x0C tot_len=6 pay_len=0 chk=invalid [75650C000201]
+3DM Message Format command: desc_set=0x0C tot_len=20 pay_len=14 chk=valid [75650C0E0E0F018003D5000A04000A05000A91CE]
+    (0C,0F): payload=[018003D5000A04000A05000A]
+3DM Poll Data command: desc_set=0x0C tot_len=14 pay_len=8 chk=valid [75650C08080D008003D504056446]
+    (0C,0D): payload=[008003D50405]
+
+Create packet from buffer
+Packet from buffer: desc_set=0x80 tot_len=82 pay_len=76 chk=valid [7565804C0AD5000000055EE67CC00AD6000000014E434A000E043D9EE88D387FDB00BF7AAF030E05BB0C1E30BB572E68BBAA24AE0E07BC8AAC80BC72C50EBCC4E2C10E083EEE3D9FBD66DADDC0AFDEF59196]
+    (80,D5): payload=[000000055EE67CC0]
+    (80,D6): payload=[000000014E434A00]
+    (80,04): payload=[3D9EE88D387FDB00BF7AAF03]
+    (80,05): payload=[BB0C1E30BB572E68BBAA24AE]
+    (80,07): payload=[BC8AAC80BC72C50EBCC4E2C1]
+    (80,08): payload=[3EEE3D9FBD66DADDC0AFDEF5]
+Packet from span: desc_set=0x80 tot_len=82 pay_len=76 chk=valid [7565804C0AD5000000055EE67CC00AD6000000014E434A000E043D9EE88D387FDB00BF7AAF030E05BB0C1E30BB572E68BBAA24AE0E07BC8AAC80BC72C50EBCC4E2C10E083EEE3D9FBD66DADDC0AFDEF59196]
+    (80,D5): payload=[000000055EE67CC0]
+    (80,D6): payload=[000000014E434A00]
+    (80,04): payload=[3D9EE88D387FDB00BF7AAF03]
+    (80,05): payload=[BB0C1E30BB572E68BBAA24AE]
+    (80,07): payload=[BC8AAC80BC72C50EBCC4E2C1]
+    (80,08): payload=[3EEE3D9FBD66DADDC0AFDEF5]
+Packet from C packet: desc_set=0x80 tot_len=82 pay_len=76 chk=valid [7565804C0AD5000000055EE67CC00AD6000000014E434A000E043D9EE88D387FDB00BF7AAF030E05BB0C1E30BB572E68BBAA24AE0E07BC8AAC80BC72C50EBCC4E2C10E083EEE3D9FBD66DADDC0AFDEF59196]
+    (80,D5): payload=[000000055EE67CC0]
+    (80,D6): payload=[000000014E434A00]
+    (80,04): payload=[3D9EE88D387FDB00BF7AAF03]
+    (80,05): payload=[BB0C1E30BB572E68BBAA24AE]
+    (80,07): payload=[BC8AAC80BC72C50EBCC4E2C1]
+    (80,08): payload=[3EEE3D9FBD66DADDC0AFDEF5]
+Sensor Data packet:
+  Ref Time = 23067000000
+  Scaled Accel = (0.077592, 0.000061, -0.979233)
+  Scaled Gyro = (-0.002138, -0.003283, -0.005192)
