@@ -2,12 +2,8 @@ Mip Parser {#parsing_packets}
 ==========
 
 The MIP Parser takes in bytes from the device connection or recorded binary
-file and extracts the packet data. Data is input to the ring buffer and
+file and extracts valid packets. Data is input to the parser and
 packets are parsed out one at a time and sent to a callback function.
-
-The parser uses a ring buffer to store data temporarily between reception
-and parsing. This helps even out processor workload on embedded systems
-when data arrives in large bursts.
 
 ![](mip_parser.svg)
 
@@ -19,48 +15,30 @@ a buffer and length. Along with the data, the user must provide a timestamp.
 The timestamp serves two purposes: to provide a time of reception indicator
 and to allow the parser to time out waiting for more data.
 
-The parse function takes an additional parameter, `max_packets`, which
-limits the number of packets parsed. This can be used to prevent a large
-quantity of packets from consuming too much CPU time and denying service
-to other subsystems. If the limit is reached, parsing stops and the
-unparsed portion of the data remains in the ring buffer. The constant value
-MIPPARSER_UNLIMITED_PACKETS disables this limit.
+The parser will scan the supplied buffer for packets, calling the packet
+callback for each valid packet. This continues until the entire buffer has
+been processed. Upon return, the entire buffer has been consumed.
 
-To continue parsing, call the parse function again. You may choose to
-not supply any new data by passing NULL and a length of 0. The timestamp
-should be unchanged from the previous call for highest accuracy, but it's
-permissible to use the current time as well. If new data is supplied, the
-new data is appended to the ring buffer and parsing resumes. The timestamp
-should be the time of the new data. Previously received but unparsed packets
-will be assigned the new timestamp.
+If a valid packet gets cut off at the end of the buffer (e.g. because it
+hasn't been received yet), the parser will store the partial packet internally
+until more data is received. If sufficient data is not received within the
+set timeout, the first byte of the potential packet is discarded and parsing
+continues.
 
-The application must parse enough packets to keep up with the incoming
-data stream. Failure to do so will result in the ring buffer becoming
-full. If this happens, the parse function will return a negative number,
-indicating the number of bytes that couldn't be copied. This will never
-happen if max_packets is `MIPPARSER_UNLIMITED_PACKETS` because all
-of the data will be processed as soon as it is received.
+Performance
+-----------
 
-The Ring Buffer  {#ring_buffer}
----------------
+The parser is most efficient when called with large chunks of data. This is
+because each call to the parser (or any function) has overhead. When reading
+from a high-speed source such as a file, we recommend parsing chunks of data
+of at least 512 bytes, ideally 1024 bytes or more. Little improvement is
+attained beyond 8192 bytes. Performance drops off below 128-byte chunks.
+This data seems to hold for both high-power desktop systems (e.g. Intel
+i7-1370) and also embedded systems such as the STM32F767 at 200 MHz.
+For low-speed streams performance isn't critical. In any case, the buffer
+should be big enough to hold all data received in between parse calls, up to
+a reasonable maximum size for your application.
 
-The ring buffer's backing buffer is a byte array that is allocated by
-the application during initialization. It must be large enough to store
-the biggest burst of data seen at any one time. For example, applications
-expecting to deal with lots of GNSS-related data will need a bigger buffer
-because there may be a large number of satellite messages. These messages
-are sent relatively infrequently but contain a lot of data. If max_packets
-is `MIPPARSER_UNLIMITED_PACKETS`, then it needs only 512 bytes (enough for
-one packet, rounded up to a power of 2).
-
-In addition to passing data to the parse function, data can be written
-directly to the ring buffer by obtaining a writable pointer and length
-from mip_parser_get_write_ptr(). This may be more efficient by skipping a
-copy operation. Call mip_parser_process_written() to tell the parser how
-many bytes were written to the pointer. Note that the length returned by
-`mip_parser_get_write_ptr` can frequently be less than the total
-available space. An application should call it in a loop as long as there
-is more data to process and the returned size is greater than 0.
 
 Packet Timeouts  {#packet_timeouts}
 ---------------
@@ -86,7 +64,7 @@ See ["microstrain_embedded_timestamp (C)"](@ref microstrain::C::microstrain_embe
 The Packet Parsing Process  {#parsing_process}
 --------------------------
 
-Packets are parsed from the internal ring buffer one at a time in the parse
+Packets are parsed from the input buffer one at a time in the parse
 function.
 
 If a packet was previously started but not completed previously (due to

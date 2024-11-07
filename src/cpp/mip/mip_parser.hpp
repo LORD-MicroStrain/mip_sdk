@@ -35,6 +35,10 @@ public:
     ///@copydoc mip::C::mip_parser_parse
     void parse(const uint8_t* inputBuffer, size_t inputCount, Timestamp timestamp) { return C::mip_parser_parse(this, inputBuffer, inputCount, timestamp); }
 
+    ///@brief Parse packets from a buffer (span version).
+    ///@copydetails mip::C::mip_parser_parse
+    void parse(microstrain::Span<const uint8_t> data, Timestamp timestamp) { return parse(data.data(), data.size(), timestamp); }
+
     ///@copydoc mip::C::mip_parser_timeout
     Timeout timeout() const { return C::mip_parser_timeout(this); }
     ///@copydoc mip::C::mip_parser_set_timeout
