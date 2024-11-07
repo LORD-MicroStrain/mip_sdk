@@ -80,6 +80,7 @@ typedef struct mip_parser
 
 void mip_parser_init(mip_parser* parser, mip_packet_callback callback, void* callback_object, mip_timeout timeout);
 void mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t input_length, mip_timestamp timestamp);
+void mip_parser_flush(mip_parser* parser);
 
 void mip_parser_reset(mip_parser* parser);
 

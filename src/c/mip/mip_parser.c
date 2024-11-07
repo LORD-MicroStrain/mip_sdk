@@ -359,6 +359,24 @@ void mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t in
     }
 }
 
+////////////////////////////////////////////////////////////////////////////////
+///@brief Processes all previously buffered data.
+///
+/// Call this at the end of reading a binary file to ensure that any trailing
+/// packets are fully processed.
+///
+///@param parser
+///
+void mip_parser_flush(mip_parser* parser)
+{
+    while(parser->_buffered_length > 0)
+    {
+        mip_parser_parse(parser, NULL, 0, parser->_start_time);
+
+        if(mip_parser_discard(parser, 1) == 1)
+            break;
+    }
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Gets a pointer into which a small amount of data may be written for
