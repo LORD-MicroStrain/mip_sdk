@@ -175,6 +175,10 @@ include all the necessary files and define a few options.
 * Source files in `src/cpp/mip/extras` as needed for your project
 * Source files in `src/cpp/mip/metadata` if using metadata
 
+Note: When using MSVC with C++, build the C and C++ code separately as libraries. Some C and C++ files
+having the same name, and MSVC will try to compile both to the same object file. This causes one to
+be overwritten by the other.
+
 #### Required #defines for building without CMake
 
 Pass these to your compiler as appropriate, e.g. `arm-none-eabi-gcc -DMICROSTRAIN_TIMESTAMP_TYPE=uint32_t -DMICROSTRAIN_ENABLE_LOGGING=0`
