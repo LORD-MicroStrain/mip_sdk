@@ -196,6 +196,18 @@ MUST be consistent between compiling the MIP SDK and any other code which includ
 headers from the MIP SDK. (If you change them after building, make sure everything gets
 rebuilt properly. Normally CMake takes care of this for you).
 
+#### Include directories
+* `src/c`
+* `src/cpp` (if using C++)
+* `examples` (if building/using example code)
+
+#### Other compiler settings
+* C++14 or later is required (if using C++)
+  * For gcc: --std=c++14
+  * For msvc: /std:c++14
+  * Use C++17 or later if using metadata.
+* If building TCP socket support on Windows, link against ws2_32.lib.
+
 Known Issues
 ------------
 
