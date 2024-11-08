@@ -158,8 +158,11 @@ because each call to the parser (or any function) has overhead. When reading
 from a high-speed source such as a file, we recommend parsing chunks of data
 of at least 512 bytes, ideally 1024 bytes or more. Little improvement is
 attained beyond 8192 bytes. Performance drops off below 128-byte chunks.
+
 This data seems to hold for both high-power desktop systems (e.g. Intel
-i7-1370) and also embedded systems such as the STM32F767 at 200 MHz.
+i7-1370 and i7-12700K) and embedded systems such as the STM32F767 at 200 MHz.
+You can benchmark your system by running the TestMipPerf test program.
+
 For low-speed streams performance isn't critical. In any case, the buffer
 should be big enough to hold all data received in between parse calls, up to
 a reasonable maximum size for your application.
