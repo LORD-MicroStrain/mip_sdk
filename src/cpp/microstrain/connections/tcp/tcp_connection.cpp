@@ -55,7 +55,7 @@ bool TcpConnection::disconnect()
    return tcp_socket_close(&mSocket);
 }
 
-///@copydoc microstrain::Connection::sendToDevice
+///@copydoc microstrain::Connection::recvFromDevice
 bool TcpConnection::recvFromDevice(uint8_t* buffer, size_t max_length, unsigned int wait_time_ms, size_t* length_out, EmbeddedTimestamp* timestamp_out)
 {
     (void)wait_time_ms;  // Not used, timeout is always fixed
@@ -65,7 +65,7 @@ bool TcpConnection::recvFromDevice(uint8_t* buffer, size_t max_length, unsigned 
     return tcp_socket_recv(&mSocket, buffer, max_length, length_out);
 }
 
-///@copydoc microstrain::Connection::recvFromDevice
+///@copydoc microstrain::Connection::sendToDevice
 bool TcpConnection::sendToDevice(const uint8_t* data, size_t length)
 {
     size_t length_out;

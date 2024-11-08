@@ -31,8 +31,6 @@
 #include <array>
 #include "../example_utils.hpp"
 
-using namespace mip;
-
 
 ////////////////////////////////////////////////////////////////////////////////
 // Global Variables
@@ -43,15 +41,15 @@ using namespace mip;
 float sensor_to_vehicle_rotation_euler[3] = {0.0, 0.0, 0.0};
 
 //Device data stores
-data_sensor::GpsTimestamp sensor_gps_time;
-data_sensor::ScaledAccel  sensor_accel;
-data_sensor::ScaledGyro   sensor_gyro;
+mip::data_sensor::GpsTimestamp sensor_gps_time;
+mip::data_sensor::ScaledAccel  sensor_accel;
+mip::data_sensor::ScaledGyro   sensor_gyro;
 
-data_filter::Timestamp    filter_gps_time;
-data_filter::Status       filter_status;
-data_filter::EulerAngles  filter_euler_angles;
-data_filter::CompAngularRate  filter_comp_angular_rate;
-data_filter::CompAccel    filter_comp_accel;
+mip::data_filter::Timestamp    filter_gps_time;
+mip::data_filter::Status       filter_status;
+mip::data_filter::EulerAngles  filter_euler_angles;
+mip::data_filter::CompAngularRate  filter_comp_angular_rate;
+mip::data_filter::CompAccel    filter_comp_accel;
 
 bool filter_state_running = false;
 
@@ -83,7 +81,7 @@ int main(int argc, const char* argv[])
     //Ping the device (note: this is good to do to make sure the device is present)
     //
 
-    if(commands_base::ping(*device) != CmdResult::ACK_OK)
+    if(mip::commands_base::ping(*device) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not ping the device!");
 
 
@@ -91,7 +89,7 @@ int main(int argc, const char* argv[])
     //Idle the device (note: this is good to do during setup)
     //
 
-    if(commands_base::setIdle(*device) != CmdResult::ACK_OK)
+    if(mip::commands_base::setIdle(*device) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set the device to idle!");
 
 
@@ -99,26 +97,26 @@ int main(int argc, const char* argv[])
     //Load the device default settings (so the device is in a known state)
     //
 
-    if(commands_3dm::defaultDeviceSettings(*device) != CmdResult::ACK_OK)
+    if(mip::commands_3dm::defaultDeviceSettings(*device) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not load default device settings!");
 
 
     float gyro_bias[3] = {0, 0, 0};
 
     const uint32_t sampling_time = 2000; // The default is 15000 ms and longer sample times are recommended but shortened for convenience
-    const Timeout old_mip_sdk_timeout = device->baseReplyTimeout();
+    const mip::Timeout old_mip_sdk_timeout = device->baseReplyTimeout();
     printf("Capturing gyro bias. This will take %d seconds \n", sampling_time/1000);
     device->setBaseReplyTimeout(sampling_time * 2);
 
-    if(commands_3dm::captureGyroBias(*device, sampling_time, gyro_bias) != CmdResult::ACK_OK)
+    if(mip::commands_3dm::captureGyroBias(*device, sampling_time, gyro_bias) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not capture gyro bias!");
 
-    if(commands_3dm::saveGyroBias(*device) != CmdResult::ACK_OK)
+    if(mip::commands_3dm::saveGyroBias(*device) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not save gyro bias!");
 
     const uint8_t device_selector = 3;
     const uint8_t enable_flag = 1;
-    if(commands_3dm::writeDatastreamControl(*device, device_selector, enable_flag) != CmdResult::ACK_OK)
+    if(mip::commands_3dm::writeDatastreamControl(*device, device_selector, enable_flag) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not enable device data stream!");
 
     // Reset the timeout
@@ -136,19 +134,19 @@ int main(int argc, const char* argv[])
     //Note: Querying the device base rate is only one way to calculate the descriptor decimation.
     //We could have also set it directly with information from the datasheet.
 
-    if(commands_3dm::imuGetBaseRate(*device, &sensor_base_rate) != CmdResult::ACK_OK)
+    if(mip::commands_3dm::imuGetBaseRate(*device, &sensor_base_rate) != mip::CmdResult::ACK_OK)
          exit_gracefully("ERROR: Could not get sensor base rate format!");
 
     const uint16_t sensor_sample_rate = 100; // Hz
     const uint16_t sensor_decimation = sensor_base_rate / sensor_sample_rate;
 
-    std::array<DescriptorRate, 3> sensor_descriptors = {{
-        { data_sensor::DATA_TIME_STAMP_GPS, sensor_decimation },
-        { data_sensor::DATA_ACCEL_SCALED,   sensor_decimation },
-        { data_sensor::DATA_GYRO_SCALED,    sensor_decimation },
+    std::array<mip::DescriptorRate, 3> sensor_descriptors = {{
+        { mip::data_sensor::DATA_TIME_STAMP_GPS, sensor_decimation },
+        { mip::data_sensor::DATA_ACCEL_SCALED,   sensor_decimation },
+        { mip::data_sensor::DATA_GYRO_SCALED,    sensor_decimation },
     }};
 
-    if(commands_3dm::writeImuMessageFormat(*device, static_cast<uint8_t>(sensor_descriptors.size()), sensor_descriptors.data()) != CmdResult::ACK_OK)
+    if(mip::commands_3dm::writeImuMessageFormat(*device, static_cast<uint8_t>(sensor_descriptors.size()), sensor_descriptors.data()) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set sensor message format!");
 
 
@@ -158,21 +156,21 @@ int main(int argc, const char* argv[])
 
     uint16_t filter_base_rate;
 
-    if(commands_3dm::filterGetBaseRate(*device, &filter_base_rate) != CmdResult::ACK_OK)
+    if(mip::commands_3dm::filterGetBaseRate(*device, &filter_base_rate) != mip::CmdResult::ACK_OK)
          exit_gracefully("ERROR: Could not get filter base rate format!");
 
     const uint16_t filter_sample_rate = 100; // Hz
     const uint16_t filter_decimation = filter_base_rate / filter_sample_rate;
 
-    std::array<DescriptorRate, 5> filter_descriptors = {{
-        { data_filter::DATA_FILTER_TIMESTAMP, filter_decimation },
-        { data_filter::DATA_FILTER_STATUS,    filter_decimation },
-        { data_filter::DATA_ATT_EULER_ANGLES, filter_decimation },
-        { data_filter::DATA_COMPENSATED_ANGULAR_RATE, filter_decimation },
-        { data_filter::DATA_COMPENSATED_ACCELERATION, filter_decimation },
+    std::array<mip::DescriptorRate, 5> filter_descriptors = {{
+        { mip::data_filter::DATA_FILTER_TIMESTAMP, filter_decimation },
+        { mip::data_filter::DATA_FILTER_STATUS,    filter_decimation },
+        { mip::data_filter::DATA_ATT_EULER_ANGLES, filter_decimation },
+        { mip::data_filter::DATA_COMPENSATED_ANGULAR_RATE, filter_decimation },
+        { mip::data_filter::DATA_COMPENSATED_ACCELERATION, filter_decimation },
     }};
 
-    if(commands_3dm::writeFilterMessageFormat(*device, static_cast<uint8_t>(filter_descriptors.size()), filter_descriptors.data()) != CmdResult::ACK_OK)
+    if(mip::commands_3dm::writeFilterMessageFormat(*device, static_cast<uint8_t>(filter_descriptors.size()), filter_descriptors.data()) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set filter message format!");
 
 
@@ -180,14 +178,14 @@ int main(int argc, const char* argv[])
     //Setup the sensor to vehicle rotation
     //
 
-    if(commands_filter::writeSensorToVehicleRotationEuler(*device, sensor_to_vehicle_rotation_euler[0], sensor_to_vehicle_rotation_euler[1], sensor_to_vehicle_rotation_euler[2]) != CmdResult::ACK_OK)
+    if(mip::commands_filter::writeSensorToVehicleRotationEuler(*device, sensor_to_vehicle_rotation_euler[0], sensor_to_vehicle_rotation_euler[1], sensor_to_vehicle_rotation_euler[2]) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set sensor-2-vehicle rotation!");
 
     //
     //Enable filter auto-initialization
     //
 
-    if(commands_filter::writeAutoInitControl(*device, 1) != CmdResult::ACK_OK)
+    if(mip::commands_filter::writeAutoInitControl(*device, 1) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set filter autoinit control!");
 
 
@@ -196,7 +194,7 @@ int main(int argc, const char* argv[])
     //Reset the filter (note: this is good to do after filter setup is complete)
     //
 
-    if(commands_filter::reset(*device) != CmdResult::ACK_OK)
+    if(mip::commands_filter::reset(*device) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not reset the filter!");
 
 
@@ -205,27 +203,27 @@ int main(int argc, const char* argv[])
     //
 
     //Sensor Data
-    DispatchHandler sensor_data_handlers[3];
+    mip::DispatchHandler sensor_data_handlers[3];
 
     device->registerExtractor(sensor_data_handlers[0], &sensor_gps_time);
     device->registerExtractor(sensor_data_handlers[1], &sensor_accel);
     device->registerExtractor(sensor_data_handlers[2], &sensor_gyro);
- 
+
     //Filter Data
-    DispatchHandler filter_data_handlers[5];
+    mip::DispatchHandler filter_data_handlers[5];
 
     device->registerExtractor(filter_data_handlers[0], &filter_gps_time);
     device->registerExtractor(filter_data_handlers[1], &filter_status);
     device->registerExtractor(filter_data_handlers[2], &filter_euler_angles);
     device->registerExtractor(filter_data_handlers[3], &filter_comp_angular_rate);
     device->registerExtractor(filter_data_handlers[4], &filter_comp_accel);
-    
+
 
     //
     //Resume the device
     //
 
-    if(commands_base::resume(*device) != CmdResult::ACK_OK)
+    if(mip::commands_base::resume(*device) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not resume the device!");
 
 
@@ -241,9 +239,9 @@ int main(int argc, const char* argv[])
     while(running)
     {
         device->update();
- 
+
         //Check Filter State
-        if((!filter_state_running) && ((filter_status.filter_state == data_filter::FilterMode::GX5_RUN_SOLUTION_ERROR) || (filter_status.filter_state == data_filter::FilterMode::GX5_RUN_SOLUTION_VALID)))
+        if((!filter_state_running) && ((filter_status.filter_state == mip::data_filter::FilterMode::GX5_RUN_SOLUTION_ERROR) || (filter_status.filter_state == mip::data_filter::FilterMode::GX5_RUN_SOLUTION_VALID)))
         {
             printf("NOTE: Filter has entered running mode.\n");
             filter_state_running = true;
@@ -257,7 +255,7 @@ int main(int argc, const char* argv[])
            if(curr_timestamp - prev_print_timestamp >= 1000)
            {
                 printf("TOW = %f: ATT_EULER = [%f %f %f]: COMP_ANG_RATE = [%f %f %f]: COMP_ACCEL = [%f %f %f]\n",
-                       filter_gps_time.tow, filter_euler_angles.roll, filter_euler_angles.pitch, filter_euler_angles.yaw, 
+                       filter_gps_time.tow, filter_euler_angles.roll, filter_euler_angles.pitch, filter_euler_angles.yaw,
                        filter_comp_angular_rate.gyro[0], filter_comp_angular_rate.gyro[1], filter_comp_angular_rate.gyro[2],
                        filter_comp_accel.accel[0], filter_comp_accel.accel[1], filter_comp_accel.accel[2]);
 
@@ -309,4 +307,3 @@ bool should_exit()
   return false;
 
 }
-

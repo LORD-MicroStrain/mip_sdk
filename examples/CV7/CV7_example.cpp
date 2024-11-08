@@ -33,8 +33,6 @@
 
 #include <array>
 
-using namespace mip;
-
 ////////////////////////////////////////////////////////////////////////////////
 // Global Variables
 ////////////////////////////////////////////////////////////////////////////////
@@ -43,14 +41,14 @@ using namespace mip;
 float sensor_to_vehicle_transformation_euler[3] = {0.0, 0.0, 0.0};
 
 //Device data stores
-data_shared::GpsTimestamp sensor_gps_time;
-data_sensor::ScaledAccel  sensor_accel;
-data_sensor::ScaledGyro   sensor_gyro;
-data_sensor::ScaledMag    sensor_mag;
+mip::data_shared::GpsTimestamp sensor_gps_time;
+mip::data_sensor::ScaledAccel  sensor_accel;
+mip::data_sensor::ScaledGyro   sensor_gyro;
+mip::data_sensor::ScaledMag    sensor_mag;
 
-data_shared::GpsTimestamp filter_gps_time;
-data_filter::Status       filter_status;
-data_filter::EulerAngles  filter_euler_angles;
+mip::data_shared::GpsTimestamp filter_gps_time;
+mip::data_filter::Status       filter_status;
+mip::data_filter::EulerAngles  filter_euler_angles;
 
 bool filter_state_ahrs = false;
 
@@ -94,7 +92,7 @@ int main(int argc, const char* argv[])
     //Ping the device (note: this is good to do to make sure the device is present)
     //
 
-    if(commands_base::ping(*device) != CmdResult::ACK_OK)
+    if(mip::commands_base::ping(*device) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not ping the device!");
 
 
@@ -102,7 +100,7 @@ int main(int argc, const char* argv[])
     //Idle the device (note: this is good to do during setup)
     //
 
-    if(commands_base::setIdle(*device) != CmdResult::ACK_OK)
+    if(mip::commands_base::setIdle(*device) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set the device to idle!");
 
 
@@ -110,7 +108,7 @@ int main(int argc, const char* argv[])
     //Load the device default settings (so the device is in a known state)
     //
 
-    if(commands_3dm::defaultDeviceSettings(*device) != CmdResult::ACK_OK)
+    if(mip::commands_3dm::defaultDeviceSettings(*device) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not load default device settings!");
 
 
@@ -123,20 +121,20 @@ int main(int argc, const char* argv[])
     //Note: Querying the device base rate is only one way to calculate the descriptor decimation.
     //We could have also set it directly with information from the datasheet (shown in GNSS setup).
 
-    if(commands_3dm::getBaseRate(*device, data_sensor::DESCRIPTOR_SET, &sensor_base_rate) != CmdResult::ACK_OK)
+    if(mip::commands_3dm::getBaseRate(*device, mip::data_sensor::DESCRIPTOR_SET, &sensor_base_rate) != mip::CmdResult::ACK_OK)
          exit_gracefully("ERROR: Could not get sensor base rate format!");
 
     const uint16_t sensor_sample_rate = 100; // Hz
     const uint16_t sensor_decimation = sensor_base_rate / sensor_sample_rate;
 
-    std::array<DescriptorRate, 4> sensor_descriptors = {{
-        { data_shared::DATA_GPS_TIME,     sensor_decimation },
-        { data_sensor::DATA_ACCEL_SCALED, sensor_decimation },
-        { data_sensor::DATA_GYRO_SCALED,  sensor_decimation },
-        { data_sensor::DATA_MAG_SCALED,   sensor_decimation },
+    std::array<mip::DescriptorRate, 4> sensor_descriptors = {{
+        { mip::data_shared::DATA_GPS_TIME,     sensor_decimation },
+        { mip::data_sensor::DATA_ACCEL_SCALED, sensor_decimation },
+        { mip::data_sensor::DATA_GYRO_SCALED,  sensor_decimation },
+        { mip::data_sensor::DATA_MAG_SCALED,   sensor_decimation },
     }};
 
-    if(commands_3dm::writeMessageFormat(*device, data_sensor::DESCRIPTOR_SET, static_cast<uint8_t>(sensor_descriptors.size()), sensor_descriptors.data()) != CmdResult::ACK_OK)
+    if(mip::commands_3dm::writeMessageFormat(*device, mip::data_sensor::DESCRIPTOR_SET, static_cast<uint8_t>(sensor_descriptors.size()), sensor_descriptors.data()) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set sensor message format!");
 
 
@@ -146,19 +144,19 @@ int main(int argc, const char* argv[])
 
     uint16_t filter_base_rate;
 
-    if(commands_3dm::getBaseRate(*device, data_filter::DESCRIPTOR_SET, &filter_base_rate) != CmdResult::ACK_OK)
+    if(mip::commands_3dm::getBaseRate(*device, mip::data_filter::DESCRIPTOR_SET, &filter_base_rate) != mip::CmdResult::ACK_OK)
          exit_gracefully("ERROR: Could not get filter base rate format!");
 
     const uint16_t filter_sample_rate = 100; // Hz
     const uint16_t filter_decimation = filter_base_rate / filter_sample_rate;
 
-    std::array<DescriptorRate, 3> filter_descriptors = {{
-        { data_shared::DATA_GPS_TIME,         filter_decimation },
-        { data_filter::DATA_FILTER_STATUS,    filter_decimation },
-        { data_filter::DATA_ATT_EULER_ANGLES, filter_decimation },
+    std::array<mip::DescriptorRate, 3> filter_descriptors = {{
+        { mip::data_shared::DATA_GPS_TIME,         filter_decimation },
+        { mip::data_filter::DATA_FILTER_STATUS,    filter_decimation },
+        { mip::data_filter::DATA_ATT_EULER_ANGLES, filter_decimation },
     }};
 
-    if(commands_3dm::writeMessageFormat(*device, data_filter::DESCRIPTOR_SET, static_cast<uint8_t>(filter_descriptors.size()), filter_descriptors.data()) != CmdResult::ACK_OK)
+    if(mip::commands_3dm::writeMessageFormat(*device, mip::data_filter::DESCRIPTOR_SET, static_cast<uint8_t>(filter_descriptors.size()), filter_descriptors.data()) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set filter message format!");
 
 
@@ -171,55 +169,55 @@ int main(int argc, const char* argv[])
     //EVENTS
 
     //Roll
-    commands_3dm::EventTrigger::Parameters event_params;
-    event_params.threshold.type       = commands_3dm::EventTrigger::ThresholdParams::Type::WINDOW;
-    event_params.threshold.desc_set   = data_filter::DESCRIPTOR_SET;
-    event_params.threshold.field_desc = data_filter::DATA_ATT_EULER_ANGLES;
+    mip::commands_3dm::EventTrigger::Parameters event_params;
+    event_params.threshold.type       = mip::commands_3dm::EventTrigger::ThresholdParams::Type::WINDOW;
+    event_params.threshold.desc_set   = mip::data_filter::DESCRIPTOR_SET;
+    event_params.threshold.field_desc = mip::data_filter::DATA_ATT_EULER_ANGLES;
     event_params.threshold.param_id   = 1;
     event_params.threshold.high_thres = -0.7853981;
     event_params.threshold.low_thres  = 0.7853981;
 
-    if(commands_3dm::writeEventTrigger(*device, FILTER_ROLL_EVENT_ACTION_ID, commands_3dm::EventTrigger::Type::THRESHOLD, event_params) != CmdResult::ACK_OK)
+    if(mip::commands_3dm::writeEventTrigger(*device, FILTER_ROLL_EVENT_ACTION_ID, mip::commands_3dm::EventTrigger::Type::THRESHOLD, event_params) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set roll event parameters!");
 
-    //Pitch 
+    //Pitch
     event_params.threshold.param_id = 2;
 
-    if(commands_3dm::writeEventTrigger(*device, FILTER_PITCH_EVENT_ACTION_ID, commands_3dm::EventTrigger::Type::THRESHOLD, event_params) != CmdResult::ACK_OK)
+    if(mip::commands_3dm::writeEventTrigger(*device, FILTER_PITCH_EVENT_ACTION_ID, mip::commands_3dm::EventTrigger::Type::THRESHOLD, event_params) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set pitch event parameters!");
 
     //ACTIONS
 
-    //Roll 
-    commands_3dm::EventAction::Parameters event_action;
-    event_action.message.desc_set       = data_filter::DESCRIPTOR_SET;
+    //Roll
+    mip::commands_3dm::EventAction::Parameters event_action;
+    event_action.message.desc_set       = mip::data_filter::DESCRIPTOR_SET;
     event_action.message.num_fields     = 1;
-    event_action.message.descriptors[0] = data_shared::DATA_EVENT_SOURCE;
+    event_action.message.descriptors[0] = mip::data_shared::DATA_EVENT_SOURCE;
     event_action.message.decimation     = 0;
 
-    if(writeEventAction(*device, FILTER_ROLL_EVENT_ACTION_ID, FILTER_ROLL_EVENT_ACTION_ID, commands_3dm::EventAction::Type::MESSAGE, event_action) != CmdResult::ACK_OK)
+    if(writeEventAction(*device, FILTER_ROLL_EVENT_ACTION_ID, FILTER_ROLL_EVENT_ACTION_ID, mip::commands_3dm::EventAction::Type::MESSAGE, event_action) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set roll action parameters!");
 
-    //Pitch 
-    if(writeEventAction(*device, FILTER_PITCH_EVENT_ACTION_ID, FILTER_PITCH_EVENT_ACTION_ID, commands_3dm::EventAction::Type::MESSAGE, event_action) != CmdResult::ACK_OK)
+    //Pitch
+    if(writeEventAction(*device, FILTER_PITCH_EVENT_ACTION_ID, FILTER_PITCH_EVENT_ACTION_ID, mip::commands_3dm::EventAction::Type::MESSAGE, event_action) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set pitch action parameters!");
 
 
     //ENABLE EVENTS
 
     //Roll
-    if(writeEventControl(*device, FILTER_ROLL_EVENT_ACTION_ID, commands_3dm::EventControl::Mode::ENABLED) != CmdResult::ACK_OK)
+    if(writeEventControl(*device, FILTER_ROLL_EVENT_ACTION_ID, mip::commands_3dm::EventControl::Mode::ENABLED) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not enable roll event!");
-    
+
     //Pitch
-    if(writeEventControl(*device, FILTER_PITCH_EVENT_ACTION_ID, commands_3dm::EventControl::Mode::ENABLED) != CmdResult::ACK_OK)
+    if(writeEventControl(*device, FILTER_PITCH_EVENT_ACTION_ID, mip::commands_3dm::EventControl::Mode::ENABLED) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not enable pitch event!");
 
     //
     //Setup the sensor to vehicle transformation
     //
 
-    if(commands_3dm::writeSensor2VehicleTransformEuler(*device, sensor_to_vehicle_transformation_euler[0], sensor_to_vehicle_transformation_euler[1], sensor_to_vehicle_transformation_euler[2]) != CmdResult::ACK_OK)
+    if(mip::commands_3dm::writeSensor2VehicleTransformEuler(*device, sensor_to_vehicle_transformation_euler[0], sensor_to_vehicle_transformation_euler[1], sensor_to_vehicle_transformation_euler[2]) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set sensor-to-vehicle transformation!");
 
 
@@ -227,7 +225,7 @@ int main(int argc, const char* argv[])
     //Setup the filter aiding measurements (GNSS position/velocity and dual antenna [aka gnss heading])
     //
 
-    if(commands_filter::writeAidingMeasurementEnable(*device, commands_filter::AidingMeasurementEnable::AidingSource::MAGNETOMETER, true) != CmdResult::ACK_OK)
+    if(mip::commands_filter::writeAidingMeasurementEnable(*device, mip::commands_filter::AidingMeasurementEnable::AidingSource::MAGNETOMETER, true) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set filter aiding measurement enable!");
 
 
@@ -235,7 +233,7 @@ int main(int argc, const char* argv[])
     //Reset the filter (note: this is good to do after filter setup is complete)
     //
 
-    if(commands_filter::reset(*device) != CmdResult::ACK_OK)
+    if(mip::commands_filter::reset(*device) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not reset the filter!");
 
 
@@ -244,27 +242,27 @@ int main(int argc, const char* argv[])
     //
 
     //Sensor Data
-    DispatchHandler sensor_data_handlers[4];
+    mip::DispatchHandler sensor_data_handlers[4];
 
-    device->registerExtractor(sensor_data_handlers[0], &sensor_gps_time, data_sensor::DESCRIPTOR_SET);
+    device->registerExtractor(sensor_data_handlers[0], &sensor_gps_time, mip::data_sensor::DESCRIPTOR_SET);
     device->registerExtractor(sensor_data_handlers[1], &sensor_accel);
     device->registerExtractor(sensor_data_handlers[2], &sensor_gyro);
     device->registerExtractor(sensor_data_handlers[3], &sensor_mag);
 
     //Filter Data
-    DispatchHandler filter_data_handlers[4];
+    mip::DispatchHandler filter_data_handlers[4];
 
-    device->registerExtractor(filter_data_handlers[0], &filter_gps_time, data_filter::DESCRIPTOR_SET);
+    device->registerExtractor(filter_data_handlers[0], &filter_gps_time, mip::data_filter::DESCRIPTOR_SET);
     device->registerExtractor(filter_data_handlers[1], &filter_status);
     device->registerExtractor(filter_data_handlers[2], &filter_euler_angles);
 
-    device->registerFieldCallback<&handleFilterEventSource>(filter_data_handlers[3], data_filter::DESCRIPTOR_SET, data_shared::DATA_EVENT_SOURCE);
+    device->registerFieldCallback<&handleFilterEventSource>(filter_data_handlers[3], mip::data_filter::DESCRIPTOR_SET, mip::data_shared::DATA_EVENT_SOURCE);
 
     //
     //Resume the device
     //
 
-    if(commands_base::resume(*device) != CmdResult::ACK_OK)
+    if(mip::commands_base::resume(*device) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not resume the device!");
 
 
@@ -277,14 +275,14 @@ int main(int argc, const char* argv[])
 
     printf("Sensor is configured... waiting for filter to enter AHRS mode (AHRS).\n");
 
-    auto current_state = std::string{""};
+    std::string current_state = "";
     while(running)
     {
         device->update();
         displayFilterState(filter_status.filter_state, current_state);
 
         //Check Filter State
-        if((!filter_state_ahrs) && (filter_status.filter_state == data_filter::FilterMode::AHRS))
+        if((!filter_state_ahrs) && (filter_status.filter_state == mip::data_filter::FilterMode::AHRS))
         {
             printf("NOTE: Filter has entered AHRS mode.\n");
             filter_state_ahrs = true;
@@ -368,4 +366,3 @@ bool should_exit()
   return false;
 
 }
-

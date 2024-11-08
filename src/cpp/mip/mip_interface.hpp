@@ -588,14 +588,14 @@ void Interface::registerFieldCallback(C::mip_dispatch_handler& handler, uint8_t 
 ///        function pointer.
 ///
 ///@param handler
-///       This must exist as long as the hander remains registered.
+///       This must exist as long as the handler remains registered.
 ///
 ///@param userData
 ///       Optional data to pass to the callback function.
 ///
 ///@param descriptorSet
 ///       If specified, overrides the descriptor set. Intended to be used with
-///       with shared data quantities.
+///       shared data quantities.
 ///
 /// Example usage:
 ///@code{.cpp}
@@ -647,14 +647,14 @@ void Interface::registerDataCallback(C::mip_dispatch_handler& handler, void* use
 ///        function pointer.
 ///
 ///@param handler
-///       This must exist as long as the hander remains registered.
+///       This must exist as long as the handler remains registered.
 ///
 ///@param userData
 ///       Optional data to pass to the callback function.
 ///
 ///@param descriptorSet
 ///       If specified, overrides the descriptor set. Intended to be used with
-///       with shared data quantities.
+///       shared data quantities.
 ///
 /// Example usage:
 ///@code{.cpp}
@@ -706,7 +706,7 @@ void Interface::registerDataCallback(C::mip_dispatch_handler& handler, void* use
 ///        member function pointer.
 ///
 ///@param handler
-///       This must exist as long as the hander remains registered.
+///       This must exist as long as the handler remains registered.
 ///
 ///@param object
 ///       A pointer to the object. The object must exist while the handler
@@ -714,7 +714,7 @@ void Interface::registerDataCallback(C::mip_dispatch_handler& handler, void* use
 ///
 ///@param descriptorSet
 ///       If specified, overrides the descriptor set. Intended to be used with
-///       with shared data quantities.
+///       shared data quantities.
 ///
 /// Example usage:
 ///@code{.cpp}
@@ -767,7 +767,7 @@ void Interface::registerDataCallback(C::mip_dispatch_handler& handler, Object* o
 ///        member function pointer.
 ///
 ///@param handler
-///       This must exist as long as the hander remains registered.
+///       This must exist as long as the handler remains registered.
 ///
 ///@param object
 ///       A pointer to the object. The object must exist while the handler
@@ -775,7 +775,7 @@ void Interface::registerDataCallback(C::mip_dispatch_handler& handler, Object* o
 ///
 ///@param descriptorSet
 ///       If specified, overrides the descriptor set. Intended to be used with
-///       with shared data quantities.
+///       shared data quantities.
 ///
 /// Example usage:
 ///@code{.cpp}

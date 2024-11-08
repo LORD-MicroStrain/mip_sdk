@@ -30,17 +30,15 @@
 #include "example_utils.hpp"
 #include <array>
 
-using namespace mip;
-
 ////////////////////////////////////////////////////////////////////////////////
 // Global Variables
 ////////////////////////////////////////////////////////////////////////////////
 
-data_shared::GpsTimestamp filter_gps_time;
-data_filter::Status       filter_status;
-data_filter::EulerAngles  filter_euler_angles;
-data_filter::PositionLlh  filter_llh_position;
-data_filter::VelocityNed  filter_ned_velocity;
+mip::data_shared::GpsTimestamp filter_gps_time;
+mip::data_filter::Status       filter_status;
+mip::data_filter::EulerAngles  filter_euler_angles;
+mip::data_filter::PositionLlh  filter_llh_position;
+mip::data_filter::VelocityNed  filter_ned_velocity;
 
 uint8_t external_heading_sensor_id = 1;
 uint8_t gnss_antenna_sensor_id = 2;
@@ -54,7 +52,7 @@ bool filter_state_full_nav = false;
 
 int usage(const char* argv0);
 
-void print_device_information(const commands_base::BaseDeviceInfo& device_info);
+void print_device_information(const mip::commands_base::BaseDeviceInfo& device_info);
 
 void exit_gracefully(const char *message);
 bool should_exit();
@@ -83,15 +81,15 @@ int main(int argc, const char* argv[])
     //Ping the device (note: this is good to do to make sure the device is present)
     //
 
-    if(commands_base::ping(*device) != CmdResult::ACK_OK)
+    if(mip::commands_base::ping(*device) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not ping the device!");
 
     //
     //Read device information
     //
 
-    commands_base::BaseDeviceInfo device_info;
-    if(commands_base::getDeviceInfo(*device, &device_info) != CmdResult::ACK_OK)
+    mip::commands_base::BaseDeviceInfo device_info;
+    if(mip::commands_base::getDeviceInfo(*device, &device_info) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Failed to get device info");
     print_device_information(device_info);
 
@@ -100,7 +98,7 @@ int main(int argc, const char* argv[])
     //Idle the device (note: this is good to do during setup)
     //
 
-    if(commands_base::setIdle(*device) != CmdResult::ACK_OK)
+    if(mip::commands_base::setIdle(*device) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set the device to idle!");
 
 
@@ -108,7 +106,7 @@ int main(int argc, const char* argv[])
     //Load the device default settings (so the device is in a known state)
     //
 
-    if(commands_3dm::defaultDeviceSettings(*device) != CmdResult::ACK_OK)
+    if(mip::commands_3dm::defaultDeviceSettings(*device) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not load default device settings!");
 
 
@@ -120,33 +118,33 @@ int main(int argc, const char* argv[])
     //
     //External heading sensor reference frame.
     //
-    commands_aiding::FrameConfig::Rotation external_heading_sensor_to_vehicle_frame_rotation;
+    mip::commands_aiding::FrameConfig::Rotation external_heading_sensor_to_vehicle_frame_rotation;
     external_heading_sensor_to_vehicle_frame_rotation.euler = mip::Vector3f(0.0f, 0.0f, 0.0f);  // External heading sensor is aligned with vehicle frame
     float external_heading_sensor_to_vehicle_frame_translation[3] = {0.0, 0.0, 0.0};  // Heading measurements are agnostic to translation, translation set to zero
-    if(commands_aiding::writeFrameConfig(*device, external_heading_sensor_id, mip::commands_aiding::FrameConfig::Format::EULER, true,
-                                            external_heading_sensor_to_vehicle_frame_translation, external_heading_sensor_to_vehicle_frame_rotation) != CmdResult::ACK_OK)
+    if(mip::commands_aiding::writeFrameConfig(*device, external_heading_sensor_id, mip::commands_aiding::FrameConfig::Format::EULER, true,
+                                            external_heading_sensor_to_vehicle_frame_translation, external_heading_sensor_to_vehicle_frame_rotation) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Unable to configure external heading sensor frame ID");
 
 
     //
     //External GNSS antenna reference frame
     //
-    commands_aiding::FrameConfig::Rotation external_gnss_antenna_to_vehicle_frame_rotation;
+    mip::commands_aiding::FrameConfig::Rotation external_gnss_antenna_to_vehicle_frame_rotation;
     external_gnss_antenna_to_vehicle_frame_rotation.euler = mip::Vector3f(0.0f, 0.0f, 0.0f);  // GNSS position/velocity measurements are agnostic to rotation, rotation set to zero
     float external_gnss_antenna_to_vehicle_frame_translation[3] = {0.0, 1.0, 0.0};  // Antenna is translated 1 meter in vehicle frame Y direction
-    if(commands_aiding::writeFrameConfig(*device, gnss_antenna_sensor_id, mip::commands_aiding::FrameConfig::Format::EULER, true,
-                                            external_gnss_antenna_to_vehicle_frame_translation, external_gnss_antenna_to_vehicle_frame_rotation) != CmdResult::ACK_OK)
+    if(mip::commands_aiding::writeFrameConfig(*device, gnss_antenna_sensor_id, mip::commands_aiding::FrameConfig::Format::EULER, true,
+                                            external_gnss_antenna_to_vehicle_frame_translation, external_gnss_antenna_to_vehicle_frame_rotation) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Unable to configure external GNSS antenna frame ID");
 
 
     //
     //External bodyframe velocity reference frame
     //
-    commands_aiding::FrameConfig::Rotation external_velocity_sensor_to_vehicle_frame_rotation;
+    mip::commands_aiding::FrameConfig::Rotation external_velocity_sensor_to_vehicle_frame_rotation;
     external_velocity_sensor_to_vehicle_frame_rotation.euler= mip::Vector3f(0.0f, 0.0f, 1.57f);  // Rotated 90 deg around yaw axis
     float external_velocity_sensor_to_vehicle_frame_translation[3] = {1.0, 0.0, 0.0};  // Sensor is translated 1 meter in X direction
-    if(commands_aiding::writeFrameConfig(*device, vehicle_frame_velocity_sensor_id, mip::commands_aiding::FrameConfig::Format::EULER, true,
-                                            external_velocity_sensor_to_vehicle_frame_translation, external_velocity_sensor_to_vehicle_frame_rotation) != CmdResult::ACK_OK)
+    if(mip::commands_aiding::writeFrameConfig(*device, vehicle_frame_velocity_sensor_id, mip::commands_aiding::FrameConfig::Format::EULER, true,
+                                            external_velocity_sensor_to_vehicle_frame_translation, external_velocity_sensor_to_vehicle_frame_rotation) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Unable to configure external vehicle frame velocity sensor ID");
 
 
@@ -156,39 +154,40 @@ int main(int argc, const char* argv[])
 
     uint16_t filter_base_rate;
 
-    if(commands_3dm::getBaseRate(*device, data_filter::DESCRIPTOR_SET, &filter_base_rate) != CmdResult::ACK_OK)
+    if(mip::commands_3dm::getBaseRate(*device, mip::data_filter::DESCRIPTOR_SET, &filter_base_rate) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not get filter base rate format!");
 
     const uint16_t filter_sample_rate = 100; // Hz
     const uint16_t filter_decimation = filter_base_rate / filter_sample_rate;
 
-    std::array<DescriptorRate, 5> filter_descriptors = {{
-        { data_shared::DATA_GPS_TIME,         filter_decimation },
-        { data_filter::DATA_FILTER_STATUS,    filter_decimation },
-        { data_filter::DATA_ATT_EULER_ANGLES, filter_decimation },
-        { data_filter::DATA_POS_LLH,          filter_decimation },
-        { data_filter::DATA_VEL_NED,          filter_decimation },
+    std::array<mip::DescriptorRate, 5> filter_descriptors = {{
+        { mip::data_shared::DATA_GPS_TIME,         filter_decimation },
+        { mip::data_filter::DATA_FILTER_STATUS,    filter_decimation },
+        { mip::data_filter::DATA_ATT_EULER_ANGLES, filter_decimation },
+        { mip::data_filter::DATA_POS_LLH,          filter_decimation },
+        { mip::data_filter::DATA_VEL_NED,          filter_decimation },
     }};
 
-    if(commands_3dm::writeMessageFormat(*device, data_filter::DESCRIPTOR_SET, static_cast<uint8_t>(filter_descriptors.size()), filter_descriptors.data()) != CmdResult::ACK_OK)
+    if(mip::commands_3dm::writeMessageFormat(*device, mip::data_filter::DESCRIPTOR_SET, static_cast<uint8_t>(filter_descriptors.size()), filter_descriptors.data()) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set filter message format!");
 
     //
     //Configure the filter to accept external heading
     //
 
-    const auto initConfig = commands_filter::InitializationConfiguration::InitialConditionSource::AUTO_POS_VEL_PITCH_ROLL;
-    commands_filter::InitializationConfiguration::AlignmentSelector alignment;
+    const mip::commands_filter::InitializationConfiguration::InitialConditionSource initConfig =
+        mip::commands_filter::InitializationConfiguration::InitialConditionSource::AUTO_POS_VEL_PITCH_ROLL;
+    mip::commands_filter::InitializationConfiguration::AlignmentSelector alignment;
     alignment.external(true);
-    const Vector3f zero3({0, 0, 0});
-    if(commands_filter::writeInitializationConfiguration(*device, 0, initConfig, alignment, 0, 0, 0, zero3, zero3, commands_filter::FilterReferenceFrame::LLH) != CmdResult::ACK_OK)
+    const mip::Vector3f zero3({0, 0, 0});
+    if(mip::commands_filter::writeInitializationConfiguration(*device, 0, initConfig, alignment, 0, 0, 0, zero3, zero3, mip::commands_filter::FilterReferenceFrame::LLH) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set heading source!");
 
     //
     //Reset the filter (note: this is good to do after filter setup is complete)
     //
 
-    if(commands_filter::reset(*device) != CmdResult::ACK_OK)
+    if(mip::commands_filter::reset(*device) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not reset the filter!");
 
 
@@ -197,9 +196,9 @@ int main(int argc, const char* argv[])
     //
 
     //Filter Data
-    DispatchHandler filter_data_handlers[5];
+    mip::DispatchHandler filter_data_handlers[5];
 
-    device->registerExtractor(filter_data_handlers[0], &filter_gps_time, data_filter::DESCRIPTOR_SET);
+    device->registerExtractor(filter_data_handlers[0], &filter_gps_time, mip::data_filter::DESCRIPTOR_SET);
     device->registerExtractor(filter_data_handlers[1], &filter_status);
     device->registerExtractor(filter_data_handlers[2], &filter_euler_angles);
     device->registerExtractor(filter_data_handlers[3], &filter_llh_position);
@@ -209,7 +208,7 @@ int main(int argc, const char* argv[])
     //Resume the device
     //
 
-    if(commands_base::resume(*device) != CmdResult::ACK_OK)
+    if(mip::commands_base::resume(*device) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not resume the device!");
 
 
@@ -230,7 +229,7 @@ int main(int argc, const char* argv[])
         displayFilterState(filter_status.filter_state, current_state);
 
         //Check for full nav filter state transition
-        if((!filter_state_full_nav) && (filter_status.filter_state == data_filter::FilterMode::FULL_NAV))
+        if((!filter_state_full_nav) && (filter_status.filter_state == mip::data_filter::FilterMode::FULL_NAV))
         {
             printf("NOTE: Filter has entered full navigation mode.\n");
             filter_state_full_nav = true;
@@ -244,15 +243,15 @@ int main(int argc, const char* argv[])
         if (elapsed_time_from_last_measurement_update > 500)
         {
             // Use measurement time of arrival for timestamping method
-            commands_aiding::Time external_measurement_time;
-            external_measurement_time.timebase = commands_aiding::Time::Timebase::TIME_OF_ARRIVAL;
+            mip::commands_aiding::Time external_measurement_time;
+            external_measurement_time.timebase = mip::commands_aiding::Time::Timebase::TIME_OF_ARRIVAL;
             external_measurement_time.reserved = 1;
             external_measurement_time.nanoseconds = current_timestamp * uint64_t(1000000);
 
             // External heading command
             float external_heading = 0.0f;
             float external_heading_uncertainty = 0.001f;
-            if(commands_aiding::headingTrue(*device, external_measurement_time, external_heading_sensor_id, external_heading, external_heading_uncertainty, 0x0001) != CmdResult::ACK_OK)
+            if(mip::commands_aiding::headingTrue(*device, external_measurement_time, external_heading_sensor_id, external_heading, external_heading_uncertainty, 0x0001) != mip::CmdResult::ACK_OK)
                 printf("WARNING: Failed to send external heading to CV7-INS\n");
 
             // External position command
@@ -260,26 +259,26 @@ int main(int argc, const char* argv[])
             double longitude = -73.10628129871753;
             double height = 122.0;
             float llh_uncertainty[3] = {1.0, 1.0, 1.0};
-            if(commands_aiding::posLlh(*device, external_measurement_time, gnss_antenna_sensor_id, latitude, longitude, height, llh_uncertainty, 0x0007) != CmdResult::ACK_OK)
+            if(mip::commands_aiding::posLlh(*device, external_measurement_time, gnss_antenna_sensor_id, latitude, longitude, height, llh_uncertainty, 0x0007) != mip::CmdResult::ACK_OK)
                 printf("WARNING: Failed to send external position to CV7-INS\n");
 
             // External global velocity command
             float ned_velocity[3] = {0.0f, 0.0f, 0.0f};
             float ned_velocity_uncertainty[3] = {0.1f, 0.1f, 0.1f};
-            if(commands_aiding::velNed(*device, external_measurement_time,  gnss_antenna_sensor_id, ned_velocity, ned_velocity_uncertainty, 0x0007) != CmdResult::ACK_OK)
+            if(mip::commands_aiding::velNed(*device, external_measurement_time,  gnss_antenna_sensor_id, ned_velocity, ned_velocity_uncertainty, 0x0007) != mip::CmdResult::ACK_OK)
                 printf("WARNING: Failed to send external NED velocity to CV7-INS\n");
 
             // External vehicle frame velocity command
             float vehicle_frame_velocity[3] = {0.0f, 0.0f, 0.0f};
             float vehicle_frame_velocity_uncertainty[3] = {0.1f, 0.1f, 0.1f};
-            if(commands_aiding::velBodyFrame(*device, external_measurement_time, vehicle_frame_velocity_sensor_id, vehicle_frame_velocity, vehicle_frame_velocity_uncertainty, 0x0007) != CmdResult::ACK_OK)
+            if(mip::commands_aiding::velBodyFrame(*device, external_measurement_time, vehicle_frame_velocity_sensor_id, vehicle_frame_velocity, vehicle_frame_velocity_uncertainty, 0x0007) != mip::CmdResult::ACK_OK)
                 printf("WARNING: Failed to send external vehicle frame velocity to CV7-INS\n");
 
             prev_measurement_update_timestamp = current_timestamp;
         }
 
         //Once in full nav, print out data at 1 Hz
-        if((filter_status.filter_state == data_filter::FilterMode::FULL_NAV) && (elapsed_time_from_last_message_print >= 1000))
+        if((filter_status.filter_state == mip::data_filter::FilterMode::FULL_NAV) && (elapsed_time_from_last_message_print >= 1000))
             {
                 printf("\n\n****Filter navigation state****\n");
                 printf("TIMESTAMP: %f\n", filter_gps_time.tow);
@@ -301,14 +300,18 @@ int main(int argc, const char* argv[])
 // Print device information
 ////////////////////////////////////////////////////////////////////////////////
 
-void print_device_information(const commands_base::BaseDeviceInfo& device_info)
+void print_device_information(const mip::commands_base::BaseDeviceInfo& device_info)
 {
     printf("Connected to:\n");
 
     auto print_info = [](const char* name, const char info[16])
     {
         char msg[17] = {0};
+#ifdef _WIN32
+        strncpy_s(msg, info, 16);
+#else
         std::strncpy(msg, info, 16);
+#endif
         printf("  %s%s\n", name, msg);
     };
 
@@ -363,4 +366,3 @@ bool should_exit()
 {
     return false;
 }
-

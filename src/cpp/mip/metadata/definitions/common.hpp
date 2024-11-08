@@ -16,43 +16,43 @@ struct MetadataFor<CmdResult>
 
     static constexpr inline EnumInfo::Entry entries[] = {
         {
-            .value = CmdResult::ACK_OK,
-            .name  = "OK",
-            .docs  = "Command completed successfully",
+            /*.value =*/ CmdResult::ACK_OK,
+            /*.name  =*/ "OK",
+            /*.docs  =*/ "Command completed successfully",
         },
         {
-            .value = CmdResult::NACK_COMMAND_UNKNOWN,
-            .name  = "Unknown Command",
-            .docs  = "The device did not recognize the command",
+            /*.value =*/ CmdResult::NACK_COMMAND_UNKNOWN,
+            /*.name  =*/ "Unknown Command",
+            /*.docs  =*/ "The device did not recognize the command",
         },
         {
-            .value = CmdResult::NACK_INVALID_CHECKSUM,
-            .name  = "Invalid Checksum",
-            .docs  = "An packet with an invalid checksum was received by the device",
+            /*.value =*/ CmdResult::NACK_INVALID_CHECKSUM,
+            /*.name  =*/ "Invalid Checksum",
+            /*.docs  =*/ "An packet with an invalid checksum was received by the device",
         },
         {
-            .value = CmdResult::NACK_INVALID_PARAM,
-            .name  = "Invalid Parameter",
-            .docs  = "One or more parameters to the command were not valid",
+            /*.value =*/ CmdResult::NACK_INVALID_PARAM,
+            /*.name  =*/ "Invalid Parameter",
+            /*.docs  =*/ "One or more parameters to the command were not valid",
         },
         {
-            .value = CmdResult::NACK_COMMAND_FAILED,
-            .name  = "Command Failed",
-            .docs  = "The device could not complete the command",
+            /*.value =*/ CmdResult::NACK_COMMAND_FAILED,
+            /*.name  =*/ "Command Failed",
+            /*.docs  =*/ "The device could not complete the command",
         },
         {
-            .value = CmdResult::NACK_COMMAND_TIMEOUT,
-            .name  = "Device Timeout",
-            .docs  = "The device reported a timeout condition",
+            /*.value =*/ CmdResult::NACK_COMMAND_TIMEOUT,
+            /*.name  =*/ "Device Timeout",
+            /*.docs  =*/ "The device reported a timeout condition",
         },
         // Status codes not represented here as they don't come from the device.
     };
 
     static constexpr inline EnumInfo value = {
-        .name    = "CmdResult",
-        .docs    = "Acknowledgement/reply code from the device after a command is issued",
-        .type    = Type::U8,
-        .entries = entries,
+        /*.name    =*/ "CmdResult",
+        /*.docs    =*/ "Acknowledgement/reply code from the device after a command is issued",
+        /*.type    =*/ Type::U8,
+        /*.entries =*/ entries,
     };
 };
 
@@ -75,22 +75,22 @@ struct MetadataFor<ReplyField>
 
     static constexpr inline ParameterInfo parameters[] = {
         {
-            .name = "cmd_field_desc",
-            .docs = "The field descriptor of the command this field acknowledges.",
-            .type = {Type::U8},
-            .accessor = utils::access<type, uint8_t, &type::cmd_field_desc>,
-            .functions = NO_FUNCTIONS,
-            .count = 1,
-            .condition = {},
+            /*.name       =*/ "cmd_field_desc",
+            /*.docs       =*/ "The field descriptor of the command this field acknowledges.",
+            /*.type       =*/ {Type::U8},
+            /*.accessor   =*/ nullptr, //utils::access<type, uint8_t, &type::cmd_field_desc>,
+            /*.attributes =*/ NO_FUNCTIONS,
+            /*.count      =*/ 1,
+            /*.condition  =*/ {},
         },
         {
-            .name = "result",
-            .docs = "Result of the command.",
-            .type = {Type::ENUM, &MetadataFor<CmdResult>::value},
-            .accessor = utils::access<type, CmdResult, &type::result>,
-            .functions = NO_FUNCTIONS,
-            .count = 1,
-            .condition = {},
+            /*.name       =*/ "result",
+            /*.docs       =*/ "Result of the command.",
+            /*.type       =*/ {Type::ENUM, &MetadataFor<CmdResult>::value},
+            /*.accessor   =*/ nullptr, //utils::access<type, CmdResult, &type::result>,
+            /*.attributes =*/ NO_FUNCTIONS,
+            /*.count      =*/ 1,
+            /*.condition  =*/ {},
         },
     };
 
@@ -113,30 +113,30 @@ struct MetadataFor<DescriptorRate>
 
     static constexpr inline ParameterInfo parameters[] = {
         {
-            .name = "descriptor",
-            .docs = "MIP data descriptor",
-            .type = {Type::U8},
-            .accessor = utils::access<type, uint8_t, &type::descriptor>,
-            .functions = NO_FUNCTIONS,
-            .count = 1,
-            .condition = {},
+            /*.name       =*/ "descriptor",
+            /*.docs       =*/ "MIP data descriptor",
+            /*.type       =*/ {Type::U8},
+            /*.accessor   =*/ nullptr, //utils::access<type, uint8_t, &type::descriptor>,
+            /*.attributes =*/ NO_FUNCTIONS,
+            /*.count      =*/ 1,
+            /*.condition  =*/ {},
         },
         {
-            .name = "decimation",
-            .docs = "Decimation from the base rate",
-            .type = {Type::U16},
-            .accessor = utils::access<type, uint16_t, &type::decimation>,
-            .functions = NO_FUNCTIONS,
-            .count = 1,
-            .condition = {},
+            /*.name       =*/ "decimation",
+            /*.docs       =*/ "Decimation from the base rate",
+            /*.type       =*/ {Type::U16},
+            /*.accessor   =*/ nullptr, //utils::access<type, uint16_t, &type::decimation>,
+            /*.attributes =*/ NO_FUNCTIONS,
+            /*.count      =*/ 1,
+            /*.condition  =*/ {},
         },
     };
 
     static constexpr inline StructInfo value = {
-        .name  = "DescriptorRate",
-        .title = "Descriptor Rate",
-        .docs  = "Descriptor rate information",
-        .parameters = parameters,
+        /*.name       =*/ "DescriptorRate",
+        /*.title      =*/ "Descriptor Rate",
+        /*.docs       =*/ "Descriptor rate information",
+        /*.parameters =*/ parameters,
     };
 };
 
@@ -148,89 +148,89 @@ struct MetadataFor<Vector<T,N>>
 
     static constexpr inline ParameterInfo parameters[] = {
         {
-            .name = "x",
-            .docs = "X axis",
-            .type = {utils::ParamType<T>::value},
-            .accessor = nullptr,
-            .functions = NO_FUNCTIONS,
-            .count = 1,
-            .condition = {},
+            /*.name       =*/ "x",
+            /*.docs       =*/ "X axis",
+            /*.type       =*/ {utils::ParamType<T>::value},
+            /*.accessor   =*/ nullptr,
+            /*.attributes =*/ NO_FUNCTIONS,
+            /*.count      =*/ 1,
+            /*.condition  =*/ {},
         },
         {
-            .name = "y",
-            .docs = "Y axis",
-            .type = {utils::ParamType<T>::value},
-            .accessor = nullptr,
-            .functions = NO_FUNCTIONS,
-            .count = 1,
-            .condition = {},
+            /*.name       =*/ "y",
+            /*.docs       =*/ "Y axis",
+            /*.type       =*/ {utils::ParamType<T>::value},
+            /*.accessor   =*/ nullptr,
+            /*.attributes =*/ NO_FUNCTIONS,
+            /*.count      =*/ 1,
+            /*.condition  =*/ {},
         },
         {
-            .name = "z",
-            .docs = "Z axis",
-            .type = {utils::ParamType<T>::value},
-            .accessor = nullptr,
-            .functions = NO_FUNCTIONS,
-            .count = 1,
-            .condition = {},
+            /*.name       =*/ "z",
+            /*.docs       =*/ "Z axis",
+            /*.type       =*/ {utils::ParamType<T>::value},
+            /*.accessor   =*/ nullptr,
+            /*.attributes =*/ NO_FUNCTIONS,
+            /*.count      =*/ 1,
+            /*.condition  =*/ {},
         },
         {
-            .name = "w",
-            .docs = "W axis",
-            .type = {utils::ParamType<T>::value},
-            .accessor = nullptr,
-            .functions = NO_FUNCTIONS,
-            .count = 1,
-            .condition = {},
+            /*.name       =*/ "w",
+            /*.docs       =*/ "W axis",
+            /*.type       =*/ {utils::ParamType<T>::value},
+            /*.accessor   =*/ nullptr,
+            /*.attributes =*/ NO_FUNCTIONS,
+            /*.count      =*/ 1,
+            /*.condition  =*/ {},
         },
     };
 
 
-    static constexpr inline StructInfo values_f[] = {
+    static constexpr inline StructInfo values_f[3] = {
         {
-            .name = "Vector2f",
-            .title = "Vector2f",
-            .docs = "2-dimensional vector of floats",
-            .parameters = {parameters, 2}
+            /*.name       =*/ "Vector2f",
+            /*.title      =*/ "Vector2f",
+            /*.docs       =*/ "2-dimensional vector of floats",
+            /*.parameters =*/ {parameters, 2}
         },
         {
-            .name = "Vector3f",
-            .title = "Vector3f",
-            .docs = "3-dimensional vector of floats",
-            .parameters = {parameters, 3}
+            /*.name       =*/ "Vector3f",
+            /*.title      =*/ "Vector3f",
+            /*.docs       =*/ "3-dimensional vector of floats",
+            /*.parameters =*/ {parameters, 3}
         },
         {
-            .name = "Vector4f",
-            .title = "Vector4f",
-            .docs = "4-dimensional vector of floats",
-            .parameters = {parameters, 4}
+            /*.name       =*/ "Vector4f",
+            /*.title      =*/ "Vector4f",
+            /*.docs       =*/ "4-dimensional vector of floats",
+            /*.parameters =*/ {parameters, 4}
         },
     };
-    static constexpr inline StructInfo values_d[] = {
+    static constexpr inline StructInfo values_d[3] = {
         {
-            .name = "Vector2d",
-            .title = "Vector2d",
-            .docs = "2-dimensional vector of doubles",
-            .parameters = {parameters, 2}
+            /*.name       =*/ "Vector2d",
+            /*.title      =*/ "Vector2d",
+            /*.docs       =*/ "2-dimensional vector of doubles",
+            /*.parameters =*/ {parameters, 2}
         },
         {
-            .name = "Vector3d",
-            .title = "Vector3d",
-            .docs = "3-dimensional vector of doubles",
-            .parameters = {parameters, 3}
+            /*.name       =*/ "Vector3d",
+            /*.title      =*/ "Vector3d",
+            /*.docs       =*/ "3-dimensional vector of doubles",
+            /*.parameters =*/ {parameters, 3}
         },
         {
-            .name = "Vector4d",
-            .title = "Vector4d",
-            .docs = "4-dimensional vector of doubles",
-            .parameters = {parameters, 4}
+            /*.name       =*/ "Vector4d",
+            /*.title      =*/ "Vector4d",
+            /*.docs       =*/ "4-dimensional vector of doubles",
+            /*.parameters =*/ {parameters, 4}
         },
     };
 
-    static_assert(std::is_floating_point_v<T>, "Expected either float or double");
+    static_assert(std::is_floating_point<T>::value, "Expected either float or double");
     static_assert(N >= 2 && N <= 4, "N should be in the range [2,4].");
 
-    static constexpr inline const StructInfo& value = std::is_same_v<T,double> ? values_d[N-2] : values_f[N-2];
+    static constexpr inline const StructInfo& value = std::is_same<T,double>::value ? values_d[N-2] : values_f[N-2];
 };
 
 
@@ -241,21 +241,21 @@ struct MetadataFor<Matrix3f>
 
     static constexpr inline ParameterInfo parameters[] = {
         {
-            .name = "m",
-            .docs = "Matrix data",
-            .type = {Type::FLOAT},
-            .accessor = nullptr,
-            .functions = NO_FUNCTIONS,
-            .count = 9,
-            .condition = {},
+            /*.name       =*/ "m",
+            /*.docs       =*/ "Matrix data",
+            /*.type       =*/ {Type::FLOAT},
+            /*.accessor   =*/ nullptr,
+            /*.attributes =*/ NO_FUNCTIONS,
+            /*.count      =*/ 9,
+            /*.condition  =*/ {},
         },
     };
 
     static constexpr inline StructInfo value = {
-        .name = "Matrix3f",
-        .title = "3x3 Float Matrix",
-        .docs = "Represents a 3D matrix of floats.",
-        .parameters = parameters,
+        /*.name       =*/ "Matrix3f",
+        /*.title      =*/ "3x3 Float Matrix",
+        /*.docs       =*/ "Represents a 3D matrix of floats.",
+        /*.parameters =*/ parameters,
     };
 };
 
@@ -266,21 +266,21 @@ struct MetadataFor<Matrix3d>
 
     static constexpr inline ParameterInfo parameters[] = {
         {
-            .name = "m",
-            .docs = "Matrix data",
-            .type = {Type::DOUBLE},
-            .accessor = nullptr,
-            .functions = NO_FUNCTIONS,
-            .count = 3,
-            .condition = {},
+            /*.name       =*/ "m",
+            /*.docs       =*/ "Matrix data",
+            /*.type       =*/ {Type::DOUBLE},
+            /*.accessor   =*/ nullptr,
+            /*.attributes =*/ NO_FUNCTIONS,
+            /*.count      =*/ 9,
+            /*.condition  =*/ {},
         },
     };
 
     static constexpr inline StructInfo value = {
-        .name = "Matrix3f",
-        .title = "3x3 Double Matrix",
-        .docs = "Represents a 3D matrix of doubles.",
-        .parameters = parameters,
+        /*.name       =*/ "Matrix3f",
+        /*.title      =*/ "3x3 Double Matrix",
+        /*.docs       =*/ "Represents a 3D matrix of doubles.",
+        /*.parameters =*/ parameters,
     };
 };
 

@@ -41,7 +41,7 @@ mip_model_number get_model_from_string(const char* model_or_serial)
     if (i < start_index + 4)
         return MODEL_UNKNOWN;
 
-    return atoi(model_or_serial + start_index);
+    return (mip_model_number)atoi(model_or_serial + start_index);
 }
 
 const char* get_model_name_from_number(mip_model_number model)

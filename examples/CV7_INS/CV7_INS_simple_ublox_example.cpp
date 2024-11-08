@@ -33,18 +33,16 @@
 #include <ctime>
 #include <array>
 
-using namespace mip;
-
 ////////////////////////////////////////////////////////////////////////////////
 // Global Variables
 ////////////////////////////////////////////////////////////////////////////////
 
-data_shared::GpsTimestamp    filter_gps_time;
-data_filter::Status          filter_status;
-data_filter::EulerAngles     filter_euler_angles;
-data_filter::PositionLlh     filter_llh_position;
-data_filter::VelocityNed     filter_ned_velocity;
-data_system::TimeSyncStatus  system_time_sync_status;
+mip::data_shared::GpsTimestamp    filter_gps_time;
+mip::data_filter::Status          filter_status;
+mip::data_filter::EulerAngles     filter_euler_angles;
+mip::data_filter::PositionLlh     filter_llh_position;
+mip::data_filter::VelocityNed     filter_ned_velocity;
+mip::data_system::TimeSyncStatus  system_time_sync_status;
 
 uint8_t gnss_antenna_sensor_id = 1;
 
@@ -63,7 +61,7 @@ struct InputArguments
 
     uint8_t pps_input_pin_id = 1;
 
-    commands_filter::InitializationConfiguration::AlignmentSelector filter_heading_alignment_method = commands_filter::InitializationConfiguration::AlignmentSelector::KINEMATIC;
+    mip::commands_filter::InitializationConfiguration::AlignmentSelector filter_heading_alignment_method = mip::commands_filter::InitializationConfiguration::AlignmentSelector::KINEMATIC;
 
     float gnss_antenna_lever_arm[3] = {0,0,0};
 };
@@ -74,7 +72,7 @@ struct InputArguments
 
 int usage(const char* argv0);
 
-void print_device_information(const commands_base::BaseDeviceInfo& device_info);
+void print_device_information(const mip::commands_base::BaseDeviceInfo& device_info);
 
 void exit_gracefully(const char *message);
 bool should_exit();
@@ -91,33 +89,33 @@ int main(int argc, const char* argv[])
 
     std::unique_ptr<ExampleUtils> utils = openFromArgs(input_arguments.mip_device_port_name, input_arguments.mip_device_baudrate, input_arguments.mip_binary_filepath);
     std::unique_ptr<mip::Interface>& device = utils->device;
-    
+
     //
     // Open uBlox serial port
     //
 
     printf("Connecting to UBlox F9P on %s at %s...\n", input_arguments.ublox_device_port_name.c_str(), input_arguments.ublox_device_baudrate.c_str());
     std::unique_ptr<ExampleUtils> utils_ublox = openFromArgs(input_arguments.ublox_device_port_name, input_arguments.ublox_device_baudrate, {});
-    ublox::UbloxDevice ublox_device(std::move(utils_ublox->connection));
+    mip::ublox::UbloxDevice ublox_device(std::move(utils_ublox->connection));
 
     //
     //Attempt to idle the device before pinging
     //
-    commands_base::setIdle(*device);
+    mip::commands_base::setIdle(*device);
 
     //
     //Ping the device (note: this is good to do to make sure the device is present)
     //
 
-    if(commands_base::ping(*device) != CmdResult::ACK_OK)
+    if(mip::commands_base::ping(*device) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not ping the device!");
 
     //
     //Read device information
     //
 
-    commands_base::BaseDeviceInfo device_info;
-    if(commands_base::getDeviceInfo(*device, &device_info) != CmdResult::ACK_OK)
+    mip::commands_base::BaseDeviceInfo device_info;
+    if(mip::commands_base::getDeviceInfo(*device, &device_info) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Failed to get device info");
     print_device_information(device_info);
 
@@ -125,7 +123,7 @@ int main(int argc, const char* argv[])
     //Idle the device (note: this is good to do during setup)
     //
 
-    if(commands_base::setIdle(*device) != CmdResult::ACK_OK)
+    if(mip::commands_base::setIdle(*device) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set the device to idle!");
 
 
@@ -133,17 +131,17 @@ int main(int argc, const char* argv[])
     //Load the device default settings (so the device is in a known state)
     //
 
-    if(commands_3dm::defaultDeviceSettings(*device) != CmdResult::ACK_OK)
+    if(mip::commands_3dm::defaultDeviceSettings(*device) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not load default device settings!");
 
 
     //
     //External GNSS antenna reference frame
     //
-    commands_aiding::FrameConfig::Rotation external_gnss_antenna_to_vehicle_frame_rotation;
+    mip::commands_aiding::FrameConfig::Rotation external_gnss_antenna_to_vehicle_frame_rotation;
     external_gnss_antenna_to_vehicle_frame_rotation.euler = mip::Vector3f(0.0f, 0.0f, 0.0f);  // GNSS position/velocity measurements are agnostic to rotation, rotation set to zero // GNSS position/velocity measurements are agnostic to rotation, rotation set to zero
-    if(commands_aiding::writeFrameConfig(*device, gnss_antenna_sensor_id, mip::commands_aiding::FrameConfig::Format::EULER, true,
-                                          input_arguments.gnss_antenna_lever_arm, external_gnss_antenna_to_vehicle_frame_rotation) != CmdResult::ACK_OK)
+    if(mip::commands_aiding::writeFrameConfig(*device, gnss_antenna_sensor_id, mip::commands_aiding::FrameConfig::Format::EULER, true,
+                                              input_arguments.gnss_antenna_lever_arm, external_gnss_antenna_to_vehicle_frame_rotation) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Unable to configure external GNSS antenna frame ID");
 
 
@@ -152,8 +150,8 @@ int main(int argc, const char* argv[])
     //
 
     float default_init[3] = {0,0,0};
-    if(commands_filter::writeInitializationConfiguration(*device, false, commands_filter::InitializationConfiguration::InitialConditionSource::AUTO_POS_VEL_ATT, input_arguments.filter_heading_alignment_method,
-                                                         0, 0, 0, default_init, default_init, commands_filter::FilterReferenceFrame::ECEF) != CmdResult::ACK_OK)
+    if(mip::commands_filter::writeInitializationConfiguration(*device, false, mip::commands_filter::InitializationConfiguration::InitialConditionSource::AUTO_POS_VEL_ATT, input_arguments.filter_heading_alignment_method,
+                                                         0, 0, 0, default_init, default_init, mip::commands_filter::FilterReferenceFrame::ECEF) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not load default device settings!");
 
 
@@ -165,18 +163,18 @@ int main(int argc, const char* argv[])
         //
 
         uint16_t system_data_base_rate;
-        if(commands_3dm::getBaseRate(*device, data_system::DESCRIPTOR_SET, &system_data_base_rate) != CmdResult::ACK_OK)
+        if(mip::commands_3dm::getBaseRate(*device, mip::data_system::DESCRIPTOR_SET, &system_data_base_rate) != mip::CmdResult::ACK_OK)
             exit_gracefully("ERROR: Could not get system data base rate format!");
 
         const uint16_t system_data_sample_rate = 10; // Hz
         const uint16_t system_data_decimation = system_data_base_rate / system_data_sample_rate;
 
-        std::array<DescriptorRate, 2> system_data_descriptors = {{
-                                                                    { data_shared::DATA_GPS_TIME,         system_data_decimation },
-                                                                    { data_system::DATA_TIME_SYNC_STATUS, system_data_decimation },
+        std::array<mip::DescriptorRate, 2> system_data_descriptors = {{
+                                                                    { mip::data_shared::DATA_GPS_TIME,         system_data_decimation },
+                                                                    { mip::data_system::DATA_TIME_SYNC_STATUS, system_data_decimation },
                                                             }};
 
-        if(commands_3dm::writeMessageFormat(*device, data_system::DESCRIPTOR_SET, static_cast<uint8_t>(system_data_descriptors.size()), system_data_descriptors.data()) != CmdResult::ACK_OK)
+        if(mip::commands_3dm::writeMessageFormat(*device, mip::data_system::DESCRIPTOR_SET, static_cast<uint8_t>(system_data_descriptors.size()), system_data_descriptors.data()) != mip::CmdResult::ACK_OK)
             exit_gracefully("ERROR: Could not set system data message format!");
 
 
@@ -184,7 +182,7 @@ int main(int argc, const char* argv[])
         // Setup GPIO for PPS input functionality
         //
 
-        if (commands_3dm::writeGpioConfig(*device, input_arguments.pps_input_pin_id, mip::commands_3dm::GpioConfig::Feature::PPS, mip::commands_3dm::GpioConfig::Behavior::PPS_INPUT, mip::commands_3dm::GpioConfig::PinMode::NONE) != CmdResult::ACK_OK)
+        if (mip::commands_3dm::writeGpioConfig(*device, input_arguments.pps_input_pin_id, mip::commands_3dm::GpioConfig::Feature::PPS, mip::commands_3dm::GpioConfig::Behavior::PPS_INPUT, mip::commands_3dm::GpioConfig::PinMode::NONE) != mip::CmdResult::ACK_OK)
             exit_gracefully("ERROR: Could not set GPIO to PPS input!");
 
 
@@ -192,7 +190,7 @@ int main(int argc, const char* argv[])
         // Setup PPS source as GPIO
         //
 
-        if (mip::commands_3dm::writePpsSource(*device, mip::commands_3dm::PpsSource::Source::GPIO) != CmdResult::ACK_OK)
+        if (mip::commands_3dm::writePpsSource(*device, mip::commands_3dm::PpsSource::Source::GPIO) != mip::CmdResult::ACK_OK)
             exit_gracefully("ERROR: Failed to set PPS source to GPIO!");
 
     }
@@ -201,26 +199,27 @@ int main(int argc, const char* argv[])
     //Configure factory streaming data.  This enables all critical data channels required for post-processing analysis
     //
 
-    if(commands_3dm::factoryStreaming(*device, commands_3dm::FactoryStreaming::Action::MERGE, 0) != CmdResult::ACK_OK)
+    if(mip::commands_3dm::factoryStreaming(*device, mip::commands_3dm::FactoryStreaming::Action::MERGE, 0) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not enable factory streaming support!");
 
     //
     //Configure the filter to use magnetometer or GNSS kinematic heading
     //
 
-    const auto initConfig = commands_filter::InitializationConfiguration::InitialConditionSource::AUTO_POS_VEL_PITCH_ROLL;
-    commands_filter::InitializationConfiguration::AlignmentSelector alignment;
+    const mip::commands_filter::InitializationConfiguration::InitialConditionSource initConfig =
+        mip::commands_filter::InitializationConfiguration::InitialConditionSource::AUTO_POS_VEL_PITCH_ROLL;
+    mip::commands_filter::InitializationConfiguration::AlignmentSelector alignment;
     alignment.magnetometer(true);
     alignment.kinematic(true);
-    const Vector3f zero3({0, 0, 0});
-    if(commands_filter::writeInitializationConfiguration(*device, 0, initConfig, alignment, 0, 0, 0, zero3, zero3, commands_filter::FilterReferenceFrame::LLH) != CmdResult::ACK_OK)
+    const mip::Vector3f zero3({0, 0, 0});
+    if(mip::commands_filter::writeInitializationConfiguration(*device, 0, initConfig, alignment, 0, 0, 0, zero3, zero3, mip::commands_filter::FilterReferenceFrame::LLH) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set heading source!");
 
     //
     //Reset the filter (note: this is good to do after filter setup is complete)
     //
 
-    if(commands_filter::reset(*device) != CmdResult::ACK_OK)
+    if(mip::commands_filter::reset(*device) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not reset the filter!");
 
 
@@ -229,26 +228,26 @@ int main(int argc, const char* argv[])
     //
 
     //Filter Data
-    DispatchHandler filter_data_handlers[5];
+    mip::DispatchHandler filter_data_handlers[5];
 
-    device->registerExtractor(filter_data_handlers[0], &filter_gps_time, data_filter::DESCRIPTOR_SET);
+    device->registerExtractor(filter_data_handlers[0], &filter_gps_time, mip::data_filter::DESCRIPTOR_SET);
     device->registerExtractor(filter_data_handlers[1], &filter_status);
     device->registerExtractor(filter_data_handlers[2], &filter_euler_angles);
     device->registerExtractor(filter_data_handlers[3], &filter_llh_position);
     device->registerExtractor(filter_data_handlers[4], &filter_ned_velocity);
 
     //System Data
-    DispatchHandler system_data_handlers[1];
+    mip::DispatchHandler system_data_handlers[1];
 
-    device->registerExtractor(system_data_handlers[0], &system_time_sync_status, data_system::DESCRIPTOR_SET);
+    device->registerExtractor(system_data_handlers[0], &system_time_sync_status, mip::data_system::DESCRIPTOR_SET);
 
     //
     //Resume the device
     //
 
-    if(commands_base::resume(*device) != CmdResult::ACK_OK)
+    if(mip::commands_base::resume(*device) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not resume the device!");
-    
+
     //Main Loop: Update the interface and process data
     //
 
@@ -266,10 +265,10 @@ int main(int argc, const char* argv[])
         device->update();
 
         // Get ublox data
-        std::pair<bool, ublox::UbloxPVTMessage> ubox_parser_result = ublox_device.update();
+        std::pair<bool, mip::ublox::UbloxPVTMessage> ubox_parser_result = ublox_device.update();
         bool pvt_message_valid = ubox_parser_result.first;
-        ublox::UbloxPVTMessage pvt_message = ubox_parser_result.second;
-        
+        mip::ublox::UbloxPVTMessage pvt_message = ubox_parser_result.second;
+
         // Wait for valid PPS lock
         if (input_arguments.enable_pps_sync && !pps_sync_valid)
         {
@@ -283,9 +282,9 @@ int main(int argc, const char* argv[])
             }
             continue;
         }
-        
+
         //Check for full nav filter state transition
-        if((!filter_state_full_nav) && (filter_status.filter_state == data_filter::FilterMode::FULL_NAV))
+        if((!filter_state_full_nav) && (filter_status.filter_state == mip::data_filter::FilterMode::FULL_NAV))
         {
             printf("NOTE: Filter has entered full navigation mode.\n");
             filter_state_full_nav = true;
@@ -296,7 +295,7 @@ int main(int argc, const char* argv[])
         bool print_new_update_message = elapsed_time_from_last_message_print >= 1000;
         if (print_new_update_message)
         {
-            if(filter_status.filter_state == data_filter::FilterMode::FULL_NAV)
+            if(filter_status.filter_state == mip::data_filter::FilterMode::FULL_NAV)
             {
                 printf("\n\n****Filter navigation state****\n");
                 printf("TIMESTAMP: %f\n", filter_gps_time.tow);
@@ -321,38 +320,38 @@ int main(int argc, const char* argv[])
             printf("LLH_POSITION_GNSS_MEAS = [%f %f %f]\n", pvt_message.latitude, pvt_message.longitude, pvt_message.height_above_ellipsoid);
             printf("NED_VELOCITY_GNSS_MEAS = [%f %f %f]\n", pvt_message.ned_velocity[0], pvt_message.ned_velocity[1], pvt_message.ned_velocity[2]);
 
-            commands_aiding::Time external_measurement_time;
+            mip::commands_aiding::Time external_measurement_time;
             external_measurement_time.reserved = 1;
 
             if (input_arguments.enable_pps_sync)
             {
                 // Send week number update to device
                 uint32_t week_number = get_gps_week(pvt_message.utc_year, pvt_message.utc_month, pvt_message.utc_day);
-                if (!commands_base::writeGpsTimeUpdate(*device, commands_base::GpsTimeUpdate::FieldId::WEEK_NUMBER, week_number))
+                if (!mip::commands_base::writeGpsTimeUpdate(*device, mip::commands_base::GpsTimeUpdate::FieldId::WEEK_NUMBER, week_number))
                     printf("WARNING: Failed to send week number time update to CV7-INS\n");
 
                 // Send time of week update to device
                 uint32_t time_of_week_int = static_cast<uint32_t>(floor(pvt_message.time_of_week));
-                if (!commands_base::writeGpsTimeUpdate(*device, commands_base::GpsTimeUpdate::FieldId::TIME_OF_WEEK, time_of_week_int))
+                if (!mip::commands_base::writeGpsTimeUpdate(*device, mip::commands_base::GpsTimeUpdate::FieldId::TIME_OF_WEEK, time_of_week_int))
                     printf("WARNING: Failed to send time of week update to CV7-INS\n");
 
                 // Mark timestamp for aiding message input
-                external_measurement_time.timebase = commands_aiding::Time::Timebase::EXTERNAL_TIME;
+                external_measurement_time.timebase = mip::commands_aiding::Time::Timebase::EXTERNAL_TIME;
                 external_measurement_time.nanoseconds = convert_gps_tow_to_nanoseconds(week_number, pvt_message.time_of_week);
             }
             else
             {
                 // If no PPS sync is supplied, use device time of arrival for data timestamping method
-                external_measurement_time.timebase = commands_aiding::Time::Timebase::TIME_OF_ARRIVAL;
+                external_measurement_time.timebase = mip::commands_aiding::Time::Timebase::TIME_OF_ARRIVAL;
                 external_measurement_time.nanoseconds = 0;  // Not used, but should be set to 0
             }
 
             // External position command
-            if (commands_aiding::posLlh(*device, external_measurement_time, gnss_antenna_sensor_id, pvt_message.latitude, pvt_message.longitude, pvt_message.height_above_ellipsoid, pvt_message.llh_position_uncertainty, 0x0007) != CmdResult::ACK_OK)
+            if (mip::commands_aiding::posLlh(*device, external_measurement_time, gnss_antenna_sensor_id, pvt_message.latitude, pvt_message.longitude, pvt_message.height_above_ellipsoid, pvt_message.llh_position_uncertainty, 0x0007) != mip::CmdResult::ACK_OK)
                 printf("WARNING: Failed to send external position to CV7-INS\n");
 
             // External global velocity command
-            if (commands_aiding::velNed(*device, external_measurement_time, gnss_antenna_sensor_id,pvt_message.ned_velocity, pvt_message.ned_velocity_uncertainty, 0x0007) != CmdResult::ACK_OK)
+            if (mip::commands_aiding::velNed(*device, external_measurement_time, gnss_antenna_sensor_id,pvt_message.ned_velocity, pvt_message.ned_velocity_uncertainty, 0x0007) != mip::CmdResult::ACK_OK)
                 printf("WARNING: Failed to send external NED velocity to CV7-INS\n");
 
             prev_measurement_update_timestamp = current_timestamp;
@@ -396,14 +395,19 @@ int get_gps_week(int year, int month, int day)
 // Print device information
 ////////////////////////////////////////////////////////////////////////////////
 
-void print_device_information(const commands_base::BaseDeviceInfo& device_info)
+void print_device_information(const mip::commands_base::BaseDeviceInfo& device_info)
 {
     printf("Connected to:\n");
 
     auto print_info = [](const char* name, const char info[16])
     {
         char msg[17] = {0};
+#ifdef _WIN32
+        strncpy_s(msg, info, 16);
+#else
         std::strncpy(msg, info, 16);
+#endif
+
         printf("  %s%s\n", name, msg);
     };
 
@@ -454,9 +458,9 @@ InputArguments parse_input_arguments(int argc, const char* argv[])
         int heading_alignment_int = std::stoi(argv[8]);
 
         if (heading_alignment_int == 0)
-            input_arguments.filter_heading_alignment_method = commands_filter::InitializationConfiguration::AlignmentSelector::KINEMATIC;
+            input_arguments.filter_heading_alignment_method = mip::commands_filter::InitializationConfiguration::AlignmentSelector::KINEMATIC;
         else if (heading_alignment_int == 1)
-            input_arguments.filter_heading_alignment_method = commands_filter::InitializationConfiguration::AlignmentSelector::MAGNETOMETER;
+            input_arguments.filter_heading_alignment_method = mip::commands_filter::InitializationConfiguration::AlignmentSelector::MAGNETOMETER;
         else
             exit_gracefully("Heading alignment selector out of range");
     }
@@ -514,4 +518,3 @@ bool should_exit()
 {
     return false;
 }
-

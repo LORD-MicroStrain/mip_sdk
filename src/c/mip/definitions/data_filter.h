@@ -17,9 +17,9 @@ extern "C" {
 #endif // __cplusplus
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipData_c  MIP Data [C]
+///@addtogroup MipData_c
 ///@{
-///@defgroup filter_data_c  Filter Data [C]
+///@defgroup filter_data_c  Filter Data
 ///
 ///@{
 
@@ -273,7 +273,7 @@ static inline void extract_mip_gnss_aid_status_flags(microstrain_serializer* ser
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_position_llh  (0x82,0x01) Position Llh [C]
+///@defgroup filter_position_llh_c  (0x82,0x01) Position Llh
 /// Filter reported position in the WGS84 geodetic frame.
 ///
 ///@{
@@ -295,7 +295,7 @@ bool extract_mip_filter_position_llh_data_from_field(const mip_field_view* field
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_velocity_ned  (0x82,0x02) Velocity Ned [C]
+///@defgroup filter_velocity_ned_c  (0x82,0x02) Velocity Ned
 /// Filter reported velocity in the NED local-level frame.
 ///
 ///@{
@@ -317,7 +317,7 @@ bool extract_mip_filter_velocity_ned_data_from_field(const mip_field_view* field
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_attitude_quaternion  (0x82,0x03) Attitude Quaternion [C]
+///@defgroup filter_attitude_quaternion_c  (0x82,0x03) Attitude Quaternion
 /// 4x1 vector representation of the quaternion describing the orientation of the device with respect to the NED local-level frame.
 /// This quaternion satisfies the following relationship:
 /// 
@@ -345,7 +345,7 @@ bool extract_mip_filter_attitude_quaternion_data_from_field(const mip_field_view
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_attitude_dcm  (0x82,0x04) Attitude Dcm [C]
+///@defgroup filter_attitude_dcm_c  (0x82,0x04) Attitude Dcm
 /// 3x3 Direction Cosine Matrix EQSTART M_{ned}^{veh} EQEND describing the orientation of the device with respect to the NED local-level frame.
 /// This matrix satisfies the following relationship:
 /// 
@@ -356,7 +356,7 @@ bool extract_mip_filter_attitude_quaternion_data_from_field(const mip_field_view
 /// EQSTART v^{ned} EQEND is a 3-element vector expressed in the NED frame. <br/>
 /// EQSTART v^{veh} EQEND is the same 3-element vector expressed in the vehicle frame.  <br/>
 /// <br/>
-/// The matrix elements are stored is row-major order: EQSTART M_{ned}^{veh} = \begin{bmatrix} M_{11}, M_{12}, M_{13}, M_{21}, M_{22}, M_{23}, M_{31}, M_{32}, M_{33} \end{bmatrix} EQEND
+/// The matrix elements are stored is row-major order: EQSTART M_{ned}^{veh} = \\begin{bmatrix} M_{11}, M_{12}, M_{13}, M_{21}, M_{22}, M_{23}, M_{31}, M_{32}, M_{33} \\end{bmatrix} EQEND
 ///
 ///@{
 
@@ -375,7 +375,7 @@ bool extract_mip_filter_attitude_dcm_data_from_field(const mip_field_view* field
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_euler_angles  (0x82,0x05) Euler Angles [C]
+///@defgroup filter_euler_angles_c  (0x82,0x05) Euler Angles
 /// Filter reported Euler angles describing the orientation of the device with respect to the NED local-level frame.
 /// The Euler angles are reported in 3-2-1 (Yaw-Pitch-Roll, AKA Aircraft) order.
 ///
@@ -398,7 +398,7 @@ bool extract_mip_filter_euler_angles_data_from_field(const mip_field_view* field
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_gyro_bias  (0x82,0x06) Gyro Bias [C]
+///@defgroup filter_gyro_bias_c  (0x82,0x06) Gyro Bias
 /// Filter reported gyro bias expressed in the sensor frame.
 ///
 ///@{
@@ -418,7 +418,7 @@ bool extract_mip_filter_gyro_bias_data_from_field(const mip_field_view* field, v
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_accel_bias  (0x82,0x07) Accel Bias [C]
+///@defgroup filter_accel_bias_c  (0x82,0x07) Accel Bias
 /// Filter reported accelerometer bias expressed in the sensor frame.
 ///
 ///@{
@@ -438,7 +438,7 @@ bool extract_mip_filter_accel_bias_data_from_field(const mip_field_view* field, 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_position_llh_uncertainty  (0x82,0x08) Position Llh Uncertainty [C]
+///@defgroup filter_position_llh_uncertainty_c  (0x82,0x08) Position Llh Uncertainty
 /// Filter reported 1-sigma position uncertainty in the NED local-level frame.
 ///
 ///@{
@@ -460,7 +460,7 @@ bool extract_mip_filter_position_llh_uncertainty_data_from_field(const mip_field
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_velocity_ned_uncertainty  (0x82,0x09) Velocity Ned Uncertainty [C]
+///@defgroup filter_velocity_ned_uncertainty_c  (0x82,0x09) Velocity Ned Uncertainty
 /// Filter reported 1-sigma velocity uncertainties in the NED local-level frame.
 ///
 ///@{
@@ -482,7 +482,7 @@ bool extract_mip_filter_velocity_ned_uncertainty_data_from_field(const mip_field
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_euler_angles_uncertainty  (0x82,0x0A) Euler Angles Uncertainty [C]
+///@defgroup filter_euler_angles_uncertainty_c  (0x82,0x0A) Euler Angles Uncertainty
 /// Filter reported 1-sigma Euler angle uncertainties.
 /// The uncertainties are reported in 3-2-1 (Yaw-Pitch-Roll, AKA Aircraft) order.
 ///
@@ -505,7 +505,7 @@ bool extract_mip_filter_euler_angles_uncertainty_data_from_field(const mip_field
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_gyro_bias_uncertainty  (0x82,0x0B) Gyro Bias Uncertainty [C]
+///@defgroup filter_gyro_bias_uncertainty_c  (0x82,0x0B) Gyro Bias Uncertainty
 /// Filter reported 1-sigma gyro bias uncertainties expressed in the sensor frame.
 ///
 ///@{
@@ -525,7 +525,7 @@ bool extract_mip_filter_gyro_bias_uncertainty_data_from_field(const mip_field_vi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_accel_bias_uncertainty  (0x82,0x0C) Accel Bias Uncertainty [C]
+///@defgroup filter_accel_bias_uncertainty_c  (0x82,0x0C) Accel Bias Uncertainty
 /// Filter reported 1-sigma accelerometer bias uncertainties expressed in the sensor frame.
 ///
 ///@{
@@ -545,7 +545,7 @@ bool extract_mip_filter_accel_bias_uncertainty_data_from_field(const mip_field_v
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_timestamp  (0x82,0x11) Timestamp [C]
+///@defgroup filter_timestamp_c  (0x82,0x11) Timestamp
 /// GPS timestamp of the Filter data
 /// 
 /// Should the PPS become unavailable, the device will revert to its internal clock, which will cause the reported time to drift from true GPS time.
@@ -572,7 +572,7 @@ bool extract_mip_filter_timestamp_data_from_field(const mip_field_view* field, v
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_status  (0x82,0x10) Status [C]
+///@defgroup filter_status_c  (0x82,0x10) Status
 /// Device-specific filter status indicators.
 ///
 ///@{
@@ -593,7 +593,7 @@ bool extract_mip_filter_status_data_from_field(const mip_field_view* field, void
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_linear_accel  (0x82,0x0D) Linear Accel [C]
+///@defgroup filter_linear_accel_c  (0x82,0x0D) Linear Accel
 /// Filter-compensated linear acceleration expressed in the vehicle frame.
 /// Note: The estimated gravity has been removed from this data leaving only linear acceleration.
 ///
@@ -614,7 +614,7 @@ bool extract_mip_filter_linear_accel_data_from_field(const mip_field_view* field
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_gravity_vector  (0x82,0x13) Gravity Vector [C]
+///@defgroup filter_gravity_vector_c  (0x82,0x13) Gravity Vector
 /// Filter reported gravity vector expressed in the vehicle frame.
 ///
 ///@{
@@ -634,7 +634,7 @@ bool extract_mip_filter_gravity_vector_data_from_field(const mip_field_view* fie
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_comp_accel  (0x82,0x1C) Comp Accel [C]
+///@defgroup filter_comp_accel_c  (0x82,0x1C) Comp Accel
 /// Filter-compensated acceleration expressed in the vehicle frame.
 ///
 ///@{
@@ -654,7 +654,7 @@ bool extract_mip_filter_comp_accel_data_from_field(const mip_field_view* field, 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_comp_angular_rate  (0x82,0x0E) Comp Angular Rate [C]
+///@defgroup filter_comp_angular_rate_c  (0x82,0x0E) Comp Angular Rate
 /// Filter-compensated angular rate expressed in the vehicle frame.
 ///
 ///@{
@@ -674,7 +674,7 @@ bool extract_mip_filter_comp_angular_rate_data_from_field(const mip_field_view* 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_quaternion_attitude_uncertainty  (0x82,0x12) Quaternion Attitude Uncertainty [C]
+///@defgroup filter_quaternion_attitude_uncertainty_c  (0x82,0x12) Quaternion Attitude Uncertainty
 /// Filter reported quaternion uncertainties.
 ///
 ///@{
@@ -694,7 +694,7 @@ bool extract_mip_filter_quaternion_attitude_uncertainty_data_from_field(const mi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_wgs84_gravity_mag  (0x82,0x0F) Wgs84 Gravity Mag [C]
+///@defgroup filter_wgs84_gravity_mag_c  (0x82,0x0F) Wgs84 Gravity Mag
 /// Filter reported WGS84 gravity magnitude.
 ///
 ///@{
@@ -714,7 +714,7 @@ bool extract_mip_filter_wgs84_gravity_mag_data_from_field(const mip_field_view* 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_heading_update_state  (0x82,0x14) Heading Update State [C]
+///@defgroup filter_heading_update_state_c  (0x82,0x14) Heading Update State
 /// Filter reported heading update state.
 /// 
 /// Heading updates can be applied from the sources listed below.  Note, some of these sources may be combined.
@@ -761,7 +761,7 @@ bool extract_mip_filter_heading_update_state_data_from_field(const mip_field_vie
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_magnetic_model  (0x82,0x15) Magnetic Model [C]
+///@defgroup filter_magnetic_model_c  (0x82,0x15) Magnetic Model
 /// The World Magnetic Model is used for this data. Please refer to the device user manual for the current version of the model.
 /// A valid GNSS location is required for the model to be valid.
 ///
@@ -786,7 +786,7 @@ bool extract_mip_filter_magnetic_model_data_from_field(const mip_field_view* fie
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_accel_scale_factor  (0x82,0x17) Accel Scale Factor [C]
+///@defgroup filter_accel_scale_factor_c  (0x82,0x17) Accel Scale Factor
 /// Filter reported accelerometer scale factor expressed in the sensor frame.
 ///
 ///@{
@@ -806,7 +806,7 @@ bool extract_mip_filter_accel_scale_factor_data_from_field(const mip_field_view*
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_accel_scale_factor_uncertainty  (0x82,0x19) Accel Scale Factor Uncertainty [C]
+///@defgroup filter_accel_scale_factor_uncertainty_c  (0x82,0x19) Accel Scale Factor Uncertainty
 /// Filter reported 1-sigma accelerometer scale factor uncertainty expressed in the sensor frame.
 ///
 ///@{
@@ -826,7 +826,7 @@ bool extract_mip_filter_accel_scale_factor_uncertainty_data_from_field(const mip
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_gyro_scale_factor  (0x82,0x16) Gyro Scale Factor [C]
+///@defgroup filter_gyro_scale_factor_c  (0x82,0x16) Gyro Scale Factor
 /// Filter reported gyro scale factor expressed in the sensor frame.
 ///
 ///@{
@@ -846,7 +846,7 @@ bool extract_mip_filter_gyro_scale_factor_data_from_field(const mip_field_view* 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_gyro_scale_factor_uncertainty  (0x82,0x18) Gyro Scale Factor Uncertainty [C]
+///@defgroup filter_gyro_scale_factor_uncertainty_c  (0x82,0x18) Gyro Scale Factor Uncertainty
 /// Filter reported 1-sigma gyro scale factor uncertainty expressed in the sensor frame.
 ///
 ///@{
@@ -866,7 +866,7 @@ bool extract_mip_filter_gyro_scale_factor_uncertainty_data_from_field(const mip_
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_mag_bias  (0x82,0x1A) Mag Bias [C]
+///@defgroup filter_mag_bias_c  (0x82,0x1A) Mag Bias
 /// Filter reported magnetometer bias expressed in the sensor frame.
 ///
 ///@{
@@ -886,7 +886,7 @@ bool extract_mip_filter_mag_bias_data_from_field(const mip_field_view* field, vo
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_mag_bias_uncertainty  (0x82,0x1B) Mag Bias Uncertainty [C]
+///@defgroup filter_mag_bias_uncertainty_c  (0x82,0x1B) Mag Bias Uncertainty
 /// Filter reported 1-sigma magnetometer bias uncertainty expressed in the sensor frame.
 ///
 ///@{
@@ -906,7 +906,7 @@ bool extract_mip_filter_mag_bias_uncertainty_data_from_field(const mip_field_vie
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_standard_atmosphere  (0x82,0x20) Standard Atmosphere [C]
+///@defgroup filter_standard_atmosphere_c  (0x82,0x20) Standard Atmosphere
 /// Filter reported standard atmosphere parameters.
 /// 
 /// The US 1976 Standard Atmosphere Model is used. A valid GNSS location is required for the model to be valid.
@@ -932,7 +932,7 @@ bool extract_mip_filter_standard_atmosphere_data_from_field(const mip_field_view
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_pressure_altitude  (0x82,0x21) Pressure Altitude [C]
+///@defgroup filter_pressure_altitude_c  (0x82,0x21) Pressure Altitude
 /// Filter reported pressure altitude.
 /// 
 /// The US 1976 Standard Atmosphere Model is used to calculate the pressure altitude in meters.
@@ -956,7 +956,7 @@ bool extract_mip_filter_pressure_altitude_data_from_field(const mip_field_view* 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_density_altitude  (0x82,0x22) Density Altitude [C]
+///@defgroup filter_density_altitude_c  (0x82,0x22) Density Altitude
 ///
 ///@{
 
@@ -975,7 +975,7 @@ bool extract_mip_filter_density_altitude_data_from_field(const mip_field_view* f
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_antenna_offset_correction  (0x82,0x30) Antenna Offset Correction [C]
+///@defgroup filter_antenna_offset_correction_c  (0x82,0x30) Antenna Offset Correction
 /// Filter reported GNSS antenna offset in vehicle frame.
 /// 
 /// This offset added to any previously stored offset vector to compensate for errors in definition.
@@ -997,7 +997,7 @@ bool extract_mip_filter_antenna_offset_correction_data_from_field(const mip_fiel
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_antenna_offset_correction_uncertainty  (0x82,0x31) Antenna Offset Correction Uncertainty [C]
+///@defgroup filter_antenna_offset_correction_uncertainty_c  (0x82,0x31) Antenna Offset Correction Uncertainty
 /// Filter reported 1-sigma GNSS antenna offset uncertainties in vehicle frame.
 ///
 ///@{
@@ -1017,7 +1017,7 @@ bool extract_mip_filter_antenna_offset_correction_uncertainty_data_from_field(co
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_multi_antenna_offset_correction  (0x82,0x34) Multi Antenna Offset Correction [C]
+///@defgroup filter_multi_antenna_offset_correction_c  (0x82,0x34) Multi Antenna Offset Correction
 /// Filter reported GNSS antenna offset in vehicle frame.
 /// 
 /// This offset added to any previously stored offset vector to compensate for errors in definition.
@@ -1040,7 +1040,7 @@ bool extract_mip_filter_multi_antenna_offset_correction_data_from_field(const mi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_multi_antenna_offset_correction_uncertainty  (0x82,0x35) Multi Antenna Offset Correction Uncertainty [C]
+///@defgroup filter_multi_antenna_offset_correction_uncertainty_c  (0x82,0x35) Multi Antenna Offset Correction Uncertainty
 /// Filter reported 1-sigma GNSS antenna offset uncertainties in vehicle frame.
 ///
 ///@{
@@ -1061,7 +1061,7 @@ bool extract_mip_filter_multi_antenna_offset_correction_uncertainty_data_from_fi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_magnetometer_offset  (0x82,0x25) Magnetometer Offset [C]
+///@defgroup filter_magnetometer_offset_c  (0x82,0x25) Magnetometer Offset
 /// Filter reported magnetometer hard iron offset in sensor frame.
 /// 
 /// This offset added to any previously stored hard iron offset vector to compensate for magnetometer in-run bias errors.
@@ -1083,7 +1083,7 @@ bool extract_mip_filter_magnetometer_offset_data_from_field(const mip_field_view
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_magnetometer_matrix  (0x82,0x26) Magnetometer Matrix [C]
+///@defgroup filter_magnetometer_matrix_c  (0x82,0x26) Magnetometer Matrix
 /// Filter reported magnetometer soft iron matrix in sensor frame.
 /// 
 /// This matrix is post multiplied to any previously stored soft iron matrix to compensate for magnetometer in-run errors.
@@ -1105,7 +1105,7 @@ bool extract_mip_filter_magnetometer_matrix_data_from_field(const mip_field_view
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_magnetometer_offset_uncertainty  (0x82,0x28) Magnetometer Offset Uncertainty [C]
+///@defgroup filter_magnetometer_offset_uncertainty_c  (0x82,0x28) Magnetometer Offset Uncertainty
 /// Filter reported 1-sigma magnetometer hard iron offset uncertainties in sensor frame.
 ///
 ///@{
@@ -1125,7 +1125,7 @@ bool extract_mip_filter_magnetometer_offset_uncertainty_data_from_field(const mi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_magnetometer_matrix_uncertainty  (0x82,0x29) Magnetometer Matrix Uncertainty [C]
+///@defgroup filter_magnetometer_matrix_uncertainty_c  (0x82,0x29) Magnetometer Matrix Uncertainty
 /// Filter reported 1-sigma magnetometer soft iron matrix uncertainties in sensor frame.
 ///
 ///@{
@@ -1145,7 +1145,7 @@ bool extract_mip_filter_magnetometer_matrix_uncertainty_data_from_field(const mi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_magnetometer_covariance_matrix  (0x82,0x2A) Magnetometer Covariance Matrix [C]
+///@defgroup filter_magnetometer_covariance_matrix_c  (0x82,0x2A) Magnetometer Covariance Matrix
 ///
 ///@{
 
@@ -1164,7 +1164,7 @@ bool extract_mip_filter_magnetometer_covariance_matrix_data_from_field(const mip
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_magnetometer_residual_vector  (0x82,0x2C) Magnetometer Residual Vector [C]
+///@defgroup filter_magnetometer_residual_vector_c  (0x82,0x2C) Magnetometer Residual Vector
 /// Filter reported magnetometer measurement residuals in vehicle frame.
 ///
 ///@{
@@ -1184,7 +1184,7 @@ bool extract_mip_filter_magnetometer_residual_vector_data_from_field(const mip_f
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_clock_correction  (0x82,0x32) Clock Correction [C]
+///@defgroup filter_clock_correction_c  (0x82,0x32) Clock Correction
 /// Filter reported GNSS receiver clock error parameters.
 ///
 ///@{
@@ -1206,7 +1206,7 @@ bool extract_mip_filter_clock_correction_data_from_field(const mip_field_view* f
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_clock_correction_uncertainty  (0x82,0x33) Clock Correction Uncertainty [C]
+///@defgroup filter_clock_correction_uncertainty_c  (0x82,0x33) Clock Correction Uncertainty
 /// Filter reported 1-sigma GNSS receiver clock error parameters.
 ///
 ///@{
@@ -1228,7 +1228,7 @@ bool extract_mip_filter_clock_correction_uncertainty_data_from_field(const mip_f
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_gnss_pos_aid_status  (0x82,0x43) Gnss Pos Aid Status [C]
+///@defgroup filter_gnss_pos_aid_status_c  (0x82,0x43) Gnss Pos Aid Status
 /// Filter reported GNSS position aiding status
 ///
 ///@{
@@ -1250,7 +1250,7 @@ bool extract_mip_filter_gnss_pos_aid_status_data_from_field(const mip_field_view
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_gnss_att_aid_status  (0x82,0x44) Gnss Att Aid Status [C]
+///@defgroup filter_gnss_att_aid_status_c  (0x82,0x44) Gnss Att Aid Status
 /// Filter reported dual antenna GNSS attitude aiding status
 ///
 ///@{
@@ -1271,7 +1271,7 @@ bool extract_mip_filter_gnss_att_aid_status_data_from_field(const mip_field_view
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_head_aid_status  (0x82,0x45) Head Aid Status [C]
+///@defgroup filter_head_aid_status_c  (0x82,0x45) Head Aid Status
 /// Filter reported GNSS heading aiding status
 ///
 ///@{
@@ -1311,7 +1311,7 @@ bool extract_mip_filter_head_aid_status_data_from_field(const mip_field_view* fi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_rel_pos_ned  (0x82,0x42) Rel Pos Ned [C]
+///@defgroup filter_rel_pos_ned_c  (0x82,0x42) Rel Pos Ned
 /// Filter reported relative position, with respect to configured reference position
 ///
 ///@{
@@ -1331,7 +1331,7 @@ bool extract_mip_filter_rel_pos_ned_data_from_field(const mip_field_view* field,
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_ecef_pos  (0x82,0x40) Ecef Pos [C]
+///@defgroup filter_ecef_pos_c  (0x82,0x40) Ecef Pos
 /// Filter reported ECEF position
 ///
 ///@{
@@ -1351,7 +1351,7 @@ bool extract_mip_filter_ecef_pos_data_from_field(const mip_field_view* field, vo
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_ecef_vel  (0x82,0x41) Ecef Vel [C]
+///@defgroup filter_ecef_vel_c  (0x82,0x41) Ecef Vel
 /// Filter reported ECEF velocity
 ///
 ///@{
@@ -1371,7 +1371,7 @@ bool extract_mip_filter_ecef_vel_data_from_field(const mip_field_view* field, vo
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_ecef_pos_uncertainty  (0x82,0x36) Ecef Pos Uncertainty [C]
+///@defgroup filter_ecef_pos_uncertainty_c  (0x82,0x36) Ecef Pos Uncertainty
 /// Filter reported 1-sigma position uncertainty in the ECEF frame.
 ///
 ///@{
@@ -1391,7 +1391,7 @@ bool extract_mip_filter_ecef_pos_uncertainty_data_from_field(const mip_field_vie
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_ecef_vel_uncertainty  (0x82,0x37) Ecef Vel Uncertainty [C]
+///@defgroup filter_ecef_vel_uncertainty_c  (0x82,0x37) Ecef Vel Uncertainty
 /// Filter reported 1-sigma velocity uncertainties in the ECEF frame.
 ///
 ///@{
@@ -1411,7 +1411,7 @@ bool extract_mip_filter_ecef_vel_uncertainty_data_from_field(const mip_field_vie
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_aiding_measurement_summary  (0x82,0x46) Aiding Measurement Summary [C]
+///@defgroup filter_aiding_measurement_summary_c  (0x82,0x46) Aiding Measurement Summary
 /// Filter reported aiding measurement summary. This message contains a summary of the specified aiding measurement over the previous measurement interval ending at the specified time.
 ///
 ///@{
@@ -1433,7 +1433,7 @@ bool extract_mip_filter_aiding_measurement_summary_data_from_field(const mip_fie
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_odometer_scale_factor_error  (0x82,0x47) Odometer Scale Factor Error [C]
+///@defgroup filter_odometer_scale_factor_error_c  (0x82,0x47) Odometer Scale Factor Error
 /// Filter reported odometer scale factor error. The total scale factor estimate is the user indicated scale factor, plus the user indicated scale factor times the scale factor error.
 ///
 ///@{
@@ -1453,7 +1453,7 @@ bool extract_mip_filter_odometer_scale_factor_error_data_from_field(const mip_fi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_odometer_scale_factor_error_uncertainty  (0x82,0x48) Odometer Scale Factor Error Uncertainty [C]
+///@defgroup filter_odometer_scale_factor_error_uncertainty_c  (0x82,0x48) Odometer Scale Factor Error Uncertainty
 /// Filter reported odometer scale factor error uncertainty.
 ///
 ///@{
@@ -1473,7 +1473,7 @@ bool extract_mip_filter_odometer_scale_factor_error_uncertainty_data_from_field(
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_gnss_dual_antenna_status  (0x82,0x49) Gnss Dual Antenna Status [C]
+///@defgroup filter_gnss_dual_antenna_status_c  (0x82,0x49) Gnss Dual Antenna Status
 /// Summary information for status of GNSS dual antenna heading estimate.
 ///
 ///@{
@@ -1534,7 +1534,7 @@ bool extract_mip_filter_gnss_dual_antenna_status_data_from_field(const mip_field
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_aiding_frame_config_error  (0x82,0x50) Aiding Frame Config Error [C]
+///@defgroup filter_aiding_frame_config_error_c  (0x82,0x50) Aiding Frame Config Error
 /// Filter reported aiding source frame configuration error
 /// 
 /// These estimates are used to compensate for small errors to the user-supplied aiding frame configurations (set with (0x13, 0x01) command ).
@@ -1557,7 +1557,7 @@ bool extract_mip_filter_aiding_frame_config_error_data_from_field(const mip_fiel
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_aiding_frame_config_error_uncertainty  (0x82,0x51) Aiding Frame Config Error Uncertainty [C]
+///@defgroup filter_aiding_frame_config_error_uncertainty_c  (0x82,0x51) Aiding Frame Config Error Uncertainty
 /// Filter reported aiding source frame configuration error uncertainty
 /// 
 /// These estimates are used to compensate for small errors to the user-supplied aiding frame configurations (set with (0x13, 0x01) command ).

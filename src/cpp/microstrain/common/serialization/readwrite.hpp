@@ -16,21 +16,41 @@
 //#include <bit>
 //#endif
 
+#ifdef MICROSTRAIN_USE_STD_ENDIAN
+
+#include <bit>
+
+namespace microstrain
+{
+namespace serialization
+{
+    using Endian = std::endian;
+} // namespace serialization
+} // namespace microstrain
+
+#else // MICROSTRAIN_USE_STD_ENDIAN
+
 namespace microstrain
 {
 namespace serialization
 {
 
-//#if __cpp_lib_endian >= 201907L
-//using Endian = std::endian;
-//#else
 enum class Endian
 {
     little,
     big,
     //native = little,
 };
-//#endif
+
+} // namespace serialization
+} // namespace microstrain
+
+#endif // MICROSTRAIN_USE_STD_ENDIAN
+
+namespace microstrain
+{
+namespace serialization
+{
 
 //
 // Write to buffer

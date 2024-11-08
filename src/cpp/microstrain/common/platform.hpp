@@ -24,6 +24,3 @@
 #if __cpp_lib_optional >= 201606L
 #define MICROSTRAIN_HAS_OPTIONAL
 #endif
-#if __cpp_lib_span >= 202002L
-#define MICROSTRAIN_HAS_SPAN
-#endif

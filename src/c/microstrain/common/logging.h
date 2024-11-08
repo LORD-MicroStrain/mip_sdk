@@ -66,7 +66,7 @@ void microstrain_logging_log(microstrain_log_level level, const char* fmt, ...);
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log data inside the MicroStrain SDK. Prefer specific
 ///       log level functions like MICROSTRAIN_LOG_INFO, etc. when possible.
-///@copydetails microstrain::C::microstrain_log_callback
+///@copydetails microstrain_log_callback
 ///
 #ifdef MICROSTRAIN_ENABLE_LOGGING
 #define MICROSTRAIN_LOG_LOG(level, ...) microstrain_logging_log(level, __VA_ARGS__)
@@ -93,7 +93,7 @@ void microstrain_logging_log(microstrain_log_level level, const char* fmt, ...);
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log data inside the MicroStrain SDK at error level
-///@copydetails microstrain::C::MICROSTRAIN_LOG_FATAL
+///@copydetails MICROSTRAIN_LOG_FATAL
 #if MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOG_LEVEL_ERROR
 #define MICROSTRAIN_LOG_ERROR(...) MICROSTRAIN_LOG_LOG(MICROSTRAIN_LOG_LEVEL_ERROR, __VA_ARGS__)
 #else
@@ -102,7 +102,7 @@ void microstrain_logging_log(microstrain_log_level level, const char* fmt, ...);
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log data inside the MicroStrain SDK at warn level
-///@copydetails microstrain::C::MICROSTRAIN_LOG_FATAL
+///@copydetails MICROSTRAIN_LOG_FATAL
 #if MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOG_LEVEL_WARN
 #define MICROSTRAIN_LOG_WARN(...) MICROSTRAIN_LOG_LOG(MICROSTRAIN_LOG_LEVEL_WARN, __VA_ARGS__)
 #else
@@ -111,7 +111,7 @@ void microstrain_logging_log(microstrain_log_level level, const char* fmt, ...);
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log data inside the MicroStrain SDK at info level
-///@copydetails microstrain::C::MICROSTRAIN_LOG_FATAL
+///@copydetails MICROSTRAIN_LOG_FATAL
 #if MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOG_LEVEL_INFO
 #define MICROSTRAIN_LOG_INFO(...) MICROSTRAIN_LOG_LOG(MICROSTRAIN_LOG_LEVEL_INFO, __VA_ARGS__)
 #else
@@ -120,7 +120,7 @@ void microstrain_logging_log(microstrain_log_level level, const char* fmt, ...);
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log data inside the MicroStrain SDK at debug level
-///@copydetails microstrain::C::MICROSTRAIN_LOG_FATAL
+///@copydetails MICROSTRAIN_LOG_FATAL
 #if MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOG_LEVEL_DEBUG
 #define MICROSTRAIN_LOG_DEBUG(...) MICROSTRAIN_LOG_LOG(MICROSTRAIN_LOG_LEVEL_DEBUG, __VA_ARGS__)
 #else
@@ -129,7 +129,7 @@ void microstrain_logging_log(microstrain_log_level level, const char* fmt, ...);
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log data inside the MicroStrain SDK at trace level
-///@copydetails microstrain::C::MICROSTRAIN_LOG_FATAL
+///@copydetails MICROSTRAIN_LOG_FATAL
 #if MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOG_LEVEL_TRACE
 #define MICROSTRAIN_LOG_TRACE(...) MICROSTRAIN_LOG_LOG(MICROSTRAIN_LOG_LEVEL_TRACE, __VA_ARGS__)
 #else

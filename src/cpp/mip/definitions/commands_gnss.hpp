@@ -16,9 +16,9 @@ struct mip_interface;
 namespace commands_gnss {
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipCommands_cpp  MIP Commands [CPP]
+///@addtogroup MipCommands_cpp
 ///@{
-///@defgroup gnss_commands_cpp  Gnss Commands [CPP]
+///@defgroup gnss_commands_cpp  Gnss Commands
 ///
 ///@{
 
@@ -33,10 +33,12 @@ enum
     CMD_LIST_RECEIVERS             = 0x01,
     CMD_SIGNAL_CONFIGURATION       = 0x02,
     CMD_RTK_DONGLE_CONFIGURATION   = 0x10,
+    CMD_SPARTN_CONFIGURATION       = 0x20,
     
     REPLY_LIST_RECEIVERS           = 0x81,
     REPLY_SIGNAL_CONFIGURATION     = 0x82,
     REPLY_RTK_DONGLE_CONFIGURATION = 0x90,
+    REPLY_SPARTN_CONFIGURATION     = 0xA0,
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -60,7 +62,7 @@ static constexpr const uint16_t GNSS_BEIDOU_ENABLE_B2A = 0x0004;
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_receiver_info  (0x0E,0x01) Receiver Info [CPP]
+///@defgroup gnss_receiver_info_cpp  (0x0E,0x01) Receiver Info
 /// Return information about the GNSS receivers in the device.
 /// 
 ///
@@ -137,7 +139,7 @@ TypedResult<ReceiverInfo> receiverInfo(C::mip_interface& device, uint8_t* numRec
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_signal_configuration  (0x0E,0x02) Signal Configuration [CPP]
+///@defgroup gnss_signal_configuration_cpp  (0x0E,0x02) Signal Configuration
 /// Configure the GNSS signals used by the device.
 /// 
 ///
@@ -224,7 +226,103 @@ TypedResult<SignalConfiguration> defaultSignalConfiguration(C::mip_interface& de
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_rtk_dongle_configuration  (0x0E,0x10) Rtk Dongle Configuration [CPP]
+///@defgroup gnss_spartn_configuration_cpp  (0x0E,0x20) Spartn Configuration
+/// Configure the SPARTN corrections service parameters.
+/// Notes:<br/>
+/// - Enable and type settings will only update after a power cycle <br/>
+/// - Type settings will only take effect after a power cycle <br/>
+/// - Key information can be updated while running
+///
+///@{
+
+struct SpartnConfiguration
+{
+    /// Parameters
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    uint8_t enable = 0; ///< Enable/Disable the SPARTN subsystem (0 = Disabled, 1 = Enabled)
+    uint8_t type = 0; ///< Connection type (0 - None, 1 = Network, 2 = L-Band)
+    uint32_t current_key_tow = 0; ///< The GPS time of week the current key is valid until
+    uint16_t current_key_week = 0; ///< The GPS week number the current key is valid until
+    uint8_t current_key[32] = {0}; ///< 32 character string of ASCII hex values for the current key (e.g. "bc" for 0xBC)
+    uint32_t next_key_tow = 0; ///< The GPS time of week the next key is valid until
+    uint16_t next_key_week = 0; ///< The GPS week number the next key is valid until
+    uint8_t next_key[32] = {0}; ///< 32 character string of ASCII hex valuesfor the next key (e.g. "bc" for 0xBC)
+    
+    /// Descriptors
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::CMD_SPARTN_CONFIGURATION;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "SpartnConfiguration";
+    static constexpr const char* DOC_NAME = "SpartnConfiguration";
+    static constexpr const bool HAS_FUNCTION_SELECTOR = true;
+    
+    auto asTuple() const
+    {
+        return std::make_tuple(enable,type,current_key_tow,current_key_week,current_key,next_key_tow,next_key_week,next_key);
+    }
+    
+    auto asTuple()
+    {
+        return std::make_tuple(std::ref(enable),std::ref(type),std::ref(current_key_tow),std::ref(current_key_week),std::ref(current_key),std::ref(next_key_tow),std::ref(next_key_week),std::ref(next_key));
+    }
+    
+    static SpartnConfiguration create_sld_all(::mip::FunctionSelector function)
+    {
+        SpartnConfiguration cmd;
+        cmd.function = function;
+        return cmd;
+    }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
+    struct Response
+    {
+        /// Parameters
+        uint8_t enable = 0; ///< Enable/Disable the SPARTN subsystem (0 = Disabled, 1 = Enabled)
+        uint8_t type = 0; ///< Connection type (0 - None, 1 = Network, 2 = L-Band)
+        uint32_t current_key_tow = 0; ///< The GPS time of week the current key is valid until
+        uint16_t current_key_week = 0; ///< The GPS week number the current key is valid until
+        uint8_t current_key[32] = {0}; ///< 32 character string of ASCII hex values for the current key (e.g. "bc" for 0xBC)
+        uint32_t next_key_tow = 0; ///< The GPS time of week the next key is valid until
+        uint16_t next_key_week = 0; ///< The GPS week number the next key is valid until
+        uint8_t next_key[32] = {0}; ///< 32 character string of ASCII hex valuesfor the next key (e.g. "bc" for 0xBC)
+        
+        /// Descriptors
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::REPLY_SPARTN_CONFIGURATION;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+        static constexpr const char* NAME = "SpartnConfiguration::Response";
+        static constexpr const char* DOC_NAME = "SpartnConfiguration Response";
+        static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+        
+        auto asTuple() const
+        {
+            return std::make_tuple(enable,type,current_key_tow,current_key_week,current_key,next_key_tow,next_key_week,next_key);
+        }
+        
+        auto asTuple()
+        {
+            return std::make_tuple(std::ref(enable),std::ref(type),std::ref(current_key_tow),std::ref(current_key_week),std::ref(current_key),std::ref(next_key_tow),std::ref(next_key_week),std::ref(next_key));
+        }
+        
+        /// Serialization
+        void insert(Serializer& serializer) const;
+        void extract(Serializer& serializer);
+        
+    };
+};
+TypedResult<SpartnConfiguration> writeSpartnConfiguration(C::mip_interface& device, uint8_t enable, uint8_t type, uint32_t currentKeyTow, uint16_t currentKeyWeek, const uint8_t* currentKey, uint32_t nextKeyTow, uint16_t nextKeyWeek, const uint8_t* nextKey);
+TypedResult<SpartnConfiguration> readSpartnConfiguration(C::mip_interface& device, uint8_t* enableOut, uint8_t* typeOut, uint32_t* currentKeyTowOut, uint16_t* currentKeyWeekOut, uint8_t* currentKeyOut, uint32_t* nextKeyTowOut, uint16_t* nextKeyWeekOut, uint8_t* nextKeyOut);
+TypedResult<SpartnConfiguration> saveSpartnConfiguration(C::mip_interface& device);
+TypedResult<SpartnConfiguration> loadSpartnConfiguration(C::mip_interface& device);
+TypedResult<SpartnConfiguration> defaultSpartnConfiguration(C::mip_interface& device);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup gnss_rtk_dongle_configuration_cpp  (0x0E,0x10) Rtk Dongle Configuration
 /// Configure the communications with the RTK Dongle connected to the device.
 /// 
 ///

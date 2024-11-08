@@ -1,17 +1,17 @@
 set(MIP_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/..")
 
 target_sources(${MIP_LIBRARY} PRIVATE
-    mip.hpp
-    mip_all.hpp
-    mip_cmdqueue.hpp
-    mip_descriptors.hpp
-    mip_field.hpp
-    mip_interface.hpp
-    mip_interface.cpp
-    mip_packet.hpp
-    mip_parser.hpp
-    mip_result.hpp
-    mip_serialization.hpp
+    "${CMAKE_CURRENT_LIST_DIR}/mip.hpp"
+    "${CMAKE_CURRENT_LIST_DIR}/mip_all.hpp"
+    "${CMAKE_CURRENT_LIST_DIR}/mip_cmdqueue.hpp"
+    "${CMAKE_CURRENT_LIST_DIR}/mip_descriptors.hpp"
+    "${CMAKE_CURRENT_LIST_DIR}/mip_field.hpp"
+    "${CMAKE_CURRENT_LIST_DIR}/mip_interface.hpp"
+    "${CMAKE_CURRENT_LIST_DIR}/mip_interface.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/mip_packet.hpp"
+    "${CMAKE_CURRENT_LIST_DIR}/mip_parser.hpp"
+    "${CMAKE_CURRENT_LIST_DIR}/mip_result.hpp"
+    "${CMAKE_CURRENT_LIST_DIR}/mip_serialization.hpp"
 )
 
 target_compile_features(${MIP_LIBRARY} PUBLIC cxx_std_11)
@@ -25,10 +25,12 @@ set(MIP_DEF_SOURCES ${MIP_DEFS})
 list(TRANSFORM MIP_DEF_HEADERS APPEND ".hpp")
 list(TRANSFORM MIP_DEF_SOURCES APPEND ".cpp")
 list(APPEND MIP_DEF_SOURCES ${MIP_DEF_HEADERS})
-list(TRANSFORM MIP_DEF_SOURCES PREPEND "definitions/")
+list(TRANSFORM MIP_DEF_SOURCES PREPEND "${CMAKE_CURRENT_LIST_DIR}/definitions/")
 
 if(MICROSTRAIN_CMAKE_DEBUG)
-    message("C++ definitions = ${MIP_DEF_SOURCES}")
+    set(INCLUDED_DEF_SOURCES ${MIP_DEF_SOURCES})
+    list(TRANSFORM INCLUDED_DEF_SOURCES REPLACE "${CMAKE_CURRENT_LIST_DIR}/" "")
+    message("C++ definitions = ${INCLUDED_DEF_SOURCES}")
 endif()
 
 target_sources(${MIP_LIBRARY} PRIVATE ${MIP_DEF_SOURCES})
@@ -40,3 +42,12 @@ endif()
 if(MIP_ENABLE_EXTRAS)
     add_subdirectory(extras)
 endif()
+
+set(MIP_LIBRARIES_TMP ${MIP_LIBRARIES_TMP} PARENT_SCOPE)
+
+#
+# Installation
+#
+
+include(microstrain_utilities)
+microstrain_setup_install_headers(${MIP_LIBRARY} ${MICROSTRAIN_SRC_DIR})

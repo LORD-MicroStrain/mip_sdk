@@ -20,10 +20,11 @@ namespace mip {
 ///
 ///@brief Receives bytes from the device
 ///
-///@param buffer     Buffer to store the received data in
-///@param max_length Max number of bytes that can be read. Should be at most the length of buffer.
-///@param length_out Number of bytes actually read.
-///@param timestamp  Timestamp of when the data was received
+///@param buffer        Buffer to store the received data in
+///@param max_length    Max number of bytes that can be read. Should be at most the length of buffer.
+///@param wait_time_ms  Time to wait for data in milliseconds.
+///@param length_out    Number of bytes actually read.
+///@param timestamp_out Timestamp of when the data was received
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -32,6 +33,7 @@ namespace mip {
 ///@note This sets the interface's user pointer to this connection object.
 ///
 ///@param device Device to configure.
+///@param conn   The connection to set
 ///
 void connect_interface(mip::Interface& device, microstrain::Connection& conn)
 {

@@ -16,9 +16,9 @@ struct mip_interface;
 namespace commands_rtk {
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipCommands_cpp  MIP Commands [CPP]
+///@addtogroup MipCommands_cpp
 ///@{
-///@defgroup rtk_commands_cpp  Rtk Commands [CPP]
+///@defgroup rtk_commands_cpp  Rtk Commands
 ///
 ///@{
 
@@ -77,7 +77,7 @@ enum class LedAction : uint8_t
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_rtk_get_status_flags  (0x0F,0x01) Get Status Flags [CPP]
+///@defgroup rtk_get_status_flags_cpp  (0x0F,0x01) Get Status Flags
 ///
 ///@{
 
@@ -250,7 +250,7 @@ TypedResult<GetStatusFlags> getStatusFlags(C::mip_interface& device, GetStatusFl
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_rtk_get_imei  (0x0F,0x02) Get Imei [CPP]
+///@defgroup rtk_get_imei_cpp  (0x0F,0x02) Get Imei
 ///
 ///@{
 
@@ -312,7 +312,7 @@ TypedResult<GetImei> getImei(C::mip_interface& device, char* imeiOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_rtk_get_imsi  (0x0F,0x03) Get Imsi [CPP]
+///@defgroup rtk_get_imsi_cpp  (0x0F,0x03) Get Imsi
 ///
 ///@{
 
@@ -374,7 +374,7 @@ TypedResult<GetImsi> getImsi(C::mip_interface& device, char* imsiOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_rtk_get_iccid  (0x0F,0x04) Get Iccid [CPP]
+///@defgroup rtk_get_iccid_cpp  (0x0F,0x04) Get Iccid
 ///
 ///@{
 
@@ -436,7 +436,7 @@ TypedResult<GetIccid> getIccid(C::mip_interface& device, char* iccidOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_rtk_connected_device_type  (0x0F,0x06) Connected Device Type [CPP]
+///@defgroup rtk_connected_device_type_cpp  (0x0F,0x06) Connected Device Type
 ///
 ///@{
 
@@ -519,7 +519,7 @@ TypedResult<ConnectedDeviceType> defaultConnectedDeviceType(C::mip_interface& de
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_rtk_get_act_code  (0x0F,0x07) Get Act Code [CPP]
+///@defgroup rtk_get_act_code_cpp  (0x0F,0x07) Get Act Code
 ///
 ///@{
 
@@ -581,7 +581,7 @@ TypedResult<GetActCode> getActCode(C::mip_interface& device, char* activationcod
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_rtk_get_modem_firmware_version  (0x0F,0x08) Get Modem Firmware Version [CPP]
+///@defgroup rtk_get_modem_firmware_version_cpp  (0x0F,0x08) Get Modem Firmware Version
 ///
 ///@{
 
@@ -643,7 +643,7 @@ TypedResult<GetModemFirmwareVersion> getModemFirmwareVersion(C::mip_interface& d
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_rtk_get_rssi  (0x0F,0x05) Get Rssi [CPP]
+///@defgroup rtk_get_rssi_cpp  (0x0F,0x05) Get Rssi
 /// Get the RSSI and connected/disconnected status of modem
 ///
 ///@{
@@ -708,7 +708,7 @@ TypedResult<GetRssi> getRssi(C::mip_interface& device, bool* validOut, int32_t* 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_rtk_service_status  (0x0F,0x0A) Service Status [CPP]
+///@defgroup rtk_service_status_cpp  (0x0F,0x0A) Service Status
 /// The 3DMRTK will send this message to the server to indicate that the connection should remain open. The Server will respond with information and status.
 ///
 ///@{
@@ -808,7 +808,7 @@ TypedResult<ServiceStatus> serviceStatus(C::mip_interface& device, uint32_t rese
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_rtk_prod_erase_storage  (0x0F,0x20) Prod Erase Storage [CPP]
+///@defgroup rtk_prod_erase_storage_cpp  (0x0F,0x20) Prod Erase Storage
 /// This command will erase the selected media to a raw and uninitialized state. ALL DATA WILL BE LOST.
 /// This command is only available in calibration mode.
 ///
@@ -848,7 +848,7 @@ TypedResult<ProdEraseStorage> prodEraseStorage(C::mip_interface& device, MediaSe
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_rtk_led_control  (0x0F,0x21) Led Control [CPP]
+///@defgroup rtk_led_control_cpp  (0x0F,0x21) Led Control
 /// This command allows direct control of the LED on the 3DM RTK. This command is only available in calibration mode or Production Test Mode.
 ///
 ///@{
@@ -890,7 +890,7 @@ TypedResult<LedControl> ledControl(C::mip_interface& device, const uint8_t* prim
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_rtk_modem_hard_reset  (0x0F,0x22) Modem Hard Reset [CPP]
+///@defgroup rtk_modem_hard_reset_cpp  (0x0F,0x22) Modem Hard Reset
 /// This command will clear the modem flash.  THIS MUST NOT BE DONE OFTEN AS IT CAN DAMAGE THE FLASH!
 /// This command is only available in calibration mode.
 ///

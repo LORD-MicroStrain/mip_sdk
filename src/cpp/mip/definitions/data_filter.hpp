@@ -16,9 +16,9 @@ struct mip_interface;
 namespace data_filter {
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipData_cpp  MIP Data [CPP]
+///@addtogroup MipData_cpp
 ///@{
-///@defgroup filter_data_cpp  Filter Data [CPP]
+///@defgroup filter_data_cpp  Filter Data
 ///
 ///@{
 
@@ -357,7 +357,7 @@ struct GnssAidStatusFlags : Bitfield<GnssAidStatusFlags>
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_position_llh  (0x82,0x01) Position Llh [CPP]
+///@defgroup filter_position_llh_cpp  (0x82,0x01) Position Llh
 /// Filter reported position in the WGS84 geodetic frame.
 ///
 ///@{
@@ -397,7 +397,7 @@ struct PositionLlh
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_velocity_ned  (0x82,0x02) Velocity Ned [CPP]
+///@defgroup filter_velocity_ned_cpp  (0x82,0x02) Velocity Ned
 /// Filter reported velocity in the NED local-level frame.
 ///
 ///@{
@@ -437,7 +437,7 @@ struct VelocityNed
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_attitude_quaternion  (0x82,0x03) Attitude Quaternion [CPP]
+///@defgroup filter_attitude_quaternion_cpp  (0x82,0x03) Attitude Quaternion
 /// 4x1 vector representation of the quaternion describing the orientation of the device with respect to the NED local-level frame.
 /// This quaternion satisfies the following relationship:
 /// 
@@ -483,7 +483,7 @@ struct AttitudeQuaternion
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_attitude_dcm  (0x82,0x04) Attitude Dcm [CPP]
+///@defgroup filter_attitude_dcm_cpp  (0x82,0x04) Attitude Dcm
 /// 3x3 Direction Cosine Matrix EQSTART M_{ned}^{veh} EQEND describing the orientation of the device with respect to the NED local-level frame.
 /// This matrix satisfies the following relationship:
 /// 
@@ -494,7 +494,7 @@ struct AttitudeQuaternion
 /// EQSTART v^{ned} EQEND is a 3-element vector expressed in the NED frame. <br/>
 /// EQSTART v^{veh} EQEND is the same 3-element vector expressed in the vehicle frame.  <br/>
 /// <br/>
-/// The matrix elements are stored is row-major order: EQSTART M_{ned}^{veh} = \begin{bmatrix} M_{11}, M_{12}, M_{13}, M_{21}, M_{22}, M_{23}, M_{31}, M_{32}, M_{33} \end{bmatrix} EQEND
+/// The matrix elements are stored is row-major order: EQSTART M_{ned}^{veh} = \\begin{bmatrix} M_{11}, M_{12}, M_{13}, M_{21}, M_{22}, M_{23}, M_{31}, M_{32}, M_{33} \\end{bmatrix} EQEND
 ///
 ///@{
 
@@ -531,7 +531,7 @@ struct AttitudeDcm
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_euler_angles  (0x82,0x05) Euler Angles [CPP]
+///@defgroup filter_euler_angles_cpp  (0x82,0x05) Euler Angles
 /// Filter reported Euler angles describing the orientation of the device with respect to the NED local-level frame.
 /// The Euler angles are reported in 3-2-1 (Yaw-Pitch-Roll, AKA Aircraft) order.
 ///
@@ -572,7 +572,7 @@ struct EulerAngles
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_gyro_bias  (0x82,0x06) Gyro Bias [CPP]
+///@defgroup filter_gyro_bias_cpp  (0x82,0x06) Gyro Bias
 /// Filter reported gyro bias expressed in the sensor frame.
 ///
 ///@{
@@ -610,7 +610,7 @@ struct GyroBias
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_accel_bias  (0x82,0x07) Accel Bias [CPP]
+///@defgroup filter_accel_bias_cpp  (0x82,0x07) Accel Bias
 /// Filter reported accelerometer bias expressed in the sensor frame.
 ///
 ///@{
@@ -648,7 +648,7 @@ struct AccelBias
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_position_llh_uncertainty  (0x82,0x08) Position Llh Uncertainty [CPP]
+///@defgroup filter_position_llh_uncertainty_cpp  (0x82,0x08) Position Llh Uncertainty
 /// Filter reported 1-sigma position uncertainty in the NED local-level frame.
 ///
 ///@{
@@ -688,7 +688,7 @@ struct PositionLlhUncertainty
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_velocity_ned_uncertainty  (0x82,0x09) Velocity Ned Uncertainty [CPP]
+///@defgroup filter_velocity_ned_uncertainty_cpp  (0x82,0x09) Velocity Ned Uncertainty
 /// Filter reported 1-sigma velocity uncertainties in the NED local-level frame.
 ///
 ///@{
@@ -728,7 +728,7 @@ struct VelocityNedUncertainty
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_euler_angles_uncertainty  (0x82,0x0A) Euler Angles Uncertainty [CPP]
+///@defgroup filter_euler_angles_uncertainty_cpp  (0x82,0x0A) Euler Angles Uncertainty
 /// Filter reported 1-sigma Euler angle uncertainties.
 /// The uncertainties are reported in 3-2-1 (Yaw-Pitch-Roll, AKA Aircraft) order.
 ///
@@ -769,7 +769,7 @@ struct EulerAnglesUncertainty
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_gyro_bias_uncertainty  (0x82,0x0B) Gyro Bias Uncertainty [CPP]
+///@defgroup filter_gyro_bias_uncertainty_cpp  (0x82,0x0B) Gyro Bias Uncertainty
 /// Filter reported 1-sigma gyro bias uncertainties expressed in the sensor frame.
 ///
 ///@{
@@ -807,7 +807,7 @@ struct GyroBiasUncertainty
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_accel_bias_uncertainty  (0x82,0x0C) Accel Bias Uncertainty [CPP]
+///@defgroup filter_accel_bias_uncertainty_cpp  (0x82,0x0C) Accel Bias Uncertainty
 /// Filter reported 1-sigma accelerometer bias uncertainties expressed in the sensor frame.
 ///
 ///@{
@@ -845,7 +845,7 @@ struct AccelBiasUncertainty
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_timestamp  (0x82,0x11) Timestamp [CPP]
+///@defgroup filter_timestamp_cpp  (0x82,0x11) Timestamp
 /// GPS timestamp of the Filter data
 /// 
 /// Should the PPS become unavailable, the device will revert to its internal clock, which will cause the reported time to drift from true GPS time.
@@ -890,7 +890,7 @@ struct Timestamp
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_status  (0x82,0x10) Status [CPP]
+///@defgroup filter_status_cpp  (0x82,0x10) Status
 /// Device-specific filter status indicators.
 ///
 ///@{
@@ -929,7 +929,7 @@ struct Status
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_linear_accel  (0x82,0x0D) Linear Accel [CPP]
+///@defgroup filter_linear_accel_cpp  (0x82,0x0D) Linear Accel
 /// Filter-compensated linear acceleration expressed in the vehicle frame.
 /// Note: The estimated gravity has been removed from this data leaving only linear acceleration.
 ///
@@ -968,7 +968,7 @@ struct LinearAccel
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_gravity_vector  (0x82,0x13) Gravity Vector [CPP]
+///@defgroup filter_gravity_vector_cpp  (0x82,0x13) Gravity Vector
 /// Filter reported gravity vector expressed in the vehicle frame.
 ///
 ///@{
@@ -1006,7 +1006,7 @@ struct GravityVector
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_comp_accel  (0x82,0x1C) Comp Accel [CPP]
+///@defgroup filter_comp_accel_cpp  (0x82,0x1C) Comp Accel
 /// Filter-compensated acceleration expressed in the vehicle frame.
 ///
 ///@{
@@ -1044,7 +1044,7 @@ struct CompAccel
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_comp_angular_rate  (0x82,0x0E) Comp Angular Rate [CPP]
+///@defgroup filter_comp_angular_rate_cpp  (0x82,0x0E) Comp Angular Rate
 /// Filter-compensated angular rate expressed in the vehicle frame.
 ///
 ///@{
@@ -1082,7 +1082,7 @@ struct CompAngularRate
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_quaternion_attitude_uncertainty  (0x82,0x12) Quaternion Attitude Uncertainty [CPP]
+///@defgroup filter_quaternion_attitude_uncertainty_cpp  (0x82,0x12) Quaternion Attitude Uncertainty
 /// Filter reported quaternion uncertainties.
 ///
 ///@{
@@ -1120,7 +1120,7 @@ struct QuaternionAttitudeUncertainty
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_wgs84_gravity_mag  (0x82,0x0F) Wgs84 Gravity Mag [CPP]
+///@defgroup filter_wgs84_gravity_mag_cpp  (0x82,0x0F) Wgs84 Gravity Mag
 /// Filter reported WGS84 gravity magnitude.
 ///
 ///@{
@@ -1158,7 +1158,7 @@ struct Wgs84GravityMag
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_heading_update_state  (0x82,0x14) Heading Update State [CPP]
+///@defgroup filter_heading_update_state_cpp  (0x82,0x14) Heading Update State
 /// Filter reported heading update state.
 /// 
 /// Heading updates can be applied from the sources listed below.  Note, some of these sources may be combined.
@@ -1210,7 +1210,7 @@ struct HeadingUpdateState
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_magnetic_model  (0x82,0x15) Magnetic Model [CPP]
+///@defgroup filter_magnetic_model_cpp  (0x82,0x15) Magnetic Model
 /// The World Magnetic Model is used for this data. Please refer to the device user manual for the current version of the model.
 /// A valid GNSS location is required for the model to be valid.
 ///
@@ -1253,7 +1253,7 @@ struct MagneticModel
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_accel_scale_factor  (0x82,0x17) Accel Scale Factor [CPP]
+///@defgroup filter_accel_scale_factor_cpp  (0x82,0x17) Accel Scale Factor
 /// Filter reported accelerometer scale factor expressed in the sensor frame.
 ///
 ///@{
@@ -1291,7 +1291,7 @@ struct AccelScaleFactor
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_accel_scale_factor_uncertainty  (0x82,0x19) Accel Scale Factor Uncertainty [CPP]
+///@defgroup filter_accel_scale_factor_uncertainty_cpp  (0x82,0x19) Accel Scale Factor Uncertainty
 /// Filter reported 1-sigma accelerometer scale factor uncertainty expressed in the sensor frame.
 ///
 ///@{
@@ -1329,7 +1329,7 @@ struct AccelScaleFactorUncertainty
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_gyro_scale_factor  (0x82,0x16) Gyro Scale Factor [CPP]
+///@defgroup filter_gyro_scale_factor_cpp  (0x82,0x16) Gyro Scale Factor
 /// Filter reported gyro scale factor expressed in the sensor frame.
 ///
 ///@{
@@ -1367,7 +1367,7 @@ struct GyroScaleFactor
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_gyro_scale_factor_uncertainty  (0x82,0x18) Gyro Scale Factor Uncertainty [CPP]
+///@defgroup filter_gyro_scale_factor_uncertainty_cpp  (0x82,0x18) Gyro Scale Factor Uncertainty
 /// Filter reported 1-sigma gyro scale factor uncertainty expressed in the sensor frame.
 ///
 ///@{
@@ -1405,7 +1405,7 @@ struct GyroScaleFactorUncertainty
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_mag_bias  (0x82,0x1A) Mag Bias [CPP]
+///@defgroup filter_mag_bias_cpp  (0x82,0x1A) Mag Bias
 /// Filter reported magnetometer bias expressed in the sensor frame.
 ///
 ///@{
@@ -1443,7 +1443,7 @@ struct MagBias
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_mag_bias_uncertainty  (0x82,0x1B) Mag Bias Uncertainty [CPP]
+///@defgroup filter_mag_bias_uncertainty_cpp  (0x82,0x1B) Mag Bias Uncertainty
 /// Filter reported 1-sigma magnetometer bias uncertainty expressed in the sensor frame.
 ///
 ///@{
@@ -1481,7 +1481,7 @@ struct MagBiasUncertainty
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_standard_atmosphere  (0x82,0x20) Standard Atmosphere [CPP]
+///@defgroup filter_standard_atmosphere_cpp  (0x82,0x20) Standard Atmosphere
 /// Filter reported standard atmosphere parameters.
 /// 
 /// The US 1976 Standard Atmosphere Model is used. A valid GNSS location is required for the model to be valid.
@@ -1525,7 +1525,7 @@ struct StandardAtmosphere
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_pressure_altitude  (0x82,0x21) Pressure Altitude [CPP]
+///@defgroup filter_pressure_altitude_cpp  (0x82,0x21) Pressure Altitude
 /// Filter reported pressure altitude.
 /// 
 /// The US 1976 Standard Atmosphere Model is used to calculate the pressure altitude in meters.
@@ -1567,7 +1567,7 @@ struct PressureAltitude
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_density_altitude  (0x82,0x22) Density Altitude [CPP]
+///@defgroup filter_density_altitude_cpp  (0x82,0x22) Density Altitude
 ///
 ///@{
 
@@ -1604,7 +1604,7 @@ struct DensityAltitude
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_antenna_offset_correction  (0x82,0x30) Antenna Offset Correction [CPP]
+///@defgroup filter_antenna_offset_correction_cpp  (0x82,0x30) Antenna Offset Correction
 /// Filter reported GNSS antenna offset in vehicle frame.
 /// 
 /// This offset added to any previously stored offset vector to compensate for errors in definition.
@@ -1644,7 +1644,7 @@ struct AntennaOffsetCorrection
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_antenna_offset_correction_uncertainty  (0x82,0x31) Antenna Offset Correction Uncertainty [CPP]
+///@defgroup filter_antenna_offset_correction_uncertainty_cpp  (0x82,0x31) Antenna Offset Correction Uncertainty
 /// Filter reported 1-sigma GNSS antenna offset uncertainties in vehicle frame.
 ///
 ///@{
@@ -1682,7 +1682,7 @@ struct AntennaOffsetCorrectionUncertainty
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_multi_antenna_offset_correction  (0x82,0x34) Multi Antenna Offset Correction [CPP]
+///@defgroup filter_multi_antenna_offset_correction_cpp  (0x82,0x34) Multi Antenna Offset Correction
 /// Filter reported GNSS antenna offset in vehicle frame.
 /// 
 /// This offset added to any previously stored offset vector to compensate for errors in definition.
@@ -1723,7 +1723,7 @@ struct MultiAntennaOffsetCorrection
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_multi_antenna_offset_correction_uncertainty  (0x82,0x35) Multi Antenna Offset Correction Uncertainty [CPP]
+///@defgroup filter_multi_antenna_offset_correction_uncertainty_cpp  (0x82,0x35) Multi Antenna Offset Correction Uncertainty
 /// Filter reported 1-sigma GNSS antenna offset uncertainties in vehicle frame.
 ///
 ///@{
@@ -1762,7 +1762,7 @@ struct MultiAntennaOffsetCorrectionUncertainty
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_magnetometer_offset  (0x82,0x25) Magnetometer Offset [CPP]
+///@defgroup filter_magnetometer_offset_cpp  (0x82,0x25) Magnetometer Offset
 /// Filter reported magnetometer hard iron offset in sensor frame.
 /// 
 /// This offset added to any previously stored hard iron offset vector to compensate for magnetometer in-run bias errors.
@@ -1802,7 +1802,7 @@ struct MagnetometerOffset
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_magnetometer_matrix  (0x82,0x26) Magnetometer Matrix [CPP]
+///@defgroup filter_magnetometer_matrix_cpp  (0x82,0x26) Magnetometer Matrix
 /// Filter reported magnetometer soft iron matrix in sensor frame.
 /// 
 /// This matrix is post multiplied to any previously stored soft iron matrix to compensate for magnetometer in-run errors.
@@ -1842,7 +1842,7 @@ struct MagnetometerMatrix
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_magnetometer_offset_uncertainty  (0x82,0x28) Magnetometer Offset Uncertainty [CPP]
+///@defgroup filter_magnetometer_offset_uncertainty_cpp  (0x82,0x28) Magnetometer Offset Uncertainty
 /// Filter reported 1-sigma magnetometer hard iron offset uncertainties in sensor frame.
 ///
 ///@{
@@ -1880,7 +1880,7 @@ struct MagnetometerOffsetUncertainty
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_magnetometer_matrix_uncertainty  (0x82,0x29) Magnetometer Matrix Uncertainty [CPP]
+///@defgroup filter_magnetometer_matrix_uncertainty_cpp  (0x82,0x29) Magnetometer Matrix Uncertainty
 /// Filter reported 1-sigma magnetometer soft iron matrix uncertainties in sensor frame.
 ///
 ///@{
@@ -1918,7 +1918,7 @@ struct MagnetometerMatrixUncertainty
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_magnetometer_covariance_matrix  (0x82,0x2A) Magnetometer Covariance Matrix [CPP]
+///@defgroup filter_magnetometer_covariance_matrix_cpp  (0x82,0x2A) Magnetometer Covariance Matrix
 ///
 ///@{
 
@@ -1955,7 +1955,7 @@ struct MagnetometerCovarianceMatrix
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_magnetometer_residual_vector  (0x82,0x2C) Magnetometer Residual Vector [CPP]
+///@defgroup filter_magnetometer_residual_vector_cpp  (0x82,0x2C) Magnetometer Residual Vector
 /// Filter reported magnetometer measurement residuals in vehicle frame.
 ///
 ///@{
@@ -1993,7 +1993,7 @@ struct MagnetometerResidualVector
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_clock_correction  (0x82,0x32) Clock Correction [CPP]
+///@defgroup filter_clock_correction_cpp  (0x82,0x32) Clock Correction
 /// Filter reported GNSS receiver clock error parameters.
 ///
 ///@{
@@ -2033,7 +2033,7 @@ struct ClockCorrection
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_clock_correction_uncertainty  (0x82,0x33) Clock Correction Uncertainty [CPP]
+///@defgroup filter_clock_correction_uncertainty_cpp  (0x82,0x33) Clock Correction Uncertainty
 /// Filter reported 1-sigma GNSS receiver clock error parameters.
 ///
 ///@{
@@ -2073,7 +2073,7 @@ struct ClockCorrectionUncertainty
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_gnss_pos_aid_status  (0x82,0x43) Gnss Pos Aid Status [CPP]
+///@defgroup filter_gnss_pos_aid_status_cpp  (0x82,0x43) Gnss Pos Aid Status
 /// Filter reported GNSS position aiding status
 ///
 ///@{
@@ -2113,7 +2113,7 @@ struct GnssPosAidStatus
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_gnss_att_aid_status  (0x82,0x44) Gnss Att Aid Status [CPP]
+///@defgroup filter_gnss_att_aid_status_cpp  (0x82,0x44) Gnss Att Aid Status
 /// Filter reported dual antenna GNSS attitude aiding status
 ///
 ///@{
@@ -2152,7 +2152,7 @@ struct GnssAttAidStatus
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_head_aid_status  (0x82,0x45) Head Aid Status [CPP]
+///@defgroup filter_head_aid_status_cpp  (0x82,0x45) Head Aid Status
 /// Filter reported GNSS heading aiding status
 ///
 ///@{
@@ -2197,7 +2197,7 @@ struct HeadAidStatus
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_rel_pos_ned  (0x82,0x42) Rel Pos Ned [CPP]
+///@defgroup filter_rel_pos_ned_cpp  (0x82,0x42) Rel Pos Ned
 /// Filter reported relative position, with respect to configured reference position
 ///
 ///@{
@@ -2235,7 +2235,7 @@ struct RelPosNed
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_ecef_pos  (0x82,0x40) Ecef Pos [CPP]
+///@defgroup filter_ecef_pos_cpp  (0x82,0x40) Ecef Pos
 /// Filter reported ECEF position
 ///
 ///@{
@@ -2273,7 +2273,7 @@ struct EcefPos
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_ecef_vel  (0x82,0x41) Ecef Vel [CPP]
+///@defgroup filter_ecef_vel_cpp  (0x82,0x41) Ecef Vel
 /// Filter reported ECEF velocity
 ///
 ///@{
@@ -2311,7 +2311,7 @@ struct EcefVel
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_ecef_pos_uncertainty  (0x82,0x36) Ecef Pos Uncertainty [CPP]
+///@defgroup filter_ecef_pos_uncertainty_cpp  (0x82,0x36) Ecef Pos Uncertainty
 /// Filter reported 1-sigma position uncertainty in the ECEF frame.
 ///
 ///@{
@@ -2349,7 +2349,7 @@ struct EcefPosUncertainty
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_ecef_vel_uncertainty  (0x82,0x37) Ecef Vel Uncertainty [CPP]
+///@defgroup filter_ecef_vel_uncertainty_cpp  (0x82,0x37) Ecef Vel Uncertainty
 /// Filter reported 1-sigma velocity uncertainties in the ECEF frame.
 ///
 ///@{
@@ -2387,7 +2387,7 @@ struct EcefVelUncertainty
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_aiding_measurement_summary  (0x82,0x46) Aiding Measurement Summary [CPP]
+///@defgroup filter_aiding_measurement_summary_cpp  (0x82,0x46) Aiding Measurement Summary
 /// Filter reported aiding measurement summary. This message contains a summary of the specified aiding measurement over the previous measurement interval ending at the specified time.
 ///
 ///@{
@@ -2427,7 +2427,7 @@ struct AidingMeasurementSummary
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_odometer_scale_factor_error  (0x82,0x47) Odometer Scale Factor Error [CPP]
+///@defgroup filter_odometer_scale_factor_error_cpp  (0x82,0x47) Odometer Scale Factor Error
 /// Filter reported odometer scale factor error. The total scale factor estimate is the user indicated scale factor, plus the user indicated scale factor times the scale factor error.
 ///
 ///@{
@@ -2465,7 +2465,7 @@ struct OdometerScaleFactorError
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_odometer_scale_factor_error_uncertainty  (0x82,0x48) Odometer Scale Factor Error Uncertainty [CPP]
+///@defgroup filter_odometer_scale_factor_error_uncertainty_cpp  (0x82,0x48) Odometer Scale Factor Error Uncertainty
 /// Filter reported odometer scale factor error uncertainty.
 ///
 ///@{
@@ -2503,7 +2503,7 @@ struct OdometerScaleFactorErrorUncertainty
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_gnss_dual_antenna_status  (0x82,0x49) Gnss Dual Antenna Status [CPP]
+///@defgroup filter_gnss_dual_antenna_status_cpp  (0x82,0x49) Gnss Dual Antenna Status
 /// Summary information for status of GNSS dual antenna heading estimate.
 ///
 ///@{
@@ -2582,7 +2582,7 @@ struct GnssDualAntennaStatus
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_aiding_frame_config_error  (0x82,0x50) Aiding Frame Config Error [CPP]
+///@defgroup filter_aiding_frame_config_error_cpp  (0x82,0x50) Aiding Frame Config Error
 /// Filter reported aiding source frame configuration error
 /// 
 /// These estimates are used to compensate for small errors to the user-supplied aiding frame configurations (set with (0x13, 0x01) command ).
@@ -2623,7 +2623,7 @@ struct AidingFrameConfigError
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_aiding_frame_config_error_uncertainty  (0x82,0x51) Aiding Frame Config Error Uncertainty [CPP]
+///@defgroup filter_aiding_frame_config_error_uncertainty_cpp  (0x82,0x51) Aiding Frame Config Error Uncertainty
 /// Filter reported aiding source frame configuration error uncertainty
 /// 
 /// These estimates are used to compensate for small errors to the user-supplied aiding frame configurations (set with (0x13, 0x01) command ).

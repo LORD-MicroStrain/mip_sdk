@@ -3,14 +3,12 @@
 #include "mip_descriptors.hpp"
 #include "mip_serialization.hpp"
 
+#include <microstrain/common/span.hpp>
+
 #include <mip/mip_field.h>
 #include <mip/mip_offsets.h>
 
 #include <cstring>
-
-#if __cpp_lib_span >= 202002L
-#include <span>
-#endif
 
 
 namespace mip
@@ -42,15 +40,15 @@ public:
     // C function wrappers
     //
 
-    ///@copydoc mip_field_descriptor_set
+    ///@copydoc mip::C::mip_field_descriptor_set
     uint8_t descriptorSet() const { return C::mip_field_descriptor_set(this); }
-    ///@copydoc mip_field_field_descriptor
+    ///@copydoc mip::C::mip_field_field_descriptor
     uint8_t fieldDescriptor() const { return C::mip_field_field_descriptor(this); }
     ///@brief Returns the descriptor set and field descriptor.
     CompositeDescriptor descriptor() const { return {descriptorSet(), fieldDescriptor()}; }
-    ///@copydoc mip_field_payload_length
+    ///@copydoc mip::C::mip_field_payload_length
     uint8_t payloadLength() const { return C::mip_field_payload_length(this); }
-    ///@copydoc mip_field_payload
+    ///@copydoc mip::C::mip_field_payload
     const uint8_t* payload() const { return C::mip_field_payload(this); }
 
     ///@brief Index the payload at the given location.
@@ -60,16 +58,14 @@ public:
 
     uint8_t operator[](unsigned int index) const { return payload(index); }
 
-#if __cpp_lib_span >= 202002L
-    std::span<const uint8_t> payloadSpan() const { return {payload(), payloadLength()}; }
-#endif
+    microstrain::Span<const uint8_t> payloadSpan() const { return {payload(), payloadLength()}; }
 
-    ///@copydoc mip_field_is_valid
+    ///@copydoc mip::C::mip_field_is_valid
     bool isValid() const { return C::mip_field_is_valid(this); }
 
-    ///@copydoc mip_field_next_after
+    ///@copybrief mip::C::mip_field_next_after
     FieldView nextAfter() const { return C::mip_field_next_after(this); }
-    ///@copydoc mip_field_next
+    ///@copybrief mip::C::mip_field_next
     bool next() { return C::mip_field_next(this); }
 
     //

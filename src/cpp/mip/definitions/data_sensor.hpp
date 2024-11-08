@@ -16,9 +16,9 @@ struct mip_interface;
 namespace data_sensor {
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipData_cpp  MIP Data [CPP]
+///@addtogroup MipData_cpp
 ///@{
-///@defgroup sensor_data_cpp  Sensor Data [CPP]
+///@defgroup sensor_data_cpp  Sensor Data
 ///
 ///@{
 
@@ -69,7 +69,7 @@ enum
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_raw_accel  (0x80,0x01) Raw Accel [CPP]
+///@defgroup sensor_raw_accel_cpp  (0x80,0x01) Raw Accel
 /// Three element vector representing the sensed acceleration.
 /// This quantity is temperature compensated and expressed in the sensor body frame.
 ///
@@ -107,7 +107,7 @@ struct RawAccel
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_raw_gyro  (0x80,0x02) Raw Gyro [CPP]
+///@defgroup sensor_raw_gyro_cpp  (0x80,0x02) Raw Gyro
 /// Three element vector representing the sensed angular rate.
 /// This quantity is temperature compensated and expressed in the sensor body frame.
 ///
@@ -145,7 +145,7 @@ struct RawGyro
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_raw_mag  (0x80,0x03) Raw Mag [CPP]
+///@defgroup sensor_raw_mag_cpp  (0x80,0x03) Raw Mag
 /// Three element vector representing the sensed magnetic field.
 /// This quantity is temperature compensated and expressed in the vehicle frame.
 ///
@@ -183,7 +183,7 @@ struct RawMag
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_raw_pressure  (0x80,0x16) Raw Pressure [CPP]
+///@defgroup sensor_raw_pressure_cpp  (0x80,0x16) Raw Pressure
 /// Scalar value representing the sensed ambient pressure.
 /// This quantity is temperature compensated.
 ///
@@ -221,7 +221,7 @@ struct RawPressure
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_scaled_accel  (0x80,0x04) Scaled Accel [CPP]
+///@defgroup sensor_scaled_accel_cpp  (0x80,0x04) Scaled Accel
 /// 3-element vector representing the sensed acceleration.
 /// This quantity is temperature compensated and expressed in the vehicle frame.
 ///
@@ -259,7 +259,7 @@ struct ScaledAccel
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_scaled_gyro  (0x80,0x05) Scaled Gyro [CPP]
+///@defgroup sensor_scaled_gyro_cpp  (0x80,0x05) Scaled Gyro
 /// 3-element vector representing the sensed angular rate.
 /// This quantity is temperature compensated and expressed in the vehicle frame.
 ///
@@ -297,7 +297,7 @@ struct ScaledGyro
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_scaled_mag  (0x80,0x06) Scaled Mag [CPP]
+///@defgroup sensor_scaled_mag_cpp  (0x80,0x06) Scaled Mag
 /// 3-element vector representing the sensed magnetic field.
 /// This quantity is temperature compensated and expressed in the vehicle frame.
 ///
@@ -335,7 +335,7 @@ struct ScaledMag
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_scaled_pressure  (0x80,0x17) Scaled Pressure [CPP]
+///@defgroup sensor_scaled_pressure_cpp  (0x80,0x17) Scaled Pressure
 /// Scalar value representing the sensed ambient pressure.
 ///
 ///@{
@@ -372,7 +372,7 @@ struct ScaledPressure
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_delta_theta  (0x80,0x07) Delta Theta [CPP]
+///@defgroup sensor_delta_theta_cpp  (0x80,0x07) Delta Theta
 /// 3-element vector representing the time integral of angular rate.
 /// This quantity is the integral of sensed angular rate over the period set by the IMU message format.  It is expressed in the vehicle frame.
 ///
@@ -410,7 +410,7 @@ struct DeltaTheta
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_delta_velocity  (0x80,0x08) Delta Velocity [CPP]
+///@defgroup sensor_delta_velocity_cpp  (0x80,0x08) Delta Velocity
 /// 3-element vector representing the time integral of acceleration.
 /// This quantity is the integral of sensed acceleration over the period set by the IMU message format.  It is expressed in the vehicle frame.
 ///
@@ -448,7 +448,7 @@ struct DeltaVelocity
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_comp_orientation_matrix  (0x80,0x09) Comp Orientation Matrix [CPP]
+///@defgroup sensor_comp_orientation_matrix_cpp  (0x80,0x09) Comp Orientation Matrix
 /// 3x3 Direction Cosine Matrix EQSTART M_{ned}^{veh} EQEND describing the orientation of the device with respect to the NED local-level frame.
 /// This matrix satisfies the following relationship:
 /// 
@@ -459,7 +459,7 @@ struct DeltaVelocity
 /// EQSTART v^{ned} EQEND is a 3-element vector expressed in the NED frame. <br/>
 /// EQSTART v^{veh} EQEND is the same 3-element vector expressed in the vehicle frame.  <br/>
 /// <br/>
-/// The matrix elements are stored is row-major order: EQSTART M = \begin{bmatrix} M_{11}, M_{12}, M_{13}, M_{21}, M_{22}, M_{23}, M_{31}, M_{32}, M_{33} \end{bmatrix} EQEND
+/// The matrix elements are stored is row-major order: EQSTART M = \\begin{bmatrix} M_{11}, M_{12}, M_{13}, M_{21}, M_{22}, M_{23}, M_{31}, M_{32}, M_{33} \\end{bmatrix} EQEND
 ///
 ///@{
 
@@ -495,7 +495,7 @@ struct CompOrientationMatrix
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_comp_quaternion  (0x80,0x0A) Comp Quaternion [CPP]
+///@defgroup sensor_comp_quaternion_cpp  (0x80,0x0A) Comp Quaternion
 /// 4x1 vector representation of the quaternion describing the orientation of the device with respect to the NED local-level frame.
 /// This quaternion satisfies the following relationship:
 /// 
@@ -540,7 +540,7 @@ struct CompQuaternion
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_comp_euler_angles  (0x80,0x0C) Comp Euler Angles [CPP]
+///@defgroup sensor_comp_euler_angles_cpp  (0x80,0x0C) Comp Euler Angles
 /// Euler angles describing the orientation of the device with respect to the NED local-level frame.
 /// The Euler angles are reported in 3-2-1 (Yaw-Pitch-Roll, AKA Aircraft) order.
 ///
@@ -580,7 +580,7 @@ struct CompEulerAngles
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_comp_orientation_update_matrix  (0x80,0x0B) Comp Orientation Update Matrix [CPP]
+///@defgroup sensor_comp_orientation_update_matrix_cpp  (0x80,0x0B) Comp Orientation Update Matrix
 /// DEPRECATED!
 ///
 ///@{
@@ -617,7 +617,7 @@ struct CompOrientationUpdateMatrix
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_orientation_raw_temp  (0x80,0x0D) Orientation Raw Temp [CPP]
+///@defgroup sensor_orientation_raw_temp_cpp  (0x80,0x0D) Orientation Raw Temp
 /// DEPRECATED!
 ///
 ///@{
@@ -654,7 +654,7 @@ struct OrientationRawTemp
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_internal_timestamp  (0x80,0x0E) Internal Timestamp [CPP]
+///@defgroup sensor_internal_timestamp_cpp  (0x80,0x0E) Internal Timestamp
 /// DEPRECATED!
 ///
 ///@{
@@ -691,7 +691,7 @@ struct InternalTimestamp
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_pps_timestamp  (0x80,0x0F) Pps Timestamp [CPP]
+///@defgroup sensor_pps_timestamp_cpp  (0x80,0x0F) Pps Timestamp
 /// DEPRECATED!
 ///
 ///@{
@@ -729,7 +729,7 @@ struct PpsTimestamp
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_gps_timestamp  (0x80,0x12) Gps Timestamp [CPP]
+///@defgroup sensor_gps_timestamp_cpp  (0x80,0x12) Gps Timestamp
 /// GPS timestamp of the SENSOR data
 /// 
 /// Should the PPS become unavailable, the device will revert to its internal clock, which will cause the reported time to drift from true GPS time.
@@ -810,7 +810,7 @@ struct GpsTimestamp
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_temperature_abs  (0x80,0x14) Temperature Abs [CPP]
+///@defgroup sensor_temperature_abs_cpp  (0x80,0x14) Temperature Abs
 /// SENSOR reported temperature statistics
 /// 
 /// Temperature may originate from the MEMS sensors, or be calculated in combination with board temperature sensors.
@@ -853,7 +853,7 @@ struct TemperatureAbs
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_up_vector  (0x80,0x11) Up Vector [CPP]
+///@defgroup sensor_up_vector_cpp  (0x80,0x11) Up Vector
 /// Gyro-stabilized 3-element vector representing the complementary filter's estimated vertical direction.
 /// This quantity is expressed in the vehicle frame.
 /// 
@@ -896,7 +896,7 @@ struct UpVector
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_north_vector  (0x80,0x10) North Vector [CPP]
+///@defgroup sensor_north_vector_cpp  (0x80,0x10) North Vector
 /// Gyro-stabilized 3-element vector representing the complementary filter's estimate of magnetic north.
 /// This quantity is expressed in the vehicle frame.
 /// 
@@ -936,7 +936,7 @@ struct NorthVector
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_overrange_status  (0x80,0x18) Overrange Status [CPP]
+///@defgroup sensor_overrange_status_cpp  (0x80,0x18) Overrange Status
 ///
 ///@{
 
@@ -1023,7 +1023,7 @@ struct OverrangeStatus
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_odometer_data  (0x80,0x40) Odometer Data [CPP]
+///@defgroup sensor_odometer_data_cpp  (0x80,0x40) Odometer Data
 ///
 ///@{
 

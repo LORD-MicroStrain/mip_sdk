@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common.hpp"
+#include <mip/metadata/definitions/common.hpp>
 
 #include <mip/definitions/data_shared.hpp>
 
@@ -20,8 +20,8 @@ struct MetadataFor<data_shared::EventSource>
             /* .name          = */ "trigger_id",
             /* .docs          = */ "Trigger ID number. If 0, this message was emitted due to being\nscheduled in the 3DM Message Format Command (0x0C,0x0F).",
             /* .type          = */ {Type::U8, nullptr},
-            /* .accessor      = */ utils::access<type, uint8_t, &type::trigger_id>,
-            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .accessor      = */ nullptr, //utils::access<type, uint8_t, &type::trigger_id>,
+            /* .attributes    = */ {true, false, false, false, false},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -49,8 +49,8 @@ struct MetadataFor<data_shared::Ticks>
             /* .name          = */ "ticks",
             /* .docs          = */ "Ticks since powerup.",
             /* .type          = */ {Type::U32, nullptr},
-            /* .accessor      = */ utils::access<type, uint32_t, &type::ticks>,
-            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .accessor      = */ nullptr, //utils::access<type, uint32_t, &type::ticks>,
+            /* .attributes    = */ {true, false, false, false, false},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -78,8 +78,8 @@ struct MetadataFor<data_shared::DeltaTicks>
             /* .name          = */ "ticks",
             /* .docs          = */ "Ticks since last output.",
             /* .type          = */ {Type::U32, nullptr},
-            /* .accessor      = */ utils::access<type, uint32_t, &type::ticks>,
-            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .accessor      = */ nullptr, //utils::access<type, uint32_t, &type::ticks>,
+            /* .attributes    = */ {true, false, false, false, false},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -103,9 +103,9 @@ struct MetadataFor<data_shared::GpsTimestamp::ValidFlags>
     using type = data_shared::GpsTimestamp::ValidFlags;
 
     static constexpr inline BitfieldInfo::Entry entries[] = {
-        { 1, "tow", "Whole number seconds TOW has been set" },
-        { 2, "week_number", "Week number has been set" },
-        { 3, "time_valid", "Both TOW and Week Number have been set" },
+        { uint32_t(1), "tow", "Whole number seconds TOW has been set" },
+        { uint32_t(2), "week_number", "Week number has been set" },
+        { uint32_t(3), "time_valid", "Both TOW and Week Number have been set" },
     };
 
     static constexpr inline BitfieldInfo value = {
@@ -127,8 +127,8 @@ struct MetadataFor<data_shared::GpsTimestamp>
             /* .name          = */ "tow",
             /* .docs          = */ "GPS Time of Week [seconds]",
             /* .type          = */ {Type::DOUBLE, nullptr},
-            /* .accessor      = */ utils::access<type, double, &type::tow>,
-            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .accessor      = */ nullptr, //utils::access<type, double, &type::tow>,
+            /* .attributes    = */ {true, false, false, false, false},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -136,17 +136,17 @@ struct MetadataFor<data_shared::GpsTimestamp>
             /* .name          = */ "week_number",
             /* .docs          = */ "GPS Week Number since 1980 [weeks]",
             /* .type          = */ {Type::U16, nullptr},
-            /* .accessor      = */ utils::access<type, uint16_t, &type::week_number>,
-            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .accessor      = */ nullptr, //utils::access<type, uint16_t, &type::week_number>,
+            /* .attributes    = */ {true, false, false, false, false},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
         {
             /* .name          = */ "valid_flags",
             /* .docs          = */ "",
-            /* .type          = */ {Type::BITFIELD, &MetadataFor<data_shared::GpsTimestamp::ValidFlags>::value},
-            /* .accessor      = */ utils::access<type, data_shared::GpsTimestamp::ValidFlags, &type::valid_flags>,
-            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .type          = */ {Type::BITS, &MetadataFor<data_shared::GpsTimestamp::ValidFlags>::value},
+            /* .accessor      = */ nullptr, //utils::access<type, data_shared::GpsTimestamp::ValidFlags, &type::valid_flags>,
+            /* .attributes    = */ {true, false, false, false, false},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -174,8 +174,8 @@ struct MetadataFor<data_shared::DeltaTime>
             /* .name          = */ "seconds",
             /* .docs          = */ "Seconds since last output.",
             /* .type          = */ {Type::DOUBLE, nullptr},
-            /* .accessor      = */ utils::access<type, double, &type::seconds>,
-            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .accessor      = */ nullptr, //utils::access<type, double, &type::seconds>,
+            /* .attributes    = */ {true, false, false, false, false},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -203,8 +203,8 @@ struct MetadataFor<data_shared::ReferenceTimestamp>
             /* .name          = */ "nanoseconds",
             /* .docs          = */ "Nanoseconds since initialization.",
             /* .type          = */ {Type::U64, nullptr},
-            /* .accessor      = */ utils::access<type, uint64_t, &type::nanoseconds>,
-            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .accessor      = */ nullptr, //utils::access<type, uint64_t, &type::nanoseconds>,
+            /* .attributes    = */ {true, false, false, false, false},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -232,8 +232,8 @@ struct MetadataFor<data_shared::ReferenceTimeDelta>
             /* .name          = */ "dt_nanos",
             /* .docs          = */ "Nanoseconds since the last occurrence of this field in a packet of the same descriptor set and event source.",
             /* .type          = */ {Type::U64, nullptr},
-            /* .accessor      = */ utils::access<type, uint64_t, &type::dt_nanos>,
-            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .accessor      = */ nullptr, //utils::access<type, uint64_t, &type::dt_nanos>,
+            /* .attributes    = */ {true, false, false, false, false},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -257,7 +257,7 @@ struct MetadataFor<data_shared::ExternalTimestamp::ValidFlags>
     using type = data_shared::ExternalTimestamp::ValidFlags;
 
     static constexpr inline BitfieldInfo::Entry entries[] = {
-        { 1, "nanoseconds", "" },
+        { uint32_t(1), "nanoseconds", "" },
     };
 
     static constexpr inline BitfieldInfo value = {
@@ -279,17 +279,17 @@ struct MetadataFor<data_shared::ExternalTimestamp>
             /* .name          = */ "nanoseconds",
             /* .docs          = */ "",
             /* .type          = */ {Type::U64, nullptr},
-            /* .accessor      = */ utils::access<type, uint64_t, &type::nanoseconds>,
-            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .accessor      = */ nullptr, //utils::access<type, uint64_t, &type::nanoseconds>,
+            /* .attributes    = */ {true, false, false, false, false},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
         {
             /* .name          = */ "valid_flags",
             /* .docs          = */ "",
-            /* .type          = */ {Type::BITFIELD, &MetadataFor<data_shared::ExternalTimestamp::ValidFlags>::value},
-            /* .accessor      = */ utils::access<type, data_shared::ExternalTimestamp::ValidFlags, &type::valid_flags>,
-            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .type          = */ {Type::BITS, &MetadataFor<data_shared::ExternalTimestamp::ValidFlags>::value},
+            /* .accessor      = */ nullptr, //utils::access<type, data_shared::ExternalTimestamp::ValidFlags, &type::valid_flags>,
+            /* .attributes    = */ {true, false, false, false, false},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -313,7 +313,7 @@ struct MetadataFor<data_shared::ExternalTimeDelta::ValidFlags>
     using type = data_shared::ExternalTimeDelta::ValidFlags;
 
     static constexpr inline BitfieldInfo::Entry entries[] = {
-        { 1, "dt_nanos", "" },
+        { uint32_t(1), "dt_nanos", "" },
     };
 
     static constexpr inline BitfieldInfo value = {
@@ -335,17 +335,17 @@ struct MetadataFor<data_shared::ExternalTimeDelta>
             /* .name          = */ "dt_nanos",
             /* .docs          = */ "Nanoseconds since the last occurrence of this field in a packet of the same descriptor set and event source.",
             /* .type          = */ {Type::U64, nullptr},
-            /* .accessor      = */ utils::access<type, uint64_t, &type::dt_nanos>,
-            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .accessor      = */ nullptr, //utils::access<type, uint64_t, &type::dt_nanos>,
+            /* .attributes    = */ {true, false, false, false, false},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
         {
             /* .name          = */ "valid_flags",
             /* .docs          = */ "",
-            /* .type          = */ {Type::BITFIELD, &MetadataFor<data_shared::ExternalTimeDelta::ValidFlags>::value},
-            /* .accessor      = */ utils::access<type, data_shared::ExternalTimeDelta::ValidFlags, &type::valid_flags>,
-            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .type          = */ {Type::BITS, &MetadataFor<data_shared::ExternalTimeDelta::ValidFlags>::value},
+            /* .accessor      = */ nullptr, //utils::access<type, data_shared::ExternalTimeDelta::ValidFlags, &type::valid_flags>,
+            /* .attributes    = */ {true, false, false, false, false},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -364,7 +364,7 @@ struct MetadataFor<data_shared::ExternalTimeDelta>
 };
 
 
-static constexpr inline const FieldInfo* DATA_SHARED_FIELDS[] = {
+static constexpr inline std::initializer_list<const FieldInfo*> DATA_SHARED = {
     &MetadataFor<data_shared::EventSource>::value,
     &MetadataFor<data_shared::Ticks>::value,
     &MetadataFor<data_shared::DeltaTicks>::value,
@@ -376,7 +376,6 @@ static constexpr inline const FieldInfo* DATA_SHARED_FIELDS[] = {
     &MetadataFor<data_shared::ExternalTimeDelta>::value,
 };
 
-static constexpr inline const DescriptorSet DATA_SHARED_DS(data_shared::DESCRIPTOR_SET, "data_shared", DATA_SHARED_FIELDS);
 
 } // namespace mip::metadata
 

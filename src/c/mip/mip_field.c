@@ -9,9 +9,15 @@
 
 #include <assert.h>
 
+#ifdef __cplusplus
+namespace mip {
+namespace C {
+extern "C" {
+#endif
+
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Constructs a %mip_field given the parameters.
+///@brief Constructs a field view given the parameters.
 ///
 ///@param field
 ///@param descriptor_set
@@ -24,8 +30,6 @@
 ///       NULL if payload_length is 0.
 ///@param payload_length
 ///       The length of the payload. Cannot exceed MIP_FIELD_PAYLOAD_LENGTH_MAX.
-///
-///@returns A %mip_field initialized with the specified values.
 ///
 void mip_field_init(mip_field_view* field, uint8_t descriptor_set, uint8_t field_descriptor, const uint8_t* payload, uint8_t payload_length)
 {
@@ -169,7 +173,7 @@ mip_field_view mip_field_first_from_packet(const mip_packet_view* packet)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Gets the next field after the specified field._
+///@brief Gets the next field after the specified field.
 ///
 ///@param field
 ///       An existing MIP field in a packet. Can be invalid, in which case the
@@ -235,3 +239,9 @@ bool mip_field_next_in_packet(mip_field_view* field, const mip_packet_view* pack
 
     return mip_field_is_valid(field);
 }
+
+#ifdef __cplusplus
+} // extern "C"
+} // namespace C
+} // namespace mip
+#endif

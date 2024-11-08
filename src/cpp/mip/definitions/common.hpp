@@ -2,6 +2,19 @@
 
 #include <mip/mip_serialization.hpp>
 
+////////////////////////////////////////////////////////////////////////////////
+///@addtogroup mip_cpp
+///@{
+///
+///@defgroup MipCommands_cpp  Mip Commands
+///@brief Contains all MIP command definitions.
+///
+///@defgroup MipData_cpp  Mip Data
+///@brief Contains all MIP data definitions.
+///
+///@}
+////////////////////////////////////////////////////////////////////////////////
+
 
 namespace mip
 {

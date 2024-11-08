@@ -17,9 +17,9 @@ extern "C" {
 #endif // __cplusplus
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipCommands_c  MIP Commands [C]
+///@addtogroup MipCommands_c
 ///@{
-///@defgroup gnss_commands_c  Gnss Commands [C]
+///@defgroup gnss_commands_c  Gnss Commands
 ///
 ///@{
 
@@ -34,10 +34,12 @@ enum
     MIP_CMD_DESC_GNSS_LIST_RECEIVERS             = 0x01,
     MIP_CMD_DESC_GNSS_SIGNAL_CONFIGURATION       = 0x02,
     MIP_CMD_DESC_GNSS_RTK_DONGLE_CONFIGURATION   = 0x10,
+    MIP_CMD_DESC_GNSS_SPARTN_CONFIGURATION       = 0x20,
     
     MIP_REPLY_DESC_GNSS_LIST_RECEIVERS           = 0x81,
     MIP_REPLY_DESC_GNSS_SIGNAL_CONFIGURATION     = 0x82,
     MIP_REPLY_DESC_GNSS_RTK_DONGLE_CONFIGURATION = 0x90,
+    MIP_REPLY_DESC_GNSS_SPARTN_CONFIGURATION     = 0xA0,
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -61,7 +63,7 @@ enum { MIP_GNSS_BEIDOU_ENABLE_B2A = 0x0004 };
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_receiver_info  (0x0E,0x01) Receiver Info [C]
+///@defgroup gnss_receiver_info_c  (0x0E,0x01) Receiver Info
 /// Return information about the GNSS receivers in the device.
 /// 
 ///
@@ -96,7 +98,7 @@ mip_cmd_result mip_gnss_receiver_info(mip_interface* device, uint8_t* num_receiv
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_signal_configuration  (0x0E,0x02) Signal Configuration [C]
+///@defgroup gnss_signal_configuration_c  (0x0E,0x02) Signal Configuration
 /// Configure the GNSS signals used by the device.
 /// 
 ///
@@ -138,7 +140,58 @@ mip_cmd_result mip_gnss_default_signal_configuration(mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_rtk_dongle_configuration  (0x0E,0x10) Rtk Dongle Configuration [C]
+///@defgroup gnss_spartn_configuration_c  (0x0E,0x20) Spartn Configuration
+/// Configure the SPARTN corrections service parameters.
+/// Notes:<br/>
+/// - Enable and type settings will only update after a power cycle <br/>
+/// - Type settings will only take effect after a power cycle <br/>
+/// - Key information can be updated while running
+///
+///@{
+
+struct mip_gnss_spartn_configuration_command
+{
+    mip_function_selector function;
+    uint8_t enable; ///< Enable/Disable the SPARTN subsystem (0 = Disabled, 1 = Enabled)
+    uint8_t type; ///< Connection type (0 - None, 1 = Network, 2 = L-Band)
+    uint32_t current_key_tow; ///< The GPS time of week the current key is valid until
+    uint16_t current_key_week; ///< The GPS week number the current key is valid until
+    uint8_t current_key[32]; ///< 32 character string of ASCII hex values for the current key (e.g. "bc" for 0xBC)
+    uint32_t next_key_tow; ///< The GPS time of week the next key is valid until
+    uint16_t next_key_week; ///< The GPS week number the next key is valid until
+    uint8_t next_key[32]; ///< 32 character string of ASCII hex valuesfor the next key (e.g. "bc" for 0xBC)
+};
+typedef struct mip_gnss_spartn_configuration_command mip_gnss_spartn_configuration_command;
+
+void insert_mip_gnss_spartn_configuration_command(microstrain_serializer* serializer, const mip_gnss_spartn_configuration_command* self);
+void extract_mip_gnss_spartn_configuration_command(microstrain_serializer* serializer, mip_gnss_spartn_configuration_command* self);
+
+struct mip_gnss_spartn_configuration_response
+{
+    uint8_t enable; ///< Enable/Disable the SPARTN subsystem (0 = Disabled, 1 = Enabled)
+    uint8_t type; ///< Connection type (0 - None, 1 = Network, 2 = L-Band)
+    uint32_t current_key_tow; ///< The GPS time of week the current key is valid until
+    uint16_t current_key_week; ///< The GPS week number the current key is valid until
+    uint8_t current_key[32]; ///< 32 character string of ASCII hex values for the current key (e.g. "bc" for 0xBC)
+    uint32_t next_key_tow; ///< The GPS time of week the next key is valid until
+    uint16_t next_key_week; ///< The GPS week number the next key is valid until
+    uint8_t next_key[32]; ///< 32 character string of ASCII hex valuesfor the next key (e.g. "bc" for 0xBC)
+};
+typedef struct mip_gnss_spartn_configuration_response mip_gnss_spartn_configuration_response;
+
+void insert_mip_gnss_spartn_configuration_response(microstrain_serializer* serializer, const mip_gnss_spartn_configuration_response* self);
+void extract_mip_gnss_spartn_configuration_response(microstrain_serializer* serializer, mip_gnss_spartn_configuration_response* self);
+
+mip_cmd_result mip_gnss_write_spartn_configuration(mip_interface* device, uint8_t enable, uint8_t type, uint32_t current_key_tow, uint16_t current_key_week, const uint8_t* current_key, uint32_t next_key_tow, uint16_t next_key_week, const uint8_t* next_key);
+mip_cmd_result mip_gnss_read_spartn_configuration(mip_interface* device, uint8_t* enable_out, uint8_t* type_out, uint32_t* current_key_tow_out, uint16_t* current_key_week_out, uint8_t* current_key_out, uint32_t* next_key_tow_out, uint16_t* next_key_week_out, uint8_t* next_key_out);
+mip_cmd_result mip_gnss_save_spartn_configuration(mip_interface* device);
+mip_cmd_result mip_gnss_load_spartn_configuration(mip_interface* device);
+mip_cmd_result mip_gnss_default_spartn_configuration(mip_interface* device);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup gnss_rtk_dongle_configuration_c  (0x0E,0x10) Rtk Dongle Configuration
 /// Configure the communications with the RTK Dongle connected to the device.
 /// 
 ///
