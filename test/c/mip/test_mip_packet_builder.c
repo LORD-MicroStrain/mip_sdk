@@ -1,6 +1,9 @@
 
+#include "test.h"
+
 #include <mip/mip_packet.h>
 #include <mip/mip_offsets.h>
+
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -8,56 +11,6 @@
 
 #define EXTRA 1
 uint8_t buffer[MIP_PACKET_LENGTH_MAX+EXTRA];
-
-int num_errors = 0;
-
-void print_buffer(FILE* file)
-{
-    for(unsigned int i=0; i<sizeof(buffer); i++)
-    {
-        fprintf(file, " %02X", buffer[i]);
-    }
-
-    fputc('\n', stderr);
-}
-
-bool check(bool condition, const char* fmt, ...)
-{
-    if( condition )
-        return true;
-
-    va_list argptr;
-    va_start(argptr, fmt);
-    vfprintf(stderr, fmt, argptr);
-    va_end(argptr);
-
-    fputc('\n', stderr);
-
-    print_buffer(stderr);
-
-    num_errors++;
-    return false;
-}
-
-bool check_equal(int a, int b, const char* fmt, ...)
-{
-    if( a == b )
-        return true;
-
-    va_list argptr;
-    va_start(argptr, fmt);
-    vfprintf(stderr, fmt, argptr);
-    va_end(argptr);
-
-    fprintf(stderr, " (%d != %d)", a, b);
-
-    fputc('\n', stderr);
-
-    print_buffer(stderr);
-
-    num_errors++;
-    return false;
-}
 
 
 void test_init()

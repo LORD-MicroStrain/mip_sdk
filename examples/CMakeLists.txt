@@ -58,11 +58,11 @@ macro(add_mip_example name sources)
 
 endmacro()
 
-add_mip_example(MipPacketC "${EXAMPLE_DIR}/mip_packet_example.c")
+add_mip_example(MipPacketExampleC "${EXAMPLE_DIR}/mip_packet_example.c")
 
 if(MICROSTRAIN_ENABLE_CPP)
 
-    add_mip_example(MipPacket "${EXAMPLE_DIR}/mip_packet_example.cpp")
+    add_mip_example(MipPacketExample "${EXAMPLE_DIR}/mip_packet_example.cpp")
 
     # C++ examples that need either serial or TCP support
     if(MICROSTRAIN_ENABLE_SERIAL OR MICROSTRAIN_ENABLE_TCP)

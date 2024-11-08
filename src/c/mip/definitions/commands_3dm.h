@@ -152,6 +152,7 @@ enum mip_nmea_message_message_id
     MIP_NMEA_MESSAGE_MESSAGE_ID_VTG  = 5,  ///<  Course over Ground. Source can be the Filter or GNSS1/2 datasets.
     MIP_NMEA_MESSAGE_MESSAGE_ID_HDT  = 6,  ///<  Heading, True. Source can be the Filter or GNSS1/2 datasets.
     MIP_NMEA_MESSAGE_MESSAGE_ID_ZDA  = 7,  ///<  Time & Date. Source must be the GNSS1 or GNSS2 datasets.
+    MIP_NMEA_MESSAGE_MESSAGE_ID_GST  = 8,  ///<  Position Error Statistics. Source can be the Filter or GNSS1/2 datasets.
     MIP_NMEA_MESSAGE_MESSAGE_ID_MSRA = 129,  ///<  MicroStrain proprietary Euler angles. Source must be the Filter dataset. The talker ID must be set to IGNORED.
     MIP_NMEA_MESSAGE_MESSAGE_ID_MSRR = 130,  ///<  MicroStrain proprietary Angular Rate/Acceleration. Source must be the Sensor dataset. The talker ID must be set to IGNORED.
 };

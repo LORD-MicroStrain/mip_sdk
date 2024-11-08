@@ -56,8 +56,10 @@ enum
     DATA_GPS_EPHEMERIS           = 0x61,
     DATA_GLONASS_EPHEMERIS       = 0x62,
     DATA_GALILEO_EPHEMERIS       = 0x63,
+    DATA_BEIDOU_EPHEMERIS        = 0x64,
     DATA_GPS_IONO_CORR           = 0x71,
     DATA_GALILEO_IONO_CORR       = 0x73,
+    DATA_BEIDOU_IONO_CORR        = 0x74,
     
 };
 
@@ -2523,6 +2525,109 @@ struct GloEphemeris
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
+///@defgroup gnss_beidou_ephemeris_cpp  (0x81,0x64) Beidou Ephemeris
+/// BeiDou Ephemeris Data
+///
+///@{
+
+struct BeidouEphemeris
+{
+    struct ValidFlags : Bitfield<ValidFlags>
+    {
+        typedef uint16_t Type;
+        enum _enumType : uint16_t
+        {
+            NONE        = 0x0000,
+            EPHEMERIS   = 0x0001,  ///<  
+            MODERN_DATA = 0x0002,  ///<  
+            ISC_L5      = 0x0004,  ///<  
+            FLAGS       = 0x0007,  ///<  
+            ALL         = 0x0007,
+        };
+        uint16_t value = NONE;
+        
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value((uint16_t)val) {}
+        operator uint16_t() const { return value; }
+        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
+        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
+        
+        bool ephemeris() const { return (value & EPHEMERIS) > 0; }
+        void ephemeris(bool val) { value &= ~EPHEMERIS; if(val) value |= EPHEMERIS; }
+        bool modernData() const { return (value & MODERN_DATA) > 0; }
+        void modernData(bool val) { value &= ~MODERN_DATA; if(val) value |= MODERN_DATA; }
+        bool iscL5() const { return (value & ISC_L5) > 0; }
+        void iscL5(bool val) { value &= ~ISC_L5; if(val) value |= ISC_L5; }
+        uint16_t flags() const { return (value & FLAGS) >> 0; }
+        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
+    };
+    /// Parameters
+    uint8_t index = 0; ///< Index of this field in this epoch.
+    uint8_t count = 0; ///< Total number of fields in this epoch.
+    double time_of_week = 0; ///< GPS Time of week [seconds]
+    uint16_t week_number = 0; ///< GPS Week since 1980 [weeks]
+    uint8_t satellite_id = 0; ///< GNSS satellite id within the constellation.
+    uint8_t health = 0; ///< Satellite and signal health
+    uint8_t iodc = 0; ///< Issue of Data Clock. This increments each time the data changes and rolls over at 4. It is used to make sure various raw data elements from different sources line up correctly.
+    uint8_t iode = 0; ///< Issue of Data Ephemeris.
+    double t_oc = 0; ///< Reference time for clock data.
+    double af0 = 0; ///< Clock bias in [s].
+    double af1 = 0; ///< Clock drift in [s/s].
+    double af2 = 0; ///< Clock drift rate in [s/s^2].
+    double t_gd = 0; ///< T Group Delay [s].
+    double ISC_L1CA = 0; ///< Inter-signal correction (L1).
+    double ISC_L2C = 0; ///< Inter-signal correction (L2, or L5 if isc_l5 flag is set).
+    double t_oe = 0; ///< Reference time for ephemeris in [s].
+    double a = 0; ///< Semi-major axis [m].
+    double a_dot = 0; ///< Semi-major axis rate [m/s].
+    double mean_anomaly = 0; ///< [rad].
+    double delta_mean_motion = 0; ///< [rad].
+    double delta_mean_motion_dot = 0; ///< [rad/s].
+    double eccentricity = 0;
+    double argument_of_perigee = 0; ///< [rad].
+    double omega = 0; ///< Longitude of Ascending Node [rad].
+    double omega_dot = 0; ///< Rate of Right Ascension [rad/s].
+    double inclination = 0; ///< Inclination angle [rad].
+    double inclination_dot = 0; ///< Inclination angle rate of change [rad/s].
+    double c_ic = 0; ///< Harmonic Correction Term.
+    double c_is = 0; ///< Harmonic Correction Term.
+    double c_uc = 0; ///< Harmonic Correction Term.
+    double c_us = 0; ///< Harmonic Correction Term.
+    double c_rc = 0; ///< Harmonic Correction Term.
+    double c_rs = 0; ///< Harmonic Correction Term.
+    ValidFlags valid_flags;
+    
+    /// Descriptors
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_BEIDOU_EPHEMERIS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "BeidouEphemeris";
+    static constexpr const char* DOC_NAME = "BeiDou Ephemeris";
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto asTuple() const
+    {
+        return std::make_tuple(index,count,time_of_week,week_number,satellite_id,health,iodc,iode,t_oc,af0,af1,af2,t_gd,ISC_L1CA,ISC_L2C,t_oe,a,a_dot,mean_anomaly,delta_mean_motion,delta_mean_motion_dot,eccentricity,argument_of_perigee,omega,omega_dot,inclination,inclination_dot,c_ic,c_is,c_uc,c_us,c_rc,c_rs,valid_flags);
+    }
+    
+    auto asTuple()
+    {
+        return std::make_tuple(std::ref(index),std::ref(count),std::ref(time_of_week),std::ref(week_number),std::ref(satellite_id),std::ref(health),std::ref(iodc),std::ref(iode),std::ref(t_oc),std::ref(af0),std::ref(af1),std::ref(af2),std::ref(t_gd),std::ref(ISC_L1CA),std::ref(ISC_L2C),std::ref(t_oe),std::ref(a),std::ref(a_dot),std::ref(mean_anomaly),std::ref(delta_mean_motion),std::ref(delta_mean_motion_dot),std::ref(eccentricity),std::ref(argument_of_perigee),std::ref(omega),std::ref(omega_dot),std::ref(inclination),std::ref(inclination_dot),std::ref(c_ic),std::ref(c_is),std::ref(c_uc),std::ref(c_us),std::ref(c_rc),std::ref(c_rs),std::ref(valid_flags));
+    }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
+};
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
 ///@defgroup gnss_gps_iono_corr_cpp  (0x81,0x71) Gps Iono Corr
 /// Ionospheric Correction Terms for GNSS
 ///
@@ -2666,6 +2771,87 @@ struct GalileoIonoCorr
     auto asTuple()
     {
         return std::make_tuple(std::ref(time_of_week),std::ref(week_number),std::ref(alpha[0]),std::ref(alpha[1]),std::ref(alpha[2]),std::ref(disturbance_flags),std::ref(valid_flags));
+    }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
+};
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup gnss_beidou_iono_corr_cpp  (0x81,0x74) Beidou Iono Corr
+/// Ionospheric Correction Terms for BeiDou
+///
+///@{
+
+struct BeidouIonoCorr
+{
+    struct ValidFlags : Bitfield<ValidFlags>
+    {
+        typedef uint16_t Type;
+        enum _enumType : uint16_t
+        {
+            NONE        = 0x0000,
+            TOW         = 0x0001,  ///<  
+            WEEK_NUMBER = 0x0002,  ///<  
+            ALPHA       = 0x0004,  ///<  
+            BETA        = 0x0008,  ///<  
+            ALPHA_CORR  = 0x0010,  ///<  
+            FLAGS       = 0x001F,  ///<  
+            ALL         = 0x001F,
+        };
+        uint16_t value = NONE;
+        
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value((uint16_t)val) {}
+        operator uint16_t() const { return value; }
+        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
+        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
+        
+        bool tow() const { return (value & TOW) > 0; }
+        void tow(bool val) { value &= ~TOW; if(val) value |= TOW; }
+        bool weekNumber() const { return (value & WEEK_NUMBER) > 0; }
+        void weekNumber(bool val) { value &= ~WEEK_NUMBER; if(val) value |= WEEK_NUMBER; }
+        bool alpha() const { return (value & ALPHA) > 0; }
+        void alpha(bool val) { value &= ~ALPHA; if(val) value |= ALPHA; }
+        bool beta() const { return (value & BETA) > 0; }
+        void beta(bool val) { value &= ~BETA; if(val) value |= BETA; }
+        bool alphaCorr() const { return (value & ALPHA_CORR) > 0; }
+        void alphaCorr(bool val) { value &= ~ALPHA_CORR; if(val) value |= ALPHA_CORR; }
+        uint16_t flags() const { return (value & FLAGS) >> 0; }
+        void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
+    };
+    /// Parameters
+    double time_of_week = 0; ///< GPS Time of week [seconds]
+    uint16_t week_number = 0; ///< GPS Week since 1980 [weeks]
+    double alpha[4] = {0}; ///< Ionospheric Delay Terms.
+    double beta[4] = {0}; ///< Ionospheric Delay Terms.
+    double alpha_corr[9] = {0}; ///< Ionospheric Delay Correction Terms.
+    ValidFlags valid_flags;
+    
+    /// Descriptors
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_BEIDOU_IONO_CORR;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "BeidouIonoCorr";
+    static constexpr const char* DOC_NAME = "BeiDou Ionospheric Correction";
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto asTuple() const
+    {
+        return std::make_tuple(time_of_week,week_number,alpha,beta,alpha_corr,valid_flags);
+    }
+    
+    auto asTuple()
+    {
+        return std::make_tuple(std::ref(time_of_week),std::ref(week_number),std::ref(alpha),std::ref(beta),std::ref(alpha_corr),std::ref(valid_flags));
     }
     
     /// Serialization

@@ -240,6 +240,191 @@ struct MetadataFor<commands_gnss::SignalConfiguration>
 };
 
 template<>
+struct MetadataFor<commands_gnss::SpartnConfiguration::Response>
+{
+    using type = commands_gnss::SpartnConfiguration::Response;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "enable",
+            /* .docs          = */ "Enable/Disable the SPARTN subsystem (0 = Disabled, 1 = Enabled)",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, uint8_t, &type::enable>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "type",
+            /* .docs          = */ "Connection type (0 - None, 1 = Network, 2 = L-Band)",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, uint8_t, &type::type>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "current_key_tow",
+            /* .docs          = */ "The GPS time of week the current key is valid until",
+            /* .type          = */ {Type::U32, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, uint32_t, &type::current_key_tow>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "current_key_week",
+            /* .docs          = */ "The GPS week number the current key is valid until",
+            /* .type          = */ {Type::U16, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, uint16_t, &type::current_key_week>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "current_key",
+            /* .docs          = */ "32 character string of ASCII hex values for the current key (e.g. 'bc' for 0xBC)",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, uint8_t, &type::current_key>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 32,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "next_key_tow",
+            /* .docs          = */ "The GPS time of week the next key is valid until",
+            /* .type          = */ {Type::U32, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, uint32_t, &type::next_key_tow>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "next_key_week",
+            /* .docs          = */ "The GPS week number the next key is valid until",
+            /* .type          = */ {Type::U16, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, uint16_t, &type::next_key_week>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "next_key",
+            /* .docs          = */ "32 character string of ASCII hex valuesfor the next key (e.g. 'bc' for 0xBC)",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, uint8_t, &type::next_key>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 32,
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_gnss::SpartnConfiguration::Response",
+        /* .title       = */ "response",
+        /* .docs        = */ "",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
+    };
+};
+
+template<>
+struct MetadataFor<commands_gnss::SpartnConfiguration>
+{
+    using type = commands_gnss::SpartnConfiguration;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        FUNCTION_SELECTOR_PARAM,
+        {
+            /* .name          = */ "enable",
+            /* .docs          = */ "Enable/Disable the SPARTN subsystem (0 = Disabled, 1 = Enabled)",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, uint8_t, &type::enable>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "type",
+            /* .docs          = */ "Connection type (0 - None, 1 = Network, 2 = L-Band)",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, uint8_t, &type::type>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "current_key_tow",
+            /* .docs          = */ "The GPS time of week the current key is valid until",
+            /* .type          = */ {Type::U32, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, uint32_t, &type::current_key_tow>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "current_key_week",
+            /* .docs          = */ "The GPS week number the current key is valid until",
+            /* .type          = */ {Type::U16, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, uint16_t, &type::current_key_week>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "current_key",
+            /* .docs          = */ "32 character string of ASCII hex values for the current key (e.g. 'bc' for 0xBC)",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, uint8_t, &type::current_key>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 32,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "next_key_tow",
+            /* .docs          = */ "The GPS time of week the next key is valid until",
+            /* .type          = */ {Type::U32, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, uint32_t, &type::next_key_tow>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "next_key_week",
+            /* .docs          = */ "The GPS week number the next key is valid until",
+            /* .type          = */ {Type::U16, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, uint16_t, &type::next_key_week>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "next_key",
+            /* .docs          = */ "32 character string of ASCII hex valuesfor the next key (e.g. 'bc' for 0xBC)",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, uint8_t, &type::next_key>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 32,
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_gnss::SpartnConfiguration",
+        /* .title       = */ "spartn_configuration",
+        /* .docs        = */ "Configure the SPARTN corrections service parameters.\nNotes:<br/>\n- Enable and type settings will only update after a power cycle <br/>\n- Type settings will only take effect after a power cycle <br/>\n- Key information can be updated while running",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ {true, true, true, true, true},
+        /* .proprietary = */ false,
+        /* .response    = */ &MetadataFor<type::Response>::value,
+    };
+};
+
+template<>
 struct MetadataFor<commands_gnss::RtkDongleConfiguration::Response>
 {
     using type = commands_gnss::RtkDongleConfiguration::Response;
@@ -322,6 +507,8 @@ static constexpr inline std::initializer_list<const FieldInfo*> COMMANDS_GNSS = 
     &MetadataFor<commands_gnss::ReceiverInfo::Response>::value,
     &MetadataFor<commands_gnss::SignalConfiguration>::value,
     &MetadataFor<commands_gnss::SignalConfiguration::Response>::value,
+    &MetadataFor<commands_gnss::SpartnConfiguration>::value,
+    &MetadataFor<commands_gnss::SpartnConfiguration::Response>::value,
     &MetadataFor<commands_gnss::RtkDongleConfiguration>::value,
     &MetadataFor<commands_gnss::RtkDongleConfiguration::Response>::value,
 };

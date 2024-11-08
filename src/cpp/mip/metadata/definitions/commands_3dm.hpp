@@ -751,6 +751,7 @@ struct MetadataFor<commands_3dm::NmeaMessage::MessageID>
         { uint32_t(5), "VTG", "Course over Ground. Source can be the Filter or GNSS1/2 datasets." },
         { uint32_t(6), "HDT", "Heading, True. Source can be the Filter or GNSS1/2 datasets." },
         { uint32_t(7), "ZDA", "Time & Date. Source must be the GNSS1 or GNSS2 datasets." },
+        { uint32_t(8), "GST", "Position Error Statistics. Source can be the Filter or GNSS1/2 datasets." },
         { uint32_t(129), "MSRA", "MicroStrain proprietary Euler angles. Source must be the Filter dataset. The talker ID must be set to IGNORED." },
         { uint32_t(130), "MSRR", "MicroStrain proprietary Angular Rate/Acceleration. Source must be the Sensor dataset. The talker ID must be set to IGNORED." },
     };
