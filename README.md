@@ -176,8 +176,9 @@ include all the necessary files and define a few options.
 * Source files in `src/cpp/mip/metadata` if using metadata
 
 Note: When using MSVC with C++, build the C and C++ code separately as libraries. Some C and C++ files
-having the same name, and MSVC will try to compile both to the same object file. This causes one to
-be overwritten by the other.
+have the same name, and MSVC will try to compile both to the same object file. This causes one to
+be overwritten by the other. Building as separate libraries causes the object files to be placed in
+different subdirectories, avoiding the conflict.
 
 #### Required #defines for building without CMake
 
