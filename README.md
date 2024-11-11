@@ -175,6 +175,11 @@ include all the necessary files and define a few options.
 * Source files in `src/cpp/mip/extras` as needed for your project
 * Source files in `src/cpp/mip/metadata` if using metadata
 
+Note: When using MSVC with C++, build the C and C++ code separately as libraries. Some C and C++ files
+have the same name, and MSVC will try to compile both to the same object file. This causes one to
+be overwritten by the other. Building as separate libraries causes the object files to be placed in
+different subdirectories, avoiding the conflict.
+
 #### Required #defines for building without CMake
 
 Pass these to your compiler as appropriate, e.g. `arm-none-eabi-gcc -DMICROSTRAIN_TIMESTAMP_TYPE=uint32_t -DMICROSTRAIN_ENABLE_LOGGING=0`
@@ -195,6 +200,18 @@ These options affect the compiled code interface and sizes of various structs. T
 MUST be consistent between compiling the MIP SDK and any other code which includes
 headers from the MIP SDK. (If you change them after building, make sure everything gets
 rebuilt properly. Normally CMake takes care of this for you).
+
+#### Include directories
+* `src/c`
+* `src/cpp` (if using C++)
+* `examples` (if building/using example code)
+
+#### Other compiler settings
+* C++14 or later is required (if using C++)
+  * For gcc: --std=c++14
+  * For msvc: /std:c++14
+  * Use C++17 or later if using metadata.
+* If building TCP socket support on Windows, link against ws2_32.lib.
 
 Known Issues
 ------------

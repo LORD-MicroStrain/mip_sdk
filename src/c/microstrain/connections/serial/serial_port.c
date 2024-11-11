@@ -103,7 +103,7 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
     }
 
     //Connect to the provided com port
-    port->handle = CreateFile(tmp_port_str, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
+    port->handle = CreateFileA(tmp_port_str, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
 
     // Ensure that the free() call in the following 'if' block doesn't clobber an error value
     DWORD last_error = GetLastError();
