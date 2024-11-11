@@ -3,7 +3,6 @@
 #include "mip_packet.h"
 #include "mip_offsets.h"
 
-#include "utils/byte_ring.h"
 #include "mip_types.h"
 
 #ifdef __cplusplus
