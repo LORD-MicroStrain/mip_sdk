@@ -4224,7 +4224,7 @@ struct MetadataFor<data_gnss::BeidouIonoCorr>
 };
 
 
-static constexpr inline std::initializer_list<const FieldInfo*> DATA_GNSS = {
+static constexpr inline const FieldInfo* DATA_GNSS_FIELDS[] = {
     &MetadataFor<data_gnss::PosLlh>::value,
     &MetadataFor<data_gnss::PosEcef>::value,
     &MetadataFor<data_gnss::VelNed>::value,
@@ -4243,19 +4243,24 @@ static constexpr inline std::initializer_list<const FieldInfo*> DATA_GNSS = {
     &MetadataFor<data_gnss::SbasInfo>::value,
     &MetadataFor<data_gnss::SbasCorrection>::value,
     &MetadataFor<data_gnss::RfErrorDetection>::value,
-    &MetadataFor<data_gnss::BaseStationInfo>::value,
-    &MetadataFor<data_gnss::RtkCorrectionsStatus>::value,
     &MetadataFor<data_gnss::SatelliteStatus>::value,
     &MetadataFor<data_gnss::Raw>::value,
+    &MetadataFor<data_gnss::BaseStationInfo>::value,
+    &MetadataFor<data_gnss::RtkCorrectionsStatus>::value,
     &MetadataFor<data_gnss::GpsEphemeris>::value,
-    &MetadataFor<data_gnss::GalileoEphemeris>::value,
     &MetadataFor<data_gnss::GloEphemeris>::value,
+    &MetadataFor<data_gnss::GalileoEphemeris>::value,
     &MetadataFor<data_gnss::BeidouEphemeris>::value,
     &MetadataFor<data_gnss::GpsIonoCorr>::value,
     &MetadataFor<data_gnss::GalileoIonoCorr>::value,
     &MetadataFor<data_gnss::BeidouIonoCorr>::value,
 };
 
+static constexpr DescriptorSetInfo DATA_GNSS = {
+    .descriptor = mip::data_gnss::DESCRIPTOR_SET,
+    .name = "Gnss Data",
+    .fields = DATA_GNSS_FIELDS,
+};
 
 } // namespace mip::metadata
 

@@ -502,17 +502,22 @@ struct MetadataFor<commands_gnss::RtkDongleConfiguration>
 };
 
 
-static constexpr inline std::initializer_list<const FieldInfo*> COMMANDS_GNSS = {
+static constexpr inline const FieldInfo* COMMANDS_GNSS_FIELDS[] = {
     &MetadataFor<commands_gnss::ReceiverInfo>::value,
-    &MetadataFor<commands_gnss::ReceiverInfo::Response>::value,
     &MetadataFor<commands_gnss::SignalConfiguration>::value,
-    &MetadataFor<commands_gnss::SignalConfiguration::Response>::value,
-    &MetadataFor<commands_gnss::SpartnConfiguration>::value,
-    &MetadataFor<commands_gnss::SpartnConfiguration::Response>::value,
     &MetadataFor<commands_gnss::RtkDongleConfiguration>::value,
+    &MetadataFor<commands_gnss::SpartnConfiguration>::value,
+    &MetadataFor<commands_gnss::ReceiverInfo::Response>::value,
+    &MetadataFor<commands_gnss::SignalConfiguration::Response>::value,
     &MetadataFor<commands_gnss::RtkDongleConfiguration::Response>::value,
+    &MetadataFor<commands_gnss::SpartnConfiguration::Response>::value,
 };
 
+static constexpr DescriptorSetInfo COMMANDS_GNSS = {
+    .descriptor = mip::commands_gnss::DESCRIPTOR_SET,
+    .name = "Gnss Commands",
+    .fields = COMMANDS_GNSS_FIELDS,
+};
 
 } // namespace mip::metadata
 

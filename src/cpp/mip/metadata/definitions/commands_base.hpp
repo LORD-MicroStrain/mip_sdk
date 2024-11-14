@@ -532,26 +532,31 @@ struct MetadataFor<commands_base::SoftReset>
 };
 
 
-static constexpr inline std::initializer_list<const FieldInfo*> COMMANDS_BASE = {
+static constexpr inline const FieldInfo* COMMANDS_BASE_FIELDS[] = {
     &MetadataFor<commands_base::Ping>::value,
     &MetadataFor<commands_base::SetIdle>::value,
     &MetadataFor<commands_base::GetDeviceInfo>::value,
-    &MetadataFor<commands_base::GetDeviceInfo::Response>::value,
     &MetadataFor<commands_base::GetDeviceDescriptors>::value,
-    &MetadataFor<commands_base::GetDeviceDescriptors::Response>::value,
     &MetadataFor<commands_base::BuiltInTest>::value,
-    &MetadataFor<commands_base::BuiltInTest::Response>::value,
     &MetadataFor<commands_base::Resume>::value,
     &MetadataFor<commands_base::GetExtendedDescriptors>::value,
-    &MetadataFor<commands_base::GetExtendedDescriptors::Response>::value,
     &MetadataFor<commands_base::ContinuousBit>::value,
-    &MetadataFor<commands_base::ContinuousBit::Response>::value,
     &MetadataFor<commands_base::CommSpeed>::value,
-    &MetadataFor<commands_base::CommSpeed::Response>::value,
     &MetadataFor<commands_base::GpsTimeUpdate>::value,
     &MetadataFor<commands_base::SoftReset>::value,
+    &MetadataFor<commands_base::GetDeviceInfo::Response>::value,
+    &MetadataFor<commands_base::GetDeviceDescriptors::Response>::value,
+    &MetadataFor<commands_base::BuiltInTest::Response>::value,
+    &MetadataFor<commands_base::GetExtendedDescriptors::Response>::value,
+    &MetadataFor<commands_base::ContinuousBit::Response>::value,
+    &MetadataFor<commands_base::CommSpeed::Response>::value,
 };
 
+static constexpr DescriptorSetInfo COMMANDS_BASE = {
+    .descriptor = mip::commands_base::DESCRIPTOR_SET,
+    .name = "Base Commands",
+    .fields = COMMANDS_BASE_FIELDS,
+};
 
 } // namespace mip::metadata
 

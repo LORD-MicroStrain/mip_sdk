@@ -1060,11 +1060,9 @@ struct MetadataFor<commands_aiding::Pressure>
 };
 
 
-static constexpr inline std::initializer_list<const FieldInfo*> COMMANDS_AIDING = {
+static constexpr inline const FieldInfo* COMMANDS_AIDING_FIELDS[] = {
     &MetadataFor<commands_aiding::FrameConfig>::value,
-    &MetadataFor<commands_aiding::FrameConfig::Response>::value,
     &MetadataFor<commands_aiding::EchoControl>::value,
-    &MetadataFor<commands_aiding::EchoControl::Response>::value,
     &MetadataFor<commands_aiding::PosEcef>::value,
     &MetadataFor<commands_aiding::PosLlh>::value,
     &MetadataFor<commands_aiding::HeightAboveEllipsoid>::value,
@@ -1074,8 +1072,15 @@ static constexpr inline std::initializer_list<const FieldInfo*> COMMANDS_AIDING 
     &MetadataFor<commands_aiding::HeadingTrue>::value,
     &MetadataFor<commands_aiding::MagneticField>::value,
     &MetadataFor<commands_aiding::Pressure>::value,
+    &MetadataFor<commands_aiding::FrameConfig::Response>::value,
+    &MetadataFor<commands_aiding::EchoControl::Response>::value,
 };
 
+static constexpr DescriptorSetInfo COMMANDS_AIDING = {
+    .descriptor = mip::commands_aiding::DESCRIPTOR_SET,
+    .name = "Aiding Commands",
+    .fields = COMMANDS_AIDING_FIELDS,
+};
 
 } // namespace mip::metadata
 

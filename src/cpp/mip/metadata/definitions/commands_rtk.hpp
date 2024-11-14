@@ -741,30 +741,35 @@ struct MetadataFor<commands_rtk::ModemHardReset>
 };
 
 
-static constexpr inline std::initializer_list<const FieldInfo*> COMMANDS_RTK = {
+static constexpr inline const FieldInfo* COMMANDS_RTK_FIELDS[] = {
     &MetadataFor<commands_rtk::GetStatusFlags>::value,
-    &MetadataFor<commands_rtk::GetStatusFlags::Response>::value,
     &MetadataFor<commands_rtk::GetImei>::value,
-    &MetadataFor<commands_rtk::GetImei::Response>::value,
     &MetadataFor<commands_rtk::GetImsi>::value,
-    &MetadataFor<commands_rtk::GetImsi::Response>::value,
     &MetadataFor<commands_rtk::GetIccid>::value,
-    &MetadataFor<commands_rtk::GetIccid::Response>::value,
-    &MetadataFor<commands_rtk::ConnectedDeviceType>::value,
-    &MetadataFor<commands_rtk::ConnectedDeviceType::Response>::value,
-    &MetadataFor<commands_rtk::GetActCode>::value,
-    &MetadataFor<commands_rtk::GetActCode::Response>::value,
-    &MetadataFor<commands_rtk::GetModemFirmwareVersion>::value,
-    &MetadataFor<commands_rtk::GetModemFirmwareVersion::Response>::value,
     &MetadataFor<commands_rtk::GetRssi>::value,
-    &MetadataFor<commands_rtk::GetRssi::Response>::value,
+    &MetadataFor<commands_rtk::ConnectedDeviceType>::value,
+    &MetadataFor<commands_rtk::GetActCode>::value,
+    &MetadataFor<commands_rtk::GetModemFirmwareVersion>::value,
     &MetadataFor<commands_rtk::ServiceStatus>::value,
-    &MetadataFor<commands_rtk::ServiceStatus::Response>::value,
     &MetadataFor<commands_rtk::ProdEraseStorage>::value,
     &MetadataFor<commands_rtk::LedControl>::value,
     &MetadataFor<commands_rtk::ModemHardReset>::value,
+    &MetadataFor<commands_rtk::GetStatusFlags::Response>::value,
+    &MetadataFor<commands_rtk::GetImei::Response>::value,
+    &MetadataFor<commands_rtk::GetImsi::Response>::value,
+    &MetadataFor<commands_rtk::GetIccid::Response>::value,
+    &MetadataFor<commands_rtk::GetRssi::Response>::value,
+    &MetadataFor<commands_rtk::ConnectedDeviceType::Response>::value,
+    &MetadataFor<commands_rtk::GetActCode::Response>::value,
+    &MetadataFor<commands_rtk::GetModemFirmwareVersion::Response>::value,
+    &MetadataFor<commands_rtk::ServiceStatus::Response>::value,
 };
 
+static constexpr DescriptorSetInfo COMMANDS_RTK = {
+    .descriptor = mip::commands_rtk::DESCRIPTOR_SET,
+    .name = "Rtk Commands",
+    .fields = COMMANDS_RTK_FIELDS,
+};
 
 } // namespace mip::metadata
 

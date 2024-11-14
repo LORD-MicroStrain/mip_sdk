@@ -364,7 +364,7 @@ struct MetadataFor<data_shared::ExternalTimeDelta>
 };
 
 
-static constexpr inline std::initializer_list<const FieldInfo*> DATA_SHARED = {
+static constexpr inline const FieldInfo* DATA_SHARED_FIELDS[] = {
     &MetadataFor<data_shared::EventSource>::value,
     &MetadataFor<data_shared::Ticks>::value,
     &MetadataFor<data_shared::DeltaTicks>::value,
@@ -376,6 +376,11 @@ static constexpr inline std::initializer_list<const FieldInfo*> DATA_SHARED = {
     &MetadataFor<data_shared::ExternalTimeDelta>::value,
 };
 
+static constexpr DescriptorSetInfo DATA_SHARED = {
+    .descriptor = mip::data_shared::DESCRIPTOR_SET,
+    .name = "Shared Data",
+    .fields = DATA_SHARED_FIELDS,
+};
 
 } // namespace mip::metadata
 

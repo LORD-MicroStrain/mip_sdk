@@ -81,20 +81,17 @@ struct EnumInfo
 struct BitfieldInfo : public EnumInfo {};
 
 
-//struct ParameterInfo;  // Defined below
-
-struct Attributes
+// Basic attribute bitfield for fields and parameters.
+struct FunctionBits
 {
-    constexpr Attributes() = default;
-    constexpr Attributes(bool w, bool r, bool s, bool l, bool d, bool e=false, bool x=false) : bits(0x00)
+    constexpr FunctionBits() = default;
+    constexpr FunctionBits(bool w, bool r, bool s, bool l, bool d) : bits(0x00)
     {
         setCanWrite(w);
         setCanRead(r);
         setCanSave(s);
         setCanLoad(l);
         setCanReset(d);
-        setNotSerialized(x);
-        setIsEchoed(e);
     }
 
     constexpr bool any() const { return bits > 0; }
@@ -104,24 +101,51 @@ struct Attributes
     constexpr bool canSave()  const { return bits & 0b00000100; }
     constexpr bool canLoad()  const { return bits & 0b00001000; }
     constexpr bool canReset() const { return bits & 0b00010000; }
-    constexpr bool isNotSerialized()    const { return bits & 0b01000000; }
-    constexpr bool isEchoed()           const { return bits & 0b10000000; }
-    constexpr bool isSerialized() const { return !isNotSerialized(); }
 
-    constexpr Attributes& setCanWrite      (bool w) { bits = (bits & 0b11111110) | (uint8_t(w)<<0); return *this; }
-    constexpr Attributes& setCanRead       (bool r) { bits = (bits & 0b11111101) | (uint8_t(r)<<1); return *this; }
-    constexpr Attributes& setCanSave       (bool s) { bits = (bits & 0b11111011) | (uint8_t(s)<<2); return *this; }
-    constexpr Attributes& setCanLoad       (bool l) { bits = (bits & 0b11110111) | (uint8_t(l)<<3); return *this; }
-    constexpr Attributes& setCanReset      (bool d) { bits = (bits & 0b11101111) | (uint8_t(d)<<4); return *this; }
-    constexpr Attributes& setNotSerialized (bool x) { bits = (bits & 0b10111111) | (uint8_t(x)<<6); return *this; }
-    constexpr Attributes& setIsEchoed      (bool e) { bits = (bits & 0b01111111) | (uint8_t(e)<<7); return *this; }
+    constexpr FunctionBits& setCanWrite      (bool w) { bits = (bits & 0b11111110) | (uint8_t(w)<<0); return *this; }
+    constexpr FunctionBits& setCanRead       (bool r) { bits = (bits & 0b11111101) | (uint8_t(r)<<1); return *this; }
+    constexpr FunctionBits& setCanSave       (bool s) { bits = (bits & 0b11111011) | (uint8_t(s)<<2); return *this; }
+    constexpr FunctionBits& setCanLoad       (bool l) { bits = (bits & 0b11110111) | (uint8_t(l)<<3); return *this; }
+    constexpr FunctionBits& setCanReset      (bool d) { bits = (bits & 0b11101111) | (uint8_t(d)<<4); return *this; }
 
     constexpr bool has(mip::FunctionSelector function) const { return (bits >> (static_cast<uint8_t>(function) - static_cast<uint8_t>(mip::FunctionSelector::WRITE))) & 1; }
 
     uint8_t bits = 0x00;
 };
-static constexpr inline Attributes ALL_FUNCTIONS = {true, true, true, true, true};
-static constexpr inline Attributes NO_FUNCTIONS  = {false, false, false, false, false};
+
+// Extended attributes for parameters.
+struct ParamAttributes : public FunctionBits
+{
+    constexpr ParamAttributes() = default;
+    constexpr ParamAttributes(FunctionBits bits) : FunctionBits(bits) {}
+    constexpr ParamAttributes(bool w, bool r, bool s, bool l, bool d, bool e=false, bool x=false) : FunctionBits(w,r,s,l,d)
+    {
+        setNotSerialized(x);
+        setIsEchoed(e);
+    }
+
+    constexpr bool isNotSerialized()    const { return bits & 0b01000000; }
+    constexpr bool isEchoed()           const { return bits & 0b10000000; }
+    constexpr bool isSerialized() const { return !isNotSerialized(); }
+
+    constexpr ParamAttributes& setNotSerialized (bool x) { bits = (bits & 0b10111111) | (uint8_t(x)<<6); return *this; }
+    constexpr ParamAttributes& setIsEchoed      (bool e) { bits = (bits & 0b01111111) | (uint8_t(e)<<7); return *this; }
+};
+
+// Extended attributes for fields.
+struct FieldAttributes : public FunctionBits
+{
+    constexpr FieldAttributes() = default;
+    constexpr FieldAttributes(FunctionBits bits) : FunctionBits(bits) {}
+    constexpr FieldAttributes(bool w, bool r, bool s, bool l, bool d, bool p=false) : FunctionBits(w,r,s,l,d) { setProprietary(p); }
+
+    constexpr bool isProprietary() const { return bits & 0b10000000; }
+
+    constexpr FieldAttributes& setProprietary(bool p) { bits = (bits & 0b01111111) | (uint8_t(p)<<7); return *this; }
+};
+
+static constexpr inline FunctionBits ALL_FUNCTIONS = {true, true, true, true, true};
+static constexpr inline FunctionBits NO_FUNCTIONS  = {false, false, false, false, false};
 
 
 struct ParameterInfo
@@ -158,13 +182,13 @@ struct ParameterInfo
 
     using Accessor = void* (*)(void*);
 
-    const char* name = nullptr;     ///< Programmatic name (e.g. for printing or language bindings).
-    const char* docs = nullptr;     ///< Human-readable documentation.
-    TypeInfo    type;               ///< Data type.
-    Accessor    accessor = nullptr; ///< Obtains a reference to the member variable.
-    Attributes  attributes;         ///< This parameter is required for the specified function selectors.
-    Count       count;              ///< Number of instances for arrays.
-    Condition   condition;          ///< For conditionally-enabled parameters like those in unions.
+    const char*     name = nullptr;     ///< Programmatic name (e.g. for printing or language bindings).
+    const char*     docs = nullptr;     ///< Human-readable documentation.
+    TypeInfo        type;               ///< Data type.
+    Accessor        accessor = nullptr; ///< Obtains a reference to the member variable.
+    ParamAttributes attributes;         ///< This parameter is required for the specified function selectors.
+    Count           count;              ///< Number of instances for arrays.
+    Condition       condition;          ///< For conditionally-enabled parameters like those in unions.
 };
 
 
@@ -182,11 +206,24 @@ struct UnionInfo : public StructInfo {};
 struct FieldInfo : public StructInfo
 {
     CompositeDescriptor descriptor  = {0x00, 0x00};
-    Attributes          functions   = {false, false, false, false, false};
+    FieldAttributes     functions   = {false, false, false, false, false};
     bool                proprietary = false;
     const FieldInfo*    response    = nullptr;
 };
 
+struct DescriptorSetInfo
+{
+    uint8_t                      descriptor = mip::INVALID_DESCRIPTOR_SET;
+    const char*                  name       = nullptr;
+    Span<const FieldInfo* const> fields     = {};
+
+    //const FieldInfo* findField(uint8_t field_desc) const
+    //{
+    //    // Binary search assumes fields are sorted by descriptor.
+    //    auto it = std::lower_bound(fields.begin(), fields.end(), field_desc, [](const FieldInfo* a, uint8_t b){ return a->descriptor.fieldDescriptor < b; });
+    //    return (it != fields.end()) && ((*it)->descriptor.fieldDescriptor==field_desc) ? *it : nullptr;
+    //}
+};
 
 ///@brief Gets the size of a basic type (including bitfields and enums if class_ is not NULL).
 ///

@@ -808,32 +808,37 @@ struct MetadataFor<data_sensor::OdometerData>
 };
 
 
-static constexpr inline std::initializer_list<const FieldInfo*> DATA_SENSOR = {
+static constexpr inline const FieldInfo* DATA_SENSOR_FIELDS[] = {
     &MetadataFor<data_sensor::RawAccel>::value,
     &MetadataFor<data_sensor::RawGyro>::value,
     &MetadataFor<data_sensor::RawMag>::value,
-    &MetadataFor<data_sensor::RawPressure>::value,
     &MetadataFor<data_sensor::ScaledAccel>::value,
     &MetadataFor<data_sensor::ScaledGyro>::value,
     &MetadataFor<data_sensor::ScaledMag>::value,
-    &MetadataFor<data_sensor::ScaledPressure>::value,
     &MetadataFor<data_sensor::DeltaTheta>::value,
     &MetadataFor<data_sensor::DeltaVelocity>::value,
     &MetadataFor<data_sensor::CompOrientationMatrix>::value,
     &MetadataFor<data_sensor::CompQuaternion>::value,
-    &MetadataFor<data_sensor::CompEulerAngles>::value,
     &MetadataFor<data_sensor::CompOrientationUpdateMatrix>::value,
+    &MetadataFor<data_sensor::CompEulerAngles>::value,
     &MetadataFor<data_sensor::OrientationRawTemp>::value,
     &MetadataFor<data_sensor::InternalTimestamp>::value,
     &MetadataFor<data_sensor::PpsTimestamp>::value,
+    &MetadataFor<data_sensor::NorthVector>::value,
+    &MetadataFor<data_sensor::UpVector>::value,
     &MetadataFor<data_sensor::GpsTimestamp>::value,
     &MetadataFor<data_sensor::TemperatureAbs>::value,
-    &MetadataFor<data_sensor::UpVector>::value,
-    &MetadataFor<data_sensor::NorthVector>::value,
+    &MetadataFor<data_sensor::RawPressure>::value,
+    &MetadataFor<data_sensor::ScaledPressure>::value,
     &MetadataFor<data_sensor::OverrangeStatus>::value,
     &MetadataFor<data_sensor::OdometerData>::value,
 };
 
+static constexpr DescriptorSetInfo DATA_SENSOR = {
+    .descriptor = mip::data_sensor::DESCRIPTOR_SET,
+    .name = "Sensor Data",
+    .fields = DATA_SENSOR_FIELDS,
+};
 
 } // namespace mip::metadata
 

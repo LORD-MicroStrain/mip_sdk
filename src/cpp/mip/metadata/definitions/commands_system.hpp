@@ -211,13 +211,18 @@ struct MetadataFor<commands_system::InterfaceControl>
 };
 
 
-static constexpr inline std::initializer_list<const FieldInfo*> COMMANDS_SYSTEM = {
-    &MetadataFor<commands_system::CommMode>::value,
-    &MetadataFor<commands_system::CommMode::Response>::value,
+static constexpr inline const FieldInfo* COMMANDS_SYSTEM_FIELDS[] = {
     &MetadataFor<commands_system::InterfaceControl>::value,
+    &MetadataFor<commands_system::CommMode>::value,
     &MetadataFor<commands_system::InterfaceControl::Response>::value,
+    &MetadataFor<commands_system::CommMode::Response>::value,
 };
 
+static constexpr DescriptorSetInfo COMMANDS_SYSTEM = {
+    .descriptor = mip::commands_system::DESCRIPTOR_SET,
+    .name = "System Commands",
+    .fields = COMMANDS_SYSTEM_FIELDS,
+};
 
 } // namespace mip::metadata
 
