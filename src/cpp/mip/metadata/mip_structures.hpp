@@ -12,12 +12,12 @@ namespace mip::metadata
   template<class T>
   using Span = microstrain::Span<T>;
 
-//struct EnumInfo;
-//struct BitfieldInfo;
-//struct UnionInfo;
-//struct StructInfo;
-//struct FieldInfo;
-//struct ParameterInfo;
+struct EnumInfo;
+struct BitfieldInfo;
+struct UnionInfo;
+struct StructInfo;
+struct FieldInfo;
+struct ParameterInfo;
 
 
 enum class Type
@@ -51,15 +51,15 @@ struct TypeInfo
     Type type = Type::NONE;
 
     const void* infoPtr = nullptr;
-    //union
-    //{
-    //    const StructInfo   *si;
-    //    const EnumInfo     *ei;
-    //    const BitfieldInfo *bi;
-    //    const UnionInfo    *ui;
-    //};
+
+    const EnumInfo*     enumPointer()     const { return (type == Type::ENUM  ) ? static_cast<const EnumInfo*    >(infoPtr) : nullptr; }
+    const BitfieldInfo* bitfieldPointer() const { return (type == Type::BITS  ) ? static_cast<const BitfieldInfo*>(infoPtr) : nullptr; }
+    const UnionInfo*    unionPointer()    const { return (type == Type::UNION ) ? static_cast<const UnionInfo*   >(infoPtr) : nullptr; }
+    const StructInfo*   structPointer()   const { return (type == Type::STRUCT) ? static_cast<const StructInfo*  >(infoPtr) : nullptr; }
 
     bool isBasicType() const { return type <= Type::DOUBLE; }
+    bool isCustom()  const { return type != Type::NONE && type >= Type::ENUM; }
+    bool isClass()   const { return type != Type::NONE && type >= Type::STRUCT; }
 };
 
 struct EnumInfo
@@ -76,6 +76,16 @@ struct EnumInfo
     Type          type    = Type::NONE;
 
     Span<const Entry> entries;
+
+    const char* nameForValue(uint32_t value) const
+    {
+        for(const Entry& entry : entries)
+        {
+            if(entry.value == value)
+                return entry.name;
+        }
+        return nullptr;
+    }
 };
 
 struct BitfieldInfo : public EnumInfo {};
@@ -224,44 +234,6 @@ struct DescriptorSetInfo
     //}
 };
 
-///@brief Gets the size of a basic type (including bitfields and enums if class_ is not NULL).
-///
-constexpr size_t sizeForBasicType(Type type, const void* info=nullptr)
-{
-    switch(type)
-    {
-    case Type::CHAR:
-    case Type::BOOL:
-    case Type::U8:
-    case Type::S8:
-        return 1;
-    case Type::U16:
-    case Type::S16:
-        return 2;
-    case Type::U32:
-    case Type::S32:
-    case Type::FLOAT:
-        return 4;
-    case Type::U64:
-    case Type::S64:
-    case Type::DOUBLE:
-        return 8;
-
-    case Type::ENUM:
-        if(!info)
-            return 0;
-        return sizeForBasicType(static_cast<const EnumInfo *>(info)->type);
-
-    case Type::BITS:
-        if(!info)
-            return 0;
-        return sizeForBasicType(static_cast<const BitfieldInfo *>(info)->type);
-
-    default:
-        return 0;
-    }
-}
-constexpr size_t sizeForBasicType(const TypeInfo& type) { return sizeForBasicType(type.type, type.infoPtr); }
 
 
 } // namespace mip::metadata
