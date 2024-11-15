@@ -4,6 +4,7 @@
 
 #include <mip/definitions/commands_gnss.hpp>
 
+
 #include <mip/metadata/mip_metadata.hpp>
 
 namespace mip::metadata
