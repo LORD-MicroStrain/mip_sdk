@@ -35,7 +35,6 @@ struct MetadataFor<commands_system::CommMode::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -65,7 +64,6 @@ struct MetadataFor<commands_system::CommMode>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, false, false, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -158,7 +156,6 @@ struct MetadataFor<commands_system::InterfaceControl::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -206,7 +203,6 @@ struct MetadataFor<commands_system::InterfaceControl>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };

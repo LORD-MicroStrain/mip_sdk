@@ -206,8 +206,7 @@ struct UnionInfo : public StructInfo {};
 struct FieldInfo : public StructInfo
 {
     CompositeDescriptor descriptor  = {0x00, 0x00};
-    FieldAttributes     functions   = {false, false, false, false, false};
-    bool                proprietary = false;
+    FieldAttributes     functions   = {false, false, false, false, false,  false};
     const FieldInfo*    response    = nullptr;
 };
 

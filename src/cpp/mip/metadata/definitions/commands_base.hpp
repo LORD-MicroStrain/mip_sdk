@@ -23,7 +23,6 @@ struct MetadataFor<commands_base::Ping>
         /* .parameters  = */ {},
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -40,7 +39,6 @@ struct MetadataFor<commands_base::SetIdle>
         /* .parameters  = */ {},
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -139,7 +137,6 @@ struct MetadataFor<commands_base::GetDeviceInfo::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -156,7 +153,6 @@ struct MetadataFor<commands_base::GetDeviceInfo>
         /* .parameters  = */ {},
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -194,7 +190,6 @@ struct MetadataFor<commands_base::GetDeviceDescriptors::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -211,7 +206,6 @@ struct MetadataFor<commands_base::GetDeviceDescriptors>
         /* .parameters  = */ {},
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -240,7 +234,6 @@ struct MetadataFor<commands_base::BuiltInTest::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -257,7 +250,6 @@ struct MetadataFor<commands_base::BuiltInTest>
         /* .parameters  = */ {},
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -274,7 +266,6 @@ struct MetadataFor<commands_base::Resume>
         /* .parameters  = */ {},
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -312,7 +303,6 @@ struct MetadataFor<commands_base::GetExtendedDescriptors::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -329,7 +319,6 @@ struct MetadataFor<commands_base::GetExtendedDescriptors>
         /* .parameters  = */ {},
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -358,7 +347,6 @@ struct MetadataFor<commands_base::ContinuousBit::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -375,7 +363,6 @@ struct MetadataFor<commands_base::ContinuousBit>
         /* .parameters  = */ {},
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -413,7 +400,6 @@ struct MetadataFor<commands_base::CommSpeed::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -452,7 +438,6 @@ struct MetadataFor<commands_base::CommSpeed>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -510,7 +495,6 @@ struct MetadataFor<commands_base::GpsTimeUpdate>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, false, false, false, false},
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -527,7 +511,6 @@ struct MetadataFor<commands_base::SoftReset>
         /* .parameters  = */ {},
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
