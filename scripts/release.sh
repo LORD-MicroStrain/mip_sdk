@@ -68,10 +68,10 @@ echo "* [Changelog](${changelog_link})" >> ${release_notes_file}
 echo "* [Documentation](${documentation_link})" >> ${release_notes_file}
 
 # Deploy the artifacts to Github
-gh release delete --cleanup-tag\
+gh release delete "${release_name}" \
+  --cleanup-tag \
   -y \
-  -R "${repo}" \
-  "${release_name}" || echo "No existing release named ${release_name}. Creating now..."
+  -R "${repo}" || echo "No existing release named ${release_name}. Creating now..."
 gh release create \
   -R "${repo}" \
   --title "${release_name}" \
