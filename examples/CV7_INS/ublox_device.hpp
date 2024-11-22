@@ -94,6 +94,15 @@ namespace mip
             float ned_velocity_uncertainty[3] = {0, 0, 0};
         };
 
+        enum FixType : uint8_t
+        {
+            NO_FIX = 0,
+            DEAD_RECKONING_ONLY = 1,
+            FIX_2D = 2,
+            FIX_3D = 3,
+            FIX_3D_AND_DEAD_RECKONING = 4,
+            TIME_FIX_ONLY = 5
+        };
 
         UbloxPVTMessage extract_pvt_message(const uint8_t payload[PVT_PAYLOAD_SIZE])
         {
@@ -118,7 +127,7 @@ namespace mip
             ublox_message.llh_position_uncertainty[0] = float(ublox_message_raw.horizontal_accuracy) * 1e-3f;
             ublox_message.llh_position_uncertainty[1] = float(ublox_message_raw.horizontal_accuracy) * 1e-3f;
             ublox_message.llh_position_uncertainty[2] = float(ublox_message_raw.vertical_accuracy) * 1e-3f;
-            ublox_message.fix_valid = ublox_message_raw.fix_type >= 3;
+            ublox_message.fix_valid = ublox_message_raw.fix_type == FIX_3D || ublox_message_raw.fix_type == FIX_3D_AND_DEAD_RECKONING;
 
             // NED velocity
             ublox_message.ned_velocity[0] = float(ublox_message_raw.north_velocity) * 1e-3f;
