@@ -54,9 +54,15 @@ tmp_dir="/tmp"
 docs_dir="${tmp_dir}/mip_sdk_documentation"
 docs_release_dir="${docs_dir}/${release_name}"
 
+# Delete the release before the tag. Deleting the tag before the release may cause issues
+gh release delete \
+  -y \
+  -R "${repo}" "${release_name}" || echo "No existing release named ${release_name}. Creating now..."
+
 # Find the commit that this project is built on
 pushd "${project_dir}"
 mip_sdk_commit="$(git rev-parse HEAD)"
+git push --delete origin "${release_name}"
 popd
 
 # Generate a release notes file
@@ -68,10 +74,6 @@ echo "* [Changelog](${changelog_link})" >> ${release_notes_file}
 echo "* [Documentation](${documentation_link})" >> ${release_notes_file}
 
 # Deploy the artifacts to Github
-gh release delete "${release_name}" \
-  --cleanup-tag \
-  -y \
-  -R "${repo}" || echo "No existing release named ${release_name}. Creating now..."
 gh release create \
   -R "${repo}" \
   --title "${release_name}" \
