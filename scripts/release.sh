@@ -62,12 +62,12 @@ chmod 700 "${git_askpass_file}"
 # Delete the release before the tag. Deleting the tag before the release may cause issues
 gh release delete \
   -y \
-  -R "${repo}" "${release_name}" || echo "No existing release named ${release_name}. Creating now..."
+  -R "${repo}" "${release_name}" || echo "No existing release named ${release_name}."
 
 # Find the commit that this project is built on
 pushd "${project_dir}"
 mip_sdk_commit="$(git rev-parse HEAD)"
-GIT_ASKPASS="${git_askpass_file}" git push --delete origin "${release_name}" &> /dev/null
+GIT_ASKPASS="${git_askpass_file}" git push --delete origin "${release_name}" || echo "No existing tag named ${release_name}."
 popd
 
 # Generate a release notes file
