@@ -54,6 +54,11 @@ tmp_dir="/tmp"
 docs_dir="${tmp_dir}/mip_sdk_documentation"
 docs_release_dir="${docs_dir}/${release_name}"
 
+# Set up the auth for github assuming that a valid token is in the environment at "GH_TOKEN"
+git_askpass_file="${project_dir}/.mip-sdk-git-askpass"
+echo 'echo ${GH_TOKEN}' > "${git_askpass_file}"
+chmod 700 "${git_askpass_file}"
+
 # Delete the release before the tag. Deleting the tag before the release may cause issues
 gh release delete \
   -y \
@@ -62,7 +67,7 @@ gh release delete \
 # Find the commit that this project is built on
 pushd "${project_dir}"
 mip_sdk_commit="$(git rev-parse HEAD)"
-git push --delete origin "${release_name}"
+GIT_ASKPASS="${git_askpass_file}" git push --delete origin "${release_name}"
 popd
 
 # Generate a release notes file
@@ -101,13 +106,10 @@ if ! git diff-index --quiet HEAD --; then
   git add --all
   git commit -m "Adds/updates documentation for release ${release_name} at ${repo}@${mip_sdk_commit}."
 
-  # Set up the auth for github assuming that a valid token is in the environment at "GH_TOKEN"
-  git_askpass_file="${project_dir}/.mip-sdk-git-askpass"
-  echo 'echo ${GH_TOKEN}' > "${git_askpass_file}"
-  chmod 700 "${git_askpass_file}"
   GIT_ASKPASS="${git_askpass_file}" git push origin main
-  rm "${git_askpass_file}"
 else
   echo "No changes to commit to documentation"
 fi
 popd
+
+rm "${git_askpass_file}"
