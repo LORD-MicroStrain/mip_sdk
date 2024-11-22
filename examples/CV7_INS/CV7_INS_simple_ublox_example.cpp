@@ -311,7 +311,7 @@ int main(int argc, const char* argv[])
 
         // Check if measurement update is valid to send
         mip::Timestamp elapsed_time_from_last_measurement_update = current_timestamp - prev_measurement_update_timestamp;
-        bool ublox_data_valid = pvt_message_valid && pvt_message.time_valid && pvt_message.llh_position_valid;
+        bool ublox_data_valid = pvt_message_valid && pvt_message.time_valid && pvt_message.fix_valid;
         bool send_measurement_update = ublox_data_valid && elapsed_time_from_last_measurement_update > 250; // Cap maximum GNSS measurement input rate to 4hz
 
         if (send_measurement_update)
