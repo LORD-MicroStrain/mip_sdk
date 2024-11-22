@@ -67,7 +67,7 @@ gh release delete \
 # Find the commit that this project is built on
 pushd "${project_dir}"
 mip_sdk_commit="$(git rev-parse HEAD)"
-GIT_ASKPASS="${git_askpass_file}" git push --delete origin "${release_name}"
+GIT_ASKPASS="${git_askpass_file}" git push --delete origin "${release_name}" &> /dev/null
 popd
 
 # Generate a release notes file
