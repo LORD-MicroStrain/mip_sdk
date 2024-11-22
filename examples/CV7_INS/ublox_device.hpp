@@ -87,7 +87,7 @@ namespace mip
             double longitude = 0;
             double height_above_ellipsoid = 0;
             float llh_position_uncertainty[3] = {0, 0, 0};
-            bool llh_position_valid = false;
+            bool fix_valid = false;
 
             // NED velocity
             float ned_velocity[3] = {0, 0, 0};
@@ -118,7 +118,7 @@ namespace mip
             ublox_message.llh_position_uncertainty[0] = float(ublox_message_raw.horizontal_accuracy) * 1e-3f;
             ublox_message.llh_position_uncertainty[1] = float(ublox_message_raw.horizontal_accuracy) * 1e-3f;
             ublox_message.llh_position_uncertainty[2] = float(ublox_message_raw.vertical_accuracy) * 1e-3f;
-            ublox_message.llh_position_valid = !ublox_message_raw.llh_invalid_flag;
+            ublox_message.fix_valid = ublox_message_raw.fix_type >= 3;
 
             // NED velocity
             ublox_message.ned_velocity[0] = float(ublox_message_raw.north_velocity) * 1e-3f;
