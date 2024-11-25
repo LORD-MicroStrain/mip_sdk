@@ -15,7 +15,7 @@
 //!
 //! THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING
 //! CUSTOMERS WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER
-//! FOR THEM TO SAVE TIME. AS A RESULT, PARKER MICROSTRAIN SHALL NOT BE HELD
+//! FOR THEM TO SAVE TIME. AS A RESULT, MICROSTRAIN BY HBK SHALL NOT BE HELD
 //! LIABLE FOR ANY DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY
 //! CLAIMS ARISING FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS
 //! OF THE CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
@@ -28,11 +28,13 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <mip/mip_all.h>
-#include <mip/utils/serial_port.h>
+#include <microstrain/connections/serial/serial_port.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
 #include <time.h>
+
+#include "example_utils.h"
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -78,9 +80,9 @@ bool filter_state_full_nav = false;
 
 
 //Required MIP interface user-defined functions
-timestamp_type get_current_timestamp();
+mip_timestamp get_current_timestamp();
 
-bool mip_interface_user_recv_from_device(mip_interface* device, uint8_t* buffer, size_t max_length, timeout_type wait_time, size_t* out_length, timestamp_type* timestamp_out);
+bool mip_interface_user_recv_from_device(mip_interface* device, uint8_t* buffer, size_t max_length, mip_timeout wait_time, size_t* out_length, mip_timestamp* timestamp_out);
 bool mip_interface_user_send_to_device(mip_interface* device, const uint8_t* data, size_t length);
 
 int usage(const char* argv0);
@@ -327,15 +329,17 @@ int main(int argc, const char* argv[])
     //Main Loop: Update the interface and process data
     //
 
-    bool running = true;
-    timestamp_type prev_print_timestamp = 0;
+    bool          running              = true;
+    mip_timestamp prev_print_timestamp = 0;
 
     printf("Sensor is configured... waiting for filter to enter Full Navigation mode.\n");
 
+    char *state_init = "";
+    char **current_state = &state_init;
     while(running)
     {
         mip_interface_update(&device, false);
-
+        displayFilterState(filter_status.filter_state, current_state, false);
 
         //Check GNSS fixes and alert the user when they become valid
         for(int i=0; i<2; i++)
@@ -360,7 +364,7 @@ int main(int argc, const char* argv[])
         //Once in full nav, print out data at 1 Hz
         if(filter_state_full_nav)
         {
-           timestamp_type curr_time = get_current_timestamp();
+           mip_timestamp curr_time = get_current_timestamp();
 
            if(curr_time - prev_print_timestamp >= 1000)
            {
@@ -384,12 +388,12 @@ int main(int argc, const char* argv[])
 // MIP Interface Time Access Function
 ////////////////////////////////////////////////////////////////////////////////
 
-timestamp_type get_current_timestamp()
+mip_timestamp get_current_timestamp()
 {
     clock_t curr_time;
     curr_time = clock();
 
-    return (timestamp_type)((double)(curr_time - start_time)/(double)CLOCKS_PER_SEC*1000.0);
+    return (mip_timestamp)((double)(curr_time - start_time) / (double)CLOCKS_PER_SEC * 1000.0);
 }
 
 
@@ -397,10 +401,12 @@ timestamp_type get_current_timestamp()
 // MIP Interface User Recv Data Function
 ////////////////////////////////////////////////////////////////////////////////
 
-bool mip_interface_user_recv_from_device(mip_interface* device, uint8_t* buffer, size_t max_length, timeout_type wait_time, size_t* out_length, timestamp_type* timestamp_out)
+bool mip_interface_user_recv_from_device(mip_interface* device_, uint8_t* buffer, size_t max_length, mip_timeout wait_time, size_t* out_length, mip_timestamp* timestamp_out)
 {
+    (void)device_;
+
     *timestamp_out = get_current_timestamp();
-    return serial_port_read(&device_port, buffer, max_length, wait_time, out_length);
+    return serial_port_read(&device_port, buffer, max_length, (int)wait_time, out_length);
 }
 
 
@@ -408,8 +414,10 @@ bool mip_interface_user_recv_from_device(mip_interface* device, uint8_t* buffer,
 // MIP Interface User Send Data Function
 ////////////////////////////////////////////////////////////////////////////////
 
-bool mip_interface_user_send_to_device(mip_interface* device, const uint8_t* data, size_t length)
+bool mip_interface_user_send_to_device(mip_interface* device_, const uint8_t* data, size_t length)
 {
+    (void)device_;
+
     size_t bytes_written;
 
     return serial_port_write(&device_port, data, length, &bytes_written);
@@ -440,8 +448,8 @@ void exit_gracefully(const char *message)
     if(serial_port_is_open(&device_port))
         serial_port_close(&device_port);
 
-#ifdef _WIN32
-    int dummy = getchar();
+#ifdef MICROSTRAIN_PLATFORM_WINDOWS
+    getchar();
 #endif
 
     exit(0);
@@ -457,4 +465,3 @@ bool should_exit()
   return false;
 
 }
-

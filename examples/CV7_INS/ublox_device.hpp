@@ -11,7 +11,7 @@
 //!
 //! THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING
 //! CUSTOMERS WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER
-//! FOR THEM TO SAVE TIME. AS A RESULT, HBK MICROSTRAIN SHALL NOT BE HELD
+//! FOR THEM TO SAVE TIME. AS A RESULT, MICROSTRAIN BY HBK SHALL NOT BE HELD
 //! LIABLE FOR ANY DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY
 //! CLAIMS ARISING FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS
 //! OF THE CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
@@ -24,7 +24,7 @@
 
 #include "simple_ublox_parser.hpp"
 
-#include "mip/platform/serial_connection.hpp"
+#include "microstrain/connections/serial/serial_connection.hpp"
 
 #define PVT_PAYLOAD_SIZE 92
 
@@ -87,13 +87,22 @@ namespace mip
             double longitude = 0;
             double height_above_ellipsoid = 0;
             float llh_position_uncertainty[3] = {0, 0, 0};
-            bool llh_position_valid = false;
+            bool fix_valid = false;
 
             // NED velocity
             float ned_velocity[3] = {0, 0, 0};
             float ned_velocity_uncertainty[3] = {0, 0, 0};
         };
 
+        enum FixType : uint8_t
+        {
+            NO_FIX = 0,
+            DEAD_RECKONING_ONLY = 1,
+            FIX_2D = 2,
+            FIX_3D = 3,
+            FIX_3D_AND_DEAD_RECKONING = 4,
+            TIME_FIX_ONLY = 5
+        };
 
         UbloxPVTMessage extract_pvt_message(const uint8_t payload[PVT_PAYLOAD_SIZE])
         {
@@ -108,24 +117,24 @@ namespace mip
             ublox_message.utc_year = ublox_message_raw.utc_year;
             ublox_message.utc_month = ublox_message_raw.utc_month;
             ublox_message.utc_day = ublox_message_raw.utc_day;
-            ublox_message.time_of_week = ublox_message_raw.iTOW * 1e-3;
+            ublox_message.time_of_week = ublox_message_raw.iTOW * 1e-3f;
             ublox_message.time_valid = ublox_message_raw.time_valid_flag;
 
             // LLH position
             ublox_message.latitude = ublox_message_raw.latitude * 1e-7;
             ublox_message.longitude = ublox_message_raw.longitude * 1e-7;;
             ublox_message.height_above_ellipsoid = ublox_message_raw.height_above_ellipsoid * 1e-3;
-            ublox_message.llh_position_uncertainty[0] = ublox_message_raw.horizontal_accuracy * 1e-3;
-            ublox_message.llh_position_uncertainty[1] = ublox_message_raw.horizontal_accuracy * 1e-3;
-            ublox_message.llh_position_uncertainty[2] = ublox_message_raw.vertical_accuracy * 1e-3;
-            ublox_message.llh_position_valid = !ublox_message_raw.llh_invalid_flag;
+            ublox_message.llh_position_uncertainty[0] = float(ublox_message_raw.horizontal_accuracy) * 1e-3f;
+            ublox_message.llh_position_uncertainty[1] = float(ublox_message_raw.horizontal_accuracy) * 1e-3f;
+            ublox_message.llh_position_uncertainty[2] = float(ublox_message_raw.vertical_accuracy) * 1e-3f;
+            ublox_message.fix_valid = ublox_message_raw.fix_type == FIX_3D || ublox_message_raw.fix_type == FIX_3D_AND_DEAD_RECKONING;
 
             // NED velocity
-            ublox_message.ned_velocity[0] = ublox_message_raw.north_velocity * 1e-3;
-            ublox_message.ned_velocity[1] = ublox_message_raw.east_velocity * 1e-3;
-            ublox_message.ned_velocity[2] = ublox_message_raw.down_velocity * 1e-3;
+            ublox_message.ned_velocity[0] = float(ublox_message_raw.north_velocity) * 1e-3f;
+            ublox_message.ned_velocity[1] = float(ublox_message_raw.east_velocity) * 1e-3f;
+            ublox_message.ned_velocity[2] = float(ublox_message_raw.down_velocity) * 1e-3f;
             for (int i = 0; i < 3; i++)
-                ublox_message.ned_velocity_uncertainty[i] = ublox_message_raw.speed_accuracy * 1e-3;
+                ublox_message.ned_velocity_uncertainty[i] = float(ublox_message_raw.speed_accuracy) * 1e-3f;
 
             return ublox_message;
         }
@@ -135,12 +144,16 @@ namespace mip
         {
         public:
 
-            UbloxDevice(std::unique_ptr<mip::Connection> connection) : _connection(std::move(connection)),
-                                                                       _message_parser(
-                                                                               [this](const std::vector<uint8_t>& packet) {
-                                                                                   handle_packet(packet);
-                                                                               })
-            {}
+            UbloxDevice(std::unique_ptr<microstrain::Connection> connection) :
+                _connection(std::move(connection)),
+                _message_parser(
+                    [this](const std::vector<uint8_t> &packet)
+                    {
+                        handle_packet(packet);
+                    }
+                )
+            {
+            }
 
             void handle_packet(const std::vector<uint8_t>& packet)
             {
@@ -184,7 +197,7 @@ namespace mip
 
         protected:
 
-            std::unique_ptr<mip::Connection> _connection;
+            std::unique_ptr<microstrain::Connection> _connection;
             UbloxMessageParser _message_parser;
 
             bool _new_pvt_message_received = false;

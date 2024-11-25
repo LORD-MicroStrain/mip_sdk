@@ -54,22 +54,31 @@ tmp_dir="/tmp"
 docs_dir="${tmp_dir}/mip_sdk_documentation"
 docs_release_dir="${docs_dir}/${release_name}"
 
+# Set up the auth for github assuming that a valid token is in the environment at "GH_TOKEN"
+git_askpass_file="${project_dir}/.mip-sdk-git-askpass"
+echo 'echo ${GH_TOKEN}' > "${git_askpass_file}"
+chmod 700 "${git_askpass_file}"
+
+# Delete the release before the tag. Deleting the tag before the release may cause issues
+gh release delete \
+  -y \
+  -R "${repo}" "${release_name}" || echo "No existing release named ${release_name}."
+
 # Find the commit that this project is built on
 pushd "${project_dir}"
 mip_sdk_commit="$(git rev-parse HEAD)"
+GIT_ASKPASS="${git_askpass_file}" git push --delete origin "${release_name}" || echo "No existing tag named ${release_name}."
 popd
 
 # Generate a release notes file
 documentation_link="https://lord-microstrain.github.io/mip_sdk_documentation/${release_name}"
+changelog_link="https://github.com/LORD-MicroStrain/mip_sdk/blob/${release_name}/CHANGELOG.md"
 release_notes_file="${tmp_dir}/mip-sdk-release-notes-${release_name}.md"
 echo "## Useful Links" > ${release_notes_file}
+echo "* [Changelog](${changelog_link})" >> ${release_notes_file}
 echo "* [Documentation](${documentation_link})" >> ${release_notes_file}
 
 # Deploy the artifacts to Github
-gh release delete \
-  -y \
-  -R "${repo}" \
-  "${release_name}" || echo "No existing release named ${release_name}. Creating now..."
 gh release create \
   -R "${repo}" \
   --title "${release_name}" \
@@ -97,13 +106,10 @@ if ! git diff-index --quiet HEAD --; then
   git add --all
   git commit -m "Adds/updates documentation for release ${release_name} at ${repo}@${mip_sdk_commit}."
 
-  # Set up the auth for github assuming that a valid token is in the environment at "GH_TOKEN"
-  git_askpass_file="${project_dir}/.mip-sdk-git-askpass"
-  echo 'echo ${GH_TOKEN}' > "${git_askpass_file}"
-  chmod 700 "${git_askpass_file}"
   GIT_ASKPASS="${git_askpass_file}" git push origin main
-  rm "${git_askpass_file}"
 else
   echo "No changes to commit to documentation"
 fi
 popd
+
+rm "${git_askpass_file}"

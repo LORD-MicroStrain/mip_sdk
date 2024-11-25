@@ -1,4 +1,21 @@
 
+/////////////////////////////////////////////////////////////////////////////
+//
+// threading.cpp
+//
+// C++ example program to print device information from any mip-enabled MicroStrain device.
+//
+//!@section LICENSE
+//!
+//! THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING
+//! CUSTOMERS WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER
+//! FOR THEM TO SAVE TIME. AS A RESULT, MICROSTRAIN BY HBK SHALL NOT BE HELD
+//! LIABLE FOR ANY DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY
+//! CLAIMS ARISING FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS
+//! OF THE CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+//
+/////////////////////////////////////////////////////////////////////////////
+
 #include "example_utils.hpp"
 
 #include <mip/definitions/commands_base.hpp>
@@ -41,12 +58,12 @@ unsigned int display_progress()
     return count;
 }
 
-void packet_callback(void*, const mip::PacketRef& packet, mip::Timestamp timestamp)
+void packet_callback(void*, const mip::PacketView&, mip::Timestamp)
 {
-    numSamples++;
+    numSamples = numSamples + 1;
 }
 
-void device_thread_loop(mip::DeviceInterface* device)
+void device_thread_loop(mip::Interface* device)
 {
     while(!stop)
     {
@@ -60,9 +77,10 @@ void device_thread_loop(mip::DeviceInterface* device)
     }
 }
 
-bool update_device(mip::DeviceInterface& device, mip::Timeout wait_time)
+bool update_device(mip::Interface& device, mip::Timeout wait_time)
 {
-    if( wait_time > 0 )
+    // Thread calls this with wait_time 0, commands have wait_time > 0.
+    if( wait_time == 0 )
         return device.defaultUpdate(wait_time);
 
     // Optionally display progress while waiting for command replies.
@@ -82,7 +100,7 @@ int main(int argc, const char* argv[])
     try
     {
         std::unique_ptr<ExampleUtils> utils = handleCommonArgs(argc, argv);
-        std::unique_ptr<mip::DeviceInterface>& device = utils->device;
+        std::unique_ptr<mip::Interface>& device = utils->device;
 
         // Disable all streaming channels.
         mip::commands_base::setIdle(*device);
@@ -131,7 +149,7 @@ int main(int argc, const char* argv[])
         deviceThread.join();
 #endif
     }
-    catch(const std::underflow_error& ex)
+    catch(const std::underflow_error&)
     {
         return printCommonUsage(argv);
     }

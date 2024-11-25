@@ -1,8 +1,24 @@
 
+/////////////////////////////////////////////////////////////////////////////
+//
+// device_info.cpp
+//
+// C++ example program to print device information from any mip-enabled MicroStrain device.
+//
+//!@section LICENSE
+//!
+//! THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING
+//! CUSTOMERS WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER
+//! FOR THEM TO SAVE TIME. AS A RESULT, MICROSTRAIN BY HBK SHALL NOT BE HELD
+//! LIABLE FOR ANY DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY
+//! CLAIMS ARISING FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS
+//! OF THE CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+//
+/////////////////////////////////////////////////////////////////////////////
+
 #include "example_utils.hpp"
 
 #include <mip/definitions/commands_base.hpp>
-#include <mip/definitions/commands_filter.hpp>
 
 #include <stdexcept>
 #include <vector>
@@ -15,7 +31,7 @@ int main(int argc, const char* argv[])
     try
     {
         std::unique_ptr<ExampleUtils> utils = handleCommonArgs(argc, argv);
-        std::unique_ptr<mip::DeviceInterface>& device = utils->device;
+        std::unique_ptr<mip::Interface>& device = utils->device;
 
         mip::commands_base::BaseDeviceInfo device_info;
 
@@ -28,7 +44,11 @@ int main(int argc, const char* argv[])
             auto print_info = [](const char* name, const char info[16])
             {
                 char msg[17] = {0};
+#ifdef _WIN32
+                strncpy_s(msg, info, 16);
+#else
                 std::strncpy(msg, info, 16);
+#endif
                 printf("  %s%s\n", name, msg);
             };
 
@@ -49,7 +69,7 @@ int main(int argc, const char* argv[])
             printf("Error: command completed with NACK: %s (%d)\n", result.name(), result.value);
         }
     }
-    catch(const std::underflow_error& ex)
+    catch(const std::underflow_error&)
     {
         return printCommonUsage(argv);
     }
