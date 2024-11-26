@@ -1,6 +1,6 @@
 #pragma once
 
-#include "platform_connection.hpp"
+#include "mip/extras/platform_connection.hpp"
 
 #if MIP_USE_SERIAL
 #include "serial_connection.hpp"
@@ -9,6 +9,8 @@
 #if MIP_USE_TCP
 #include "tcp_connection.hpp"
 #endif
+
+#include <microstrain/connections/connection.hpp>
 
 #include <memory>
 
@@ -31,7 +33,7 @@ namespace platform
     ///       For serial ports, this is the baud rate.
     ///       For TCP sockets, this is the port number.
     ///
-    std::unique_ptr<mip::Connection> createConnectionFromInterfaceName(std::string interface_name, uint32_t parameter)
+    std::unique_ptr<microstrain::Connection> createConnectionFromInterfaceName(std::string interface_name, uint32_t parameter)
     {
 #ifdef MIP_USE_SERIAL
         // Todo: Detect USB connections (interface_name.find("ttyACM0") or similar)
@@ -70,9 +72,9 @@ namespace platform
     ///
     ///@returns True if the interface could be a URL or IP address. False otherwise.
     ///
-    bool isNetworkInterfaceName(std::string_view interface)
+    bool isNetworkInterfaceName(std::string_view interface_name)
     {
-        return interface == "localhost" || interface.find('.') != std::string::npos;
+        return interface_name == "localhost" || interface_name.find('.') != std::string::npos;
     }
 
 
