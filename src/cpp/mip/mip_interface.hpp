@@ -201,13 +201,13 @@ public:
     //
 
     template<class Cmd>
-    TypedResult<Cmd> runCommand(const Cmd& cmd, Timeout additionalTime=0) { return mip::runCommand(*this, cmd, additionalTime); }
+    CmdResult runCommand(const Cmd& cmd, Timeout additionalTime=0) { return mip::runCommand(*this, cmd, additionalTime); }
 
     template<class Cmd, class... Args>
-    TypedResult<Cmd> runCommand(Args&&... args, Timeout additionalTime=0) { return mip::runCommand(*this, std::forward<Args>(args)..., additionalTime); }
+    CmdResult runCommand(Args&&... args, Timeout additionalTime=0) { return mip::runCommand(*this, std::forward<Args>(args)..., additionalTime); }
 
     template<class Cmd>
-    TypedResult<Cmd> runCommand(const Cmd& cmd, typename Cmd::Response& response, Timeout additionalTime=0) { return mip::runCommand(*this, cmd, response, additionalTime); }
+    CmdResult runCommand(const Cmd& cmd, typename Cmd::Response& response, Timeout additionalTime=0) { return mip::runCommand(*this, cmd, response, additionalTime); }
 
 
     template<class Cmd>
@@ -834,7 +834,7 @@ void Interface::registerExtractor(C::mip_dispatch_handler& handler, DataField* f
 
 
 template<class Cmd>
-TypedResult<Cmd> runCommand(C::mip_interface& device, const Cmd& cmd, Timeout additionalTime)
+CmdResult runCommand(C::mip_interface& device, const Cmd& cmd, Timeout additionalTime)
 {
     PacketBuf packet(cmd);
 
@@ -845,14 +845,14 @@ TypedResult<Cmd> runCommand(C::mip_interface& device, const Cmd& cmd, Timeout ad
 }
 
 template<class Cmd, class... Args>
-TypedResult<Cmd> runCommand(C::mip_interface& device, const Args&&... args, Timeout additionalTime)
+CmdResult runCommand(C::mip_interface& device, const Args&&... args, Timeout additionalTime)
 {
     Cmd cmd{std::forward<Args>(args)...};
     return runCommand(device, cmd, additionalTime);
 }
 
 template<class Cmd>
-TypedResult<Cmd> runCommand(C::mip_interface& device, const Cmd& cmd, typename Cmd::Response& response, Timeout additionalTime)
+CmdResult runCommand(C::mip_interface& device, const Cmd& cmd, typename Cmd::Response& response, Timeout additionalTime)
 {
     PacketBuf packet(cmd);
 
