@@ -265,7 +265,7 @@ bool serial_port_set_baudrate(serial_port* port, int baudrate)
 
     if(GetCommState(port->handle, &dcb) == 0)
     {
-        MIP_LOG_ERROR("GetCommState() failed with error code %d\n", GetLastError());
+        MICROSTRAIN_LOG_ERROR("GetCommState() failed with error code %d\n", GetLastError());
         return false;
     }
 
@@ -273,7 +273,7 @@ bool serial_port_set_baudrate(serial_port* port, int baudrate)
 
     if(SetCommState(port->handle, &dcb) == 0)
     {
-        MIP_LOG_ERROR("SetCommState() failed with error code %d\n", GetLastError());
+        MICROSTRAIN_LOG_ERROR("SetCommState() failed with error code %d\n", GetLastError());
         return false;
     }
 
@@ -282,7 +282,7 @@ bool serial_port_set_baudrate(serial_port* port, int baudrate)
     speed_t speed = baudrate;
     if (ioctl(port->handle, IOSSIOSPEED, &speed) < 0)
     {
-        MIP_LOG_ERROR("Unable to set baud rate (%d): %s\n", errno, strerror(errno));
+        MICROSTRAIN_LOG_ERROR("Unable to set baud rate (%d): %s\n", errno, strerror(errno));
         return false;
     }
 
@@ -292,20 +292,20 @@ bool serial_port_set_baudrate(serial_port* port, int baudrate)
     struct termios serial_port_settings;
     if (tcgetattr(port->handle, &serial_port_settings) < 0)
     {
-        MIP_LOG_ERROR("Unable to get serial port settings (%d): %s\n", errno, strerror(errno));
+        MICROSTRAIN_LOG_ERROR("Unable to get serial port settings (%d): %s\n", errno, strerror(errno));
         return false;
     }
 
     if (cfsetispeed(&serial_port_settings, baud_rate_to_speed(baudrate)) < 0 || cfsetospeed(&serial_port_settings, baud_rate_to_speed(baudrate)) < 0)
     {
-        MIP_LOG_ERROR("Unable to set baud rate (%d): %s\n", errno, strerror(errno));
+        MICROSTRAIN_LOG_ERROR("Unable to set baud rate (%d): %s\n", errno, strerror(errno));
         return false;
     }
 
     // Persist the settings
     if(tcsetattr(port->handle, TCSANOW, &serial_port_settings) < 0)
     {
-        MIP_LOG_ERROR("Unable to save serial port settings (%d): %s\n", errno, strerror(errno));
+        MICROSTRAIN_LOG_ERROR("Unable to save serial port settings (%d): %s\n", errno, strerror(errno));
         return false;
     }
 #endif
