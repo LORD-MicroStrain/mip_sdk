@@ -4,6 +4,7 @@
 
 #include <mip/definitions/data_filter.hpp>
 
+
 #include <mip/metadata/mip_metadata.hpp>
 
 namespace mip::metadata
@@ -61,7 +62,6 @@ struct MetadataFor<data_filter::PositionLlh>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -117,7 +117,6 @@ struct MetadataFor<data_filter::VelocityNed>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -155,7 +154,6 @@ struct MetadataFor<data_filter::AttitudeQuaternion>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -193,7 +191,6 @@ struct MetadataFor<data_filter::AttitudeDcm>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -249,7 +246,6 @@ struct MetadataFor<data_filter::EulerAngles>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -287,7 +283,6 @@ struct MetadataFor<data_filter::GyroBias>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -325,7 +320,6 @@ struct MetadataFor<data_filter::AccelBias>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -381,7 +375,6 @@ struct MetadataFor<data_filter::PositionLlhUncertainty>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -437,7 +430,6 @@ struct MetadataFor<data_filter::VelocityNedUncertainty>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -493,7 +485,6 @@ struct MetadataFor<data_filter::EulerAnglesUncertainty>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -531,7 +522,6 @@ struct MetadataFor<data_filter::GyroBiasUncertainty>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -569,7 +559,6 @@ struct MetadataFor<data_filter::AccelBiasUncertainty>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -616,7 +605,6 @@ struct MetadataFor<data_filter::Timestamp>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -754,7 +742,6 @@ struct MetadataFor<data_filter::Status>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -792,7 +779,6 @@ struct MetadataFor<data_filter::LinearAccel>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -830,7 +816,6 @@ struct MetadataFor<data_filter::GravityVector>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -868,7 +853,6 @@ struct MetadataFor<data_filter::CompAccel>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -906,7 +890,6 @@ struct MetadataFor<data_filter::CompAngularRate>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -944,7 +927,6 @@ struct MetadataFor<data_filter::QuaternionAttitudeUncertainty>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -982,7 +964,6 @@ struct MetadataFor<data_filter::Wgs84GravityMag>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1060,7 +1041,6 @@ struct MetadataFor<data_filter::HeadingUpdateState>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1134,7 +1114,6 @@ struct MetadataFor<data_filter::MagneticModel>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1172,7 +1151,6 @@ struct MetadataFor<data_filter::AccelScaleFactor>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1210,7 +1188,6 @@ struct MetadataFor<data_filter::AccelScaleFactorUncertainty>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1248,7 +1225,6 @@ struct MetadataFor<data_filter::GyroScaleFactor>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1286,7 +1262,6 @@ struct MetadataFor<data_filter::GyroScaleFactorUncertainty>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1324,7 +1299,6 @@ struct MetadataFor<data_filter::MagBias>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1362,7 +1336,6 @@ struct MetadataFor<data_filter::MagBiasUncertainty>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1436,7 +1409,6 @@ struct MetadataFor<data_filter::StandardAtmosphere>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1474,7 +1446,6 @@ struct MetadataFor<data_filter::PressureAltitude>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1512,7 +1483,6 @@ struct MetadataFor<data_filter::DensityAltitude>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1550,7 +1520,6 @@ struct MetadataFor<data_filter::AntennaOffsetCorrection>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1588,7 +1557,6 @@ struct MetadataFor<data_filter::AntennaOffsetCorrectionUncertainty>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1635,7 +1603,6 @@ struct MetadataFor<data_filter::MultiAntennaOffsetCorrection>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1682,7 +1649,6 @@ struct MetadataFor<data_filter::MultiAntennaOffsetCorrectionUncertainty>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1720,7 +1686,6 @@ struct MetadataFor<data_filter::MagnetometerOffset>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1758,7 +1723,6 @@ struct MetadataFor<data_filter::MagnetometerMatrix>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1796,7 +1760,6 @@ struct MetadataFor<data_filter::MagnetometerOffsetUncertainty>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1834,7 +1797,6 @@ struct MetadataFor<data_filter::MagnetometerMatrixUncertainty>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1872,7 +1834,6 @@ struct MetadataFor<data_filter::MagnetometerCovarianceMatrix>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1910,7 +1871,6 @@ struct MetadataFor<data_filter::MagnetometerResidualVector>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1966,7 +1926,6 @@ struct MetadataFor<data_filter::ClockCorrection>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2022,7 +1981,6 @@ struct MetadataFor<data_filter::ClockCorrectionUncertainty>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2111,7 +2069,6 @@ struct MetadataFor<data_filter::GnssPosAidStatus>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2158,7 +2115,6 @@ struct MetadataFor<data_filter::GnssAttAidStatus>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2224,7 +2180,6 @@ struct MetadataFor<data_filter::HeadAidStatus>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2262,7 +2217,6 @@ struct MetadataFor<data_filter::RelPosNed>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2300,7 +2254,6 @@ struct MetadataFor<data_filter::EcefPos>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2338,7 +2291,6 @@ struct MetadataFor<data_filter::EcefVel>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2376,7 +2328,6 @@ struct MetadataFor<data_filter::EcefPosUncertainty>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2414,7 +2365,6 @@ struct MetadataFor<data_filter::EcefVelUncertainty>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2525,7 +2475,6 @@ struct MetadataFor<data_filter::AidingMeasurementSummary>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2563,7 +2512,6 @@ struct MetadataFor<data_filter::OdometerScaleFactorError>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2601,7 +2549,6 @@ struct MetadataFor<data_filter::OdometerScaleFactorErrorUncertainty>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2715,7 +2662,6 @@ struct MetadataFor<data_filter::GnssDualAntennaStatus>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2762,7 +2708,6 @@ struct MetadataFor<data_filter::AidingFrameConfigError>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2809,13 +2754,12 @@ struct MetadataFor<data_filter::AidingFrameConfigErrorUncertainty>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
 
 
-static constexpr inline std::initializer_list<const FieldInfo*> DATA_FILTER = {
+static constexpr inline const FieldInfo* DATA_FILTER_FIELDS[] = {
     &MetadataFor<data_filter::PositionLlh>::value,
     &MetadataFor<data_filter::VelocityNed>::value,
     &MetadataFor<data_filter::AttitudeQuaternion>::value,
@@ -2828,45 +2772,45 @@ static constexpr inline std::initializer_list<const FieldInfo*> DATA_FILTER = {
     &MetadataFor<data_filter::EulerAnglesUncertainty>::value,
     &MetadataFor<data_filter::GyroBiasUncertainty>::value,
     &MetadataFor<data_filter::AccelBiasUncertainty>::value,
-    &MetadataFor<data_filter::Timestamp>::value,
-    &MetadataFor<data_filter::Status>::value,
     &MetadataFor<data_filter::LinearAccel>::value,
-    &MetadataFor<data_filter::GravityVector>::value,
-    &MetadataFor<data_filter::CompAccel>::value,
     &MetadataFor<data_filter::CompAngularRate>::value,
-    &MetadataFor<data_filter::QuaternionAttitudeUncertainty>::value,
     &MetadataFor<data_filter::Wgs84GravityMag>::value,
+    &MetadataFor<data_filter::Status>::value,
+    &MetadataFor<data_filter::Timestamp>::value,
+    &MetadataFor<data_filter::QuaternionAttitudeUncertainty>::value,
+    &MetadataFor<data_filter::GravityVector>::value,
     &MetadataFor<data_filter::HeadingUpdateState>::value,
     &MetadataFor<data_filter::MagneticModel>::value,
-    &MetadataFor<data_filter::AccelScaleFactor>::value,
-    &MetadataFor<data_filter::AccelScaleFactorUncertainty>::value,
     &MetadataFor<data_filter::GyroScaleFactor>::value,
+    &MetadataFor<data_filter::AccelScaleFactor>::value,
     &MetadataFor<data_filter::GyroScaleFactorUncertainty>::value,
+    &MetadataFor<data_filter::AccelScaleFactorUncertainty>::value,
     &MetadataFor<data_filter::MagBias>::value,
     &MetadataFor<data_filter::MagBiasUncertainty>::value,
+    &MetadataFor<data_filter::CompAccel>::value,
     &MetadataFor<data_filter::StandardAtmosphere>::value,
     &MetadataFor<data_filter::PressureAltitude>::value,
     &MetadataFor<data_filter::DensityAltitude>::value,
-    &MetadataFor<data_filter::AntennaOffsetCorrection>::value,
-    &MetadataFor<data_filter::AntennaOffsetCorrectionUncertainty>::value,
-    &MetadataFor<data_filter::MultiAntennaOffsetCorrection>::value,
-    &MetadataFor<data_filter::MultiAntennaOffsetCorrectionUncertainty>::value,
     &MetadataFor<data_filter::MagnetometerOffset>::value,
     &MetadataFor<data_filter::MagnetometerMatrix>::value,
     &MetadataFor<data_filter::MagnetometerOffsetUncertainty>::value,
     &MetadataFor<data_filter::MagnetometerMatrixUncertainty>::value,
     &MetadataFor<data_filter::MagnetometerCovarianceMatrix>::value,
     &MetadataFor<data_filter::MagnetometerResidualVector>::value,
+    &MetadataFor<data_filter::AntennaOffsetCorrection>::value,
+    &MetadataFor<data_filter::AntennaOffsetCorrectionUncertainty>::value,
     &MetadataFor<data_filter::ClockCorrection>::value,
     &MetadataFor<data_filter::ClockCorrectionUncertainty>::value,
+    &MetadataFor<data_filter::MultiAntennaOffsetCorrection>::value,
+    &MetadataFor<data_filter::MultiAntennaOffsetCorrectionUncertainty>::value,
+    &MetadataFor<data_filter::EcefPosUncertainty>::value,
+    &MetadataFor<data_filter::EcefVelUncertainty>::value,
+    &MetadataFor<data_filter::EcefPos>::value,
+    &MetadataFor<data_filter::EcefVel>::value,
+    &MetadataFor<data_filter::RelPosNed>::value,
     &MetadataFor<data_filter::GnssPosAidStatus>::value,
     &MetadataFor<data_filter::GnssAttAidStatus>::value,
     &MetadataFor<data_filter::HeadAidStatus>::value,
-    &MetadataFor<data_filter::RelPosNed>::value,
-    &MetadataFor<data_filter::EcefPos>::value,
-    &MetadataFor<data_filter::EcefVel>::value,
-    &MetadataFor<data_filter::EcefPosUncertainty>::value,
-    &MetadataFor<data_filter::EcefVelUncertainty>::value,
     &MetadataFor<data_filter::AidingMeasurementSummary>::value,
     &MetadataFor<data_filter::OdometerScaleFactorError>::value,
     &MetadataFor<data_filter::OdometerScaleFactorErrorUncertainty>::value,
@@ -2875,6 +2819,11 @@ static constexpr inline std::initializer_list<const FieldInfo*> DATA_FILTER = {
     &MetadataFor<data_filter::AidingFrameConfigErrorUncertainty>::value,
 };
 
+static constexpr DescriptorSetInfo DATA_FILTER = {
+    .descriptor = mip::data_filter::DESCRIPTOR_SET,
+    .name = "Filter Data",
+    .fields = DATA_FILTER_FIELDS,
+};
 
 } // namespace mip::metadata
 
