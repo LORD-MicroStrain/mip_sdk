@@ -104,8 +104,6 @@ struct FunctionBits
         setCanReset(d);
     }
 
-    constexpr bool any() const { return bits > 0; }
-
     constexpr bool canWrite() const { return bits & 0b00000001; }
     constexpr bool canRead()  const { return bits & 0b00000010; }
     constexpr bool canSave()  const { return bits & 0b00000100; }
@@ -148,6 +146,8 @@ struct FieldAttributes : public FunctionBits
     constexpr FieldAttributes() = default;
     constexpr FieldAttributes(FunctionBits bits) : FunctionBits(bits) {}
     constexpr FieldAttributes(bool w, bool r, bool s, bool l, bool d, bool p=false) : FunctionBits(w,r,s,l,d) { setProprietary(p); }
+
+    constexpr bool hasFunctionSelector() const { return (bits & 0b00011111) > 0; }
 
     constexpr bool isProprietary() const { return bits & 0b10000000; }
 
