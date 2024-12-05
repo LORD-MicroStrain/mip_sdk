@@ -101,7 +101,7 @@ const char* get_model_name_from_number(mip_model_number model)
     case MODEL_3DM_CV7_INS:   return "3DM-CV7-INS";
 
     default:
-    case MODEL_UNKNOWN: return "Unknown";
+    case MODEL_UNKNOWN: return "";
     }
 }
 
