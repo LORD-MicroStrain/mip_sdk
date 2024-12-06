@@ -4,6 +4,7 @@
 
 #include <mip/definitions/data_sensor.hpp>
 
+
 #include <mip/metadata/mip_metadata.hpp>
 
 namespace mip::metadata
@@ -34,7 +35,6 @@ struct MetadataFor<data_sensor::RawAccel>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -63,7 +63,6 @@ struct MetadataFor<data_sensor::RawGyro>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -92,7 +91,6 @@ struct MetadataFor<data_sensor::RawMag>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -121,7 +119,6 @@ struct MetadataFor<data_sensor::RawPressure>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -150,7 +147,6 @@ struct MetadataFor<data_sensor::ScaledAccel>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -179,7 +175,6 @@ struct MetadataFor<data_sensor::ScaledGyro>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -208,7 +203,6 @@ struct MetadataFor<data_sensor::ScaledMag>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -237,7 +231,6 @@ struct MetadataFor<data_sensor::ScaledPressure>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -266,7 +259,6 @@ struct MetadataFor<data_sensor::DeltaTheta>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -295,7 +287,6 @@ struct MetadataFor<data_sensor::DeltaVelocity>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -324,7 +315,6 @@ struct MetadataFor<data_sensor::CompOrientationMatrix>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -353,7 +343,6 @@ struct MetadataFor<data_sensor::CompQuaternion>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -400,7 +389,6 @@ struct MetadataFor<data_sensor::CompEulerAngles>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -429,7 +417,6 @@ struct MetadataFor<data_sensor::CompOrientationUpdateMatrix>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -458,7 +445,6 @@ struct MetadataFor<data_sensor::OrientationRawTemp>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -487,7 +473,6 @@ struct MetadataFor<data_sensor::InternalTimestamp>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -525,7 +510,6 @@ struct MetadataFor<data_sensor::PpsTimestamp>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -594,7 +578,6 @@ struct MetadataFor<data_sensor::GpsTimestamp>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -641,7 +624,6 @@ struct MetadataFor<data_sensor::TemperatureAbs>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -670,7 +652,6 @@ struct MetadataFor<data_sensor::UpVector>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -699,7 +680,6 @@ struct MetadataFor<data_sensor::NorthVector>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -755,7 +735,6 @@ struct MetadataFor<data_sensor::OverrangeStatus>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -802,38 +781,42 @@ struct MetadataFor<data_sensor::OdometerData>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
 
 
-static constexpr inline std::initializer_list<const FieldInfo*> DATA_SENSOR = {
+static constexpr inline const FieldInfo* DATA_SENSOR_FIELDS[] = {
     &MetadataFor<data_sensor::RawAccel>::value,
     &MetadataFor<data_sensor::RawGyro>::value,
     &MetadataFor<data_sensor::RawMag>::value,
-    &MetadataFor<data_sensor::RawPressure>::value,
     &MetadataFor<data_sensor::ScaledAccel>::value,
     &MetadataFor<data_sensor::ScaledGyro>::value,
     &MetadataFor<data_sensor::ScaledMag>::value,
-    &MetadataFor<data_sensor::ScaledPressure>::value,
     &MetadataFor<data_sensor::DeltaTheta>::value,
     &MetadataFor<data_sensor::DeltaVelocity>::value,
     &MetadataFor<data_sensor::CompOrientationMatrix>::value,
     &MetadataFor<data_sensor::CompQuaternion>::value,
-    &MetadataFor<data_sensor::CompEulerAngles>::value,
     &MetadataFor<data_sensor::CompOrientationUpdateMatrix>::value,
+    &MetadataFor<data_sensor::CompEulerAngles>::value,
     &MetadataFor<data_sensor::OrientationRawTemp>::value,
     &MetadataFor<data_sensor::InternalTimestamp>::value,
     &MetadataFor<data_sensor::PpsTimestamp>::value,
+    &MetadataFor<data_sensor::NorthVector>::value,
+    &MetadataFor<data_sensor::UpVector>::value,
     &MetadataFor<data_sensor::GpsTimestamp>::value,
     &MetadataFor<data_sensor::TemperatureAbs>::value,
-    &MetadataFor<data_sensor::UpVector>::value,
-    &MetadataFor<data_sensor::NorthVector>::value,
+    &MetadataFor<data_sensor::RawPressure>::value,
+    &MetadataFor<data_sensor::ScaledPressure>::value,
     &MetadataFor<data_sensor::OverrangeStatus>::value,
     &MetadataFor<data_sensor::OdometerData>::value,
 };
 
+static constexpr DescriptorSetInfo DATA_SENSOR = {
+    .descriptor = mip::data_sensor::DESCRIPTOR_SET,
+    .name = "Sensor Data",
+    .fields = DATA_SENSOR_FIELDS,
+};
 
 } // namespace mip::metadata
 
