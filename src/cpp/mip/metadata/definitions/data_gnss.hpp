@@ -4229,9 +4229,9 @@ static constexpr inline const FieldInfo* DATA_GNSS_FIELDS[] = {
 };
 
 static constexpr DescriptorSetInfo DATA_GNSS = {
-    .descriptor = mip::data_gnss::DESCRIPTOR_SET,
-    .name = "Gnss Data",
-    .fields = DATA_GNSS_FIELDS,
+    /*.descriptor =*/ mip::data_gnss::DESCRIPTOR_SET,
+    /*.name       =*/ "Gnss Data",
+    /*.fields     =*/ DATA_GNSS_FIELDS,
 };
 
 } // namespace mip::metadata

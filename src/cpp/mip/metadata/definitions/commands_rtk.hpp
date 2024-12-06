@@ -746,9 +746,9 @@ static constexpr inline const FieldInfo* COMMANDS_RTK_FIELDS[] = {
 };
 
 static constexpr DescriptorSetInfo COMMANDS_RTK = {
-    .descriptor = mip::commands_rtk::DESCRIPTOR_SET,
-    .name = "Rtk Commands",
-    .fields = COMMANDS_RTK_FIELDS,
+    /*.descriptor =*/ mip::commands_rtk::DESCRIPTOR_SET,
+    /*.name       =*/ "Rtk Commands",
+    /*.fields     =*/ COMMANDS_RTK_FIELDS,
 };
 
 } // namespace mip::metadata

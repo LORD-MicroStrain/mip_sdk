@@ -2820,9 +2820,9 @@ static constexpr inline const FieldInfo* DATA_FILTER_FIELDS[] = {
 };
 
 static constexpr DescriptorSetInfo DATA_FILTER = {
-    .descriptor = mip::data_filter::DESCRIPTOR_SET,
-    .name = "Filter Data",
-    .fields = DATA_FILTER_FIELDS,
+    /*.descriptor =*/ mip::data_filter::DESCRIPTOR_SET,
+    /*.name       =*/ "Filter Data",
+    /*.fields     =*/ DATA_FILTER_FIELDS,
 };
 
 } // namespace mip::metadata

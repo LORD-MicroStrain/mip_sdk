@@ -150,9 +150,9 @@ static constexpr inline const FieldInfo* DATA_SYSTEM_FIELDS[] = {
 };
 
 static constexpr DescriptorSetInfo DATA_SYSTEM = {
-    .descriptor = mip::data_system::DESCRIPTOR_SET,
-    .name = "System Data",
-    .fields = DATA_SYSTEM_FIELDS,
+    /*.descriptor =*/ mip::data_system::DESCRIPTOR_SET,
+    /*.name       =*/ "System Data",
+    /*.fields     =*/ DATA_SYSTEM_FIELDS,
 };
 
 } // namespace mip::metadata

@@ -369,9 +369,9 @@ static constexpr inline const FieldInfo* DATA_SHARED_FIELDS[] = {
 };
 
 static constexpr DescriptorSetInfo DATA_SHARED = {
-    .descriptor = mip::data_shared::DESCRIPTOR_SET,
-    .name = "Shared Data",
-    .fields = DATA_SHARED_FIELDS,
+    /*.descriptor =*/ mip::data_shared::DESCRIPTOR_SET,
+    /*.name       =*/ "Shared Data",
+    /*.fields     =*/ DATA_SHARED_FIELDS,
 };
 
 } // namespace mip::metadata

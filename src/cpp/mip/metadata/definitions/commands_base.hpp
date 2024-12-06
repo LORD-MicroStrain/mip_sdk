@@ -537,9 +537,9 @@ static constexpr inline const FieldInfo* COMMANDS_BASE_FIELDS[] = {
 };
 
 static constexpr DescriptorSetInfo COMMANDS_BASE = {
-    .descriptor = mip::commands_base::DESCRIPTOR_SET,
-    .name = "Base Commands",
-    .fields = COMMANDS_BASE_FIELDS,
+    /*.descriptor =*/ mip::commands_base::DESCRIPTOR_SET,
+    /*.name       =*/ "Base Commands",
+    /*.fields     =*/ COMMANDS_BASE_FIELDS,
 };
 
 } // namespace mip::metadata

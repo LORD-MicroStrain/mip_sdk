@@ -4432,9 +4432,9 @@ static constexpr inline const FieldInfo* COMMANDS_3DM_FIELDS[] = {
 };
 
 static constexpr DescriptorSetInfo COMMANDS_3DM = {
-    .descriptor = mip::commands_3dm::DESCRIPTOR_SET,
-    .name = "3dm Commands",
-    .fields = COMMANDS_3DM_FIELDS,
+    /*.descriptor =*/ mip::commands_3dm::DESCRIPTOR_SET,
+    /*.name       =*/ "3dm Commands",
+    /*.fields     =*/ COMMANDS_3DM_FIELDS,
 };
 
 } // namespace mip::metadata

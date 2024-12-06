@@ -1065,9 +1065,9 @@ static constexpr inline const FieldInfo* COMMANDS_AIDING_FIELDS[] = {
 };
 
 static constexpr DescriptorSetInfo COMMANDS_AIDING = {
-    .descriptor = mip::commands_aiding::DESCRIPTOR_SET,
-    .name = "Aiding Commands",
-    .fields = COMMANDS_AIDING_FIELDS,
+    /*.descriptor =*/ mip::commands_aiding::DESCRIPTOR_SET,
+    /*.name       =*/ "Aiding Commands",
+    /*.fields     =*/ COMMANDS_AIDING_FIELDS,
 };
 
 } // namespace mip::metadata

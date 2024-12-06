@@ -507,9 +507,9 @@ static constexpr inline const FieldInfo* COMMANDS_GNSS_FIELDS[] = {
 };
 
 static constexpr DescriptorSetInfo COMMANDS_GNSS = {
-    .descriptor = mip::commands_gnss::DESCRIPTOR_SET,
-    .name = "Gnss Commands",
-    .fields = COMMANDS_GNSS_FIELDS,
+    /*.descriptor =*/ mip::commands_gnss::DESCRIPTOR_SET,
+    /*.name       =*/ "Gnss Commands",
+    /*.fields     =*/ COMMANDS_GNSS_FIELDS,
 };
 
 } // namespace mip::metadata

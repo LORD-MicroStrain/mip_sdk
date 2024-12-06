@@ -813,9 +813,9 @@ static constexpr inline const FieldInfo* DATA_SENSOR_FIELDS[] = {
 };
 
 static constexpr DescriptorSetInfo DATA_SENSOR = {
-    .descriptor = mip::data_sensor::DESCRIPTOR_SET,
-    .name = "Sensor Data",
-    .fields = DATA_SENSOR_FIELDS,
+    /*.descriptor =*/ mip::data_sensor::DESCRIPTOR_SET,
+    /*.name       =*/ "Sensor Data",
+    /*.fields     =*/ DATA_SENSOR_FIELDS,
 };
 
 } // namespace mip::metadata

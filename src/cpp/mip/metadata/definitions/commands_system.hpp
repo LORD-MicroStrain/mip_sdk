@@ -216,9 +216,9 @@ static constexpr inline const FieldInfo* COMMANDS_SYSTEM_FIELDS[] = {
 };
 
 static constexpr DescriptorSetInfo COMMANDS_SYSTEM = {
-    .descriptor = mip::commands_system::DESCRIPTOR_SET,
-    .name = "System Commands",
-    .fields = COMMANDS_SYSTEM_FIELDS,
+    /*.descriptor =*/ mip::commands_system::DESCRIPTOR_SET,
+    /*.name       =*/ "System Commands",
+    /*.fields     =*/ COMMANDS_SYSTEM_FIELDS,
 };
 
 } // namespace mip::metadata

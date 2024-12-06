@@ -4043,9 +4043,9 @@ static constexpr inline const FieldInfo* COMMANDS_FILTER_FIELDS[] = {
 };
 
 static constexpr DescriptorSetInfo COMMANDS_FILTER = {
-    .descriptor = mip::commands_filter::DESCRIPTOR_SET,
-    .name = "Filter Commands",
-    .fields = COMMANDS_FILTER_FIELDS,
+    /*.descriptor =*/ mip::commands_filter::DESCRIPTOR_SET,
+    /*.name       =*/ "Filter Commands",
+    /*.fields     =*/ COMMANDS_FILTER_FIELDS,
 };
 
 } // namespace mip::metadata
