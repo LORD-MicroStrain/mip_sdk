@@ -26,7 +26,6 @@ class Interface;
 void connect_interface(mip::Interface& dev, microstrain::Connection& conn);
 
 
-
 using DispatchHandler = C::mip_dispatch_handler;
 
 struct Dispatcher : public C::mip_dispatcher
