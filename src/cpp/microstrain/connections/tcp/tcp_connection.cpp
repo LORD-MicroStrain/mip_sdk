@@ -14,9 +14,9 @@ namespace connections
 ///
 ///@param hostname Host name or IP address to connect to
 ///@param port     Port on hostName to connect to
-TcpConnection::TcpConnection(const std::string& hostname, uint16_t port)
+TcpConnection::TcpConnection(const std::string &hostname, uint16_t port)
 {
-    mHostname = hostname;
+    mHostname = std::move(hostname);
     mPort     = port;
     mType     = TYPE;
 

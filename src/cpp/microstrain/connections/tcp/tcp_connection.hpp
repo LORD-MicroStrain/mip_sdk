@@ -23,6 +23,7 @@ class TcpConnection : public microstrain::Connection
 public:
     static constexpr auto TYPE = "TCP";
 
+    TcpConnection() = default;
     TcpConnection(const std::string& hostname, uint16_t port);
     ~TcpConnection();
 

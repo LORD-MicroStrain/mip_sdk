@@ -26,6 +26,7 @@ namespace mip
 
             operator bool() const { return result; }
             bool operator!() const { return !result; }
+            operator CmdResult() const { return result; }
 
             bool operator==(mip::C::mip_cmd_result value) const { return result == value; }
             bool operator!=(mip::C::mip_cmd_result value) const { return result != value; }
