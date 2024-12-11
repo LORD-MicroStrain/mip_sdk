@@ -93,7 +93,6 @@ Test generate_interleaved()
 }
 
 volatile bool dummy = false;
-uint8_t parse_buffer[1024];
 
 struct ChunkStats
 {
@@ -125,10 +124,9 @@ ChunkStats chunked_test(const Test& test, size_t chunk_size)
     auto callback = +[](void* v, const mip::PacketView* p, mip::Timestamp)
     {
         *static_cast<size_t*>(v) += 1;
-        return true;
     };
     size_t num_pkts  = 0;
-    mip::Parser parser(parse_buffer, sizeof(parse_buffer), callback, &num_pkts, MIPPARSER_DEFAULT_TIMEOUT_MS);
+    mip::Parser parser(callback, &num_pkts, MIP_PARSER_DEFAULT_TIMEOUT_MS);
 
 
     const size_t num_full_chunks = (chunk_size == 0) ? 1 : (test.data.size() / chunk_size);
@@ -166,7 +164,7 @@ ChunkStats chunked_test(const Test& test, size_t chunk_size)
     ChunkStats stats;
     stats.chunk_size = chunk_size;
     stats.num_calls  = num_full_chunks;
-    stats.total_time = (float)std::accumulate(chunk_times.begin(), chunk_times.end(), 0.0) / test.num_iterations;  // Accumulate with double precision!
+    stats.total_time = std::accumulate(chunk_times.begin(), chunk_times.end(), 0.0) / test.num_iterations;  // Accumulate with double precision!
     stats.avg_time   = stats.total_time / num_full_chunks;
     stats.max_time   = *std::max_element(chunk_times.begin(), chunk_times.end());
 

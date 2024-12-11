@@ -26,9 +26,6 @@
 #include "mip_types.h"
 #include "mip_version.h"
 
-// MIP Utils
-#include "utils/byte_ring.h"
-
 // MIP Commands
 #include "definitions/commands_3dm.h"
 #include "definitions/commands_aiding.h"
