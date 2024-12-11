@@ -4,6 +4,7 @@
 
 #include <mip/definitions/commands_system.hpp>
 
+
 #include <mip/metadata/mip_metadata.hpp>
 
 namespace mip::metadata
@@ -34,7 +35,6 @@ struct MetadataFor<commands_system::CommMode::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -64,7 +64,6 @@ struct MetadataFor<commands_system::CommMode>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, false, false, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -157,7 +156,6 @@ struct MetadataFor<commands_system::InterfaceControl::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -205,19 +203,23 @@ struct MetadataFor<commands_system::InterfaceControl>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
 
 
-static constexpr inline std::initializer_list<const FieldInfo*> COMMANDS_SYSTEM = {
-    &MetadataFor<commands_system::CommMode>::value,
-    &MetadataFor<commands_system::CommMode::Response>::value,
+static constexpr inline const FieldInfo* COMMANDS_SYSTEM_FIELDS[] = {
     &MetadataFor<commands_system::InterfaceControl>::value,
+    &MetadataFor<commands_system::CommMode>::value,
     &MetadataFor<commands_system::InterfaceControl::Response>::value,
+    &MetadataFor<commands_system::CommMode::Response>::value,
 };
 
+static constexpr DescriptorSetInfo COMMANDS_SYSTEM = {
+    /*.descriptor =*/ mip::commands_system::DESCRIPTOR_SET,
+    /*.name       =*/ "System Commands",
+    /*.fields     =*/ COMMANDS_SYSTEM_FIELDS,
+};
 
 } // namespace mip::metadata
 

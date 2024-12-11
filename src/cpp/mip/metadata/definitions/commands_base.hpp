@@ -4,6 +4,7 @@
 
 #include <mip/definitions/commands_base.hpp>
 
+
 #include <mip/metadata/mip_metadata.hpp>
 
 namespace mip::metadata
@@ -22,7 +23,6 @@ struct MetadataFor<commands_base::Ping>
         /* .parameters  = */ {},
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -39,7 +39,6 @@ struct MetadataFor<commands_base::SetIdle>
         /* .parameters  = */ {},
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -138,7 +137,6 @@ struct MetadataFor<commands_base::GetDeviceInfo::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -155,7 +153,6 @@ struct MetadataFor<commands_base::GetDeviceInfo>
         /* .parameters  = */ {},
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -193,7 +190,6 @@ struct MetadataFor<commands_base::GetDeviceDescriptors::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -210,7 +206,6 @@ struct MetadataFor<commands_base::GetDeviceDescriptors>
         /* .parameters  = */ {},
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -239,7 +234,6 @@ struct MetadataFor<commands_base::BuiltInTest::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -256,7 +250,6 @@ struct MetadataFor<commands_base::BuiltInTest>
         /* .parameters  = */ {},
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -273,7 +266,6 @@ struct MetadataFor<commands_base::Resume>
         /* .parameters  = */ {},
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -311,7 +303,6 @@ struct MetadataFor<commands_base::GetExtendedDescriptors::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -328,7 +319,6 @@ struct MetadataFor<commands_base::GetExtendedDescriptors>
         /* .parameters  = */ {},
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -357,7 +347,6 @@ struct MetadataFor<commands_base::ContinuousBit::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -374,7 +363,6 @@ struct MetadataFor<commands_base::ContinuousBit>
         /* .parameters  = */ {},
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -412,7 +400,6 @@ struct MetadataFor<commands_base::CommSpeed::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -451,7 +438,6 @@ struct MetadataFor<commands_base::CommSpeed>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -509,7 +495,6 @@ struct MetadataFor<commands_base::GpsTimeUpdate>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, false, false, false, false},
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -526,32 +511,36 @@ struct MetadataFor<commands_base::SoftReset>
         /* .parameters  = */ {},
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
 
 
-static constexpr inline std::initializer_list<const FieldInfo*> COMMANDS_BASE = {
+static constexpr inline const FieldInfo* COMMANDS_BASE_FIELDS[] = {
     &MetadataFor<commands_base::Ping>::value,
     &MetadataFor<commands_base::SetIdle>::value,
     &MetadataFor<commands_base::GetDeviceInfo>::value,
-    &MetadataFor<commands_base::GetDeviceInfo::Response>::value,
     &MetadataFor<commands_base::GetDeviceDescriptors>::value,
-    &MetadataFor<commands_base::GetDeviceDescriptors::Response>::value,
     &MetadataFor<commands_base::BuiltInTest>::value,
-    &MetadataFor<commands_base::BuiltInTest::Response>::value,
     &MetadataFor<commands_base::Resume>::value,
     &MetadataFor<commands_base::GetExtendedDescriptors>::value,
-    &MetadataFor<commands_base::GetExtendedDescriptors::Response>::value,
     &MetadataFor<commands_base::ContinuousBit>::value,
-    &MetadataFor<commands_base::ContinuousBit::Response>::value,
     &MetadataFor<commands_base::CommSpeed>::value,
-    &MetadataFor<commands_base::CommSpeed::Response>::value,
     &MetadataFor<commands_base::GpsTimeUpdate>::value,
     &MetadataFor<commands_base::SoftReset>::value,
+    &MetadataFor<commands_base::GetDeviceInfo::Response>::value,
+    &MetadataFor<commands_base::GetDeviceDescriptors::Response>::value,
+    &MetadataFor<commands_base::BuiltInTest::Response>::value,
+    &MetadataFor<commands_base::GetExtendedDescriptors::Response>::value,
+    &MetadataFor<commands_base::ContinuousBit::Response>::value,
+    &MetadataFor<commands_base::CommSpeed::Response>::value,
 };
 
+static constexpr DescriptorSetInfo COMMANDS_BASE = {
+    /*.descriptor =*/ mip::commands_base::DESCRIPTOR_SET,
+    /*.name       =*/ "Base Commands",
+    /*.fields     =*/ COMMANDS_BASE_FIELDS,
+};
 
 } // namespace mip::metadata
 

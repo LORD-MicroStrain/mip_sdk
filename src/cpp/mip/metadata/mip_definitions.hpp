@@ -1,53 +1,21 @@
 #pragma once
 
-#include "mip_metadata.hpp"
-
+#include <microstrain/common/span.hpp>
 #include <mip/mip_descriptors.hpp>
-
-#include <set>
-#include <initializer_list>
 
 
 namespace mip::metadata
 {
 
-class Definitions
-{
-    struct Less
-    {
-        inline bool operator()(const FieldInfo *a, const FieldInfo *b) const
-        {
-            return a->descriptor < b->descriptor;
-        }
-        inline bool operator()(const FieldInfo *a, CompositeDescriptor desc) const
-        {
-            return a->descriptor < desc;
-        }
-        inline bool operator()(CompositeDescriptor desc, const FieldInfo *a) const
-        {
-            return desc < a->descriptor;
-        }
-        using is_transparent = void;
-    };
+struct FieldInfo;
+struct DescriptorSetInfo;
 
-    using Container = std::set<const FieldInfo *, Less>;
+// A list of const DescriptorSetInfo pointers.
+// This is a view of an array of const pointers to const DescriptorSetInfos.
+using DescriptorSetSpan = microstrain::Span<DescriptorSetInfo const* const>;
 
-public:
-    Definitions() = default;
-    Definitions(const std::initializer_list<const std::initializer_list<const FieldInfo*>*>& fields) { registerDefinitions(fields); }
-
-    void registerField(const FieldInfo* field);
-    void registerDefinitions(std::initializer_list<const FieldInfo*> fields);
-    void registerDefinitions(const std::initializer_list<const std::initializer_list<const FieldInfo*>*>& fields);
-
-    const FieldInfo* findField(mip::CompositeDescriptor descriptor) const;
-
-
-private:
-    Container mFields;
-};
-
-
-
+const DescriptorSetInfo* findDescriptorSet(const DescriptorSetSpan& descriptorSets, uint8_t descriptor);
+const FieldInfo* findField(const DescriptorSetSpan& descriptorSets, mip::CompositeDescriptor descriptor);
+const FieldInfo* findField(const DescriptorSetInfo& ds_info, uint8_t field_desc, bool check_shared_data=true);
 
 } // namespace mip::metadata
