@@ -101,13 +101,13 @@ void InterfaceControl::insert(Serializer& serializer) const
 {
     serializer.insert(function);
     
-    serializer.insert(interface);
+    serializer.insert(port);
     
     if( function == FunctionSelector::WRITE )
     {
-        serializer.insert(protocols_in);
+        serializer.insert(protocols_incoming);
         
-        serializer.insert(protocols_out);
+        serializer.insert(protocols_outgoing);
         
     }
 }
@@ -115,59 +115,59 @@ void InterfaceControl::extract(Serializer& serializer)
 {
     serializer.extract(function);
     
-    serializer.extract(interface);
+    serializer.extract(port);
     
     if( function == FunctionSelector::WRITE )
     {
-        serializer.extract(protocols_in);
+        serializer.extract(protocols_incoming);
         
-        serializer.extract(protocols_out);
+        serializer.extract(protocols_outgoing);
         
     }
 }
 
 void InterfaceControl::Response::insert(Serializer& serializer) const
 {
-    serializer.insert(interface);
+    serializer.insert(port);
     
-    serializer.insert(protocols_in);
+    serializer.insert(protocols_incoming);
     
-    serializer.insert(protocols_out);
+    serializer.insert(protocols_outgoing);
     
 }
 void InterfaceControl::Response::extract(Serializer& serializer)
 {
-    serializer.extract(interface);
+    serializer.extract(port);
     
-    serializer.extract(protocols_in);
+    serializer.extract(protocols_incoming);
     
-    serializer.extract(protocols_out);
+    serializer.extract(protocols_outgoing);
     
 }
 
-TypedResult<InterfaceControl> writeInterfaceControl(C::mip_interface& device, CommsInterface interface, CommsProtocol protocolsIn, CommsProtocol protocolsOut)
+TypedResult<InterfaceControl> writeInterfaceControl(C::mip_interface& device, CommsInterface port, CommsProtocol protocolsIncoming, CommsProtocol protocolsOutgoing)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
     
     serializer.insert(FunctionSelector::WRITE);
-    serializer.insert(interface);
+    serializer.insert(port);
     
-    serializer.insert(protocolsIn);
+    serializer.insert(protocolsIncoming);
     
-    serializer.insert(protocolsOut);
+    serializer.insert(protocolsOutgoing);
     
     assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_INTERFACE_CONTROL, buffer, (uint8_t)serializer.usedLength());
 }
-TypedResult<InterfaceControl> readInterfaceControl(C::mip_interface& device, CommsInterface interface, CommsProtocol* protocolsInOut, CommsProtocol* protocolsOutOut)
+TypedResult<InterfaceControl> readInterfaceControl(C::mip_interface& device, CommsInterface port, CommsProtocol* protocolsIncomingOut, CommsProtocol* protocolsOutgoingOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
     
     serializer.insert(FunctionSelector::READ);
-    serializer.insert(interface);
+    serializer.insert(port);
     
     assert(serializer.isOk());
     
@@ -178,50 +178,50 @@ TypedResult<InterfaceControl> readInterfaceControl(C::mip_interface& device, Com
     {
         Serializer deserializer(buffer, responseLength);
         
-        deserializer.extract(interface);
+        deserializer.extract(port);
         
-        assert(protocolsInOut);
-        deserializer.extract(*protocolsInOut);
+        assert(protocolsIncomingOut);
+        deserializer.extract(*protocolsIncomingOut);
         
-        assert(protocolsOutOut);
-        deserializer.extract(*protocolsOutOut);
+        assert(protocolsOutgoingOut);
+        deserializer.extract(*protocolsOutgoingOut);
         
         if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
 }
-TypedResult<InterfaceControl> saveInterfaceControl(C::mip_interface& device, CommsInterface interface)
+TypedResult<InterfaceControl> saveInterfaceControl(C::mip_interface& device, CommsInterface port)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
     
     serializer.insert(FunctionSelector::SAVE);
-    serializer.insert(interface);
+    serializer.insert(port);
     
     assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_INTERFACE_CONTROL, buffer, (uint8_t)serializer.usedLength());
 }
-TypedResult<InterfaceControl> loadInterfaceControl(C::mip_interface& device, CommsInterface interface)
+TypedResult<InterfaceControl> loadInterfaceControl(C::mip_interface& device, CommsInterface port)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
     
     serializer.insert(FunctionSelector::LOAD);
-    serializer.insert(interface);
+    serializer.insert(port);
     
     assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_INTERFACE_CONTROL, buffer, (uint8_t)serializer.usedLength());
 }
-TypedResult<InterfaceControl> defaultInterfaceControl(C::mip_interface& device, CommsInterface interface)
+TypedResult<InterfaceControl> defaultInterfaceControl(C::mip_interface& device, CommsInterface port)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
     
     serializer.insert(FunctionSelector::RESET);
-    serializer.insert(interface);
+    serializer.insert(port);
     
     assert(serializer.isOk());
     
