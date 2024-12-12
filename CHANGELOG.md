@@ -24,6 +24,23 @@ Forthcoming
 ### Interface Changes
 ### Bug Fixes
 
+V3.1.0
+-----------
+### New Features
+* Mip parser:
+  * Improved performance: typically 2-5x faster parsing in both desktop and embedded applications.
+  * Stand-alone parser doesn't require a parse buffer anymore.
+### Interface Changes
+* Mip Parser:
+  * Constructor no longer takes a parse buffer.
+  * Removed optional limit on max packets per parse call. Users may limit the number of bytes passed to the parser instead.
+  * `mip_parser_parse` and related functions return void because they always consume the entire buffer.
+  * Packet callback now must return void
+  * `mip_interface_user_recv_from_device` doesn't take a data buffer parameter anymore. Instead, users should pass
+    their own data buffer to `mip_parser_parse`. The buffer may be transient.
+### Bug Fixes
+  * None
+
 v3.0.0
 ------
 

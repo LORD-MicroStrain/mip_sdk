@@ -50,7 +50,7 @@ struct microstrain_serializer;
 typedef struct mip_packet_view
 {
     uint8_t*       _buffer;         ///<@private Pointer to the packet data.
-    uint_least16_t _buffer_length;  ///<@private Length of the buffer (NOT the packet length!).
+    uint_least16_t _buffer_length;  ///<@private Length of the buffer (not necessarily the packet length!).
 } mip_packet_view;
 
 
