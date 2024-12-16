@@ -24,7 +24,8 @@ void FirmwareVersion::toString(char* buffer, size_t buffer_size) const
 ///@brief Reads a standard-format string (X.Y.ZZ\0 or XYZZ\0).
 ///
 ///@param str    Input string. Can be unterminated if length is specified.
-///@param length Length of input string. Assumed to be NULL-terminated if -1.
+///@param length Limits reading this many chars from str. Can be larger if str
+///              is terminated. Use -1 if unknown and str is terminated.
 ///
 ///@return True if a valid version was parsed.
 ///
@@ -35,7 +36,7 @@ bool FirmwareVersion::fromString(const char* str, size_t length)
     unsigned int digit = 0;
     for(unsigned int i=0; i<length; i++)
     {
-        if(!std::isdigit(str[i]))
+        if(!std::isdigit((unsigned char)str[i]))
         {
             if(str[i] == '.')
                 continue;
