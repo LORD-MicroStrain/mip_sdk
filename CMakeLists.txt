@@ -142,9 +142,10 @@ set(MIP_LIBRARIES ${MIP_LIBRARIES_TMP} CACHE STRING "List of all requested MIP l
 # TESTING
 #
 
-include(CTest)
 
 if(MICROSTRAIN_BUILD_TESTS)
+    include(CTest)
+    enable_testing()
     add_subdirectory("test")
 endif()
 

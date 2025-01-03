@@ -4,6 +4,7 @@
 
 #include <mip/definitions/commands_3dm.hpp>
 
+
 #include <mip/metadata/mip_metadata.hpp>
 
 namespace mip::metadata
@@ -52,7 +53,6 @@ struct MetadataFor<commands_3dm::PollImuMessage>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -99,7 +99,6 @@ struct MetadataFor<commands_3dm::PollGnssMessage>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -146,7 +145,6 @@ struct MetadataFor<commands_3dm::PollFilterMessage>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -184,7 +182,6 @@ struct MetadataFor<commands_3dm::ImuMessageFormat::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -223,7 +220,6 @@ struct MetadataFor<commands_3dm::ImuMessageFormat>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -261,7 +257,6 @@ struct MetadataFor<commands_3dm::GpsMessageFormat::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -300,7 +295,6 @@ struct MetadataFor<commands_3dm::GpsMessageFormat>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -338,7 +332,6 @@ struct MetadataFor<commands_3dm::FilterMessageFormat::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -377,7 +370,6 @@ struct MetadataFor<commands_3dm::FilterMessageFormat>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -406,7 +398,6 @@ struct MetadataFor<commands_3dm::ImuGetBaseRate::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -423,7 +414,6 @@ struct MetadataFor<commands_3dm::ImuGetBaseRate>
         /* .parameters  = */ {},
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -452,7 +442,6 @@ struct MetadataFor<commands_3dm::GpsGetBaseRate::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -469,7 +458,6 @@ struct MetadataFor<commands_3dm::GpsGetBaseRate>
         /* .parameters  = */ {},
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -498,7 +486,6 @@ struct MetadataFor<commands_3dm::FilterGetBaseRate::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -515,7 +502,6 @@ struct MetadataFor<commands_3dm::FilterGetBaseRate>
         /* .parameters  = */ {},
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -571,7 +557,6 @@ struct MetadataFor<commands_3dm::PollData>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -609,7 +594,6 @@ struct MetadataFor<commands_3dm::GetBaseRate::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -638,7 +622,6 @@ struct MetadataFor<commands_3dm::GetBaseRate>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -685,7 +668,6 @@ struct MetadataFor<commands_3dm::MessageFormat::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -733,7 +715,6 @@ struct MetadataFor<commands_3dm::MessageFormat>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -751,6 +732,7 @@ struct MetadataFor<commands_3dm::NmeaMessage::MessageID>
         { uint32_t(5), "VTG", "Course over Ground. Source can be the Filter or GNSS1/2 datasets." },
         { uint32_t(6), "HDT", "Heading, True. Source can be the Filter or GNSS1/2 datasets." },
         { uint32_t(7), "ZDA", "Time & Date. Source must be the GNSS1 or GNSS2 datasets." },
+        { uint32_t(8), "GST", "Position Error Statistics. Source can be the Filter or GNSS1/2 datasets." },
         { uint32_t(129), "MSRA", "MicroStrain proprietary Euler angles. Source must be the Filter dataset. The talker ID must be set to IGNORED." },
         { uint32_t(130), "MSRR", "MicroStrain proprietary Angular Rate/Acceleration. Source must be the Sensor dataset. The talker ID must be set to IGNORED." },
     };
@@ -880,7 +862,6 @@ struct MetadataFor<commands_3dm::NmeaPollData>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -918,7 +899,6 @@ struct MetadataFor<commands_3dm::NmeaMessageFormat::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -957,7 +937,6 @@ struct MetadataFor<commands_3dm::NmeaMessageFormat>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -979,7 +958,6 @@ struct MetadataFor<commands_3dm::DeviceSettings>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {false, false, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1008,7 +986,6 @@ struct MetadataFor<commands_3dm::UartBaudrate::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1038,7 +1015,6 @@ struct MetadataFor<commands_3dm::UartBaudrate>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -1096,7 +1072,6 @@ struct MetadataFor<commands_3dm::FactoryStreaming>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1134,7 +1109,6 @@ struct MetadataFor<commands_3dm::DatastreamControl::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1173,7 +1147,6 @@ struct MetadataFor<commands_3dm::DatastreamControl>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -1331,7 +1304,6 @@ struct MetadataFor<commands_3dm::ConstellationSettings::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1379,7 +1351,6 @@ struct MetadataFor<commands_3dm::ConstellationSettings>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -1455,7 +1426,6 @@ struct MetadataFor<commands_3dm::GnssSbasSettings::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1512,7 +1482,6 @@ struct MetadataFor<commands_3dm::GnssSbasSettings>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -1569,7 +1538,6 @@ struct MetadataFor<commands_3dm::GnssAssistedFix::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1608,7 +1576,6 @@ struct MetadataFor<commands_3dm::GnssAssistedFix>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -1655,7 +1622,6 @@ struct MetadataFor<commands_3dm::GnssTimeAssistance::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1703,7 +1669,6 @@ struct MetadataFor<commands_3dm::GnssTimeAssistance>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, false, false, false},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -1768,7 +1733,6 @@ struct MetadataFor<commands_3dm::ImuLowpassFilter::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1834,7 +1798,6 @@ struct MetadataFor<commands_3dm::ImuLowpassFilter>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -1885,7 +1848,6 @@ struct MetadataFor<commands_3dm::PpsSource::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1915,7 +1877,6 @@ struct MetadataFor<commands_3dm::PpsSource>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -2046,7 +2007,6 @@ struct MetadataFor<commands_3dm::GpioConfig::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2103,7 +2063,6 @@ struct MetadataFor<commands_3dm::GpioConfig>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -2141,7 +2100,6 @@ struct MetadataFor<commands_3dm::GpioState::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2180,7 +2138,6 @@ struct MetadataFor<commands_3dm::GpioState>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, false, false, false},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -2246,7 +2203,6 @@ struct MetadataFor<commands_3dm::Odometer::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2294,7 +2250,6 @@ struct MetadataFor<commands_3dm::Odometer>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -2403,7 +2358,6 @@ struct MetadataFor<commands_3dm::GetEventSupport::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2432,7 +2386,6 @@ struct MetadataFor<commands_3dm::GetEventSupport>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -2491,7 +2444,6 @@ struct MetadataFor<commands_3dm::EventControl::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2530,7 +2482,6 @@ struct MetadataFor<commands_3dm::EventControl>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -2622,7 +2573,6 @@ struct MetadataFor<commands_3dm::GetEventTriggerStatus::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2660,7 +2610,6 @@ struct MetadataFor<commands_3dm::GetEventTriggerStatus>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -2732,7 +2681,6 @@ struct MetadataFor<commands_3dm::GetEventActionStatus::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2770,7 +2718,6 @@ struct MetadataFor<commands_3dm::GetEventActionStatus>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -3077,7 +3024,6 @@ struct MetadataFor<commands_3dm::EventTrigger::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -3125,7 +3071,6 @@ struct MetadataFor<commands_3dm::EventTrigger>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -3344,7 +3289,6 @@ struct MetadataFor<commands_3dm::EventAction::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -3401,7 +3345,6 @@ struct MetadataFor<commands_3dm::EventAction>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -3430,7 +3373,6 @@ struct MetadataFor<commands_3dm::AccelBias::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -3460,7 +3402,6 @@ struct MetadataFor<commands_3dm::AccelBias>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -3489,7 +3430,6 @@ struct MetadataFor<commands_3dm::GyroBias::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -3519,7 +3459,6 @@ struct MetadataFor<commands_3dm::GyroBias>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -3548,7 +3487,6 @@ struct MetadataFor<commands_3dm::CaptureGyroBias::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -3577,7 +3515,6 @@ struct MetadataFor<commands_3dm::CaptureGyroBias>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -3606,7 +3543,6 @@ struct MetadataFor<commands_3dm::MagHardIronOffset::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -3636,7 +3572,6 @@ struct MetadataFor<commands_3dm::MagHardIronOffset>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -3665,7 +3600,6 @@ struct MetadataFor<commands_3dm::MagSoftIronMatrix::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -3695,7 +3629,6 @@ struct MetadataFor<commands_3dm::MagSoftIronMatrix>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -3724,7 +3657,6 @@ struct MetadataFor<commands_3dm::ConingScullingEnable::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -3754,7 +3686,6 @@ struct MetadataFor<commands_3dm::ConingScullingEnable>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -3801,7 +3732,6 @@ struct MetadataFor<commands_3dm::Sensor2VehicleTransformEuler::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -3849,7 +3779,6 @@ struct MetadataFor<commands_3dm::Sensor2VehicleTransformEuler>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -3878,7 +3807,6 @@ struct MetadataFor<commands_3dm::Sensor2VehicleTransformQuaternion::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -3908,7 +3836,6 @@ struct MetadataFor<commands_3dm::Sensor2VehicleTransformQuaternion>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -3937,7 +3864,6 @@ struct MetadataFor<commands_3dm::Sensor2VehicleTransformDcm::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -3967,7 +3893,6 @@ struct MetadataFor<commands_3dm::Sensor2VehicleTransformDcm>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -4023,7 +3948,6 @@ struct MetadataFor<commands_3dm::ComplementaryFilter::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -4080,7 +4004,6 @@ struct MetadataFor<commands_3dm::ComplementaryFilter>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -4140,7 +4063,6 @@ struct MetadataFor<commands_3dm::SensorRange::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -4179,7 +4101,6 @@ struct MetadataFor<commands_3dm::SensorRange>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -4260,7 +4181,6 @@ struct MetadataFor<commands_3dm::CalibratedSensorRanges::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -4289,7 +4209,6 @@ struct MetadataFor<commands_3dm::CalibratedSensorRanges>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -4354,7 +4273,6 @@ struct MetadataFor<commands_3dm::LowpassFilter::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -4420,100 +4338,104 @@ struct MetadataFor<commands_3dm::LowpassFilter>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
 
 
-static constexpr inline std::initializer_list<const FieldInfo*> COMMANDS_3DM = {
+static constexpr inline const FieldInfo* COMMANDS_3DM_FIELDS[] = {
     &MetadataFor<commands_3dm::PollImuMessage>::value,
     &MetadataFor<commands_3dm::PollGnssMessage>::value,
     &MetadataFor<commands_3dm::PollFilterMessage>::value,
-    &MetadataFor<commands_3dm::ImuMessageFormat>::value,
-    &MetadataFor<commands_3dm::ImuMessageFormat::Response>::value,
-    &MetadataFor<commands_3dm::GpsMessageFormat>::value,
-    &MetadataFor<commands_3dm::GpsMessageFormat::Response>::value,
-    &MetadataFor<commands_3dm::FilterMessageFormat>::value,
-    &MetadataFor<commands_3dm::FilterMessageFormat::Response>::value,
+    &MetadataFor<commands_3dm::NmeaPollData>::value,
     &MetadataFor<commands_3dm::ImuGetBaseRate>::value,
-    &MetadataFor<commands_3dm::ImuGetBaseRate::Response>::value,
     &MetadataFor<commands_3dm::GpsGetBaseRate>::value,
-    &MetadataFor<commands_3dm::GpsGetBaseRate::Response>::value,
+    &MetadataFor<commands_3dm::ImuMessageFormat>::value,
+    &MetadataFor<commands_3dm::GpsMessageFormat>::value,
+    &MetadataFor<commands_3dm::FilterMessageFormat>::value,
     &MetadataFor<commands_3dm::FilterGetBaseRate>::value,
-    &MetadataFor<commands_3dm::FilterGetBaseRate::Response>::value,
+    &MetadataFor<commands_3dm::NmeaMessageFormat>::value,
     &MetadataFor<commands_3dm::PollData>::value,
     &MetadataFor<commands_3dm::GetBaseRate>::value,
-    &MetadataFor<commands_3dm::GetBaseRate::Response>::value,
     &MetadataFor<commands_3dm::MessageFormat>::value,
-    &MetadataFor<commands_3dm::MessageFormat::Response>::value,
-    &MetadataFor<commands_3dm::NmeaPollData>::value,
-    &MetadataFor<commands_3dm::NmeaMessageFormat>::value,
-    &MetadataFor<commands_3dm::NmeaMessageFormat::Response>::value,
-    &MetadataFor<commands_3dm::DeviceSettings>::value,
-    &MetadataFor<commands_3dm::UartBaudrate>::value,
-    &MetadataFor<commands_3dm::UartBaudrate::Response>::value,
     &MetadataFor<commands_3dm::FactoryStreaming>::value,
     &MetadataFor<commands_3dm::DatastreamControl>::value,
-    &MetadataFor<commands_3dm::DatastreamControl::Response>::value,
     &MetadataFor<commands_3dm::ConstellationSettings>::value,
-    &MetadataFor<commands_3dm::ConstellationSettings::Response>::value,
     &MetadataFor<commands_3dm::GnssSbasSettings>::value,
-    &MetadataFor<commands_3dm::GnssSbasSettings::Response>::value,
     &MetadataFor<commands_3dm::GnssAssistedFix>::value,
-    &MetadataFor<commands_3dm::GnssAssistedFix::Response>::value,
     &MetadataFor<commands_3dm::GnssTimeAssistance>::value,
-    &MetadataFor<commands_3dm::GnssTimeAssistance::Response>::value,
-    &MetadataFor<commands_3dm::ImuLowpassFilter>::value,
-    &MetadataFor<commands_3dm::ImuLowpassFilter::Response>::value,
     &MetadataFor<commands_3dm::PpsSource>::value,
-    &MetadataFor<commands_3dm::PpsSource::Response>::value,
-    &MetadataFor<commands_3dm::GpioConfig>::value,
-    &MetadataFor<commands_3dm::GpioConfig::Response>::value,
-    &MetadataFor<commands_3dm::GpioState>::value,
-    &MetadataFor<commands_3dm::GpioState::Response>::value,
-    &MetadataFor<commands_3dm::Odometer>::value,
-    &MetadataFor<commands_3dm::Odometer::Response>::value,
     &MetadataFor<commands_3dm::GetEventSupport>::value,
-    &MetadataFor<commands_3dm::GetEventSupport::Response>::value,
     &MetadataFor<commands_3dm::EventControl>::value,
-    &MetadataFor<commands_3dm::EventControl::Response>::value,
     &MetadataFor<commands_3dm::GetEventTriggerStatus>::value,
-    &MetadataFor<commands_3dm::GetEventTriggerStatus::Response>::value,
     &MetadataFor<commands_3dm::GetEventActionStatus>::value,
-    &MetadataFor<commands_3dm::GetEventActionStatus::Response>::value,
     &MetadataFor<commands_3dm::EventTrigger>::value,
-    &MetadataFor<commands_3dm::EventTrigger::Response>::value,
     &MetadataFor<commands_3dm::EventAction>::value,
-    &MetadataFor<commands_3dm::EventAction::Response>::value,
-    &MetadataFor<commands_3dm::AccelBias>::value,
-    &MetadataFor<commands_3dm::AccelBias::Response>::value,
-    &MetadataFor<commands_3dm::GyroBias>::value,
-    &MetadataFor<commands_3dm::GyroBias::Response>::value,
-    &MetadataFor<commands_3dm::CaptureGyroBias>::value,
-    &MetadataFor<commands_3dm::CaptureGyroBias::Response>::value,
-    &MetadataFor<commands_3dm::MagHardIronOffset>::value,
-    &MetadataFor<commands_3dm::MagHardIronOffset::Response>::value,
-    &MetadataFor<commands_3dm::MagSoftIronMatrix>::value,
-    &MetadataFor<commands_3dm::MagSoftIronMatrix::Response>::value,
-    &MetadataFor<commands_3dm::ConingScullingEnable>::value,
-    &MetadataFor<commands_3dm::ConingScullingEnable::Response>::value,
+    &MetadataFor<commands_3dm::DeviceSettings>::value,
     &MetadataFor<commands_3dm::Sensor2VehicleTransformEuler>::value,
-    &MetadataFor<commands_3dm::Sensor2VehicleTransformEuler::Response>::value,
     &MetadataFor<commands_3dm::Sensor2VehicleTransformQuaternion>::value,
-    &MetadataFor<commands_3dm::Sensor2VehicleTransformQuaternion::Response>::value,
     &MetadataFor<commands_3dm::Sensor2VehicleTransformDcm>::value,
-    &MetadataFor<commands_3dm::Sensor2VehicleTransformDcm::Response>::value,
+    &MetadataFor<commands_3dm::AccelBias>::value,
+    &MetadataFor<commands_3dm::GyroBias>::value,
+    &MetadataFor<commands_3dm::CaptureGyroBias>::value,
+    &MetadataFor<commands_3dm::MagHardIronOffset>::value,
+    &MetadataFor<commands_3dm::MagSoftIronMatrix>::value,
+    &MetadataFor<commands_3dm::ConingScullingEnable>::value,
+    &MetadataFor<commands_3dm::UartBaudrate>::value,
+    &MetadataFor<commands_3dm::GpioConfig>::value,
+    &MetadataFor<commands_3dm::GpioState>::value,
+    &MetadataFor<commands_3dm::Odometer>::value,
+    &MetadataFor<commands_3dm::ImuLowpassFilter>::value,
     &MetadataFor<commands_3dm::ComplementaryFilter>::value,
-    &MetadataFor<commands_3dm::ComplementaryFilter::Response>::value,
     &MetadataFor<commands_3dm::SensorRange>::value,
-    &MetadataFor<commands_3dm::SensorRange::Response>::value,
     &MetadataFor<commands_3dm::CalibratedSensorRanges>::value,
-    &MetadataFor<commands_3dm::CalibratedSensorRanges::Response>::value,
     &MetadataFor<commands_3dm::LowpassFilter>::value,
+    &MetadataFor<commands_3dm::ImuMessageFormat::Response>::value,
+    &MetadataFor<commands_3dm::GpsMessageFormat::Response>::value,
+    &MetadataFor<commands_3dm::FilterMessageFormat::Response>::value,
+    &MetadataFor<commands_3dm::ImuGetBaseRate::Response>::value,
+    &MetadataFor<commands_3dm::GpsGetBaseRate::Response>::value,
+    &MetadataFor<commands_3dm::DatastreamControl::Response>::value,
+    &MetadataFor<commands_3dm::UartBaudrate::Response>::value,
+    &MetadataFor<commands_3dm::FilterGetBaseRate::Response>::value,
+    &MetadataFor<commands_3dm::ImuLowpassFilter::Response>::value,
+    &MetadataFor<commands_3dm::NmeaMessageFormat::Response>::value,
+    &MetadataFor<commands_3dm::GetBaseRate::Response>::value,
+    &MetadataFor<commands_3dm::MessageFormat::Response>::value,
+    &MetadataFor<commands_3dm::ComplementaryFilter::Response>::value,
+    &MetadataFor<commands_3dm::AccelBias::Response>::value,
+    &MetadataFor<commands_3dm::GyroBias::Response>::value,
+    &MetadataFor<commands_3dm::CaptureGyroBias::Response>::value,
+    &MetadataFor<commands_3dm::MagHardIronOffset::Response>::value,
+    &MetadataFor<commands_3dm::MagSoftIronMatrix::Response>::value,
+    &MetadataFor<commands_3dm::ConingScullingEnable::Response>::value,
+    &MetadataFor<commands_3dm::ConstellationSettings::Response>::value,
+    &MetadataFor<commands_3dm::GnssSbasSettings::Response>::value,
+    &MetadataFor<commands_3dm::GnssAssistedFix::Response>::value,
+    &MetadataFor<commands_3dm::GnssTimeAssistance::Response>::value,
+    &MetadataFor<commands_3dm::PpsSource::Response>::value,
+    &MetadataFor<commands_3dm::Sensor2VehicleTransformEuler::Response>::value,
+    &MetadataFor<commands_3dm::Sensor2VehicleTransformQuaternion::Response>::value,
+    &MetadataFor<commands_3dm::Sensor2VehicleTransformDcm::Response>::value,
+    &MetadataFor<commands_3dm::GetEventSupport::Response>::value,
+    &MetadataFor<commands_3dm::EventControl::Response>::value,
+    &MetadataFor<commands_3dm::GetEventTriggerStatus::Response>::value,
+    &MetadataFor<commands_3dm::GetEventActionStatus::Response>::value,
+    &MetadataFor<commands_3dm::EventTrigger::Response>::value,
+    &MetadataFor<commands_3dm::EventAction::Response>::value,
+    &MetadataFor<commands_3dm::GpioConfig::Response>::value,
+    &MetadataFor<commands_3dm::GpioState::Response>::value,
+    &MetadataFor<commands_3dm::Odometer::Response>::value,
+    &MetadataFor<commands_3dm::SensorRange::Response>::value,
+    &MetadataFor<commands_3dm::CalibratedSensorRanges::Response>::value,
     &MetadataFor<commands_3dm::LowpassFilter::Response>::value,
 };
 
+static constexpr DescriptorSetInfo COMMANDS_3DM = {
+    /*.descriptor =*/ mip::commands_3dm::DESCRIPTOR_SET,
+    /*.name       =*/ "3dm Commands",
+    /*.fields     =*/ COMMANDS_3DM_FIELDS,
+};
 
 } // namespace mip::metadata
 

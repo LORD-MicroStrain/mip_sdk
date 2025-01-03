@@ -243,6 +243,208 @@ TypedResult<SignalConfiguration> defaultSignalConfiguration(C::mip_interface& de
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SIGNAL_CONFIGURATION, buffer, (uint8_t)serializer.usedLength());
 }
+void SpartnConfiguration::insert(Serializer& serializer) const
+{
+    serializer.insert(function);
+    
+    if( function == FunctionSelector::WRITE )
+    {
+        serializer.insert(enable);
+        
+        serializer.insert(type);
+        
+        serializer.insert(current_key_tow);
+        
+        serializer.insert(current_key_week);
+        
+        for(unsigned int i=0; i < 32; i++)
+            serializer.insert(current_key[i]);
+        
+        serializer.insert(next_key_tow);
+        
+        serializer.insert(next_key_week);
+        
+        for(unsigned int i=0; i < 32; i++)
+            serializer.insert(next_key[i]);
+        
+    }
+}
+void SpartnConfiguration::extract(Serializer& serializer)
+{
+    serializer.extract(function);
+    
+    if( function == FunctionSelector::WRITE )
+    {
+        serializer.extract(enable);
+        
+        serializer.extract(type);
+        
+        serializer.extract(current_key_tow);
+        
+        serializer.extract(current_key_week);
+        
+        for(unsigned int i=0; i < 32; i++)
+            serializer.extract(current_key[i]);
+        
+        serializer.extract(next_key_tow);
+        
+        serializer.extract(next_key_week);
+        
+        for(unsigned int i=0; i < 32; i++)
+            serializer.extract(next_key[i]);
+        
+    }
+}
+
+void SpartnConfiguration::Response::insert(Serializer& serializer) const
+{
+    serializer.insert(enable);
+    
+    serializer.insert(type);
+    
+    serializer.insert(current_key_tow);
+    
+    serializer.insert(current_key_week);
+    
+    for(unsigned int i=0; i < 32; i++)
+        serializer.insert(current_key[i]);
+    
+    serializer.insert(next_key_tow);
+    
+    serializer.insert(next_key_week);
+    
+    for(unsigned int i=0; i < 32; i++)
+        serializer.insert(next_key[i]);
+    
+}
+void SpartnConfiguration::Response::extract(Serializer& serializer)
+{
+    serializer.extract(enable);
+    
+    serializer.extract(type);
+    
+    serializer.extract(current_key_tow);
+    
+    serializer.extract(current_key_week);
+    
+    for(unsigned int i=0; i < 32; i++)
+        serializer.extract(current_key[i]);
+    
+    serializer.extract(next_key_tow);
+    
+    serializer.extract(next_key_week);
+    
+    for(unsigned int i=0; i < 32; i++)
+        serializer.extract(next_key[i]);
+    
+}
+
+TypedResult<SpartnConfiguration> writeSpartnConfiguration(C::mip_interface& device, uint8_t enable, uint8_t type, uint32_t currentKeyTow, uint16_t currentKeyWeek, const uint8_t* currentKey, uint32_t nextKeyTow, uint16_t nextKeyWeek, const uint8_t* nextKey)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    serializer.insert(FunctionSelector::WRITE);
+    serializer.insert(enable);
+    
+    serializer.insert(type);
+    
+    serializer.insert(currentKeyTow);
+    
+    serializer.insert(currentKeyWeek);
+    
+    assert(currentKey);
+    for(unsigned int i=0; i < 32; i++)
+        serializer.insert(currentKey[i]);
+    
+    serializer.insert(nextKeyTow);
+    
+    serializer.insert(nextKeyWeek);
+    
+    assert(nextKey);
+    for(unsigned int i=0; i < 32; i++)
+        serializer.insert(nextKey[i]);
+    
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SPARTN_CONFIGURATION, buffer, (uint8_t)serializer.usedLength());
+}
+TypedResult<SpartnConfiguration> readSpartnConfiguration(C::mip_interface& device, uint8_t* enableOut, uint8_t* typeOut, uint32_t* currentKeyTowOut, uint16_t* currentKeyWeekOut, uint8_t* currentKeyOut, uint32_t* nextKeyTowOut, uint16_t* nextKeyWeekOut, uint8_t* nextKeyOut)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    serializer.insert(FunctionSelector::READ);
+    assert(serializer.isOk());
+    
+    uint8_t responseLength = sizeof(buffer);
+    TypedResult<SpartnConfiguration> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_SPARTN_CONFIGURATION, buffer, (uint8_t)serializer.usedLength(), REPLY_SPARTN_CONFIGURATION, buffer, &responseLength);
+    
+    if( result == MIP_ACK_OK )
+    {
+        Serializer deserializer(buffer, responseLength);
+        
+        assert(enableOut);
+        deserializer.extract(*enableOut);
+        
+        assert(typeOut);
+        deserializer.extract(*typeOut);
+        
+        assert(currentKeyTowOut);
+        deserializer.extract(*currentKeyTowOut);
+        
+        assert(currentKeyWeekOut);
+        deserializer.extract(*currentKeyWeekOut);
+        
+        assert(currentKeyOut);
+        for(unsigned int i=0; i < 32; i++)
+            deserializer.extract(currentKeyOut[i]);
+        
+        assert(nextKeyTowOut);
+        deserializer.extract(*nextKeyTowOut);
+        
+        assert(nextKeyWeekOut);
+        deserializer.extract(*nextKeyWeekOut);
+        
+        assert(nextKeyOut);
+        for(unsigned int i=0; i < 32; i++)
+            deserializer.extract(nextKeyOut[i]);
+        
+        if( deserializer.remaining() != 0 )
+            result = MIP_STATUS_ERROR;
+    }
+    return result;
+}
+TypedResult<SpartnConfiguration> saveSpartnConfiguration(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    serializer.insert(FunctionSelector::SAVE);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SPARTN_CONFIGURATION, buffer, (uint8_t)serializer.usedLength());
+}
+TypedResult<SpartnConfiguration> loadSpartnConfiguration(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    serializer.insert(FunctionSelector::LOAD);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SPARTN_CONFIGURATION, buffer, (uint8_t)serializer.usedLength());
+}
+TypedResult<SpartnConfiguration> defaultSpartnConfiguration(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    serializer.insert(FunctionSelector::RESET);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SPARTN_CONFIGURATION, buffer, (uint8_t)serializer.usedLength());
+}
 void RtkDongleConfiguration::insert(Serializer& serializer) const
 {
     serializer.insert(function);

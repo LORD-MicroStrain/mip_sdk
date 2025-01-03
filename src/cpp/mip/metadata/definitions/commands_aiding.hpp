@@ -4,6 +4,7 @@
 
 #include <mip/definitions/commands_aiding.hpp>
 
+
 #include <mip/metadata/mip_metadata.hpp>
 
 namespace mip::metadata
@@ -123,7 +124,6 @@ struct MetadataFor<commands_aiding::FrameConfig::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -189,7 +189,6 @@ struct MetadataFor<commands_aiding::FrameConfig>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -238,7 +237,6 @@ struct MetadataFor<commands_aiding::EchoControl::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -268,7 +266,6 @@ struct MetadataFor<commands_aiding::EchoControl>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -416,7 +413,6 @@ struct MetadataFor<commands_aiding::PosEcef>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -519,7 +515,6 @@ struct MetadataFor<commands_aiding::PosLlh>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -584,7 +579,6 @@ struct MetadataFor<commands_aiding::HeightAboveEllipsoid>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -669,7 +663,6 @@ struct MetadataFor<commands_aiding::VelEcef>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -754,7 +747,6 @@ struct MetadataFor<commands_aiding::VelNed>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -839,7 +831,6 @@ struct MetadataFor<commands_aiding::VelBodyFrame>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -904,7 +895,6 @@ struct MetadataFor<commands_aiding::HeadingTrue>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -989,7 +979,6 @@ struct MetadataFor<commands_aiding::MagneticField>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1054,17 +1043,14 @@ struct MetadataFor<commands_aiding::Pressure>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
 
 
-static constexpr inline std::initializer_list<const FieldInfo*> COMMANDS_AIDING = {
+static constexpr inline const FieldInfo* COMMANDS_AIDING_FIELDS[] = {
     &MetadataFor<commands_aiding::FrameConfig>::value,
-    &MetadataFor<commands_aiding::FrameConfig::Response>::value,
     &MetadataFor<commands_aiding::EchoControl>::value,
-    &MetadataFor<commands_aiding::EchoControl::Response>::value,
     &MetadataFor<commands_aiding::PosEcef>::value,
     &MetadataFor<commands_aiding::PosLlh>::value,
     &MetadataFor<commands_aiding::HeightAboveEllipsoid>::value,
@@ -1074,8 +1060,15 @@ static constexpr inline std::initializer_list<const FieldInfo*> COMMANDS_AIDING 
     &MetadataFor<commands_aiding::HeadingTrue>::value,
     &MetadataFor<commands_aiding::MagneticField>::value,
     &MetadataFor<commands_aiding::Pressure>::value,
+    &MetadataFor<commands_aiding::FrameConfig::Response>::value,
+    &MetadataFor<commands_aiding::EchoControl::Response>::value,
 };
 
+static constexpr DescriptorSetInfo COMMANDS_AIDING = {
+    /*.descriptor =*/ mip::commands_aiding::DESCRIPTOR_SET,
+    /*.name       =*/ "Aiding Commands",
+    /*.fields     =*/ COMMANDS_AIDING_FIELDS,
+};
 
 } // namespace mip::metadata
 

@@ -17,8 +17,6 @@
 volatile sig_atomic_t stop_flag = false;
 mip::Timestamp last_receive_time = 0;
 
-mip::metadata::Definitions mipdefs{mip::metadata::ALL_FIELDS};
-
 void signal_handler(int signum)
 {
     (void)signum;
@@ -37,8 +35,6 @@ void handleField(void*, const mip::FieldView& field, mip::Timestamp timestamp)
 
 int main(int argc, const char* argv[])
 {
-    mipdefs.registerDefinitions(mip::metadata::ALL_FIELDS);
-
     std::unique_ptr<ExampleUtils> utils;
     try {
         utils = handleCommonArgs(argc, argv);

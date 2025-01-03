@@ -4,6 +4,7 @@
 
 #include <mip/definitions/data_gnss.hpp>
 
+
 #include <mip/metadata/mip_metadata.hpp>
 
 namespace mip::metadata
@@ -111,7 +112,6 @@ struct MetadataFor<data_gnss::PosLlh>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -178,7 +178,6 @@ struct MetadataFor<data_gnss::PosEcef>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -285,7 +284,6 @@ struct MetadataFor<data_gnss::VelNed>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -352,7 +350,6 @@ struct MetadataFor<data_gnss::VelEcef>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -469,7 +466,6 @@ struct MetadataFor<data_gnss::Dop>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -581,7 +577,6 @@ struct MetadataFor<data_gnss::UtcTime>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -648,7 +643,6 @@ struct MetadataFor<data_gnss::GpsTime>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -725,7 +719,6 @@ struct MetadataFor<data_gnss::ClockInfo>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -846,7 +839,6 @@ struct MetadataFor<data_gnss::FixInfo>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -972,7 +964,6 @@ struct MetadataFor<data_gnss::SvInfo>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1111,7 +1102,6 @@ struct MetadataFor<data_gnss::HwStatus>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1198,7 +1188,6 @@ struct MetadataFor<data_gnss::DgpsInfo>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1285,7 +1274,6 @@ struct MetadataFor<data_gnss::DgpsChannel>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1372,7 +1360,6 @@ struct MetadataFor<data_gnss::ClockInfo2>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1428,7 +1415,6 @@ struct MetadataFor<data_gnss::GpsLeapSeconds>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1578,7 +1564,6 @@ struct MetadataFor<data_gnss::SbasInfo>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1732,7 +1717,6 @@ struct MetadataFor<data_gnss::SbasCorrection>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1881,7 +1865,6 @@ struct MetadataFor<data_gnss::RfErrorDetection>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2014,7 +1997,6 @@ struct MetadataFor<data_gnss::BaseStationInfo>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2176,7 +2158,6 @@ struct MetadataFor<data_gnss::RtkCorrectionsStatus>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2311,7 +2292,6 @@ struct MetadataFor<data_gnss::SatelliteStatus>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2642,7 +2622,6 @@ struct MetadataFor<data_gnss::Raw>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2989,7 +2968,6 @@ struct MetadataFor<data_gnss::GpsEphemeris>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -3336,7 +3314,6 @@ struct MetadataFor<data_gnss::GalileoEphemeris>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -3600,7 +3577,352 @@ struct MetadataFor<data_gnss::GloEphemeris>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
+    };
+};
+
+template<>
+struct MetadataFor<data_gnss::BeidouEphemeris::ValidFlags>
+{
+    using type = data_gnss::BeidouEphemeris::ValidFlags;
+
+    static constexpr inline BitfieldInfo::Entry entries[] = {
+        { uint32_t(1), "ephemeris", "" },
+        { uint32_t(2), "modern_data", "" },
+        { uint32_t(4), "isc_l5", "" },
+        { uint32_t(7), "flags", "" },
+    };
+
+    static constexpr inline BitfieldInfo value = {
+        /* .name    = */ "ValidFlags",
+        /* .docs    = */ "",
+        /* .type    = */ Type::U16,
+        /* .entries = */ entries,
+    };
+
+};
+
+template<>
+struct MetadataFor<data_gnss::BeidouEphemeris>
+{
+    using type = data_gnss::BeidouEphemeris;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "index",
+            /* .docs          = */ "Index of this field in this epoch.",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, uint8_t, &type::index>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "count",
+            /* .docs          = */ "Total number of fields in this epoch.",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, uint8_t, &type::count>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "time_of_week",
+            /* .docs          = */ "GPS Time of week [seconds]",
+            /* .type          = */ {Type::DOUBLE, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, double, &type::time_of_week>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "week_number",
+            /* .docs          = */ "GPS Week since 1980 [weeks]",
+            /* .type          = */ {Type::U16, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, uint16_t, &type::week_number>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "satellite_id",
+            /* .docs          = */ "GNSS satellite id within the constellation.",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, uint8_t, &type::satellite_id>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "health",
+            /* .docs          = */ "Satellite and signal health",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, uint8_t, &type::health>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "iodc",
+            /* .docs          = */ "Issue of Data Clock. This increments each time the data changes and\nrolls over at 4. It is used to make sure various raw data elements from\ndifferent sources line up correctly.",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, uint8_t, &type::iodc>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "iode",
+            /* .docs          = */ "Issue of Data Ephemeris.",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, uint8_t, &type::iode>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "t_oc",
+            /* .docs          = */ "Reference time for clock data.",
+            /* .type          = */ {Type::DOUBLE, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, double, &type::t_oc>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "af0",
+            /* .docs          = */ "Clock bias in [s].",
+            /* .type          = */ {Type::DOUBLE, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, double, &type::af0>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "af1",
+            /* .docs          = */ "Clock drift in [s/s].",
+            /* .type          = */ {Type::DOUBLE, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, double, &type::af1>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "af2",
+            /* .docs          = */ "Clock drift rate in [s/s^2].",
+            /* .type          = */ {Type::DOUBLE, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, double, &type::af2>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "t_gd",
+            /* .docs          = */ "T Group Delay [s].",
+            /* .type          = */ {Type::DOUBLE, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, double, &type::t_gd>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "ISC_L1CA",
+            /* .docs          = */ "Inter-signal correction (L1).",
+            /* .type          = */ {Type::DOUBLE, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, double, &type::ISC_L1CA>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "ISC_L2C",
+            /* .docs          = */ "Inter-signal correction (L2, or L5 if isc_l5 flag is set).",
+            /* .type          = */ {Type::DOUBLE, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, double, &type::ISC_L2C>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "t_oe",
+            /* .docs          = */ "Reference time for ephemeris in [s].",
+            /* .type          = */ {Type::DOUBLE, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, double, &type::t_oe>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "a",
+            /* .docs          = */ "Semi-major axis [m].",
+            /* .type          = */ {Type::DOUBLE, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, double, &type::a>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "a_dot",
+            /* .docs          = */ "Semi-major axis rate [m/s].",
+            /* .type          = */ {Type::DOUBLE, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, double, &type::a_dot>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "mean_anomaly",
+            /* .docs          = */ "[rad].",
+            /* .type          = */ {Type::DOUBLE, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, double, &type::mean_anomaly>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "delta_mean_motion",
+            /* .docs          = */ "[rad].",
+            /* .type          = */ {Type::DOUBLE, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, double, &type::delta_mean_motion>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "delta_mean_motion_dot",
+            /* .docs          = */ "[rad/s].",
+            /* .type          = */ {Type::DOUBLE, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, double, &type::delta_mean_motion_dot>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "eccentricity",
+            /* .docs          = */ "",
+            /* .type          = */ {Type::DOUBLE, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, double, &type::eccentricity>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "argument_of_perigee",
+            /* .docs          = */ "[rad].",
+            /* .type          = */ {Type::DOUBLE, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, double, &type::argument_of_perigee>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "omega",
+            /* .docs          = */ "Longitude of Ascending Node [rad].",
+            /* .type          = */ {Type::DOUBLE, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, double, &type::omega>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "omega_dot",
+            /* .docs          = */ "Rate of Right Ascension [rad/s].",
+            /* .type          = */ {Type::DOUBLE, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, double, &type::omega_dot>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "inclination",
+            /* .docs          = */ "Inclination angle [rad].",
+            /* .type          = */ {Type::DOUBLE, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, double, &type::inclination>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "inclination_dot",
+            /* .docs          = */ "Inclination angle rate of change [rad/s].",
+            /* .type          = */ {Type::DOUBLE, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, double, &type::inclination_dot>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "c_ic",
+            /* .docs          = */ "Harmonic Correction Term.",
+            /* .type          = */ {Type::DOUBLE, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, double, &type::c_ic>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "c_is",
+            /* .docs          = */ "Harmonic Correction Term.",
+            /* .type          = */ {Type::DOUBLE, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, double, &type::c_is>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "c_uc",
+            /* .docs          = */ "Harmonic Correction Term.",
+            /* .type          = */ {Type::DOUBLE, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, double, &type::c_uc>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "c_us",
+            /* .docs          = */ "Harmonic Correction Term.",
+            /* .type          = */ {Type::DOUBLE, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, double, &type::c_us>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "c_rc",
+            /* .docs          = */ "Harmonic Correction Term.",
+            /* .type          = */ {Type::DOUBLE, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, double, &type::c_rc>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "c_rs",
+            /* .docs          = */ "Harmonic Correction Term.",
+            /* .type          = */ {Type::DOUBLE, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, double, &type::c_rs>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "valid_flags",
+            /* .docs          = */ "",
+            /* .type          = */ {Type::BITS, &MetadataFor<data_gnss::BeidouEphemeris::ValidFlags>::value},
+            /* .accessor      = */ nullptr, //utils::access<type, data_gnss::BeidouEphemeris::ValidFlags, &type::valid_flags>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "data_gnss::BeidouEphemeris",
+        /* .title       = */ "BeiDou Ephemeris",
+        /* .docs        = */ "BeiDou Ephemeris Data",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
         /* .response    = */ nullptr,
     };
 };
@@ -3687,7 +4009,6 @@ struct MetadataFor<data_gnss::GpsIonoCorr>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -3774,13 +4095,108 @@ struct MetadataFor<data_gnss::GalileoIonoCorr>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
+    };
+};
+
+template<>
+struct MetadataFor<data_gnss::BeidouIonoCorr::ValidFlags>
+{
+    using type = data_gnss::BeidouIonoCorr::ValidFlags;
+
+    static constexpr inline BitfieldInfo::Entry entries[] = {
+        { uint32_t(1), "tow", "" },
+        { uint32_t(2), "week_number", "" },
+        { uint32_t(4), "alpha", "" },
+        { uint32_t(8), "beta", "" },
+        { uint32_t(16), "alpha_corr", "" },
+        { uint32_t(31), "flags", "" },
+    };
+
+    static constexpr inline BitfieldInfo value = {
+        /* .name    = */ "ValidFlags",
+        /* .docs    = */ "",
+        /* .type    = */ Type::U16,
+        /* .entries = */ entries,
+    };
+
+};
+
+template<>
+struct MetadataFor<data_gnss::BeidouIonoCorr>
+{
+    using type = data_gnss::BeidouIonoCorr;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "time_of_week",
+            /* .docs          = */ "GPS Time of week [seconds]",
+            /* .type          = */ {Type::DOUBLE, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, double, &type::time_of_week>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "week_number",
+            /* .docs          = */ "GPS Week since 1980 [weeks]",
+            /* .type          = */ {Type::U16, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, uint16_t, &type::week_number>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "alpha",
+            /* .docs          = */ "Ionospheric Delay Terms.",
+            /* .type          = */ {Type::DOUBLE, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, double, &type::alpha>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 4,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "beta",
+            /* .docs          = */ "Ionospheric Delay Terms.",
+            /* .type          = */ {Type::DOUBLE, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, double, &type::beta>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 4,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "alpha_corr",
+            /* .docs          = */ "Ionospheric Delay Correction Terms.",
+            /* .type          = */ {Type::DOUBLE, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, double, &type::alpha_corr>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 9,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "valid_flags",
+            /* .docs          = */ "",
+            /* .type          = */ {Type::BITS, &MetadataFor<data_gnss::BeidouIonoCorr::ValidFlags>::value},
+            /* .accessor      = */ nullptr, //utils::access<type, data_gnss::BeidouIonoCorr::ValidFlags, &type::valid_flags>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "data_gnss::BeidouIonoCorr",
+        /* .title       = */ "BeiDou Ionospheric Correction",
+        /* .docs        = */ "Ionospheric Correction Terms for BeiDou",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
         /* .response    = */ nullptr,
     };
 };
 
 
-static constexpr inline std::initializer_list<const FieldInfo*> DATA_GNSS = {
+static constexpr inline const FieldInfo* DATA_GNSS_FIELDS[] = {
     &MetadataFor<data_gnss::PosLlh>::value,
     &MetadataFor<data_gnss::PosEcef>::value,
     &MetadataFor<data_gnss::VelNed>::value,
@@ -3799,17 +4215,24 @@ static constexpr inline std::initializer_list<const FieldInfo*> DATA_GNSS = {
     &MetadataFor<data_gnss::SbasInfo>::value,
     &MetadataFor<data_gnss::SbasCorrection>::value,
     &MetadataFor<data_gnss::RfErrorDetection>::value,
-    &MetadataFor<data_gnss::BaseStationInfo>::value,
-    &MetadataFor<data_gnss::RtkCorrectionsStatus>::value,
     &MetadataFor<data_gnss::SatelliteStatus>::value,
     &MetadataFor<data_gnss::Raw>::value,
+    &MetadataFor<data_gnss::BaseStationInfo>::value,
+    &MetadataFor<data_gnss::RtkCorrectionsStatus>::value,
     &MetadataFor<data_gnss::GpsEphemeris>::value,
-    &MetadataFor<data_gnss::GalileoEphemeris>::value,
     &MetadataFor<data_gnss::GloEphemeris>::value,
+    &MetadataFor<data_gnss::GalileoEphemeris>::value,
+    &MetadataFor<data_gnss::BeidouEphemeris>::value,
     &MetadataFor<data_gnss::GpsIonoCorr>::value,
     &MetadataFor<data_gnss::GalileoIonoCorr>::value,
+    &MetadataFor<data_gnss::BeidouIonoCorr>::value,
 };
 
+static constexpr DescriptorSetInfo DATA_GNSS = {
+    /*.descriptor =*/ mip::data_gnss::DESCRIPTOR_SET,
+    /*.name       =*/ "Gnss Data",
+    /*.fields     =*/ DATA_GNSS_FIELDS,
+};
 
 } // namespace mip::metadata
 

@@ -1,6 +1,6 @@
 
 
-#include <mip/metadata/mip_definitions.hpp>
+#include <mip/metadata/mip_all_definitions.hpp>
 
 #include <mip/mip_field.hpp>
 
@@ -16,8 +16,6 @@
 #if __cpp_lib_optional < 201606L
 #error "Needs optional support"
 #endif
-
-extern mip::metadata::Definitions mipdefs;
 
 
 struct Formatter
@@ -359,7 +357,7 @@ std::ostream& Formatter::formatStruct(const mip::metadata::StructInfo* info, siz
 ///
 std::ostream& formatField(std::ostream& ss, const mip::FieldView& field)
 {
-    const mip::metadata::FieldInfo* info = mipdefs.findField(field.descriptor());
+    const mip::metadata::FieldInfo* info = mip::metadata::findField(mip::metadata::ALL_DESCRIPTOR_SETS, field.descriptor());
 
     if(!info)
     {
