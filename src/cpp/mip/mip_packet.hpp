@@ -132,7 +132,7 @@ public:
             if(ok)
                 ok &= C::mip_packet_update_last_field_length(&m_packet, basePointer(), (uint8_t) usedLength()) >= 0;
 
-            if(!ok)
+            if(!ok && basePointer())
                 C::mip_packet_cancel_last_field(&m_packet, basePointer());
 
             return ok;

@@ -4,6 +4,7 @@
 
 #include <mip/definitions/data_system.hpp>
 
+
 #include <mip/metadata/mip_metadata.hpp>
 
 namespace mip::metadata
@@ -34,7 +35,6 @@ struct MetadataFor<data_system::BuiltInTest>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -72,7 +72,6 @@ struct MetadataFor<data_system::TimeSyncStatus>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -101,7 +100,6 @@ struct MetadataFor<data_system::GpioState>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -139,19 +137,23 @@ struct MetadataFor<data_system::GpioAnalogValue>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
 
 
-static constexpr inline std::initializer_list<const FieldInfo*> DATA_SYSTEM = {
+static constexpr inline const FieldInfo* DATA_SYSTEM_FIELDS[] = {
     &MetadataFor<data_system::BuiltInTest>::value,
     &MetadataFor<data_system::TimeSyncStatus>::value,
     &MetadataFor<data_system::GpioState>::value,
     &MetadataFor<data_system::GpioAnalogValue>::value,
 };
 
+static constexpr DescriptorSetInfo DATA_SYSTEM = {
+    /*.descriptor =*/ mip::data_system::DESCRIPTOR_SET,
+    /*.name       =*/ "System Data",
+    /*.fields     =*/ DATA_SYSTEM_FIELDS,
+};
 
 } // namespace mip::metadata
 

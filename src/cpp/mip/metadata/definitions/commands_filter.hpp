@@ -4,6 +4,7 @@
 
 #include <mip/definitions/commands_filter.hpp>
 
+
 #include <mip/metadata/mip_metadata.hpp>
 
 namespace mip::metadata
@@ -22,7 +23,6 @@ struct MetadataFor<commands_filter::Reset>
         /* .parameters  = */ {},
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -69,7 +69,6 @@ struct MetadataFor<commands_filter::SetInitialAttitude>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -122,7 +121,6 @@ struct MetadataFor<commands_filter::EstimationControl::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -152,7 +150,6 @@ struct MetadataFor<commands_filter::EstimationControl>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -244,7 +241,6 @@ struct MetadataFor<commands_filter::ExternalGnssUpdate>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -291,7 +287,6 @@ struct MetadataFor<commands_filter::ExternalHeadingUpdate>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -356,7 +351,6 @@ struct MetadataFor<commands_filter::ExternalHeadingUpdateWithTime>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -405,7 +399,6 @@ struct MetadataFor<commands_filter::TareOrientation::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -435,7 +428,6 @@ struct MetadataFor<commands_filter::TareOrientation>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -485,7 +477,6 @@ struct MetadataFor<commands_filter::VehicleDynamicsMode::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -515,7 +506,6 @@ struct MetadataFor<commands_filter::VehicleDynamicsMode>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -562,7 +552,6 @@ struct MetadataFor<commands_filter::SensorToVehicleRotationEuler::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -610,7 +599,6 @@ struct MetadataFor<commands_filter::SensorToVehicleRotationEuler>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -639,7 +627,6 @@ struct MetadataFor<commands_filter::SensorToVehicleRotationDcm::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -669,7 +656,6 @@ struct MetadataFor<commands_filter::SensorToVehicleRotationDcm>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -698,7 +684,6 @@ struct MetadataFor<commands_filter::SensorToVehicleRotationQuaternion::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -728,7 +713,6 @@ struct MetadataFor<commands_filter::SensorToVehicleRotationQuaternion>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -757,7 +741,6 @@ struct MetadataFor<commands_filter::SensorToVehicleOffset::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -787,7 +770,6 @@ struct MetadataFor<commands_filter::SensorToVehicleOffset>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -816,7 +798,6 @@ struct MetadataFor<commands_filter::AntennaOffset::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -846,7 +827,6 @@ struct MetadataFor<commands_filter::AntennaOffset>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -896,7 +876,6 @@ struct MetadataFor<commands_filter::GnssSource::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -926,7 +905,6 @@ struct MetadataFor<commands_filter::GnssSource>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -980,7 +958,6 @@ struct MetadataFor<commands_filter::HeadingSource::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1010,7 +987,6 @@ struct MetadataFor<commands_filter::HeadingSource>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -1039,7 +1015,6 @@ struct MetadataFor<commands_filter::AutoInitControl::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1069,7 +1044,6 @@ struct MetadataFor<commands_filter::AutoInitControl>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -1098,7 +1072,6 @@ struct MetadataFor<commands_filter::AccelNoise::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1128,7 +1101,6 @@ struct MetadataFor<commands_filter::AccelNoise>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -1157,7 +1129,6 @@ struct MetadataFor<commands_filter::GyroNoise::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1187,7 +1158,6 @@ struct MetadataFor<commands_filter::GyroNoise>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -1225,7 +1195,6 @@ struct MetadataFor<commands_filter::AccelBiasModel::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1264,7 +1233,6 @@ struct MetadataFor<commands_filter::AccelBiasModel>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -1302,7 +1270,6 @@ struct MetadataFor<commands_filter::GyroBiasModel::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1341,7 +1308,6 @@ struct MetadataFor<commands_filter::GyroBiasModel>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -1389,7 +1355,6 @@ struct MetadataFor<commands_filter::AltitudeAiding::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1419,7 +1384,6 @@ struct MetadataFor<commands_filter::AltitudeAiding>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -1467,7 +1431,6 @@ struct MetadataFor<commands_filter::PitchRollAiding::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1497,7 +1460,6 @@ struct MetadataFor<commands_filter::PitchRollAiding>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -1535,7 +1497,6 @@ struct MetadataFor<commands_filter::AutoZupt::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1574,7 +1535,6 @@ struct MetadataFor<commands_filter::AutoZupt>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -1612,7 +1572,6 @@ struct MetadataFor<commands_filter::AutoAngularZupt::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1651,7 +1610,6 @@ struct MetadataFor<commands_filter::AutoAngularZupt>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -1668,7 +1626,6 @@ struct MetadataFor<commands_filter::CommandedZupt>
         /* .parameters  = */ {},
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1685,7 +1642,6 @@ struct MetadataFor<commands_filter::CommandedAngularZupt>
         /* .parameters  = */ {},
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1707,7 +1663,6 @@ struct MetadataFor<commands_filter::MagCaptureAutoCal>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, false, true, false, false},
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1736,7 +1691,6 @@ struct MetadataFor<commands_filter::GravityNoise::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1766,7 +1720,6 @@ struct MetadataFor<commands_filter::GravityNoise>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -1795,7 +1748,6 @@ struct MetadataFor<commands_filter::PressureAltitudeNoise::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1825,7 +1777,6 @@ struct MetadataFor<commands_filter::PressureAltitudeNoise>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -1854,7 +1805,6 @@ struct MetadataFor<commands_filter::HardIronOffsetNoise::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1884,7 +1834,6 @@ struct MetadataFor<commands_filter::HardIronOffsetNoise>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -1913,7 +1862,6 @@ struct MetadataFor<commands_filter::SoftIronMatrixNoise::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1943,7 +1891,6 @@ struct MetadataFor<commands_filter::SoftIronMatrixNoise>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -1972,7 +1919,6 @@ struct MetadataFor<commands_filter::MagNoise::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2002,7 +1948,6 @@ struct MetadataFor<commands_filter::MagNoise>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -2060,7 +2005,6 @@ struct MetadataFor<commands_filter::InclinationSource::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2099,7 +2043,6 @@ struct MetadataFor<commands_filter::InclinationSource>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -2137,7 +2080,6 @@ struct MetadataFor<commands_filter::MagneticDeclinationSource::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2176,7 +2118,6 @@ struct MetadataFor<commands_filter::MagneticDeclinationSource>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -2214,7 +2155,6 @@ struct MetadataFor<commands_filter::MagFieldMagnitudeSource::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2253,7 +2193,6 @@ struct MetadataFor<commands_filter::MagFieldMagnitudeSource>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -2309,7 +2248,6 @@ struct MetadataFor<commands_filter::ReferencePosition::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2366,7 +2304,6 @@ struct MetadataFor<commands_filter::ReferencePosition>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -2469,7 +2406,6 @@ struct MetadataFor<commands_filter::AccelMagnitudeErrorAdaptiveMeasurement::Resp
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2553,7 +2489,6 @@ struct MetadataFor<commands_filter::AccelMagnitudeErrorAdaptiveMeasurement>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -2636,7 +2571,6 @@ struct MetadataFor<commands_filter::MagMagnitudeErrorAdaptiveMeasurement::Respon
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2720,7 +2654,6 @@ struct MetadataFor<commands_filter::MagMagnitudeErrorAdaptiveMeasurement>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -2785,7 +2718,6 @@ struct MetadataFor<commands_filter::MagDipAngleErrorAdaptiveMeasurement::Respons
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2851,7 +2783,6 @@ struct MetadataFor<commands_filter::MagDipAngleErrorAdaptiveMeasurement>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -2916,7 +2847,6 @@ struct MetadataFor<commands_filter::AidingMeasurementEnable::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2955,7 +2885,6 @@ struct MetadataFor<commands_filter::AidingMeasurementEnable>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -2972,7 +2901,6 @@ struct MetadataFor<commands_filter::Run>
         /* .parameters  = */ {},
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -3019,7 +2947,6 @@ struct MetadataFor<commands_filter::KinematicConstraint::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -3067,7 +2994,6 @@ struct MetadataFor<commands_filter::KinematicConstraint>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -3229,7 +3155,6 @@ struct MetadataFor<commands_filter::InitializationConfiguration::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -3331,7 +3256,6 @@ struct MetadataFor<commands_filter::InitializationConfiguration>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -3369,7 +3293,6 @@ struct MetadataFor<commands_filter::AdaptiveFilterOptions::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -3408,7 +3331,6 @@ struct MetadataFor<commands_filter::AdaptiveFilterOptions>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -3446,7 +3368,6 @@ struct MetadataFor<commands_filter::MultiAntennaOffset::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -3485,7 +3406,6 @@ struct MetadataFor<commands_filter::MultiAntennaOffset>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -3532,7 +3452,6 @@ struct MetadataFor<commands_filter::RelPosConfiguration::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -3580,7 +3499,6 @@ struct MetadataFor<commands_filter::RelPosConfiguration>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -3636,7 +3554,6 @@ struct MetadataFor<commands_filter::RefPointLeverArm::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -3675,7 +3592,6 @@ struct MetadataFor<commands_filter::RefPointLeverArm>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -3731,7 +3647,6 @@ struct MetadataFor<commands_filter::SpeedMeasurement>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -3769,7 +3684,6 @@ struct MetadataFor<commands_filter::SpeedLeverArm::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -3808,7 +3722,6 @@ struct MetadataFor<commands_filter::SpeedLeverArm>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -3837,7 +3750,6 @@ struct MetadataFor<commands_filter::WheeledVehicleConstraintControl::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -3867,7 +3779,6 @@ struct MetadataFor<commands_filter::WheeledVehicleConstraintControl>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -3896,7 +3807,6 @@ struct MetadataFor<commands_filter::VerticalGyroConstraintControl::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -3926,7 +3836,6 @@ struct MetadataFor<commands_filter::VerticalGyroConstraintControl>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -3964,7 +3873,6 @@ struct MetadataFor<commands_filter::GnssAntennaCalControl::Response>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -4003,7 +3911,6 @@ struct MetadataFor<commands_filter::GnssAntennaCalControl>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true, true, true, true, true},
-        /* .proprietary = */ false,
         /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
@@ -4032,110 +3939,114 @@ struct MetadataFor<commands_filter::SetInitialHeading>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
 
 
-static constexpr inline std::initializer_list<const FieldInfo*> COMMANDS_FILTER = {
+static constexpr inline const FieldInfo* COMMANDS_FILTER_FIELDS[] = {
     &MetadataFor<commands_filter::Reset>::value,
     &MetadataFor<commands_filter::SetInitialAttitude>::value,
+    &MetadataFor<commands_filter::SetInitialHeading>::value,
+    &MetadataFor<commands_filter::Run>::value,
+    &MetadataFor<commands_filter::VehicleDynamicsMode>::value,
+    &MetadataFor<commands_filter::SensorToVehicleRotationEuler>::value,
+    &MetadataFor<commands_filter::SensorToVehicleOffset>::value,
+    &MetadataFor<commands_filter::AntennaOffset>::value,
     &MetadataFor<commands_filter::EstimationControl>::value,
-    &MetadataFor<commands_filter::EstimationControl::Response>::value,
+    &MetadataFor<commands_filter::GnssSource>::value,
     &MetadataFor<commands_filter::ExternalGnssUpdate>::value,
     &MetadataFor<commands_filter::ExternalHeadingUpdate>::value,
-    &MetadataFor<commands_filter::ExternalHeadingUpdateWithTime>::value,
-    &MetadataFor<commands_filter::TareOrientation>::value,
-    &MetadataFor<commands_filter::TareOrientation::Response>::value,
-    &MetadataFor<commands_filter::VehicleDynamicsMode>::value,
-    &MetadataFor<commands_filter::VehicleDynamicsMode::Response>::value,
-    &MetadataFor<commands_filter::SensorToVehicleRotationEuler>::value,
-    &MetadataFor<commands_filter::SensorToVehicleRotationEuler::Response>::value,
-    &MetadataFor<commands_filter::SensorToVehicleRotationDcm>::value,
-    &MetadataFor<commands_filter::SensorToVehicleRotationDcm::Response>::value,
-    &MetadataFor<commands_filter::SensorToVehicleRotationQuaternion>::value,
-    &MetadataFor<commands_filter::SensorToVehicleRotationQuaternion::Response>::value,
-    &MetadataFor<commands_filter::SensorToVehicleOffset>::value,
-    &MetadataFor<commands_filter::SensorToVehicleOffset::Response>::value,
-    &MetadataFor<commands_filter::AntennaOffset>::value,
-    &MetadataFor<commands_filter::AntennaOffset::Response>::value,
-    &MetadataFor<commands_filter::GnssSource>::value,
-    &MetadataFor<commands_filter::GnssSource::Response>::value,
     &MetadataFor<commands_filter::HeadingSource>::value,
-    &MetadataFor<commands_filter::HeadingSource::Response>::value,
     &MetadataFor<commands_filter::AutoInitControl>::value,
-    &MetadataFor<commands_filter::AutoInitControl::Response>::value,
     &MetadataFor<commands_filter::AccelNoise>::value,
-    &MetadataFor<commands_filter::AccelNoise::Response>::value,
     &MetadataFor<commands_filter::GyroNoise>::value,
-    &MetadataFor<commands_filter::GyroNoise::Response>::value,
     &MetadataFor<commands_filter::AccelBiasModel>::value,
-    &MetadataFor<commands_filter::AccelBiasModel::Response>::value,
     &MetadataFor<commands_filter::GyroBiasModel>::value,
-    &MetadataFor<commands_filter::GyroBiasModel::Response>::value,
-    &MetadataFor<commands_filter::AltitudeAiding>::value,
-    &MetadataFor<commands_filter::AltitudeAiding::Response>::value,
-    &MetadataFor<commands_filter::PitchRollAiding>::value,
-    &MetadataFor<commands_filter::PitchRollAiding::Response>::value,
     &MetadataFor<commands_filter::AutoZupt>::value,
-    &MetadataFor<commands_filter::AutoZupt::Response>::value,
+    &MetadataFor<commands_filter::ExternalHeadingUpdateWithTime>::value,
     &MetadataFor<commands_filter::AutoAngularZupt>::value,
-    &MetadataFor<commands_filter::AutoAngularZupt::Response>::value,
+    &MetadataFor<commands_filter::TareOrientation>::value,
     &MetadataFor<commands_filter::CommandedZupt>::value,
     &MetadataFor<commands_filter::CommandedAngularZupt>::value,
+    &MetadataFor<commands_filter::ReferencePosition>::value,
     &MetadataFor<commands_filter::MagCaptureAutoCal>::value,
     &MetadataFor<commands_filter::GravityNoise>::value,
-    &MetadataFor<commands_filter::GravityNoise::Response>::value,
     &MetadataFor<commands_filter::PressureAltitudeNoise>::value,
-    &MetadataFor<commands_filter::PressureAltitudeNoise::Response>::value,
     &MetadataFor<commands_filter::HardIronOffsetNoise>::value,
-    &MetadataFor<commands_filter::HardIronOffsetNoise::Response>::value,
     &MetadataFor<commands_filter::SoftIronMatrixNoise>::value,
-    &MetadataFor<commands_filter::SoftIronMatrixNoise::Response>::value,
     &MetadataFor<commands_filter::MagNoise>::value,
-    &MetadataFor<commands_filter::MagNoise::Response>::value,
-    &MetadataFor<commands_filter::InclinationSource>::value,
-    &MetadataFor<commands_filter::InclinationSource::Response>::value,
     &MetadataFor<commands_filter::MagneticDeclinationSource>::value,
-    &MetadataFor<commands_filter::MagneticDeclinationSource::Response>::value,
-    &MetadataFor<commands_filter::MagFieldMagnitudeSource>::value,
-    &MetadataFor<commands_filter::MagFieldMagnitudeSource::Response>::value,
-    &MetadataFor<commands_filter::ReferencePosition>::value,
-    &MetadataFor<commands_filter::ReferencePosition::Response>::value,
     &MetadataFor<commands_filter::AccelMagnitudeErrorAdaptiveMeasurement>::value,
-    &MetadataFor<commands_filter::AccelMagnitudeErrorAdaptiveMeasurement::Response>::value,
     &MetadataFor<commands_filter::MagMagnitudeErrorAdaptiveMeasurement>::value,
-    &MetadataFor<commands_filter::MagMagnitudeErrorAdaptiveMeasurement::Response>::value,
     &MetadataFor<commands_filter::MagDipAngleErrorAdaptiveMeasurement>::value,
-    &MetadataFor<commands_filter::MagDipAngleErrorAdaptiveMeasurement::Response>::value,
+    &MetadataFor<commands_filter::AltitudeAiding>::value,
+    &MetadataFor<commands_filter::PitchRollAiding>::value,
+    &MetadataFor<commands_filter::InclinationSource>::value,
+    &MetadataFor<commands_filter::MagFieldMagnitudeSource>::value,
+    &MetadataFor<commands_filter::SensorToVehicleRotationDcm>::value,
+    &MetadataFor<commands_filter::SensorToVehicleRotationQuaternion>::value,
     &MetadataFor<commands_filter::AidingMeasurementEnable>::value,
-    &MetadataFor<commands_filter::AidingMeasurementEnable::Response>::value,
-    &MetadataFor<commands_filter::Run>::value,
     &MetadataFor<commands_filter::KinematicConstraint>::value,
-    &MetadataFor<commands_filter::KinematicConstraint::Response>::value,
     &MetadataFor<commands_filter::InitializationConfiguration>::value,
-    &MetadataFor<commands_filter::InitializationConfiguration::Response>::value,
     &MetadataFor<commands_filter::AdaptiveFilterOptions>::value,
-    &MetadataFor<commands_filter::AdaptiveFilterOptions::Response>::value,
     &MetadataFor<commands_filter::MultiAntennaOffset>::value,
-    &MetadataFor<commands_filter::MultiAntennaOffset::Response>::value,
     &MetadataFor<commands_filter::RelPosConfiguration>::value,
-    &MetadataFor<commands_filter::RelPosConfiguration::Response>::value,
     &MetadataFor<commands_filter::RefPointLeverArm>::value,
-    &MetadataFor<commands_filter::RefPointLeverArm::Response>::value,
     &MetadataFor<commands_filter::SpeedMeasurement>::value,
     &MetadataFor<commands_filter::SpeedLeverArm>::value,
-    &MetadataFor<commands_filter::SpeedLeverArm::Response>::value,
-    &MetadataFor<commands_filter::WheeledVehicleConstraintControl>::value,
-    &MetadataFor<commands_filter::WheeledVehicleConstraintControl::Response>::value,
     &MetadataFor<commands_filter::VerticalGyroConstraintControl>::value,
-    &MetadataFor<commands_filter::VerticalGyroConstraintControl::Response>::value,
+    &MetadataFor<commands_filter::WheeledVehicleConstraintControl>::value,
     &MetadataFor<commands_filter::GnssAntennaCalControl>::value,
+    &MetadataFor<commands_filter::VehicleDynamicsMode::Response>::value,
+    &MetadataFor<commands_filter::SensorToVehicleRotationEuler::Response>::value,
+    &MetadataFor<commands_filter::SensorToVehicleOffset::Response>::value,
+    &MetadataFor<commands_filter::AntennaOffset::Response>::value,
+    &MetadataFor<commands_filter::EstimationControl::Response>::value,
+    &MetadataFor<commands_filter::GnssSource::Response>::value,
+    &MetadataFor<commands_filter::HeadingSource::Response>::value,
+    &MetadataFor<commands_filter::AutoInitControl::Response>::value,
+    &MetadataFor<commands_filter::AccelNoise::Response>::value,
+    &MetadataFor<commands_filter::GyroNoise::Response>::value,
+    &MetadataFor<commands_filter::AccelBiasModel::Response>::value,
+    &MetadataFor<commands_filter::GyroBiasModel::Response>::value,
+    &MetadataFor<commands_filter::AutoZupt::Response>::value,
+    &MetadataFor<commands_filter::AutoAngularZupt::Response>::value,
+    &MetadataFor<commands_filter::ReferencePosition::Response>::value,
+    &MetadataFor<commands_filter::GravityNoise::Response>::value,
+    &MetadataFor<commands_filter::PressureAltitudeNoise::Response>::value,
+    &MetadataFor<commands_filter::HardIronOffsetNoise::Response>::value,
+    &MetadataFor<commands_filter::SoftIronMatrixNoise::Response>::value,
+    &MetadataFor<commands_filter::TareOrientation::Response>::value,
+    &MetadataFor<commands_filter::MagNoise::Response>::value,
+    &MetadataFor<commands_filter::MagneticDeclinationSource::Response>::value,
+    &MetadataFor<commands_filter::AccelMagnitudeErrorAdaptiveMeasurement::Response>::value,
+    &MetadataFor<commands_filter::MagMagnitudeErrorAdaptiveMeasurement::Response>::value,
+    &MetadataFor<commands_filter::MagDipAngleErrorAdaptiveMeasurement::Response>::value,
+    &MetadataFor<commands_filter::AltitudeAiding::Response>::value,
+    &MetadataFor<commands_filter::PitchRollAiding::Response>::value,
+    &MetadataFor<commands_filter::InclinationSource::Response>::value,
+    &MetadataFor<commands_filter::MagFieldMagnitudeSource::Response>::value,
+    &MetadataFor<commands_filter::SensorToVehicleRotationDcm::Response>::value,
+    &MetadataFor<commands_filter::SensorToVehicleRotationQuaternion::Response>::value,
+    &MetadataFor<commands_filter::AidingMeasurementEnable::Response>::value,
+    &MetadataFor<commands_filter::KinematicConstraint::Response>::value,
+    &MetadataFor<commands_filter::InitializationConfiguration::Response>::value,
+    &MetadataFor<commands_filter::AdaptiveFilterOptions::Response>::value,
+    &MetadataFor<commands_filter::MultiAntennaOffset::Response>::value,
+    &MetadataFor<commands_filter::RelPosConfiguration::Response>::value,
+    &MetadataFor<commands_filter::RefPointLeverArm::Response>::value,
+    &MetadataFor<commands_filter::SpeedLeverArm::Response>::value,
+    &MetadataFor<commands_filter::VerticalGyroConstraintControl::Response>::value,
+    &MetadataFor<commands_filter::WheeledVehicleConstraintControl::Response>::value,
     &MetadataFor<commands_filter::GnssAntennaCalControl::Response>::value,
-    &MetadataFor<commands_filter::SetInitialHeading>::value,
 };
 
+static constexpr DescriptorSetInfo COMMANDS_FILTER = {
+    /*.descriptor =*/ mip::commands_filter::DESCRIPTOR_SET,
+    /*.name       =*/ "Filter Commands",
+    /*.fields     =*/ COMMANDS_FILTER_FIELDS,
+};
 
 } // namespace mip::metadata
 

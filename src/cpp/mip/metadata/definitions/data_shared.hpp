@@ -4,6 +4,7 @@
 
 #include <mip/definitions/data_shared.hpp>
 
+
 #include <mip/metadata/mip_metadata.hpp>
 
 namespace mip::metadata
@@ -34,7 +35,6 @@ struct MetadataFor<data_shared::EventSource>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -63,7 +63,6 @@ struct MetadataFor<data_shared::Ticks>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -92,7 +91,6 @@ struct MetadataFor<data_shared::DeltaTicks>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -159,7 +157,6 @@ struct MetadataFor<data_shared::GpsTimestamp>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -188,7 +185,6 @@ struct MetadataFor<data_shared::DeltaTime>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -217,7 +213,6 @@ struct MetadataFor<data_shared::ReferenceTimestamp>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -246,7 +241,6 @@ struct MetadataFor<data_shared::ReferenceTimeDelta>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -302,7 +296,6 @@ struct MetadataFor<data_shared::ExternalTimestamp>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -358,13 +351,12 @@ struct MetadataFor<data_shared::ExternalTimeDelta>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
 
 
-static constexpr inline std::initializer_list<const FieldInfo*> DATA_SHARED = {
+static constexpr inline const FieldInfo* DATA_SHARED_FIELDS[] = {
     &MetadataFor<data_shared::EventSource>::value,
     &MetadataFor<data_shared::Ticks>::value,
     &MetadataFor<data_shared::DeltaTicks>::value,
@@ -376,6 +368,11 @@ static constexpr inline std::initializer_list<const FieldInfo*> DATA_SHARED = {
     &MetadataFor<data_shared::ExternalTimeDelta>::value,
 };
 
+static constexpr DescriptorSetInfo DATA_SHARED = {
+    /*.descriptor =*/ mip::data_shared::DESCRIPTOR_SET,
+    /*.name       =*/ "Shared Data",
+    /*.fields     =*/ DATA_SHARED_FIELDS,
+};
 
 } // namespace mip::metadata
 

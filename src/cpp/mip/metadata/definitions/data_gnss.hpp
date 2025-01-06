@@ -4,6 +4,7 @@
 
 #include <mip/definitions/data_gnss.hpp>
 
+
 #include <mip/metadata/mip_metadata.hpp>
 
 namespace mip::metadata
@@ -111,7 +112,6 @@ struct MetadataFor<data_gnss::PosLlh>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -178,7 +178,6 @@ struct MetadataFor<data_gnss::PosEcef>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -285,7 +284,6 @@ struct MetadataFor<data_gnss::VelNed>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -352,7 +350,6 @@ struct MetadataFor<data_gnss::VelEcef>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -469,7 +466,6 @@ struct MetadataFor<data_gnss::Dop>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -581,7 +577,6 @@ struct MetadataFor<data_gnss::UtcTime>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -648,7 +643,6 @@ struct MetadataFor<data_gnss::GpsTime>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -725,7 +719,6 @@ struct MetadataFor<data_gnss::ClockInfo>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -846,7 +839,6 @@ struct MetadataFor<data_gnss::FixInfo>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -972,7 +964,6 @@ struct MetadataFor<data_gnss::SvInfo>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1111,7 +1102,6 @@ struct MetadataFor<data_gnss::HwStatus>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1198,7 +1188,6 @@ struct MetadataFor<data_gnss::DgpsInfo>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1285,7 +1274,6 @@ struct MetadataFor<data_gnss::DgpsChannel>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1372,7 +1360,6 @@ struct MetadataFor<data_gnss::ClockInfo2>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1428,7 +1415,6 @@ struct MetadataFor<data_gnss::GpsLeapSeconds>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1578,7 +1564,6 @@ struct MetadataFor<data_gnss::SbasInfo>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1732,7 +1717,6 @@ struct MetadataFor<data_gnss::SbasCorrection>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -1881,7 +1865,6 @@ struct MetadataFor<data_gnss::RfErrorDetection>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2014,7 +1997,6 @@ struct MetadataFor<data_gnss::BaseStationInfo>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2176,7 +2158,6 @@ struct MetadataFor<data_gnss::RtkCorrectionsStatus>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2311,7 +2292,6 @@ struct MetadataFor<data_gnss::SatelliteStatus>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2642,7 +2622,6 @@ struct MetadataFor<data_gnss::Raw>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -2989,7 +2968,6 @@ struct MetadataFor<data_gnss::GpsEphemeris>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -3336,7 +3314,6 @@ struct MetadataFor<data_gnss::GalileoEphemeris>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -3600,7 +3577,6 @@ struct MetadataFor<data_gnss::GloEphemeris>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -3947,7 +3923,6 @@ struct MetadataFor<data_gnss::BeidouEphemeris>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -4034,7 +4009,6 @@ struct MetadataFor<data_gnss::GpsIonoCorr>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -4121,7 +4095,6 @@ struct MetadataFor<data_gnss::GalileoIonoCorr>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
@@ -4218,13 +4191,12 @@ struct MetadataFor<data_gnss::BeidouIonoCorr>
         /* .parameters  = */ parameters,
         /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
-        /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
 };
 
 
-static constexpr inline std::initializer_list<const FieldInfo*> DATA_GNSS = {
+static constexpr inline const FieldInfo* DATA_GNSS_FIELDS[] = {
     &MetadataFor<data_gnss::PosLlh>::value,
     &MetadataFor<data_gnss::PosEcef>::value,
     &MetadataFor<data_gnss::VelNed>::value,
@@ -4243,19 +4215,24 @@ static constexpr inline std::initializer_list<const FieldInfo*> DATA_GNSS = {
     &MetadataFor<data_gnss::SbasInfo>::value,
     &MetadataFor<data_gnss::SbasCorrection>::value,
     &MetadataFor<data_gnss::RfErrorDetection>::value,
-    &MetadataFor<data_gnss::BaseStationInfo>::value,
-    &MetadataFor<data_gnss::RtkCorrectionsStatus>::value,
     &MetadataFor<data_gnss::SatelliteStatus>::value,
     &MetadataFor<data_gnss::Raw>::value,
+    &MetadataFor<data_gnss::BaseStationInfo>::value,
+    &MetadataFor<data_gnss::RtkCorrectionsStatus>::value,
     &MetadataFor<data_gnss::GpsEphemeris>::value,
-    &MetadataFor<data_gnss::GalileoEphemeris>::value,
     &MetadataFor<data_gnss::GloEphemeris>::value,
+    &MetadataFor<data_gnss::GalileoEphemeris>::value,
     &MetadataFor<data_gnss::BeidouEphemeris>::value,
     &MetadataFor<data_gnss::GpsIonoCorr>::value,
     &MetadataFor<data_gnss::GalileoIonoCorr>::value,
     &MetadataFor<data_gnss::BeidouIonoCorr>::value,
 };
 
+static constexpr DescriptorSetInfo DATA_GNSS = {
+    /*.descriptor =*/ mip::data_gnss::DESCRIPTOR_SET,
+    /*.name       =*/ "Gnss Data",
+    /*.fields     =*/ DATA_GNSS_FIELDS,
+};
 
 } // namespace mip::metadata
 
