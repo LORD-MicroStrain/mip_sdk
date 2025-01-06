@@ -238,7 +238,7 @@ add_library(mip ${ALL_MIP_SOURCES})
 
 target_include_directories(mip PUBLIC
   "$<BUILD_INTERFACE:${SRC_DIR}>" # Include directory for build only
-  "$<INSTALL_INTERFACE:src>"      # Include directory for installation
+  "$<INSTALL_INTERFACE:include>"      # Include directory for installation
 )
 
 if(WITH_INTERNAL)
