@@ -54,7 +54,7 @@ enum class CommsInterface : uint8_t
 {
     ALL    = 0,  ///<  
     MAIN   = 1,  ///<  An alias that directs to Main USB if it's connected, or Main UART otherwise
-    UART_1 = 17,  ///<  First configured UART. Note that this may not mean the first GPIO, if that pin is not set for UART.
+    UART_1 = 17,  ///<  Depending on your device, this may mean either the first UART *currently configured*, or the first port on which UART *can be configured*. Refer to your device manual.
     UART_2 = 18,  ///<  
     UART_3 = 19,  ///<  
     USB_1  = 33,  ///<  The first virtual serial port over USB (ie. COM5)
@@ -188,7 +188,7 @@ TypedResult<CommMode> defaultCommMode(C::mip_interface& device);
 ///
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup system_interface_control_cpp  (0x7F,0x02) Interface Control
-/// Reassign port functions.
+/// Reassign data protocols, both incoming and outgoing.
 /// 
 /// Responds over the port that sent the command with an ACK/NACK immediately after the operation is complete. It is the user's responsibility to not
 /// send any critical information or commands while awaiting a response! Doing so while this command processes may cause those packets to be dropped.
@@ -209,9 +209,9 @@ struct InterfaceControl
 {
     /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
-    CommsInterface interface = static_cast<CommsInterface>(0); ///< Which physical interface is being selected (USB, serial, etc)
-    CommsProtocol protocols_in; ///< Input protocol(s) enabled. If the protocol supports ACK/NACK or detailed responses, it will be sent over this port even if no corresponding output protocol is set.
-    CommsProtocol protocols_out; ///< Output data protocol(s) enabled.
+    CommsInterface port = static_cast<CommsInterface>(0); ///< Which physical interface is being selected (USB, serial, etc)
+    CommsProtocol protocols_incoming; ///< Input protocol(s) the port will accept. If the protocol supports ACK/NACK or detailed responses, it will be sent over this port even if no corresponding output protocol is set.
+    CommsProtocol protocols_outgoing; ///< Data protocol(s) the port will output
     
     /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_system::DESCRIPTOR_SET;
@@ -223,19 +223,19 @@ struct InterfaceControl
     
     auto asTuple() const
     {
-        return std::make_tuple(interface,protocols_in,protocols_out);
+        return std::make_tuple(port,protocols_incoming,protocols_outgoing);
     }
     
     auto asTuple()
     {
-        return std::make_tuple(std::ref(interface),std::ref(protocols_in),std::ref(protocols_out));
+        return std::make_tuple(std::ref(port),std::ref(protocols_incoming),std::ref(protocols_outgoing));
     }
     
     static InterfaceControl create_sld_all(::mip::FunctionSelector function)
     {
         InterfaceControl cmd;
         cmd.function = function;
-        cmd.interface = ::mip::commands_system::CommsInterface::ALL;
+        cmd.port = ::mip::commands_system::CommsInterface::ALL;
         return cmd;
     }
     
@@ -246,9 +246,9 @@ struct InterfaceControl
     struct Response
     {
         /// Parameters
-        CommsInterface interface = static_cast<CommsInterface>(0); ///< Which physical interface is being selected (USB, serial, etc)
-        CommsProtocol protocols_in; ///< Input protocol(s) enabled. If the protocol supports ACK/NACK or detailed responses, it will be sent over this port even if no corresponding output protocol is set.
-        CommsProtocol protocols_out; ///< Output data protocol(s) enabled.
+        CommsInterface port = static_cast<CommsInterface>(0); ///< Which physical interface is being selected (USB, serial, etc)
+        CommsProtocol protocols_incoming; ///< Input protocol(s) the port will accept. If the protocol supports ACK/NACK or detailed responses, it will be sent over this port even if no corresponding output protocol is set.
+        CommsProtocol protocols_outgoing; ///< Data protocol(s) the port will output
         
         /// Descriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_system::DESCRIPTOR_SET;
@@ -260,12 +260,12 @@ struct InterfaceControl
         
         auto asTuple() const
         {
-            return std::make_tuple(interface,protocols_in,protocols_out);
+            return std::make_tuple(port,protocols_incoming,protocols_outgoing);
         }
         
         auto asTuple()
         {
-            return std::make_tuple(std::ref(interface),std::ref(protocols_in),std::ref(protocols_out));
+            return std::make_tuple(std::ref(port),std::ref(protocols_incoming),std::ref(protocols_outgoing));
         }
         
         /// Serialization
@@ -274,11 +274,11 @@ struct InterfaceControl
         
     };
 };
-TypedResult<InterfaceControl> writeInterfaceControl(C::mip_interface& device, CommsInterface interface, CommsProtocol protocolsIn, CommsProtocol protocolsOut);
-TypedResult<InterfaceControl> readInterfaceControl(C::mip_interface& device, CommsInterface interface, CommsProtocol* protocolsInOut, CommsProtocol* protocolsOutOut);
-TypedResult<InterfaceControl> saveInterfaceControl(C::mip_interface& device, CommsInterface interface);
-TypedResult<InterfaceControl> loadInterfaceControl(C::mip_interface& device, CommsInterface interface);
-TypedResult<InterfaceControl> defaultInterfaceControl(C::mip_interface& device, CommsInterface interface);
+TypedResult<InterfaceControl> writeInterfaceControl(C::mip_interface& device, CommsInterface port, CommsProtocol protocolsIncoming, CommsProtocol protocolsOutgoing);
+TypedResult<InterfaceControl> readInterfaceControl(C::mip_interface& device, CommsInterface port, CommsProtocol* protocolsIncomingOut, CommsProtocol* protocolsOutgoingOut);
+TypedResult<InterfaceControl> saveInterfaceControl(C::mip_interface& device, CommsInterface port);
+TypedResult<InterfaceControl> loadInterfaceControl(C::mip_interface& device, CommsInterface port);
+TypedResult<InterfaceControl> defaultInterfaceControl(C::mip_interface& device, CommsInterface port);
 
 ///@}
 ///

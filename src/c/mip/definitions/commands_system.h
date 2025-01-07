@@ -55,7 +55,7 @@ enum mip_comms_interface
 {
     MIP_COMMS_INTERFACE_ALL    = 0,  ///<  
     MIP_COMMS_INTERFACE_MAIN   = 1,  ///<  An alias that directs to Main USB if it's connected, or Main UART otherwise
-    MIP_COMMS_INTERFACE_UART_1 = 17,  ///<  First configured UART. Note that this may not mean the first GPIO, if that pin is not set for UART.
+    MIP_COMMS_INTERFACE_UART_1 = 17,  ///<  Depending on your device, this may mean either the first UART *currently configured*, or the first port on which UART *can be configured*. Refer to your device manual.
     MIP_COMMS_INTERFACE_UART_2 = 18,  ///<  
     MIP_COMMS_INTERFACE_UART_3 = 19,  ///<  
     MIP_COMMS_INTERFACE_USB_1  = 33,  ///<  The first virtual serial port over USB (ie. COM5)
@@ -139,7 +139,7 @@ mip_cmd_result mip_system_default_comm_mode(mip_interface* device);
 ///
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup system_interface_control_c  (0x7F,0x02) Interface Control
-/// Reassign port functions.
+/// Reassign data protocols, both incoming and outgoing.
 /// 
 /// Responds over the port that sent the command with an ACK/NACK immediately after the operation is complete. It is the user's responsibility to not
 /// send any critical information or commands while awaiting a response! Doing so while this command processes may cause those packets to be dropped.
@@ -159,9 +159,9 @@ mip_cmd_result mip_system_default_comm_mode(mip_interface* device);
 struct mip_system_interface_control_command
 {
     mip_function_selector function;
-    mip_comms_interface interface; ///< Which physical interface is being selected (USB, serial, etc)
-    mip_comms_protocol protocols_in; ///< Input protocol(s) enabled. If the protocol supports ACK/NACK or detailed responses, it will be sent over this port even if no corresponding output protocol is set.
-    mip_comms_protocol protocols_out; ///< Output data protocol(s) enabled.
+    mip_comms_interface port; ///< Which physical interface is being selected (USB, serial, etc)
+    mip_comms_protocol protocols_incoming; ///< Input protocol(s) the port will accept. If the protocol supports ACK/NACK or detailed responses, it will be sent over this port even if no corresponding output protocol is set.
+    mip_comms_protocol protocols_outgoing; ///< Data protocol(s) the port will output
 };
 typedef struct mip_system_interface_control_command mip_system_interface_control_command;
 
@@ -170,20 +170,20 @@ void extract_mip_system_interface_control_command(microstrain_serializer* serial
 
 struct mip_system_interface_control_response
 {
-    mip_comms_interface interface; ///< Which physical interface is being selected (USB, serial, etc)
-    mip_comms_protocol protocols_in; ///< Input protocol(s) enabled. If the protocol supports ACK/NACK or detailed responses, it will be sent over this port even if no corresponding output protocol is set.
-    mip_comms_protocol protocols_out; ///< Output data protocol(s) enabled.
+    mip_comms_interface port; ///< Which physical interface is being selected (USB, serial, etc)
+    mip_comms_protocol protocols_incoming; ///< Input protocol(s) the port will accept. If the protocol supports ACK/NACK or detailed responses, it will be sent over this port even if no corresponding output protocol is set.
+    mip_comms_protocol protocols_outgoing; ///< Data protocol(s) the port will output
 };
 typedef struct mip_system_interface_control_response mip_system_interface_control_response;
 
 void insert_mip_system_interface_control_response(microstrain_serializer* serializer, const mip_system_interface_control_response* self);
 void extract_mip_system_interface_control_response(microstrain_serializer* serializer, mip_system_interface_control_response* self);
 
-mip_cmd_result mip_system_write_interface_control(mip_interface* device, mip_comms_interface interface, mip_comms_protocol protocols_in, mip_comms_protocol protocols_out);
-mip_cmd_result mip_system_read_interface_control(mip_interface* device, mip_comms_interface interface, mip_comms_protocol* protocols_in_out, mip_comms_protocol* protocols_out_out);
-mip_cmd_result mip_system_save_interface_control(mip_interface* device, mip_comms_interface interface);
-mip_cmd_result mip_system_load_interface_control(mip_interface* device, mip_comms_interface interface);
-mip_cmd_result mip_system_default_interface_control(mip_interface* device, mip_comms_interface interface);
+mip_cmd_result mip_system_write_interface_control(mip_interface* device, mip_comms_interface port, mip_comms_protocol protocols_incoming, mip_comms_protocol protocols_outgoing);
+mip_cmd_result mip_system_read_interface_control(mip_interface* device, mip_comms_interface port, mip_comms_protocol* protocols_incoming_out, mip_comms_protocol* protocols_outgoing_out);
+mip_cmd_result mip_system_save_interface_control(mip_interface* device, mip_comms_interface port);
+mip_cmd_result mip_system_load_interface_control(mip_interface* device, mip_comms_interface port);
+mip_cmd_result mip_system_default_interface_control(mip_interface* device, mip_comms_interface port);
 
 ///@}
 ///
