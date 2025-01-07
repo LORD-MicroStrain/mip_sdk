@@ -1,4 +1,3 @@
-
 #include "mip_interface.hpp"
 
 #include <microstrain/connections/connection.hpp>
