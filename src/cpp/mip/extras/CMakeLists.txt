@@ -6,6 +6,9 @@ add_library(${MIP_EXTRAS_LIBRARY}
     "${CMAKE_CURRENT_LIST_DIR}/descriptor_id.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/firmware_version.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/firmware_version.hpp"
+    "${CMAKE_CURRENT_LIST_DIR}/mip_extras_all.hpp"
+    "${CMAKE_CURRENT_LIST_DIR}/platform_connection.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/platform_connection.hpp"
 )
 
 target_compile_features(${MIP_EXTRAS_LIBRARY} PUBLIC cxx_std_11)
