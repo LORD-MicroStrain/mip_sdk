@@ -145,7 +145,7 @@ static size_t mip_parser_discard(mip_parser* parser, size_t offset)
     // Shift buffered packet and any trailing data down to offset 0.
     // This makes parsing logic simpler and allows room for a full length packet.
     memmove(&parser->_buffer[0], &parser->_buffer[offset], parser->_buffered_length-offset);
-    parser->_buffered_length -= offset;
+    parser->_buffered_length -= (uint16_t)offset;
 
     return expected_packet_length;
 }
@@ -186,7 +186,7 @@ void mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t in
     // via mip_parser_get_write_ptr().
     if(input_buffer == NULL)
     {
-        parser->_buffered_length += input_length;
+        parser->_buffered_length += (uint16_t)input_length;
         input_length = 0;
 
         // Check that the buffer has not been overrun (and likely corrupting the mip interface).
@@ -207,7 +207,7 @@ void mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t in
                (MIP_HEADER_LENGTH + parser->_buffer[MIP_INDEX_LENGTH] + MIP_CHECKSUM_LENGTH)
     ;
 
-    size_t total_packet_bytes = 0;
+    // size_t total_packet_bytes = 0;
 
     for(;;)
     {
@@ -236,7 +236,7 @@ void mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t in
 
             memcpy(&parser->_buffer[parser->_buffered_length], &input_buffer[unparsed_input_offset], remaining_input_length);
 
-            parser->_buffered_length += remaining_input_length;
+            parser->_buffered_length += (uint16_t)remaining_input_length;
             unparsed_input_offset    += remaining_input_length;
             //remaining_packet_length  -= remaining_input_length;
             //remaining_input_length   = 0;
@@ -321,14 +321,14 @@ void mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t in
 
                 memcpy(&parser->_buffer[parser->_buffered_length], &input_buffer[unparsed_input_offset], packet_length_from_input);
                 unparsed_input_offset    += packet_length_from_input;
-                parser->_buffered_length += packet_length_from_input;
+                parser->_buffered_length += (uint16_t)packet_length_from_input;
             }
 
             assert(expected_packet_length <= MIP_PACKET_LENGTH_MAX && expected_packet_length >= MIP_PACKET_LENGTH_MIN);
 
             mip_packet_view packet = {
                 ._buffer        = parser->_buffer,
-                ._buffer_length = expected_packet_length,
+                ._buffer_length = (uint_least16_t)expected_packet_length,
             };
 
             const bool checksum_valid = mip_packet_compute_checksum(&packet) == mip_packet_checksum_value(&packet);
