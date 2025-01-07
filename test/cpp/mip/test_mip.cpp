@@ -23,8 +23,10 @@ int main(int argc, const char* argv[])
 {
     srand(0);
 
-    auto callback = [](void*, const PacketView* parsedPacket, Timestamp timestamp)->bool
+    auto callback = [](void*, const PacketView* parsedPacket, Timestamp timestamp)
     {
+        (void)timestamp;
+
         unsigned int parsedFields = 0;
         bool error = false;
         for(FieldView field : *parsedPacket)
@@ -67,11 +69,9 @@ int main(int argc, const char* argv[])
             numErrors++;
             fprintf(stderr, "Field count mismatch: %d != %d\n", parsedFields, numFields);
         }
-
-        return true;
     };
 
-    Parser parser(parseBuffer, sizeof(parseBuffer), callback, nullptr, MIPPARSER_DEFAULT_TIMEOUT_MS);
+    Parser parser(callback, nullptr, MIP_PARSER_DEFAULT_TIMEOUT_MS);
 
 
     const unsigned int NUM_ITERATIONS = 100;
@@ -85,32 +85,25 @@ int main(int argc, const char* argv[])
             const uint8_t fieldDescriptor = (rand() % 255) + 1;
             const uint8_t payloadLength = (rand() % MIP_FIELD_PAYLOAD_LENGTH_MAX) + 1;
 
-            auto field = packet.createField(fieldDescriptor);
-
-            uint8_t* ptr = field.getPtrAndAdvance(payloadLength);
-            if(!ptr)
-            {
-                field.cancel();
+            auto payload = packet.createField(fieldDescriptor, payloadLength);
+            if(!payload.hasRemaining())
                 break;
-            }
 
             for(unsigned int p=0; p<payloadLength; p++)
-                ptr[p] = rand() & 0xFF;
+                payload.insert<uint8_t>(rand() & 0xFF);
 
-            field.commit();
+            if(!payload.isFinished())
+            {
+                numErrors++;
+                fprintf(stderr, "Field %u did not have the right size (wrote %zu, expected %u, max %zu).\n", numFields, payload.offset(), payloadLength, payload.capacity());
+            }
 
-            fields[numFields] = FieldView(packet.descriptorSet(), fieldDescriptor, ptr, payloadLength);
+            fields[numFields] = FieldView(packet.descriptorSet(), fieldDescriptor, payload.basePointer(), payloadLength);
         }
 
         packet.finalize();
 
-        size_t rem = parser.parse(packet.pointer(), packet.totalLength(), 0, MIPPARSER_UNLIMITED_PACKETS);
-
-        if( rem != 0 )
-        {
-            numErrors++;
-            fprintf(stderr, "Parser reports %zu unparsed bytes.\n", rem);
-        }
+        parser.parse(packet.pointer(), packet.totalLength(), 0);
 
         if( numErrors > 10 )
             break;
