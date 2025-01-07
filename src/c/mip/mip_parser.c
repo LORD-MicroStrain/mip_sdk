@@ -338,7 +338,7 @@ void mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t in
 
             if(checksum_valid)
             {
-                total_packet_bytes += expected_packet_length;
+                // total_packet_bytes += expected_packet_length;
                 MIP_DIAG_INC(parser->_diag_valid_packets, 1);
                 MIP_DIAG_INC(parser->_diag_packet_bytes, expected_packet_length);
 
