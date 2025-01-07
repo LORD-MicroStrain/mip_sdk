@@ -5,6 +5,10 @@
 
 #include <mip/definitions/common.hpp>
 
+#if defined MICROSTRAIN_PLATFORM_APPLE
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wmissing-braces"
+#endif // MICROSTRAIN_PLATFORM_APPLE
 
 namespace mip::metadata
 {
@@ -284,3 +288,8 @@ struct MetadataFor<Matrix3d>
 };
 
 } // namespace mip::metadata
+
+#if defined MICROSTRAIN_PLATFORM_APPLE
+// Revert warning suppression
+#pragma clang diagnostic pop
+#endif // MICROSTRAIN_PLATFORM_APPLE
