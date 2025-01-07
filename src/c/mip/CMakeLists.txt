@@ -42,9 +42,6 @@ add_library(${MIP_LIBRARY}
     "${CMAKE_CURRENT_LIST_DIR}/definitions/common.c"
     "${CMAKE_CURRENT_LIST_DIR}/definitions/common.h"
     "${CMAKE_CURRENT_LIST_DIR}/mip_all.h"
-
-    "${CMAKE_CURRENT_LIST_DIR}/utils/byte_ring.c"
-    "${CMAKE_CURRENT_LIST_DIR}/utils/byte_ring.h"
 )
 
 target_compile_features(${MIP_LIBRARY} PUBLIC c_std_11)

@@ -19,7 +19,7 @@
 #include <unistd.h>
 #endif
 
-serial_port port;
+serial_port device_port;
 uint8_t parse_buffer[1024];
 mip_interface device;
 mip_sensor_scaled_accel_data scaled_accel;
@@ -111,14 +111,18 @@ mip_timestamp get_current_timestamp()
 }
 
 
-bool mip_interface_user_recv_from_device(mip_interface* device_, uint8_t* buffer, size_t max_length, mip_timeout wait_time, size_t* out_length, mip_timestamp* timestamp_out)
+bool mip_interface_user_recv_from_device(mip_interface* device_, mip_timeout wait_time, bool from_cmd, mip_timestamp* timestamp_out)
 {
     (void)device_;
 
     *timestamp_out = get_current_timestamp();
-    if( !serial_port_read(&port, buffer, max_length, (int)wait_time, out_length) )
+
+    size_t length;
+
+    if( !serial_port_read(&device_port, parse_buffer, sizeof(parse_buffer), (int)wait_time, &length) )
         return false;
 
+    mip_interface_input_bytes(device_, parse_buffer, length, *timestamp_out);
     return true;
 }
 
@@ -128,7 +132,7 @@ bool mip_interface_user_send_to_device(mip_interface* device_, const uint8_t* da
     (void)device_;
 
     size_t bytes_written;
-    if (!serial_port_write(&port, data, length, &bytes_written))
+    if (!serial_port_write(&device_port, data, length, &bytes_written))
         return false;
 
     return true;
@@ -137,7 +141,7 @@ bool mip_interface_user_send_to_device(mip_interface* device_, const uint8_t* da
 
 bool open_port(const char* name, uint32_t baudrate)
 {
-    return serial_port_open(&port, name, (int)baudrate);
+    return serial_port_open(&device_port, name, (int)baudrate);
 }
 
 int usage(const char* argv0)
@@ -162,7 +166,7 @@ int main(int argc, const char* argv[])
         return 1;
 
     mip_interface_init(
-        &device, parse_buffer, sizeof(parse_buffer), mip_timeout_from_baudrate(baudrate), 1000,
+        &device, mip_timeout_from_baudrate(baudrate), 1000,
         &mip_interface_user_send_to_device, &mip_interface_user_recv_from_device, &mip_interface_default_update, NULL
     );
 
@@ -229,7 +233,7 @@ int main(int argc, const char* argv[])
 #else
         usleep(100000);
 #endif
-        mip_interface_update(&device, false);
+        mip_interface_update(&device, 0, false);
     }
 
     result = mip_base_set_idle(&device);
@@ -275,6 +279,6 @@ done:
     );
 #endif // MIP_ENABLE_DIAGNOSTICS
 
-    serial_port_close(&port);
+    serial_port_close(&device_port);
     return result == MIP_ACK_OK ? 0 : 2;
 }

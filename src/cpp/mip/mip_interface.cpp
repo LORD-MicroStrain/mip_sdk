@@ -39,13 +39,19 @@ void connect_interface(mip::Interface& device, microstrain::Connection& conn)
 {
     using microstrain::Connection;
 
-    auto send = [](C::mip_interface* device, const uint8_t* data, size_t length)->bool
+    auto send = +[](C::mip_interface* device, const uint8_t* data, size_t length)->bool
     {
         return static_cast<Connection*>(C::mip_interface_user_pointer(device))->sendToDevice(data, length);
     };
-    auto recv = [](C::mip_interface* device, uint8_t* buffer, size_t max_length, C::mip_timeout wait_time, size_t* length_out, C::mip_timestamp* timestamp_out)->bool
+    auto recv = +[](C::mip_interface* device, C::mip_timeout wait_time, bool, C::mip_timestamp* timestamp_out)->bool
     {
-        return static_cast<Connection*>(C::mip_interface_user_pointer(device))->recvFromDevice(buffer, max_length, static_cast<unsigned int>(wait_time), length_out, timestamp_out);
+        uint8_t buffer[512];
+        size_t length;
+        if( !static_cast<Connection*>(C::mip_interface_user_pointer(device))->recvFromDevice(buffer, sizeof(buffer), wait_time, &length, timestamp_out) )
+            return false;
+
+        C::mip_interface_input_bytes(device, buffer, length, *timestamp_out);
+        return true;
     };
 
     C::mip_interface_set_user_pointer(&device, &conn);
