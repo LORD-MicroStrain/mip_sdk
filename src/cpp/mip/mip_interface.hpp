@@ -199,16 +199,16 @@ namespace mip
         //
 
         template<class Cmd>
-        CmdResult runCommand(const Cmd& cmd, Timeout additionalTime=0) { return runCommand(*this, cmd, additionalTime); }
+        CmdResult runCommand(const Cmd& cmd, Timeout additionalTime=0) { return mip::runCommand(*this, cmd, additionalTime); }
 
         template<class Cmd, class... Args>
-        CmdResult runCommand(Args&&... args, Timeout additionalTime=0) { return runCommand(*this, std::forward<Args>(args)..., additionalTime); }
+        CmdResult runCommand(Args&&... args, Timeout additionalTime=0) { return mip::runCommand(*this, std::forward<Args>(args)..., additionalTime); }
 
         template<class Cmd>
-        CmdResult runCommand(const Cmd& cmd, typename Cmd::Response& response, Timeout additionalTime=0) { return runCommand(*this, cmd, response, additionalTime); }
+        CmdResult runCommand(const Cmd& cmd, typename Cmd::Response& response, Timeout additionalTime=0) { return mip::runCommand(*this, cmd, response, additionalTime); }
 
         template<class Cmd>
-        bool startCommand(PendingCmd& pending, const Cmd& cmd, Timeout additionalTime=0) { return startCommand(*this, pending, cmd, additionalTime); }
+        bool startCommand(PendingCmd& pending, const Cmd& cmd, Timeout additionalTime=0) { return mip::startCommand(*this, pending, cmd, additionalTime); }
 
     //    template<class Cmd>
     //    bool startCommand(PendingCmd& pending, const Cmd& cmd, uint8_t* responseBuffer, uint8_t responseBufferSize, Timeout additionalTime=0) { return startCommand(pending, cmd, responseBuffer, responseBufferSize, additionalTime); }

@@ -52,7 +52,7 @@ namespace mip
         {
             uint8_t buffer[512];
             size_t length;
-            if (!static_cast<Connection*>(C::mip_interface_user_pointer(device))->recvFromDevice(buffer, sizeof(buffer), wait_time, &length, timestamp_out))
+            if (!static_cast<Connection*>(C::mip_interface_user_pointer(device))->recvFromDevice(buffer, sizeof(buffer), static_cast<unsigned int>(wait_time), &length, timestamp_out))
                 return false;
 
             C::mip_interface_input_bytes(device, buffer, length, *timestamp_out);

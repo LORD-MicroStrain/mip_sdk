@@ -76,6 +76,7 @@ if(WIN32)
             "/external:anglebrackets" # Treat angle brackets as system includes
             "/external:W0"            # No warnings from system includes
             "/W4"                     # Enable warnings
+            "/WX"                     # Warnings as errors
             "/Zc:__cplusplus"         # Enable updated __cplusplus value
             "/MP"                     # Multi-process compilation
         )
@@ -91,6 +92,7 @@ else()
     set(MICROSTRAIN_PRIVATE_COMPILE_OPTIONS
         "-Wall"   # Enable warnings
         "-Wextra" # Enable extra warnings
+        "-Werror" # Warnings as errors
     )
 
     set(MICROSTRAIN_PRIVATE_COMPILE_DEFINITIONS "")
