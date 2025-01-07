@@ -360,7 +360,7 @@ void create_packet_from_buffer()
                 microstrain_extract_u64(&serializer, &nanoseconds);
 
                 if(microstrain_serializer_is_complete(&serializer))
-                    printf("  Ref Time = %lu\n", nanoseconds);
+                    printf("  Ref Time = %llu\n", nanoseconds);
 
                 break;
             }

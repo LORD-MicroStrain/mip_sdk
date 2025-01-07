@@ -324,7 +324,7 @@ void create_packet_from_buffer()
                 uint64_t nanoseconds;
 
                 if(serializer.extract(nanoseconds))
-                    std::printf("  Ref Time = %lu\n", nanoseconds);
+                    std::printf("  Ref Time = %llu\n", nanoseconds);
 
                 break;
             }
