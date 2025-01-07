@@ -5,8 +5,6 @@
 #include <memory>
 #include <string_view>
 
-// tsets
-
 namespace mip
 {
     namespace platform

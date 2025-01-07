@@ -2,17 +2,15 @@
 
 #include "descriptor_id.hpp"
 
+#include <mip/mip_descriptors.hpp>
 #include <mip/mip_interface.hpp>
 #include <mip/mip_result.hpp>
-#include <mip/mip_descriptors.hpp>
 
-
-#include <stddef.h>
 #include <algorithm>
+#include <stddef.h>
 
 namespace mip
 {
-
     ////////////////////////////////////////////////////////////////////////////////
     ///@brief Represents a list of zero or more actions and their results.
     ///
@@ -21,8 +19,8 @@ namespace mip
     public:
         struct Entry
         {
-            CmdResult    result;         ///< Result of action.
-            DescriptorId descriptor;     ///< Command or action that was executed.
+            CmdResult    result;     ///< Result of action.
+            DescriptorId descriptor; ///< Command or action that was executed.
 
             operator bool() const { return result; }
             bool operator!() const { return !result; }
@@ -38,15 +36,15 @@ namespace mip
         };
 
     public:
-        CompositeResult() {}
+        CompositeResult() = default;
         CompositeResult(bool success) : m_results{Entry{success, 0x0000}} {}
         CompositeResult(CmdResult result) : m_results{result} {}
         CompositeResult(CompositeDescriptor cmd, CmdResult result) : m_results{{result, cmd}} {}
         CompositeResult(const Entry& result) : m_results{result} {}
 
-        bool isEmpty() const { return m_results.empty(); }
+        bool isEmpty()  const { return m_results.empty();  }
         bool notEmpty() const { return !m_results.empty(); }
-        size_t count() const { return m_results.size(); }
+        size_t count()  const { return m_results.size();   }
 
         bool allSuccessful()  const { return std::all_of (m_results.begin(), m_results.end(), [](const Entry& r){ return  r.result.isAck(); }); }
         bool allFailed()      const { return std::all_of (m_results.begin(), m_results.end(), [](const Entry& r){ return !r.result.isAck(); }); }
@@ -68,7 +66,7 @@ namespace mip
             if (count() == 1) return m_results.front().result;
             if (allSuccessful()) return CmdResult::ACK_OK;
             if (anyMatch(CmdResult::STATUS_TIMEDOUT)) return CmdResult::STATUS_TIMEDOUT;
-            else return CmdResult::STATUS_ERROR;
+            return CmdResult::STATUS_ERROR;
         }
 
         void clear() { m_results.clear(); }
@@ -84,9 +82,9 @@ namespace mip
         void extend(const CompositeResult& other) { m_results.insert(m_results.end(), other.m_results.begin(), other.m_results.end()); }
 
         // Same as append but returns *this.
-        CompositeResult& operator+=(bool result) { append(result); return *this; }
+        CompositeResult& operator+=(bool result)      { append(result); return *this; }
         CompositeResult& operator+=(CmdResult result) { append(result); return *this; }
-        CompositeResult& operator+=(Entry result) { append(result); return *this; }
+        CompositeResult& operator+=(Entry result)     { append(result); return *this; }
 
         // Same as append but returns the result.
         // Useful for code like `if( !results.appendAndCheckThis( doCommand() ) { return results; /* This specific command failed */ })`
@@ -110,25 +108,23 @@ namespace mip
         Entry& last() { return m_results.back(); }
 
         CmdResult firstResult() const { return m_results.front().result; }
-        CmdResult lastResult() const { return m_results.back().result; }
+        CmdResult lastResult()  const { return m_results.back().result;  }
 
-        auto begin() { return m_results.begin(); }
-        auto end()   { return m_results.end();   }
+        std::vector<Entry>::iterator begin() { return m_results.begin(); }
+        std::vector<Entry>::iterator end()   { return m_results.end();   }
 
-        auto begin() const { return m_results.begin(); }
-        auto end()   const { return m_results.end();   }
+        std::vector<Entry>::const_iterator begin() const { return m_results.begin(); }
+        std::vector<Entry>::const_iterator end()   const { return m_results.end();   }
 
     private:
         std::vector<Entry> m_results;
     };
-
 
     template<class Cmd, class... Args>
     CompositeResult::Entry runCommandEx(Interface& device, const Cmd& cmd, Args&&... args)
     {
         CmdResult result = device.runCommand(cmd, std::forward<Args>(args)...);
 
-        return {result, {Cmd::DESCRIPTOR_SET, Cmd::FIELD_DESCRIPTOR}};
+        return { result, {Cmd::DESCRIPTOR_SET, Cmd::FIELD_DESCRIPTOR} };
     }
-
 } // namespace mip

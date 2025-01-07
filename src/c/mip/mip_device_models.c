@@ -1,16 +1,15 @@
-
 #include "mip_device_models.h"
 
 #include <ctype.h>
-#include <stdlib.h>
-#include <stdint.h>
 #include <stdbool.h>
+#include <stdint.h>
+#include <stdlib.h>
 
 #ifdef __cplusplus
 namespace mip {
 namespace C {
 extern "C" {
-#endif// __cplusplus
+#endif // __cplusplus
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Parses a string into a model number.
