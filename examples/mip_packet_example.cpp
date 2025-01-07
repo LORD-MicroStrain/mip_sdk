@@ -1,10 +1,11 @@
-
 #include <mip/mip_packet.hpp>
 
-#include <mip/definitions/commands_base.hpp>
 #include <mip/definitions/commands_3dm.hpp>
+#include <mip/definitions/commands_base.hpp>
 #include <mip/definitions/data_sensor.hpp>
 #include <mip/definitions/data_shared.hpp>
+
+#include <microstrain/common/platform.h>
 
 #include <cstdio>
 
@@ -324,7 +325,11 @@ void create_packet_from_buffer()
                 uint64_t nanoseconds;
 
                 if(serializer.extract(nanoseconds))
+#if defined MICROSTRAIN_PLATFORM_APPLE
                     std::printf("  Ref Time = %llu\n", nanoseconds);
+#else
+                    std::printf("  Ref Time = %lu\n", nanoseconds);
+#endif // MICROSTRAIN_PLATFORM_APPLE
 
                 break;
             }
