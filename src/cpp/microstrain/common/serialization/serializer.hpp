@@ -63,7 +63,7 @@ public:
     bool isOverrun()                  const { return m_offset > m_size;        }  ///< Returns true if offset has exceeded the size/capacity.
     bool isOk()                       const { return !isOverrun();             }  ///< Returns true if not overrun, i.e. !isOverrun().
     bool isFinished()                 const { return m_offset == m_size;       }  ///< Returns true if the entire buffer (and no more) has been read/written.
-    bool hasRemaining(size_t count=0) const { return m_offset+count <= m_size; }  ///< Returns true if at least 'count' bytes remain unread/unwritten.
+    bool hasRemaining(size_t count=1) const { return m_offset+count <= m_size; }  ///< Returns true if at least 'count' bytes remain unread/unwritten.
 
     uint8_t*       basePointer()       { return m_ptr; }  ///< Returns a pointer to the start of the buffer.
     const uint8_t* basePointer() const { return m_ptr; }  ///< Returns a pointer to the start of the buffer.
@@ -72,8 +72,8 @@ public:
     ///       This function does NOT advance the offset value. Generally, you should use getPtrAndAdvance() instead.
     ///@param required_size How many bytes will be read/written to the pointer.
     ///@returns A valid pointer if required_size bytes are available. NULL otherwise.
-    uint8_t*       pointer(size_t required_size)       { return hasRemaining(required_size) ? (m_ptr+m_offset) : nullptr; }
-    const uint8_t* pointer(size_t required_size) const { return hasRemaining(required_size) ? (m_ptr+m_offset) : nullptr; }  ///<@copydoc pointer(size_t required_size)
+    uint8_t*       getPointer(size_t required_size)       { return hasRemaining(required_size) ? (m_ptr+m_offset) : nullptr; }
+    const uint8_t* getPointer(size_t required_size) const { return hasRemaining(required_size) ? (m_ptr+m_offset) : nullptr; }  ///<@copydoc pointer(size_t required_size)
 
     ///@brief Obtains a pointer to the current offset for reading/writing a value of specified size, and post-increments the offset by that size.
     ///       Use this function just like pointer().

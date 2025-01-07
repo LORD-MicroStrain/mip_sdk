@@ -280,7 +280,7 @@ void create_packet_from_scratch()
     if(microstrain_serializer_is_ok(&serializer))
     {
         // Now we know how many bytes were written, so update the field length in the packet.
-        mip_packet_update_last_field_length(&packet, payload5, microstrain_serializer_length(&serializer));
+        mip_packet_update_last_field_length(&packet, payload5, (uint8_t)microstrain_serializer_length(&serializer));
     }
     else // Not enough space
     {
