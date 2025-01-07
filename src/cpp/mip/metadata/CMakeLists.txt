@@ -14,7 +14,7 @@ if(MICROSTRAIN_CMAKE_DEBUG)
    message("C++ metadata definitions = ${INCLUDED_DEF_HEADERS}")
 endif()
 
-add_library(${MIP_METADATA_LIBRARY}
+set(MIP_METADATA_SOURCES
     "${CMAKE_CURRENT_LIST_DIR}/mip_all_definitions.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/mip_definitions.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/mip_definitions.cpp"
@@ -24,6 +24,14 @@ add_library(${MIP_METADATA_LIBRARY}
     "${CMAKE_CURRENT_LIST_DIR}/definitions/common.hpp"
     ${MIP_DEF_HEADERS}
 )
+
+add_library(${MIP_METADATA_LIBRARY}
+    "${MIP_METADATA_SOURCES}"
+)
+
+if(MSVC)
+    source_group(TREE ${MICROSTRAIN_SRC_DIR} FILES ${MIP_METADATA_SOURCES})
+endif()
 
 target_compile_features(${MIP_METADATA_LIBRARY} PUBLIC cxx_std_20)
 
