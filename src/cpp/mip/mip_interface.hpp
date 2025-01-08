@@ -103,7 +103,7 @@ namespace mip
         template<bool (*Send)(Interface&, microstrain::Span<const uint8_t>)>
         void setSendFunction();
 
-        template<bool (*Recv)(Interface&, Timeout, Timestamp*)>
+        template<bool (*Recv)(Interface&, Timeout, bool, Timestamp*)>
         void setRecvFunction();
 
         template<bool (*Update)(Interface&, Timeout, bool)>
@@ -116,7 +116,7 @@ namespace mip
         template<class Derived, bool (Derived::*Send)(microstrain::Span<const uint8_t*>)>
         void setSendFunction();
 
-        template<class Derived, bool (Derived::*Recv)(Timeout, Timestamp*)>
+        template<class Derived, bool (Derived::*Recv)(Timeout, bool, Timestamp*)>
         void setRecvFunction();
 
         template<class Derived, bool (Derived::*Update)(Timeout, bool)>
@@ -256,12 +256,12 @@ namespace mip
     ///
     ///@tparam Recv A compile-time pointer to the callback function.
     ///
-    template<bool (*Recv)(Interface&, Timeout, Timestamp*)>
+    template<bool (*Recv)(Interface&, Timeout, bool, Timestamp*)>
     void Interface::setRecvFunction()
     {
-        setRecvFunction([](C::mip_interface* device, C::mip_timeout wait_time, C::mip_timestamp* timestamp_out)->bool
+        setRecvFunction([](C::mip_interface* device, C::mip_timeout wait_time, bool from_cmd, C::mip_timestamp* timestamp_out)->bool
         {
-            return (*Recv)(*static_cast<Interface*>(device), wait_time, timestamp_out);
+            return (*Recv)(*static_cast<Interface*>(device), wait_time, from_cmd, timestamp_out);
         });
     }
 
@@ -320,14 +320,14 @@ namespace mip
     ///
     ///@see Interface::setSendFunction()
     ///
-    template<class Derived, bool (Derived::*Recv)(Timeout, Timestamp*)>
+    template<class Derived, bool (Derived::*Recv)(Timeout, bool, Timestamp*)>
     void Interface::setRecvFunction()
     {
         static_assert(std::is_base_of<C::mip_interface, Derived>::value, "Derived must be derived from C::mip_interface.");
 
-        setRecvFunction([](C::mip_interface* device, Timeout wait_time, Timestamp* timestamp_out)
+        setRecvFunction([](C::mip_interface* device, Timeout wait_time, bool from_cmd, Timestamp* timestamp_out)
         {
-            return (static_cast<Derived*>(device)->*Recv)(wait_time, timestamp_out);
+            return (static_cast<Derived*>(device)->*Recv)(wait_time, from_cmd, timestamp_out);
         });
     }
 
