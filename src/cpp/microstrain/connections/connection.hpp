@@ -1,14 +1,11 @@
 #pragma once
 
 #include <microstrain/common/embedded_time.hpp>
-#include <microstrain/common/platform.hpp>
+#include <microstrain/common/span.hpp>
 
 #include <stddef.h>
 #include <stdint.h>
 
-#if defined MICROSTRAIN_HAS_SPAN
-#include <span>
-#endif // MICROSTRAIN_HAS_SPAN
 
 namespace microstrain
 {
@@ -32,9 +29,8 @@ namespace microstrain
         virtual bool sendToDevice(const uint8_t* data, size_t length) = 0;
         virtual bool recvFromDevice(uint8_t* buffer, size_t max_length, unsigned int wait_time_ms, size_t* length_out, EmbeddedTimestamp* timestamp_out) = 0;
 
-#if defined MICROSTRAIN_HAS_SPAN
-        bool sendToDevice(std::span<const uint8_t> data) { return sendToDevice(data.data(), data.size()); }
-        bool recvFromDevice(std::span<uint8_t>& buffer, unsigned int wait_time_ms, EmbeddedTimestamp* timestamp_out)
+        bool sendToDevice(microstrain::Span<const uint8_t> data) { return sendToDevice(data.data(), data.size()); }
+        bool recvFromDevice(microstrain::Span<uint8_t>& buffer, unsigned int wait_time_ms, EmbeddedTimestamp* timestamp_out)
         {
             size_t length = 0;
             if (!recvFromDevice(buffer.data(), buffer.size(), wait_time_ms, &length, timestamp_out))
@@ -43,7 +39,6 @@ namespace microstrain
             buffer = buffer.first(length);
             return true;
         }
-#endif // MICROSTRAIN_HAS_SPAN
 
         virtual bool isConnected() const = 0;
         virtual bool connect() = 0;
