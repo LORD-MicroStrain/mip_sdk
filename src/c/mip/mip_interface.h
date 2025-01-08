@@ -34,7 +34,7 @@ struct mip_interface;
 
 // Documentation is in source file.
 typedef bool (*mip_send_callback)(struct mip_interface* device, const uint8_t* data, size_t length);
-typedef bool (*mip_recv_callback)(struct mip_interface* device, mip_timeout wait_time, bool from_cmd, mip_timestamp* timestamp_out);
+typedef bool (*mip_recv_callback)(struct mip_interface* device, uint8_t* buffer, size_t max_length, mip_timeout wait_time, bool from_cmd, size_t* length_out, mip_timestamp* timestamp_out);
 typedef bool (*mip_update_callback)(struct mip_interface* device, mip_timeout wait_time, bool from_cmd);
 
 
@@ -66,13 +66,13 @@ void mip_interface_init(
 //
 
 bool mip_interface_send_to_device(mip_interface* device, const uint8_t* data, size_t length);
-bool mip_interface_recv_from_device(mip_interface* device, mip_timeout wait_time, bool from_cmd, mip_timestamp* timestamp_out);
+bool mip_interface_recv_from_device(mip_interface* device, uint8_t* buffer, size_t max_length, mip_timeout wait_time, bool from_cmd, size_t* length_out, mip_timestamp* timestamp_out);
 bool mip_interface_update(mip_interface* device, mip_timeout wait_time, bool from_cmd);
 
 bool mip_interface_default_update(mip_interface* device, mip_timeout wait_time, bool from_cmd);
 
-void mip_interface_input_bytes(mip_interface* device, const uint8_t* data, size_t length, mip_timestamp timestamp);
-void mip_interface_input_packet(mip_interface* device, const mip_packet_view* packet, mip_timestamp timestamp);
+void mip_interface_input_bytes_from_device(mip_interface* device, const uint8_t* data, size_t length, mip_timestamp timestamp);
+void mip_interface_input_packet_from_device(mip_interface* device, const mip_packet_view* packet, mip_timestamp timestamp);
 
 void mip_interface_parse_callback(void* device, const mip_packet_view* packet, mip_timestamp timestamp);
 
