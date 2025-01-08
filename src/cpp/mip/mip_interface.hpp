@@ -100,8 +100,10 @@ namespace mip
 
         template<bool (*Send)(Interface&, const uint8_t*, size_t)>
         void setSendFunction();
+        template<bool (*Send)(Interface&, microstrain::Span<const uint8_t>)>
+        void setSendFunction();
 
-        template<bool (*Recv)(Interface&, uint8_t*, size_t, Timeout, size_t*, Timestamp*)>
+        template<bool (*Recv)(Interface&, Timeout, Timestamp*)>
         void setRecvFunction();
 
         template<bool (*Update)(Interface&, Timeout, bool)>
@@ -111,8 +113,10 @@ namespace mip
 
         template<class Derived, bool (Derived::*Send)(const uint8_t*, size_t)>
         void setSendFunction();
+        template<class Derived, bool (Derived::*Send)(microstrain::Span<const uint8_t*>)>
+        void setSendFunction();
 
-        template<class Derived, bool (Derived::*Recv)(uint8_t*, size_t, Timeout, size_t*, Timestamp*)>
+        template<class Derived, bool (Derived::*Recv)(Timeout, Timestamp*)>
         void setRecvFunction();
 
         template<class Derived, bool (Derived::*Update)(Timeout, bool)>
@@ -132,8 +136,13 @@ namespace mip
         // General accessors
         //
 
-        //void setMaxPacketsPerPoll(unsigned int maxPackets) { C::mip_interface_set_max_packets_per_update(this, maxPackets); }
-        //unsigned int maxPacketsPerPoll() const             { return C::mip_interface_max_packets_per_update(this); }
+        ///@brief Sets an optional user data pointer which can be retrieved later.
+        ///
+        ///@warning If using connect_interface(), setCallbacks(), or constructing using a microstrain::Connection object,
+        ///         the user pointer must point at the connection instance and must not be changed.
+        ///
+        void setUserPointer(void* ptr) { C::mip_interface_set_user_pointer(this, ptr); }
+        void* userPointer() { return C::mip_interface_user_pointer(this); }
 
         Timeout baseReplyTimeout() const          { return C::mip_cmd_queue_base_reply_timeout(&cmdQueue()); }
         void setBaseReplyTimeout(Timeout timeout) { C::mip_cmd_queue_set_base_reply_timeout(&cmdQueue(), timeout); }
@@ -229,16 +238,30 @@ namespace mip
     }
 
     ////////////////////////////////////////////////////////////////////////////////
+    ///@brief Sets the send callback function (free function /w span version).
+    ///
+    ///@tparam Send A compile-time pointer to the callback function.
+    ///
+    template<bool (*Send)(Interface&, microstrain::Span<const uint8_t>)>
+    void Interface::setSendFunction()
+    {
+        setSendFunction([](C::mip_interface* device, const uint8_t* data, size_t length)->bool
+        {
+            return (*Send)(*static_cast<Interface*>(device), {data, length});
+        });
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
     ///@brief Sets the receive callback function (free function version).
     ///
     ///@tparam Recv A compile-time pointer to the callback function.
     ///
-    template<bool (*Recv)(Interface&, uint8_t*, size_t, Timeout, size_t*, Timestamp*)>
+    template<bool (*Recv)(Interface&, Timeout, Timestamp*)>
     void Interface::setRecvFunction()
     {
-        setRecvFunction([](C::mip_interface* device, uint8_t* buffer, size_t max_length, C::mip_timeout wait_time, size_t* length_out, C::mip_timestamp* timestamp_out)->bool
+        setRecvFunction([](C::mip_interface* device, C::mip_timeout wait_time, C::mip_timestamp* timestamp_out)->bool
         {
-            return (*Recv)(*static_cast<Interface*>(device), buffer, max_length, wait_time, length_out, timestamp_out);
+            return (*Recv)(*static_cast<Interface*>(device), wait_time, timestamp_out);
         });
     }
 
@@ -297,14 +320,14 @@ namespace mip
     ///
     ///@see Interface::setSendFunction()
     ///
-    template<class Derived, bool (Derived::*Recv)(uint8_t*, size_t, Timeout, size_t*, Timestamp*)>
+    template<class Derived, bool (Derived::*Recv)(Timeout, Timestamp*)>
     void Interface::setRecvFunction()
     {
         static_assert(std::is_base_of<C::mip_interface, Derived>::value, "Derived must be derived from C::mip_interface.");
 
-        setRecvFunction([](C::mip_interface* device, uint8_t* buffer, size_t max_length, Timeout wait_time, size_t* length_out, Timestamp* timestamp_out)
+        setRecvFunction([](C::mip_interface* device, Timeout wait_time, Timestamp* timestamp_out)
         {
-            return (static_cast<Derived*>(device)->*Recv)(buffer, max_length, wait_time, length_out, timestamp_out);
+            return (static_cast<Derived*>(device)->*Recv)(wait_time, timestamp_out);
         });
     }
 
