@@ -27,24 +27,19 @@
 // Include Files
 ////////////////////////////////////////////////////////////////////////////////
 
+#include "example_utils.h"
+
 #include <mip/mip_all.h>
 #include <microstrain/connections/serial/serial_port.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <errno.h>
-#include <time.h>
 
-//#include "example_utils.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // Global Variables
 ////////////////////////////////////////////////////////////////////////////////
 
-serial_port device_port;
-clock_t start_time;
-
 int port = -1;
-uint8_t parse_buffer[1024];
 mip_interface device;
 
 //Sensor-to-vehicle frame rotation (Euler Angles)
@@ -76,16 +71,7 @@ bool filter_state_running = false;
 // Function Prototypes
 ////////////////////////////////////////////////////////////////////////////////
 
-
-//Required MIP interface user-defined functions
-mip_timestamp get_current_timestamp();
-
-bool mip_interface_user_recv_from_device(mip_interface* device, mip_timeout wait_time, bool from_cmd, mip_timestamp* timestamp_out);
-bool mip_interface_user_send_to_device(mip_interface* device, const uint8_t* data, size_t length);
-
 int usage(const char* argv0);
-
-void exit_gracefully(const char *message);
 bool should_exit();
 
 
@@ -110,11 +96,7 @@ int main(int argc, const char* argv[])
     if(baudrate == 0)
         return usage(argv[0]);
 
-    //
-    //Get the program start time
-    //
-
-    start_time = clock();
+    mip_example_init();
 
     printf("Connecting to and configuring sensor.\n");
 
@@ -351,53 +333,6 @@ int main(int argc, const char* argv[])
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// MIP Interface Time Access Function
-////////////////////////////////////////////////////////////////////////////////
-
-mip_timestamp get_current_timestamp()
-{
-    clock_t curr_time;
-    curr_time = clock();
-
-    return (mip_timestamp)((double)(curr_time - start_time) / (double)CLOCKS_PER_SEC * 1000.0);
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-// MIP Interface User Recv Data Function
-////////////////////////////////////////////////////////////////////////////////
-
-bool mip_interface_user_recv_from_device(mip_interface* device_, mip_timeout wait_time, bool from_cmd, mip_timestamp* timestamp_out)
-{
-    (void)device_;
-
-    *timestamp_out = get_current_timestamp();
-
-    size_t length;
-
-    if( !serial_port_read(&device_port, parse_buffer, sizeof(parse_buffer), (int)wait_time, &length) )
-        return false;
-
-    mip_interface_input_bytes(device_, parse_buffer, length, *timestamp_out);
-    return true;
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-// MIP Interface User Send Data Function
-////////////////////////////////////////////////////////////////////////////////
-
-bool mip_interface_user_send_to_device(mip_interface* device_, const uint8_t* data, size_t length)
-{
-    (void)device_;
-
-    size_t bytes_written;
-
-    return serial_port_write(&device_port, data, length, &bytes_written);
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
 // Print Usage Function
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -405,27 +340,6 @@ int usage(const char* argv0)
 {
     printf("Usage: %s <port> <baudrate>\n", argv0);
     return 1;
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-// Exit Function
-////////////////////////////////////////////////////////////////////////////////
-
-void exit_gracefully(const char *message)
-{
-    if(message)
-        printf("%s\n", message);
-
-    //Close com port
-    if(serial_port_is_open(&device_port))
-        serial_port_close(&device_port);
-
-#ifdef MICROSTRAIN_PLATFORM_WINDOWS
-    getchar();
-#endif
-
-    exit(0);
 }
 
 
