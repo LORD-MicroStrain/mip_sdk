@@ -46,7 +46,6 @@ typedef struct mip_interface
     mip_parser          _parser;          ///<@private MIP Parser for incoming MIP packets.
     mip_cmd_queue       _queue;           ///<@private Queue for checking command replies.
     mip_dispatcher      _dispatcher;      ///<@private Dispatcher for data callbacks.
-    //unsigned int        _max_update_pkts; ///<@private Max number of MIP packets to parse at once.
     mip_send_callback   _send_callback;   ///<@private Optional function which is called to send raw bytes to the device.
     mip_recv_callback   _recv_callback;   ///<@private Optional function which is called to receive raw bytes from the device.
     mip_update_callback _update_callback; ///<@private Optional function to call during updates.
@@ -70,9 +69,11 @@ bool mip_interface_recv_from_device(mip_interface* device, uint8_t* buffer, size
 bool mip_interface_update(mip_interface* device, mip_timeout wait_time, bool from_cmd);
 
 bool mip_interface_default_update(mip_interface* device, mip_timeout wait_time, bool from_cmd);
+void mip_interface_input_data_and_time(mip_interface* device, const uint8_t* received_data, size_t data_length, mip_timestamp now);
 
 void mip_interface_input_bytes_from_device(mip_interface* device, const uint8_t* data, size_t length, mip_timestamp timestamp);
 void mip_interface_input_packet_from_device(mip_interface* device, const mip_packet_view* packet, mip_timestamp timestamp);
+void mip_interface_update_time(mip_interface* device, mip_timestamp timestamp);
 
 void mip_interface_parse_callback(void* device, const mip_packet_view* packet, mip_timestamp timestamp);
 

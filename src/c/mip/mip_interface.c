@@ -369,7 +369,7 @@ bool mip_interface_recv_from_device(mip_interface* device, uint8_t* buffer, size
 ///         updated (e.g. if the serial port is not open).
 ///
 
-bool mip_interface_update(struct mip_interface* device, mip_timeout wait_time, bool from_cmd)
+bool mip_interface_update(mip_interface* device, mip_timeout wait_time, bool from_cmd)
 {
     return device->_update_callback && device->_update_callback(device, wait_time, from_cmd);
 }
@@ -398,7 +398,7 @@ bool mip_interface_update(struct mip_interface* device, mip_timeout wait_time, b
 ///
 ///@returns The value returned by mip_interface_user_recv_from_device.
 ///
-bool mip_interface_default_update(struct mip_interface* device, mip_timeout wait_time, bool from_cmd)
+bool mip_interface_default_update(mip_interface* device, mip_timeout wait_time, bool from_cmd)
 {
     if( !device->_recv_callback )
         return false;
@@ -415,13 +415,27 @@ bool mip_interface_default_update(struct mip_interface* device, mip_timeout wait
     if ( !(device->_recv_callback)(device, buffer, sizeof(buffer), wait_time, from_cmd, &count, &timestamp) )
         return false;
 
-    // Pass the data to the MIP parser.
-    mip_interface_input_bytes_from_device(device, buffer, count, timestamp);
-
-    // Update the command queue to see if any commands have timed out.
-    mip_cmd_queue_update(mip_interface_cmd_queue(device), timestamp);
+    mip_interface_input_data_and_time(device, buffer, count, timestamp);
 
     return true;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief This function takes care of processing received data and updating the
+///       current time.
+///
+/// User-defined update functions should either call this function after
+/// getting data from the connection, or do the equivalent manually:
+///@li Input bytes to the parser, via mip_interface_input_bytes_from_device, and
+///@li Update the current time via mip_interface_update_time
+///
+void mip_interface_input_data_and_time(mip_interface* device, const uint8_t* received_data, size_t data_length, mip_timestamp timestamp)
+{
+    // Pass the data to the MIP parser.
+    mip_interface_input_bytes_from_device(device, received_data, data_length, timestamp);
+
+    // Update the command queue to see if any commands have timed out.
+    mip_interface_update_time(device, timestamp);
 }
 
 
@@ -456,6 +470,23 @@ void mip_interface_input_packet_from_device(mip_interface* device, const mip_pac
 {
     mip_cmd_queue_process_packet(&device->_queue, packet, timestamp);
     mip_dispatcher_dispatch_packet(&device->_dispatcher, packet, timestamp);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Call this to ensure that pending commands time out properly.
+///
+/// This function should be called regularly (i.e. from within the update
+/// callback). Otherwise, unacknowledged commands may never time out. This can
+/// happen even if data is being sent through mip_interface_input_bytes_from_device
+/// because the device may be streaming data. See the implementation of
+/// mip_interface_default_update for an example.
+///
+///param device
+///param timestamp Current time, as if timestamping received data.
+///
+void mip_interface_update_time(mip_interface* device, mip_timestamp timestamp)
+{
+    mip_cmd_queue_update(mip_interface_cmd_queue(device), timestamp);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
