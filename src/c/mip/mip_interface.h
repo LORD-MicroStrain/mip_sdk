@@ -69,7 +69,7 @@ bool mip_interface_recv_from_device(mip_interface* device, uint8_t* buffer, size
 bool mip_interface_update(mip_interface* device, mip_timeout wait_time, bool from_cmd);
 
 bool mip_interface_default_update(mip_interface* device, mip_timeout wait_time, bool from_cmd);
-void mip_interface_input_data_and_time(mip_interface* device, const uint8_t* received_data, size_t data_length, mip_timestamp now);
+void mip_interface_input_bytes_andor_time(mip_interface* device, const uint8_t* received_data, size_t data_length, mip_timestamp now);
 
 void mip_interface_input_bytes_from_device(mip_interface* device, const uint8_t* data, size_t length, mip_timestamp timestamp);
 void mip_interface_input_packet_from_device(mip_interface* device, const mip_packet_view* packet, mip_timestamp timestamp);
