@@ -194,9 +194,11 @@ namespace mip
         bool update(Timeout wait_time = 0, bool from_cmd = false) { return C::mip_interface_update(this, wait_time, from_cmd); }
 
         bool defaultUpdate(Timeout wait_time = 0, bool from_cmd = false) { return C::mip_interface_default_update(this, wait_time, from_cmd); }
+        bool defaultUpdateExtBuffer(Timeout wait_time, bool from_cmd, microstrain::Span<uint8_t> buffer) { return C::mip_interface_default_update_ext_buffer(this, wait_time, from_cmd, buffer.data(), buffer.size()); }
         void inputBytes(const uint8_t* data, size_t length, Timestamp timestamp) { C::mip_interface_input_bytes_from_device(this, data, length, timestamp); }
         void inputPacket(const C::mip_packet_view& packet, Timestamp timestamp) { C::mip_interface_input_packet_from_device(this, &packet, timestamp); }
-
+        void updateTime(Timestamp timestamp) { C::mip_interface_update_time(this, timestamp); }
+        void inputBytesAndOrTime(microstrain::Span<const uint8_t> data, Timestamp timestamp) { C::mip_interface_input_bytes_andor_time(this, data.data(), data.size(), timestamp); }
 
         CmdResult waitForReply(C::mip_pending_cmd& cmd) { return C::mip_interface_wait_for_reply(this, &cmd); }
 

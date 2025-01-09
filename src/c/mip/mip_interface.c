@@ -381,8 +381,11 @@ bool mip_interface_update(mip_interface* device, mip_timeout wait_time, bool fro
 /// This is the default choice for the user update function. It ignores the
 /// from_cmd flag and always tries to read data from the device.
 ///
-///@warning This function is provided for convenience and quick setup.
-///         It is not optimized and may not work at all in certain situations.
+///@warning This function is provided for convenience and quick setup. It will
+///         work for most applications, but it is not optimized for your
+///         application. It may be unsuitable for some situations such as
+///         small microcontrollers (due to the fixed-size stack-allocated data
+///         buffer) or in combination with multi-threading.
 ///
 ///@param device
 ///
@@ -400,25 +403,63 @@ bool mip_interface_update(mip_interface* device, mip_timeout wait_time, bool fro
 ///
 bool mip_interface_default_update(mip_interface* device, mip_timeout wait_time, bool from_cmd)
 {
-    if( !device->_recv_callback )
-        return false;
-
     // Allocate a buffer to hold received data.
     // Note: bigger buffers will parse faster, but may overflow the stack.
     // 512 bytes seems to be a good compromise on both desktop and embedded devices.
     uint8_t buffer[512];
 
+    return mip_interface_default_update_ext_buffer(device, wait_time, from_cmd, buffer, sizeof(buffer));
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Polls the port for new data or command replies using a supplied buffer.
+///
+/// This function is suitable for most single-threaded use cases where
+/// performance is not critical. In performance-sensitive applications, it's
+/// best to either read directly into the mip parser buffer, or call
+/// mip_interface_input_bytes from your own update function (bypassing
+/// mip_interface_recv_from_device entirely).
+///
+///@param device
+///
+///@param wait_time
+///       Time to wait for data from the device. This will be nonzero when
+///       waiting for command replies. Applications calling this function
+///       can pass 0 to avoid blocking when checking for new data.
+///
+///@param from_cmd
+///       If true, this call is a result of waiting for a command to complete.
+///       Otherwise, this call is a regularly-scheduled poll for data. User
+///       code calling this function should generally set this to false.
+///
+///@param buffer
+///       Buffer to hold data read from the device connection. At least 512
+///       bytes are recommended for better performance, with a few kB being
+///       the point of diminishing return.
+///
+///@param buffer_size
+///       Size of the buffer.
+///
+///@returns The value returned by mip_interface_user_recv_from_device.
+///
+bool mip_interface_default_update_ext_buffer(mip_interface* device, mip_timeout wait_time, bool from_cmd, uint8_t* buffer, size_t buffer_size)
+{
+    if( !device->_recv_callback )
+        return false;
+
     size_t count = 0;
     mip_timestamp timestamp;
 
     // Try to read data from the port into a temporary buffer.
-    if ( !(device->_recv_callback)(device, buffer, sizeof(buffer), wait_time, from_cmd, &count, &timestamp) )
+    if ( !(device->_recv_callback)(device, buffer, buffer_size, wait_time, from_cmd, &count, &timestamp) )
         return false;
 
     mip_interface_input_bytes_andor_time(device, buffer, count, timestamp);
 
     return true;
 }
+
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief This function takes care of processing received data and updating the
