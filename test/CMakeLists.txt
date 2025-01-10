@@ -1,10 +1,19 @@
 set(MICROSTRAIN_TEST_LIBRARY "MicrostrainTest")
-add_library(${MICROSTRAIN_TEST_LIBRARY}
+
+set(MICROSTRAIN_TEST_SOURCES
     "${CMAKE_CURRENT_LIST_DIR}/test.c"
     "${CMAKE_CURRENT_LIST_DIR}/test.h"
 )
 
+add_library(${MICROSTRAIN_TEST_LIBRARY}
+    "${MICROSTRAIN_TEST_SOURCES}"
+)
+
 set(TEST_DIR "${CMAKE_CURRENT_LIST_DIR}")
+
+if(MSVC)
+    source_group(TREE ${TEST_DIR} FILES ${MICROSTRAIN_TEST_SOURCES})
+endif()
 
 # Note: Don't use this macro to add tests, use the SDK specific macros below
 macro(add_test_common NAME SOURCES COMMAND LIBRARIES USE_CPP ARGS)
@@ -15,6 +24,10 @@ macro(add_test_common NAME SOURCES COMMAND LIBRARIES USE_CPP ARGS)
     endif()
 
     add_executable(${NAME} ${SOURCES})
+
+    if(MSVC)
+        source_group(TREE ${TEST_DIR} FILES ${SOURCES})
+    endif()
 
     target_include_directories(${NAME} PRIVATE
         "${TEST_DIR}"
@@ -81,10 +94,10 @@ macro(add_microstrain_test)
     )
 endmacro()
 
-set(MIP_TEST_DATA_BIN "${CMAKE_CURRENT_SOURCE_DIR}/data/mip_data.bin")
+set(MIP_TEST_DATA_BIN "${CMAKE_CURRENT_LIST_DIR}/data/mip_data.bin")
 
-add_subdirectory(c)
-add_subdirectory(cpp)
+add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/c")
+add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/cpp")
 
 #if(MICROSTRAIN_BUILD_EXAMPLES)
 #    set(OUT_FILE "${CMAKE_CURRENT_BINARY_DIR}/MipPacketExampleOutput.txt")

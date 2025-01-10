@@ -1,1 +1,1 @@
-add_subdirectory(mip)
+add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/mip")

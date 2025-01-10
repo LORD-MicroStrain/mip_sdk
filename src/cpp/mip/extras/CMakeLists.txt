@@ -2,12 +2,14 @@ set(MIP_EXTRAS_LIBRARY "mip_extras" CACHE INTERNAL "Name of the MIP extras libra
 mark_as_advanced(MIP_EXTRAS_LIBRARY)
 
 set(EXTRAS_SUBDIR_TIME "${CMAKE_CURRENT_LIST_DIR}/time")
-add_library(${MIP_EXTRAS_LIBRARY}
+set(MIP_EXTRAS_SOURCES
     "${CMAKE_CURRENT_LIST_DIR}/composite_result.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/descriptor_id.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/firmware_version.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/firmware_version.hpp"
-
+    "${CMAKE_CURRENT_LIST_DIR}/mip_extras_all.hpp"
+    "${CMAKE_CURRENT_LIST_DIR}/platform_connection.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/platform_connection.hpp"
     "${EXTRAS_SUBDIR_TIME}/durations.hpp"
     "${EXTRAS_SUBDIR_TIME}/misc.hpp"
     "${EXTRAS_SUBDIR_TIME}/standards.cpp"
@@ -15,6 +17,14 @@ add_library(${MIP_EXTRAS_LIBRARY}
     "${EXTRAS_SUBDIR_TIME}/timestamp.cpp"
     "${EXTRAS_SUBDIR_TIME}/timestamp.hpp"
 )
+
+add_library(${MIP_EXTRAS_LIBRARY}
+    "${MIP_EXTRAS_SOURCES}"
+)
+
+if(MSVC)
+    source_group(TREE ${MICROSTRAIN_SRC_DIR} FILES ${MIP_EXTRAS_SOURCES})
+endif()
 
 target_compile_features(${MIP_EXTRAS_LIBRARY} PUBLIC cxx_std_11)
 

@@ -16,7 +16,7 @@ unsigned int num_errors = 0;
 size_t bytesRead = 0;
 size_t bytes_parsed = 0;
 
-bool handle_packet(void* p, const struct mip_packet_view* packet, mip_timestamp t)
+void handle_packet(void* p, const struct mip_packet_view* packet, mip_timestamp t)
 {
     (void)t;
 
@@ -26,8 +26,8 @@ bool handle_packet(void* p, const struct mip_packet_view* packet, mip_timestamp 
     if( length > MIP_PACKET_LENGTH_MAX )
     {
         num_errors++;
-        fprintf(stderr, "Packet with length too long (%ld)\n", length);
-        return false;
+        fprintf(stderr, "Packet with length too long (%zu)\n", length);
+        return;
     }
     // size_t written = fwrite(mip_packet_buffer(packet), 1, length, outfile);
     // return written == length;
@@ -40,15 +40,15 @@ bool handle_packet(void* p, const struct mip_packet_view* packet, mip_timestamp 
     {
         num_errors++;
         fprintf(stderr, "Failed to read from input file (2).\n");
-        return false;
+        return;
     }
 
     const uint8_t* packet_buffer = mip_packet_pointer(packet);
 
-    // printf("Packet: ");
-    // for(size_t i=0; i<length; i++)
-    //     printf(" %02X", packet_buffer[i]);
-    // fputc('\n', stdout);
+     printf("Packet: ");
+     for(size_t i=0; i<length; i++)
+         printf(" %02X", packet_buffer[i]);
+     fputc('\n', stdout);
 
     bool good = memcmp(check_buffer, packet_buffer, length) == 0;
 
@@ -66,8 +66,6 @@ bool handle_packet(void* p, const struct mip_packet_view* packet, mip_timestamp 
 
         fputc('\n', stderr);
     }
-
-    return good;
 }
 
 
@@ -98,7 +96,7 @@ int main(int argc, const char* argv[])
 
     srand(0);
 
-    mip_parser_init(&parser, parse_buffer, sizeof(parse_buffer), &handle_packet, infile2, MIPPARSER_DEFAULT_TIMEOUT_MS);
+    mip_parser_init(&parser, &handle_packet, infile2, MIP_PARSER_DEFAULT_TIMEOUT_MS);
 
     do
     {
@@ -107,7 +105,7 @@ int main(int argc, const char* argv[])
         const size_t numRead = fread(input_buffer, 1, numToRead, infile);
         bytesRead += numRead;
 
-        mip_parser_parse(&parser, input_buffer, numRead, 0, MIPPARSER_UNLIMITED_PACKETS);
+        mip_parser_parse(&parser, input_buffer, numRead, 0);
 
         // End of file (or error)
         if( numRead != numToRead )
@@ -120,7 +118,7 @@ int main(int argc, const char* argv[])
     if( bytes_parsed != bytesRead )
     {
         num_errors++;
-        fprintf(stderr, "Read %ld bytes but only parsed %ld bytes (delta %ld).\n", bytesRead, bytes_parsed, bytesRead-bytes_parsed);
+        fprintf(stderr, "Read %zu bytes but only parsed %zu bytes (delta %zu).\n", bytesRead, bytes_parsed, bytesRead-bytes_parsed);
     }
 
     fclose(infile2);

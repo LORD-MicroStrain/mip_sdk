@@ -5,7 +5,7 @@ set(CMAKE_C_STANDARD 11)
 
 project(
     "MIP_SDK"
-    VERSION "3.0.00"
+    VERSION "3.1.00"
     DESCRIPTION "MicroStrain Communications Library for embedded systems"
     LANGUAGES C CXX
 )
@@ -86,6 +86,7 @@ if(WIN32)
             "/external:anglebrackets" # Treat angle brackets as system includes
             "/external:W0"            # No warnings from system includes
             "/W4"                     # Enable warnings
+            "/WX"                     # Warnings as errors
             "/Zc:__cplusplus"         # Enable updated __cplusplus value
             "/MP"                     # Multi-process compilation
         )
@@ -101,6 +102,7 @@ else()
     set(MICROSTRAIN_PRIVATE_COMPILE_OPTIONS
         "-Wall"   # Enable warnings
         "-Wextra" # Enable extra warnings
+        "-Werror" # Warnings as errors
     )
 
     set(MICROSTRAIN_PRIVATE_COMPILE_DEFINITIONS "")

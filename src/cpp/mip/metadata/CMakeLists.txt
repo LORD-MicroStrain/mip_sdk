@@ -14,7 +14,7 @@ if(MICROSTRAIN_CMAKE_DEBUG)
    message("C++ metadata definitions = ${INCLUDED_DEF_HEADERS}")
 endif()
 
-add_library(${MIP_METADATA_LIBRARY}
+set(MIP_METADATA_SOURCES
     "${CMAKE_CURRENT_LIST_DIR}/mip_all_definitions.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/mip_definitions.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/mip_definitions.cpp"
@@ -25,6 +25,14 @@ add_library(${MIP_METADATA_LIBRARY}
     ${MIP_DEF_HEADERS}
 )
 
+add_library(${MIP_METADATA_LIBRARY}
+    "${MIP_METADATA_SOURCES}"
+)
+
+if(MSVC)
+    source_group(TREE ${MICROSTRAIN_SRC_DIR} FILES ${MIP_METADATA_SOURCES})
+endif()
+
 target_compile_features(${MIP_METADATA_LIBRARY} PUBLIC cxx_std_20)
 
 target_link_libraries(${MIP_METADATA_LIBRARY} PUBLIC ${MIP_LIBRARY})
@@ -33,6 +41,12 @@ target_compile_definitions(${MIP_METADATA_LIBRARY}
     PUBLIC "MIP_ENABLE_METADATA=1"
     PRIVATE ${MICROSTRAIN_PRIVATE_COMPILE_DEFINITIONS}
 )
+
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    list(APPEND MICROSTRAIN_PRIVATE_COMPILE_OPTIONS
+        "-Wno-missing-braces" # Suppress missing braces warning
+    )
+endif()
 
 target_compile_options(${MIP_METADATA_LIBRARY} PRIVATE ${MICROSTRAIN_PRIVATE_COMPILE_OPTIONS})
 

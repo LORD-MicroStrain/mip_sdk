@@ -107,13 +107,13 @@ void insert_mip_system_interface_control_command(microstrain_serializer* seriali
 {
     insert_mip_function_selector(serializer, self->function);
     
-    insert_mip_comms_interface(serializer, self->interface);
+    insert_mip_comms_interface(serializer, self->port);
     
     if( self->function == MIP_FUNCTION_WRITE )
     {
-        insert_mip_comms_protocol(serializer, self->protocols_in);
+        insert_mip_comms_protocol(serializer, self->protocols_incoming);
         
-        insert_mip_comms_protocol(serializer, self->protocols_out);
+        insert_mip_comms_protocol(serializer, self->protocols_outgoing);
         
     }
 }
@@ -121,37 +121,37 @@ void extract_mip_system_interface_control_command(microstrain_serializer* serial
 {
     extract_mip_function_selector(serializer, &self->function);
     
-    extract_mip_comms_interface(serializer, &self->interface);
+    extract_mip_comms_interface(serializer, &self->port);
     
     if( self->function == MIP_FUNCTION_WRITE )
     {
-        extract_mip_comms_protocol(serializer, &self->protocols_in);
+        extract_mip_comms_protocol(serializer, &self->protocols_incoming);
         
-        extract_mip_comms_protocol(serializer, &self->protocols_out);
+        extract_mip_comms_protocol(serializer, &self->protocols_outgoing);
         
     }
 }
 
 void insert_mip_system_interface_control_response(microstrain_serializer* serializer, const mip_system_interface_control_response* self)
 {
-    insert_mip_comms_interface(serializer, self->interface);
+    insert_mip_comms_interface(serializer, self->port);
     
-    insert_mip_comms_protocol(serializer, self->protocols_in);
+    insert_mip_comms_protocol(serializer, self->protocols_incoming);
     
-    insert_mip_comms_protocol(serializer, self->protocols_out);
+    insert_mip_comms_protocol(serializer, self->protocols_outgoing);
     
 }
 void extract_mip_system_interface_control_response(microstrain_serializer* serializer, mip_system_interface_control_response* self)
 {
-    extract_mip_comms_interface(serializer, &self->interface);
+    extract_mip_comms_interface(serializer, &self->port);
     
-    extract_mip_comms_protocol(serializer, &self->protocols_in);
+    extract_mip_comms_protocol(serializer, &self->protocols_incoming);
     
-    extract_mip_comms_protocol(serializer, &self->protocols_out);
+    extract_mip_comms_protocol(serializer, &self->protocols_outgoing);
     
 }
 
-mip_cmd_result mip_system_write_interface_control(mip_interface* device, mip_comms_interface interface, mip_comms_protocol protocols_in, mip_comms_protocol protocols_out)
+mip_cmd_result mip_system_write_interface_control(mip_interface* device, mip_comms_interface port, mip_comms_protocol protocols_incoming, mip_comms_protocol protocols_outgoing)
 {
     microstrain_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -159,17 +159,17 @@ mip_cmd_result mip_system_write_interface_control(mip_interface* device, mip_com
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
     
-    insert_mip_comms_interface(&serializer, interface);
+    insert_mip_comms_interface(&serializer, port);
     
-    insert_mip_comms_protocol(&serializer, protocols_in);
+    insert_mip_comms_protocol(&serializer, protocols_incoming);
     
-    insert_mip_comms_protocol(&serializer, protocols_out);
+    insert_mip_comms_protocol(&serializer, protocols_outgoing);
     
     assert(microstrain_serializer_is_ok(&serializer));
     
     return mip_interface_run_command(device, MIP_SYSTEM_CMD_DESC_SET, MIP_CMD_DESC_SYSTEM_INTERFACE_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
 }
-mip_cmd_result mip_system_read_interface_control(mip_interface* device, mip_comms_interface interface, mip_comms_protocol* protocols_in_out, mip_comms_protocol* protocols_out_out)
+mip_cmd_result mip_system_read_interface_control(mip_interface* device, mip_comms_interface port, mip_comms_protocol* protocols_incoming_out, mip_comms_protocol* protocols_outgoing_out)
 {
     microstrain_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -177,7 +177,7 @@ mip_cmd_result mip_system_read_interface_control(mip_interface* device, mip_comm
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
     
-    insert_mip_comms_interface(&serializer, interface);
+    insert_mip_comms_interface(&serializer, port);
     
     assert(microstrain_serializer_is_ok(&serializer));
     
@@ -189,20 +189,20 @@ mip_cmd_result mip_system_read_interface_control(mip_interface* device, mip_comm
         microstrain_serializer deserializer;
         microstrain_serializer_init_insertion(&deserializer, buffer, responseLength);
         
-        extract_mip_comms_interface(&deserializer, &interface);
+        extract_mip_comms_interface(&deserializer, &port);
         
-        assert(protocols_in_out);
-        extract_mip_comms_protocol(&deserializer, protocols_in_out);
+        assert(protocols_incoming_out);
+        extract_mip_comms_protocol(&deserializer, protocols_incoming_out);
         
-        assert(protocols_out_out);
-        extract_mip_comms_protocol(&deserializer, protocols_out_out);
+        assert(protocols_outgoing_out);
+        extract_mip_comms_protocol(&deserializer, protocols_outgoing_out);
         
         if( microstrain_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
 }
-mip_cmd_result mip_system_save_interface_control(mip_interface* device, mip_comms_interface interface)
+mip_cmd_result mip_system_save_interface_control(mip_interface* device, mip_comms_interface port)
 {
     microstrain_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -210,13 +210,13 @@ mip_cmd_result mip_system_save_interface_control(mip_interface* device, mip_comm
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_SAVE);
     
-    insert_mip_comms_interface(&serializer, interface);
+    insert_mip_comms_interface(&serializer, port);
     
     assert(microstrain_serializer_is_ok(&serializer));
     
     return mip_interface_run_command(device, MIP_SYSTEM_CMD_DESC_SET, MIP_CMD_DESC_SYSTEM_INTERFACE_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
 }
-mip_cmd_result mip_system_load_interface_control(mip_interface* device, mip_comms_interface interface)
+mip_cmd_result mip_system_load_interface_control(mip_interface* device, mip_comms_interface port)
 {
     microstrain_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -224,13 +224,13 @@ mip_cmd_result mip_system_load_interface_control(mip_interface* device, mip_comm
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_LOAD);
     
-    insert_mip_comms_interface(&serializer, interface);
+    insert_mip_comms_interface(&serializer, port);
     
     assert(microstrain_serializer_is_ok(&serializer));
     
     return mip_interface_run_command(device, MIP_SYSTEM_CMD_DESC_SET, MIP_CMD_DESC_SYSTEM_INTERFACE_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
 }
-mip_cmd_result mip_system_default_interface_control(mip_interface* device, mip_comms_interface interface)
+mip_cmd_result mip_system_default_interface_control(mip_interface* device, mip_comms_interface port)
 {
     microstrain_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -238,7 +238,7 @@ mip_cmd_result mip_system_default_interface_control(mip_interface* device, mip_c
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
     
-    insert_mip_comms_interface(&serializer, interface);
+    insert_mip_comms_interface(&serializer, port);
     
     assert(microstrain_serializer_is_ok(&serializer));
     
