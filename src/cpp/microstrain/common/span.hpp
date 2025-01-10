@@ -57,6 +57,14 @@ struct Span
     constexpr element_type front() const noexcept { return *m_ptr; }
     constexpr element_type back() const noexcept { return *m_ptr[extent-1]; }
 
+    [[nodiscard]] constexpr Span<T, DYNAMIC_EXTENT> first(size_t count) const { return { m_ptr, count }; }
+    template<size_t Count>
+    [[nodiscard]] constexpr Span<T, Count> first() const { return { m_ptr }; }
+
+    [[nodiscard]] constexpr Span<T, DYNAMIC_EXTENT> last(size_t count) const { return { m_ptr + (size() - count), count }; }
+    template<size_t Count>
+    [[nodiscard]] constexpr Span<T, Count> last() const { return { m_ptr + size() - Count }; }
+
     constexpr reference operator[](size_t idx) noexcept { return m_ptr[idx]; }
     constexpr const_reference operator[](size_t idx) const noexcept { return m_ptr[idx]; }
 
