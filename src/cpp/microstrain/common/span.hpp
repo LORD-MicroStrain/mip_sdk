@@ -78,6 +78,14 @@ struct Span
     template<size_t Offset, size_t Count = DYNAMIC_EXTENT>
     [[nodiscard]] constexpr Span<T, Count == DYNAMIC_EXTENT ? DYNAMIC_EXTENT : Extent-Count> subspan() const { return {m_ptr+Offset}; }
 
+    [[nodiscard]] constexpr Span<T, DYNAMIC_EXTENT> first(size_t count) const { return {m_ptr, count};}
+    template<size_t Count>
+    [[nodiscard]] constexpr Span<T, Count> first() const { static_assert(Count<=Extent, "Count out of range"); return {m_ptr}; }
+
+    [[nodiscard]] constexpr Span<T, DYNAMIC_EXTENT> last(size_t count) const { return {m_ptr+(size()-count), count};}
+    template<size_t Count>
+    [[nodiscard]] constexpr Span<T, Count> last() const { static_assert(Count<=Extent, "Count out of range"); return {m_ptr+(size()-count)}; }
+
 private:
     pointer m_ptr = nullptr;
 };
@@ -117,6 +125,14 @@ struct Span<T, DYNAMIC_EXTENT>
     [[nodiscard]] constexpr Span<T, DYNAMIC_EXTENT> subspan(size_t index) const { return {m_ptr+index, m_cnt-index}; }
     template<size_t Offset, size_t Count = DYNAMIC_EXTENT>
     [[nodiscard]] constexpr Span<T, Count> subspan() const { return {m_ptr+Offset, Count}; }
+
+    [[nodiscard]] constexpr Span<T, DYNAMIC_EXTENT> first(size_t count) const { return {m_ptr, count};}
+    template<size_t Count>
+    [[nodiscard]] constexpr Span<T, Count> first() const { return {m_ptr}; }
+
+    [[nodiscard]] constexpr Span<T, DYNAMIC_EXTENT> last(size_t count) const { return {m_ptr+(size()-count), count};}
+    template<size_t Count>
+    [[nodiscard]] constexpr Span<T, Count> last() const { return {m_ptr+(size()-count)}; }
 
 private:
     pointer m_ptr   = nullptr;
