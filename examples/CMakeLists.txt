@@ -57,7 +57,7 @@ macro(add_mip_example name sources)
     add_executable(${name} ${sources})
 
     if(MSVC)
-        source_group(TREE ${EXAMPLE_LIBS} FILES ${sources})
+        source_group(TREE ${EXAMPLE_DIR} FILES ${sources})
     endif()
 
     target_compile_features(${name} PUBLIC c_std_11)
