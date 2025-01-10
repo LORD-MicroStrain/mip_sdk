@@ -59,7 +59,7 @@ namespace mip
     ///
     bool recv_from_connection(Connection* conn, Span<uint8_t> buffer, Timeout timeout, bool /*from_cmd*/, size_t* length_out, Timestamp* timestamp_out)
     {
-        return conn->recvFromDeviceSpan(buffer, timeout, length_out, timestamp_out);
+        return conn->recvFromDeviceSpan(buffer, (unsigned int)timeout, length_out, timestamp_out);
     }
 
 } // namespace mip
