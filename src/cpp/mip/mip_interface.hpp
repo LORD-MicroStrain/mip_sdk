@@ -239,6 +239,12 @@ namespace mip
         void registerExtractor(C::mip_dispatch_handler& handler, DataField* field, uint8_t descriptorSet=DataField::DESCRIPTOR_SET);
 
         //
+        // Unregistration
+        //
+
+        void removeDispatcher(C::mip_dispatch_handler& handler) { mip::C::mip_interface_remove_dispatcher(this, &handler); }
+
+        //
         // Run function templates
         //
 
@@ -1237,39 +1243,6 @@ namespace mip
     //
     //    return C::mip_interface_start_command_packet(&device, &packet, &pending);
     //}
-
-    template<class Cmd>
-    TypedResult<Cmd> setAndSave(C::mip_interface& device, Cmd& cmd)
-    {
-        cmd.function = mip::FunctionSelector::WRITE;
-        auto result = runCommand(device, cmd);
-        if(!result)
-            return result;
-        cmd.function = mip::FunctionSelector::SAVE;
-        return runCommand(device, cmd);
-    }
-
-    template<class Cmd, class Rsp=typename Cmd::Response>
-    TypedResult<Cmd> loadAndRead(C::mip_interface& device, Cmd& cmd, Rsp& rsp)
-    {
-        cmd.function = mip::FunctionSelector::LOAD;
-        auto result = runCommand(device, cmd);
-        if(!result)
-            return result;
-        cmd.function = mip::FunctionSelector::READ;
-        return runCommand(device, cmd, rsp);
-    }
-
-    template<class Cmd, class Rsp=typename Cmd::Response>
-    TypedResult<Cmd> resetAndRead(C::mip_interface& device, Cmd& cmd, Rsp& rsp)
-    {
-        cmd.function = mip::FunctionSelector::RESET;
-        auto result = runCommand(device, cmd);
-        if(!result)
-            return result;
-        cmd.function = mip::FunctionSelector::READ;
-        return runCommand(device, cmd, rsp);
-    }
 
     ///@}
     ////////////////////////////////////////////////////////////////////////////////

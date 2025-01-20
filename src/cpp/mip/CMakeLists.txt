@@ -3,6 +3,8 @@ set(MIP_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/..")
 set(MIP_SOURCES
     "${CMAKE_CURRENT_LIST_DIR}/mip.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/mip_all.hpp"
+    "${CMAKE_CURRENT_LIST_DIR}/mip_cmd_utils.hpp"
+    "${CMAKE_CURRENT_LIST_DIR}/mip_cmd_utils.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/mip_cmdqueue.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/mip_descriptors.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/mip_field.hpp"
