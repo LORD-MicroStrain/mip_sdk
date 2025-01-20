@@ -569,10 +569,16 @@ void mip_interface_parse_callback(void* device, const mip_packet_view* packet, m
 ///
 enum mip_cmd_result mip_interface_wait_for_reply(mip_interface* device, mip_pending_cmd* cmd)
 {
+    const mip_timestamp start_time = mip_interface_last_update_time(device);
+    const mip_timeout total_wait_time = device->_queue._base_timeout + cmd->_extra_timeout;
+
+    // Always run once with the full wait time (last update time can change in another thread).
+    mip_timeout next_wait_time = total_wait_time;
+
     enum mip_cmd_result status;
     while( !mip_cmd_result_is_finished(status = mip_pending_cmd_status(cmd)) )
     {
-        if( !mip_interface_update(device, 0, true) )
+        if( !mip_interface_update(device, next_wait_time, true) )
         {
             // When this function returns the pending command may be deallocated and the
             // queue will have a dangling pointer. Therefore, the command must be manually
@@ -589,6 +595,15 @@ enum mip_cmd_result mip_interface_wait_for_reply(mip_interface* device, mip_pend
 
             return MIP_STATUS_ERROR;
         }
+
+        // Reduce the wait time next iteration to account for time already waited.
+        // Note: only allow the update function to time out the command to avoid a race condition.
+        const mip_timeout time_passed = mip_interface_last_update_time(device) - start_time;
+
+        if(time_passed < total_wait_time)
+            next_wait_time = total_wait_time - time_passed;
+        else
+            next_wait_time = 0;
     }
     return status;
 }
