@@ -155,10 +155,11 @@ void mip_interface_init(
 {
     mip_parser_init(&device->_parser, &mip_interface_parse_callback, device, parse_timeout);
 
-    device->_send_callback   = send;
-    device->_recv_callback   = recv;
-    device->_update_callback = update;
-    device->_user_pointer    = user_pointer;
+    device->_send_callback    = send;
+    device->_recv_callback    = recv;
+    device->_update_callback  = update;
+    device->_last_update_time = 0;
+    device->_user_pointer     = user_pointer;
 
     mip_cmd_queue_init(&device->_queue, base_reply_timeout);
 
@@ -299,6 +300,13 @@ mip_cmd_queue* mip_interface_cmd_queue(mip_interface* device)
     return &device->_queue;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+///@brief Returns the last timestamp passed to mip_interface_update_time.
+///
+mip_timestamp mip_interface_last_update_time(const mip_interface* device)
+{
+    return device->_last_update_time;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 //
@@ -527,6 +535,7 @@ void mip_interface_input_packet_from_device(mip_interface* device, const mip_pac
 ///
 void mip_interface_update_time(mip_interface* device, mip_timestamp timestamp)
 {
+    device->_last_update_time = timestamp;
     mip_cmd_queue_update(mip_interface_cmd_queue(device), timestamp);
 }
 
@@ -768,6 +777,19 @@ void mip_interface_register_extractor(
     mip_dispatcher_add_handler(&device->_dispatcher, handler);
 }
 
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Removes a dispatch handler.
+///
+///@param device
+///
+///@param handler The mip_dispatch_handler object to be removed. No-op if not
+///       installed.
+///
+void mip_interface_remove_dispatcher(mip_interface* device, mip_dispatch_handler* handler)
+{
+    mip_dispatcher_remove_handler(&device->_dispatcher, handler);
+}
 
 #ifdef __cplusplus
 } // extern "C"

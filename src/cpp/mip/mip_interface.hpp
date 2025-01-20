@@ -178,6 +178,8 @@ namespace mip
         Timeout baseReplyTimeout() const          { return C::mip_cmd_queue_base_reply_timeout(&cmdQueue()); }
         void setBaseReplyTimeout(Timeout timeout) { C::mip_cmd_queue_set_base_reply_timeout(&cmdQueue(), timeout); }
 
+        Timestamp lastUpdateTime() const { return C::mip_interface_last_update_time(this); }
+
         Parser&   parser()   { return *static_cast<Parser*>(C::mip_interface_parser(this)); }
         CmdQueue& cmdQueue() { return *static_cast<CmdQueue*>(C::mip_interface_cmd_queue(this)); }
 

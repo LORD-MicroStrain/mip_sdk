@@ -49,6 +49,7 @@ typedef struct mip_interface
     mip_send_callback   _send_callback;   ///<@private Optional function which is called to send raw bytes to the device.
     mip_recv_callback   _recv_callback;   ///<@private Optional function which is called to receive raw bytes from the device.
     mip_update_callback _update_callback; ///<@private Optional function to call during updates.
+    mip_timestamp       _last_update_time;///<@private Records the last timestamp passed to mip_interface_update_time.
     void*               _user_pointer;    ///<@private Optional user-specified data pointer.
 } mip_interface;
 
@@ -97,6 +98,8 @@ void mip_interface_register_packet_callback(mip_interface* device, mip_dispatch_
 void mip_interface_register_field_callback(mip_interface* device, mip_dispatch_handler* handler, uint8_t descriptor_set, uint8_t field_descriptor, mip_dispatch_field_callback callback, void* user_data);
 void mip_interface_register_extractor(mip_interface* device, mip_dispatch_handler* handler, uint8_t descriptor_set, uint8_t field_descriptor, mip_dispatch_extractor callback, void* field_ptr);
 
+void mip_interface_remove_dispatcher(mip_interface* device, mip_dispatch_handler* handler);
+
 //
 // Accessors
 //
@@ -113,6 +116,8 @@ void*               mip_interface_user_pointer(const mip_interface* device);
 
 mip_parser*    mip_interface_parser(mip_interface* device);
 mip_cmd_queue* mip_interface_cmd_queue(mip_interface* device);
+
+mip_timestamp mip_interface_last_update_time(const mip_interface* device);
 
 ///@}
 ///@}
