@@ -40,9 +40,9 @@ namespace mip
         void removeAllHandlers() { C::mip_dispatcher_remove_all_handlers(this); }
     };
 
-    template<class Cmd> CmdResult runCommand(C::mip_interface& device, const Cmd& cmd, Timeout additionalTime=0);
-    template<class Cmd> CmdResult runCommand(C::mip_interface& device, const Cmd& cmd, typename Cmd::Response& response, Timeout additionalTime=0);
-    template<class Cmd, class... Args> CmdResult runCommand(C::mip_interface& device, const Args&&... args, Timeout additionalTime);
+    template<class Cmd> TypedResult<Cmd> runCommand(C::mip_interface& device, const Cmd& cmd, Timeout additionalTime=0);
+    template<class Cmd> TypedResult<Cmd> runCommand(C::mip_interface& device, const Cmd& cmd, typename Cmd::Response& response, Timeout additionalTime=0);
+    template<class Cmd, class... Args> TypedResult<Cmd> runCommand(C::mip_interface& device, const Args&&... args, Timeout additionalTime);
     template<class Cmd> bool startCommand(C::mip_interface& device, C::mip_pending_cmd& pending, const Cmd& cmd, Timeout additionalTime);
 
 
@@ -1190,7 +1190,7 @@ namespace mip
 
 
     template<class Cmd>
-    CmdResult runCommand(C::mip_interface& device, const Cmd& cmd, Timeout additionalTime)
+    TypedResult<Cmd> runCommand(C::mip_interface& device, const Cmd& cmd, Timeout additionalTime)
     {
         PacketBuf packet(cmd);
 
