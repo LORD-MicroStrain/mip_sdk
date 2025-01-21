@@ -1,5 +1,6 @@
 # microstrain_common is defined by the C api.
 set(MICROSTRAIN_COMMON_SOURCES
+    "${CMAKE_CURRENT_LIST_DIR}/bits.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/embedded_time.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/index.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/logging.hpp"
