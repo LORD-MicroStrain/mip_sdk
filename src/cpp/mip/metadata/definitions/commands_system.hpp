@@ -102,7 +102,6 @@ struct MetadataFor<commands_system::CommsProtocol>
         { uint32_t(256), "NMEA", "" },
         { uint32_t(512), "RTCM", "" },
         { uint32_t(16777216), "SPARTN", "" },
-        { uint32_t(33554432), "UBLOX", "" },
     };
 
     static constexpr inline BitfieldInfo value = {
