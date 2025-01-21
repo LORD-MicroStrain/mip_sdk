@@ -66,13 +66,13 @@ struct CommsProtocol : Bitfield<CommsProtocol>
     typedef uint32_t Type;
     enum _enumType : uint32_t
     {
-        NONE         = 0x00000000,
-        MIP_COMMANDS = 0x00000001,  ///<  
-        MIP_DATA     = 0x00000002,  ///<  
-        NMEA         = 0x00000004,  ///<  
-        RTCM         = 0x00000008,  ///<  
-        SPARTN       = 0x00000010,  ///<  
-        ALL          = 0x0000001F,
+        NONE   = 0x00000000,
+        MIP    = 0x00000001,  ///<  Microstrain Inertial Protocol
+        NMEA   = 0x00000100,  ///<  
+        RTCM   = 0x00000200,  ///<  
+        SPARTN = 0x01000000,  ///<  
+        UBLOX  = 0x02000000,  ///<  
+        ALL    = 0x03000301,
     };
     uint32_t value = NONE;
     
@@ -84,16 +84,16 @@ struct CommsProtocol : Bitfield<CommsProtocol>
     CommsProtocol& operator|=(uint32_t val) { return *this = value | val; }
     CommsProtocol& operator&=(uint32_t val) { return *this = value & val; }
     
-    bool mipCommands() const { return (value & MIP_COMMANDS) > 0; }
-    void mipCommands(bool val) { value &= ~MIP_COMMANDS; if(val) value |= MIP_COMMANDS; }
-    bool mipData() const { return (value & MIP_DATA) > 0; }
-    void mipData(bool val) { value &= ~MIP_DATA; if(val) value |= MIP_DATA; }
+    bool mip() const { return (value & MIP) > 0; }
+    void mip(bool val) { value &= ~MIP; if(val) value |= MIP; }
     bool nmea() const { return (value & NMEA) > 0; }
     void nmea(bool val) { value &= ~NMEA; if(val) value |= NMEA; }
     bool rtcm() const { return (value & RTCM) > 0; }
     void rtcm(bool val) { value &= ~RTCM; if(val) value |= RTCM; }
     bool spartn() const { return (value & SPARTN) > 0; }
     void spartn(bool val) { value &= ~SPARTN; if(val) value |= SPARTN; }
+    bool ublox() const { return (value & UBLOX) > 0; }
+    void ublox(bool val) { value &= ~UBLOX; if(val) value |= UBLOX; }
     bool allSet() const { return value == ALL; }
     void setAll() { value |= ALL; }
 };
