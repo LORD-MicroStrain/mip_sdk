@@ -85,7 +85,7 @@ static inline void extract_mip_time_format(microstrain_serializer* serializer, m
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_time_format)tmp;
 }
 
 typedef uint32_t mip_commanded_test_bits_gq7;
@@ -126,7 +126,7 @@ static inline void extract_mip_commanded_test_bits_gq7(microstrain_serializer* s
 {
     uint32_t tmp = 0;
     microstrain_extract_u32(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_commanded_test_bits_gq7)tmp;
 }
 
 
@@ -374,7 +374,7 @@ static inline void extract_mip_base_gps_time_update_command_field_id(microstrain
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_base_gps_time_update_command_field_id)tmp;
 }
 
 

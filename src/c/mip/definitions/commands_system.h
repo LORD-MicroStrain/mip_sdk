@@ -71,7 +71,7 @@ static inline void extract_mip_comms_interface(microstrain_serializer* serialize
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_comms_interface)tmp;
 }
 
 typedef uint32_t mip_comms_protocol;
@@ -89,7 +89,7 @@ static inline void extract_mip_comms_protocol(microstrain_serializer* serializer
 {
     uint32_t tmp = 0;
     microstrain_extract_u32(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_comms_protocol)tmp;
 }
 
 
