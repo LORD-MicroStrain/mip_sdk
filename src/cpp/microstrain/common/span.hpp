@@ -17,13 +17,14 @@ namespace microstrain
 #else // MICROSTRAIN_USE_STD_SPAN
 
 #include <type_traits>
+#include <stdint.h>
 #include <stddef.h>
 
 namespace microstrain
 {
 
 
-static constexpr size_t DYNAMIC_EXTENT = -1;
+static constexpr size_t DYNAMIC_EXTENT = SIZE_MAX;
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Implementation of std::span from C++20.
