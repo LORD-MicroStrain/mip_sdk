@@ -74,7 +74,7 @@ static inline void extract_mip_media_selector(microstrain_serializer* serializer
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_media_selector)tmp;
 }
 
 enum mip_led_action
@@ -93,7 +93,7 @@ static inline void extract_mip_led_action(microstrain_serializer* serializer, mi
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_led_action)tmp;
 }
 
 
@@ -128,7 +128,7 @@ static inline void extract_mip_rtk_get_status_flags_command_status_flags_legacy(
 {
     uint32_t tmp = 0;
     microstrain_extract_u32(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_rtk_get_status_flags_command_status_flags_legacy)tmp;
 }
 
 typedef uint32_t mip_rtk_get_status_flags_command_status_flags;
@@ -154,7 +154,7 @@ static inline void extract_mip_rtk_get_status_flags_command_status_flags(microst
 {
     uint32_t tmp = 0;
     microstrain_extract_u32(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_rtk_get_status_flags_command_status_flags)tmp;
 }
 
 
@@ -253,7 +253,7 @@ static inline void extract_mip_rtk_connected_device_type_command_type(microstrai
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_rtk_connected_device_type_command_type)tmp;
 }
 
 
@@ -367,7 +367,7 @@ static inline void extract_mip_rtk_service_status_command_service_flags(microstr
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_rtk_service_status_command_service_flags)tmp;
 }
 
 

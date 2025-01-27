@@ -166,7 +166,7 @@ static inline void extract_mip_nmea_message_message_id(microstrain_serializer* s
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_nmea_message_message_id)tmp;
 }
 
 enum mip_nmea_message_talker_id
@@ -187,7 +187,7 @@ static inline void extract_mip_nmea_message_talker_id(microstrain_serializer* se
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_nmea_message_talker_id)tmp;
 }
 
 
@@ -221,7 +221,7 @@ static inline void extract_mip_sensor_range_type(microstrain_serializer* seriali
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_sensor_range_type)tmp;
 }
 
 
@@ -752,7 +752,7 @@ static inline void extract_mip_3dm_factory_streaming_command_action(microstrain_
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_3dm_factory_streaming_command_action)tmp;
 }
 
 
@@ -857,7 +857,7 @@ static inline void extract_mip_3dm_constellation_settings_command_constellation_
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_3dm_constellation_settings_command_constellation_id)tmp;
 }
 
 typedef uint16_t mip_3dm_constellation_settings_command_option_flags;
@@ -872,7 +872,7 @@ static inline void extract_mip_3dm_constellation_settings_command_option_flags(m
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_3dm_constellation_settings_command_option_flags)tmp;
 }
 
 struct mip_3dm_constellation_settings_command_settings
@@ -944,7 +944,7 @@ static inline void extract_mip_3dm_gnss_sbas_settings_command_sbasoptions(micros
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_3dm_gnss_sbas_settings_command_sbasoptions)tmp;
 }
 
 
@@ -1012,7 +1012,7 @@ static inline void extract_mip_3dm_gnss_assisted_fix_command_assisted_fix_option
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_3dm_gnss_assisted_fix_command_assisted_fix_option)tmp;
 }
 
 
@@ -1162,7 +1162,7 @@ static inline void extract_mip_3dm_pps_source_command_source(microstrain_seriali
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_3dm_pps_source_command_source)tmp;
 }
 
 
@@ -1234,7 +1234,7 @@ static inline void extract_mip_3dm_gpio_config_command_feature(microstrain_seria
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_3dm_gpio_config_command_feature)tmp;
 }
 
 enum mip_3dm_gpio_config_command_behavior
@@ -1265,7 +1265,7 @@ static inline void extract_mip_3dm_gpio_config_command_behavior(microstrain_seri
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_3dm_gpio_config_command_behavior)tmp;
 }
 
 typedef uint8_t mip_3dm_gpio_config_command_pin_mode;
@@ -1282,7 +1282,7 @@ static inline void extract_mip_3dm_gpio_config_command_pin_mode(microstrain_seri
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_3dm_gpio_config_command_pin_mode)tmp;
 }
 
 
@@ -1388,7 +1388,7 @@ static inline void extract_mip_3dm_odometer_command_mode(microstrain_serializer*
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_3dm_odometer_command_mode)tmp;
 }
 
 
@@ -1460,7 +1460,7 @@ static inline void extract_mip_3dm_get_event_support_command_query(microstrain_s
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_3dm_get_event_support_command_query)tmp;
 }
 
 struct mip_3dm_get_event_support_command_info
@@ -1531,7 +1531,7 @@ static inline void extract_mip_3dm_event_control_command_mode(microstrain_serial
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_3dm_event_control_command_mode)tmp;
 }
 
 
@@ -1583,7 +1583,7 @@ static inline void extract_mip_3dm_get_event_trigger_status_command_status(micro
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_3dm_get_event_trigger_status_command_status)tmp;
 }
 
 struct mip_3dm_get_event_trigger_status_command_entry
@@ -1684,7 +1684,7 @@ static inline void extract_mip_3dm_event_trigger_command_gpio_params_mode(micros
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_3dm_event_trigger_command_gpio_params_mode)tmp;
 }
 
 
@@ -1713,7 +1713,7 @@ static inline void extract_mip_3dm_event_trigger_command_threshold_params_type(m
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_3dm_event_trigger_command_threshold_params_type)tmp;
 }
 
 
@@ -1780,7 +1780,7 @@ static inline void extract_mip_3dm_event_trigger_command_type(microstrain_serial
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_3dm_event_trigger_command_type)tmp;
 }
 
 union mip_3dm_event_trigger_command_parameters
@@ -1847,7 +1847,7 @@ static inline void extract_mip_3dm_event_action_command_gpio_params_mode(microst
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_3dm_event_action_command_gpio_params_mode)tmp;
 }
 
 
@@ -1889,7 +1889,7 @@ static inline void extract_mip_3dm_event_action_command_type(microstrain_seriali
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_3dm_event_action_command_type)tmp;
 }
 
 union mip_3dm_event_action_command_parameters
