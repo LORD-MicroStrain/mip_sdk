@@ -151,6 +151,45 @@ constexpr size_t serializedSizeForBasicType(Type type, const void* info=nullptr)
 }
 constexpr size_t serializedSizeForBasicType(const TypeInfo& type) { return serializedSizeForBasicType(type.type, type.infoPtr); }
 
+///@brief Gets the size of a basic type (including bitfields and enums if class_ is not NULL).
+///
+constexpr size_t serializedAlignForBasicType(Type type, const void* info=nullptr)
+{
+    switch(type)
+    {
+    case Type::CHAR:
+    case Type::BOOL:
+    case Type::U8:
+    case Type::S8:
+        return alignof(uint8_t);
+    case Type::U16:
+    case Type::S16:
+        return alignof(uint16_t);
+    case Type::U32:
+    case Type::S32:
+    case Type::FLOAT:
+        return alignof(uint32_t);
+    case Type::U64:
+    case Type::S64:
+    case Type::DOUBLE:
+        return alignof(uint64_t);
+
+    case Type::ENUM:
+        if(!info)
+            return 0;
+        return serializedAlignForBasicType(static_cast<const EnumInfo *>(info)->type);
+
+    case Type::BITS:
+        if(!info)
+            return 0;
+        return serializedAlignForBasicType(static_cast<const BitfieldInfo *>(info)->type);
+
+    default:
+        return 0;
+    }
+}
+constexpr size_t serializedAlignForBasicType(const TypeInfo& type) { return serializedAlignForBasicType(type.type, type.infoPtr); }
+
 constexpr const char* nameForBasicType(Type type)
 {
     switch(type)
@@ -188,4 +227,28 @@ constexpr const char* nameOfType(const TypeInfo& type)
     }
 }
 
+const inline ParameterInfo* getParameterInfo(const size_t offset, const FieldInfo& field_info)
+{
+    size_t check_offset = 0;
+
+    for (const ParameterInfo& param : field_info.parameters)
+    {
+        const size_t align        = serializedAlignForBasicType(param.type);
+        const size_t align_offset = check_offset % align;
+
+        if (align_offset != 0)
+        {
+            check_offset += align - align_offset;
+        }
+
+        if (offset == check_offset)
+        {
+            return &param;
+        }
+
+        check_offset += serializedSizeForBasicType(param.type);
+    }
+
+    return nullptr;
+}
 } // namespace mip::metadata
