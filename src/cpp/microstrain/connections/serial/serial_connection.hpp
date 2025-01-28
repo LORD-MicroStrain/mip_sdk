@@ -21,7 +21,7 @@ namespace microstrain
         class SerialConnection : public microstrain::Connection
         {
         public:
-            static constexpr const char* TYPE = "Serial";
+            static const char* TYPE;
 
             SerialConnection(std::string portName, uint32_t baudrate);
             ~SerialConnection() override;
@@ -38,6 +38,8 @@ namespace microstrain
                 name     = mPortName;
                 baudrate = mBaudrate;
             };
+
+            bool isType(const void* p) const override { return p==TYPE || Connection::isType(p); }
 
             uint32_t baudrate() const { return mBaudrate; }
 
@@ -59,9 +61,11 @@ namespace microstrain
         class UsbSerialConnection : public SerialConnection
         {
         public:
-            static constexpr const char* TYPE = "USB";
+            static const char* TYPE;
 
             UsbSerialConnection(const std::string& portName, uint32_t baudrate) : SerialConnection(portName, baudrate) { mType = TYPE; }
+
+            bool isType(const void* p) const override { return p==TYPE || SerialConnection::isType(p); }
         };
 
         ///@}

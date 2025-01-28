@@ -8,6 +8,9 @@ namespace microstrain
 {
     namespace connections
     {
+        const char* SerialConnection::TYPE = "Serial";
+        const char* UsbSerialConnection::TYPE = "UsbSerial";
+
         ////////////////////////////////////////////////////////////////////////////////
         ///@brief Creates a Serial Connection that will communicate with a device over
         ///       serial

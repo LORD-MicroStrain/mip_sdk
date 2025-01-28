@@ -21,7 +21,7 @@ namespace microstrain
         class RecordingConnection : public Connection
         {
         public:
-            static constexpr const char* TYPE = "Recording";
+            static const char* TYPE;
 
             RecordingConnection(Connection* connection, std::ostream* recvStream = nullptr, std::ostream* sendStream = nullptr);
             ~RecordingConnection() override = default;
@@ -54,6 +54,8 @@ namespace microstrain
 
             const char* interfaceName() const override { return mConnection->interfaceName(); }
             uint32_t parameter() const override { return mConnection->parameter(); }
+
+            bool isType(const void* p) const override { return p==TYPE || Connection::isType(p); }
 
             uint64_t recvFileBytesWritten() const
             {

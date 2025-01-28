@@ -21,7 +21,7 @@ namespace microstrain
         class TcpConnection : public microstrain::Connection
         {
         public:
-            static constexpr const char* TYPE = "TCP";
+            static const char* TYPE;
 
             TcpConnection() = default;
             TcpConnection(const std::string& hostname, uint16_t port);
@@ -42,6 +42,8 @@ namespace microstrain
                 host_name = mHostname;
                 port      = mPort;
             };
+
+            bool isType(const void* p) const override { return p==TYPE || Connection::isType(p); }
 
         private:
             tcp_socket mSocket;

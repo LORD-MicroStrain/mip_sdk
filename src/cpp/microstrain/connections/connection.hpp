@@ -51,6 +51,11 @@ namespace microstrain
         virtual bool connect() = 0;
         virtual bool disconnect() = 0;
 
+        virtual bool isType(const void* ptr) const { return false; }
+
+        template<class ConnectionType>
+        bool isType() const { return isType(ConnectionType::TYPE); }
+
         const char* type() const { return mType; }
 
         virtual const char* interfaceName() const = 0;

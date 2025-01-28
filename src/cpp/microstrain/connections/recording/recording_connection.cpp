@@ -4,6 +4,8 @@ namespace microstrain
 {
     namespace connections
     {
+        const char* RecordingConnection::TYPE = "Recording";
+
         ////////////////////////////////////////////////////////////////////////////////
         ///@brief Creates a RecordingConnection that will write received bytes to
         ///       recvStream, and sent bytes to sendStream
