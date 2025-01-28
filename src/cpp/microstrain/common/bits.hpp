@@ -437,7 +437,7 @@ namespace detail
     {
         static_assert(std::is_enum<TestType>::value, "Expected an enum.");
 
-        using type = typename std::underlying_type<TestType>::value;
+        using type = typename std::underlying_type<TestType>::type;
     };
 }
 
@@ -476,13 +476,13 @@ struct BitfieldMemberN
     static_assert(std::numeric_limits<BaseType>::digits >= nbits, "T doesn't have enough bits");
 
     template<typename RegType>
-    static T get(RegType reg) { return static_cast<BaseType>(getBitsN(reg, bitI, nbits)); }
+    static constexpr T get(RegType reg) { return static_cast<Type>(getBitsN(reg, bitI, nbits)); }
 
     template<typename RegType>
-    static void set(RegType& reg, Type value) { setBitsN(reg, bitI, nbits, static_cast<BaseType>(value)); }
+    static constexpr void set(RegType& reg, Type value) { setBitsN(reg, bitI, nbits, static_cast<BaseType>(value)); }
 
     template<typename RegType>
-    static void clear(RegType& reg) { clearBitsN(reg, bitI, nbits); }
+    static constexpr void clear(RegType& reg) { clearBitsN(reg, bitI, nbits); }
 };
 
 
