@@ -26,7 +26,12 @@ public:
 
     Parser(Timeout timeout) { C::mip_parser_init(this, nullptr, nullptr, timeout); }
 
-    template<class T, bool (T::*Callback)(const PacketView&, Timestamp)>
+    void setCallback(mip::C::mip_packet_callback callback, void* userdata=nullptr) { C::mip_parser_set_callback(this, callback, userdata); }
+
+    template<class T, void (*Callback)(T&, const PacketView&, Timestamp)>
+    void setCallback(T& object);
+
+    template<class T, void (T::*Callback)(const PacketView&, Timestamp)>
     void setCallback(T& object);
 
     ///@copydoc mip::C::mip_parser_reset
@@ -47,7 +52,37 @@ public:
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Initializes the MIP Parser
+///@brief Sets the packet callback for the mip parser.
+///
+/// This version allows binding a non-member function instead of a C-style callback.
+/// Example:
+///@code{.cpp}
+/// struct MyClass;
+/// void handlePacket(MyClass& mc, const PacketRef& packet, Timeout timeout);
+///
+/// MyClass myInstance;
+/// Parser parser<MyClass, &handlePacket>(myInstance);
+///@endcode
+///
+///@tparam T Any referencable data type (excludes void).
+///@tparam Callback A pointer to a function taking T& as its first argument.
+///
+///@param object
+///       Instance of T.
+///
+template<class T, void (*Callback)(T&, const PacketView&, Timestamp)>
+void Parser::setCallback(T& object)
+{
+    C::mip_packet_callback callback = +[](void* p, C::mip_packet_view pkt, C::mip_timestamp ts)
+    {
+        Callback(*static_cast<T*>(p), PacketView(pkt), ts);
+    };
+
+    setCallback(callback, &object);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Sets the packet callback for the mip parser.
 ///
 /// This version allows binding a member function instead of a C-style callback.
 /// Example:
@@ -67,7 +102,7 @@ public:
 ///@param object
 ///       Instance of T to call the callback.
 ///
-template<class T, bool (T::*Callback)(const PacketView&, Timestamp)>
+template<class T, void (T::*Callback)(const PacketView&, Timestamp)>
 void Parser::setCallback(T& object)
 {
     C::mip_packet_callback callback = [](void* obj, const C::mip_packet_view* pkt, Timestamp timestamp)->void

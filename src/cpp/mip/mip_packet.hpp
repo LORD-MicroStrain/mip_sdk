@@ -89,6 +89,7 @@ public:
     //std::tuple<uint8_t*, size_t> createField(uint8_t fieldDescriptor) { uint8_t* ptr; int max_size = C::mip_packet_alloc_field(this, fieldDescriptor, 0, &ptr); return max_size >= 0 ? std::make_tuple(ptr, max_size) : std::make_tuple(nullptr, 0); }  ///<@copydoc mip::C::mip_packet_alloc_field
     //int finishLastField(uint8_t* payloadPtr, uint8_t newPayloadLength) { return C::mip_packet_realloc_last_field(this, payloadPtr, newPayloadLength); }  ///<@copydoc mip::C::mip_packet_realloc_last_field
     //int cancelLastField(uint8_t* payloadPtr) { return C::mip_packet_cancel_last_field(this, payloadPtr); }  ///<@copydoc mip::C::mip_packet_cancel_last_field
+    bool addField(uint8_t fieldDescriptor, microstrain::Span<const uint8_t> payload) { return addField(fieldDescriptor, payload.data(), payload.size()); }
 
     void finalize() { C::mip_packet_finalize(this); }  ///<@copydoc mip::C::mip_packet_finalize
 
