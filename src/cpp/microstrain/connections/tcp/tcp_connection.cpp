@@ -8,7 +8,7 @@ namespace microstrain
 {
     namespace connections
     {
-        constexpr const char* TcpConnection::TYPE = "TCP";
+        const char* TcpConnection::TYPE = "TCP";
 
         ////////////////////////////////////////////////////////////////////////////////
         ///@brief Creates a TcpConnection that will communicate with a device over TCP
