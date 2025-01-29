@@ -44,6 +44,7 @@ namespace mip
     template<class Cmd> TypedResult<Cmd> runCommand(C::mip_interface& device, const Cmd& cmd, typename Cmd::Response& response, Timeout additionalTime=0);
     template<class Cmd, class... Args> TypedResult<Cmd> runCommand(C::mip_interface& device, const Args&&... args, Timeout additionalTime);
     template<class Cmd> bool startCommand(C::mip_interface& device, C::mip_pending_cmd& pending, const Cmd& cmd, Timeout additionalTime);
+    template<class Cmd> bool startCommand(C::mip_interface& device, C::mip_pending_cmd& pending, const Cmd& cmd, uint8_t* buffer, size_t bufferSize, Timeout additionalTime);
 
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -1234,15 +1235,15 @@ namespace mip
         return C::mip_interface_start_command_packet(&device, &packet, &pending);
     }
 
-    //template<class Cmd>
-    //bool startCommand(C::mip_interface& device, C::mip_pending_cmd& pending, const Cmd& cmd, uint8_t* responseBuffer, uint8_t responseBufferSize, Timeout additionalTime)
-    //{
-    //    PacketBuf packet(cmd);
-    //
-    //    C::mip_pending_cmd_init_full(&pending, Cmd::descriptorSet, Cmd::fieldDescriptor, Cmd::Response::fieldDescriptor, responseBuffer, responseBufferSize, additionalTime);
-    //
-    //    return C::mip_interface_start_command_packet(&device, &packet, &pending);
-    //}
+    template<class Cmd>
+    bool startCommand(C::mip_interface& device, C::mip_pending_cmd& pending, const Cmd& cmd, uint8_t* responseBuffer, uint8_t responseBufferSize, Timeout additionalTime)
+    {
+        PacketBuf packet(cmd);
+
+        C::mip_pending_cmd_init_full(&pending, Cmd::descriptorSet, Cmd::fieldDescriptor, Cmd::Response::fieldDescriptor, responseBuffer, responseBufferSize, additionalTime);
+
+        return C::mip_interface_start_command_packet(&device, &packet, &pending);
+    }
 
     ///@}
     ////////////////////////////////////////////////////////////////////////////////
