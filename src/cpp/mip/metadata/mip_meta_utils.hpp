@@ -227,6 +227,17 @@ constexpr const char* nameOfType(const TypeInfo& type)
     }
 }
 
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Get a pointer to a parameter given the offset of the member in the
+///        class/struct
+///
+/// @param offset The offset of the member within the struct/class. Use the C++
+///         offsetof or a variant to get this value
+///
+/// @param field_info Metadata field info to look up parameter info for
+///
+/// @return A pointer to the parameter info if found, otherwise nullptr
+///
 const inline ParameterInfo* getParameterInfo(const size_t offset, const FieldInfo& field_info)
 {
     size_t check_offset = 0;
