@@ -231,6 +231,8 @@ constexpr const char* nameOfType(const TypeInfo& type)
 /// @brief Get a pointer to a parameter given the offset of the member in the
 ///        class/struct
 ///
+/// @warning This does not work for nested types, I.E. ClassType.member1.member2
+///
 /// @param offset The offset of the member within the struct/class. Use the C++
 ///         offsetof or a variant to get this value
 ///
@@ -244,12 +246,16 @@ const inline ParameterInfo* getParameterInfo(const size_t offset, const FieldInf
 
     for (const ParameterInfo& param : field_info.parameters)
     {
-        const size_t align        = serializedAlignForBasicType(param.type);
-        const size_t align_offset = check_offset % align;
+        const size_t align = serializedAlignForBasicType(param.type);
 
-        if (align_offset != 0)
+        if (align != 0)
         {
-            check_offset += align - align_offset;
+            const size_t align_offset = check_offset % align;
+
+            if (align_offset != 0)
+            {
+                check_offset += align - align_offset;
+            }
         }
 
         if (offset == check_offset)
