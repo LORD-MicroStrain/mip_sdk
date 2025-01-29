@@ -2,6 +2,7 @@
 
 #include <type_traits>
 #include <limits>
+#include <stdint.h>
 #include <assert.h>
 
 
@@ -116,22 +117,43 @@ constexpr T bitmaskIthruJ(unsigned int bitI, unsigned int bitJ)
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Checks if a specific bit in a value is set.
 ///
-///@tparam T An integral type. Let the compiler deduce this in most cases.
+///@tparam RegType An integral type. Let the compiler deduce this in most cases.
 ///
 ///@param reg Value containing the bit to check.
 ///@param bit The 0-based index of the bit to check in val.
-///           Must be less than the number of bits in T.
+///           Must be less than the number of bits in RegType.
 ///
 ///@returns True if the bit is set, false otherwise.
 ///
-template<typename T>
-constexpr bool testBit(T reg, unsigned int bit)
+template<typename RegType>
+constexpr bool testBit(RegType reg, unsigned int bit)
 {
-    assert(bit < std::numeric_limits<T>::digits);  // bit must be less than the number of bits in T.
+    assert(bit < std::numeric_limits<RegType>::digits);  // bit must be less than the number of bits in T.
 
     return (reg >> bit) & 1u;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+///@brief Sets a specific bit in a variable to a specified value.
+///
+///@tparam RegType An integral type. Let the compiler deduce this.
+///
+///@param reg   Value to be modified.
+///@param bit   The 0-based index of the bit to modify.
+///             Must be less than the number of bits in RegType.
+///@param value Sets the bit to this value. Default true.
+///
+template<typename RegType>
+constexpr void setBit(RegType& reg, unsigned int bit, bool value=true)
+{
+    assert(bit < std::numeric_limits<RegType>::digits);  // bit must be less than the number of bits in T.
+
+    using T = typename std::remove_volatile<RegType>::type;
+    T tmp = reg;
+    tmp &= ~T(T(1) << bit);
+    tmp |= T(value) << bit;
+    reg = tmp;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -508,6 +530,44 @@ template<class T, unsigned int BitI, unsigned int BitJ>
 struct BitfieldMemberIthruJ : public BitfieldMemberItoJ<T, BitI, BitJ+1> {};
 
 
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Helper type to get an integer of at least N bytes in size.
+///
+template<unsigned int nbytes>
+struct IntegerWithBytes {};
+
+template<> struct IntegerWithBytes<8>
+{
+    using Unsigned = uint64_t;
+    using Signed   = int64_t;
+};
+template<> struct IntegerWithBytes<7> : IntegerWithBytes<8> {};
+template<> struct IntegerWithBytes<6> : IntegerWithBytes<8> {};
+template<> struct IntegerWithBytes<5> : IntegerWithBytes<8> {};
+template<> struct IntegerWithBytes<4>
+{
+    using Unsigned = uint32_t;
+    using Signed   = int32_t;
+};
+template<> struct IntegerWithBytes<3> : IntegerWithBytes<4> {};
+template<> struct IntegerWithBytes<2>
+{
+    using Unsigned = uint16_t;
+    using Signed   = int16_t;
+};
+template<> struct IntegerWithBytes<1>
+{
+    using Unsigned = uint8_t;
+    using Signed   = int8_t;
+};
+
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Helper type to get an integer of at least N bits in size.
+///
+template<unsigned int nbits>
+struct IntegerWithBits : IntegerWithBytes< (nbits+7)/8 > {};
 
 
 }  // namespace microstrain::common
