@@ -97,7 +97,7 @@ struct Span<T, DYNAMIC_EXTENT>
     constexpr Span() = default;
     constexpr Span(pointer ptr, size_t cnt) : m_ptr(ptr), m_cnt(cnt) {}
     template<size_t N>
-    constexpr Span(const T (&arr)[N]) : m_ptr(arr), m_cnt(N) {}
+    constexpr Span(T (&arr)[N]) : m_ptr(arr), m_cnt(N) {}
 
     constexpr pointer begin() const noexcept { return m_ptr; }
     constexpr pointer end() const noexcept { return m_ptr+m_cnt; }
