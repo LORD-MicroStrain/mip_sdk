@@ -71,7 +71,7 @@ static inline void extract_mip_comms_interface(microstrain_serializer* serialize
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_comms_interface)tmp;
 }
 
 typedef uint32_t mip_comms_protocol;
@@ -80,8 +80,7 @@ static const mip_comms_protocol MIP_COMMS_PROTOCOL_MIP    = 0x00000001; ///<  Mi
 static const mip_comms_protocol MIP_COMMS_PROTOCOL_NMEA   = 0x00000100; ///<  
 static const mip_comms_protocol MIP_COMMS_PROTOCOL_RTCM   = 0x00000200; ///<  
 static const mip_comms_protocol MIP_COMMS_PROTOCOL_SPARTN = 0x01000000; ///<  
-static const mip_comms_protocol MIP_COMMS_PROTOCOL_UBLOX  = 0x02000000; ///<  
-static const mip_comms_protocol MIP_COMMS_PROTOCOL_ALL    = 0x03000301;
+static const mip_comms_protocol MIP_COMMS_PROTOCOL_ALL    = 0x01000301;
 static inline void insert_mip_comms_protocol(microstrain_serializer* serializer, const mip_comms_protocol self)
 {
     microstrain_insert_u32(serializer, (uint32_t)(self));
@@ -90,7 +89,7 @@ static inline void extract_mip_comms_protocol(microstrain_serializer* serializer
 {
     uint32_t tmp = 0;
     microstrain_extract_u32(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_comms_protocol)tmp;
 }
 
 
