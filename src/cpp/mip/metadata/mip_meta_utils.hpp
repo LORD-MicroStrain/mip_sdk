@@ -188,4 +188,228 @@ constexpr const char* nameOfType(const TypeInfo& type)
     }
 }
 
+////////////////////////////////////////////////////////////////////////////////
+///@brief Gets the size of a basic type (including bitfields and enums if info
+///       is not NULL).
+///
+constexpr size_t sizeForBasicType(const Type type, const void* info = nullptr)
+{
+    switch (type)
+    {
+        case Type::CHAR:
+        {
+            return sizeof(char);
+        }
+        case Type::BOOL:
+        {
+            return sizeof(bool);
+        }
+        case Type::U8:
+        {
+            return sizeof(uint8_t);
+        }
+        case Type::S8:
+        {
+            return sizeof(int8_t);
+        }
+        case Type::U16:
+        {
+            return sizeof(uint16_t);
+        }
+        case Type::S16:
+        {
+            return sizeof(int16_t);
+        }
+        case Type::U32:
+        {
+            return sizeof(uint32_t);
+        }
+        case Type::S32:
+        {
+            return sizeof(int32_t);
+        }
+        case Type::U64:
+        {
+            return sizeof(uint64_t);
+        }
+        case Type::S64:
+        {
+            return sizeof(int64_t);
+        }
+        case Type::FLOAT:
+        {
+            return sizeof(float);
+        }
+        case Type::DOUBLE:
+        {
+            return sizeof(double);
+        }
+        case Type::ENUM:
+        {
+            if (!info)
+            {
+                return 0;
+            }
+
+            return sizeForBasicType(static_cast<const EnumInfo*>(info)->type);
+        }
+        case Type::BITS:
+        {
+            if (!info)
+            {
+                return 0;
+            }
+
+            return sizeForBasicType(static_cast<const BitfieldInfo*>(info)->type);
+        }
+        default:
+        {
+            return 0;
+        }
+    }
+}
+constexpr size_t sizeForBasicType(const TypeInfo& type) { return sizeForBasicType(type.type, type.infoPtr); }
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Gets the size of a basic type (including bitfields and enums if info
+///       is not NULL).
+///
+constexpr size_t alignmentForBasicType(const Type type, const void* info = nullptr)
+{
+    switch (type)
+    {
+        case Type::CHAR:
+        {
+            return alignof(char);
+        }
+        case Type::BOOL:
+        {
+            return alignof(bool);
+        }
+        case Type::U8:
+        {
+            return alignof(uint8_t);
+        }
+        case Type::S8:
+        {
+            return alignof(int8_t);
+        }
+        case Type::U16:
+        {
+            return alignof(uint16_t);
+        }
+        case Type::S16:
+        {
+            return alignof(int16_t);
+        }
+        case Type::U32:
+        {
+            return alignof(uint32_t);
+        }
+        case Type::S32:
+        {
+            return alignof(int32_t);
+        }
+        case Type::U64:
+        {
+            return alignof(uint64_t);
+        }
+        case Type::S64:
+        {
+            return alignof(int64_t);
+        }
+        case Type::FLOAT:
+        {
+            return alignof(float);
+        }
+        case Type::DOUBLE:
+        {
+            return alignof(double);
+        }
+        case Type::ENUM:
+        {
+            if (!info)
+            {
+                return 0;
+            }
+
+            return alignmentForBasicType(static_cast<const EnumInfo*>(info)->type);
+        }
+        case Type::BITS:
+        {
+            if (!info)
+            {
+                return 0;
+            }
+
+            return alignmentForBasicType(static_cast<const BitfieldInfo*>(info)->type);
+        }
+        default:
+        {
+            return 0;
+        }
+    }
+}
+constexpr size_t alignmentForBasicType(const TypeInfo& type) { return alignmentForBasicType(type.type, type.infoPtr); }
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Get a pointer to a parameter given the offset of the member in the
+///        class/struct
+///
+///@warning This does not work for nested types, I.E. ClassType.member1.member2
+///
+///@see GET_MIP_METADATA_PARAM_INFO
+///
+///@param offset     The offset of the member within the struct/class. Use the
+///                  C++ offsetof or a variant to get this value
+///
+///@param field_info Metadata field info to look up parameter info for
+///
+///@return A pointer to the parameter info if found, otherwise nullptr
+///
+const inline ParameterInfo* getParameterInfoFromStructMemberOffset(const size_t offset, const FieldInfo& field_info)
+{
+    size_t check_offset = 0;
+
+    for (const ParameterInfo& param : field_info.parameters)
+    {
+        const size_t align = alignmentForBasicType(param.type);
+
+        if (align != 0)
+        {
+            const size_t align_offset = check_offset % align;
+
+            if (align_offset != 0)
+            {
+                check_offset += align - align_offset;
+            }
+        }
+
+        if (offset == check_offset)
+        {
+            return &param;
+        }
+
+        check_offset += sizeForBasicType(param.type);
+    }
+
+    return nullptr;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Get a pointer to a parameter given the offset of the member in the
+///        class/struct
+///
+///@warning This does not work for nested types, I.E. ClassType.member1.member2
+///
+///@param MipType MIP struct/class
+///
+///@param MemberField The member field within the MIP struct/class
+///
+///@see mip::metadata::utils::getParameterInfo
+///
+///@return A pointer to the parameter info if found, otherwise nullptr
+///
+#define GET_MIP_METADATA_PARAM_INFO(MipType, MemberField) \
+    mip::metadata::utils::getParameterInfo(offsetof(MipType, MemberField), mip::metadata::MetadataFor<MipType>().value)
 } // namespace mip::metadata
