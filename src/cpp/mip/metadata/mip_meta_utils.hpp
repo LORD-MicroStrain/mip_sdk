@@ -406,10 +406,10 @@ const inline ParameterInfo* getParameterInfoFromStructMemberOffset(const size_t 
 ///
 ///@param MemberField The member field within the MIP struct/class
 ///
-///@see mip::metadata::utils::getParameterInfo
+///@see mip::metadata::utils::getParameterInfoFromStructMemberOffset
 ///
 ///@return A pointer to the parameter info if found, otherwise nullptr
 ///
 #define GET_MIP_METADATA_PARAM_INFO(MipType, MemberField) \
-    mip::metadata::utils::getParameterInfo(offsetof(MipType, MemberField), mip::metadata::MetadataFor<MipType>().value)
+    mip::metadata::utils::getParameterInfoFromStructMemberOffset(offsetof(MipType, MemberField), mip::metadata::MetadataFor<MipType>().value)
 } // namespace mip::metadata
