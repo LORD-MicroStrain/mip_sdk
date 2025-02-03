@@ -144,7 +144,7 @@ struct MetadataFor<Vector<T,N>>
 {
     using type = Vector<T,N>;
 
-    static constexpr inline ParameterInfo parameters[] = {
+    static constexpr inline ParameterInfo parameters_v[] = {
         {
             /*.name       =*/ "x",
             /*.docs       =*/ "X axis",
@@ -183,103 +183,152 @@ struct MetadataFor<Vector<T,N>>
         },
     };
 
-
-    static constexpr inline StructInfo values_f[3] = {
+    static constexpr inline StructInfo vector_f[3] = {
         {
             /*.name       =*/ "Vector2f",
             /*.title      =*/ "Vector2f",
             /*.docs       =*/ "2-dimensional vector of floats",
-            /*.parameters =*/ {parameters, 2}
+            /*.parameters =*/ {parameters_v, 2}
         },
         {
             /*.name       =*/ "Vector3f",
             /*.title      =*/ "Vector3f",
             /*.docs       =*/ "3-dimensional vector of floats",
-            /*.parameters =*/ {parameters, 3}
+            /*.parameters =*/ {parameters_v, 3}
         },
         {
             /*.name       =*/ "Vector4f",
             /*.title      =*/ "Vector4f",
             /*.docs       =*/ "4-dimensional vector of floats",
-            /*.parameters =*/ {parameters, 4}
+            /*.parameters =*/ {parameters_v, 4}
         },
     };
-    static constexpr inline StructInfo values_d[3] = {
+
+    static constexpr inline StructInfo vector_d[3] = {
         {
             /*.name       =*/ "Vector2d",
             /*.title      =*/ "Vector2d",
             /*.docs       =*/ "2-dimensional vector of doubles",
-            /*.parameters =*/ {parameters, 2}
+            /*.parameters =*/ {parameters_v, 2}
         },
         {
             /*.name       =*/ "Vector3d",
             /*.title      =*/ "Vector3d",
             /*.docs       =*/ "3-dimensional vector of doubles",
-            /*.parameters =*/ {parameters, 3}
+            /*.parameters =*/ {parameters_v, 3}
         },
         {
             /*.name       =*/ "Vector4d",
             /*.title      =*/ "Vector4d",
             /*.docs       =*/ "4-dimensional vector of doubles",
-            /*.parameters =*/ {parameters, 4}
+            /*.parameters =*/ {parameters_v, 4}
         },
     };
 
-    static_assert(std::is_floating_point<T>::value, "Expected either float or double");
-    static_assert(N >= 2 && N <= 4, "N should be in the range [2,4].");
-
-    static constexpr inline const StructInfo& value = std::is_same<T,double>::value ? values_d[N-2] : values_f[N-2];
-};
-
-
-template<>
-struct MetadataFor<Matrix3f>
-{
-    using type = Matrix3f;
-
-    static constexpr inline ParameterInfo parameters[] = {
+    static constexpr inline ParameterInfo parameters_m[] = {
         {
-            /*.name       =*/ "m",
+            /*.name       =*/ "m[0]",
             /*.docs       =*/ "Matrix data",
-            /*.type       =*/ {Type::FLOAT},
+            /*.type       =*/ {utils::ParamType<T>::value},
             /*.accessor   =*/ nullptr,
             /*.attributes =*/ NO_FUNCTIONS,
-            /*.count      =*/ 3,
+            /*.count      =*/ 1,
+            /*.condition  =*/ {},
+        },
+        {
+            /*.name       =*/ "m[1]",
+            /*.docs       =*/ "Matrix data",
+            /*.type       =*/ {utils::ParamType<T>::value},
+            /*.accessor   =*/ nullptr,
+            /*.attributes =*/ NO_FUNCTIONS,
+            /*.count      =*/ 1,
+            /*.condition  =*/ {},
+        },
+        {
+            /*.name       =*/ "m[2]",
+            /*.docs       =*/ "Matrix data",
+            /*.type       =*/ {utils::ParamType<T>::value},
+            /*.accessor   =*/ nullptr,
+            /*.attributes =*/ NO_FUNCTIONS,
+            /*.count      =*/ 1,
+            /*.condition  =*/ {},
+        },
+        {
+            /*.name       =*/ "m[3]",
+            /*.docs       =*/ "Matrix data",
+            /*.type       =*/ {utils::ParamType<T>::value},
+            /*.accessor   =*/ nullptr,
+            /*.attributes =*/ NO_FUNCTIONS,
+            /*.count      =*/ 1,
+            /*.condition  =*/ {},
+        },
+        {
+            /*.name       =*/ "m[4]",
+            /*.docs       =*/ "Matrix data",
+            /*.type       =*/ {utils::ParamType<T>::value},
+            /*.accessor   =*/ nullptr,
+            /*.attributes =*/ NO_FUNCTIONS,
+            /*.count      =*/ 1,
+            /*.condition  =*/ {},
+        },
+        {
+            /*.name       =*/ "m[5]",
+            /*.docs       =*/ "Matrix data",
+            /*.type       =*/ {utils::ParamType<T>::value},
+            /*.accessor   =*/ nullptr,
+            /*.attributes =*/ NO_FUNCTIONS,
+            /*.count      =*/ 1,
+            /*.condition  =*/ {},
+        },
+        {
+            /*.name       =*/ "m[6]",
+            /*.docs       =*/ "Matrix data",
+            /*.type       =*/ {utils::ParamType<T>::value},
+            /*.accessor   =*/ nullptr,
+            /*.attributes =*/ NO_FUNCTIONS,
+            /*.count      =*/ 1,
+            /*.condition  =*/ {},
+        },
+        {
+            /*.name       =*/ "m[7]",
+            /*.docs       =*/ "Matrix data",
+            /*.type       =*/ {utils::ParamType<T>::value},
+            /*.accessor   =*/ nullptr,
+            /*.attributes =*/ NO_FUNCTIONS,
+            /*.count      =*/ 1,
+            /*.condition  =*/ {},
+        },
+        {
+            /*.name       =*/ "m[8]",
+            /*.docs       =*/ "Matrix data",
+            /*.type       =*/ {utils::ParamType<T>::value},
+            /*.accessor   =*/ nullptr,
+            /*.attributes =*/ NO_FUNCTIONS,
+            /*.count      =*/ 1,
             /*.condition  =*/ {},
         },
     };
 
-    static constexpr inline StructInfo value = {
+    static constexpr inline StructInfo matrix_f = {
+        /*.name       =*/ "Matrix3d",
+        /*.title      =*/ "3x3 Double Matrix",
+        /*.docs       =*/ "Represents a 3D matrix of doubles.",
+        /*.parameters =*/ parameters_m,
+    };
+
+    static constexpr inline StructInfo matrix_d = {
         /*.name       =*/ "Matrix3f",
         /*.title      =*/ "3x3 Float Matrix",
         /*.docs       =*/ "Represents a 3D matrix of floats.",
-        /*.parameters =*/ parameters,
-    };
-};
-
-template<>
-struct MetadataFor<Matrix3d>
-{
-    using type = Matrix3d;
-
-    static constexpr inline ParameterInfo parameters[] = {
-        {
-            /*.name       =*/ "m",
-            /*.docs       =*/ "Matrix data",
-            /*.type       =*/ {Type::DOUBLE},
-            /*.accessor   =*/ nullptr,
-            /*.attributes =*/ NO_FUNCTIONS,
-            /*.count      =*/ 3,
-            /*.condition  =*/ {},
-        },
+        /*.parameters =*/ parameters_m,
     };
 
-    static constexpr inline StructInfo value = {
-        /*.name       =*/ "Matrix3f",
-        /*.title      =*/ "3x3 Double Matrix",
-        /*.docs       =*/ "Represents a 3D matrix of doubles.",
-        /*.parameters =*/ parameters,
-    };
+    static_assert(std::is_floating_point<T>::value, "Expected either float or double");
+    static_assert(N == 9 || (N >= 2 && N <= 4), "N should be in the range [2,4] or exactly 9.");
+
+    static constexpr inline const StructInfo& value =
+        N == 9 ? (std::is_same<T,double>::value ? matrix_d        : matrix_f) :
+                 (std::is_same<T,double>::value ? vector_d[N - 2] : vector_f[N - 2]);
 };
 
 } // namespace mip::metadata
