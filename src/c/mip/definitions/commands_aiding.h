@@ -74,7 +74,7 @@ static inline void extract_mip_time_timebase(microstrain_serializer* serializer,
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_time_timebase)tmp;
 }
 
 
@@ -139,7 +139,7 @@ static inline void extract_mip_aiding_frame_config_command_format(microstrain_se
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_aiding_frame_config_command_format)tmp;
 }
 
 union mip_aiding_frame_config_command_rotation
@@ -206,7 +206,7 @@ static inline void extract_mip_aiding_echo_control_command_mode(microstrain_seri
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_aiding_echo_control_command_mode)tmp;
 }
 
 
@@ -257,7 +257,7 @@ static inline void extract_mip_aiding_pos_ecef_command_valid_flags(microstrain_s
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_aiding_pos_ecef_command_valid_flags)tmp;
 }
 
 
@@ -300,7 +300,7 @@ static inline void extract_mip_aiding_pos_llh_command_valid_flags(microstrain_se
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_aiding_pos_llh_command_valid_flags)tmp;
 }
 
 
@@ -366,7 +366,7 @@ static inline void extract_mip_aiding_vel_ecef_command_valid_flags(microstrain_s
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_aiding_vel_ecef_command_valid_flags)tmp;
 }
 
 
@@ -407,7 +407,7 @@ static inline void extract_mip_aiding_vel_ned_command_valid_flags(microstrain_se
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_aiding_vel_ned_command_valid_flags)tmp;
 }
 
 
@@ -448,7 +448,7 @@ static inline void extract_mip_aiding_vel_body_frame_command_valid_flags(microst
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_aiding_vel_body_frame_command_valid_flags)tmp;
 }
 
 
@@ -511,7 +511,7 @@ static inline void extract_mip_aiding_magnetic_field_command_valid_flags(microst
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_aiding_magnetic_field_command_valid_flags)tmp;
 }
 
 

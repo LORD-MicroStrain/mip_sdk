@@ -106,6 +106,7 @@ bool serial_port_open(serial_port* port, const char* port_str, int baudrate)
 
     // Ensure that the free() call in the following 'if' block doesn't clobber an error value
     DWORD last_error = GetLastError();
+    (void)last_error;
 
     // If the port string was modified
     if (added_prefix)
