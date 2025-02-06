@@ -103,20 +103,24 @@ namespace mip
     template<class DataField>
     TypedResult<mip::commands_3dm::PollData> pollData(Interface& device, Timeout wait_time, DataField& field)
     {
-        bool found = false;
-
-        auto collectData = [&](mip::FieldView raw) { found |= raw.extract(field); };
-
-        constexpr auto callback = [](void* p, mip::C::mip_field_view raw, mip::Timestamp)
+        struct Context
         {
-            auto& fn = *static_cast< decltype(collectData)* >(p);
-            fn(raw);
+            bool found = false;
+            DataField& fieldRef;
+
+            void callback(const mip::FieldView& raw, mip::Timestamp)
+            {
+                found = raw.extract(fieldRef);
+            }
         };
+        Context ctx{false, field};
 
         const Timestamp start_time = device.lastUpdateTime();
 
         DispatchHandler handler;
-        device.registerFieldCallback<callback>(handler, DataField::DESCRIPTOR_SET, DataField::FIELD_DESCRIPTOR, &collectData);
+        device.registerFieldCallback<Context, &Context::callback>(
+            handler, DataField::DESCRIPTOR_SET, DataField::FIELD_DESCRIPTOR, &ctx
+        );
 
         const uint8_t descriptors = DataField::FIELD_DESCRIPTOR;
 
@@ -124,7 +128,7 @@ namespace mip
 
         if(result)
         {
-            while(!found)
+            while(!ctx.found)
             {
                 const Timeout delta = device.lastUpdateTime() - start_time;
 
