@@ -41,7 +41,7 @@ typedef uint8_t microstrain_log_level;
 ///@param fmt   printf style format string
 ///@param args  Variadic args used to populate the fmt string
 ///
-typedef void (*microstrain_log_callback)(void* user, const microstrain_log_level level, const char* fmt, const va_list args);
+typedef void (*microstrain_log_callback)(void* user, const microstrain_log_level level, const char* fmt, va_list args);
 
 void microstrain_logging_init(const microstrain_log_callback callback, const microstrain_log_level level, void* user);
 

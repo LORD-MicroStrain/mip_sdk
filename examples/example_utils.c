@@ -22,7 +22,7 @@ void mip_example_init()
 }
 
 
-void mip_example_log(void* user, const microstrain_log_level level, const char* fmt, const va_list args)
+void mip_example_log(void* user, const microstrain_log_level level, const char* fmt, va_list args)
 {
     (void)user;
 

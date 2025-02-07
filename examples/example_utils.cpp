@@ -21,7 +21,7 @@ mip::Timestamp getCurrentTimestamp()
     return duration_cast<milliseconds>( steady_clock::now().time_since_epoch() ).count();
 }
 
-void customLog(void* /*user*/, const microstrain_log_level level, const char* fmt, const va_list args)
+void customLog(void* /*user*/, const microstrain_log_level level, const char* fmt, va_list args)
 {
     // Convert the varargs into a string
     std::string log;
