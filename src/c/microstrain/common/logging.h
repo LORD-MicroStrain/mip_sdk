@@ -49,7 +49,7 @@ microstrain_log_callback microstrain_logging_callback(void);
 microstrain_log_level microstrain_logging_level(void);
 void* microstrain_logging_user_data(void);
 
-void microstrain_logging_log_v(const microstrain_log_level level, const char* fmt, const va_list args);
+void microstrain_logging_log_v(const microstrain_log_level level, const char* fmt, va_list args);
 void microstrain_logging_log  (const microstrain_log_level level, const char* fmt, ...);
 
 const char* microstrain_logging_level_name(const microstrain_log_level level);

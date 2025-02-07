@@ -68,7 +68,7 @@ void* microstrain_logging_user_data(void)
 ///       directly
 ///@copydetails microstrain_log_callback
 ///
-void microstrain_logging_log_v(const microstrain_log_level level, const char* fmt, const va_list args)
+void microstrain_logging_log_v(const microstrain_log_level level, const char* fmt, va_list args)
 {
     const microstrain_log_callback callback = microstrain_logging_callback();
     if(callback != NULL && microstrain_logging_level() >= level)
