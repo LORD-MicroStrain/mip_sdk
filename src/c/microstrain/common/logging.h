@@ -1,7 +1,7 @@
 #pragma once
 
-#include <stdint.h>
 #include <stdarg.h>
+#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -13,10 +13,11 @@ extern "C" {
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup microstrain_logging  MicroStrain Logging [C]
 ///
-///@brief High-level C functions for logging information from within the MicroStrain SDK
+///@brief High-level C functions for logging information from within the
+///       MicroStrain SDK
 ///
-/// This module contains functions that allow the MicroStrain SDK to log information
-/// and allows users to override the logging functions
+/// This module contains functions that allow the MicroStrain SDK to log
+/// information and allows users to override the logging functions
 ///
 ///@{
 
@@ -35,29 +36,33 @@ typedef uint8_t microstrain_log_level;
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Callback function typedef for custom logging behavior.
 ///
-///@param level   The log level that this log should be logged at
-///@param fmt     printf style format string
-///@param ...     Variadic args used to populate the fmt string
+///@param user  User data pointer
+///@param level The log level that this log should be logged at
+///@param fmt   printf style format string
+///@param args  Variadic args used to populate the fmt string
 ///
-typedef void (*microstrain_log_callback)(void* user, microstrain_log_level level, const char* fmt, va_list args);
+typedef void (*microstrain_log_callback)(void* user, const microstrain_log_level level, const char* fmt, const va_list args);
 
-void microstrain_logging_init(microstrain_log_callback callback, microstrain_log_level level, void* user);
+void microstrain_logging_init(const microstrain_log_callback callback, const microstrain_log_level level, void* user);
 
 microstrain_log_callback microstrain_logging_callback(void);
 microstrain_log_level microstrain_logging_level(void);
 void* microstrain_logging_user_data(void);
 
-void microstrain_logging_log(microstrain_log_level level, const char* fmt, ...);
+void microstrain_logging_log_v(const microstrain_log_level level, const char* fmt, const va_list args);
+void microstrain_logging_log  (const microstrain_log_level level, const char* fmt, ...);
 
-const char* microstrain_logging_level_name(microstrain_log_level level);
+const char* microstrain_logging_level_name(const microstrain_log_level level);
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to initialize the MicroStrain logger.
-///       This function does not need to be called unless the user wants logging
+///       This function does not need to be called unless the user wants
+///       logging
 ///
 ///@param callback The callback to execute when there is data to log
 ///@param level    The level that the MicroStrain SDK should log at
-///@param user     User data that will be passed to the callback every time it is excuted
+///@param user     User data that will be passed to the callback every time it
+///                is executed
 ///
 #ifdef MICROSTRAIN_ENABLE_LOGGING
 #define MICROSTRAIN_LOG_INIT(callback, level, user) microstrain_logging_init(callback, level, user)
@@ -66,14 +71,17 @@ const char* microstrain_logging_level_name(microstrain_log_level level);
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Helper macro used to log data inside the MicroStrain SDK. Prefer specific
-///       log level functions like MICROSTRAIN_LOG_INFO, etc. when possible.
+///@brief Helper macro used to log data inside the MicroStrain SDK. Prefer
+///       specific log level functions like MICROSTRAIN_LOG_INFO, etc. when
+///       possible.
 ///@copydetails microstrain_log_callback
 ///
 #ifdef MICROSTRAIN_ENABLE_LOGGING
 #define MICROSTRAIN_LOG_LOG(level, ...) microstrain_logging_log(level, __VA_ARGS__)
+#define MICROSTRAIN_LOG_LOG_V(level, fmt, args) microstrain_logging_log_v(level, fmt, args)
 #else
 #define MICROSTRAIN_LOG_LOG(level, ...) (void)0
+#define MICROSTRAIN_LOG_LOG_V(level, fmt, args) (void)0
 #endif
 
 #ifndef MICROSTRAIN_LOGGING_MAX_LEVEL
@@ -81,85 +89,114 @@ const char* microstrain_logging_level_name(microstrain_log_level level);
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Helper macro used to log data inside the MicroStrain SDK at fatal level
+///@brief Helper macro used to log data inside the MicroStrain SDK at fatal
+///       level
 ///
-///@param context Context of what called this function. Could be a mip device, serial connection, etc.
+///@param context Context of what called this function. Could be a mip device,
+///               serial connection, etc.
 ///@param fmt     printf style format string
 ///@param ...     Variadic args used to populate the fmt string
 ///
 #if MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOG_LEVEL_FATAL
 #define MICROSTRAIN_LOG_FATAL(...) MICROSTRAIN_LOG_LOG(MICROSTRAIN_LOG_LEVEL_FATAL, __VA_ARGS__)
+#define MICROSTRAIN_LOG_FATAL_V(fmt, args) MICROSTRAIN_LOG_LOG_V(MICROSTRAIN_LOG_LEVEL_FATAL, fmt, args)
 #else
 #define MICROSTRAIN_LOG_FATAL(...) (void)0
+#define MICROSTRAIN_LOG_FATAL_V(fmt, args) (void)0
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Helper macro used to log data inside the MicroStrain SDK at error level
+///@brief Helper macro used to log data inside the MicroStrain SDK at error
+///       level
 ///@copydetails MICROSTRAIN_LOG_FATAL
+///
 #if MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOG_LEVEL_ERROR
 #define MICROSTRAIN_LOG_ERROR(...) MICROSTRAIN_LOG_LOG(MICROSTRAIN_LOG_LEVEL_ERROR, __VA_ARGS__)
+#define MICROSTRAIN_LOG_ERROR_V(fmt, args) MICROSTRAIN_LOG_LOG_V(MICROSTRAIN_LOG_LEVEL_ERROR, fmt, args)
 #else
 #define MICROSTRAIN_LOG_ERROR(...) (void)0
+#define MICROSTRAIN_LOG_ERROR_V(fmt, args) (void)0
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log data inside the MicroStrain SDK at warn level
 ///@copydetails MICROSTRAIN_LOG_FATAL
+///
 #if MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOG_LEVEL_WARN
 #define MICROSTRAIN_LOG_WARN(...) MICROSTRAIN_LOG_LOG(MICROSTRAIN_LOG_LEVEL_WARN, __VA_ARGS__)
+#define MICROSTRAIN_LOG_WARN_V(fmt, args) MICROSTRAIN_LOG_LOG_V(MICROSTRAIN_LOG_LEVEL_WARN, fmt, args)
 #else
 #define MICROSTRAIN_LOG_WARN(...) (void)0
+#define MICROSTRAIN_LOG_WARN_V(fmt, args) (void)0
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log data inside the MicroStrain SDK at info level
 ///@copydetails MICROSTRAIN_LOG_FATAL
+///
 #if MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOG_LEVEL_INFO
 #define MICROSTRAIN_LOG_INFO(...) MICROSTRAIN_LOG_LOG(MICROSTRAIN_LOG_LEVEL_INFO, __VA_ARGS__)
+#define MICROSTRAIN_LOG_INFO_V(fmt, args) MICROSTRAIN_LOG_LOG_V(MICROSTRAIN_LOG_LEVEL_INFO, fmt, args)
 #else
 #define MICROSTRAIN_LOG_INFO(...) (void)0
+#define MICROSTRAIN_LOG_INFO_V(fmt, args) (void)0
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Helper macro used to log data inside the MicroStrain SDK at debug level
+///@brief Helper macro used to log data inside the MicroStrain SDK at debug
+///       level
 ///@copydetails MICROSTRAIN_LOG_FATAL
+///
 #if MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOG_LEVEL_DEBUG
 #define MICROSTRAIN_LOG_DEBUG(...) MICROSTRAIN_LOG_LOG(MICROSTRAIN_LOG_LEVEL_DEBUG, __VA_ARGS__)
+#define MICROSTRAIN_LOG_DEBUG_V(fmt, args) MICROSTRAIN_LOG_LOG_V(MICROSTRAIN_LOG_LEVEL_DEBUG, fmt, args)
 #else
 #define MICROSTRAIN_LOG_DEBUG(...) (void)0
+#define MICROSTRAIN_LOG_DEBUG_V(fmt, args) (void)0
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Helper macro used to log data inside the MicroStrain SDK at trace level
+///@brief Helper macro used to log data inside the MicroStrain SDK at trace
+///       level
 ///@copydetails MICROSTRAIN_LOG_FATAL
+///
 #if MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOG_LEVEL_TRACE
 #define MICROSTRAIN_LOG_TRACE(...) MICROSTRAIN_LOG_LOG(MICROSTRAIN_LOG_LEVEL_TRACE, __VA_ARGS__)
+#define MICROSTRAIN_LOG_TRACE_V(fmt, args) MICROSTRAIN_LOG_LOG_V(MICROSTRAIN_LOG_LEVEL_TRACE, fmt, args)
 #else
 #define MICROSTRAIN_LOG_TRACE(...) (void)0
+#define MICROSTRAIN_LOG_TRACE_V(fmt, args) (void)0
 #endif
 
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log an error message from a syscall.
 ///@param msg A plain C-string without any printf-style formatters.
-/// The resulting log message will be "<message here>: <error-code> <error-description>\n".
+/// The resulting log message will be
+/// "<message here>: <error-code> <error-description>\n".
+///
 #define MICROSTRAIN_LOG_ERROR_WITH_ERRNO(msg) MICROSTRAIN_LOG_ERROR(msg ": %d %s\n", errno, strerror(errno))
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log an error message from a syscall.
-///@param msg A plain C-string which includes one or more printf-style formatters.
+///@param msg A plain C-string which includes one or more printf-style
+///           formatters.
 ///@param ... Arguments corresponding to the format codes in msg.
-/// The resulting log message will be "<message here>: <error-code> <error-description>\n".
+/// The resulting log message will be
+/// "<message here>: <error-code> <error-description>\n".
+///
 #define MICROSTRAIN_LOG_ERROR_WITH_ERRNO_EX(msg, ...) MICROSTRAIN_LOG_ERROR(msg ": %d %s\n", __VA_ARGS__, errno, strerror(errno))
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Log an array of bytes.
 ///@param level Log level for this message.
-///@param buffer Pointer to byte array of type (const char*)/
+///@param buffer Pointer to a byte array of type (const char*)/
 ///@param length Length of buffer.
-///@param ...   Arguments corresponding to printf-style message with optional formatting.
+///@param ...   Arguments corresponding to a printf-style message with optional
+///             formatting.
 /// The resulting message will be "<message here> XX XX XX XX ...\n" where XX
 /// is a pair of hex digits.
+///
 #define MICROSTRAIN_LOG_BYTES(level, buffer, length, ...) { \
   MICROSTRAIN_LOG_LOG(level, __VA_ARGS__);                  \
   for(size_t i=0; i<length; i++) {                          \
