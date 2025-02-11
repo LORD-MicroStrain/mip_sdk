@@ -229,6 +229,7 @@ void mip_dispatcher_remove_handler(mip_dispatcher* self, mip_dispatch_handler* h
             handler->_next = NULL;
             return;
         }
+        query = query->_next;
     }
 }
 
