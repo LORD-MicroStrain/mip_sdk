@@ -517,8 +517,8 @@ void mip_interface_input_bytes_from_device(mip_interface* device, const uint8_t*
 ///
 void mip_interface_input_packet_from_device(mip_interface* device, const mip_packet_view* packet, mip_timestamp timestamp)
 {
-    mip_cmd_queue_process_packet(&device->_queue, packet, timestamp);
     mip_dispatcher_dispatch_packet(&device->_dispatcher, packet, timestamp);
+    mip_cmd_queue_process_packet(&device->_queue, packet, timestamp);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
