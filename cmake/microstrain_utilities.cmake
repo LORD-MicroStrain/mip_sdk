@@ -29,7 +29,6 @@ endmacro()
 set(MICROSTRAIN_CONFIG_FILE_IN ${CMAKE_CURRENT_LIST_DIR}/mip-config.cmake.in)
 
 function(microstrain_generate_package_config PACKAGE_NAME)
-
     include(GNUInstallDirs)
     include(CMakePackageConfigHelpers)
 
@@ -48,7 +47,8 @@ function(microstrain_generate_package_config PACKAGE_NAME)
         set(MICROSTRAIN_CMAKE_CONFIG_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/cmake/${PACKAGE_NAME}")
     endif()
 
-    set(INCLUDE_INSTALL_DIR "${CMAKE_INSTALL_INCLUDEDIR}/${MICROSTRAIN_SUBDIR_NAME}")
+    set(INCLUDE_INSTALL_DIR_C "${CMAKE_INSTALL_INCLUDEDIR}/${MICROSTRAIN_SUBDIR_NAME}/c")
+    set(INCLUDE_INSTALL_DIR_CPP "${CMAKE_INSTALL_INCLUDEDIR}/${MICROSTRAIN_SUBDIR_NAME}/cpp")
     set(SYSCONFIG_INSTALL_DIR "${CMAKE_INSTALL_SYSCONFDIR}/${MICROSTRAIN_SUBDIR_NAME}")
     set(LIBRARY_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}")
 
@@ -59,7 +59,11 @@ function(microstrain_generate_package_config PACKAGE_NAME)
         "${MICROSTRAIN_CONFIG_FILE_IN}"
         "${MICROSTRAIN_CONFIG_FILE_OUTPUT}"
         INSTALL_DESTINATION "${MICROSTRAIN_CMAKE_CONFIG_INSTALL_DIR}"
-        PATH_VARS INCLUDE_INSTALL_DIR SYSCONFIG_INSTALL_DIR LIBRARY_INSTALL_DIR
+        PATH_VARS
+            INCLUDE_INSTALL_DIR_C
+            INCLUDE_INSTALL_DIR_CPP
+            SYSCONFIG_INSTALL_DIR
+            LIBRARY_INSTALL_DIR
     )
 
     write_basic_package_version_file(
@@ -69,36 +73,30 @@ function(microstrain_generate_package_config PACKAGE_NAME)
     )
 
     install(
-        FILES "${MICROSTRAIN_CONFIG_FILE_OUTPUT}"
-        "${MICROSTRAIN_VERSION_FILE_OUTPUT}"
+        FILES
+            "${MICROSTRAIN_CONFIG_FILE_OUTPUT}"
+            "${MICROSTRAIN_VERSION_FILE_OUTPUT}"
         DESTINATION "${MICROSTRAIN_CMAKE_CONFIG_INSTALL_DIR}"
         COMPONENT "${PACKAGE_NAME}"
     )
 endfunction()
 
 macro(microstrain_setup_library_install LIBRARY ROOT_DIR)
+    include(GNUInstallDirs)
     install(
         TARGETS ${LIBRARY}
         COMPONENT ${LIBRARY}
         EXPORT ${LIBRARY}-targets
-        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        ARCHIVE
+            DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        LIBRARY
+            DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        RUNTIME
+            DESTINATION ${CMAKE_INSTALL_BINDIR}
     )
 
     microstrain_setup_install_headers(${LIBRARY} ${ROOT_DIR})
     microstrain_generate_package_config(${LIBRARY})
-
-#    include(CMakePackageConfigHelpers)
-
-#    set(CONFIG_EXPORT_DIR "${CMAKE_INSTALL_DATADIR}/cmake/${LIBRARY}")
-
-    # TODO: Do we want this configure step? What is it used for?
-#    install(
-#        FILES "${CMAKE_BINARY_DIR}/${LIBRARY}-config.cmake" "${CMAKE_BINARY_DIR}/${LIBRARY}-config-version.cmake"
-#        DESTINATION ${CONFIG_EXPORT_DIR}
-#        COMPONENT ${LIBRARY}
-#    )
 endmacro()
 
 #

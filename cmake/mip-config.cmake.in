@@ -2,8 +2,20 @@ set(@PACKAGE_NAME@_VERSION @PACKAGE_VERSION@)
 
 @PACKAGE_INIT@
 
-set_and_check(@PACKAGE_NAME_UPPER@_INCLUDE_DIR "@PACKAGE_INCLUDE_INSTALL_DIR@")
 set_and_check(@PACKAGE_NAME_UPPER@_LIBRARY_DIR "@PACKAGE_LIBRARY_INSTALL_DIR@")
+
+set(@PACKAGE_NAME_UPPER@_INCLUDE_DIRS "")
+
+# Include directories based on supported compilers
+if(CMAKE_CXX_COMPILER)
+  set_and_check(@PACKAGE_NAME_UPPER@_CPP_INCLUDE_DIR "@PACKAGE_INCLUDE_INSTALL_DIR_CPP@")
+  list(APPEND @PACKAGE_NAME_UPPER@_INCLUDE_DIRS "@PACKAGE_INCLUDE_INSTALL_DIR_CPP@")
+endif()
+
+if(CMAKE_C_COMPILER)
+  set_and_check(@PACKAGE_NAME_UPPER@_C_INCLUDE_DIR "@PACKAGE_INCLUDE_INSTALL_DIR_C@")
+  list(APPEND @PACKAGE_NAME_UPPER@_INCLUDE_DIRS "@PACKAGE_INCLUDE_INSTALL_DIR_C@")
+endif()
 
 set(@PACKAGE_NAME_UPPER@_LIBRARY @PACKAGE_NAME@)
 
@@ -13,20 +25,15 @@ link_directories("${@PACKAGE_NAME_UPPER@_LIBRARY_DIR}")
 set(@PACKAGE_NAME_UPPER@_LIBRARIES "${@PACKAGE_NAME_UPPER@_LIBRARY}")
 
 # Find components
-macro(@PACKAGE_NAME@cfg_find_component comp required quiet)
-  set(_@PACKAGE_NAME@_QUIET)
-  if(${quiet})
-    set(_@PACKAGE_NAME@_QUIET QUIET)
-  endif()
-
+macro(@PACKAGE_NAME@cfg_find_component comp required)
   set(_@PACKAGE_NAME@_REQUIRED)
-  if(${required} AND Boost_FIND_REQUIRED)
+  if(${required} AND @PACKAGE_NAME@_FIND_REQUIRED)
     set(_@PACKAGE_NAME@_REQUIRED REQUIRED)
   endif()
 
   set(__@PACKAGE_NAME@_comp_nv "${comp}")
 
-  find_package(${__@PACKAGE_NAME@_comp_nv} ${@PACKAGE_NAME@_VERSION} EXACT CONFIG ${_@PACKAGE_NAME@_REQUIRED} ${_@PACKAGE_NAME@_QUIET})
+  find_package(${__@PACKAGE_NAME@_comp_nv} ${@PACKAGE_NAME@_VERSION} EXACT ${_@PACKAGE_NAME@_REQUIRED} CONFIG)
 
   set(__@PACKAGE_NAME@_comp_found ${${__@PACKAGE_NAME@_comp_nv}_FOUND})
 
