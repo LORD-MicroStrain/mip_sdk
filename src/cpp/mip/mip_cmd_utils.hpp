@@ -33,7 +33,7 @@ namespace mip
         if(!result)
             return result;
         cmd.function = mip::FunctionSelector::SAVE;
-        return runCommand(device, cmd);
+        return runCommand(device, cmd, 200);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
