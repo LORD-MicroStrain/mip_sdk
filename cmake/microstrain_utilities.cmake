@@ -26,9 +26,60 @@ macro(microstrain_setup_install_headers LIBRARY ROOT_DIR)
     endforeach()
 endmacro()
 
+set(MICROSTRAIN_CONFIG_FILE_IN ${CMAKE_CURRENT_LIST_DIR}/mip-config.cmake.in)
+
+function(microstrain_generate_package_config PACKAGE_NAME)
+
+    include(GNUInstallDirs)
+    include(CMakePackageConfigHelpers)
+
+    set(MICROSTRAIN_CONFIG_FILE_NAME "${PACKAGE_NAME}-config")
+
+    set(MICROSTRAIN_VERSION_FILE_NAME "${MICROSTRAIN_CONFIG_FILE_NAME}-version.cmake")
+    string(APPEND MICROSTRAIN_CONFIG_FILE_NAME ".cmake")
+    set(MICROSTRAIN_CONFIG_FILE_OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${MICROSTRAIN_CONFIG_FILE_NAME}")
+    set(MICROSTRAIN_VERSION_FILE_OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${MICROSTRAIN_VERSION_FILE_NAME}")
+
+    set(MICROSTRAIN_SUBDIR_NAME "microstrain")
+
+    if(WIN32)
+        set(MICROSTRAIN_CMAKE_CONFIG_INSTALL_DIR "${PACKAGE_NAME}/cmake")
+    else()
+        set(MICROSTRAIN_CMAKE_CONFIG_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/cmake/${PACKAGE_NAME}")
+    endif()
+
+    set(INCLUDE_INSTALL_DIR "${CMAKE_INSTALL_INCLUDEDIR}/${MICROSTRAIN_SUBDIR_NAME}")
+    set(SYSCONFIG_INSTALL_DIR "${CMAKE_INSTALL_SYSCONFDIR}/${MICROSTRAIN_SUBDIR_NAME}")
+    set(LIBRARY_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}")
+
+    set(PACKAGE_VERSION "${MICROSTRAIN_GIT_VERSION_CLEAN}")
+    string(TOUPPER "${PACKAGE_NAME}" PACKAGE_NAME_UPPER)
+
+    configure_package_config_file(
+        "${MICROSTRAIN_CONFIG_FILE_IN}"
+        "${MICROSTRAIN_CONFIG_FILE_OUTPUT}"
+        INSTALL_DESTINATION "${MICROSTRAIN_CMAKE_CONFIG_INSTALL_DIR}"
+        PATH_VARS INCLUDE_INSTALL_DIR SYSCONFIG_INSTALL_DIR LIBRARY_INSTALL_DIR
+    )
+
+    write_basic_package_version_file(
+        "${MICROSTRAIN_VERSION_FILE_OUTPUT}"
+        VERSION "${MICROSTRAIN_GIT_VERSION_CLEAN}"
+        COMPATIBILITY AnyNewerVersion
+    )
+
+    install(
+        FILES "${MICROSTRAIN_CONFIG_FILE_OUTPUT}"
+        "${MICROSTRAIN_VERSION_FILE_OUTPUT}"
+        DESTINATION "${MICROSTRAIN_CMAKE_CONFIG_INSTALL_DIR}"
+        COMPONENT "${PACKAGE_NAME}"
+    )
+endfunction()
+
 macro(microstrain_setup_library_install LIBRARY ROOT_DIR)
     install(
         TARGETS ${LIBRARY}
+        COMPONENT ${LIBRARY}
         EXPORT ${LIBRARY}-targets
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
@@ -36,6 +87,7 @@ macro(microstrain_setup_library_install LIBRARY ROOT_DIR)
     )
 
     microstrain_setup_install_headers(${LIBRARY} ${ROOT_DIR})
+    microstrain_generate_package_config(${LIBRARY})
 
 #    include(CMakePackageConfigHelpers)
 
