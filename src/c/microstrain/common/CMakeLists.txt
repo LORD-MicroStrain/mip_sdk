@@ -6,6 +6,7 @@ set(MICROSTRAIN_LOGGING_MAX_LEVEL "MICROSTRAIN_LOG_LEVEL_WARN" CACHE STRING "Max
 set(MICROSTRAIN_TIMESTAMP_TYPE "uint64_t" CACHE STRING "Override the type used for received data timestamps and timeouts (must be unsigned or at least 64 bits).")
 
 set(MICROSTRAIN_COMMON_SOURCES
+    "${CMAKE_CURRENT_LIST_DIR}/embedded_time.h"
     "${CMAKE_CURRENT_LIST_DIR}/logging.h"
     "${CMAKE_CURRENT_LIST_DIR}/platform.h"
     "${CMAKE_CURRENT_LIST_DIR}/serialization.c"
