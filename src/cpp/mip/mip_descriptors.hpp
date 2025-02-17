@@ -24,7 +24,7 @@ namespace mip
         uint8_t fieldDescriptor;  ///< MIP field descriptor.
 
         constexpr CompositeDescriptor(uint8_t descSet, uint8_t fieldDesc) : descriptorSet(descSet), fieldDescriptor(fieldDesc) {}
-        constexpr CompositeDescriptor(uint16_t combo) : descriptorSet(combo >> 8), fieldDescriptor(combo & 0xFF) {}
+        constexpr CompositeDescriptor(uint16_t combo=0) : descriptorSet(combo >> 8), fieldDescriptor(combo & 0xFF) {}
 
         CompositeDescriptor& operator=(uint16_t combo) { return *this = CompositeDescriptor(combo); }
 
