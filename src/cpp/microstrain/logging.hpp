@@ -1,6 +1,6 @@
 #pragma once
 
-#include <microstrain/common/logging.h>
+#include <microstrain/logging.h>
 
 
 namespace microstrain

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <microstrain/common/platform.h>
+#include <microstrain/platform.h>
 
 #ifdef __has_include
 #if __has_include(<version>)

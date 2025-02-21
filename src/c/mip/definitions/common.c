@@ -1,7 +1,7 @@
 
 #include "common.h"
 
-#include "microstrain/common/serialization.h"
+#include "microstrain/serialization.h"
 
 
 void insert_mip_descriptor_rate(microstrain_serializer* serializer, const mip_descriptor_rate* self)
