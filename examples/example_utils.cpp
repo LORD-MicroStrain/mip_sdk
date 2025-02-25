@@ -4,7 +4,7 @@
 
 #include <stdarg.h>
 
-#include <microstrain/common/logging.h>
+#include <microstrain/logging.h>
 
 #include "example_utils.hpp"
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <microstrain/common/embedded_time.h>
+#include <microstrain/embedded_time.h>
 
 
 namespace microstrain

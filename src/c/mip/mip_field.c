@@ -5,7 +5,7 @@
 #include "mip_offsets.h"
 #include "mip_descriptors.h"
 
-#include <microstrain/common/serialization.h>
+#include <microstrain/serialization.h>
 
 #include <assert.h>
 

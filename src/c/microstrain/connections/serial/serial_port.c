@@ -1,6 +1,6 @@
 #include "serial_port.h"
 
-#include <microstrain/common/logging.h>
+#include <microstrain/logging.h>
 
 #if defined MICROSTRAIN_PLATFORM_WINDOWS
 #include <ctype.h>

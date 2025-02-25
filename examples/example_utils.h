@@ -3,7 +3,7 @@
 #include <mip/definitions/data_filter.h>
 
 #include <microstrain/connections/serial/serial_port.h>
-#include <microstrain/common/logging.h>
+#include <microstrain/logging.h>
 
 extern serial_port device_port;
 

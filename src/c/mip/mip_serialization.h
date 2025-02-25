@@ -2,7 +2,7 @@
 
 #include "mip_field.h"
 
-#include <microstrain/common/serialization.h>
+#include <microstrain/serialization.h>
 
 
 #ifdef __cplusplus
