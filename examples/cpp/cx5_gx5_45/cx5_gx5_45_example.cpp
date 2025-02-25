@@ -8,7 +8,7 @@
 // This example shows a typical setup for the GX5-45 sensor in a wheeled-vehicle application using using C++.
 // It is not an exhaustive example of all GX5-45 settings.
 // If your specific setup needs are not met by this example, please consult
-// the MSCL-embedded API documentation for the proper commands.
+// the MIP SDK API documentation for the proper commands.
 //
 //
 //!@section LICENSE
@@ -27,11 +27,11 @@
 // Include Files
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <mip/mip_all.hpp>
+#include <../../src/cpp/mip/mip_all.hpp>
 
 #include <array>
 
-#include "example_utils.hpp"
+#include "../example_utils.hpp"
 
 
 ////////////////////////////////////////////////////////////////////////////////

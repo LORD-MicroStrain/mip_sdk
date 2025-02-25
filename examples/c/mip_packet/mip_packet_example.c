@@ -1,12 +1,12 @@
-#include "mip/mip_packet.h"
-#include "mip/mip_serialization.h"
+#include "../../src/c/mip/mip_packet.h"
+#include "../../src/c/mip/mip_serialization.h"
 
-#include "mip/definitions/commands_3dm.h"
-#include "mip/definitions/commands_base.h"
-#include "mip/definitions/data_sensor.h"
-#include "mip/definitions/data_shared.h"
+#include "../../src/c/mip/definitions/commands_3dm.h"
+#include "../../src/c/mip/definitions/commands_base.h"
+#include "../../src/c/mip/definitions/data_sensor.h"
+#include "../../src/c/mip/definitions/data_shared.h"
 
-#include <microstrain/common/platform.h>
+#include <../../src/c/microstrain/common/platform.h>
 
 #include <stdbool.h>
 #include <stdio.h>

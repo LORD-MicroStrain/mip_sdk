@@ -1,0 +1,6 @@
+add_subdirectory(cv7)
+#add_subdirectory(cx5_gx5_45)
+#add_subdirectory(cx5_gx5_cv5_15_25)
+#add_subdirectory(gq7)
+#add_subdirectory(mip_packet)
+#add_subdirectory(stream_imu)

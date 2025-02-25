@@ -8,7 +8,7 @@
 // This example shows a typical setup for the CX5-15 sensor in a wheeled-vehicle application using using C.
 // It is not an exhaustive example of all CX5-15 settings.
 // If your specific setup needs are not met by this example, please consult
-// the MSCL-embedded API documentation for the proper commands.
+// the MIP SDK API documentation for the proper commands.
 //
 //
 //!@section LICENSE
@@ -27,10 +27,10 @@
 // Include Files
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "example_utils.h"
+#include "../example_utils.h"
 
-#include <mip/mip_all.h>
-#include <microstrain/connections/serial/serial_port.h>
+#include <../../src/c/mip/mip_all.h>
+#include <../../src/c/microstrain/connections/serial/serial_port.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -138,9 +138,9 @@ int main(int argc, const char* argv[])
     mip_cmd_queue* queue = mip_interface_cmd_queue(&device);
     const mip_timeout old_mip_sdk_timeout = mip_cmd_queue_base_reply_timeout(queue);
     printf("Capturing gyro bias. This will take %d seconds. \n", sampling_time/1000);
-    mip_cmd_queue_set_base_reply_timeout(queue, sampling_time * 2);    
+    mip_cmd_queue_set_base_reply_timeout(queue, sampling_time * 2);
     float gyro_bias[3] = {0, 0, 0};
-        
+
     if(mip_3dm_capture_gyro_bias(&device, sampling_time, gyro_bias) != MIP_ACK_OK)
         exit_gracefully("ERROR: Could not load default device settings!");
 
@@ -266,7 +266,7 @@ int main(int argc, const char* argv[])
            if(curr_time - prev_print_timestamp >= 1000)
            {
                 printf("TOW = %f: ATT_EULER = [%f %f %f]: COMP_ANG_RATE = [%f %f %f]: COMP_ACCEL = [%f %f %f]\n",
-                       filter_gps_time.tow, filter_euler_angles.roll, filter_euler_angles.pitch, filter_euler_angles.yaw, 
+                       filter_gps_time.tow, filter_euler_angles.roll, filter_euler_angles.pitch, filter_euler_angles.yaw,
                        filter_comp_angular_rate.gyro[0], filter_comp_angular_rate.gyro[1], filter_comp_angular_rate.gyro[2],
                        filter_comp_accel.accel[0], filter_comp_accel.accel[1], filter_comp_accel.accel[2]);
 
@@ -301,4 +301,3 @@ bool should_exit()
   return false;
 
 }
-

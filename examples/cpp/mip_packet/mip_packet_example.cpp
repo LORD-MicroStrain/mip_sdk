@@ -1,11 +1,11 @@
-#include <mip/mip_packet.hpp>
+#include <../../src/cpp/mip/mip_packet.hpp>
 
-#include <mip/definitions/commands_3dm.hpp>
-#include <mip/definitions/commands_base.hpp>
-#include <mip/definitions/data_sensor.hpp>
-#include <mip/definitions/data_shared.hpp>
+#include <../../src/cpp/mip/definitions/commands_3dm.hpp>
+#include <../../src/cpp/mip/definitions/commands_base.hpp>
+#include <../../src/cpp/mip/definitions/data_sensor.hpp>
+#include <../../src/cpp/mip/definitions/data_shared.hpp>
 
-#include <microstrain/common/platform.h>
+#include <../../src/c/microstrain/common/platform.h>
 
 #include <cstdio>
 

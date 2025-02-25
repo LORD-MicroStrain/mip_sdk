@@ -7,7 +7,7 @@
 // This example shows the basic setup for a CV-INS sensor using external aiding measurements.
 // It is not an exhaustive example of all CV7 settings.
 // If your specific setup needs are not met by this example, please consult
-// the MSCL-embedded API documentation for the proper commands.
+// the MIP SDK API documentation for the proper commands.
 //
 //
 //!@section LICENSE
