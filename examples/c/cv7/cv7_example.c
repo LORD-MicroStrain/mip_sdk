@@ -31,6 +31,11 @@
 #include <mip/definitions/data_sensor.h>
 #include <mip/definitions/data_shared.h>
 
+#ifdef _MSC_VER
+#define _USE_MATH_DEFINES
+#endif // _MSC_VER
+
+#include <math.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -144,7 +149,7 @@ int main(int argc, const char* argv[])
     // Note: This is good to do after filter setup is complete
     printf("Resetting the filter.\n");
     cmd_result = mip_filter_reset(&device);
-    if (mip_cmd_result_is_ack(cmd_result))
+    if (!mip_cmd_result_is_ack(cmd_result))
     {
         terminate(&device, "Could not reset the filter!\n", cmd_result);
     }
@@ -253,12 +258,12 @@ int main(int argc, const char* argv[])
         terminate(&device, "Could not resume the device!\n", cmd_result);
     }
 
-    printf("Sensor is configured... waiting for filter to enter AHRS mode.\n");
+    printf("Sensor is configured... waiting for filter to enter vertical gyro mode.\n");
 
     mip_filter_mode current_state = filter_status.filter_state;
 
-    // Wait for the device to enter AHRS mode
-    while (filter_status.filter_state != MIP_FILTER_MODE_AHRS)
+    // Wait for the device to enter vertical gyro mode
+    while (filter_status.filter_state != MIP_FILTER_MODE_VERT_GYRO)
     {
         // Update the device state
         // Note: This will update the device callbacks to trigger the filter state change
@@ -271,8 +276,6 @@ int main(int argc, const char* argv[])
             current_state = filter_status.filter_state;
         }
     }
-
-    printf("Filter has entered AHRS mode.\n");
 
     mip_timestamp prev_print_timestamp = 0;
 
@@ -398,8 +401,8 @@ void configure_event_triggers(mip_interface* device)
 
     // Configure the high and low thresholds for the trigger window
     event_params.threshold.type       = MIP_3DM_EVENT_TRIGGER_COMMAND_THRESHOLD_PARAMS_TYPE_WINDOW;
-    event_params.threshold.high_thres = -0.7853981;
-    event_params.threshold.low_thres  = 0.7853981;
+    event_params.threshold.low_thres  = 45.0 * M_PI / 180.0;               // Note: Command expects radians. Converting 45 degrees into radians
+    event_params.threshold.high_thres = -event_params.threshold.low_thres; // -45 degrees
 
     printf("Configuring threshold event trigger for roll on trigger instance ID 1.\n");
     mip_cmd_result cmd_result = mip_3dm_write_event_trigger(
@@ -529,33 +532,33 @@ void handle_event_triggers(void* user, const mip_field_view* field, mip_timestam
 
 void display_filter_state(const mip_filter_mode filter_state)
 {
-    printf("FILTER STATE: ");
+    printf("The filter has entered ");
 
     switch (filter_state)
     {
         case MIP_FILTER_MODE_INIT:
         {
-            printf("INIT (%d)", (uint8_t)filter_state);
+            printf("initialization mode. INIT (%d)", (uint8_t)filter_state);
             break;
         }
         case MIP_FILTER_MODE_VERT_GYRO:
         {
-            printf("VERT_GYRO (%d)", (uint8_t)filter_state);
+            printf("vertical gyro mode. VERT_GYRO (%d)", (uint8_t)filter_state);
             break;
         }
         case MIP_FILTER_MODE_AHRS:
         {
-            printf("AHRS (%d)", (uint8_t)filter_state);
+            printf("AHRS mode. AHRS (%d)", (uint8_t)filter_state);
             break;
         }
         case MIP_FILTER_MODE_FULL_NAV:
         {
-            printf("FULL_NAV (%d)", (uint8_t)filter_state);
+            printf("full navigation mode. FULL_NAV (%d)", (uint8_t)filter_state);
             break;
         }
         default:
         {
-            printf("STARTUP (%d)", (uint8_t)filter_state);
+            printf("startup mode. STARTUP (%d)", (uint8_t)filter_state);
             break;
         }
     }
