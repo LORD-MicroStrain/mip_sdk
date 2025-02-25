@@ -34,17 +34,17 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <time.h>
 
 // Message format configuration
-bool configure_sensor_message_format(mip_interface* device);
-bool configure_filter_message_format(mip_interface* device);
+void configure_sensor_message_format(mip_interface* device);
+void configure_filter_message_format(mip_interface* device);
 
 // Event configuration
-bool configure_event_triggers(mip_interface* device);
-bool configure_event_actions(mip_interface* device);
-bool enable_events(mip_interface* device);
-bool configure_events(mip_interface* device);
+void configure_event_triggers(mip_interface* device);
+void configure_event_actions(mip_interface* device);
+void enable_events(mip_interface* device);
 void handle_event_triggers(void* user, const mip_field_view* field, mip_timestamp timestamp);
 
 void display_filter_state(const mip_filter_mode filter_state);
@@ -56,7 +56,9 @@ bool mip_interface_user_send_to_device(mip_interface* mip_device, const uint8_t*
 bool mip_interface_user_recv_from_device(mip_interface* mip_device, uint8_t* buffer, size_t max_length, mip_timeout wait_time, bool from_cmd,
     size_t* length_out, mip_timestamp* timestamp_out);
 
-bool initialize_device(mip_interface* device, serial_port* device_port, uint32_t baudrate);
+void initialize_device(mip_interface* device, serial_port* device_port, uint32_t baudrate);
+
+void terminate(mip_interface* device, const char* message, mip_cmd_result cmd_result);
 
 // Global time variable to get_timestamp()
 time_t g_start_time;
@@ -98,36 +100,18 @@ int main(int argc, const char* argv[])
 
     // Initialize the MIP device and send commands to prepare for configuration/use
     mip_interface device;
-    if (!initialize_device(&device, &device_port, baudrate))
-    {
-        printf("Closing the serial port and exiting.\n");
-        serial_port_close(&device_port);
-        return 1;
-    }
+    initialize_device(&device, &device_port, baudrate);
 
     // Configure the message format for sensor data
-    if (!configure_sensor_message_format(&device))
-    {
-        printf("Closing the serial port and exiting.\n");
-        serial_port_close(&device_port);
-        return 1;
-    }
+    configure_sensor_message_format(&device);
 
     // Configure the message format for filter data
-    if (!configure_filter_message_format(&device))
-    {
-        printf("Closing the serial port and exiting.\n");
-        serial_port_close(&device_port);
-        return 1;
-    }
+    configure_filter_message_format(&device);
 
-    // Configure event triggers and actions for euler angles
-    if (!configure_events(&device))
-    {
-        printf("Closing the serial port and exiting.\n");
-        serial_port_close(&device_port);
-        return 1;
-    }
+    // Setup event triggers/actions on > 45 degrees filter pitch and roll Euler angles
+    configure_event_triggers(&device);
+    configure_event_actions(&device);
+    enable_events(&device);
 
     // Configure Sensor-to-Vehicle Transformation
     printf("Configuring sensor-to-vehicle transformation.\n");
@@ -140,10 +124,7 @@ int main(int argc, const char* argv[])
 
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        printf("ERROR: Could not set sensor-to-vehicle transformation!\nCommand Result: %s\n", mip_cmd_result_to_string(cmd_result));
-        printf("Closing the serial port and exiting.\n");
-        serial_port_close(&device_port);
-        return 1;
+        terminate(&device, "Could not set sensor-to-vehicle transformation!\n", cmd_result);
     }
 
     // Configure Filter Aiding Measurements (GNSS position/velocity and dual antenna [aka gnss heading])
@@ -156,22 +137,16 @@ int main(int argc, const char* argv[])
 
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        printf("ERROR: Could not set filter aiding measurement enable!\nCommand Result: %s\n", mip_cmd_result_to_string(cmd_result));
-        printf("Closing the serial port and exiting.\n");
-        serial_port_close(&device_port);
-        return 1;
+        terminate(&device, "Could not set filter aiding measurement enable!\n", cmd_result);
     }
 
     // Reset the filter
     // Note: This is good to do after filter setup is complete
     printf("Resetting the filter.\n");
     cmd_result = mip_filter_reset(&device);
-    if (!mip_cmd_result_is_ack(cmd_result))
+    if (mip_cmd_result_is_ack(cmd_result))
     {
-        printf("ERROR: Could not reset the filter!\nCommand Result: %s\n", mip_cmd_result_to_string(cmd_result));
-        printf("Closing the serial port and exiting.\n");
-        serial_port_close(&device_port);
-        return 1;
+        terminate(&device, "Could not reset the filter!\n", cmd_result);
     }
 
     // Register data callbacks
@@ -275,10 +250,7 @@ int main(int argc, const char* argv[])
     cmd_result = mip_base_resume(&device);
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        printf("ERROR: Could not resume the device!\nCommand Result: %s\n", mip_cmd_result_to_string(cmd_result));
-        printf("Closing the serial port and exiting.\n");
-        serial_port_close(&device_port);
-        return 1;
+        terminate(&device, "Could not resume the device!\n", cmd_result);
     }
 
     printf("Sensor is configured... waiting for filter to enter AHRS mode.\n");
@@ -300,7 +272,7 @@ int main(int argc, const char* argv[])
         }
     }
 
-    printf("NOTE: Filter has entered AHRS mode.\n");
+    printf("Filter has entered AHRS mode.\n");
 
     mip_timestamp prev_print_timestamp = 0;
 
@@ -342,7 +314,7 @@ int main(int argc, const char* argv[])
 }
 
 // Configure Sensor data message format
-bool configure_sensor_message_format(mip_interface* device)
+void configure_sensor_message_format(mip_interface* device)
 {
     // Note: Querying the device base rate is only one way to calculate the descriptor decimation.
     // We could have also set it directly with information from the datasheet (shown in GNSS setup).
@@ -352,8 +324,7 @@ bool configure_sensor_message_format(mip_interface* device)
     mip_cmd_result cmd_result = mip_3dm_get_base_rate(device, MIP_SENSOR_DATA_DESC_SET, &sensor_base_rate);
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        printf("ERROR: Could not get sensor base rate format!\nCommand Result: %s\n", mip_cmd_result_to_string(cmd_result));
-        return false;
+        terminate(device, "Could not get sensor base rate format!\n", cmd_result);
     }
 
     const uint16_t sensor_sample_rate = 100; // Hz
@@ -376,23 +347,19 @@ bool configure_sensor_message_format(mip_interface* device)
 
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        printf("ERROR: Could not set sensor message format!\nCommand Result: %s\n", mip_cmd_result_to_string(cmd_result));
-        return false;
+        terminate(device, "Could not set sensor message format!\n", cmd_result);
     }
-
-    return true;
 }
 
 // Configure Filter data message format
-bool configure_filter_message_format(mip_interface* device)
+void configure_filter_message_format(mip_interface* device)
 {
     printf("Getting the base rate for filter data.\n");
     uint16_t filter_base_rate;
     mip_cmd_result cmd_result = mip_3dm_get_base_rate(device, MIP_FILTER_DATA_DESC_SET, &filter_base_rate);
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        printf("ERROR: Could not get filter base rate format!\nCommand Result: %s\n", mip_cmd_result_to_string(cmd_result));
-        return false;
+        terminate(device, "Could not get filter base rate format!\n", cmd_result);
     }
 
     const uint16_t filter_sample_rate = 100; // Hz
@@ -414,15 +381,12 @@ bool configure_filter_message_format(mip_interface* device)
 
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        printf("ERROR: Could not set filter message format!\nCommand Result: %s\n", mip_cmd_result_to_string(cmd_result));
-        return false;
+        terminate(device, "Could not set filter message format!\n", cmd_result);
     }
-
-    return true;
 }
 
 // Set up a trigger for filter euler angles
-bool configure_event_triggers(mip_interface* device)
+void configure_event_triggers(mip_interface* device)
 {
     // Configure a threshold trigger
     mip_3dm_event_trigger_command_parameters event_params;
@@ -447,8 +411,7 @@ bool configure_event_triggers(mip_interface* device)
 
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        printf("ERROR: Could not set pitch event parameters!\nCommand Result: %s\n", mip_cmd_result_to_string(cmd_result));
-        return false;
+        terminate(device, "Could not set pitch event parameters!\n", cmd_result);
     }
 
     // Use the same trigger configuration, but set it to the y-axis (pitch)
@@ -464,15 +427,12 @@ bool configure_event_triggers(mip_interface* device)
 
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        printf("ERROR: Could not set roll event parameters!\nCommand Result: %s\n", mip_cmd_result_to_string(cmd_result));
-        return false;
+        terminate(device, "Could not set roll event parameters!\n", cmd_result);
     }
-
-    return true;
 }
 
 // Note: Event trigger instance IDs do not need to match the Action instance IDs
-bool configure_event_actions(mip_interface* device)
+void configure_event_actions(mip_interface* device)
 {
     mip_3dm_event_action_command_parameters event_action;
     event_action.message.desc_set       = MIP_FILTER_DATA_DESC_SET;
@@ -492,8 +452,7 @@ bool configure_event_actions(mip_interface* device)
 
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        printf("ERROR: Could not set roll action parameters!\nCommand Result: %s\n", mip_cmd_result_to_string(cmd_result));
-        return false;
+        terminate(device, "Could not set roll action parameters!\n", cmd_result);
     }
 
     // Configure an action for event trigger 2 (pitch)
@@ -508,15 +467,12 @@ bool configure_event_actions(mip_interface* device)
 
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        printf("ERROR: Could not set pitch action parameters!\nCommand Result: %s\n", mip_cmd_result_to_string(cmd_result));
-        return false;
+        terminate(device, "Could not set pitch action parameters!\n", cmd_result);
     }
-
-    return true;
 }
 
 // Enable the events
-bool enable_events(mip_interface* device)
+void enable_events(mip_interface* device)
 {
     // Enable the roll event trigger
     printf("Enabling event trigger instance 1 (roll).\n");
@@ -528,8 +484,7 @@ bool enable_events(mip_interface* device)
 
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        printf("ERROR: Could not enable roll event!\nCommand Result: %s\n", mip_cmd_result_to_string(cmd_result));
-        return false;
+        terminate(device, "Could not enable roll event!\n", cmd_result);
     }
 
     // Enable the pitch event trigger
@@ -542,27 +497,8 @@ bool enable_events(mip_interface* device)
 
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        printf("ERROR: Could not enable pitch event!\nCommand Result: %s\n", mip_cmd_result_to_string(cmd_result));
-        return false;
+        terminate(device, "Could not enable pitch event!\n", cmd_result);
     }
-
-    return true;
-}
-
-// Setup event triggers/actions on > 45 degrees filter pitch and roll Euler angles
-bool configure_events(mip_interface* device)
-{
-    if (!configure_event_triggers(device))
-    {
-        return false;
-    }
-
-    if (!configure_event_actions(device))
-    {
-        return false;
-    }
-
-    return enable_events(device);
 }
 
 // Handler for filter event source field
@@ -582,12 +518,12 @@ void handle_event_triggers(void* user, const mip_field_view* field, mip_timestam
     // Event trigger instance ID 1 (roll)
     if (data.trigger_id == 1)
     {
-        printf("WARNING: Roll event triggered! Trigger ID: %d\n", data.trigger_id);
+        printf("EVENT: Roll event triggered! Trigger ID: %d\n", data.trigger_id);
     }
     // Event trigger instance ID 2 (pitch)
     else if (data.trigger_id == 2)
     {
-        printf("WARNING: Pitch event triggered! Trigger ID: %d\n", data.trigger_id);
+        printf("EVENT: Pitch event triggered! Trigger ID: %d\n", data.trigger_id);
     }
 }
 
@@ -684,9 +620,7 @@ bool mip_interface_user_recv_from_device(mip_interface* device, uint8_t* buffer,
 /// @param device_port Serial port to use for the device connection
 /// @param baudrate    Baudrate to open the connection with
 ///
-/// @return True, if the device was successfully initialized otherwise, false
-///
-bool initialize_device(mip_interface* device, serial_port* device_port, uint32_t baudrate)
+void initialize_device(mip_interface* device, serial_port* device_port, uint32_t baudrate)
 {
     printf("Initializing device interface.\n");
     mip_interface_init(
@@ -708,8 +642,7 @@ bool initialize_device(mip_interface* device, serial_port* device_port, uint32_t
     cmd_result = mip_base_ping(device);
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        printf("ERROR: Could not ping the device!\nCommand Result: %s\n", mip_cmd_result_to_string(cmd_result));
-        return false;
+        terminate(device, "Could not ping the device!", cmd_result);
     }
 
     // Set the device to Idle
@@ -718,8 +651,7 @@ bool initialize_device(mip_interface* device, serial_port* device_port, uint32_t
     cmd_result = mip_base_set_idle(device);
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        printf("ERROR: Could not set the device to idle!\nCommand Result: %s\n", mip_cmd_result_to_string(cmd_result));
-        return false;
+        terminate(device, "Could not set the device to idle!\n", cmd_result);
     }
 
     // Load the default settings on the device
@@ -728,9 +660,32 @@ bool initialize_device(mip_interface* device, serial_port* device_port, uint32_t
     cmd_result = mip_3dm_default_device_settings(device);
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        printf("ERROR: Could not load device default settings!\nCommand Result: %s\n", mip_cmd_result_to_string(cmd_result));
-        return false;
+        terminate(device, "Could not load device default settings!\n", cmd_result);
+    }
+}
+
+// Print an error message and terminate the program after closing the serial port
+void terminate(mip_interface* device, const char* message, mip_cmd_result cmd_result)
+{
+    printf("ERROR: %s Command Result: %d %s\n", message, cmd_result, mip_cmd_result_to_string(cmd_result));
+
+    if (device != NULL)
+    {
+        // Get the serial connection pointer that was set during device initialization
+        serial_port* device_port = (serial_port*)mip_interface_user_pointer(device);
+
+        if (device_port == NULL)
+        {
+            printf("ERROR: serial_port pointer not set in mip_interface_init(). Cannot close the port.\n");
+        }
+        else
+        {
+            printf("Closing the serial port.\n");
+            serial_port_close(device_port);
+        }
     }
 
-    return true;
+    printf("Exiting the program.\n");
+
+    exit(1);
 }
