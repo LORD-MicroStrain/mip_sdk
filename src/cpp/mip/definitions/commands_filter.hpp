@@ -3085,7 +3085,7 @@ TypedResult<ReferencePosition> defaultReferencePosition(C::mip_interface& device
 /// 
 /// Adaptive measurements can be enabled/disabled without the need for providing the additional parameters.
 /// In this case, only the function selector and enable value are required; all other parameters will remain at their previous values.
-/// When “auto-adaptive” is selected, the filter and limit parameters are ignored.
+/// When "auto-adaptive" is selected, the filter and limit parameters are ignored.
 /// Instead, aiding measurements which rely on the gravity vector will be automatically reweighted by the Kalman filter according to the perceived measurement quality.
 /// 
 ///
