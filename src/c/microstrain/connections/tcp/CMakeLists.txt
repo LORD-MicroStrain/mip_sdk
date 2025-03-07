@@ -1,10 +1,18 @@
 set(MICROSTRAIN_SOCKET_LIBRARY "microstrain_socket" CACHE INTERNAL "Name of the MicroStrain TCP socket connections library")
 mark_as_advanced(MICROSTRAIN_SOCKET_LIBRARY)
 
-add_library(${MICROSTRAIN_SOCKET_LIBRARY}
+set(MICROSTRAIN_SOCKET_SOURCES
     "${CMAKE_CURRENT_LIST_DIR}/tcp_socket.h"
     "${CMAKE_CURRENT_LIST_DIR}/tcp_socket.c"
 )
+
+add_library(${MICROSTRAIN_SOCKET_LIBRARY}
+    "${MICROSTRAIN_SOCKET_SOURCES}"
+)
+
+if(MSVC)
+    source_group(TREE ${MICROSTRAIN_SRC_DIR} FILES ${MICROSTRAIN_SOCKET_SOURCES})
+endif()
 
 target_compile_features(${MICROSTRAIN_SOCKET_LIBRARY} PUBLIC c_std_11)
 

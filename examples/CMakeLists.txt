@@ -1,12 +1,20 @@
 set(EXAMPLE_DIR "${CMAKE_CURRENT_LIST_DIR}")
 set(MIP_EXAMPLE_UTILS_LIBRARY "example_utils")
 
-add_library(${MIP_EXAMPLE_UTILS_LIBRARY}
+set(MIP_EXAMPLE_UTILS_SOURCES
     "${EXAMPLE_DIR}/example_utils.c"
     "${EXAMPLE_DIR}/example_utils.h"
     "${EXAMPLE_DIR}/example_utils.cpp"
     "${EXAMPLE_DIR}/example_utils.hpp"
 )
+
+add_library(${MIP_EXAMPLE_UTILS_LIBRARY}
+    "${MIP_EXAMPLE_UTILS_SOURCES}"
+)
+
+if(MSVC)
+    source_group(TREE ${EXAMPLE_DIR} FILES ${MIP_EXAMPLE_UTILS_SOURCES})
+endif()
 
 set(EXAMPLE_LIBS)
 
@@ -47,6 +55,10 @@ list(APPEND EXAMPLE_LIBS ${MIP_EXAMPLE_UTILS_LIBRARY})
 macro(add_mip_example name sources)
 
     add_executable(${name} ${sources})
+
+    if(MSVC)
+        source_group(TREE ${EXAMPLE_DIR} FILES ${sources})
+    endif()
 
     target_compile_features(${name} PUBLIC c_std_11)
     if(MICROSTRAIN_ENABLE_CPP)  # Technically should only do this for C++ examples but this is simpler

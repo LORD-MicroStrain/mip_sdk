@@ -1,3 +1,7 @@
+set(MICROSTRAIN_CONNECTION_SOURCES
+    "${CMAKE_CURRENT_LIST_DIR}/connection.hpp"
+)
+
 if(MICROSTRAIN_ENABLE_SERIAL)
     add_subdirectory(serial)
 endif()

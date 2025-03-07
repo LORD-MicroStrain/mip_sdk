@@ -129,12 +129,17 @@ constexpr T saturate_cast(U x) noexcept
             constexpr T minimum = std::numeric_limits<T>::min();
             constexpr T maximum = std::numeric_limits<T>::max();
 
-            if(x < static_cast<U>(minimum))
-                return minimum;
-            else if(x > static_cast<U>(maximum))
+            if(x > static_cast<U>(maximum))
                 return maximum;
-            else
-                return x;
+
+            // Only check minimum if signed, otherwise compiler may warn about unsigned comparison with 0 always false.
+            if constexpr(std::is_signed<U>::value)
+            {
+                if(x < static_cast<U>(minimum))
+                    return minimum;
+            }
+
+            return x;
         }
     }
     // Unsigned result

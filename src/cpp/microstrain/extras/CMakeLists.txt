@@ -1,11 +1,18 @@
 set(MICROSTRAIN_EXTRAS_LIBRARY "microstrain_extras" CACHE INTERNAL "Name of the MicroStrain extras library")
 mark_as_advanced(MICROSTRAIN_EXTRAS_LIBRARY)
 
-add_library(${MICROSTRAIN_EXTRAS_LIBRARY}
+set(MICROSTRAIN_EXTRAS_SOURCES
     "${CMAKE_CURRENT_LIST_DIR}/scope_helper.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/scope_helper.hpp"
 )
 
+add_library(${MICROSTRAIN_EXTRAS_LIBRARY}
+    "${MICROSTRAIN_EXTRAS_SOURCES}"
+)
+
+if(MSVC)
+    source_group(TREE ${MICROSTRAIN_SRC_DIR} FILES ${MICROSTRAIN_EXTRAS_SOURCES})
+endif()
 
 target_compile_features(${MICROSTRAIN_EXTRAS_LIBRARY} PUBLIC cxx_std_11)
 

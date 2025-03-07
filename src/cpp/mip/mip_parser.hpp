@@ -70,9 +70,9 @@ public:
 template<class T, bool (T::*Callback)(const PacketView&, Timestamp)>
 void Parser::setCallback(T& object)
 {
-    C::mip_packet_callback callback = [](void* obj, const C::mip_packet_view* pkt, Timestamp timestamp)->bool
+    C::mip_packet_callback callback = [](void* obj, const C::mip_packet_view* pkt, Timestamp timestamp)->void
     {
-        return (static_cast<T*>(obj)->*Callback)(PacketView(pkt), timestamp);
+        (static_cast<T*>(obj)->*Callback)(PacketView(pkt), timestamp);
     };
 
     C::mip_parser_set_callback(this, callback, &object);

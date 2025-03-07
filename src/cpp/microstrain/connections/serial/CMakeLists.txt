@@ -1,9 +1,17 @@
-# Add to existing C library.
-target_sources(${MICROSTRAIN_SERIAL_LIBRARY} PRIVATE
+set(MICROSTRAIN_SERIAL_SOURCES
     "${CMAKE_CURRENT_LIST_DIR}/serial_connection.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/serial_connection.hpp"
-    "${CMAKE_CURRENT_LIST_DIR}/../connection.hpp"
+    "${MICROSTRAIN_CONNECTION_SOURCES}"
 )
+
+# Add to existing C library.
+target_sources(${MICROSTRAIN_SERIAL_LIBRARY} PRIVATE
+    "${MICROSTRAIN_SERIAL_SOURCES}"
+)
+
+if(MSVC)
+    source_group(TREE ${MICROSTRAIN_SRC_DIR} FILES ${MICROSTRAIN_SERIAL_SOURCES})
+endif()
 
 target_compile_features(${MICROSTRAIN_SERIAL_LIBRARY} PUBLIC cxx_std_11)
 

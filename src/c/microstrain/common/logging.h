@@ -49,6 +49,8 @@ void* microstrain_logging_user_data(void);
 
 void microstrain_logging_log(microstrain_log_level level, const char* fmt, ...);
 
+const char* microstrain_logging_level_name(microstrain_log_level level);
+
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to initialize the MicroStrain logger.
 ///       This function does not need to be called unless the user wants logging
@@ -135,6 +137,36 @@ void microstrain_logging_log(microstrain_log_level level, const char* fmt, ...);
 #else
 #define MICROSTRAIN_LOG_TRACE(...) (void)0
 #endif
+
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Helper macro used to log an error message from a syscall.
+///@param msg A plain C-string without any printf-style formatters.
+/// The resulting log message will be "<message here>: <error-code> <error-description>\n".
+#define MICROSTRAIN_LOG_ERROR_WITH_ERRNO(msg) MICROSTRAIN_LOG_ERROR(msg ": %d %s\n", errno, strerror(errno))
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Helper macro used to log an error message from a syscall.
+///@param msg A plain C-string which includes one or more printf-style formatters.
+///@param ... Arguments corresponding to the format codes in msg.
+/// The resulting log message will be "<message here>: <error-code> <error-description>\n".
+#define MICROSTRAIN_LOG_ERROR_WITH_ERRNO_EX(msg, ...) MICROSTRAIN_LOG_ERROR(msg ": %d %s\n", __VA_ARGS__, errno, strerror(errno))
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Log an array of bytes.
+///@param level Log level for this message.
+///@param buffer Pointer to byte array of type (const char*)/
+///@param length Length of buffer.
+///@param ...   Arguments corresponding to printf-style message with optional formatting.
+/// The resulting message will be "<message here> XX XX XX XX ...\n" where XX
+/// is a pair of hex digits.
+#define MICROSTRAIN_LOG_BYTES(level, buffer, length, ...) { \
+  MICROSTRAIN_LOG_LOG(level, __VA_ARGS__);                  \
+  for(size_t i=0; i<length; i++) {                          \
+    MICROSTRAIN_LOG_LOG(level, " %02X", buffer[i]);                \
+  }                                                         \
+  MICROSTRAIN_LOG_LOG(level, "\n");                                \
+}
 
 ///@}
 ///@}

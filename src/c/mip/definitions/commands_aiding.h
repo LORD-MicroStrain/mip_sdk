@@ -32,23 +32,16 @@ enum
     MIP_AIDING_CMD_DESC_SET                    = 0x13,
     
     MIP_CMD_DESC_AIDING_FRAME_CONFIG           = 0x01,
-    MIP_CMD_DESC_AIDING_LOCAL_FRAME            = 0x03,
     MIP_CMD_DESC_AIDING_ECHO_CONTROL           = 0x1F,
-    MIP_CMD_DESC_AIDING_POS_LOCAL              = 0x20,
     MIP_CMD_DESC_AIDING_POS_ECEF               = 0x21,
     MIP_CMD_DESC_AIDING_POS_LLH                = 0x22,
     MIP_CMD_DESC_AIDING_HEIGHT_ABOVE_ELLIPSOID = 0x23,
-    MIP_CMD_DESC_AIDING_HEIGHT_REL             = 0x24,
     MIP_CMD_DESC_AIDING_VEL_ECEF               = 0x28,
     MIP_CMD_DESC_AIDING_VEL_NED                = 0x29,
     MIP_CMD_DESC_AIDING_VEL_BODY_FRAME         = 0x2A,
-    MIP_CMD_DESC_AIDING_WHEELSPEED             = 0x2B,
     MIP_CMD_DESC_AIDING_HEADING_TRUE           = 0x31,
     MIP_CMD_DESC_AIDING_MAGNETIC_FIELD         = 0x32,
     MIP_CMD_DESC_AIDING_PRESSURE               = 0x33,
-    MIP_CMD_DESC_AIDING_DELTA_POSITION         = 0x38,
-    MIP_CMD_DESC_AIDING_DELTA_ATTITUDE         = 0x39,
-    MIP_CMD_DESC_AIDING_ANGULAR_RATE_LOCAL     = 0x3A,
     
     MIP_REPLY_DESC_AIDING_FRAME_CONFIG         = 0x81,
     MIP_REPLY_DESC_AIDING_ECHO_CONTROL         = 0x9F,
@@ -74,7 +67,7 @@ static inline void extract_mip_time_timebase(microstrain_serializer* serializer,
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_time_timebase)tmp;
 }
 
 
@@ -120,7 +113,6 @@ void extract_mip_time(microstrain_serializer* serializer, mip_time* self);
 /// Format: 1 (Euler)
 /// Translation: [0,1,] (GNSS with a 1 meter Y offset in the vehicle frame)
 /// Rotation: [0,0,0,0] (Rotational component is not relevant for GNSS measurements, set to zero)
-/// 
 ///
 ///@{
 
@@ -139,7 +131,7 @@ static inline void extract_mip_aiding_frame_config_command_format(microstrain_se
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_aiding_frame_config_command_format)tmp;
 }
 
 union mip_aiding_frame_config_command_rotation
@@ -206,7 +198,7 @@ static inline void extract_mip_aiding_echo_control_command_mode(microstrain_seri
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_aiding_echo_control_command_mode)tmp;
 }
 
 
@@ -257,7 +249,7 @@ static inline void extract_mip_aiding_pos_ecef_command_valid_flags(microstrain_s
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_aiding_pos_ecef_command_valid_flags)tmp;
 }
 
 
@@ -300,7 +292,7 @@ static inline void extract_mip_aiding_pos_llh_command_valid_flags(microstrain_se
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_aiding_pos_llh_command_valid_flags)tmp;
 }
 
 
@@ -366,7 +358,7 @@ static inline void extract_mip_aiding_vel_ecef_command_valid_flags(microstrain_s
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_aiding_vel_ecef_command_valid_flags)tmp;
 }
 
 
@@ -389,7 +381,7 @@ mip_cmd_result mip_aiding_vel_ecef(mip_interface* device, const mip_time* time, 
 ///
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup aiding_vel_ned_c  (0x13,0x29) Vel Ned
-/// NED velocity aiding command. Coordinates are given in the local North-East-Down frame.
+/// NED velocity aiding command. Coordinates are given in the local North East Down frame.
 ///
 ///@{
 
@@ -407,7 +399,7 @@ static inline void extract_mip_aiding_vel_ned_command_valid_flags(microstrain_se
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_aiding_vel_ned_command_valid_flags)tmp;
 }
 
 
@@ -448,7 +440,7 @@ static inline void extract_mip_aiding_vel_body_frame_command_valid_flags(microst
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_aiding_vel_body_frame_command_valid_flags)tmp;
 }
 
 
@@ -511,7 +503,7 @@ static inline void extract_mip_aiding_magnetic_field_command_valid_flags(microst
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_aiding_magnetic_field_command_valid_flags)tmp;
 }
 
 

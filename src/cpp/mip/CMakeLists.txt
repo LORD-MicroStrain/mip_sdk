@@ -1,6 +1,6 @@
 set(MIP_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/..")
 
-target_sources(${MIP_LIBRARY} PRIVATE
+set(MIP_SOURCES
     "${CMAKE_CURRENT_LIST_DIR}/mip.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/mip_all.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/mip_cmdqueue.hpp"
@@ -13,6 +13,14 @@ target_sources(${MIP_LIBRARY} PRIVATE
     "${CMAKE_CURRENT_LIST_DIR}/mip_result.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/mip_serialization.hpp"
 )
+
+target_sources(${MIP_LIBRARY} PRIVATE
+    "${MIP_SOURCES}"
+)
+
+if(MSVC)
+    source_group(TREE ${MICROSTRAIN_SRC_DIR} FILES ${MIP_SOURCES})
+endif()
 
 target_compile_features(${MIP_LIBRARY} PUBLIC cxx_std_11)
 target_include_directories(${MIP_LIBRARY} PRIVATE ${MIP_INCLUDE_DIR})
@@ -33,7 +41,13 @@ if(MICROSTRAIN_CMAKE_DEBUG)
     message("C++ definitions = ${INCLUDED_DEF_SOURCES}")
 endif()
 
-target_sources(${MIP_LIBRARY} PRIVATE ${MIP_DEF_SOURCES})
+target_sources(${MIP_LIBRARY} PRIVATE
+    "${MIP_DEF_SOURCES}"
+)
+
+if(MSVC)
+    source_group(TREE ${MICROSTRAIN_SRC_DIR} FILES ${MIP_DEF_SOURCES})
+endif()
 
 if(MIP_ENABLE_METADATA)
     add_subdirectory(metadata)

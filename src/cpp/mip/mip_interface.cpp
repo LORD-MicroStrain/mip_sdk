@@ -2,6 +2,10 @@
 
 #include <microstrain/connections/connection.hpp>
 
+using microstrain::Connection;
+using microstrain::Span;
+
+
 namespace mip
 {
     ////////////////////////////////////////////////////////////////////////////////
@@ -31,6 +35,7 @@ namespace mip
     ///@param timestamp_out Timestamp of when the data was received
     ////////////////////////////////////////////////////////////////////////////////
 
+
     ////////////////////////////////////////////////////////////////////////////////
     ///@brief Sets up the mip interface callbacks to point at this object.
     ///
@@ -39,29 +44,22 @@ namespace mip
     ///@param device Device to configure.
     ///@param conn   The connection to set
     ///
-    void connect_interface(mip::Interface& device, microstrain::Connection& conn)
+    void connect_interface(mip::Interface& device, Connection& conn)
     {
-        using microstrain::Connection;
+        device.setUserPointer(&conn);
 
-        C::mip_send_callback send = +[](C::mip_interface* device, const uint8_t* data, size_t length)->bool
-        {
-            return static_cast<Connection*>(C::mip_interface_user_pointer(device))->sendToDevice(data, length);
-        };
-
-        C::mip_recv_callback recv = +[](C::mip_interface* device, C::mip_timeout wait_time, bool, C::mip_timestamp* timestamp_out)->bool
-        {
-            uint8_t buffer[512];
-            size_t length;
-            if (!static_cast<Connection*>(C::mip_interface_user_pointer(device))->recvFromDevice(buffer, sizeof(buffer), wait_time, &length, timestamp_out))
-                return false;
-
-            C::mip_interface_input_bytes(device, buffer, length, *timestamp_out);
-            return true;
-        };
-
-        C::mip_interface_set_user_pointer(&device, &conn);
-
-        C::mip_interface_set_send_function(&device, send);
-        C::mip_interface_set_recv_function(&device, recv);
+        device.setSendFunctionUserPointer<Connection, &Connection::sendToDevice>();
+        device.setRecvFunctionUserPointer<Connection, &recv_from_connection>();
+        device.setUpdateFunction(C::mip_interface_default_update);
     }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    ///@brief Adapts microstrain::Connection::recvFromDeviceSpan to a signature
+    ///       compatible with mip interface receive callbacks.
+    ///
+    bool recv_from_connection(Connection* conn, Span<uint8_t> buffer, Timeout timeout, bool /*from_cmd*/, size_t* length_out, Timestamp* timestamp_out)
+    {
+        return conn->recvFromDeviceSpan(buffer, (unsigned int)timeout, length_out, timestamp_out);
+    }
+
 } // namespace mip

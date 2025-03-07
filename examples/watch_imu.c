@@ -1,8 +1,9 @@
 
+#include "example_utils.h"
+
 #include <mip/mip_dispatch.h>
 #include <mip/mip_interface.h>
 #include <microstrain/connections/serial/serial_port.h>
-#include <microstrain/common/logging.h>
 #include <microstrain/common/platform.h>
 
 #include <mip/definitions/commands_base.h>
@@ -11,34 +12,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
-#include <inttypes.h>
 
-#ifdef MICROSTRAIN_PLATFORM_WINDOWS
-#else
-#include <unistd.h>
-#endif
-
-serial_port device_port;
-uint8_t parse_buffer[1024];
 mip_interface device;
 mip_sensor_scaled_accel_data scaled_accel;
-
-void customLog(void* user, microstrain_log_level level, const char* fmt, va_list args)
-{
-    (void)user;
-
-    switch (level)
-    {
-        case MICROSTRAIN_LOG_LEVEL_FATAL:
-        case MICROSTRAIN_LOG_LEVEL_ERROR:
-            vfprintf(stderr, fmt, args);
-            break;
-        default:
-            vprintf(fmt, args);
-            break;
-    }
-}
 
 void handlePacket(void* unused, const mip_packet_view* packet, mip_timestamp timestamp)
 {
@@ -98,46 +74,6 @@ void handleMag(void* user, const mip_field_view* field, mip_timestamp timestamp)
 }
 
 
-time_t startTime;
-
-mip_timestamp get_current_timestamp()
-{
-    time_t t;
-    time(&t);
-
-    double delta = difftime(t, startTime);
-
-    return (mip_timestamp)(delta * 1000);
-}
-
-
-bool mip_interface_user_recv_from_device(mip_interface* device_, mip_timeout wait_time, bool from_cmd, mip_timestamp* timestamp_out)
-{
-    (void)device_;
-
-    *timestamp_out = get_current_timestamp();
-
-    size_t length;
-
-    if( !serial_port_read(&device_port, parse_buffer, sizeof(parse_buffer), (int)wait_time, &length) )
-        return false;
-
-    mip_interface_input_bytes(device_, parse_buffer, length, *timestamp_out);
-    return true;
-}
-
-
-bool mip_interface_user_send_to_device(mip_interface* device_, const uint8_t* data, size_t length)
-{
-    (void)device_;
-
-    size_t bytes_written;
-    if (!serial_port_write(&device_port, data, length, &bytes_written))
-        return false;
-
-    return true;
-}
-
 
 bool open_port(const char* name, uint32_t baudrate)
 {
@@ -159,8 +95,7 @@ int main(int argc, const char* argv[])
     if( baudrate == 0 )
         return usage(argv[0]);
 
-    // Initialize the MIP logger before opening the port so we can print errors if they occur
-    MICROSTRAIN_LOG_INIT(&customLog, MICROSTRAIN_LOG_LEVEL_INFO, NULL);
+    mip_example_init();
 
     if( !open_port(argv[1], baudrate) )
         return 1;
@@ -169,10 +104,6 @@ int main(int argc, const char* argv[])
         &device, mip_timeout_from_baudrate(baudrate), 1000,
         &mip_interface_user_send_to_device, &mip_interface_user_recv_from_device, &mip_interface_default_update, NULL
     );
-
-
-    // Record program start time for use with difftime in getTimestamp().
-    time(&startTime);
 
     enum mip_cmd_result result;
 

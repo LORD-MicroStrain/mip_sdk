@@ -98,11 +98,10 @@ struct MetadataFor<commands_system::CommsProtocol>
     using type = commands_system::CommsProtocol;
 
     static constexpr inline BitfieldInfo::Entry entries[] = {
-        { uint32_t(1), "MIP_COMMANDS", "" },
-        { uint32_t(2), "MIP_DATA", "" },
-        { uint32_t(4), "NMEA", "" },
-        { uint32_t(8), "RTCM", "" },
-        { uint32_t(16), "SPARTN", "" },
+        { uint32_t(1), "MIP", "Microstrain Inertial Protocol" },
+        { uint32_t(256), "NMEA", "" },
+        { uint32_t(512), "RTCM", "" },
+        { uint32_t(16777216), "SPARTN", "" },
     };
 
     static constexpr inline BitfieldInfo value = {

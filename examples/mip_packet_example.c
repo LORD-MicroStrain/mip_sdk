@@ -1,14 +1,15 @@
-
 #include "mip/mip_packet.h"
 #include "mip/mip_serialization.h"
 
-#include "mip/definitions/commands_base.h"
 #include "mip/definitions/commands_3dm.h"
+#include "mip/definitions/commands_base.h"
 #include "mip/definitions/data_sensor.h"
 #include "mip/definitions/data_shared.h"
 
-#include <stdio.h>
+#include <microstrain/common/platform.h>
+
 #include <stdbool.h>
+#include <stdio.h>
 
 
 // This function demonstrates how to inspect and iterate fields in
@@ -360,7 +361,11 @@ void create_packet_from_buffer()
                 microstrain_extract_u64(&serializer, &nanoseconds);
 
                 if(microstrain_serializer_is_complete(&serializer))
+#if defined MICROSTRAIN_PLATFORM_APPLE
+                    printf("  Ref Time = %llu\n", nanoseconds);
+#else
                     printf("  Ref Time = %lu\n", nanoseconds);
+#endif // MICROSTRAIN_PLATFORM_APPLE
 
                 break;
             }

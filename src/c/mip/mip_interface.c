@@ -102,7 +102,7 @@ extern "C" {
 ///@li To check for new data packets
 ///
 /// Generally an application should call mip_interface_recv_from_device() from
-/// within this callback and pass the data to mip_interface_input_bytes().
+/// within this callback and pass the data to mip_interface_input_bytes_from_device().
 /// Many applications can set this callback to mip_interface_default_update().
 ///
 ///@param device
@@ -339,9 +339,9 @@ bool mip_interface_send_to_device(mip_interface* device, const uint8_t* data, si
 ///@returns False if the receive callback is NULL.
 ///@returns False if the receive callback failed (i.e. if it returned false).
 ///
-bool mip_interface_recv_from_device(mip_interface* device, mip_timeout wait_time, bool from_cmd, mip_timestamp* timestamp_out)
+bool mip_interface_recv_from_device(mip_interface* device, uint8_t* buffer, size_t max_length, mip_timeout wait_time, bool from_cmd, size_t* length_out, mip_timestamp* timestamp_out)
 {
-    return device->_recv_callback && device->_recv_callback(device, wait_time, from_cmd, timestamp_out);
+    return device->_recv_callback && device->_recv_callback(device, buffer, max_length, wait_time, from_cmd, length_out, timestamp_out);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -369,7 +369,7 @@ bool mip_interface_recv_from_device(mip_interface* device, mip_timeout wait_time
 ///         updated (e.g. if the serial port is not open).
 ///
 
-bool mip_interface_update(struct mip_interface* device, mip_timeout wait_time, bool from_cmd)
+bool mip_interface_update(mip_interface* device, mip_timeout wait_time, bool from_cmd)
 {
     return device->_update_callback && device->_update_callback(device, wait_time, from_cmd);
 }
@@ -379,7 +379,13 @@ bool mip_interface_update(struct mip_interface* device, mip_timeout wait_time, b
 ///@brief Polls the port for new data or command replies.
 ///
 /// This is the default choice for the user update function. It ignores the
-/// from_cmd flag and always reads data from the device.
+/// from_cmd flag and always tries to read data from the device.
+///
+///@warning This function is provided for convenience and quick setup. It will
+///         work for most applications, but it is not optimized for your
+///         application. It may be unsuitable for some situations such as
+///         small microcontrollers (due to the fixed-size stack-allocated data
+///         buffer) or in combination with multi-threading.
 ///
 ///@param device
 ///
@@ -395,18 +401,82 @@ bool mip_interface_update(struct mip_interface* device, mip_timeout wait_time, b
 ///
 ///@returns The value returned by mip_interface_user_recv_from_device.
 ///
-bool mip_interface_default_update(struct mip_interface* device, mip_timeout wait_time, bool from_cmd)
+bool mip_interface_default_update(mip_interface* device, mip_timeout wait_time, bool from_cmd)
+{
+    // Allocate a buffer to hold received data.
+    // Note: bigger buffers will parse faster, but may overflow the stack.
+    // 512 bytes seems to be a good compromise on both desktop and embedded devices.
+    uint8_t buffer[512];
+
+    return mip_interface_default_update_ext_buffer(device, wait_time, from_cmd, buffer, sizeof(buffer));
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Polls the port for new data or command replies using a supplied buffer.
+///
+/// This function is suitable for most single-threaded use cases where
+/// performance is not critical. In performance-sensitive applications, it's
+/// best to either read directly into the mip parser buffer, or call
+/// mip_interface_input_bytes from your own update function (bypassing
+/// mip_interface_recv_from_device entirely).
+///
+///@param device
+///
+///@param wait_time
+///       Time to wait for data from the device. This will be nonzero when
+///       waiting for command replies. Applications calling this function
+///       can pass 0 to avoid blocking when checking for new data.
+///
+///@param from_cmd
+///       If true, this call is a result of waiting for a command to complete.
+///       Otherwise, this call is a regularly-scheduled poll for data. User
+///       code calling this function should generally set this to false.
+///
+///@param buffer
+///       Buffer to hold data read from the device connection. At least 512
+///       bytes are recommended for better performance, with a few kB being
+///       the point of diminishing return.
+///
+///@param buffer_size
+///       Size of the buffer.
+///
+///@returns The value returned by mip_interface_user_recv_from_device.
+///
+bool mip_interface_default_update_ext_buffer(mip_interface* device, mip_timeout wait_time, bool from_cmd, uint8_t* buffer, size_t buffer_size)
 {
     if( !device->_recv_callback )
         return false;
 
+    size_t count = 0;
     mip_timestamp timestamp;
-    if ( !mip_interface_recv_from_device(device, wait_time, from_cmd, &timestamp) )
+
+    // Try to read data from the port into a temporary buffer.
+    if ( !(device->_recv_callback)(device, buffer, buffer_size, wait_time, from_cmd, &count, &timestamp) )
         return false;
 
-    mip_cmd_queue_update(mip_interface_cmd_queue(device), timestamp);
+    mip_interface_input_bytes_andor_time(device, buffer, count, timestamp);
 
     return true;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief This function takes care of processing received data and updating the
+///       current time.
+///
+/// User-defined update functions should either call this function after
+/// getting data from the connection, or do the equivalent manually:
+///@li Input bytes to the parser, via mip_interface_input_bytes_from_device, and
+///@li Update the current time via mip_interface_update_time
+///
+void mip_interface_input_bytes_andor_time(mip_interface* device, const uint8_t* received_data, size_t data_length, mip_timestamp now)
+{
+    // Pass the data to the MIP parser.
+    mip_interface_input_bytes_from_device(device, received_data, data_length, now);
+
+    // Update the command queue to see if any commands have timed out.
+    mip_interface_update_time(device, now);
 }
 
 
@@ -422,7 +492,7 @@ bool mip_interface_default_update(struct mip_interface* device, mip_timeout wait
 ///@param timestamp
 ///       Time of the received data.
 ///
-void mip_interface_input_bytes(mip_interface* device, const uint8_t* data, size_t length, mip_timestamp timestamp)
+void mip_interface_input_bytes_from_device(mip_interface* device, const uint8_t* data, size_t length, mip_timestamp timestamp)
 {
     mip_parser_parse(&device->_parser, data, length, timestamp);
 }
@@ -437,14 +507,31 @@ void mip_interface_input_bytes(mip_interface* device, const uint8_t* data, size_
 ///@param timestamp
 ///       Timestamp of the received MIP packet.
 ///
-void mip_interface_input_packet(mip_interface* device, const mip_packet_view* packet, mip_timestamp timestamp)
+void mip_interface_input_packet_from_device(mip_interface* device, const mip_packet_view* packet, mip_timestamp timestamp)
 {
     mip_cmd_queue_process_packet(&device->_queue, packet, timestamp);
     mip_dispatcher_dispatch_packet(&device->_dispatcher, packet, timestamp);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Wrapper around mip_interface_input_packet for use with mip_parser.
+///@brief Call this to ensure that pending commands time out properly.
+///
+/// This function should be called regularly (i.e. from within the update
+/// callback). Otherwise, unacknowledged commands may never time out. This can
+/// happen even if data is being sent through mip_interface_input_bytes_from_device
+/// because the device may be streaming data. See the implementation of
+/// mip_interface_default_update for an example.
+///
+///param device
+///param timestamp Current time, as if timestamping received data.
+///
+void mip_interface_update_time(mip_interface* device, mip_timestamp timestamp)
+{
+    mip_cmd_queue_update(mip_interface_cmd_queue(device), timestamp);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Wrapper around mip_interface_input_packet_from_device for use with mip_parser.
 ///
 ///@param device    Void pointer to the device. Must be a mip_interface pointer.
 ///@param packet    MIP Packet from the parser.
@@ -452,7 +539,7 @@ void mip_interface_input_packet(mip_interface* device, const mip_packet_view* pa
 ///
 void mip_interface_parse_callback(void* device, const mip_packet_view* packet, mip_timestamp timestamp)
 {
-    mip_interface_input_packet(device, packet, timestamp);
+    mip_interface_input_packet_from_device(device, packet, timestamp);
 }
 
 

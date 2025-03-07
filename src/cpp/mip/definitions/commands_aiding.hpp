@@ -31,23 +31,16 @@ enum
     DESCRIPTOR_SET             = 0x13,
     
     CMD_FRAME_CONFIG           = 0x01,
-    CMD_LOCAL_FRAME            = 0x03,
     CMD_ECHO_CONTROL           = 0x1F,
-    CMD_POS_LOCAL              = 0x20,
     CMD_POS_ECEF               = 0x21,
     CMD_POS_LLH                = 0x22,
     CMD_HEIGHT_ABOVE_ELLIPSOID = 0x23,
-    CMD_HEIGHT_REL             = 0x24,
     CMD_VEL_ECEF               = 0x28,
     CMD_VEL_NED                = 0x29,
     CMD_VEL_BODY_FRAME         = 0x2A,
-    CMD_WHEELSPEED             = 0x2B,
     CMD_HEADING_TRUE           = 0x31,
     CMD_MAGNETIC_FIELD         = 0x32,
     CMD_PRESSURE               = 0x33,
-    CMD_DELTA_POSITION         = 0x38,
-    CMD_DELTA_ATTITUDE         = 0x39,
-    CMD_ANGULAR_RATE_LOCAL     = 0x3A,
     
     REPLY_FRAME_CONFIG         = 0x81,
     REPLY_ECHO_CONTROL         = 0x9F,
@@ -107,7 +100,6 @@ struct Time
 /// Format: 1 (Euler)
 /// Translation: [0,1,] (GNSS with a 1 meter Y offset in the vehicle frame)
 /// Rotation: [0,0,0,0] (Rotational component is not relevant for GNSS measurements, set to zero)
-/// 
 ///
 ///@{
 
@@ -229,7 +221,7 @@ struct EchoControl
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_ECHO_CONTROL;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "EchoControl";
-    static constexpr const char* DOC_NAME = "Aiding Command Echo Control";
+    static constexpr const char* DOC_NAME = "Echo Control";
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
     
     auto asTuple() const
@@ -263,7 +255,7 @@ struct EchoControl
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::REPLY_ECHO_CONTROL;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         static constexpr const char* NAME = "EchoControl::Response";
-        static constexpr const char* DOC_NAME = "Aiding Command Echo Control Response";
+        static constexpr const char* DOC_NAME = "Echo Control Response";
         static constexpr const bool HAS_FUNCTION_SELECTOR = false;
         
         auto asTuple() const
@@ -558,7 +550,7 @@ TypedResult<VelEcef> velEcef(C::mip_interface& device, const Time& time, uint8_t
 ///
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup aiding_vel_ned_cpp  (0x13,0x29) Vel Ned
-/// NED velocity aiding command. Coordinates are given in the local North-East-Down frame.
+/// NED velocity aiding command. Coordinates are given in the local North East Down frame.
 ///
 ///@{
 

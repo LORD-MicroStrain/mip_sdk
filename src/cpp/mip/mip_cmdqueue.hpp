@@ -84,7 +84,7 @@ struct PendingCmd : public C::mip_pending_cmd
     ///@param additionalTime     Optional additional time to allow for the device to process the command. Default 0.
     ///
     template<class Cmd>
-    PendingCmd(const Cmd& cmd, uint8_t* responseBuffer, uint8_t responseBufferSize, Timeout additionalTime=0) : PendingCmd(Cmd::DESCRIPTOR_SET, Cmd::FIELD_DESCRIPTOR, Cmd::Response::FIELD_DESCRIPTOR, responseBuffer, responseBufferSize, additionalTime) {}
+    PendingCmd(const Cmd&, uint8_t* responseBuffer, uint8_t responseBufferSize, Timeout additionalTime=0) : PendingCmd(Cmd::DESCRIPTOR_SET, Cmd::FIELD_DESCRIPTOR, Cmd::Response::FIELD_DESCRIPTOR, responseBuffer, responseBufferSize, additionalTime) {}
 
     ///@brief Disable copying and moving. Once queued, a pending command must remain in the same memory location.
     ///

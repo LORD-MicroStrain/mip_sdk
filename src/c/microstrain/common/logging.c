@@ -77,3 +77,26 @@ void microstrain_logging_log(microstrain_log_level level, const char* fmt, ...)
         va_end(args);
     }
 }
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Returns a string representing the given log level.
+///@param level
+///
+/// The returned string is statically-allocated and shall not be freed nor
+/// modified. The strings are padded to a uniform length for consistent
+/// alignment in log files.
+///
+const char* microstrain_logging_level_name(microstrain_log_level level)
+{
+    switch(level)
+    {
+    case MICROSTRAIN_LOG_LEVEL_OFF:   return "OFF  ";
+    case MICROSTRAIN_LOG_LEVEL_FATAL: return "FATAL";
+    case MICROSTRAIN_LOG_LEVEL_ERROR: return "ERROR";
+    case MICROSTRAIN_LOG_LEVEL_WARN:  return "WARN ";
+    case MICROSTRAIN_LOG_LEVEL_INFO:  return "INFO ";
+    case MICROSTRAIN_LOG_LEVEL_DEBUG: return "DEBUG";
+    case MICROSTRAIN_LOG_LEVEL_TRACE: return "TRACE";
+    default: return "INVALID";
+    }
+}

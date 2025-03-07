@@ -121,7 +121,7 @@ int main(int argc, const char* argv[])
 #if USE_THREADS
         // Set the update function. Before this call, command replies are processed by the main thread.
         // After this, replies will be processed by the device thread.
-        device->setUpdateFunction<&update_device>();
+        device->setUpdateFunctionFree<&update_device>();
 
         // Start the device thread.
         std::thread deviceThread( &device_thread_loop, device.get() );

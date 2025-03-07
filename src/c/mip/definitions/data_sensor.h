@@ -451,7 +451,7 @@ static inline void extract_mip_sensor_gps_timestamp_data_valid_flags(microstrain
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_sensor_gps_timestamp_data_valid_flags)tmp;
 }
 
 
@@ -568,7 +568,7 @@ static inline void extract_mip_sensor_overrange_status_data_status(microstrain_s
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_sensor_overrange_status_data_status)tmp;
 }
 
 

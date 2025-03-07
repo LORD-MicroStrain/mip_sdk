@@ -169,7 +169,7 @@ static inline void extract_mip_filter_reference_frame(microstrain_serializer* se
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_filter_reference_frame)tmp;
 }
 
 enum mip_filter_mag_param_source
@@ -188,7 +188,7 @@ static inline void extract_mip_filter_mag_param_source(microstrain_serializer* s
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_filter_mag_param_source)tmp;
 }
 
 enum mip_filter_adaptive_measurement
@@ -207,7 +207,7 @@ static inline void extract_mip_filter_adaptive_measurement(microstrain_serialize
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_filter_adaptive_measurement)tmp;
 }
 
 
@@ -296,7 +296,7 @@ static inline void extract_mip_filter_estimation_control_command_enable_flags(mi
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_filter_estimation_control_command_enable_flags)tmp;
 }
 
 
@@ -453,7 +453,7 @@ static inline void extract_mip_filter_tare_orientation_command_mip_tare_axes(mic
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_filter_tare_orientation_command_mip_tare_axes)tmp;
 }
 
 
@@ -507,7 +507,7 @@ static inline void extract_mip_filter_vehicle_dynamics_mode_command_dynamics_mod
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_filter_vehicle_dynamics_mode_command_dynamics_mode)tmp;
 }
 
 
@@ -828,7 +828,7 @@ static inline void extract_mip_filter_gnss_source_command_source(microstrain_ser
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_filter_gnss_source_command_source)tmp;
 }
 
 
@@ -897,7 +897,7 @@ static inline void extract_mip_filter_heading_source_command_source(microstrain_
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_filter_heading_source_command_source)tmp;
 }
 
 
@@ -1148,7 +1148,7 @@ static inline void extract_mip_filter_altitude_aiding_command_aiding_selector(mi
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_filter_altitude_aiding_command_aiding_selector)tmp;
 }
 
 
@@ -1201,7 +1201,7 @@ static inline void extract_mip_filter_pitch_roll_aiding_command_aiding_source(mi
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_filter_pitch_roll_aiding_command_aiding_source)tmp;
 }
 
 
@@ -1716,7 +1716,7 @@ mip_cmd_result mip_filter_default_reference_position(mip_interface* device);
 /// 
 /// Adaptive measurements can be enabled/disabled without the need for providing the additional parameters.
 /// In this case, only the function selector and enable value are required; all other parameters will remain at their previous values.
-/// When “auto-adaptive” is selected, the filter and limit parameters are ignored.
+/// When "auto-adaptive" is selected, the filter and limit parameters are ignored.
 /// Instead, aiding measurements which rely on the gravity vector will be automatically reweighted by the Kalman filter according to the perceived measurement quality.
 /// 
 ///
@@ -1896,7 +1896,7 @@ static inline void extract_mip_filter_aiding_measurement_enable_command_aiding_s
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_filter_aiding_measurement_enable_command_aiding_source)tmp;
 }
 
 
@@ -2007,7 +2007,7 @@ static inline void extract_mip_filter_initialization_configuration_command_align
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_filter_initialization_configuration_command_alignment_selector)tmp;
 }
 
 enum mip_filter_initialization_configuration_command_initial_condition_source
@@ -2027,7 +2027,7 @@ static inline void extract_mip_filter_initialization_configuration_command_initi
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_filter_initialization_configuration_command_initial_condition_source)tmp;
 }
 
 
@@ -2211,7 +2211,7 @@ static inline void extract_mip_filter_ref_point_lever_arm_command_reference_poin
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_filter_ref_point_lever_arm_command_reference_point_selector)tmp;
 }
 
 
