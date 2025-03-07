@@ -4,7 +4,7 @@
 #include <mip/mip_dispatch.h>
 #include <mip/mip_interface.h>
 #include <microstrain/connections/serial/serial_port.h>
-#include <microstrain/common/platform.h>
+#include <microstrain/platform.h>
 
 #include <mip/definitions/commands_base.h>
 #include <mip/definitions/commands_3dm.h>

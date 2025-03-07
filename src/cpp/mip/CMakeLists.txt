@@ -12,6 +12,8 @@ set(MIP_SOURCES
     "${CMAKE_CURRENT_LIST_DIR}/mip_parser.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/mip_result.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/mip_serialization.hpp"
+    "${CMAKE_CURRENT_LIST_DIR}/definitions/common.hpp"
+    ${MIP_DEF_HEADERS}
 )
 
 target_sources(${MIP_LIBRARY} PRIVATE

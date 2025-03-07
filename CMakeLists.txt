@@ -80,6 +80,12 @@ if(WIN32)
             "/Zc:__cplusplus"         # Enable updated __cplusplus value
             "/MP"                     # Multi-process compilation
         )
+
+        if(${MSVC_TOOLSET_VERSION} LESS 143)
+            list(APPEND MICROSTRAIN_PRIVATE_COMPILE_OPTIONS
+                "/wd4201" # Suppress warnings related to nameless structs/unions
+            )
+        endif()
     endif()
 
     # Disable windows defined min/max
@@ -104,6 +110,12 @@ cmake_policy(SET CMP0076 NEW)
 # Suppress warnings due to linking libraries across directories
 cmake_policy(SET CMP0079 NEW)
 
+#
+# Version numbering
+#
+
+microstrain_get_git_version(MICROSTRAIN_GIT_VERSION MICROSTRAIN_GIT_VERSION_CLEAN)
+
 
 # Add all the C files (required even for C++ API)
 set(MICROSTRAIN_SRC_C_DIR "${MICROSTRAIN_SRC_DIR}/c")
@@ -118,7 +130,7 @@ if(MICROSTRAIN_ENABLE_CPP)
     add_subdirectory(${MICROSTRAIN_SRC_CPP_DIR}/microstrain)
     add_subdirectory(${MICROSTRAIN_SRC_CPP_DIR}/mip)
 
-    #target_compile_definitions(${MICROSTRAIN_COMMON_LIBRARY} PUBLIC "MICROSTRAIN_ENABLE_CPP_C_NAMESPACE=${MICROSTRAIN_ENABLE_CPP_C_NAMESPACE}")
+    #target_compile_definitions(${MICROSTRAIN_LIBRARY} PUBLIC "MICROSTRAIN_ENABLE_CPP_C_NAMESPACE=${MICROSTRAIN_ENABLE_CPP_C_NAMESPACE}")
 endif()
 
 # Create list of requested libraries for easier linking
@@ -148,12 +160,6 @@ endif()
 if(MICROSTRAIN_BUILD_EXAMPLES)
     add_subdirectory("examples")
 endif()
-
-#
-# Version numbering
-#
-
-microstrain_get_git_version(MICROSTRAIN_GIT_VERSION MICROSTRAIN_GIT_VERSION_CLEAN)
 
 #
 # DOCUMENTATION
@@ -209,25 +215,6 @@ endif()
 #
 # Packaging
 #
-
-include(GNUInstallDirs)
-include(CMakePackageConfigHelpers)
-
-set(CONFIG_EXPORT_DIR "${CMAKE_INSTALL_DATADIR}/cmake/mip")
-
-set(EXPORT_TARGETS ${MIP_LIBRARY})
-configure_package_config_file(
-    "${CMAKE_CURRENT_LIST_DIR}/cmake/mip-config.cmake.in"
-    "${CMAKE_BINARY_DIR}/mip-config.cmake"
-    INSTALL_DESTINATION "${CONFIG_EXPORT_DIR}"
-    PATH_VARS CMAKE_INSTALL_INCLUDEDIR CONFIG_EXPORT_DIR
-)
-unset(EXPORT_TARGETS)
-
-write_basic_package_version_file(
-    "${CMAKE_BINARY_DIR}/mip-config-version.cmake"
-    COMPATIBILITY AnyNewerVersion
-)
 
 # If we were asked to package, find the generators we can use
 if(MICROSTRAIN_BUILD_PACKAGE)

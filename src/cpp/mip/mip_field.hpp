@@ -3,7 +3,7 @@
 #include "mip_descriptors.hpp"
 #include "mip_serialization.hpp"
 
-#include <microstrain/common/span.hpp>
+#include <microstrain/span.hpp>
 
 #include <mip/mip_field.h>
 #include <mip/mip_offsets.h>

@@ -22,9 +22,10 @@ void* microstrain_log_user_data_ = NULL;
 ///
 ///@param callback The callback to execute when there is data to log
 ///@param level    The level that the MicroStrain SDK should log at
-///@param user     User data that will be passed to the callback every time it is excuted
+///@param user     User data that will be passed to the callback every time it
+///                is executed
 ///
-void microstrain_logging_init(microstrain_log_callback callback, microstrain_log_level level, void* user)
+void microstrain_logging_init(const microstrain_log_callback callback, const microstrain_log_level level, void* user)
 {
     microstrain_log_callback_  = callback;
     microstrain_log_level_     = level;
@@ -62,20 +63,31 @@ void* microstrain_logging_user_data(void)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Internal log function called by logging macros.
-///       Call MICROSTRAIN_LOG_* macros instead of using this function directly
-///@copydetails microstrain::C::microstrain_log_callback
+///@brief Internal log function called by variadic logging macros.
+///       Call MICROSTRAIN_LOG_*_V macros instead of using this function
+///       directly
+///@copydetails microstrain_log_callback
 ///
-void microstrain_logging_log(microstrain_log_level level, const char* fmt, ...)
+void microstrain_logging_log_v(const microstrain_log_level level, const char* fmt, va_list args)
 {
     const microstrain_log_callback callback = microstrain_logging_callback();
     if(callback != NULL && microstrain_logging_level() >= level)
     {
-        va_list args;
-        va_start(args, fmt);
         callback(microstrain_logging_user_data(), level, fmt, args);
-        va_end(args);
     }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Internal log function called by logging macros.
+///       Call MICROSTRAIN_LOG_* macros instead of using this function directly
+///@copydetails microstrain_log_callback
+///
+void microstrain_logging_log(const microstrain_log_level level, const char* fmt, ...)
+{
+    va_list args;
+    va_start(args, fmt);
+    microstrain_logging_log_v(level, fmt, args);
+    va_end(args);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -86,7 +98,7 @@ void microstrain_logging_log(microstrain_log_level level, const char* fmt, ...)
 /// modified. The strings are padded to a uniform length for consistent
 /// alignment in log files.
 ///
-const char* microstrain_logging_level_name(microstrain_log_level level)
+const char* microstrain_logging_level_name(const microstrain_log_level level)
 {
     switch(level)
     {

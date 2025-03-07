@@ -163,7 +163,7 @@ include all the necessary files and define a few options.
 
 #### Minimum Required Files for building without CMake
 ##### C only
-* All source files in `src/c/microstrain/common`, except logging.c if logging is disabled
+* All source files in `src/c/microstrain`, except logging.c if logging is disabled
 * Source files in `src/c/microstrain/connections` for your required connection types
 * All source files in `src/c/mip` and `src/c/mip/utils`
 * All source files in `src/c/mip/definitions` (or at least all the required descriptor sets)
@@ -212,6 +212,66 @@ rebuilt properly. Normally CMake takes care of this for you).
   * For msvc: /std:c++14
   * Use C++17 or later if using metadata.
 * If building TCP socket support on Windows, link against ws2_32.lib.
+
+## How to use the pre-packaged libraries
+* Available Modules:
+  * microstrain
+  * microstrain_extras (CPP only)
+  * microstrain_recording_connection (CPP only)
+  * microstrain_serial
+  * microstrain_socket
+  * mip
+  * mip_extras (CPP only)
+  * mip_metadata (CPP only)
+
+### Including the packages using CMake
+
+We have included CMake find_package config files with the package for easy project integration.<br>
+The simplest way to include all desired modules is to find the MIP package and request the desired modules as components.<br>
+Each module has an associated config file which defines `<NAME>_LIBRARY` `<NAME>_LIBRARIES` and `<NAME>_INCLUDE_DIRS`.<br>
+When using find_package, the name of the package should be all lowercase.
+
+#### Minimum requirements for CMake projects
+* Include the installation directory in `CMAKE_PREFIX_PATH` (Usually not required on Linux)
+* Find the package in `CONFIG` mode
+* Link the libraries and include directories to your target/project
+
+```cmake
+# Find the desired package/module
+find_package(mip COMPONENTS <list_of_modules> CONFIG)
+
+# Link the libraries
+target_link_libraries(<target_name> PUBLIC ${MIP_LIBRARIES})
+
+# Add the include directories
+target_include_directories(<target_name> PUBLIC ${MIP_INCLUDE_DIRS})
+```
+
+You may need to add the installation directory to the CMake prefix path if it cannot find the package.<br>
+This is usually not required on Linux.
+
+ ```cmake
+# Set the installation directory to the package
+set(MIP_SDK_DIR <path_to_installation_dir>)
+
+# Add the directory to the CMake prefix paths to search for the package
+list(APPEND CMAKE_PREFIX_PATH ${MIP_SDK_DIR})
+
+# Find the desired package/module
+find_package(...)
+```
+
+### Including the packages without CMake
+
+If you want to include the MIP SDK without a CMake project, you will need to include the installation <br>
+directory in your project configuration.
+
+#### Minimum requirements for projects without CMake
+* Include the library directory `<path_to_installed_package>/lib`
+* Link the libraries/modules
+* Add the include directory `<path_to_installed_package>/include/microstrain`
+
+Please note, all libraries work with C, but only some work with C++
 
 Known Issues
 ------------

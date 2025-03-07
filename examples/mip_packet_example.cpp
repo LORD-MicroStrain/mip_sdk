@@ -5,7 +5,7 @@
 #include <mip/definitions/data_sensor.hpp>
 #include <mip/definitions/data_shared.hpp>
 
-#include <microstrain/common/platform.h>
+#include <microstrain/platform.h>
 
 #include <cstdio>
 
