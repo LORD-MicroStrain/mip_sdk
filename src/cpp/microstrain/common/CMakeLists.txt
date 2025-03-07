@@ -1,5 +1,5 @@
 # microstrain_common is defined by the C api.
-target_sources(${MICROSTRAIN_COMMON_LIBRARY} PRIVATE
+set(MICROSTRAIN_COMMON_SOURCES
     "${CMAKE_CURRENT_LIST_DIR}/embedded_time.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/index.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/logging.hpp"
@@ -8,6 +8,14 @@ target_sources(${MICROSTRAIN_COMMON_LIBRARY} PRIVATE
     "${CMAKE_CURRENT_LIST_DIR}/serialization/readwrite.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/serialization/serializer.hpp"
 )
+
+target_sources(${MICROSTRAIN_COMMON_LIBRARY} PRIVATE
+    "${MICROSTRAIN_COMMON_SOURCES}"
+)
+
+if(MSVC)
+    source_group(TREE ${MICROSTRAIN_SRC_DIR} FILES ${MICROSTRAIN_COMMON_SOURCES})
+endif()
 
 target_compile_features(${MICROSTRAIN_COMMON_LIBRARY} PUBLIC cxx_std_11)
 target_include_directories(${MICROSTRAIN_COMMON_LIBRARY} INTERFACE ${MICROSTRAIN_SRC_CPP_DIR})

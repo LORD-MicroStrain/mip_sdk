@@ -14,7 +14,7 @@ configure_file(${MIP_VERSION_IN_FILE} ${MIP_VERSION_OUT_FILE})
 # Core MIP C library
 #
 
-add_library(${MIP_LIBRARY}
+set(MIP_SOURCES
     "${MIP_VERSION_OUT_FILE}"
 
     "${CMAKE_CURRENT_LIST_DIR}/mip_cmdqueue.c"
@@ -42,10 +42,15 @@ add_library(${MIP_LIBRARY}
     "${CMAKE_CURRENT_LIST_DIR}/definitions/common.c"
     "${CMAKE_CURRENT_LIST_DIR}/definitions/common.h"
     "${CMAKE_CURRENT_LIST_DIR}/mip_all.h"
-
-    "${CMAKE_CURRENT_LIST_DIR}/utils/byte_ring.c"
-    "${CMAKE_CURRENT_LIST_DIR}/utils/byte_ring.h"
 )
+
+add_library(${MIP_LIBRARY}
+    "${MIP_SOURCES}"
+)
+
+if(MSVC)
+    source_group(TREE ${MICROSTRAIN_SRC_DIR} FILES ${MIP_SOURCES})
+endif()
 
 target_compile_features(${MIP_LIBRARY} PUBLIC c_std_11)
 target_link_libraries(${MIP_LIBRARY} PUBLIC ${MICROSTRAIN_COMMON_LIBRARY})
@@ -94,7 +99,13 @@ if(MICROSTRAIN_CMAKE_DEBUG)
     message("C definitions = ${INCLUDED_DEF_SOURCES}")
 endif()
 
-target_sources(${MIP_LIBRARY} PRIVATE ${MIP_DEF_SOURCES})
+target_sources(${MIP_LIBRARY} PRIVATE
+    "${MIP_DEF_SOURCES}"
+)
+
+if(MSVC)
+    source_group(TREE ${MICROSTRAIN_SRC_DIR} FILES ${MIP_DEF_SOURCES})
+endif()
 
 set(MIP_LIBRARIES_TMP ${MIP_LIBRARIES_TMP} ${MIP_LIBRARY} PARENT_SCOPE)
 

@@ -1,27 +1,103 @@
+set(MICROSTRAIN_TEST_LIBRARY "MicrostrainTest")
+
+set(MICROSTRAIN_TEST_SOURCES
+    "${CMAKE_CURRENT_LIST_DIR}/test.c"
+    "${CMAKE_CURRENT_LIST_DIR}/test.h"
+)
+
+add_library(${MICROSTRAIN_TEST_LIBRARY}
+    "${MICROSTRAIN_TEST_SOURCES}"
+)
+
 set(TEST_DIR "${CMAKE_CURRENT_LIST_DIR}")
 
-add_library(MicrostrainTest "${TEST_DIR}/test.h" "${TEST_DIR}/test.c")
+if(MSVC)
+    source_group(TREE ${TEST_DIR} FILES ${MICROSTRAIN_TEST_SOURCES})
+endif()
 
-#
-# MIP
-#
+# Note: Don't use this macro to add tests, use the SDK specific macros below
+macro(add_test_common NAME SOURCES COMMAND LIBRARIES USE_CPP ARGS)
+    set(INCLUDE_DIRS "${MICROSTRAIN_SRC_C_DIR}")
 
-macro(add_mip_test name sources command)
-    add_executable(${name} ${sources})
+    if(${USE_CPP})
+        list(APPEND INCLUDE_DIRS "${MICROSTRAIN_SRC_CPP_DIR}")
+    endif()
 
-    target_include_directories(${name} PRIVATE ${CMAKE_CURRENT_LIST_DIR} ${MICROSTRAIN_SRC_DIR})
-    target_link_libraries(${name} MicrostrainTest ${MIP_LIBRARY})
+    add_executable(${NAME} ${SOURCES})
 
-    add_test(${name} ${command} ${ARGN})
+    if(MSVC)
+        source_group(TREE ${TEST_DIR} FILES ${SOURCES})
+    endif()
+
+    target_include_directories(${NAME} PRIVATE
+        "${TEST_DIR}"
+        "${INCLUDE_DIRS}"
+    )
+
+    target_link_libraries(${NAME} PRIVATE
+        ${MICROSTRAIN_TEST_LIBRARY}
+        "${LIBRARIES}"
+    )
+
+    add_test(${NAME} ${COMMAND} ${ARGS})
 endmacro()
 
-add_mip_test(TestMipPacketBuilding "${TEST_DIR}/c/mip/test_mip_packet_builder.c" TestMipPacketBuilding)
-add_mip_test(TestMipParsing        "${TEST_DIR}/c/mip/test_mip_parser.c" TestMipParsing "${TEST_DIR}/data/mip_data.bin")
-add_mip_test(TestMipRandom         "${TEST_DIR}/c/mip/test_mip_random.c" TestMipRandom)
-add_mip_test(TestMipFields         "${TEST_DIR}/c/mip/test_mip_fields.c" TestMipFields)
-add_mip_test(TestMipCpp            "${TEST_DIR}/cpp/mip/test_mip.cpp" TestMipCpp)
-add_mip_test(TestMipPerf           "${TEST_DIR}/cpp/mip/mip_parser_performance.cpp" TestMipPerf)
-add_mip_test(TestMipPacket         "${TEST_DIR}/cpp/mip/test_packet_interface.cpp" TestMipPacket)
+set(OPTIONS USE_CPP)
+set(SINGLE_VALUES NAME COMMAND)
+set(MULTI_VALUES SOURCES ADDL_LINK_LIBRARIES ARGS)
+
+macro(add_mip_test)
+    set(TEST_ARG_PREFIX "MIP_TEST_ARG")
+    cmake_parse_arguments(${TEST_ARG_PREFIX}
+        "${OPTIONS}"
+        "${SINGLE_VALUES}"
+        "${MULTI_VALUES}"
+        "${ARGN}"
+    )
+
+    set(MIP_TEST_LINK_LIBRARIES
+        ${MIP_LIBRARY}
+        "${${TEST_ARG_PREFIX}_ADDL_LINK_LIBRARIES}"
+    )
+
+    add_test_common(
+        "${${TEST_ARG_PREFIX}_NAME}"
+        "${${TEST_ARG_PREFIX}_SOURCES}"
+        "${${TEST_ARG_PREFIX}_COMMAND}"
+        "${MIP_TEST_LINK_LIBRARIES}"
+        ${${TEST_ARG_PREFIX}_USE_CPP}
+        "${${TEST_ARG_PREFIX}_ARGS}"
+    )
+endmacro()
+
+macro(add_microstrain_test)
+    set(TEST_ARG_PREFIX "MICROSTRAIN_TEST_ARG")
+    cmake_parse_arguments(${TEST_ARG_PREFIX}
+        "${OPTIONS}"
+        "${SINGLE_VALUES}"
+        "${MULTI_VALUES}"
+        "${ARGN}"
+    )
+
+    set(MICROSTRAIN_TEST_LINK_LIBRARIES
+        ${MICROSTRAIN_COMMON_LIBRARY}
+        "${${TEST_ARG_PREFIX}_ADDL_LINK_LIBRARIES}"
+    )
+
+    add_test_common(
+        "${${TEST_ARG_PREFIX}_NAME}"
+        "${${TEST_ARG_PREFIX}_SOURCES}"
+        "${${TEST_ARG_PREFIX}_COMMAND}"
+        "${MICROSTRAIN_TEST_LINK_LIBRARIES}"
+        ${${TEST_ARG_PREFIX}_USE_CPP}
+        "${${TEST_ARG_PREFIX}_ARGS}"
+    )
+endmacro()
+
+set(MIP_TEST_DATA_BIN "${CMAKE_CURRENT_LIST_DIR}/data/mip_data.bin")
+
+add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/c")
+add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/cpp")
 
 #if(MICROSTRAIN_BUILD_EXAMPLES)
 #    set(OUT_FILE "${CMAKE_CURRENT_BINARY_DIR}/MipPacketExampleOutput.txt")

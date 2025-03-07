@@ -1,10 +1,18 @@
 set(MICROSTRAIN_SERIAL_LIBRARY "microstrain_serial" CACHE INTERNAL "Name of the MicroStrain serial connections library")
 mark_as_advanced(MICROSTRAIN_SERIAL_LIBRARY)
 
-add_library(${MICROSTRAIN_SERIAL_LIBRARY}
+set(MICROSTRAIN_SERIAL_SOURCES
     "${CMAKE_CURRENT_LIST_DIR}/serial_port.h"
     "${CMAKE_CURRENT_LIST_DIR}/serial_port.c"
 )
+
+add_library(${MICROSTRAIN_SERIAL_LIBRARY}
+    "${MICROSTRAIN_SERIAL_SOURCES}"
+)
+
+if(MSVC)
+    source_group(TREE ${MICROSTRAIN_SRC_DIR} FILES ${MICROSTRAIN_SERIAL_SOURCES})
+endif()
 
 target_compile_features(${MICROSTRAIN_SERIAL_LIBRARY} PUBLIC c_std_11)
 

@@ -20,11 +20,11 @@ class Parser : public C::mip_parser
 {
 public:
     ///@copydoc mip::C::mip_parser_init
-    Parser(uint8_t* buffer, size_t bufferSize, C::mip_packet_callback callback, void* callbackObject, Timeout timeout) { C::mip_parser_init(this, buffer, bufferSize, callback, callbackObject, timeout); }
+    Parser(C::mip_packet_callback callback, void* callbackObject, Timeout timeout) { C::mip_parser_init(this, callback, callbackObject, timeout); }
     ///@copydoc mip::C::mip_parser_init
-    Parser(uint8_t* buffer, size_t bufferSize, bool (*callback)(void*,const PacketView*,Timestamp), void* callbackObject, Timeout timeout) { C::mip_parser_init(this, buffer, bufferSize, (C::mip_packet_callback)callback, callbackObject, timeout); }
+    Parser(void (*callback)(void*,const PacketView*,Timestamp), void* callbackObject, Timeout timeout) { C::mip_parser_init(this, (C::mip_packet_callback)callback, callbackObject, timeout); }
 
-    Parser(uint8_t* buffer, size_t bufferSize, Timeout timeout) { C::mip_parser_init(this, buffer, bufferSize, nullptr, nullptr, timeout); }
+    Parser(Timeout timeout) { C::mip_parser_init(this, nullptr, nullptr, timeout); }
 
     template<class T, bool (T::*Callback)(const PacketView&, Timestamp)>
     void setCallback(T& object);
@@ -33,7 +33,11 @@ public:
     void reset() { C::mip_parser_reset(this); }
 
     ///@copydoc mip::C::mip_parser_parse
-    size_t parse(const uint8_t* inputBuffer, size_t inputCount, Timestamp timestamp, unsigned int maxPackets=0) { return C::mip_parser_parse(this, inputBuffer, inputCount, timestamp, maxPackets); }
+    void parse(const uint8_t* inputBuffer, size_t inputCount, Timestamp timestamp) { return C::mip_parser_parse(this, inputBuffer, inputCount, timestamp); }
+
+    ///@brief Parse packets from a buffer (span version).
+    ///@copydetails mip::C::mip_parser_parse
+    void parse(microstrain::Span<const uint8_t> data, Timestamp timestamp) { return parse(data.data(), data.size(), timestamp); }
 
     ///@copydoc mip::C::mip_parser_timeout
     Timeout timeout() const { return C::mip_parser_timeout(this); }
@@ -66,55 +70,12 @@ public:
 template<class T, bool (T::*Callback)(const PacketView&, Timestamp)>
 void Parser::setCallback(T& object)
 {
-    C::mip_packet_callback callback = [](void* obj, const C::mip_packet_view* pkt, Timestamp timestamp)->bool
+    C::mip_packet_callback callback = [](void* obj, const C::mip_packet_view* pkt, Timestamp timestamp)->void
     {
-        return (static_cast<T*>(obj)->*Callback)(PacketView(pkt), timestamp);
+        (static_cast<T*>(obj)->*Callback)(PacketView(pkt), timestamp);
     };
 
     C::mip_parser_set_callback(this, callback, &object);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-///@brief Read data from a source into the internal parsing buffer.
-///
-///@tparam Function
-/// A function-like object with the following signature:
-/// `bool read(size_t maxCount, size_t* count_out, Timestamp* timestamp_out);`
-/// The parameters are as follows:
-/// @li buffer - Buffer into which to write data.
-/// @li maxCount - The maximum number of bytes to read.
-/// @li count_out - Updated with the number of bytes actually read.
-/// @li timestamp_out - Updated with the timestamp of the data.
-///
-///@param parser
-///
-///@param reader
-///       A callback function, lambda, or similar which will read data into the
-///       buffer and capture the timestamp. It should return true if successful
-///       or false otherwise. If it returns false, parsing is skipped. The read
-///       function may also throw an exception instead of returning false.
-///
-///@param maxPackets
-///       Maximum number of packets to parse, just like for Parser::parse().
-///
-///@return Same as the return value of reader.
-///
-template<class Function>
-bool parseMipDataFromSource(C::mip_parser& parser, Function reader, size_t maxPackets)
-{
-    uint8_t* ptr;
-    size_t maxCount = C::mip_parser_get_write_ptr(&parser, &ptr);
-
-    size_t count;
-    Timestamp timestamp;
-    if( !reader(ptr, maxCount, &count, &timestamp) )
-        return false;
-
-    assert(count <= maxCount);
-
-    C::mip_parser_process_written(&parser, count, timestamp, maxPackets);
-
-    return true;
 }
 
 ///@}

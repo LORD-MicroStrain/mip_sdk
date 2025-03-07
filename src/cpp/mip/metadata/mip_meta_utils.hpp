@@ -73,7 +73,7 @@ void* access(void* p);
 #ifdef MICROSTRAIN_HAS_OPTIONAL
 ///@brief Reads a value of the given type from a buffer.
 ///
-inline std::optional<uint64_t> extractBasicType(mip::metadata::Type type, microstrain::Span<const uint8_t> payload, size_t offset=0)
+inline std::optional<uint64_t> extractIntegralType(mip::metadata::Type type, microstrain::Span<const uint8_t> payload, size_t offset=0)
 {
     switch(type)
     {
@@ -86,8 +86,6 @@ inline std::optional<uint64_t> extractBasicType(mip::metadata::Type type, micros
     case mip::metadata::Type::S32:    return microstrain::extract< int64_t, microstrain::serialization::Endian::big>(payload.data(), payload.size(), offset);
     case mip::metadata::Type::U64:    return microstrain::extract<uint64_t, microstrain::serialization::Endian::big>(payload.data(), payload.size(), offset);
     case mip::metadata::Type::S64:    return microstrain::extract< int64_t, microstrain::serialization::Endian::big>(payload.data(), payload.size(), offset);
-    case mip::metadata::Type::FLOAT:  return microstrain::extract<   float, microstrain::serialization::Endian::big>(payload.data(), payload.size(), offset);
-    case mip::metadata::Type::DOUBLE: return microstrain::extract<  double, microstrain::serialization::Endian::big>(payload.data(), payload.size(), offset);
     default: return std::nullopt;
     }
 }

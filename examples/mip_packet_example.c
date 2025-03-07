@@ -1,14 +1,15 @@
-
 #include "mip/mip_packet.h"
 #include "mip/mip_serialization.h"
 
-#include "mip/definitions/commands_base.h"
 #include "mip/definitions/commands_3dm.h"
+#include "mip/definitions/commands_base.h"
 #include "mip/definitions/data_sensor.h"
 #include "mip/definitions/data_shared.h"
 
-#include <stdio.h>
+#include <microstrain/common/platform.h>
+
 #include <stdbool.h>
+#include <stdio.h>
 
 
 // This function demonstrates how to inspect and iterate fields in
@@ -280,7 +281,7 @@ void create_packet_from_scratch()
     if(microstrain_serializer_is_ok(&serializer))
     {
         // Now we know how many bytes were written, so update the field length in the packet.
-        mip_packet_update_last_field_length(&packet, payload5, microstrain_serializer_length(&serializer));
+        mip_packet_update_last_field_length(&packet, payload5, (uint8_t)microstrain_serializer_length(&serializer));
     }
     else // Not enough space
     {
@@ -360,7 +361,11 @@ void create_packet_from_buffer()
                 microstrain_extract_u64(&serializer, &nanoseconds);
 
                 if(microstrain_serializer_is_complete(&serializer))
+#if defined MICROSTRAIN_PLATFORM_APPLE
+                    printf("  Ref Time = %llu\n", nanoseconds);
+#else
                     printf("  Ref Time = %lu\n", nanoseconds);
+#endif // MICROSTRAIN_PLATFORM_APPLE
 
                 break;
             }

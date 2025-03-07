@@ -5,7 +5,6 @@
 
 #include <mip/definitions/common.hpp>
 
-
 namespace mip::metadata
 {
 
