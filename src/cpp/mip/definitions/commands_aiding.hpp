@@ -303,22 +303,22 @@ struct PosEcef
         };
         uint16_t value = NONE;
         
-        ValidFlags() : value(NONE) {}
-        ValidFlags(int val) : value((uint16_t)val) {}
-        operator uint16_t() const { return value; }
-        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
-        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
-        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
+        constexpr ValidFlags() : value(NONE) {}
+        constexpr ValidFlags(int val) : value((uint16_t)val) {}
+        constexpr operator uint16_t() const { return value; }
+        constexpr ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        constexpr ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
+        constexpr ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        constexpr ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool x() const { return (value & X) > 0; }
-        void x(bool val) { value &= ~X; if(val) value |= X; }
-        bool y() const { return (value & Y) > 0; }
-        void y(bool val) { value &= ~Y; if(val) value |= Y; }
-        bool z() const { return (value & Z) > 0; }
-        void z(bool val) { value &= ~Z; if(val) value |= Z; }
-        bool allSet() const { return value == ALL; }
-        void setAll() { value |= ALL; }
+        constexpr bool x() const { return (value & X) > 0; }
+        constexpr void x(bool val) { value &= ~X; if(val) value |= X; }
+        constexpr bool y() const { return (value & Y) > 0; }
+        constexpr void y(bool val) { value &= ~Y; if(val) value |= Y; }
+        constexpr bool z() const { return (value & Z) > 0; }
+        constexpr void z(bool val) { value &= ~Z; if(val) value |= Z; }
+        constexpr bool allSet() const { return value == ALL; }
+        constexpr void setAll() { value |= ALL; }
     };
     /// Parameters
     Time time; ///< Timestamp of the measurement.
@@ -378,22 +378,22 @@ struct PosLlh
         };
         uint16_t value = NONE;
         
-        ValidFlags() : value(NONE) {}
-        ValidFlags(int val) : value((uint16_t)val) {}
-        operator uint16_t() const { return value; }
-        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
-        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
-        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
+        constexpr ValidFlags() : value(NONE) {}
+        constexpr ValidFlags(int val) : value((uint16_t)val) {}
+        constexpr operator uint16_t() const { return value; }
+        constexpr ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        constexpr ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
+        constexpr ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        constexpr ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool latitude() const { return (value & LATITUDE) > 0; }
-        void latitude(bool val) { value &= ~LATITUDE; if(val) value |= LATITUDE; }
-        bool longitude() const { return (value & LONGITUDE) > 0; }
-        void longitude(bool val) { value &= ~LONGITUDE; if(val) value |= LONGITUDE; }
-        bool height() const { return (value & HEIGHT) > 0; }
-        void height(bool val) { value &= ~HEIGHT; if(val) value |= HEIGHT; }
-        bool allSet() const { return value == ALL; }
-        void setAll() { value |= ALL; }
+        constexpr bool latitude() const { return (value & LATITUDE) > 0; }
+        constexpr void latitude(bool val) { value &= ~LATITUDE; if(val) value |= LATITUDE; }
+        constexpr bool longitude() const { return (value & LONGITUDE) > 0; }
+        constexpr void longitude(bool val) { value &= ~LONGITUDE; if(val) value |= LONGITUDE; }
+        constexpr bool height() const { return (value & HEIGHT) > 0; }
+        constexpr void height(bool val) { value &= ~HEIGHT; if(val) value |= HEIGHT; }
+        constexpr bool allSet() const { return value == ALL; }
+        constexpr void setAll() { value |= ALL; }
     };
     /// Parameters
     Time time; ///< Timestamp of the measurement.
@@ -496,22 +496,22 @@ struct VelEcef
         };
         uint16_t value = NONE;
         
-        ValidFlags() : value(NONE) {}
-        ValidFlags(int val) : value((uint16_t)val) {}
-        operator uint16_t() const { return value; }
-        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
-        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
-        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
+        constexpr ValidFlags() : value(NONE) {}
+        constexpr ValidFlags(int val) : value((uint16_t)val) {}
+        constexpr operator uint16_t() const { return value; }
+        constexpr ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        constexpr ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
+        constexpr ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        constexpr ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool x() const { return (value & X) > 0; }
-        void x(bool val) { value &= ~X; if(val) value |= X; }
-        bool y() const { return (value & Y) > 0; }
-        void y(bool val) { value &= ~Y; if(val) value |= Y; }
-        bool z() const { return (value & Z) > 0; }
-        void z(bool val) { value &= ~Z; if(val) value |= Z; }
-        bool allSet() const { return value == ALL; }
-        void setAll() { value |= ALL; }
+        constexpr bool x() const { return (value & X) > 0; }
+        constexpr void x(bool val) { value &= ~X; if(val) value |= X; }
+        constexpr bool y() const { return (value & Y) > 0; }
+        constexpr void y(bool val) { value &= ~Y; if(val) value |= Y; }
+        constexpr bool z() const { return (value & Z) > 0; }
+        constexpr void z(bool val) { value &= ~Z; if(val) value |= Z; }
+        constexpr bool allSet() const { return value == ALL; }
+        constexpr void setAll() { value |= ALL; }
     };
     /// Parameters
     Time time; ///< Timestamp of the measurement.
@@ -569,22 +569,22 @@ struct VelNed
         };
         uint16_t value = NONE;
         
-        ValidFlags() : value(NONE) {}
-        ValidFlags(int val) : value((uint16_t)val) {}
-        operator uint16_t() const { return value; }
-        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
-        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
-        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
+        constexpr ValidFlags() : value(NONE) {}
+        constexpr ValidFlags(int val) : value((uint16_t)val) {}
+        constexpr operator uint16_t() const { return value; }
+        constexpr ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        constexpr ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
+        constexpr ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        constexpr ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool x() const { return (value & X) > 0; }
-        void x(bool val) { value &= ~X; if(val) value |= X; }
-        bool y() const { return (value & Y) > 0; }
-        void y(bool val) { value &= ~Y; if(val) value |= Y; }
-        bool z() const { return (value & Z) > 0; }
-        void z(bool val) { value &= ~Z; if(val) value |= Z; }
-        bool allSet() const { return value == ALL; }
-        void setAll() { value |= ALL; }
+        constexpr bool x() const { return (value & X) > 0; }
+        constexpr void x(bool val) { value &= ~X; if(val) value |= X; }
+        constexpr bool y() const { return (value & Y) > 0; }
+        constexpr void y(bool val) { value &= ~Y; if(val) value |= Y; }
+        constexpr bool z() const { return (value & Z) > 0; }
+        constexpr void z(bool val) { value &= ~Z; if(val) value |= Z; }
+        constexpr bool allSet() const { return value == ALL; }
+        constexpr void setAll() { value |= ALL; }
     };
     /// Parameters
     Time time; ///< Timestamp of the measurement.
@@ -642,22 +642,22 @@ struct VelBodyFrame
         };
         uint16_t value = NONE;
         
-        ValidFlags() : value(NONE) {}
-        ValidFlags(int val) : value((uint16_t)val) {}
-        operator uint16_t() const { return value; }
-        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
-        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
-        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
+        constexpr ValidFlags() : value(NONE) {}
+        constexpr ValidFlags(int val) : value((uint16_t)val) {}
+        constexpr operator uint16_t() const { return value; }
+        constexpr ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        constexpr ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
+        constexpr ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        constexpr ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool x() const { return (value & X) > 0; }
-        void x(bool val) { value &= ~X; if(val) value |= X; }
-        bool y() const { return (value & Y) > 0; }
-        void y(bool val) { value &= ~Y; if(val) value |= Y; }
-        bool z() const { return (value & Z) > 0; }
-        void z(bool val) { value &= ~Z; if(val) value |= Z; }
-        bool allSet() const { return value == ALL; }
-        void setAll() { value |= ALL; }
+        constexpr bool x() const { return (value & X) > 0; }
+        constexpr void x(bool val) { value &= ~X; if(val) value |= X; }
+        constexpr bool y() const { return (value & Y) > 0; }
+        constexpr void y(bool val) { value &= ~Y; if(val) value |= Y; }
+        constexpr bool z() const { return (value & Z) > 0; }
+        constexpr void z(bool val) { value &= ~Z; if(val) value |= Z; }
+        constexpr bool allSet() const { return value == ALL; }
+        constexpr void setAll() { value |= ALL; }
     };
     /// Parameters
     Time time; ///< Timestamp of the measurement.
@@ -757,22 +757,22 @@ struct MagneticField
         };
         uint16_t value = NONE;
         
-        ValidFlags() : value(NONE) {}
-        ValidFlags(int val) : value((uint16_t)val) {}
-        operator uint16_t() const { return value; }
-        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
-        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
-        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
+        constexpr ValidFlags() : value(NONE) {}
+        constexpr ValidFlags(int val) : value((uint16_t)val) {}
+        constexpr operator uint16_t() const { return value; }
+        constexpr ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        constexpr ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
+        constexpr ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        constexpr ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool x() const { return (value & X) > 0; }
-        void x(bool val) { value &= ~X; if(val) value |= X; }
-        bool y() const { return (value & Y) > 0; }
-        void y(bool val) { value &= ~Y; if(val) value |= Y; }
-        bool z() const { return (value & Z) > 0; }
-        void z(bool val) { value &= ~Z; if(val) value |= Z; }
-        bool allSet() const { return value == ALL; }
-        void setAll() { value |= ALL; }
+        constexpr bool x() const { return (value & X) > 0; }
+        constexpr void x(bool val) { value &= ~X; if(val) value |= X; }
+        constexpr bool y() const { return (value & Y) > 0; }
+        constexpr void y(bool val) { value &= ~Y; if(val) value |= Y; }
+        constexpr bool z() const { return (value & Z) > 0; }
+        constexpr void z(bool val) { value &= ~Z; if(val) value |= Z; }
+        constexpr bool allSet() const { return value == ALL; }
+        constexpr void setAll() { value |= ALL; }
     };
     /// Parameters
     Time time; ///< Timestamp of the measurement.

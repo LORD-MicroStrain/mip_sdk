@@ -304,30 +304,30 @@ struct EstimationControl
         };
         uint16_t value = NONE;
         
-        EnableFlags() : value(NONE) {}
-        EnableFlags(int val) : value((uint16_t)val) {}
-        operator uint16_t() const { return value; }
-        EnableFlags& operator=(uint16_t val) { value = val; return *this; }
-        EnableFlags& operator=(int val) { value = uint16_t(val); return *this; }
-        EnableFlags& operator|=(uint16_t val) { return *this = value | val; }
-        EnableFlags& operator&=(uint16_t val) { return *this = value & val; }
+        constexpr EnableFlags() : value(NONE) {}
+        constexpr EnableFlags(int val) : value((uint16_t)val) {}
+        constexpr operator uint16_t() const { return value; }
+        constexpr EnableFlags& operator=(uint16_t val) { value = val; return *this; }
+        constexpr EnableFlags& operator=(int val) { value = uint16_t(val); return *this; }
+        constexpr EnableFlags& operator|=(uint16_t val) { return *this = value | val; }
+        constexpr EnableFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool gyroBias() const { return (value & GYRO_BIAS) > 0; }
-        void gyroBias(bool val) { value &= ~GYRO_BIAS; if(val) value |= GYRO_BIAS; }
-        bool accelBias() const { return (value & ACCEL_BIAS) > 0; }
-        void accelBias(bool val) { value &= ~ACCEL_BIAS; if(val) value |= ACCEL_BIAS; }
-        bool gyroScaleFactor() const { return (value & GYRO_SCALE_FACTOR) > 0; }
-        void gyroScaleFactor(bool val) { value &= ~GYRO_SCALE_FACTOR; if(val) value |= GYRO_SCALE_FACTOR; }
-        bool accelScaleFactor() const { return (value & ACCEL_SCALE_FACTOR) > 0; }
-        void accelScaleFactor(bool val) { value &= ~ACCEL_SCALE_FACTOR; if(val) value |= ACCEL_SCALE_FACTOR; }
-        bool antennaOffset() const { return (value & ANTENNA_OFFSET) > 0; }
-        void antennaOffset(bool val) { value &= ~ANTENNA_OFFSET; if(val) value |= ANTENNA_OFFSET; }
-        bool autoMagHardIron() const { return (value & AUTO_MAG_HARD_IRON) > 0; }
-        void autoMagHardIron(bool val) { value &= ~AUTO_MAG_HARD_IRON; if(val) value |= AUTO_MAG_HARD_IRON; }
-        bool autoMagSoftIron() const { return (value & AUTO_MAG_SOFT_IRON) > 0; }
-        void autoMagSoftIron(bool val) { value &= ~AUTO_MAG_SOFT_IRON; if(val) value |= AUTO_MAG_SOFT_IRON; }
-        bool allSet() const { return value == ALL; }
-        void setAll() { value |= ALL; }
+        constexpr bool gyroBias() const { return (value & GYRO_BIAS) > 0; }
+        constexpr void gyroBias(bool val) { value &= ~GYRO_BIAS; if(val) value |= GYRO_BIAS; }
+        constexpr bool accelBias() const { return (value & ACCEL_BIAS) > 0; }
+        constexpr void accelBias(bool val) { value &= ~ACCEL_BIAS; if(val) value |= ACCEL_BIAS; }
+        constexpr bool gyroScaleFactor() const { return (value & GYRO_SCALE_FACTOR) > 0; }
+        constexpr void gyroScaleFactor(bool val) { value &= ~GYRO_SCALE_FACTOR; if(val) value |= GYRO_SCALE_FACTOR; }
+        constexpr bool accelScaleFactor() const { return (value & ACCEL_SCALE_FACTOR) > 0; }
+        constexpr void accelScaleFactor(bool val) { value &= ~ACCEL_SCALE_FACTOR; if(val) value |= ACCEL_SCALE_FACTOR; }
+        constexpr bool antennaOffset() const { return (value & ANTENNA_OFFSET) > 0; }
+        constexpr void antennaOffset(bool val) { value &= ~ANTENNA_OFFSET; if(val) value |= ANTENNA_OFFSET; }
+        constexpr bool autoMagHardIron() const { return (value & AUTO_MAG_HARD_IRON) > 0; }
+        constexpr void autoMagHardIron(bool val) { value &= ~AUTO_MAG_HARD_IRON; if(val) value |= AUTO_MAG_HARD_IRON; }
+        constexpr bool autoMagSoftIron() const { return (value & AUTO_MAG_SOFT_IRON) > 0; }
+        constexpr void autoMagSoftIron(bool val) { value &= ~AUTO_MAG_SOFT_IRON; if(val) value |= AUTO_MAG_SOFT_IRON; }
+        constexpr bool allSet() const { return value == ALL; }
+        constexpr void setAll() { value |= ALL; }
     };
     /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
@@ -586,22 +586,22 @@ struct TareOrientation
         };
         uint8_t value = NONE;
         
-        MipTareAxes() : value(NONE) {}
-        MipTareAxes(int val) : value((uint8_t)val) {}
-        operator uint8_t() const { return value; }
-        MipTareAxes& operator=(uint8_t val) { value = val; return *this; }
-        MipTareAxes& operator=(int val) { value = uint8_t(val); return *this; }
-        MipTareAxes& operator|=(uint8_t val) { return *this = value | val; }
-        MipTareAxes& operator&=(uint8_t val) { return *this = value & val; }
+        constexpr MipTareAxes() : value(NONE) {}
+        constexpr MipTareAxes(int val) : value((uint8_t)val) {}
+        constexpr operator uint8_t() const { return value; }
+        constexpr MipTareAxes& operator=(uint8_t val) { value = val; return *this; }
+        constexpr MipTareAxes& operator=(int val) { value = uint8_t(val); return *this; }
+        constexpr MipTareAxes& operator|=(uint8_t val) { return *this = value | val; }
+        constexpr MipTareAxes& operator&=(uint8_t val) { return *this = value & val; }
         
-        bool roll() const { return (value & ROLL) > 0; }
-        void roll(bool val) { value &= ~ROLL; if(val) value |= ROLL; }
-        bool pitch() const { return (value & PITCH) > 0; }
-        void pitch(bool val) { value &= ~PITCH; if(val) value |= PITCH; }
-        bool yaw() const { return (value & YAW) > 0; }
-        void yaw(bool val) { value &= ~YAW; if(val) value |= YAW; }
-        bool allSet() const { return value == ALL; }
-        void setAll() { value |= ALL; }
+        constexpr bool roll() const { return (value & ROLL) > 0; }
+        constexpr void roll(bool val) { value &= ~ROLL; if(val) value |= ROLL; }
+        constexpr bool pitch() const { return (value & PITCH) > 0; }
+        constexpr void pitch(bool val) { value &= ~PITCH; if(val) value |= PITCH; }
+        constexpr bool yaw() const { return (value & YAW) > 0; }
+        constexpr void yaw(bool val) { value &= ~YAW; if(val) value |= YAW; }
+        constexpr bool allSet() const { return value == ALL; }
+        constexpr void setAll() { value |= ALL; }
     };
     /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
@@ -3614,24 +3614,24 @@ struct InitializationConfiguration
         };
         uint8_t value = NONE;
         
-        AlignmentSelector() : value(NONE) {}
-        AlignmentSelector(int val) : value((uint8_t)val) {}
-        operator uint8_t() const { return value; }
-        AlignmentSelector& operator=(uint8_t val) { value = val; return *this; }
-        AlignmentSelector& operator=(int val) { value = uint8_t(val); return *this; }
-        AlignmentSelector& operator|=(uint8_t val) { return *this = value | val; }
-        AlignmentSelector& operator&=(uint8_t val) { return *this = value & val; }
+        constexpr AlignmentSelector() : value(NONE) {}
+        constexpr AlignmentSelector(int val) : value((uint8_t)val) {}
+        constexpr operator uint8_t() const { return value; }
+        constexpr AlignmentSelector& operator=(uint8_t val) { value = val; return *this; }
+        constexpr AlignmentSelector& operator=(int val) { value = uint8_t(val); return *this; }
+        constexpr AlignmentSelector& operator|=(uint8_t val) { return *this = value | val; }
+        constexpr AlignmentSelector& operator&=(uint8_t val) { return *this = value & val; }
         
-        bool dualAntenna() const { return (value & DUAL_ANTENNA) > 0; }
-        void dualAntenna(bool val) { value &= ~DUAL_ANTENNA; if(val) value |= DUAL_ANTENNA; }
-        bool kinematic() const { return (value & KINEMATIC) > 0; }
-        void kinematic(bool val) { value &= ~KINEMATIC; if(val) value |= KINEMATIC; }
-        bool magnetometer() const { return (value & MAGNETOMETER) > 0; }
-        void magnetometer(bool val) { value &= ~MAGNETOMETER; if(val) value |= MAGNETOMETER; }
-        bool external() const { return (value & EXTERNAL) > 0; }
-        void external(bool val) { value &= ~EXTERNAL; if(val) value |= EXTERNAL; }
-        bool allSet() const { return value == ALL; }
-        void setAll() { value |= ALL; }
+        constexpr bool dualAntenna() const { return (value & DUAL_ANTENNA) > 0; }
+        constexpr void dualAntenna(bool val) { value &= ~DUAL_ANTENNA; if(val) value |= DUAL_ANTENNA; }
+        constexpr bool kinematic() const { return (value & KINEMATIC) > 0; }
+        constexpr void kinematic(bool val) { value &= ~KINEMATIC; if(val) value |= KINEMATIC; }
+        constexpr bool magnetometer() const { return (value & MAGNETOMETER) > 0; }
+        constexpr void magnetometer(bool val) { value &= ~MAGNETOMETER; if(val) value |= MAGNETOMETER; }
+        constexpr bool external() const { return (value & EXTERNAL) > 0; }
+        constexpr void external(bool val) { value &= ~EXTERNAL; if(val) value |= EXTERNAL; }
+        constexpr bool allSet() const { return value == ALL; }
+        constexpr void setAll() { value |= ALL; }
     };
     enum class InitialConditionSource : uint8_t
     {

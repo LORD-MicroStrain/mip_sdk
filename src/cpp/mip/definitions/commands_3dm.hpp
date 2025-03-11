@@ -1274,18 +1274,18 @@ struct ConstellationSettings
         };
         uint16_t value = NONE;
         
-        OptionFlags() : value(NONE) {}
-        OptionFlags(int val) : value((uint16_t)val) {}
-        operator uint16_t() const { return value; }
-        OptionFlags& operator=(uint16_t val) { value = val; return *this; }
-        OptionFlags& operator=(int val) { value = uint16_t(val); return *this; }
-        OptionFlags& operator|=(uint16_t val) { return *this = value | val; }
-        OptionFlags& operator&=(uint16_t val) { return *this = value & val; }
+        constexpr OptionFlags() : value(NONE) {}
+        constexpr OptionFlags(int val) : value((uint16_t)val) {}
+        constexpr operator uint16_t() const { return value; }
+        constexpr OptionFlags& operator=(uint16_t val) { value = val; return *this; }
+        constexpr OptionFlags& operator=(int val) { value = uint16_t(val); return *this; }
+        constexpr OptionFlags& operator|=(uint16_t val) { return *this = value | val; }
+        constexpr OptionFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool l1saif() const { return (value & L1SAIF) > 0; }
-        void l1saif(bool val) { value &= ~L1SAIF; if(val) value |= L1SAIF; }
-        bool allSet() const { return value == ALL; }
-        void setAll() { value |= ALL; }
+        constexpr bool l1saif() const { return (value & L1SAIF) > 0; }
+        constexpr void l1saif(bool val) { value &= ~L1SAIF; if(val) value |= L1SAIF; }
+        constexpr bool allSet() const { return value == ALL; }
+        constexpr void setAll() { value |= ALL; }
     };
     struct Settings
     {
@@ -1397,22 +1397,22 @@ struct GnssSbasSettings
         };
         uint16_t value = NONE;
         
-        SBASOptions() : value(NONE) {}
-        SBASOptions(int val) : value((uint16_t)val) {}
-        operator uint16_t() const { return value; }
-        SBASOptions& operator=(uint16_t val) { value = val; return *this; }
-        SBASOptions& operator=(int val) { value = uint16_t(val); return *this; }
-        SBASOptions& operator|=(uint16_t val) { return *this = value | val; }
-        SBASOptions& operator&=(uint16_t val) { return *this = value & val; }
+        constexpr SBASOptions() : value(NONE) {}
+        constexpr SBASOptions(int val) : value((uint16_t)val) {}
+        constexpr operator uint16_t() const { return value; }
+        constexpr SBASOptions& operator=(uint16_t val) { value = val; return *this; }
+        constexpr SBASOptions& operator=(int val) { value = uint16_t(val); return *this; }
+        constexpr SBASOptions& operator|=(uint16_t val) { return *this = value | val; }
+        constexpr SBASOptions& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool enableRanging() const { return (value & ENABLE_RANGING) > 0; }
-        void enableRanging(bool val) { value &= ~ENABLE_RANGING; if(val) value |= ENABLE_RANGING; }
-        bool enableCorrections() const { return (value & ENABLE_CORRECTIONS) > 0; }
-        void enableCorrections(bool val) { value &= ~ENABLE_CORRECTIONS; if(val) value |= ENABLE_CORRECTIONS; }
-        bool applyIntegrity() const { return (value & APPLY_INTEGRITY) > 0; }
-        void applyIntegrity(bool val) { value &= ~APPLY_INTEGRITY; if(val) value |= APPLY_INTEGRITY; }
-        bool allSet() const { return value == ALL; }
-        void setAll() { value |= ALL; }
+        constexpr bool enableRanging() const { return (value & ENABLE_RANGING) > 0; }
+        constexpr void enableRanging(bool val) { value &= ~ENABLE_RANGING; if(val) value |= ENABLE_RANGING; }
+        constexpr bool enableCorrections() const { return (value & ENABLE_CORRECTIONS) > 0; }
+        constexpr void enableCorrections(bool val) { value &= ~ENABLE_CORRECTIONS; if(val) value |= ENABLE_CORRECTIONS; }
+        constexpr bool applyIntegrity() const { return (value & APPLY_INTEGRITY) > 0; }
+        constexpr void applyIntegrity(bool val) { value &= ~APPLY_INTEGRITY; if(val) value |= APPLY_INTEGRITY; }
+        constexpr bool allSet() const { return value == ALL; }
+        constexpr void setAll() { value |= ALL; }
     };
     /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
@@ -1975,22 +1975,22 @@ struct GetEventTriggerStatus
         };
         uint8_t value = NONE;
         
-        Status() : value(NONE) {}
-        Status(int val) : value((uint8_t)val) {}
-        operator uint8_t() const { return value; }
-        Status& operator=(uint8_t val) { value = val; return *this; }
-        Status& operator=(int val) { value = uint8_t(val); return *this; }
-        Status& operator|=(uint8_t val) { return *this = value | val; }
-        Status& operator&=(uint8_t val) { return *this = value & val; }
+        constexpr Status() : value(NONE) {}
+        constexpr Status(int val) : value((uint8_t)val) {}
+        constexpr operator uint8_t() const { return value; }
+        constexpr Status& operator=(uint8_t val) { value = val; return *this; }
+        constexpr Status& operator=(int val) { value = uint8_t(val); return *this; }
+        constexpr Status& operator|=(uint8_t val) { return *this = value | val; }
+        constexpr Status& operator&=(uint8_t val) { return *this = value & val; }
         
-        bool active() const { return (value & ACTIVE) > 0; }
-        void active(bool val) { value &= ~ACTIVE; if(val) value |= ACTIVE; }
-        bool enabled() const { return (value & ENABLED) > 0; }
-        void enabled(bool val) { value &= ~ENABLED; if(val) value |= ENABLED; }
-        bool test() const { return (value & TEST) > 0; }
-        void test(bool val) { value &= ~TEST; if(val) value |= TEST; }
-        bool allSet() const { return value == ALL; }
-        void setAll() { value |= ALL; }
+        constexpr bool active() const { return (value & ACTIVE) > 0; }
+        constexpr void active(bool val) { value &= ~ACTIVE; if(val) value |= ACTIVE; }
+        constexpr bool enabled() const { return (value & ENABLED) > 0; }
+        constexpr void enabled(bool val) { value &= ~ENABLED; if(val) value |= ENABLED; }
+        constexpr bool test() const { return (value & TEST) > 0; }
+        constexpr void test(bool val) { value &= ~TEST; if(val) value |= TEST; }
+        constexpr bool allSet() const { return value == ALL; }
+        constexpr void setAll() { value |= ALL; }
     };
     struct Entry
     {
@@ -3463,22 +3463,22 @@ struct GpioConfig
         };
         uint8_t value = NONE;
         
-        PinMode() : value(NONE) {}
-        PinMode(int val) : value((uint8_t)val) {}
-        operator uint8_t() const { return value; }
-        PinMode& operator=(uint8_t val) { value = val; return *this; }
-        PinMode& operator=(int val) { value = uint8_t(val); return *this; }
-        PinMode& operator|=(uint8_t val) { return *this = value | val; }
-        PinMode& operator&=(uint8_t val) { return *this = value & val; }
+        constexpr PinMode() : value(NONE) {}
+        constexpr PinMode(int val) : value((uint8_t)val) {}
+        constexpr operator uint8_t() const { return value; }
+        constexpr PinMode& operator=(uint8_t val) { value = val; return *this; }
+        constexpr PinMode& operator=(int val) { value = uint8_t(val); return *this; }
+        constexpr PinMode& operator|=(uint8_t val) { return *this = value | val; }
+        constexpr PinMode& operator&=(uint8_t val) { return *this = value & val; }
         
-        bool openDrain() const { return (value & OPEN_DRAIN) > 0; }
-        void openDrain(bool val) { value &= ~OPEN_DRAIN; if(val) value |= OPEN_DRAIN; }
-        bool pulldown() const { return (value & PULLDOWN) > 0; }
-        void pulldown(bool val) { value &= ~PULLDOWN; if(val) value |= PULLDOWN; }
-        bool pullup() const { return (value & PULLUP) > 0; }
-        void pullup(bool val) { value &= ~PULLUP; if(val) value |= PULLUP; }
-        bool allSet() const { return value == ALL; }
-        void setAll() { value |= ALL; }
+        constexpr bool openDrain() const { return (value & OPEN_DRAIN) > 0; }
+        constexpr void openDrain(bool val) { value &= ~OPEN_DRAIN; if(val) value |= OPEN_DRAIN; }
+        constexpr bool pulldown() const { return (value & PULLDOWN) > 0; }
+        constexpr void pulldown(bool val) { value &= ~PULLDOWN; if(val) value |= PULLDOWN; }
+        constexpr bool pullup() const { return (value & PULLUP) > 0; }
+        constexpr void pullup(bool val) { value &= ~PULLUP; if(val) value |= PULLUP; }
+        constexpr bool allSet() const { return value == ALL; }
+        constexpr void setAll() { value |= ALL; }
     };
     /// Parameters
     FunctionSelector function = static_cast<FunctionSelector>(0);
