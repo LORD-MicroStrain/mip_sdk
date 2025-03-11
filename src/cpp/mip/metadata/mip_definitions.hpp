@@ -1,6 +1,6 @@
 #pragma once
 
-#include <microstrain/common/span.hpp>
+#include <microstrain/span.hpp>
 #include <mip/mip_descriptors.hpp>
 
 

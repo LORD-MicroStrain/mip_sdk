@@ -1,7 +1,7 @@
 #pragma once
 
-#include <microstrain/common/index.hpp>
-#include <microstrain/common/span.hpp>
+#include <microstrain/index.hpp>
+#include <microstrain/span.hpp>
 #include <mip/mip_descriptors.hpp>
 
 #include <stdint.h>

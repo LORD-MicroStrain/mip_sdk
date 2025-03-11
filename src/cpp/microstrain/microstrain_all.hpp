@@ -1,13 +1,13 @@
 ﻿#pragma once
 
-// MicroStrain Common
-#include "common/embedded_time.hpp"
-#include "common/index.hpp"
-#include "common/logging.hpp"
-#include "common/platform.hpp"
-#include "common/serialization.hpp"
-#include "common/serialization/readwrite.hpp"
-#include "common/serialization/serializer.hpp"
+// MicroStrain
+#include "embedded_time.hpp"
+#include "index.hpp"
+#include "logging.hpp"
+#include "platform.hpp"
+#include "serialization.hpp"
+#include "serialization/readwrite.hpp"
+#include "serialization/serializer.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup microstrain MicroStrain API

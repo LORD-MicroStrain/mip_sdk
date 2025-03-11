@@ -13,7 +13,7 @@
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <microstrain/common/serialization.h>
+#include <microstrain/serialization.h>
 #include "../mip_field.h"
 
 #include <stddef.h>

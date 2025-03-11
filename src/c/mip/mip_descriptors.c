@@ -1,7 +1,7 @@
 
 #include "mip_descriptors.h"
 
-#include "microstrain/common/serialization.h"
+#include "microstrain/serialization.h"
 
 #ifdef __cplusplus
 namespace mip {

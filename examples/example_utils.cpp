@@ -4,7 +4,7 @@
 
 #include <stdarg.h>
 
-#include <microstrain/common/logging.h>
+#include <microstrain/logging.h>
 
 #include "example_utils.hpp"
 
@@ -21,7 +21,7 @@ mip::Timestamp getCurrentTimestamp()
     return duration_cast<milliseconds>( steady_clock::now().time_since_epoch() ).count();
 }
 
-void customLog(void* /*user*/, microstrain_log_level level, const char* fmt, va_list args)
+void customLog(void* /*user*/, const microstrain_log_level level, const char* fmt, va_list args)
 {
     // Convert the varargs into a string
     std::string log;
@@ -139,7 +139,7 @@ int printCommonUsage(const char* argv[])
 
 void displayFilterState(const mip::data_filter::FilterMode &filterState, std::string &currentState, bool isFiveSeries) {
     std::string read_state = "";
-    switch (filterState) 
+    switch (filterState)
     {
         case mip::data_filter::FilterMode::INIT:
             read_state = (isFiveSeries ? "GX5_INIT" : "INIT") + std::string(" (1)");
@@ -158,7 +158,7 @@ void displayFilterState(const mip::data_filter::FilterMode &filterState, std::st
             break;
     }
 
-    if (read_state != currentState) 
+    if (read_state != currentState)
     {
         printf("Filter state: %s\n", read_state.data());
         currentState = read_state;

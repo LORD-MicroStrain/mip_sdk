@@ -21,6 +21,9 @@ REMOVED - A function/class has been removed.
 Forthcoming
 -----------
 ### New Features
+* CMake find_package config files
+  * Added CMake find_package config files for each module
+  * Each module supports the components feature of find_package
 ### Interface Changes
 ### Bug Fixes
 

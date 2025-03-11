@@ -80,7 +80,7 @@ macro(add_microstrain_test)
     )
 
     set(MICROSTRAIN_TEST_LINK_LIBRARIES
-        ${MICROSTRAIN_COMMON_LIBRARY}
+        ${MICROSTRAIN_LIBRARY}
         "${${TEST_ARG_PREFIX}_ADDL_LINK_LIBRARIES}"
     )
 
