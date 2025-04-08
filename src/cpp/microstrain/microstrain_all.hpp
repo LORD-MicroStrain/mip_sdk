@@ -6,6 +6,8 @@
 #include "logging.hpp"
 #include "platform.hpp"
 #include "serialization.hpp"
+#include "extras/saturating_math.hpp"
+#include "extras/scope_helper.hpp"
 #include "serialization/readwrite.hpp"
 #include "serialization/serializer.hpp"
 

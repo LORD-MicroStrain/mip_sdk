@@ -245,10 +245,10 @@ class SaturatingInt
     operator T() const { return m_value; }
 
     SaturatingInt& operator++() { if(m_value < std::numeric_limits<T>::max()) ++m_value; return *this; }
-    SaturatingInt operator++(int) { auto tmp=*this; ++(*this); return tmp; }
+    SaturatingInt operator++(int) { SaturatingInt tmp=*this; ++(*this); return tmp; }
 
     SaturatingInt& operator--() { if(m_value > std::numeric_limits<T>::min()) --m_value; return *this; }
-    SaturatingInt operator--(int) { auto tmp=*this; --(*this); return tmp; }
+    SaturatingInt operator--(int) { SaturatingInt tmp=*this; --(*this); return tmp; }
 
     SaturatingInt& operator+(T value) { accum_sat(m_value, value); return *this; }
     SaturatingInt& operator-(T value) { reduce_sat(m_value, value); return *this; }
