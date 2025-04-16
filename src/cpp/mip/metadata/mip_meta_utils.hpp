@@ -188,6 +188,10 @@ constexpr const char* nameOfType(const TypeInfo& type)
     }
 }
 
+constexpr void getOffsetForAlignment(const TypeInfo& type, size_t &current_offset);
+
+constexpr size_t sizeForBasicType(const TypeInfo& type);
+
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Gets the size of a basic type (including bitfields and enums if info
 ///       is not NULL).
@@ -262,6 +266,50 @@ constexpr size_t sizeForBasicType(const Type type, const void* info = nullptr)
 
             return sizeForBasicType(static_cast<const BitfieldInfo*>(info)->type);
         }
+        case Type::STRUCT:
+        {
+            size_t total_size = 0;
+
+            if (!info)
+            {
+                return total_size;
+            }
+
+            if (const StructInfo* struct_info = static_cast<const StructInfo*>(info))
+            {
+                for (const ParameterInfo& param : struct_info->parameters)
+                {
+                    getOffsetForAlignment(param.type, total_size);
+                    total_size += sizeForBasicType(param.type);
+                }
+            }
+
+            return total_size;
+        }
+        case Type::UNION:
+        {
+            size_t highest_size = 0;
+
+            if (!info)
+            {
+                return highest_size;
+            }
+
+            if (const StructInfo* struct_info = static_cast<const StructInfo*>(info))
+            {
+                for (const ParameterInfo& param : struct_info->parameters)
+                {
+                    const size_t param_size = sizeForBasicType(param.type);
+
+                    if (param_size > highest_size)
+                    {
+                        highest_size = param_size;
+                    }
+                }
+            }
+
+            return highest_size;
+        }
         default:
         {
             return 0;
@@ -269,6 +317,8 @@ constexpr size_t sizeForBasicType(const Type type, const void* info = nullptr)
     }
 }
 constexpr size_t sizeForBasicType(const TypeInfo& type) { return sizeForBasicType(type.type, type.infoPtr); }
+
+constexpr size_t alignmentForBasicType(const TypeInfo& type);
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Gets the size of a basic type (including bitfields and enums if info
@@ -344,6 +394,31 @@ constexpr size_t alignmentForBasicType(const Type type, const void* info = nullp
 
             return alignmentForBasicType(static_cast<const BitfieldInfo*>(info)->type);
         }
+        case Type::UNION:
+        case Type::STRUCT:
+        {
+            size_t highest_alignment = 0;
+
+            if (!info)
+            {
+                return highest_alignment;
+            }
+
+            if (const StructInfo* struct_info = static_cast<const StructInfo*>(info))
+            {
+                for (const ParameterInfo& param : struct_info->parameters)
+                {
+                    const size_t param_alignment = alignmentForBasicType(param.type);
+
+                    if (param_alignment > highest_alignment)
+                    {
+                        highest_alignment = param_alignment;
+                    }
+                }
+            }
+
+            return highest_alignment;
+        }
         default:
         {
             return 0;
@@ -352,13 +427,26 @@ constexpr size_t alignmentForBasicType(const Type type, const void* info = nullp
 }
 constexpr size_t alignmentForBasicType(const TypeInfo& type) { return alignmentForBasicType(type.type, type.infoPtr); }
 
+constexpr void getOffsetForAlignment(const TypeInfo& type, size_t &current_offset)
+{
+    const size_t align = alignmentForBasicType(type);
+
+    if (align != 0)
+    {
+        const size_t align_offset = current_offset % align;
+
+        if (align_offset != 0)
+        {
+            current_offset += align - align_offset;
+        }
+    }
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Get a pointer to a parameter given the offset of the member in the
-///        class/struct
+///       class/struct
 ///
 ///@warning This does not work for nested types, I.E. ClassType.member1.member2
-///
-///@see GET_MIP_METADATA_PARAM_INFO
 ///
 ///@param offset     The offset of the member within the struct/class. Use the
 ///                  C++ offsetof or a variant to get this value
@@ -367,27 +455,22 @@ constexpr size_t alignmentForBasicType(const TypeInfo& type) { return alignmentF
 ///
 ///@return A pointer to the parameter info if found, otherwise nullptr
 ///
-const inline ParameterInfo* getParameterInfoFromStructMemberOffset(const size_t offset, const FieldInfo& field_info)
+const inline ParameterInfo* getParameterInfoFromStructMemberOffset(const size_t offset, const StructInfo& field_info)
 {
     size_t check_offset = 0;
 
     for (const ParameterInfo& param : field_info.parameters)
     {
-        const size_t align = alignmentForBasicType(param.type);
-
-        if (align != 0)
-        {
-            const size_t align_offset = check_offset % align;
-
-            if (align_offset != 0)
-            {
-                check_offset += align - align_offset;
-            }
-        }
+        getOffsetForAlignment(param.type, check_offset);
 
         if (offset == check_offset)
         {
             return &param;
+        }
+
+        if (offset < check_offset)
+        {
+            break;
         }
 
         check_offset += sizeForBasicType(param.type);
@@ -398,18 +481,101 @@ const inline ParameterInfo* getParameterInfoFromStructMemberOffset(const size_t 
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Get a pointer to a parameter given the offset of the member in the
-///        class/struct
+///       class/struct
 ///
-///@warning This does not work for nested types, I.E. ClassType.member1.member2
+///@param base_offset   The offset of the member within the struct/class. Use
+///                     the C++ offsetof or a variant to get this value
 ///
-///@param MipType MIP struct/class
+///@param nested_offset The offset of the member within the struct/class. Use
+///                     the C++ offsetof or a variant to get this value
 ///
-///@param MemberField The member field within the MIP struct/class
+///@param field_info    Metadata field info to look up parameter info for
 ///
-///@see mip::metadata::utils::getParameterInfoFromStructMemberOffset
+///@return A pointer to the parameter info if found, otherwise nullptr
+///
+const inline ParameterInfo* getNestedParameterInfoFromStructMemberOffset(const size_t base_offset, const size_t nested_offset, const StructInfo& field_info)
+{
+    if (const ParameterInfo* base_param = getParameterInfoFromStructMemberOffset(base_offset, field_info))
+    {
+        switch (base_param->type.type)
+        {
+            case Type::STRUCT:
+            {
+                const StructInfo* struct_info = static_cast<const StructInfo*>(base_param->type.infoPtr);
+                return getParameterInfoFromStructMemberOffset(nested_offset, *struct_info);
+            }
+            case Type::UNION:
+            {
+                const UnionInfo* union_info = static_cast<const UnionInfo*>(base_param->type.infoPtr);
+                return getParameterInfoFromStructMemberOffset(nested_offset, *union_info);
+            }
+            default:
+            {
+                break;
+            }
+        }
+    }
+
+    return nullptr;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Get a pointer to a parameter given the member of a MIP type
+///
+/// @param struct_info Metadata struct info to find the member of
+///
+/// @param param_name The name of the member to find info for
+///
+/// @param dummy       Dummy variable for macro compile checks and code
+///                    completion
+///
+///@return A pointer to the parameter info if found, otherwise nullptr
+///
+const inline ParameterInfo* getParameterInfoForMember(const StructInfo& struct_info, const char* param_name, const size_t dummy = 0)
+{
+    // Dummy variable for macro checks
+    (void)dummy;
+
+    for (const ParameterInfo& param : struct_info.parameters)
+    {
+        if (strcmp(param.name, param_name) == 0)
+        {
+            return &param;
+        }
+    }
+
+    return nullptr;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Get a pointer to a parameter given the member of a nested
+///       class/struct
+///
+///@param MemberParameter   Member parameter to get the type of which has
+///                         metadata
+///
+///@param NestedMemberField The member field within the nested parameter type
+///
+///@see mip::metadata::utils::getParameterInfoForMember
+///
+///@return A pointer to the parameter info if found, otherwise nullptr
+///
+#define GET_MIP_METADATA_NESTED_PARAM_INFO(MemberParameter, NestedMemberField) \
+mip::metadata::utils::getParameterInfoForMember(mip::metadata::MetadataFor<decltype(MemberParameter)>::value, #NestedMemberField, \
+offsetof(decltype(MemberParameter), NestedMemberField)) // Dummy entry to allow offsetof to check the member exists
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Get a pointer to a parameter given the member of a class/struct
+///
+///@param MipType MIP type that has metadata
+///
+///@param MemberField The member field within the MIP type
+///
+///@see mip::metadata::utils::getParameterInfoForMember
 ///
 ///@return A pointer to the parameter info if found, otherwise nullptr
 ///
 #define GET_MIP_METADATA_PARAM_INFO(MipType, MemberField) \
-    mip::metadata::utils::getParameterInfoFromStructMemberOffset(offsetof(MipType, MemberField), mip::metadata::MetadataFor<MipType>().value)
+mip::metadata::utils::getParameterInfoForMember(mip::metadata::MetadataFor<MipType>::value, #MemberField, \
+offsetof(MipType, MemberField)) // Dummy entry to allow offsetof to check the member exists
 } // namespace mip::metadata
