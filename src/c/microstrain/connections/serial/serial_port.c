@@ -379,7 +379,7 @@ bool serial_port_read(serial_port* port, void* buffer, size_t num_bytes, int wai
         return false;
     }
 
-    if (wait_time <= 0)
+    if (wait_time > 0)
     {
         if (bytes_available == 0)
             return true;
