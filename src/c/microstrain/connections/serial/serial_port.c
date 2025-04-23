@@ -386,7 +386,7 @@ bool serial_port_read(serial_port* port, void* buffer, size_t num_bytes, int wai
 
         // Don't let Windows block on the read
         if (bytes_available < num_bytes)
-            num_bytes = (bytes_available > 0) ? bytes_available : 1;
+            num_bytes = bytes_available;
     }
 
     DWORD  local_bytes_read;
