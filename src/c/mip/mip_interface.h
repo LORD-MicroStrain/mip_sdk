@@ -76,7 +76,7 @@ void mip_interface_input_bytes_from_device(mip_interface* device, const uint8_t*
 void mip_interface_input_packet_from_device(mip_interface* device, const mip_packet_view* packet, mip_timestamp timestamp);
 void mip_interface_update_time(mip_interface* device, mip_timestamp timestamp);
 
-void mip_interface_parse_callback(void* device, const mip_packet_view* packet, mip_timestamp timestamp);
+bool mip_interface_parse_callback(void* device, const mip_packet_view* packet, mip_timestamp timestamp);
 
 //
 // Commands

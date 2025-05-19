@@ -166,6 +166,10 @@ static size_t mip_parser_discard(mip_parser* parser, size_t offset)
 ///       Time of arrival of the data to be parsed. This is used to set packets'
 ///       timestamp and to time out incomplete packets.
 ///
+///@returns The number of bytes processed from input_buffer. This will always
+///         be equal to input_length, unless the packet callback is NULL or
+///         it returns false to stop parsing early.
+///
 ///@note The timestamp of a packet is based on the time the packet was parsed.
 ///      Packets received during an earlier parse call may be timestamped with
 ///      the time from a later parse call, but will never be timestamped before
@@ -180,7 +184,7 @@ static size_t mip_parser_discard(mip_parser* parser, size_t offset)
 ///      be properly parsed. Note that the 16-bit checksum has a 1 in 65,536
 ///      chance of appearing to be valid at random.
 ///
-void mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t input_length, mip_timestamp timestamp)
+size_t mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t input_length, mip_timestamp timestamp)
 {
     // Allow the user to specify bytes written into the parser buffer itself
     // via mip_parser_get_write_ptr().
@@ -202,12 +206,10 @@ void mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t in
 
     // Expected length of the packet or current header byte being parsed. 1, 2, 4 or >= 6.
     size_t expected_packet_length =
-               (parser->_buffered_length < MIP_HEADER_LENGTH) ?
-               (parser->_buffered_length + 1) :
-               (MIP_HEADER_LENGTH + parser->_buffer[MIP_INDEX_LENGTH] + MIP_CHECKSUM_LENGTH)
+        (parser->_buffered_length < MIP_HEADER_LENGTH) ?
+        (parser->_buffered_length + 1) :
+        (MIP_HEADER_LENGTH + parser->_buffer[MIP_INDEX_LENGTH] + MIP_CHECKSUM_LENGTH)
     ;
-
-    // size_t total_packet_bytes = 0;
 
     for(;;)
     {
@@ -226,12 +228,14 @@ void mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t in
             // Check for timeout
             if(timestamp >= (parser->_start_time + parser->_timeout))
             {
+                parser->_start_time = timestamp;
+
                 // Discard first packet in buffer and reparse remaining buffered data.
                 if(parser->_buffered_length > 0)
+                {
                     expected_packet_length = mip_parser_discard(parser, 1);
-
-                parser->_start_time = timestamp;
-                continue;
+                    continue;
+                }
             }
 
             memcpy(&parser->_buffer[parser->_buffered_length], &input_buffer[unparsed_input_offset], remaining_input_length);
@@ -248,7 +252,7 @@ void mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t in
             MIP_DIAG_INC(parser->_diag_bytes_read, input_length);
             //MIP_DIAG_INC(parser->_diag_bytes_skipped, (input_length - total_packet_bytes));
 
-            return;
+            return unparsed_input_offset;
         }
 
         //
@@ -342,8 +346,20 @@ void mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t in
                 MIP_DIAG_INC(parser->_diag_valid_packets, 1);
                 MIP_DIAG_INC(parser->_diag_packet_bytes, expected_packet_length);
 
+                bool stop = true;
+
+                // If there's no callback, assume the user just wants one packet at a time.
                 if(parser->_callback)
-                    parser->_callback(parser->_callback_object, &packet, parser->_start_time);
+                    stop = !parser->_callback(parser->_callback_object, &packet, parser->_start_time);
+
+                if(stop)
+                {
+                    // The packet data must be discarded so it won't be reparsed next time.
+                    mip_parser_discard(parser, expected_packet_length);
+                    parser->_start_time = timestamp;
+
+                    return unparsed_input_offset;
+                }
             }
             else
             {
@@ -354,6 +370,8 @@ void mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t in
             // Shift any leftover data down to 0 (multiple packets within a buffered false packet).
             expected_packet_length = mip_parser_discard(parser, expected_packet_length);
             parser->_start_time = timestamp;
+
+            break; // switch
         }
         }
     }

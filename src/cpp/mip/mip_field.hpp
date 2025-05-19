@@ -48,6 +48,8 @@ public:
     CompositeDescriptor descriptor() const { return {descriptorSet(), fieldDescriptor()}; }
     ///@copydoc mip::C::mip_field_payload_length
     uint8_t payloadLength() const { return C::mip_field_payload_length(this); }
+    ///@copydoc mip::C::mip_field_total_length
+    uint8_t totalLength() const { return C::mip_field_total_length(this); }
     ///@copydoc mip::C::mip_field_payload
     const uint8_t* payload() const { return C::mip_field_payload(this); }
 
