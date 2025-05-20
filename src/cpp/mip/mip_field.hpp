@@ -36,6 +36,9 @@ public:
     /// Creates a %Field class from the mip_field C struct.
     FieldView(const C::mip_field_view& other) { std::memcpy(static_cast<C::mip_field_view*>(this), &other, sizeof(C::mip_field_view)); }
 
+    /// Construct from descriptor and payload (composite span version)
+    FieldView(CompositeDescriptor descriptor, microstrain::Span<const uint8_t> payload) : FieldView(descriptor.descriptorSet, descriptor.fieldDescriptor, payload.data(), uint8_t(payload.size())) {}
+
     //
     // C function wrappers
     //
