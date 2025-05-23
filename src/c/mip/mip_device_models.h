@@ -23,15 +23,12 @@ enum mip_model_number
     MODEL_3DM_RQ1_45_ST    = 6239, // 3DM-RQ1-45-ST
     MODEL_3DM_GQ4_45       = 6250, // 3DM-GQ4-45
     // Gen 5
-    MODEL_3DM_MV5_25       = 6241, // 3DM_MV5_25
     MODEL_3DM_MV5_15       = 6243, // 3DM_MV5_15
-    MODEL_3DM_MV5_10       = 6244, // 3DM_MV5_10
     MODEL_3DM_GX5_45       = 6251, // 3DM-GX5-45
     MODEL_3DM_GX5_35       = 6252, // 3DM-GX5-35
     MODEL_3DM_GX5_25       = 6253, // 3DM-GX5-25
     MODEL_3DM_GX5_15       = 6254, // 3DM-GX5-15
     MODEL_3DM_GX5_10       = 6255, // 3DM-GX5-10
-    MODEL_3DM_CV5_45       = 6256, // 3DM-CV5-45
     MODEL_3DM_CV5_25       = 6257, // 3DM-CV5-25
     MODEL_3DM_CV5_15       = 6258, // 3DM-CV5-15
     MODEL_3DM_CV5_10       = 6259, // 3DM-CV5-10
