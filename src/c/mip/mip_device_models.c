@@ -64,46 +64,46 @@ const char* get_model_name_from_number(mip_model_number model)
     switch (model)
     {
     // Gen 3
-    case MODEL_3DM_DH3:          return "3DM_DH3";
-    case MODEL_3DM_GX3_25:       return "3DM_GX3_25";
-    case MODEL_3DM_GX3_35:       return "3DM_GX3_35";
-    case MODEL_3DM_GX3_15:       return "3DM_GX3_15";
-    case MODEL_3DM_GX3_45:       return "3DM_GX3_45";
+    case MODEL_3DM_DH3:          return "3DM-DH3";
+    case MODEL_3DM_GX3_25:       return "3DM-GX3-25";
+    case MODEL_3DM_GX3_35:       return "3DM-GX3-35";
+    case MODEL_3DM_GX3_15:       return "3DM-GX3-15";
+    case MODEL_3DM_GX3_45:       return "3DM-GX3-45";
     // Gen 4
-    case MODEL_3DM_RQ1_45_LT:    return "3DM_RQ1_45_LT";
-    case MODEL_3DM_GX4_15:       return "3DM_GX4_15";
-    case MODEL_3DM_GX4_25:       return "3DM_GX4_25";
-    case MODEL_3DM_GX4_45:       return "3DM_GX4_45";
-    case MODEL_3DM_RQ1_45_ST:    return "3DM_RQ1_45_ST";
-    case MODEL_3DM_GQ4_45:       return "3DM_GQ4_45";
+    case MODEL_3DM_RQ1_45_LT:    return "3DM-RQ1-45_LT";
+    case MODEL_3DM_GX4_15:       return "3DM-GX4-15";
+    case MODEL_3DM_GX4_25:       return "3DM-GX4-25";
+    case MODEL_3DM_GX4_45:       return "3DM-GX4-45";
+    case MODEL_3DM_RQ1_45_ST:    return "3DM-RQ1-45_ST";
+    case MODEL_3DM_GQ4_45:       return "3DM-GQ4-45";
     // Gen 5
-    case MODEL_3DM_MV5_15:       return "3DM_MV5_15"; // AR
-    case MODEL_3DM_GX5_45:       return "3DM_GX5_45"; // GNSS/INS
-    case MODEL_3DM_GX5_35:       return "3DM_GX5_35"; // GNSS/AHRS
-    case MODEL_3DM_GX5_25:       return "3DM_GX5_25"; // AHRS
-    case MODEL_3DM_GX5_15:       return "3DM_GX5_15"; // AR
-    case MODEL_3DM_GX5_10:       return "3DM_GX5_10"; // IMU
-    case MODEL_3DM_CV5_25:       return "3DM_CV5_25"; // AHRS
-    case MODEL_3DM_CV5_15:       return "3DM_CV5_15"; // AR
-    case MODEL_3DM_CV5_10:       return "3DM_CV5_10"; // IMU
-    case MODEL_3DM_CX5_45:       return "3DM_CX5_45"; // GNSS/INS
-    case MODEL_3DM_CX5_35:       return "3DM_CX5_35"; // GNSS/AHRS
-    case MODEL_3DM_CX5_25:       return "3DM_CX5_25"; // AHRS
-    case MODEL_3DM_CX5_15:       return "3DM_CX5_15"; // AR
-    case MODEL_3DM_CX5_10:       return "3DM_CX5_10"; // IMU
-    case MODEL_3DM_CL5_10:       return "3DM_CL5_10"; // IMU
-    case MODEL_3DM_CL5_15:       return "3DM_CL5_15"; // AR
-    case MODEL_3DM_CL5_25:       return "3DM_CL5_25"; // AHRS
+    case MODEL_3DM_MV5_15:       return "3DM-MV5-15"; // AR
+    case MODEL_3DM_GX5_45:       return "3DM-GX5-45"; // GNSS/INS
+    case MODEL_3DM_GX5_35:       return "3DM-GX5-35"; // GNSS/AHRS
+    case MODEL_3DM_GX5_25:       return "3DM-GX5-25"; // AHRS
+    case MODEL_3DM_GX5_15:       return "3DM-GX5-15"; // AR
+    case MODEL_3DM_GX5_10:       return "3DM-GX5-10"; // IMU
+    case MODEL_3DM_CV5_25:       return "3DM-CV5-25"; // AHRS
+    case MODEL_3DM_CV5_15:       return "3DM-CV5-15"; // AR
+    case MODEL_3DM_CV5_10:       return "3DM-CV5-10"; // IMU
+    case MODEL_3DM_CX5_45:       return "3DM-CX5-45"; // GNSS/INS
+    case MODEL_3DM_CX5_35:       return "3DM-CX5-35"; // GNSS/AHRS
+    case MODEL_3DM_CX5_25:       return "3DM-CX5-25"; // AHRS
+    case MODEL_3DM_CX5_15:       return "3DM-CX5-15"; // AR
+    case MODEL_3DM_CX5_10:       return "3DM-CX5-10"; // IMU
+    case MODEL_3DM_CL5_10:       return "3DM-CL5-10"; // IMU
+    case MODEL_3DM_CL5_15:       return "3DM-CL5-15"; // AR
+    case MODEL_3DM_CL5_25:       return "3DM-CL5-25"; // AHRS
     // Gen 7
-    case MODEL_3DM_GQ7:          return "3DM_GQ7"; // GNSS/INS
-    case MODEL_3DM_RTK:          return "3DM_RTK";
-    case MODEL_3DM_CV7_AR:       return "3DM_CV7_AR";
-    case MODEL_3DM_CV7_AHRS:     return "3DM_CV7_AHRS";
-    case MODEL_3DM_CV7_INS:      return "3DM_CV7_INS";
-    case MODEL_3DM_CV7_GNSS_INS: return "3DM_CV7_GNSS/INS";
-    case MODEL_3DM_GV7_AR:       return "3DM_GV7_AR";
-    case MODEL_3DM_GV7_AHRS:     return "3DM_GV7_AHRS";
-    case MODEL_3DM_GV7_INS:      return "3DM_GV7_INS";
+    case MODEL_3DM_GQ7:          return "3DM-GQ7"; // GNSS/INS
+    case MODEL_3DM_RTK:          return "3DM-RTK";
+    case MODEL_3DM_CV7_AR:       return "3DM-CV7-AR";
+    case MODEL_3DM_CV7_AHRS:     return "3DM-CV7-AHRS";
+    case MODEL_3DM_CV7_INS:      return "3DM-CV7-INS";
+    case MODEL_3DM_CV7_GNSS_INS: return "3DM-CV7-GNSS/INS";
+    case MODEL_3DM_GV7_AR:       return "3DM-GV7-AR";
+    case MODEL_3DM_GV7_AHRS:     return "3DM-GV7-AHRS";
+    case MODEL_3DM_GV7_INS:      return "3DM-GV7-INS";
 
     default:
     case MODEL_UNKNOWN: return "";
