@@ -23,7 +23,7 @@ enum mip_model_number
     MODEL_3DM_RQ1_45_ST     = 6239,
     MODEL_3DM_GQ4_45        = 6250,
     // Gen 5
-    MODEL_3DM_MV5_AR        = 6243, // 3DM_MV5_15
+    MODEL_3DM_MV5_AR        = 6243, // 3DM-MV5-15
     MODEL_3DM_GX5_GNSS_INS  = 6251, // 3DM-GX5-45
     MODEL_3DM_GX5_GNSS_AHRS = 6252, // 3DM-GX5-35
     MODEL_3DM_GX5_AHRS      = 6253, // 3DM-GX5-25
