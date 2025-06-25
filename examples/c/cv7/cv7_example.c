@@ -660,7 +660,7 @@ void initialize_device(mip_interface* device, serial_port* device_port, uint32_t
     mip_interface_init(
         device,
         mip_timeout_from_baudrate(baudrate),  // Set the base timeout for commands (milliseconds)
-        1000,                                 // Set the base timeout for command replies (milliseconds)
+        500,                                  // Set the base timeout for command replies (milliseconds)
         &mip_interface_user_send_to_device,   // User-defined send packet callback
         &mip_interface_user_recv_from_device, // User-defined receive packet callback
         &mip_interface_default_update,        // Default update callback

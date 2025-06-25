@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project("Cv7_Example"
+project("Cv7_Example_C"
     VERSION "1.0.0"
     DESCRIPTION "Simple example for the CV7 using C"
     LANGUAGES C
