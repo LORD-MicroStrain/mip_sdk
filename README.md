@@ -163,7 +163,7 @@ include all the necessary files and define a few options.
 
 #### Minimum Required Files for building without CMake
 ##### C only
-* All source files in `src/c/microstrain/common`, except logging.c if logging is disabled
+* All source files in `src/c/microstrain`, except logging.c if logging is disabled
 * Source files in `src/c/microstrain/connections` for your required connection types
 * All source files in `src/c/mip` and `src/c/mip/utils`
 * All source files in `src/c/mip/definitions` (or at least all the required descriptor sets)
@@ -215,7 +215,7 @@ rebuilt properly. Normally CMake takes care of this for you).
 
 ## How to use the pre-packaged libraries
 * Available Modules:
-  * microstrain_common
+  * microstrain
   * microstrain_extras (CPP only)
   * microstrain_recording_connection (CPP only)
   * microstrain_serial

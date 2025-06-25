@@ -53,7 +53,7 @@ if(MSVC)
 endif()
 
 target_compile_features(${MIP_LIBRARY} PUBLIC c_std_11)
-target_link_libraries(${MIP_LIBRARY} PUBLIC ${MICROSTRAIN_COMMON_LIBRARY})
+target_link_libraries(${MIP_LIBRARY} PUBLIC ${MICROSTRAIN_LIBRARY})
 
 if(${MIP_ENABLE_DIAGNOSTICS})
     target_compile_definitions(${MIP_LIBRARY} PUBLIC "MIP_ENABLE_DIAGNOSTICS=1")

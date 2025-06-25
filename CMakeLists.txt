@@ -80,6 +80,12 @@ if(WIN32)
             "/Zc:__cplusplus"         # Enable updated __cplusplus value
             "/MP"                     # Multi-process compilation
         )
+
+        if(${MSVC_TOOLSET_VERSION} LESS 143)
+            list(APPEND MICROSTRAIN_PRIVATE_COMPILE_OPTIONS
+                "/wd4201" # Suppress warnings related to nameless structs/unions
+            )
+        endif()
     endif()
 
     # Disable windows defined min/max
@@ -124,7 +130,7 @@ if(MICROSTRAIN_ENABLE_CPP)
     add_subdirectory(${MICROSTRAIN_SRC_CPP_DIR}/microstrain)
     add_subdirectory(${MICROSTRAIN_SRC_CPP_DIR}/mip)
 
-    #target_compile_definitions(${MICROSTRAIN_COMMON_LIBRARY} PUBLIC "MICROSTRAIN_ENABLE_CPP_C_NAMESPACE=${MICROSTRAIN_ENABLE_CPP_C_NAMESPACE}")
+    #target_compile_definitions(${MICROSTRAIN_LIBRARY} PUBLIC "MICROSTRAIN_ENABLE_CPP_C_NAMESPACE=${MICROSTRAIN_ENABLE_CPP_C_NAMESPACE}")
 endif()
 
 # Create list of requested libraries for easier linking

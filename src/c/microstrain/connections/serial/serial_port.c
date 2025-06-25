@@ -1,6 +1,6 @@
 #include "serial_port.h"
 
-#include <microstrain/common/logging.h>
+#include <microstrain/logging.h>
 
 #if defined MICROSTRAIN_PLATFORM_WINDOWS
 #include <ctype.h>
@@ -137,11 +137,11 @@ bool serial_port_open(serial_port* port, const char* port_str, int baudrate)
     GetCommTimeouts(port->handle, &timeouts);
 
     // Set the new timeouts
-    timeouts.ReadIntervalTimeout         = 1;
+    timeouts.ReadIntervalTimeout         = 10;
     timeouts.ReadTotalTimeoutMultiplier  = 1;
-    timeouts.ReadTotalTimeoutConstant    = 1;
+    timeouts.ReadTotalTimeoutConstant    = 10;
     timeouts.WriteTotalTimeoutMultiplier = 1;
-    timeouts.WriteTotalTimeoutConstant   = 1;
+    timeouts.WriteTotalTimeoutConstant   = 10;
 
     SetCommTimeouts(port->handle, &timeouts);
 
@@ -369,25 +369,25 @@ bool serial_port_read(serial_port* port, void* buffer, size_t num_bytes, int wai
         return false;
 
 #if defined MICROSTRAIN_PLATFORM_WINDOWS
-    uint32_t bytes_available = serial_port_read_count(port);
-
-    DWORD last_error = GetLastError();
-    if (last_error != 0)
+    if (wait_time == 0)
     {
-        MICROSTRAIN_LOG_ERROR("Failed to read serial port. Error: %lx\n", last_error);
-        serial_port_close(port);
-        return false;
-    }
+        uint32_t bytes_available = serial_port_read_count(port);
 
-    if (wait_time <= 0)
-    {
+        DWORD last_error = GetLastError();
+        if (last_error != 0)
+        {
+            MICROSTRAIN_LOG_ERROR("Failed to read serial port. Error: %lx\n", last_error);
+            serial_port_close(port);
+            return false;
+        }
+
         if (bytes_available == 0)
             return true;
-    }
 
-    // Don't let Windows block on the read
-    if (bytes_available < num_bytes)
-        num_bytes = (bytes_available > 0) ? bytes_available : 1;
+        // Don't let Windows block on the read
+        if (bytes_available < num_bytes)
+            num_bytes = bytes_available;
+    }
 
     DWORD  local_bytes_read;
 

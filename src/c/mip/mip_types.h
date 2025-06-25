@@ -6,7 +6,7 @@
 
 #ifdef __cplusplus
 
-#include <microstrain/common/embedded_time.hpp>
+#include <microstrain/embedded_time.hpp>
 
 namespace mip {
 namespace C {
@@ -17,7 +17,7 @@ typedef microstrain::C::microstrain_embedded_timestamp mip_timeout;
 
 #else
 
-#include <microstrain/common/embedded_time.h>
+#include <microstrain/embedded_time.h>
 
 typedef microstrain_embedded_timestamp mip_timestamp;
 typedef microstrain_embedded_timestamp mip_timeout;

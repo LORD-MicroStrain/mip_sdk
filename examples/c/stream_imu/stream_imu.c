@@ -1,10 +1,10 @@
 
 #include "../example_utils.h"
 
-#include <../../src/c/mip/mip_dispatch.h>
-#include <../../src/c/mip/mip_interface.h>
-#include <../../src/c/microstrain/connections/serial/serial_port.h>
-#include <../../src/c/microstrain/common/platform.h>
+#include <mip/mip_dispatch.h>
+#include <mip/mip_interface.h>
+#include <microstrain/connections/serial/serial_port.h>
+#include <microstrain/platform.h>
 
 #include <../../src/c/mip/definitions/commands_base.h>
 #include <../../src/c/mip/definitions/commands_3dm.h>

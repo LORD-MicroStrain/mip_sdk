@@ -1,7 +1,7 @@
 
 #include "tcp_socket.h"
 
-#include "microstrain/common/logging.h"
+#include "microstrain/logging.h"
 
 #ifdef MICROSTRAIN_PLATFORM_WINDOWS
 

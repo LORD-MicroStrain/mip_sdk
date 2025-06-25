@@ -47,7 +47,6 @@ enum
     MIP_CMD_DESC_3DM_MESSAGE_FORMAT                  = 0x0F,
     MIP_CMD_DESC_3DM_CONFIGURE_FACTORY_STREAMING     = 0x10,
     MIP_CMD_DESC_3DM_CONTROL_DATA_STREAM             = 0x11,
-    MIP_CMD_DESC_3DM_RAW_RTCM_2_3_MESSAGE            = 0x20,
     MIP_CMD_DESC_3DM_GNSS_CONSTELLATION_SETTINGS     = 0x21,
     MIP_CMD_DESC_3DM_GNSS_SBAS_SETTINGS              = 0x22,
     MIP_CMD_DESC_3DM_GNSS_ASSISTED_FIX_SETTINGS      = 0x23,
@@ -63,16 +62,11 @@ enum
     MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_EUL    = 0x31,
     MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_QUAT   = 0x32,
     MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_DCM    = 0x33,
-    MIP_CMD_DESC_3DM_SET_GNSS_DYNAMICS_MODE          = 0x34,
-    MIP_CMD_DESC_3DM_SET_IMU_SIGNAL_COND             = 0x35,
-    MIP_CMD_DESC_3DM_SET_IMU_TIMESTAMP               = 0x36,
     MIP_CMD_DESC_3DM_ACCEL_BIAS                      = 0x37,
     MIP_CMD_DESC_3DM_GYRO_BIAS                       = 0x38,
     MIP_CMD_DESC_3DM_CAPTURE_GYRO_BIAS               = 0x39,
     MIP_CMD_DESC_3DM_HARD_IRON_OFFSET                = 0x3A,
     MIP_CMD_DESC_3DM_SOFT_IRON_MATRIX                = 0x3B,
-    MIP_CMD_DESC_3DM_REALIGN_UP                      = 0x3C,
-    MIP_CMD_DESC_3DM_REALIGN_NORTH                   = 0x3D,
     MIP_CMD_DESC_3DM_CONING_AND_SCULLING_ENABLE      = 0x3E,
     MIP_CMD_DESC_3DM_UART_BAUDRATE                   = 0x40,
     MIP_CMD_DESC_3DM_GPIO_CONFIG                     = 0x41,
@@ -83,11 +77,6 @@ enum
     MIP_CMD_DESC_3DM_SENSOR_RANGE                    = 0x52,
     MIP_CMD_DESC_3DM_CALIBRATED_RANGES               = 0x53,
     MIP_CMD_DESC_3DM_LOWPASS_FILTER                  = 0x54,
-    MIP_CMD_DESC_3DM_DATASTREAM_FORMAT               = 0x60,
-    MIP_CMD_DESC_3DM_DEVICE_POWER_STATE              = 0x61,
-    MIP_CMD_DESC_3DM_SAVE_RESTORE_GPS_SETTINGS       = 0x62,
-    MIP_CMD_DESC_3DM_DEVICE_SETTINGS                 = 0x63,
-    MIP_CMD_DESC_3DM_RAW_CLIP_SETTINGS               = 0x70,
     
     MIP_REPLY_DESC_3DM_IMU_MESSAGE_FORMAT            = 0x80,
     MIP_REPLY_DESC_3DM_GNSS_MESSAGE_FORMAT           = 0x81,
@@ -95,21 +84,12 @@ enum
     MIP_REPLY_DESC_3DM_IMU_BASE_RATE                 = 0x83,
     MIP_REPLY_DESC_3DM_GNSS_BASE_RATE                = 0x84,
     MIP_REPLY_DESC_3DM_DATASTREAM_ENABLE             = 0x85,
-    MIP_REPLY_DESC_3DM_IMU_SIGNAL_SETTINGS           = 0x86,
     MIP_REPLY_DESC_3DM_UART_BAUDRATE                 = 0x87,
-    MIP_REPLY_DESC_3DM_DATASTREAM_FORMAT             = 0x88,
-    MIP_REPLY_DESC_3DM_POWER_STATE                   = 0x89,
     MIP_REPLY_DESC_3DM_FILTER_BASE_RATE              = 0x8A,
     MIP_REPLY_DESC_3DM_ADVANCED_DATA_FILTER          = 0x8B,
     MIP_REPLY_DESC_3DM_POLL_DATA                     = 0x8D,
     MIP_REPLY_DESC_3DM_BASE_RATE                     = 0x8E,
     MIP_REPLY_DESC_3DM_MESSAGE_FORMAT                = 0x8F,
-    MIP_REPLY_DESC_3DM_COMMUNICATIONS_MODE           = 0x91,
-    MIP_REPLY_DESC_3DM_GNSS_DYNAMICS_MODE            = 0x92,
-    MIP_REPLY_DESC_3DM_IMU_TIMESTAMP_VALUE           = 0x93,
-    MIP_REPLY_DESC_3DM_IMU_BASIC_STATUS              = 0x94,
-    MIP_REPLY_DESC_3DM_IMU_ADVANCED_STATUS           = 0x95,
-    MIP_REPLY_DESC_3DM_RAW_CLIP_SETTINGS             = 0x96,
     MIP_REPLY_DESC_3DM_LEGACY_COMP_FILTER            = 0x97,
     MIP_REPLY_DESC_3DM_ACCEL_BIAS_VECTOR             = 0x9A,
     MIP_REPLY_DESC_3DM_GYRO_BIAS_VECTOR              = 0x9B,
@@ -314,6 +294,81 @@ mip_cmd_result mip_3dm_poll_filter_message(mip_interface* device, bool suppress_
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
+///@defgroup 3dm_nmea_poll_data_c  (0x0C,0x04) Nmea Poll Data
+/// Poll the device for a NMEA message with the specified format.
+/// 
+/// This function polls for a NMEA message using the provided format.
+/// If the format is not provided, the device will attempt to use the
+/// stored format (set with the Set NMEA Message Format command.) If no format is provided
+/// and there is no stored format, the device will respond with a NACK. The reply packet contains
+/// an ACK/NACK field. The polled data packet is sent separately as normal NMEA messages.
+///
+///@{
+
+struct mip_3dm_nmea_poll_data_command
+{
+    bool suppress_ack; ///< Suppress the usual ACK/NACK reply.
+    uint8_t count; ///< Number of format entries (limited by payload size)
+    mip_nmea_message format_entries[40]; ///< List of format entries.
+};
+typedef struct mip_3dm_nmea_poll_data_command mip_3dm_nmea_poll_data_command;
+
+void insert_mip_3dm_nmea_poll_data_command(microstrain_serializer* serializer, const mip_3dm_nmea_poll_data_command* self);
+void extract_mip_3dm_nmea_poll_data_command(microstrain_serializer* serializer, mip_3dm_nmea_poll_data_command* self);
+
+mip_cmd_result mip_3dm_nmea_poll_data(mip_interface* device, bool suppress_ack, uint8_t count, const mip_nmea_message* format_entries);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup 3dm_imu_get_base_rate_c  (0x0C,0x06) Imu Get Base Rate
+/// Get the base rate for the IMU data in Hz
+/// 
+/// This is the fastest rate for this type of data available on the device.
+/// This is used in conjunction with the IMU Message Format Command to set streaming data at a specified rate.
+///
+///@{
+
+typedef struct mip_3dm_imu_get_base_rate_command mip_3dm_imu_get_base_rate_command; ///< No parameters (empty struct not allowed in C)
+
+struct mip_3dm_imu_get_base_rate_response
+{
+    uint16_t rate; ///< [hz]
+};
+typedef struct mip_3dm_imu_get_base_rate_response mip_3dm_imu_get_base_rate_response;
+
+void insert_mip_3dm_imu_get_base_rate_response(microstrain_serializer* serializer, const mip_3dm_imu_get_base_rate_response* self);
+void extract_mip_3dm_imu_get_base_rate_response(microstrain_serializer* serializer, mip_3dm_imu_get_base_rate_response* self);
+
+mip_cmd_result mip_3dm_imu_get_base_rate(mip_interface* device, uint16_t* rate_out);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup 3dm_gnss_get_base_rate_c  (0x0C,0x07) Gnss Get Base Rate
+/// Get the base rate for the GNSS data in Hz
+/// 
+/// This is the fastest rate for this type of data available on the device.
+/// This is used in conjunction with the GNSS Message Format Command to set streaming data at a specified rate.
+///
+///@{
+
+typedef struct mip_3dm_gnss_get_base_rate_command mip_3dm_gnss_get_base_rate_command; ///< No parameters (empty struct not allowed in C)
+
+struct mip_3dm_gnss_get_base_rate_response
+{
+    uint16_t rate; ///< [hz]
+};
+typedef struct mip_3dm_gnss_get_base_rate_response mip_3dm_gnss_get_base_rate_response;
+
+void insert_mip_3dm_gnss_get_base_rate_response(microstrain_serializer* serializer, const mip_3dm_gnss_get_base_rate_response* self);
+void extract_mip_3dm_gnss_get_base_rate_response(microstrain_serializer* serializer, mip_3dm_gnss_get_base_rate_response* self);
+
+mip_cmd_result mip_3dm_gnss_get_base_rate(mip_interface* device, uint16_t* rate_out);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
 ///@defgroup 3dm_imu_message_format_c  (0x0C,0x08) Imu Message Format
 /// Set, read, or save the format of the IMU data packet.
 /// 
@@ -351,39 +406,39 @@ mip_cmd_result mip_3dm_default_imu_message_format(mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup 3dm_gps_message_format_c  (0x0C,0x09) Gps Message Format
+///@defgroup 3dm_gnss_message_format_c  (0x0C,0x09) Gnss Message Format
 /// Set, read, or save the format of the GNSS data packet.
 /// 
 /// The resulting data messages will maintain the order of descriptors sent in the command.
 ///
 ///@{
 
-struct mip_3dm_gps_message_format_command
+struct mip_3dm_gnss_message_format_command
 {
     mip_function_selector function;
     uint8_t num_descriptors; ///< Number of descriptors
     mip_descriptor_rate descriptors[82]; ///< Descriptor format list.
 };
-typedef struct mip_3dm_gps_message_format_command mip_3dm_gps_message_format_command;
+typedef struct mip_3dm_gnss_message_format_command mip_3dm_gnss_message_format_command;
 
-void insert_mip_3dm_gps_message_format_command(microstrain_serializer* serializer, const mip_3dm_gps_message_format_command* self);
-void extract_mip_3dm_gps_message_format_command(microstrain_serializer* serializer, mip_3dm_gps_message_format_command* self);
+void insert_mip_3dm_gnss_message_format_command(microstrain_serializer* serializer, const mip_3dm_gnss_message_format_command* self);
+void extract_mip_3dm_gnss_message_format_command(microstrain_serializer* serializer, mip_3dm_gnss_message_format_command* self);
 
-struct mip_3dm_gps_message_format_response
+struct mip_3dm_gnss_message_format_response
 {
     uint8_t num_descriptors; ///< Number of descriptors
     mip_descriptor_rate descriptors[82]; ///< Descriptor format list.
 };
-typedef struct mip_3dm_gps_message_format_response mip_3dm_gps_message_format_response;
+typedef struct mip_3dm_gnss_message_format_response mip_3dm_gnss_message_format_response;
 
-void insert_mip_3dm_gps_message_format_response(microstrain_serializer* serializer, const mip_3dm_gps_message_format_response* self);
-void extract_mip_3dm_gps_message_format_response(microstrain_serializer* serializer, mip_3dm_gps_message_format_response* self);
+void insert_mip_3dm_gnss_message_format_response(microstrain_serializer* serializer, const mip_3dm_gnss_message_format_response* self);
+void extract_mip_3dm_gnss_message_format_response(microstrain_serializer* serializer, mip_3dm_gnss_message_format_response* self);
 
-mip_cmd_result mip_3dm_write_gps_message_format(mip_interface* device, uint8_t num_descriptors, const mip_descriptor_rate* descriptors);
-mip_cmd_result mip_3dm_read_gps_message_format(mip_interface* device, uint8_t* num_descriptors_out, uint8_t num_descriptors_out_max, mip_descriptor_rate* descriptors_out);
-mip_cmd_result mip_3dm_save_gps_message_format(mip_interface* device);
-mip_cmd_result mip_3dm_load_gps_message_format(mip_interface* device);
-mip_cmd_result mip_3dm_default_gps_message_format(mip_interface* device);
+mip_cmd_result mip_3dm_write_gnss_message_format(mip_interface* device, uint8_t num_descriptors, const mip_descriptor_rate* descriptors);
+mip_cmd_result mip_3dm_read_gnss_message_format(mip_interface* device, uint8_t* num_descriptors_out, uint8_t num_descriptors_out_max, mip_descriptor_rate* descriptors_out);
+mip_cmd_result mip_3dm_save_gnss_message_format(mip_interface* device);
+mip_cmd_result mip_3dm_load_gnss_message_format(mip_interface* device);
+mip_cmd_result mip_3dm_default_gnss_message_format(mip_interface* device);
 
 ///@}
 ///
@@ -425,54 +480,6 @@ mip_cmd_result mip_3dm_default_filter_message_format(mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup 3dm_imu_get_base_rate_c  (0x0C,0x06) Imu Get Base Rate
-/// Get the base rate for the IMU data in Hz
-/// 
-/// This is the fastest rate for this type of data available on the device.
-/// This is used in conjunction with the IMU Message Format Command to set streaming data at a specified rate.
-///
-///@{
-
-typedef struct mip_3dm_imu_get_base_rate_command mip_3dm_imu_get_base_rate_command; ///< No parameters (empty struct not allowed in C)
-
-struct mip_3dm_imu_get_base_rate_response
-{
-    uint16_t rate; ///< [hz]
-};
-typedef struct mip_3dm_imu_get_base_rate_response mip_3dm_imu_get_base_rate_response;
-
-void insert_mip_3dm_imu_get_base_rate_response(microstrain_serializer* serializer, const mip_3dm_imu_get_base_rate_response* self);
-void extract_mip_3dm_imu_get_base_rate_response(microstrain_serializer* serializer, mip_3dm_imu_get_base_rate_response* self);
-
-mip_cmd_result mip_3dm_imu_get_base_rate(mip_interface* device, uint16_t* rate_out);
-
-///@}
-///
-////////////////////////////////////////////////////////////////////////////////
-///@defgroup 3dm_gps_get_base_rate_c  (0x0C,0x07) Gps Get Base Rate
-/// Get the base rate for the GNSS data in Hz
-/// 
-/// This is the fastest rate for this type of data available on the device.
-/// This is used in conjunction with the GNSS Message Format Command to set streaming data at a specified rate.
-///
-///@{
-
-typedef struct mip_3dm_gps_get_base_rate_command mip_3dm_gps_get_base_rate_command; ///< No parameters (empty struct not allowed in C)
-
-struct mip_3dm_gps_get_base_rate_response
-{
-    uint16_t rate; ///< [hz]
-};
-typedef struct mip_3dm_gps_get_base_rate_response mip_3dm_gps_get_base_rate_response;
-
-void insert_mip_3dm_gps_get_base_rate_response(microstrain_serializer* serializer, const mip_3dm_gps_get_base_rate_response* self);
-void extract_mip_3dm_gps_get_base_rate_response(microstrain_serializer* serializer, mip_3dm_gps_get_base_rate_response* self);
-
-mip_cmd_result mip_3dm_gps_get_base_rate(mip_interface* device, uint16_t* rate_out);
-
-///@}
-///
-////////////////////////////////////////////////////////////////////////////////
 ///@defgroup 3dm_filter_get_base_rate_c  (0x0C,0x0B) Filter Get Base Rate
 /// Get the base rate for the Estimation Filter data in Hz
 /// 
@@ -493,6 +500,41 @@ void insert_mip_3dm_filter_get_base_rate_response(microstrain_serializer* serial
 void extract_mip_3dm_filter_get_base_rate_response(microstrain_serializer* serializer, mip_3dm_filter_get_base_rate_response* self);
 
 mip_cmd_result mip_3dm_filter_get_base_rate(mip_interface* device, uint16_t* rate_out);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup 3dm_nmea_message_format_c  (0x0C,0x0C) Nmea Message Format
+/// Set, read, or save the NMEA message format.
+///
+///@{
+
+struct mip_3dm_nmea_message_format_command
+{
+    mip_function_selector function;
+    uint8_t count; ///< Number of format entries (limited by payload size)
+    mip_nmea_message format_entries[40]; ///< List of format entries.
+};
+typedef struct mip_3dm_nmea_message_format_command mip_3dm_nmea_message_format_command;
+
+void insert_mip_3dm_nmea_message_format_command(microstrain_serializer* serializer, const mip_3dm_nmea_message_format_command* self);
+void extract_mip_3dm_nmea_message_format_command(microstrain_serializer* serializer, mip_3dm_nmea_message_format_command* self);
+
+struct mip_3dm_nmea_message_format_response
+{
+    uint8_t count; ///< Number of format entries (limited by payload size)
+    mip_nmea_message format_entries[40]; ///< List of format entries.
+};
+typedef struct mip_3dm_nmea_message_format_response mip_3dm_nmea_message_format_response;
+
+void insert_mip_3dm_nmea_message_format_response(microstrain_serializer* serializer, const mip_3dm_nmea_message_format_response* self);
+void extract_mip_3dm_nmea_message_format_response(microstrain_serializer* serializer, mip_3dm_nmea_message_format_response* self);
+
+mip_cmd_result mip_3dm_write_nmea_message_format(mip_interface* device, uint8_t count, const mip_nmea_message* format_entries);
+mip_cmd_result mip_3dm_read_nmea_message_format(mip_interface* device, uint8_t* count_out, uint8_t count_out_max, mip_nmea_message* format_entries_out);
+mip_cmd_result mip_3dm_save_nmea_message_format(mip_interface* device);
+mip_cmd_result mip_3dm_load_nmea_message_format(mip_interface* device);
+mip_cmd_result mip_3dm_default_nmea_message_format(mip_interface* device);
 
 ///@}
 ///
@@ -590,140 +632,6 @@ mip_cmd_result mip_3dm_read_message_format(mip_interface* device, uint8_t desc_s
 mip_cmd_result mip_3dm_save_message_format(mip_interface* device, uint8_t desc_set);
 mip_cmd_result mip_3dm_load_message_format(mip_interface* device, uint8_t desc_set);
 mip_cmd_result mip_3dm_default_message_format(mip_interface* device, uint8_t desc_set);
-
-///@}
-///
-////////////////////////////////////////////////////////////////////////////////
-///@defgroup 3dm_nmea_poll_data_c  (0x0C,0x04) Nmea Poll Data
-/// Poll the device for a NMEA message with the specified format.
-/// 
-/// This function polls for a NMEA message using the provided format.
-/// If the format is not provided, the device will attempt to use the
-/// stored format (set with the Set NMEA Message Format command.) If no format is provided
-/// and there is no stored format, the device will respond with a NACK. The reply packet contains
-/// an ACK/NACK field. The polled data packet is sent separately as normal NMEA messages.
-///
-///@{
-
-struct mip_3dm_nmea_poll_data_command
-{
-    bool suppress_ack; ///< Suppress the usual ACK/NACK reply.
-    uint8_t count; ///< Number of format entries (limited by payload size)
-    mip_nmea_message format_entries[40]; ///< List of format entries.
-};
-typedef struct mip_3dm_nmea_poll_data_command mip_3dm_nmea_poll_data_command;
-
-void insert_mip_3dm_nmea_poll_data_command(microstrain_serializer* serializer, const mip_3dm_nmea_poll_data_command* self);
-void extract_mip_3dm_nmea_poll_data_command(microstrain_serializer* serializer, mip_3dm_nmea_poll_data_command* self);
-
-mip_cmd_result mip_3dm_nmea_poll_data(mip_interface* device, bool suppress_ack, uint8_t count, const mip_nmea_message* format_entries);
-
-///@}
-///
-////////////////////////////////////////////////////////////////////////////////
-///@defgroup 3dm_nmea_message_format_c  (0x0C,0x0C) Nmea Message Format
-/// Set, read, or save the NMEA message format.
-///
-///@{
-
-struct mip_3dm_nmea_message_format_command
-{
-    mip_function_selector function;
-    uint8_t count; ///< Number of format entries (limited by payload size)
-    mip_nmea_message format_entries[40]; ///< List of format entries.
-};
-typedef struct mip_3dm_nmea_message_format_command mip_3dm_nmea_message_format_command;
-
-void insert_mip_3dm_nmea_message_format_command(microstrain_serializer* serializer, const mip_3dm_nmea_message_format_command* self);
-void extract_mip_3dm_nmea_message_format_command(microstrain_serializer* serializer, mip_3dm_nmea_message_format_command* self);
-
-struct mip_3dm_nmea_message_format_response
-{
-    uint8_t count; ///< Number of format entries (limited by payload size)
-    mip_nmea_message format_entries[40]; ///< List of format entries.
-};
-typedef struct mip_3dm_nmea_message_format_response mip_3dm_nmea_message_format_response;
-
-void insert_mip_3dm_nmea_message_format_response(microstrain_serializer* serializer, const mip_3dm_nmea_message_format_response* self);
-void extract_mip_3dm_nmea_message_format_response(microstrain_serializer* serializer, mip_3dm_nmea_message_format_response* self);
-
-mip_cmd_result mip_3dm_write_nmea_message_format(mip_interface* device, uint8_t count, const mip_nmea_message* format_entries);
-mip_cmd_result mip_3dm_read_nmea_message_format(mip_interface* device, uint8_t* count_out, uint8_t count_out_max, mip_nmea_message* format_entries_out);
-mip_cmd_result mip_3dm_save_nmea_message_format(mip_interface* device);
-mip_cmd_result mip_3dm_load_nmea_message_format(mip_interface* device);
-mip_cmd_result mip_3dm_default_nmea_message_format(mip_interface* device);
-
-///@}
-///
-////////////////////////////////////////////////////////////////////////////////
-///@defgroup 3dm_device_settings_c  (0x0C,0x30) Device Settings
-/// Save, Load, or Reset to Default the values for all device settings.
-/// 
-/// When a save current settings command is issued, a brief data disturbance may occur while all settings are written to non-volatile memory.
-/// 
-/// This command should have a long timeout as it may take up to 1 second to complete.
-///
-///@{
-
-struct mip_3dm_device_settings_command
-{
-    mip_function_selector function;
-};
-typedef struct mip_3dm_device_settings_command mip_3dm_device_settings_command;
-
-void insert_mip_3dm_device_settings_command(microstrain_serializer* serializer, const mip_3dm_device_settings_command* self);
-void extract_mip_3dm_device_settings_command(microstrain_serializer* serializer, mip_3dm_device_settings_command* self);
-
-mip_cmd_result mip_3dm_save_device_settings(mip_interface* device);
-mip_cmd_result mip_3dm_load_device_settings(mip_interface* device);
-mip_cmd_result mip_3dm_default_device_settings(mip_interface* device);
-
-///@}
-///
-////////////////////////////////////////////////////////////////////////////////
-///@defgroup 3dm_uart_baudrate_c  (0x0C,0x40) Uart Baudrate
-/// Read, Save, Load, or Reset to Default the baud rate of the main communication channel.
-/// 
-/// For all functions except 0x01 (use new settings), the new baud rate value is ignored.
-/// Please see the device user manual for supported baud rates.
-/// 
-/// The device will wait until all incoming and outgoing data has been sent, up
-/// to a maximum of 250 ms, before applying any change.
-/// 
-/// No guarantee is provided as to what happens to commands issued during this
-/// delay period; They may or may not be processed and any responses aren't
-/// guaranteed to be at one rate or the other. The same applies to data packets.
-/// 
-/// It is highly recommended that the device be idle before issuing this command
-/// and that it be issued in its own packet. Users should wait 250 ms after
-/// sending this command before further interaction.
-///
-///@{
-
-struct mip_3dm_uart_baudrate_command
-{
-    mip_function_selector function;
-    uint32_t baud;
-};
-typedef struct mip_3dm_uart_baudrate_command mip_3dm_uart_baudrate_command;
-
-void insert_mip_3dm_uart_baudrate_command(microstrain_serializer* serializer, const mip_3dm_uart_baudrate_command* self);
-void extract_mip_3dm_uart_baudrate_command(microstrain_serializer* serializer, mip_3dm_uart_baudrate_command* self);
-
-struct mip_3dm_uart_baudrate_response
-{
-    uint32_t baud;
-};
-typedef struct mip_3dm_uart_baudrate_response mip_3dm_uart_baudrate_response;
-
-void insert_mip_3dm_uart_baudrate_response(microstrain_serializer* serializer, const mip_3dm_uart_baudrate_response* self);
-void extract_mip_3dm_uart_baudrate_response(microstrain_serializer* serializer, mip_3dm_uart_baudrate_response* self);
-
-mip_cmd_result mip_3dm_write_uart_baudrate(mip_interface* device, uint32_t baud);
-mip_cmd_result mip_3dm_read_uart_baudrate(mip_interface* device, uint32_t* baud_out);
-mip_cmd_result mip_3dm_save_uart_baudrate(mip_interface* device);
-mip_cmd_result mip_3dm_load_uart_baudrate(mip_interface* device);
-mip_cmd_result mip_3dm_default_uart_baudrate(mip_interface* device);
 
 ///@}
 ///
@@ -923,16 +831,13 @@ mip_cmd_result mip_3dm_default_constellation_settings(mip_interface* device);
 ///
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup 3dm_gnss_sbas_settings_c  (0x0C,0x22) Gnss Sbas Settings
-/// Configure the SBAS subsystem
-/// 
-/// 
-/// 
+/// Configure the GNSS SBAS subsystem
 ///
 ///@{
 
 typedef uint16_t mip_3dm_gnss_sbas_settings_command_sbasoptions;
 static const mip_3dm_gnss_sbas_settings_command_sbasoptions MIP_3DM_GNSS_SBAS_SETTINGS_COMMAND_SBASOPTIONS_NONE               = 0x0000;
-static const mip_3dm_gnss_sbas_settings_command_sbasoptions MIP_3DM_GNSS_SBAS_SETTINGS_COMMAND_SBASOPTIONS_ENABLE_RANGING     = 0x0001; ///<  Use SBAS pseudo-ranges in position solution
+static const mip_3dm_gnss_sbas_settings_command_sbasoptions MIP_3DM_GNSS_SBAS_SETTINGS_COMMAND_SBASOPTIONS_ENABLE_RANGING     = 0x0001; ///<  Use SBAS pseudoranges in position solution
 static const mip_3dm_gnss_sbas_settings_command_sbasoptions MIP_3DM_GNSS_SBAS_SETTINGS_COMMAND_SBASOPTIONS_ENABLE_CORRECTIONS = 0x0002; ///<  Use SBAS differential corrections
 static const mip_3dm_gnss_sbas_settings_command_sbasoptions MIP_3DM_GNSS_SBAS_SETTINGS_COMMAND_SBASOPTIONS_APPLY_INTEGRITY    = 0x0004; ///<  Use SBAS integrity information.  If enabled, only GPS satellites for which integrity information is available will be used.
 static const mip_3dm_gnss_sbas_settings_command_sbasoptions MIP_3DM_GNSS_SBAS_SETTINGS_COMMAND_SBASOPTIONS_ALL                = 0x0007;
@@ -1083,62 +988,6 @@ mip_cmd_result mip_3dm_read_gnss_time_assistance(mip_interface* device, double* 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup 3dm_imu_lowpass_filter_c  (0x0C,0x50) Imu Lowpass Filter
-/// Advanced configuration for the IMU data quantity low-pass filters.
-/// 
-/// Deprecated, use the lowpass filter (0x0C,0x54) command instead.
-/// 
-/// The scaled data quantities are by default filtered through a single-pole IIR low-pass filter
-/// which is configured with a -3dB cutoff frequency of half the reporting frequency (set by
-/// decimation factor in the IMU Message Format command) to prevent aliasing on a per data
-/// quantity basis. This advanced configuration command allows for the cutoff frequency to
-/// be configured independently of the data reporting frequency as well as allowing for a
-/// complete bypass of the digital low-pass filter.
-/// 
-/// Possible data descriptors:
-/// 0x04 - Scaled accelerometer data
-/// 0x05 - Scaled gyro data
-/// 0x06 - Scaled magnetometer data (if applicable)
-/// 0x17 - Scaled pressure data (if applicable)
-///
-///@{
-
-struct mip_3dm_imu_lowpass_filter_command
-{
-    mip_function_selector function;
-    uint8_t target_descriptor; ///< Field descriptor of filtered quantity within the Sensor data set. Supported values are accel (0x04), gyro (0x05), mag (0x06), and pressure (0x17), provided the data is supported by the device. Except with the READ function selector, this can be 0 to apply to all of the above quantities.
-    bool enable; ///< The target data will be filtered if this is true.
-    bool manual; ///< If false, the cutoff frequency is set to half of the streaming rate as configured by the message format command. Otherwise, the cutoff frequency is set according to the following 'frequency' parameter.
-    uint16_t frequency; ///< -3dB cutoff frequency in Hz. Will not affect filtering if 'manual' is false.
-    uint8_t reserved; ///< Reserved, set to 0x00.
-};
-typedef struct mip_3dm_imu_lowpass_filter_command mip_3dm_imu_lowpass_filter_command;
-
-void insert_mip_3dm_imu_lowpass_filter_command(microstrain_serializer* serializer, const mip_3dm_imu_lowpass_filter_command* self);
-void extract_mip_3dm_imu_lowpass_filter_command(microstrain_serializer* serializer, mip_3dm_imu_lowpass_filter_command* self);
-
-struct mip_3dm_imu_lowpass_filter_response
-{
-    uint8_t target_descriptor;
-    bool enable; ///< True if the filter is currently enabled.
-    bool manual; ///< True if the filter cutoff was manually configured.
-    uint16_t frequency; ///< The cutoff frequency of the filter. If the filter is in auto mode, this value is unspecified.
-    uint8_t reserved; ///< Reserved and must be ignored.
-};
-typedef struct mip_3dm_imu_lowpass_filter_response mip_3dm_imu_lowpass_filter_response;
-
-void insert_mip_3dm_imu_lowpass_filter_response(microstrain_serializer* serializer, const mip_3dm_imu_lowpass_filter_response* self);
-void extract_mip_3dm_imu_lowpass_filter_response(microstrain_serializer* serializer, mip_3dm_imu_lowpass_filter_response* self);
-
-mip_cmd_result mip_3dm_write_imu_lowpass_filter(mip_interface* device, uint8_t target_descriptor, bool enable, bool manual, uint16_t frequency, uint8_t reserved);
-mip_cmd_result mip_3dm_read_imu_lowpass_filter(mip_interface* device, uint8_t target_descriptor, bool* enable_out, bool* manual_out, uint16_t* frequency_out, uint8_t* reserved_out);
-mip_cmd_result mip_3dm_save_imu_lowpass_filter(mip_interface* device, uint8_t target_descriptor);
-mip_cmd_result mip_3dm_load_imu_lowpass_filter(mip_interface* device, uint8_t target_descriptor);
-mip_cmd_result mip_3dm_default_imu_lowpass_filter(mip_interface* device, uint8_t target_descriptor);
-
-///@}
-///
-////////////////////////////////////////////////////////////////////////////////
 ///@defgroup 3dm_pps_source_c  (0x0C,0x28) Pps Source
 /// Controls the Pulse Per Second (PPS) source.
 ///
@@ -1190,236 +1039,6 @@ mip_cmd_result mip_3dm_read_pps_source(mip_interface* device, mip_3dm_pps_source
 mip_cmd_result mip_3dm_save_pps_source(mip_interface* device);
 mip_cmd_result mip_3dm_load_pps_source(mip_interface* device);
 mip_cmd_result mip_3dm_default_pps_source(mip_interface* device);
-
-///@}
-///
-////////////////////////////////////////////////////////////////////////////////
-///@defgroup 3dm_gpio_config_c  (0x0C,0x41) Gpio Config
-/// Configures the user GPIO pins on the connector for use with several built-in functions or for general input or output.
-/// 
-/// GPIO pins are device-dependent. Some features are only available on
-/// certain pins. Some behaviors require specific configurations.
-/// Consult the device user manual for restrictions and default settings.
-/// 
-/// To avoid glitches on GPIOs configured as an output in a mode other than
-/// GPIO, always configure the relevant function before setting up the pin
-/// with this command. Otherwise, the pin state will be undefined between
-/// this command and the one to set up the feature. For input pins, use
-/// this command first so the state is well-defined when the feature is
-/// initialized.
-/// 
-/// Some configurations can only be active on one pin at a time. If such
-/// configuration is applied to a second pin, the second one will take
-/// precedence and the original pin's configuration will be reset.
-/// 
-///
-///@{
-
-enum mip_3dm_gpio_config_command_feature
-{
-    MIP_3DM_GPIO_CONFIG_COMMAND_FEATURE_UNUSED    = 0,  ///<  The pin is not used. It may be technically possible to read the pin state in this mode, but this is not guaranteed to be true of all devices or pins.
-    MIP_3DM_GPIO_CONFIG_COMMAND_FEATURE_GPIO      = 1,  ///<  General purpose input or output. Use this for direct control of pin output state or to stream the state of the pin.
-    MIP_3DM_GPIO_CONFIG_COMMAND_FEATURE_PPS       = 2,  ///<  Pulse per second input or output.
-    MIP_3DM_GPIO_CONFIG_COMMAND_FEATURE_ENCODER   = 3,  ///<  Motor encoder/odometer input.
-    MIP_3DM_GPIO_CONFIG_COMMAND_FEATURE_TIMESTAMP = 4,  ///<  Precision Timestamping. Use with Event Trigger Configuration (0x0C,0x2E).
-    MIP_3DM_GPIO_CONFIG_COMMAND_FEATURE_UART      = 5,  ///<  UART data or control lines.
-};
-typedef enum mip_3dm_gpio_config_command_feature mip_3dm_gpio_config_command_feature;
-
-static inline void insert_mip_3dm_gpio_config_command_feature(microstrain_serializer* serializer, const mip_3dm_gpio_config_command_feature self)
-{
-    microstrain_insert_u8(serializer, (uint8_t)(self));
-}
-static inline void extract_mip_3dm_gpio_config_command_feature(microstrain_serializer* serializer, mip_3dm_gpio_config_command_feature* self)
-{
-    uint8_t tmp = 0;
-    microstrain_extract_u8(serializer, &tmp);
-    *self = (mip_3dm_gpio_config_command_feature)tmp;
-}
-
-enum mip_3dm_gpio_config_command_behavior
-{
-    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_UNUSED            = 0,  ///<  Use 0 unless otherwise specified.
-    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_GPIO_INPUT        = 1,  ///<  Pin will be an input. This can be used to stream or poll the value and is the default setting.
-    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_GPIO_OUTPUT_LOW   = 2,  ///<  Pin is an output initially in the LOW state. This state will be restored during system startup if the configuration is saved.
-    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_GPIO_OUTPUT_HIGH  = 3,  ///<  Pin is an output initially in the HIGH state. This state will be restored during system startup if the configuration is saved.
-    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_PPS_INPUT         = 1,  ///<  Pin will receive the pulse-per-second signal. Only one pin can have this behavior. This will only work if the PPS Source command is configured to GPIO.
-    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_PPS_OUTPUT        = 2,  ///<  Pin will transmit the pulse-per-second signal from the device.
-    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_ENCODER_A         = 1,  ///<  Encoder "A" quadrature input. Only one pin can have this behavior. The last command to set this behavior will take precedence.
-    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_ENCODER_B         = 2,  ///<  Encoder "B" quadrature input. Only one pin can have this behavior. The last command to set this behavior will take precedence.
-    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_TIMESTAMP_RISING  = 1,  ///<  Rising edges will be timestamped.
-    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_TIMESTAMP_FALLING = 2,  ///<  Falling edges will be timestamped.
-    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_TIMESTAMP_EITHER  = 3,  ///<  Both rising and falling edges will be timestamped.
-    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_UART_PORT2_TX     = 33,  ///<  (0x21) UART port 2 transmit.
-    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_UART_PORT2_RX     = 34,  ///<  (0x22) UART port 2 receive.
-    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_UART_PORT3_TX     = 49,  ///<  (0x31) UART port 3 transmit.
-    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_UART_PORT3_RX     = 50,  ///<  (0x32) UART port 3 receive.
-};
-typedef enum mip_3dm_gpio_config_command_behavior mip_3dm_gpio_config_command_behavior;
-
-static inline void insert_mip_3dm_gpio_config_command_behavior(microstrain_serializer* serializer, const mip_3dm_gpio_config_command_behavior self)
-{
-    microstrain_insert_u8(serializer, (uint8_t)(self));
-}
-static inline void extract_mip_3dm_gpio_config_command_behavior(microstrain_serializer* serializer, mip_3dm_gpio_config_command_behavior* self)
-{
-    uint8_t tmp = 0;
-    microstrain_extract_u8(serializer, &tmp);
-    *self = (mip_3dm_gpio_config_command_behavior)tmp;
-}
-
-typedef uint8_t mip_3dm_gpio_config_command_pin_mode;
-static const mip_3dm_gpio_config_command_pin_mode MIP_3DM_GPIO_CONFIG_COMMAND_PIN_MODE_NONE       = 0x00;
-static const mip_3dm_gpio_config_command_pin_mode MIP_3DM_GPIO_CONFIG_COMMAND_PIN_MODE_OPEN_DRAIN = 0x01; ///<  The pin will be an open-drain output. The state will be either LOW or FLOATING instead of LOW or HIGH, respectively. This is used to connect multiple open-drain outputs from several devices. An internal or external pull-up resistor is typically used in combination. The maximum voltage of an open drain output is subject to the device maximum input voltage range found in the specifications.
-static const mip_3dm_gpio_config_command_pin_mode MIP_3DM_GPIO_CONFIG_COMMAND_PIN_MODE_PULLDOWN   = 0x02; ///<  The pin will have an internal pull-down resistor enabled. This is useful for connecting inputs to signals which can only be pulled high such as mechanical switches. Cannot be used in combination with pull-up. See the device specifications for the resistance value.
-static const mip_3dm_gpio_config_command_pin_mode MIP_3DM_GPIO_CONFIG_COMMAND_PIN_MODE_PULLUP     = 0x04; ///<  The pin will have an internal pull-up resistor enabled. Useful for connecting inputs to signals which can only be pulled low such as mechanical switches, or in combination with an open drain output. Cannot be used in combination with pull-down. See the device specifications for the resistance value. Use of this mode may restrict the maximum allowed input voltage. See the device datasheet for details.
-static const mip_3dm_gpio_config_command_pin_mode MIP_3DM_GPIO_CONFIG_COMMAND_PIN_MODE_ALL        = 0x07;
-static inline void insert_mip_3dm_gpio_config_command_pin_mode(microstrain_serializer* serializer, const mip_3dm_gpio_config_command_pin_mode self)
-{
-    microstrain_insert_u8(serializer, (uint8_t)(self));
-}
-static inline void extract_mip_3dm_gpio_config_command_pin_mode(microstrain_serializer* serializer, mip_3dm_gpio_config_command_pin_mode* self)
-{
-    uint8_t tmp = 0;
-    microstrain_extract_u8(serializer, &tmp);
-    *self = (mip_3dm_gpio_config_command_pin_mode)tmp;
-}
-
-
-struct mip_3dm_gpio_config_command
-{
-    mip_function_selector function;
-    uint8_t pin; ///< GPIO pin number counting from 1. For save, load, and default function selectors, this can be 0 to select all pins.
-    mip_3dm_gpio_config_command_feature feature; ///< Determines how the pin will be used.
-    mip_3dm_gpio_config_command_behavior behavior; ///< Select an appropriate value from the enumeration based on the selected feature (e.g. for PPS, select one of the values prefixed with PPS_.)
-    mip_3dm_gpio_config_command_pin_mode pin_mode; ///< GPIO configuration. May be restricted depending on device, pin, feature, and behavior. See device user manual.
-};
-typedef struct mip_3dm_gpio_config_command mip_3dm_gpio_config_command;
-
-void insert_mip_3dm_gpio_config_command(microstrain_serializer* serializer, const mip_3dm_gpio_config_command* self);
-void extract_mip_3dm_gpio_config_command(microstrain_serializer* serializer, mip_3dm_gpio_config_command* self);
-
-struct mip_3dm_gpio_config_response
-{
-    uint8_t pin; ///< GPIO pin number counting from 1. For save, load, and default function selectors, this can be 0 to select all pins.
-    mip_3dm_gpio_config_command_feature feature; ///< Determines how the pin will be used.
-    mip_3dm_gpio_config_command_behavior behavior; ///< Select an appropriate value from the enumeration based on the selected feature (e.g. for PPS, select one of the values prefixed with PPS_.)
-    mip_3dm_gpio_config_command_pin_mode pin_mode; ///< GPIO configuration. May be restricted depending on device, pin, feature, and behavior. See device user manual.
-};
-typedef struct mip_3dm_gpio_config_response mip_3dm_gpio_config_response;
-
-void insert_mip_3dm_gpio_config_response(microstrain_serializer* serializer, const mip_3dm_gpio_config_response* self);
-void extract_mip_3dm_gpio_config_response(microstrain_serializer* serializer, mip_3dm_gpio_config_response* self);
-
-mip_cmd_result mip_3dm_write_gpio_config(mip_interface* device, uint8_t pin, mip_3dm_gpio_config_command_feature feature, mip_3dm_gpio_config_command_behavior behavior, mip_3dm_gpio_config_command_pin_mode pin_mode);
-mip_cmd_result mip_3dm_read_gpio_config(mip_interface* device, uint8_t pin, mip_3dm_gpio_config_command_feature* feature_out, mip_3dm_gpio_config_command_behavior* behavior_out, mip_3dm_gpio_config_command_pin_mode* pin_mode_out);
-mip_cmd_result mip_3dm_save_gpio_config(mip_interface* device, uint8_t pin);
-mip_cmd_result mip_3dm_load_gpio_config(mip_interface* device, uint8_t pin);
-mip_cmd_result mip_3dm_default_gpio_config(mip_interface* device, uint8_t pin);
-
-///@}
-///
-////////////////////////////////////////////////////////////////////////////////
-///@defgroup 3dm_gpio_state_c  (0x0C,0x42) Gpio State
-/// Allows the state of the pin to be read or controlled.
-/// 
-/// This command serves two purposes: 1) To allow reading the state of a pin via command,
-/// rather than polling a data quantity, and 2) to provide a way to set the output state
-/// without also having to specify the operating mode.
-/// 
-/// The state read back from the pin is the physical state of the pin, rather than a
-/// configuration value. The state can be read regardless of its configuration as long as
-/// the device supports GPIO input on that pin. If the pin is set to an output, the read
-/// value would match the output value.
-/// 
-/// While the state of a pin can always be set, it will only have an observable effect if
-/// the pin is set to output mode.
-/// 
-/// This command does not support saving, loading, or resetting the state. Instead, use the
-/// GPIO Configuration command, which allows the initial state to be configured.
-///
-///@{
-
-struct mip_3dm_gpio_state_command
-{
-    mip_function_selector function;
-    uint8_t pin; ///< GPIO pin number counting from 1. Cannot be 0.
-    bool state; ///< The pin state.
-};
-typedef struct mip_3dm_gpio_state_command mip_3dm_gpio_state_command;
-
-void insert_mip_3dm_gpio_state_command(microstrain_serializer* serializer, const mip_3dm_gpio_state_command* self);
-void extract_mip_3dm_gpio_state_command(microstrain_serializer* serializer, mip_3dm_gpio_state_command* self);
-
-struct mip_3dm_gpio_state_response
-{
-    uint8_t pin; ///< GPIO pin number counting from 1. Cannot be 0.
-    bool state; ///< The pin state.
-};
-typedef struct mip_3dm_gpio_state_response mip_3dm_gpio_state_response;
-
-void insert_mip_3dm_gpio_state_response(microstrain_serializer* serializer, const mip_3dm_gpio_state_response* self);
-void extract_mip_3dm_gpio_state_response(microstrain_serializer* serializer, mip_3dm_gpio_state_response* self);
-
-mip_cmd_result mip_3dm_write_gpio_state(mip_interface* device, uint8_t pin, bool state);
-mip_cmd_result mip_3dm_read_gpio_state(mip_interface* device, uint8_t pin, bool* state_out);
-
-///@}
-///
-////////////////////////////////////////////////////////////////////////////////
-///@defgroup 3dm_odometer_c  (0x0C,0x43) Odometer
-/// Configures the hardware odometer interface.
-/// 
-///
-///@{
-
-enum mip_3dm_odometer_command_mode
-{
-    MIP_3DM_ODOMETER_COMMAND_MODE_DISABLED   = 0,  ///<  Encoder is disabled.
-    MIP_3DM_ODOMETER_COMMAND_MODE_QUADRATURE = 2,  ///<  Quadrature encoder mode.
-};
-typedef enum mip_3dm_odometer_command_mode mip_3dm_odometer_command_mode;
-
-static inline void insert_mip_3dm_odometer_command_mode(microstrain_serializer* serializer, const mip_3dm_odometer_command_mode self)
-{
-    microstrain_insert_u8(serializer, (uint8_t)(self));
-}
-static inline void extract_mip_3dm_odometer_command_mode(microstrain_serializer* serializer, mip_3dm_odometer_command_mode* self)
-{
-    uint8_t tmp = 0;
-    microstrain_extract_u8(serializer, &tmp);
-    *self = (mip_3dm_odometer_command_mode)tmp;
-}
-
-
-struct mip_3dm_odometer_command
-{
-    mip_function_selector function;
-    mip_3dm_odometer_command_mode mode; ///< Mode setting.
-    float scaling; ///< Encoder pulses per meter of distance traveled [pulses/m]. Distance traveled is computed using the formula d = p / N * 2R * pi, where d is distance, p is the number of pulses received, N is the encoder resolution, and R is the wheel radius. By simplifying all of the parameters into one, the formula d = p / S is obtained, where s is the odometer scaling factor passed to this command. S is equivalent to N / (2R * pi) and has units of pulses / meter. N is in units of "A" pulses per revolution and R is in meters. Make this value negative if the odometer is mounted so that it rotates backwards.
-    float uncertainty; ///< Uncertainty in encoder counts to distance translation (1-sigma value) [m/m].
-};
-typedef struct mip_3dm_odometer_command mip_3dm_odometer_command;
-
-void insert_mip_3dm_odometer_command(microstrain_serializer* serializer, const mip_3dm_odometer_command* self);
-void extract_mip_3dm_odometer_command(microstrain_serializer* serializer, mip_3dm_odometer_command* self);
-
-struct mip_3dm_odometer_response
-{
-    mip_3dm_odometer_command_mode mode; ///< Mode setting.
-    float scaling; ///< Encoder pulses per meter of distance traveled [pulses/m]. Distance traveled is computed using the formula d = p / N * 2R * pi, where d is distance, p is the number of pulses received, N is the encoder resolution, and R is the wheel radius. By simplifying all of the parameters into one, the formula d = p / S is obtained, where s is the odometer scaling factor passed to this command. S is equivalent to N / (2R * pi) and has units of pulses / meter. N is in units of "A" pulses per revolution and R is in meters. Make this value negative if the odometer is mounted so that it rotates backwards.
-    float uncertainty; ///< Uncertainty in encoder counts to distance translation (1-sigma value) [m/m].
-};
-typedef struct mip_3dm_odometer_response mip_3dm_odometer_response;
-
-void insert_mip_3dm_odometer_response(microstrain_serializer* serializer, const mip_3dm_odometer_response* self);
-void extract_mip_3dm_odometer_response(microstrain_serializer* serializer, mip_3dm_odometer_response* self);
-
-mip_cmd_result mip_3dm_write_odometer(mip_interface* device, mip_3dm_odometer_command_mode mode, float scaling, float uncertainty);
-mip_cmd_result mip_3dm_read_odometer(mip_interface* device, mip_3dm_odometer_command_mode* mode_out, float* scaling_out, float* uncertainty_out);
-mip_cmd_result mip_3dm_save_odometer(mip_interface* device);
-mip_cmd_result mip_3dm_load_odometer(mip_interface* device);
-mip_cmd_result mip_3dm_default_odometer(mip_interface* device);
 
 ///@}
 ///
@@ -1701,7 +1320,7 @@ void extract_mip_3dm_event_trigger_command_gpio_params(microstrain_serializer* s
 enum mip_3dm_event_trigger_command_threshold_params_type
 {
     MIP_3DM_EVENT_TRIGGER_COMMAND_THRESHOLD_PARAMS_TYPE_WINDOW   = 1,  ///<  Window comparison. Trigger is active if low_thres &lt;= value &lt;= high_thres. If the thresholds are reversed, the trigger is active when value &lt; high_thres or value &gt; low_thres.
-    MIP_3DM_EVENT_TRIGGER_COMMAND_THRESHOLD_PARAMS_TYPE_INTERVAL = 2,  ///<  Trigger at evenly-spaced intervals. Normally used with time fields to trigger periodically. Trigger is active when (value % interval) &lt;= int_thres. If the thresholds are reversed (high_thres &lt; low_thres) then the trigger is active when (value % low_thres) &gt; high_thres.
+    MIP_3DM_EVENT_TRIGGER_COMMAND_THRESHOLD_PARAMS_TYPE_INTERVAL = 2,  ///<  Trigger at evenly spaced intervals. Normally used with time fields to trigger periodically. Trigger is active when (value % interval) &lt;= int_thres. If the thresholds are reversed (high_thres &lt; low_thres) then the trigger is active when (value % low_thres) &gt; high_thres.
 };
 typedef enum mip_3dm_event_trigger_command_threshold_params_type mip_3dm_event_trigger_command_threshold_params_type;
 
@@ -1933,6 +1552,224 @@ mip_cmd_result mip_3dm_default_event_action(mip_interface* device, uint8_t insta
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
+///@defgroup 3dm_device_settings_c  (0x0C,0x30) Device Settings
+/// Save, Load, or Reset to Default the values for all device settings.
+/// 
+/// When a save current settings command is issued, a brief data disturbance may occur while all settings are written to non-volatile memory.
+/// 
+/// This command should have a long timeout as it may take up to 1 second to complete.
+///
+///@{
+
+struct mip_3dm_device_settings_command
+{
+    mip_function_selector function;
+};
+typedef struct mip_3dm_device_settings_command mip_3dm_device_settings_command;
+
+void insert_mip_3dm_device_settings_command(microstrain_serializer* serializer, const mip_3dm_device_settings_command* self);
+void extract_mip_3dm_device_settings_command(microstrain_serializer* serializer, mip_3dm_device_settings_command* self);
+
+mip_cmd_result mip_3dm_save_device_settings(mip_interface* device);
+mip_cmd_result mip_3dm_load_device_settings(mip_interface* device);
+mip_cmd_result mip_3dm_default_device_settings(mip_interface* device);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup 3dm_sensor_2_vehicle_transform_euler_c  (0x0C,0x31) Sensor 2 Vehicle Transform Euler
+/// Sets the sensor-to-vehicle frame transformation using Yaw, Pitch, and Roll Euler angles.
+/// 
+/// These are the Yaw, Pitch, and Roll mounting angles of the sensor with respect to vehicle frame of reference,
+/// and describe the transformation of vectors from the sensor body frame to the vehicle frame.<br/>
+/// 
+/// Note: This is the transformation, the inverse of the rotation defined in our legacy products.<br/>
+/// 
+/// The transformation may be stored in the device as a matrix or quaternion.  When Euler angles are read back from the device, they may not
+/// be exactly equal to the Euler angles used to set the transformation, but they are functionally equivalent, such that they result in the same transformation.<br/>
+/// <br/><br/>
+/// This transformation to the vehicle frame will be applied to the following output quantities:<br/><br/>
+/// IMU:<br/>
+/// Scaled Acceleration<br/>
+/// Scaled Gyro<br/>
+/// Scaled Magnetometer<br/>
+/// Delta Theta<br/>
+/// Delta Velocity<br/>
+/// Complementary Filter Orientation<br/>
+/// <br/><br/>
+/// Estimation Filter:<br/>
+/// Estimated Orientation, Quaternion<br/>
+/// Estimated Orientation, Matrix<br/>
+/// Estimated Orientation, Euler Angles<br/>
+/// Estimated Linear Acceleration<br/>
+/// Estimated Angular Rate<br/>
+/// Estimated Gravity Vector<br/>
+/// <br/>
+/// Changing this setting will force all low-pass filters, the complementary filter, and the estimation filter to reset.
+///
+///@{
+
+struct mip_3dm_sensor_2_vehicle_transform_euler_command
+{
+    mip_function_selector function;
+    float roll; ///< [radians]
+    float pitch; ///< [radians]
+    float yaw; ///< [radians]
+};
+typedef struct mip_3dm_sensor_2_vehicle_transform_euler_command mip_3dm_sensor_2_vehicle_transform_euler_command;
+
+void insert_mip_3dm_sensor_2_vehicle_transform_euler_command(microstrain_serializer* serializer, const mip_3dm_sensor_2_vehicle_transform_euler_command* self);
+void extract_mip_3dm_sensor_2_vehicle_transform_euler_command(microstrain_serializer* serializer, mip_3dm_sensor_2_vehicle_transform_euler_command* self);
+
+struct mip_3dm_sensor_2_vehicle_transform_euler_response
+{
+    float roll; ///< [radians]
+    float pitch; ///< [radians]
+    float yaw; ///< [radians]
+};
+typedef struct mip_3dm_sensor_2_vehicle_transform_euler_response mip_3dm_sensor_2_vehicle_transform_euler_response;
+
+void insert_mip_3dm_sensor_2_vehicle_transform_euler_response(microstrain_serializer* serializer, const mip_3dm_sensor_2_vehicle_transform_euler_response* self);
+void extract_mip_3dm_sensor_2_vehicle_transform_euler_response(microstrain_serializer* serializer, mip_3dm_sensor_2_vehicle_transform_euler_response* self);
+
+mip_cmd_result mip_3dm_write_sensor_2_vehicle_transform_euler(mip_interface* device, float roll, float pitch, float yaw);
+mip_cmd_result mip_3dm_read_sensor_2_vehicle_transform_euler(mip_interface* device, float* roll_out, float* pitch_out, float* yaw_out);
+mip_cmd_result mip_3dm_save_sensor_2_vehicle_transform_euler(mip_interface* device);
+mip_cmd_result mip_3dm_load_sensor_2_vehicle_transform_euler(mip_interface* device);
+mip_cmd_result mip_3dm_default_sensor_2_vehicle_transform_euler(mip_interface* device);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup 3dm_sensor_2_vehicle_transform_quaternion_c  (0x0C,0x32) Sensor 2 Vehicle Transform Quaternion
+/// Set the sensor-to-vehicle frame transformation using unit length quaternion.
+/// 
+/// Note: This is the transformation, the inverse of the rotation.
+/// 
+/// This quaternion describes the transformation of vectors from the sensor body frame to the vehicle frame of reference, and satisfies the following relationship:<br/>
+/// 
+/// EQSTART p^{veh} = q^{-1} p^{sen} q EQEND<br/>
+/// 
+/// Where:<br/>
+/// EQSTART q = (q_w, q_x, q_y, q_z) EQEND is the quaternion describing the transformation. <br/>
+/// EQSTART p^{sen} = (0, v^{sen}_x, v^{sen}_y, v^{sen}_z) EQEND and EQSTART v^{sen} EQEND is a 3-element vector expressed in the sensor body frame.<br/>
+/// EQSTART p^{veh} = (0, v^{veh}_x, v^{veh}_y, v^{veh}_z) EQEND and EQSTART v^{veh} EQEND is a 3-element vector expressed in the vehicle frame.<br/>
+/// 
+/// The transformation may be stored in the device as a matrix or a quaternion.  When the quaternion is read back from the device, it may not
+/// be exactly equal to the quaternion used to set the transformation, but it is functionally equivalent.<br/>
+/// <br/><br/>
+/// This transformation affects the following output quantities:<br/><br/>
+/// IMU:<br/>
+/// Scaled Acceleration<br/>
+/// Scaled Gyro<br/>
+/// Scaled Magnetometer<br/>
+/// Delta Theta<br/>
+/// Delta Velocity<br/>
+/// <br/><br/>
+/// Estimation Filter:<br/>
+/// Estimated Orientation, Quaternion<br/>
+/// Estimated Orientation, Matrix<br/>
+/// Estimated Orientation, Euler Angles<br/>
+/// Estimated Linear Acceleration<br/>
+/// Estimated Angular Rate<br/>
+/// Estimated Gravity Vector<br/>
+/// <br/>
+/// Changing this setting will force all low-pass filters, the complementary filter, and the estimation filter to reset.
+///
+///@{
+
+struct mip_3dm_sensor_2_vehicle_transform_quaternion_command
+{
+    mip_function_selector function;
+    mip_quatf q; ///< Unit length quaternion representing transform [w, i, j, k]
+};
+typedef struct mip_3dm_sensor_2_vehicle_transform_quaternion_command mip_3dm_sensor_2_vehicle_transform_quaternion_command;
+
+void insert_mip_3dm_sensor_2_vehicle_transform_quaternion_command(microstrain_serializer* serializer, const mip_3dm_sensor_2_vehicle_transform_quaternion_command* self);
+void extract_mip_3dm_sensor_2_vehicle_transform_quaternion_command(microstrain_serializer* serializer, mip_3dm_sensor_2_vehicle_transform_quaternion_command* self);
+
+struct mip_3dm_sensor_2_vehicle_transform_quaternion_response
+{
+    mip_quatf q; ///< Unit length quaternion representing transform [w, i, j, k]
+};
+typedef struct mip_3dm_sensor_2_vehicle_transform_quaternion_response mip_3dm_sensor_2_vehicle_transform_quaternion_response;
+
+void insert_mip_3dm_sensor_2_vehicle_transform_quaternion_response(microstrain_serializer* serializer, const mip_3dm_sensor_2_vehicle_transform_quaternion_response* self);
+void extract_mip_3dm_sensor_2_vehicle_transform_quaternion_response(microstrain_serializer* serializer, mip_3dm_sensor_2_vehicle_transform_quaternion_response* self);
+
+mip_cmd_result mip_3dm_write_sensor_2_vehicle_transform_quaternion(mip_interface* device, const float* q);
+mip_cmd_result mip_3dm_read_sensor_2_vehicle_transform_quaternion(mip_interface* device, float* q_out);
+mip_cmd_result mip_3dm_save_sensor_2_vehicle_transform_quaternion(mip_interface* device);
+mip_cmd_result mip_3dm_load_sensor_2_vehicle_transform_quaternion(mip_interface* device);
+mip_cmd_result mip_3dm_default_sensor_2_vehicle_transform_quaternion(mip_interface* device);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup 3dm_sensor_2_vehicle_transform_dcm_c  (0x0C,0x33) Sensor 2 Vehicle Transform Dcm
+/// Set the sensor to vehicle frame transformation using a using a 3 x 3 direction cosine matrix EQSTART M_{ned}^{veh} EQEND, stored in row-major order in a 9-element array.
+/// 
+/// These angles define the transformation of vectors from the sensor body frame to the fixed vehicle frame, according to:<br/>
+/// EQSTART v^{veh} = M_{sen}^{veh} v^{sen} EQEND<br/>
+/// 
+/// Where:<br/>
+/// 
+/// EQSTART v^{sen} EQEND is a 3-element vector expressed in the sensor body frame. <br/>
+/// EQSTART v^{veh} EQEND is the same 3-element vector expressed in the vehicle frame.  <br/>
+/// <br/>
+/// The matrix elements are stored is row-major order: EQSTART M_{sen}^{veh} = \\begin{bmatrix} M_{11}, M_{12}, M_{13}, M_{21}, M_{22}, M_{23}, M_{31}, M_{32}, M_{33} \\end{bmatrix} EQEND
+/// 
+/// The transformation may be stored in the device as a matrix or a quaternion. When EQSTART M_{sen}^{veh} EQEND is read back from the device, it may not
+/// be exactly equal to array used to set the transformation, but it is functionally equivalent.<br/>
+/// <br/><br/>
+/// This transformation affects the following output quantities:<br/><br/>
+/// IMU:<br/>
+/// Scaled Acceleration<br/>
+/// Scaled Gyro<br/>
+/// Scaled Magnetometer<br/>
+/// Delta Theta<br/>
+/// Delta Velocity<br/>
+/// <br/><br/>
+/// Estimation Filter:<br/>
+/// Estimated Orientation, Quaternion<br/>
+/// Estimated Orientation, Matrix<br/>
+/// Estimated Orientation, Euler Angles<br/>
+/// Estimated Linear Acceleration<br/>
+/// Estimated Angular Rate<br/>
+/// Estimated Gravity Vector<br/>
+/// <br/>
+/// Changing this setting will force all low-pass filters, the complementary filter, and the estimation filter to reset.
+///
+///@{
+
+struct mip_3dm_sensor_2_vehicle_transform_dcm_command
+{
+    mip_function_selector function;
+    mip_matrix3f dcm; ///< 3 x 3 direction cosine matrix, stored in row-major order
+};
+typedef struct mip_3dm_sensor_2_vehicle_transform_dcm_command mip_3dm_sensor_2_vehicle_transform_dcm_command;
+
+void insert_mip_3dm_sensor_2_vehicle_transform_dcm_command(microstrain_serializer* serializer, const mip_3dm_sensor_2_vehicle_transform_dcm_command* self);
+void extract_mip_3dm_sensor_2_vehicle_transform_dcm_command(microstrain_serializer* serializer, mip_3dm_sensor_2_vehicle_transform_dcm_command* self);
+
+struct mip_3dm_sensor_2_vehicle_transform_dcm_response
+{
+    mip_matrix3f dcm; ///< 3 x 3 direction cosine matrix, stored in row-major order
+};
+typedef struct mip_3dm_sensor_2_vehicle_transform_dcm_response mip_3dm_sensor_2_vehicle_transform_dcm_response;
+
+void insert_mip_3dm_sensor_2_vehicle_transform_dcm_response(microstrain_serializer* serializer, const mip_3dm_sensor_2_vehicle_transform_dcm_response* self);
+void extract_mip_3dm_sensor_2_vehicle_transform_dcm_response(microstrain_serializer* serializer, mip_3dm_sensor_2_vehicle_transform_dcm_response* self);
+
+mip_cmd_result mip_3dm_write_sensor_2_vehicle_transform_dcm(mip_interface* device, const float* dcm);
+mip_cmd_result mip_3dm_read_sensor_2_vehicle_transform_dcm(mip_interface* device, float* dcm_out);
+mip_cmd_result mip_3dm_save_sensor_2_vehicle_transform_dcm(mip_interface* device);
+mip_cmd_result mip_3dm_load_sensor_2_vehicle_transform_dcm(mip_interface* device);
+mip_cmd_result mip_3dm_default_sensor_2_vehicle_transform_dcm(mip_interface* device);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
 ///@defgroup 3dm_accel_bias_c  (0x0C,0x37) Accel Bias
 /// Configures the user specified accelerometer bias
 /// 
@@ -2086,7 +1923,6 @@ mip_cmd_result mip_3dm_default_mag_hard_iron_offset(mip_interface* device);
 /// 
 /// The matrix is in row major order:
 /// EQSTART M = \\begin{bmatrix} 0 &amp; 1 &amp; 2 \\\\ 3 &amp; 4 &amp; 5 \\\\ 6 &amp; 7 &amp; 8 \\end{bmatrix} EQEND
-/// 
 ///
 ///@{
 
@@ -2151,191 +1987,334 @@ mip_cmd_result mip_3dm_default_coning_sculling_enable(mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup 3dm_sensor_2_vehicle_transform_euler_c  (0x0C,0x31) Sensor 2 Vehicle Transform Euler
-/// Sets the sensor-to-vehicle frame transformation using Yaw, Pitch, Roll Euler angles.
-/// These are the Yaw, Pitch, and Roll mounting angles of the sensor with respect to vehicle frame of reference,
-/// and describe the transformation of vectors from the sensor body frame to the vehicle frame.<br/>
-/// Note: This is the transformation, the inverse of the rotation defined in our legacy products.<br/>
-/// The transformation may be stored in the device as a matrix or quaternion.  When Euler angles are read back from the device, they may not
-/// be exactly equal to the Euler angles used to set the transformation, but they are functionally equivalent, such that they result in the same transformation.<br/>
-/// <br/><br/>
-/// This transformation to the vehicle frame will be applied to the following output quantities:<br/><br/>
-/// IMU:<br/>
-/// Scaled Acceleration<br/>
-/// Scaled Gyro<br/>
-/// Scaled Magnetometer<br/>
-/// Delta Theta<br/>
-/// Delta Velocity<br/>
-/// Complementary Filter Orientation<br/>
-/// <br/><br/>
-/// Estimation Filter:<br/>
-/// Estimated Orientation, Quaternion<br/>
-/// Estimated Orientation, Matrix<br/>
-/// Estimated Orientation, Euler Angles<br/>
-/// Estimated Linear Acceleration<br/>
-/// Estimated Angular Rate<br/>
-/// Estimated Gravity Vector<br/>
-/// <br/>
-/// Changing this setting will force all low-pass filters, the complementary filter, and the estimation filter to reset.
+///@defgroup 3dm_uart_baudrate_c  (0x0C,0x40) Uart Baudrate
+/// Read, Save, Load, or Reset to Default the baud rate of the main communication channel.
+/// 
+/// For all functions except 0x01 (use new settings), the new baud rate value is ignored.
+/// Please see the device user manual for supported baud rates.
+/// 
+/// The device will wait until all incoming and outgoing data has been sent, up
+/// to a maximum of 250 ms, before applying any change.
+/// 
+/// No guarantee is provided as to what happens to commands issued during this
+/// delay period; They may or may not be processed and any responses aren't
+/// guaranteed to be at one rate or the other. The same applies to data packets.
+/// 
+/// It is highly recommended that the device be idle before issuing this command
+/// and that it be issued in its own packet. Users should wait 250 ms after
+/// sending this command before further interaction.
 ///
 ///@{
 
-struct mip_3dm_sensor_2_vehicle_transform_euler_command
+struct mip_3dm_uart_baudrate_command
 {
     mip_function_selector function;
-    float roll; ///< [radians]
-    float pitch; ///< [radians]
-    float yaw; ///< [radians]
+    uint32_t baud;
 };
-typedef struct mip_3dm_sensor_2_vehicle_transform_euler_command mip_3dm_sensor_2_vehicle_transform_euler_command;
+typedef struct mip_3dm_uart_baudrate_command mip_3dm_uart_baudrate_command;
 
-void insert_mip_3dm_sensor_2_vehicle_transform_euler_command(microstrain_serializer* serializer, const mip_3dm_sensor_2_vehicle_transform_euler_command* self);
-void extract_mip_3dm_sensor_2_vehicle_transform_euler_command(microstrain_serializer* serializer, mip_3dm_sensor_2_vehicle_transform_euler_command* self);
+void insert_mip_3dm_uart_baudrate_command(microstrain_serializer* serializer, const mip_3dm_uart_baudrate_command* self);
+void extract_mip_3dm_uart_baudrate_command(microstrain_serializer* serializer, mip_3dm_uart_baudrate_command* self);
 
-struct mip_3dm_sensor_2_vehicle_transform_euler_response
+struct mip_3dm_uart_baudrate_response
 {
-    float roll; ///< [radians]
-    float pitch; ///< [radians]
-    float yaw; ///< [radians]
+    uint32_t baud;
 };
-typedef struct mip_3dm_sensor_2_vehicle_transform_euler_response mip_3dm_sensor_2_vehicle_transform_euler_response;
+typedef struct mip_3dm_uart_baudrate_response mip_3dm_uart_baudrate_response;
 
-void insert_mip_3dm_sensor_2_vehicle_transform_euler_response(microstrain_serializer* serializer, const mip_3dm_sensor_2_vehicle_transform_euler_response* self);
-void extract_mip_3dm_sensor_2_vehicle_transform_euler_response(microstrain_serializer* serializer, mip_3dm_sensor_2_vehicle_transform_euler_response* self);
+void insert_mip_3dm_uart_baudrate_response(microstrain_serializer* serializer, const mip_3dm_uart_baudrate_response* self);
+void extract_mip_3dm_uart_baudrate_response(microstrain_serializer* serializer, mip_3dm_uart_baudrate_response* self);
 
-mip_cmd_result mip_3dm_write_sensor_2_vehicle_transform_euler(mip_interface* device, float roll, float pitch, float yaw);
-mip_cmd_result mip_3dm_read_sensor_2_vehicle_transform_euler(mip_interface* device, float* roll_out, float* pitch_out, float* yaw_out);
-mip_cmd_result mip_3dm_save_sensor_2_vehicle_transform_euler(mip_interface* device);
-mip_cmd_result mip_3dm_load_sensor_2_vehicle_transform_euler(mip_interface* device);
-mip_cmd_result mip_3dm_default_sensor_2_vehicle_transform_euler(mip_interface* device);
+mip_cmd_result mip_3dm_write_uart_baudrate(mip_interface* device, uint32_t baud);
+mip_cmd_result mip_3dm_read_uart_baudrate(mip_interface* device, uint32_t* baud_out);
+mip_cmd_result mip_3dm_save_uart_baudrate(mip_interface* device);
+mip_cmd_result mip_3dm_load_uart_baudrate(mip_interface* device);
+mip_cmd_result mip_3dm_default_uart_baudrate(mip_interface* device);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup 3dm_sensor_2_vehicle_transform_quaternion_c  (0x0C,0x32) Sensor 2 Vehicle Transform Quaternion
-/// Set the sensor to vehicle frame transformation using unit length quaternion.
+///@defgroup 3dm_gpio_config_c  (0x0C,0x41) Gpio Config
+/// Configures the user GPIO pins on the connector for use with several built-in functions or for general input or output.
 /// 
-/// Note: This is the transformation, the inverse of the rotation.
+/// GPIO pins are device-dependent. Some features are only available on
+/// certain pins. Some behaviors require specific configurations.
+/// Consult the device user manual for restrictions and default settings.
 /// 
-/// This quaternion describes the transformation of vectors from the sensor body frame to the vehicle frame of reference, and satisfies the following relationship:<br/>
+/// To avoid glitches on GPIOs configured as an output in a mode other than
+/// GPIO, always configure the relevant function before setting up the pin
+/// with this command. Otherwise, the pin state will be undefined between
+/// this command and the one to set up the feature. For input pins, use
+/// this command first so the state is well-defined when the feature is
+/// initialized.
 /// 
-/// EQSTART p^{veh} = q^{-1} p^{sen} q EQEND<br/>
+/// Some configurations can only be active on one pin at a time. If such
+/// configuration is applied to a second pin, the second one will take
+/// precedence and the original pin's configuration will be reset.
 /// 
-/// Where:<br/>
-/// EQSTART q = (q_w, q_x, q_y, q_z) EQEND is the quaternion describing the transformation. <br/>
-/// EQSTART p^{sen} = (0, v^{sen}_x, v^{sen}_y, v^{sen}_z) EQEND and EQSTART v^{sen} EQEND is a 3-element vector expressed in the sensor body frame.<br/>
-/// EQSTART p^{veh} = (0, v^{veh}_x, v^{veh}_y, v^{veh}_z) EQEND and EQSTART v^{veh} EQEND is a 3-element vector expressed in the vehicle frame.<br/>
-/// 
-/// The transformation may be stored in the device as a matrix or a quaternion.  When the quaternion is read back from the device, it may not
-/// be exactly equal to the quaternion used to set the transformation, but it is functionally equivalent.<br/>
-/// <br/><br/>
-/// This transformation affects the following output quantities:<br/><br/>
-/// IMU:<br/>
-/// Scaled Acceleration<br/>
-/// Scaled Gyro<br/>
-/// Scaled Magnetometer<br/>
-/// Delta Theta<br/>
-/// Delta Velocity<br/>
-/// <br/><br/>
-/// Estimation Filter:<br/>
-/// Estimated Orientation, Quaternion<br/>
-/// Estimated Orientation, Matrix<br/>
-/// Estimated Orientation, Euler Angles<br/>
-/// Estimated Linear Acceleration<br/>
-/// Estimated Angular Rate<br/>
-/// Estimated Gravity Vector<br/>
-/// <br/>
-/// Changing this setting will force all low-pass filters, the complementary filter, and the estimation filter to reset.
 ///
 ///@{
 
-struct mip_3dm_sensor_2_vehicle_transform_quaternion_command
+enum mip_3dm_gpio_config_command_feature
+{
+    MIP_3DM_GPIO_CONFIG_COMMAND_FEATURE_UNUSED    = 0,  ///<  The pin is not used. It may be technically possible to read the pin state in this mode, but this is not guaranteed to be true of all devices or pins.
+    MIP_3DM_GPIO_CONFIG_COMMAND_FEATURE_GPIO      = 1,  ///<  General purpose input or output. Use this for direct control of pin output state or to stream the state of the pin.
+    MIP_3DM_GPIO_CONFIG_COMMAND_FEATURE_PPS       = 2,  ///<  Pulse per second input or output.
+    MIP_3DM_GPIO_CONFIG_COMMAND_FEATURE_ENCODER   = 3,  ///<  Motor encoder/odometer input.
+    MIP_3DM_GPIO_CONFIG_COMMAND_FEATURE_TIMESTAMP = 4,  ///<  Precision Timestamping. Use with Event Trigger Configuration (0x0C,0x2E).
+    MIP_3DM_GPIO_CONFIG_COMMAND_FEATURE_UART      = 5,  ///<  UART data or control lines.
+};
+typedef enum mip_3dm_gpio_config_command_feature mip_3dm_gpio_config_command_feature;
+
+static inline void insert_mip_3dm_gpio_config_command_feature(microstrain_serializer* serializer, const mip_3dm_gpio_config_command_feature self)
+{
+    microstrain_insert_u8(serializer, (uint8_t)(self));
+}
+static inline void extract_mip_3dm_gpio_config_command_feature(microstrain_serializer* serializer, mip_3dm_gpio_config_command_feature* self)
+{
+    uint8_t tmp = 0;
+    microstrain_extract_u8(serializer, &tmp);
+    *self = (mip_3dm_gpio_config_command_feature)tmp;
+}
+
+enum mip_3dm_gpio_config_command_behavior
+{
+    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_UNUSED            = 0,  ///<  Use 0 unless otherwise specified.
+    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_GPIO_INPUT        = 1,  ///<  Pin will be an input. This can be used to stream or poll the value and is the default setting.
+    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_GPIO_OUTPUT_LOW   = 2,  ///<  Pin is an output initially in the LOW state. This state will be restored during system startup if the configuration is saved.
+    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_GPIO_OUTPUT_HIGH  = 3,  ///<  Pin is an output initially in the HIGH state. This state will be restored during system startup if the configuration is saved.
+    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_PPS_INPUT         = 1,  ///<  Pin will receive the pulse-per-second signal. Only one pin can have this behavior. This will only work if the PPS Source command is configured to GPIO.
+    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_PPS_OUTPUT        = 2,  ///<  Pin will transmit the pulse-per-second signal from the device.
+    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_ENCODER_A         = 1,  ///<  Encoder "A" quadrature input. Only one pin can have this behavior. The last command to set this behavior will take precedence.
+    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_ENCODER_B         = 2,  ///<  Encoder "B" quadrature input. Only one pin can have this behavior. The last command to set this behavior will take precedence.
+    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_TIMESTAMP_RISING  = 1,  ///<  Rising edges will be timestamped.
+    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_TIMESTAMP_FALLING = 2,  ///<  Falling edges will be timestamped.
+    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_TIMESTAMP_EITHER  = 3,  ///<  Both rising and falling edges will be timestamped.
+    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_UART_PORT2_TX     = 33,  ///<  (0x21) UART port 2 transmit.
+    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_UART_PORT2_RX     = 34,  ///<  (0x22) UART port 2 receive.
+    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_UART_PORT3_TX     = 49,  ///<  (0x31) UART port 3 transmit.
+    MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_UART_PORT3_RX     = 50,  ///<  (0x32) UART port 3 receive.
+};
+typedef enum mip_3dm_gpio_config_command_behavior mip_3dm_gpio_config_command_behavior;
+
+static inline void insert_mip_3dm_gpio_config_command_behavior(microstrain_serializer* serializer, const mip_3dm_gpio_config_command_behavior self)
+{
+    microstrain_insert_u8(serializer, (uint8_t)(self));
+}
+static inline void extract_mip_3dm_gpio_config_command_behavior(microstrain_serializer* serializer, mip_3dm_gpio_config_command_behavior* self)
+{
+    uint8_t tmp = 0;
+    microstrain_extract_u8(serializer, &tmp);
+    *self = (mip_3dm_gpio_config_command_behavior)tmp;
+}
+
+typedef uint8_t mip_3dm_gpio_config_command_pin_mode;
+static const mip_3dm_gpio_config_command_pin_mode MIP_3DM_GPIO_CONFIG_COMMAND_PIN_MODE_NONE       = 0x00;
+static const mip_3dm_gpio_config_command_pin_mode MIP_3DM_GPIO_CONFIG_COMMAND_PIN_MODE_OPEN_DRAIN = 0x01; ///<  The pin will be an open-drain output. The state will be either LOW or FLOATING instead of LOW or HIGH, respectively. This is used to connect multiple open-drain outputs from several devices. An internal or external pull-up resistor is typically used in combination. The maximum voltage of an open drain output is subject to the device maximum input voltage range found in the specifications.
+static const mip_3dm_gpio_config_command_pin_mode MIP_3DM_GPIO_CONFIG_COMMAND_PIN_MODE_PULLDOWN   = 0x02; ///<  The pin will have an internal pull-down resistor enabled. This is useful for connecting inputs to signals which can only be pulled high such as mechanical switches. Cannot be used in combination with pull-up. See the device specifications for the resistance value.
+static const mip_3dm_gpio_config_command_pin_mode MIP_3DM_GPIO_CONFIG_COMMAND_PIN_MODE_PULLUP     = 0x04; ///<  The pin will have an internal pull-up resistor enabled. Useful for connecting inputs to signals which can only be pulled low such as mechanical switches, or in combination with an open drain output. Cannot be used in combination with pull-down. See the device specifications for the resistance value. Use of this mode may restrict the maximum allowed input voltage. See the device datasheet for details.
+static const mip_3dm_gpio_config_command_pin_mode MIP_3DM_GPIO_CONFIG_COMMAND_PIN_MODE_ALL        = 0x07;
+static inline void insert_mip_3dm_gpio_config_command_pin_mode(microstrain_serializer* serializer, const mip_3dm_gpio_config_command_pin_mode self)
+{
+    microstrain_insert_u8(serializer, (uint8_t)(self));
+}
+static inline void extract_mip_3dm_gpio_config_command_pin_mode(microstrain_serializer* serializer, mip_3dm_gpio_config_command_pin_mode* self)
+{
+    uint8_t tmp = 0;
+    microstrain_extract_u8(serializer, &tmp);
+    *self = (mip_3dm_gpio_config_command_pin_mode)tmp;
+}
+
+
+struct mip_3dm_gpio_config_command
 {
     mip_function_selector function;
-    mip_quatf q; ///< Unit length quaternion representing transform [w, i, j, k]
+    uint8_t pin; ///< GPIO pin number counting from 1. For save, load, and default function selectors, this can be 0 to select all pins.
+    mip_3dm_gpio_config_command_feature feature; ///< Determines how the pin will be used.
+    mip_3dm_gpio_config_command_behavior behavior; ///< Select an appropriate value from the enumeration based on the selected feature (e.g. for PPS, select one of the values prefixed with PPS_.)
+    mip_3dm_gpio_config_command_pin_mode pin_mode; ///< GPIO configuration. May be restricted depending on device, pin, feature, and behavior. See device user manual.
 };
-typedef struct mip_3dm_sensor_2_vehicle_transform_quaternion_command mip_3dm_sensor_2_vehicle_transform_quaternion_command;
+typedef struct mip_3dm_gpio_config_command mip_3dm_gpio_config_command;
 
-void insert_mip_3dm_sensor_2_vehicle_transform_quaternion_command(microstrain_serializer* serializer, const mip_3dm_sensor_2_vehicle_transform_quaternion_command* self);
-void extract_mip_3dm_sensor_2_vehicle_transform_quaternion_command(microstrain_serializer* serializer, mip_3dm_sensor_2_vehicle_transform_quaternion_command* self);
+void insert_mip_3dm_gpio_config_command(microstrain_serializer* serializer, const mip_3dm_gpio_config_command* self);
+void extract_mip_3dm_gpio_config_command(microstrain_serializer* serializer, mip_3dm_gpio_config_command* self);
 
-struct mip_3dm_sensor_2_vehicle_transform_quaternion_response
+struct mip_3dm_gpio_config_response
 {
-    mip_quatf q; ///< Unit length quaternion representing transform [w, i, j, k]
+    uint8_t pin; ///< GPIO pin number counting from 1. For save, load, and default function selectors, this can be 0 to select all pins.
+    mip_3dm_gpio_config_command_feature feature; ///< Determines how the pin will be used.
+    mip_3dm_gpio_config_command_behavior behavior; ///< Select an appropriate value from the enumeration based on the selected feature (e.g. for PPS, select one of the values prefixed with PPS_.)
+    mip_3dm_gpio_config_command_pin_mode pin_mode; ///< GPIO configuration. May be restricted depending on device, pin, feature, and behavior. See device user manual.
 };
-typedef struct mip_3dm_sensor_2_vehicle_transform_quaternion_response mip_3dm_sensor_2_vehicle_transform_quaternion_response;
+typedef struct mip_3dm_gpio_config_response mip_3dm_gpio_config_response;
 
-void insert_mip_3dm_sensor_2_vehicle_transform_quaternion_response(microstrain_serializer* serializer, const mip_3dm_sensor_2_vehicle_transform_quaternion_response* self);
-void extract_mip_3dm_sensor_2_vehicle_transform_quaternion_response(microstrain_serializer* serializer, mip_3dm_sensor_2_vehicle_transform_quaternion_response* self);
+void insert_mip_3dm_gpio_config_response(microstrain_serializer* serializer, const mip_3dm_gpio_config_response* self);
+void extract_mip_3dm_gpio_config_response(microstrain_serializer* serializer, mip_3dm_gpio_config_response* self);
 
-mip_cmd_result mip_3dm_write_sensor_2_vehicle_transform_quaternion(mip_interface* device, const float* q);
-mip_cmd_result mip_3dm_read_sensor_2_vehicle_transform_quaternion(mip_interface* device, float* q_out);
-mip_cmd_result mip_3dm_save_sensor_2_vehicle_transform_quaternion(mip_interface* device);
-mip_cmd_result mip_3dm_load_sensor_2_vehicle_transform_quaternion(mip_interface* device);
-mip_cmd_result mip_3dm_default_sensor_2_vehicle_transform_quaternion(mip_interface* device);
+mip_cmd_result mip_3dm_write_gpio_config(mip_interface* device, uint8_t pin, mip_3dm_gpio_config_command_feature feature, mip_3dm_gpio_config_command_behavior behavior, mip_3dm_gpio_config_command_pin_mode pin_mode);
+mip_cmd_result mip_3dm_read_gpio_config(mip_interface* device, uint8_t pin, mip_3dm_gpio_config_command_feature* feature_out, mip_3dm_gpio_config_command_behavior* behavior_out, mip_3dm_gpio_config_command_pin_mode* pin_mode_out);
+mip_cmd_result mip_3dm_save_gpio_config(mip_interface* device, uint8_t pin);
+mip_cmd_result mip_3dm_load_gpio_config(mip_interface* device, uint8_t pin);
+mip_cmd_result mip_3dm_default_gpio_config(mip_interface* device, uint8_t pin);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup 3dm_sensor_2_vehicle_transform_dcm_c  (0x0C,0x33) Sensor 2 Vehicle Transform Dcm
-/// Set the sensor to vehicle frame transformation using a using a 3 x 3 direction cosine matrix EQSTART M_{ned}^{veh} EQEND, stored in row-major order in a 9-element array.
+///@defgroup 3dm_gpio_state_c  (0x0C,0x42) Gpio State
+/// Allows the state of the pin to be read or controlled.
 /// 
-/// These angles define the transformation of vectors from the sensor body frame to the fixed vehicle frame, according to:<br/>
-/// EQSTART v^{veh} = M_{sen}^{veh} v^{sen} EQEND<br/>
+/// This command serves two purposes: 1) To allow reading the state of a pin via command,
+/// rather than polling a data quantity, and 2) to provide a way to set the output state
+/// without also having to specify the operating mode.
 /// 
-/// Where:<br/>
+/// The state read back from the pin is the physical state of the pin, rather than a
+/// configuration value. The state can be read regardless of its configuration as long as
+/// the device supports GPIO input on that pin. If the pin is set to an output, the read
+/// value would match the output value.
 /// 
-/// EQSTART v^{sen} EQEND is a 3-element vector expressed in the sensor body frame. <br/>
-/// EQSTART v^{veh} EQEND is the same 3-element vector expressed in the vehicle frame.  <br/>
-/// <br/>
-/// The matrix elements are stored is row-major order: EQSTART M_{sen}^{veh} = \\begin{bmatrix} M_{11}, M_{12}, M_{13}, M_{21}, M_{22}, M_{23}, M_{31}, M_{32}, M_{33} \\end{bmatrix} EQEND
-/// The transformation may be stored in the device as a matrix or a quaternion. When EQSTART M_{sen}^{veh} EQEND is read back from the device, it may not
-/// be exactly equal to array used to set the transformation, but it is functionally equivalent.<br/>
-/// <br/><br/>
-/// This transformation affects the following output quantities:<br/><br/>
-/// IMU:<br/>
-/// Scaled Acceleration<br/>
-/// Scaled Gyro<br/>
-/// Scaled Magnetometer<br/>
-/// Delta Theta<br/>
-/// Delta Velocity<br/>
-/// <br/><br/>
-/// Estimation Filter:<br/>
-/// Estimated Orientation, Quaternion<br/>
-/// Estimated Orientation, Matrix<br/>
-/// Estimated Orientation, Euler Angles<br/>
-/// Estimated Linear Acceleration<br/>
-/// Estimated Angular Rate<br/>
-/// Estimated Gravity Vector<br/>
-/// <br/>
-/// Changing this setting will force all low-pass filters, the complementary filter, and the estimation filter to reset.
+/// While the state of a pin can always be set, it will only have an observable effect if
+/// the pin is set to output mode.
+/// 
+/// This command does not support saving, loading, or resetting the state. Instead, use the
+/// GPIO Configuration command, which allows the initial state to be configured.
 ///
 ///@{
 
-struct mip_3dm_sensor_2_vehicle_transform_dcm_command
+struct mip_3dm_gpio_state_command
 {
     mip_function_selector function;
-    mip_matrix3f dcm; ///< 3 x 3 direction cosine matrix, stored in row-major order
+    uint8_t pin; ///< GPIO pin number counting from 1. Cannot be 0.
+    bool state; ///< The pin state.
 };
-typedef struct mip_3dm_sensor_2_vehicle_transform_dcm_command mip_3dm_sensor_2_vehicle_transform_dcm_command;
+typedef struct mip_3dm_gpio_state_command mip_3dm_gpio_state_command;
 
-void insert_mip_3dm_sensor_2_vehicle_transform_dcm_command(microstrain_serializer* serializer, const mip_3dm_sensor_2_vehicle_transform_dcm_command* self);
-void extract_mip_3dm_sensor_2_vehicle_transform_dcm_command(microstrain_serializer* serializer, mip_3dm_sensor_2_vehicle_transform_dcm_command* self);
+void insert_mip_3dm_gpio_state_command(microstrain_serializer* serializer, const mip_3dm_gpio_state_command* self);
+void extract_mip_3dm_gpio_state_command(microstrain_serializer* serializer, mip_3dm_gpio_state_command* self);
 
-struct mip_3dm_sensor_2_vehicle_transform_dcm_response
+struct mip_3dm_gpio_state_response
 {
-    mip_matrix3f dcm; ///< 3 x 3 direction cosine matrix, stored in row-major order
+    uint8_t pin; ///< GPIO pin number counting from 1. Cannot be 0.
+    bool state; ///< The pin state.
 };
-typedef struct mip_3dm_sensor_2_vehicle_transform_dcm_response mip_3dm_sensor_2_vehicle_transform_dcm_response;
+typedef struct mip_3dm_gpio_state_response mip_3dm_gpio_state_response;
 
-void insert_mip_3dm_sensor_2_vehicle_transform_dcm_response(microstrain_serializer* serializer, const mip_3dm_sensor_2_vehicle_transform_dcm_response* self);
-void extract_mip_3dm_sensor_2_vehicle_transform_dcm_response(microstrain_serializer* serializer, mip_3dm_sensor_2_vehicle_transform_dcm_response* self);
+void insert_mip_3dm_gpio_state_response(microstrain_serializer* serializer, const mip_3dm_gpio_state_response* self);
+void extract_mip_3dm_gpio_state_response(microstrain_serializer* serializer, mip_3dm_gpio_state_response* self);
 
-mip_cmd_result mip_3dm_write_sensor_2_vehicle_transform_dcm(mip_interface* device, const float* dcm);
-mip_cmd_result mip_3dm_read_sensor_2_vehicle_transform_dcm(mip_interface* device, float* dcm_out);
-mip_cmd_result mip_3dm_save_sensor_2_vehicle_transform_dcm(mip_interface* device);
-mip_cmd_result mip_3dm_load_sensor_2_vehicle_transform_dcm(mip_interface* device);
-mip_cmd_result mip_3dm_default_sensor_2_vehicle_transform_dcm(mip_interface* device);
+mip_cmd_result mip_3dm_write_gpio_state(mip_interface* device, uint8_t pin, bool state);
+mip_cmd_result mip_3dm_read_gpio_state(mip_interface* device, uint8_t pin, bool* state_out);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup 3dm_odometer_c  (0x0C,0x43) Odometer
+/// Configures the hardware odometer interface.
+///
+///@{
+
+enum mip_3dm_odometer_command_mode
+{
+    MIP_3DM_ODOMETER_COMMAND_MODE_DISABLED   = 0,  ///<  Encoder is disabled.
+    MIP_3DM_ODOMETER_COMMAND_MODE_QUADRATURE = 2,  ///<  Quadrature encoder mode.
+};
+typedef enum mip_3dm_odometer_command_mode mip_3dm_odometer_command_mode;
+
+static inline void insert_mip_3dm_odometer_command_mode(microstrain_serializer* serializer, const mip_3dm_odometer_command_mode self)
+{
+    microstrain_insert_u8(serializer, (uint8_t)(self));
+}
+static inline void extract_mip_3dm_odometer_command_mode(microstrain_serializer* serializer, mip_3dm_odometer_command_mode* self)
+{
+    uint8_t tmp = 0;
+    microstrain_extract_u8(serializer, &tmp);
+    *self = (mip_3dm_odometer_command_mode)tmp;
+}
+
+
+struct mip_3dm_odometer_command
+{
+    mip_function_selector function;
+    mip_3dm_odometer_command_mode mode; ///< Mode setting.
+    float scaling; ///< Encoder pulses per meter of distance traveled [pulses/m]. Distance traveled is computed using the formula d = p / N * 2R * pi, where d is distance, p is the number of pulses received, N is the encoder resolution, and R is the wheel radius. By simplifying all of the parameters into one, the formula d = p / S is obtained, where s is the odometer scaling factor passed to this command. S is equivalent to N / (2R * pi) and has units of pulses / meter. N is in units of "A" pulses per revolution and R is in meters. Make this value negative if the odometer is mounted so that it rotates backwards.
+    float uncertainty; ///< Uncertainty in encoder counts to distance translation (1-sigma value) [m/m].
+};
+typedef struct mip_3dm_odometer_command mip_3dm_odometer_command;
+
+void insert_mip_3dm_odometer_command(microstrain_serializer* serializer, const mip_3dm_odometer_command* self);
+void extract_mip_3dm_odometer_command(microstrain_serializer* serializer, mip_3dm_odometer_command* self);
+
+struct mip_3dm_odometer_response
+{
+    mip_3dm_odometer_command_mode mode; ///< Mode setting.
+    float scaling; ///< Encoder pulses per meter of distance traveled [pulses/m]. Distance traveled is computed using the formula d = p / N * 2R * pi, where d is distance, p is the number of pulses received, N is the encoder resolution, and R is the wheel radius. By simplifying all of the parameters into one, the formula d = p / S is obtained, where s is the odometer scaling factor passed to this command. S is equivalent to N / (2R * pi) and has units of pulses / meter. N is in units of "A" pulses per revolution and R is in meters. Make this value negative if the odometer is mounted so that it rotates backwards.
+    float uncertainty; ///< Uncertainty in encoder counts to distance translation (1-sigma value) [m/m].
+};
+typedef struct mip_3dm_odometer_response mip_3dm_odometer_response;
+
+void insert_mip_3dm_odometer_response(microstrain_serializer* serializer, const mip_3dm_odometer_response* self);
+void extract_mip_3dm_odometer_response(microstrain_serializer* serializer, mip_3dm_odometer_response* self);
+
+mip_cmd_result mip_3dm_write_odometer(mip_interface* device, mip_3dm_odometer_command_mode mode, float scaling, float uncertainty);
+mip_cmd_result mip_3dm_read_odometer(mip_interface* device, mip_3dm_odometer_command_mode* mode_out, float* scaling_out, float* uncertainty_out);
+mip_cmd_result mip_3dm_save_odometer(mip_interface* device);
+mip_cmd_result mip_3dm_load_odometer(mip_interface* device);
+mip_cmd_result mip_3dm_default_odometer(mip_interface* device);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup 3dm_imu_lowpass_filter_c  (0x0C,0x50) Imu Lowpass Filter
+/// Advanced configuration for the IMU data quantity low-pass filters.
+/// 
+/// Deprecated, use the lowpass filter (0x0C,0x54) command instead.
+/// 
+/// The scaled data quantities are by default filtered through a single-pole IIR low-pass filter
+/// which is configured with a -3dB cutoff frequency of half the reporting frequency (set by
+/// decimation factor in the IMU Message Format command) to prevent aliasing on a per data
+/// quantity basis. This advanced configuration command allows for the cutoff frequency to
+/// be configured independently of the data reporting frequency as well as allowing for a
+/// complete bypass of the digital low-pass filter.
+/// 
+/// Possible data descriptors:
+/// 0x04 - Scaled accelerometer data
+/// 0x05 - Scaled gyro data
+/// 0x06 - Scaled magnetometer data (if applicable)
+/// 0x17 - Scaled pressure data (if applicable)
+///
+///@{
+
+struct mip_3dm_imu_lowpass_filter_command
+{
+    mip_function_selector function;
+    uint8_t target_descriptor; ///< Field descriptor of filtered quantity within the Sensor data set. Supported values are accel (0x04), gyro (0x05), mag (0x06), and pressure (0x17), provided the data is supported by the device. Except with the READ function selector, this can be 0 to apply to all of the above quantities.
+    bool enable; ///< The target data will be filtered if this is true.
+    bool manual; ///< If false, the cutoff frequency is set to half of the streaming rate as configured by the message format command. Otherwise, the cutoff frequency is set according to the following 'frequency' parameter.
+    uint16_t frequency; ///< -3dB cutoff frequency in Hz. Will not affect filtering if 'manual' is false.
+    uint8_t reserved; ///< Reserved, set to 0x00.
+};
+typedef struct mip_3dm_imu_lowpass_filter_command mip_3dm_imu_lowpass_filter_command;
+
+void insert_mip_3dm_imu_lowpass_filter_command(microstrain_serializer* serializer, const mip_3dm_imu_lowpass_filter_command* self);
+void extract_mip_3dm_imu_lowpass_filter_command(microstrain_serializer* serializer, mip_3dm_imu_lowpass_filter_command* self);
+
+struct mip_3dm_imu_lowpass_filter_response
+{
+    uint8_t target_descriptor;
+    bool enable; ///< True if the filter is currently enabled.
+    bool manual; ///< True if the filter cutoff was manually configured.
+    uint16_t frequency; ///< The cutoff frequency of the filter. If the filter is in auto mode, this value is unspecified.
+    uint8_t reserved; ///< Reserved and must be ignored.
+};
+typedef struct mip_3dm_imu_lowpass_filter_response mip_3dm_imu_lowpass_filter_response;
+
+void insert_mip_3dm_imu_lowpass_filter_response(microstrain_serializer* serializer, const mip_3dm_imu_lowpass_filter_response* self);
+void extract_mip_3dm_imu_lowpass_filter_response(microstrain_serializer* serializer, mip_3dm_imu_lowpass_filter_response* self);
+
+mip_cmd_result mip_3dm_write_imu_lowpass_filter(mip_interface* device, uint8_t target_descriptor, bool enable, bool manual, uint16_t frequency, uint8_t reserved);
+mip_cmd_result mip_3dm_read_imu_lowpass_filter(mip_interface* device, uint8_t target_descriptor, bool* enable_out, bool* manual_out, uint16_t* frequency_out, uint8_t* reserved_out);
+mip_cmd_result mip_3dm_save_imu_lowpass_filter(mip_interface* device, uint8_t target_descriptor);
+mip_cmd_result mip_3dm_load_imu_lowpass_filter(mip_interface* device, uint8_t target_descriptor);
+mip_cmd_result mip_3dm_default_imu_lowpass_filter(mip_interface* device, uint8_t target_descriptor);
 
 ///@}
 ///
@@ -2483,7 +2462,6 @@ mip_cmd_result mip_3dm_calibrated_sensor_ranges(mip_interface* device, mip_senso
 /// For WRITE, SAVE, LOAD, and DEFAULT function selectors, the descriptor set and/or field descriptor
 /// may be 0x00 to set, save, load, or reset the setting for all supported descriptors. The
 /// field descriptor must be 0x00 if the descriptor set is 0x00.
-/// 
 ///
 ///@{
 

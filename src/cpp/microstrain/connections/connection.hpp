@@ -1,7 +1,7 @@
 #pragma once
 
-#include <microstrain/common/embedded_time.hpp>
-#include <microstrain/common/span.hpp>
+#include <microstrain/embedded_time.hpp>
+#include <microstrain/span.hpp>
 
 #include <stddef.h>
 #include <stdint.h>

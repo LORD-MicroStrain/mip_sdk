@@ -6,7 +6,7 @@
 #include "../../src/c/mip/definitions/data_sensor.h"
 #include "../../src/c/mip/definitions/data_shared.h"
 
-#include <../../src/c/microstrain/common/platform.h>
+#include <microstrain/platform.h>
 
 #include <stdbool.h>
 #include <stdio.h>

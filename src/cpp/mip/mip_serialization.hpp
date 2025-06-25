@@ -1,6 +1,6 @@
 #pragma once
 
-#include <microstrain/common/serialization.hpp>
+#include <microstrain/serialization.hpp>
 
 #include <type_traits>
 #include <stddef.h>

@@ -1,7 +1,7 @@
 
 #include "test.h"
 
-#include <microstrain/common/span.hpp>
+#include <microstrain/span.hpp>
 #include <mip/mip_packet.hpp>
 
 #include <mip/definitions/data_sensor.hpp>

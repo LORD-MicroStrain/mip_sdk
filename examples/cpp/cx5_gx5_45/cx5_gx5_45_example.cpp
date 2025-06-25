@@ -154,7 +154,7 @@ int main(int argc, const char* argv[])
     }};
 
     //GNSS
-    if(mip::commands_3dm::writeGpsMessageFormat(*device, static_cast<uint8_t>(gnss_descriptors.size()), gnss_descriptors.data()) != mip::CmdResult::ACK_OK)
+    if(mip::commands_3dm::writeGnssMessageFormat(*device, static_cast<uint8_t>(gnss_descriptors.size()), gnss_descriptors.data()) != mip::CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set GNSS1 message format!");
 
 

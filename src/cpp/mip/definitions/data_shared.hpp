@@ -198,22 +198,22 @@ struct GpsTimestamp
         };
         uint16_t value = NONE;
         
-        ValidFlags() : value(NONE) {}
-        ValidFlags(int val) : value((uint16_t)val) {}
-        operator uint16_t() const { return value; }
-        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
-        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
-        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
+        constexpr ValidFlags() : value(NONE) {}
+        constexpr ValidFlags(int val) : value((uint16_t)val) {}
+        constexpr operator uint16_t() const { return value; }
+        constexpr ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        constexpr ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
+        constexpr ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        constexpr ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool tow() const { return (value & TOW) > 0; }
-        void tow(bool val) { value &= ~TOW; if(val) value |= TOW; }
-        bool weekNumber() const { return (value & WEEK_NUMBER) > 0; }
-        void weekNumber(bool val) { value &= ~WEEK_NUMBER; if(val) value |= WEEK_NUMBER; }
-        uint16_t timeValid() const { return (value & TIME_VALID) >> 0; }
-        void timeValid(uint16_t val) { value = (value & ~TIME_VALID) | (val << 0); }
-        bool allSet() const { return value == ALL; }
-        void setAll() { value |= ALL; }
+        constexpr bool tow() const { return (value & TOW) > 0; }
+        constexpr void tow(bool val) { value &= ~TOW; if(val) value |= TOW; }
+        constexpr bool weekNumber() const { return (value & WEEK_NUMBER) > 0; }
+        constexpr void weekNumber(bool val) { value &= ~WEEK_NUMBER; if(val) value |= WEEK_NUMBER; }
+        constexpr uint16_t timeValid() const { return (value & TIME_VALID) >> 0; }
+        constexpr void timeValid(uint16_t val) { value = (value & ~TIME_VALID) | (val << 0); }
+        constexpr bool allSet() const { return value == ALL; }
+        constexpr void setAll() { value |= ALL; }
     };
     /// Parameters
     double tow = 0; ///< GPS Time of Week [seconds]
@@ -409,18 +409,18 @@ struct ExternalTimestamp
         };
         uint16_t value = NONE;
         
-        ValidFlags() : value(NONE) {}
-        ValidFlags(int val) : value((uint16_t)val) {}
-        operator uint16_t() const { return value; }
-        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
-        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
-        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
+        constexpr ValidFlags() : value(NONE) {}
+        constexpr ValidFlags(int val) : value((uint16_t)val) {}
+        constexpr operator uint16_t() const { return value; }
+        constexpr ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        constexpr ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
+        constexpr ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        constexpr ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool nanoseconds() const { return (value & NANOSECONDS) > 0; }
-        void nanoseconds(bool val) { value &= ~NANOSECONDS; if(val) value |= NANOSECONDS; }
-        bool allSet() const { return value == ALL; }
-        void setAll() { value |= ALL; }
+        constexpr bool nanoseconds() const { return (value & NANOSECONDS) > 0; }
+        constexpr void nanoseconds(bool val) { value &= ~NANOSECONDS; if(val) value |= NANOSECONDS; }
+        constexpr bool allSet() const { return value == ALL; }
+        constexpr void setAll() { value |= ALL; }
     };
     /// Parameters
     uint64_t nanoseconds = 0;
@@ -483,18 +483,18 @@ struct ExternalTimeDelta
         };
         uint16_t value = NONE;
         
-        ValidFlags() : value(NONE) {}
-        ValidFlags(int val) : value((uint16_t)val) {}
-        operator uint16_t() const { return value; }
-        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
-        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
-        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
+        constexpr ValidFlags() : value(NONE) {}
+        constexpr ValidFlags(int val) : value((uint16_t)val) {}
+        constexpr operator uint16_t() const { return value; }
+        constexpr ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        constexpr ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
+        constexpr ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        constexpr ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
-        bool dtNanos() const { return (value & DT_NANOS) > 0; }
-        void dtNanos(bool val) { value &= ~DT_NANOS; if(val) value |= DT_NANOS; }
-        bool allSet() const { return value == ALL; }
-        void setAll() { value |= ALL; }
+        constexpr bool dtNanos() const { return (value & DT_NANOS) > 0; }
+        constexpr void dtNanos(bool val) { value &= ~DT_NANOS; if(val) value |= DT_NANOS; }
+        constexpr bool allSet() const { return value == ALL; }
+        constexpr void setAll() { value |= ALL; }
     };
     /// Parameters
     uint64_t dt_nanos = 0; ///< Nanoseconds since the last occurrence of this field in a packet of the same descriptor set and event source.

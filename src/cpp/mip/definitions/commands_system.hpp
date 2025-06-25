@@ -75,24 +75,24 @@ struct CommsProtocol : Bitfield<CommsProtocol>
     };
     uint32_t value = NONE;
     
-    CommsProtocol() : value(NONE) {}
-    CommsProtocol(int val) : value((uint32_t)val) {}
-    operator uint32_t() const { return value; }
-    CommsProtocol& operator=(uint32_t val) { value = val; return *this; }
-    CommsProtocol& operator=(int val) { value = uint32_t(val); return *this; }
-    CommsProtocol& operator|=(uint32_t val) { return *this = value | val; }
-    CommsProtocol& operator&=(uint32_t val) { return *this = value & val; }
+    constexpr CommsProtocol() : value(NONE) {}
+    constexpr CommsProtocol(int val) : value((uint32_t)val) {}
+    constexpr operator uint32_t() const { return value; }
+    constexpr CommsProtocol& operator=(uint32_t val) { value = val; return *this; }
+    constexpr CommsProtocol& operator=(int val) { value = uint32_t(val); return *this; }
+    constexpr CommsProtocol& operator|=(uint32_t val) { return *this = value | val; }
+    constexpr CommsProtocol& operator&=(uint32_t val) { return *this = value & val; }
     
-    bool mip() const { return (value & MIP) > 0; }
-    void mip(bool val) { value &= ~MIP; if(val) value |= MIP; }
-    bool nmea() const { return (value & NMEA) > 0; }
-    void nmea(bool val) { value &= ~NMEA; if(val) value |= NMEA; }
-    bool rtcm() const { return (value & RTCM) > 0; }
-    void rtcm(bool val) { value &= ~RTCM; if(val) value |= RTCM; }
-    bool spartn() const { return (value & SPARTN) > 0; }
-    void spartn(bool val) { value &= ~SPARTN; if(val) value |= SPARTN; }
-    bool allSet() const { return value == ALL; }
-    void setAll() { value |= ALL; }
+    constexpr bool mip() const { return (value & MIP) > 0; }
+    constexpr void mip(bool val) { value &= ~MIP; if(val) value |= MIP; }
+    constexpr bool nmea() const { return (value & NMEA) > 0; }
+    constexpr void nmea(bool val) { value &= ~NMEA; if(val) value |= NMEA; }
+    constexpr bool rtcm() const { return (value & RTCM) > 0; }
+    constexpr void rtcm(bool val) { value &= ~RTCM; if(val) value |= RTCM; }
+    constexpr bool spartn() const { return (value & SPARTN) > 0; }
+    constexpr void spartn(bool val) { value &= ~SPARTN; if(val) value |= SPARTN; }
+    constexpr bool allSet() const { return value == ALL; }
+    constexpr void setAll() { value |= ALL; }
 };
 
 ////////////////////////////////////////////////////////////////////////////////
