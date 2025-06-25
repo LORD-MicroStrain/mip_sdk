@@ -1,368 +1,620 @@
-
 /////////////////////////////////////////////////////////////////////////////
-//
-// CV7_Example.cpp
-//
-// C++ Example set-up program for the CV7
-//
-// This example shows a typical setup for the CV7 sensor using C++.
-// It is not an exhaustive example of all CV7 settings.
-// If your specific setup needs are not met by this example, please consult
-// the MIP SDK API documentation for the proper commands.
-//
-//
-//!@section LICENSE
-//!
-//! THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING
-//! CUSTOMERS WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER
-//! FOR THEM TO SAVE TIME. AS A RESULT, MICROSTRAIN BY HBK SHALL NOT BE HELD
-//! LIABLE FOR ANY DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY
-//! CLAIMS ARISING FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS
-//! OF THE CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
-//
-/////////////////////////////////////////////////////////////////////////////
+/// cv7_example.cpp
+///
+/// Example set-up program for the CV7 using C++
+///
+/// This example shows a typical setup for the CV7 sensor using C++.
+/// It is not an exhaustive example of all CV7 settings.
+/// If this example does not meet your specific setup needs, please consult
+/// the MIP SDK API documentation for the proper commands.
+///
+/// @section LICENSE
+///
+/// THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+/// WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+/// TIME. AS A RESULT, MICROSTRAIN BY HBK SHALL NOT BE HELD LIABLE FOR ANY
+/// DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
+/// FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
+/// CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+///
 
+// Include the MicroStrain Serial connection header
+#include <microstrain/connections/serial/serial_connection.hpp>
 
-////////////////////////////////////////////////////////////////////////////////
-// Include Files
-////////////////////////////////////////////////////////////////////////////////
+// Include all necessary MIP headers
+// Note: The MIP SDK has headers for each module to include all headers associated with the module
+// I.E., #include <mip/mip_all.h>
+#include <mip/definitions/commands_3dm.hpp>
+#include <mip/definitions/commands_base.hpp>
+#include <mip/definitions/commands_filter.hpp>
+#include <mip/definitions/data_filter.hpp>
+#include <mip/definitions/data_sensor.hpp>
+#include <mip/definitions/data_shared.hpp>
 
-#include "../example_utils.hpp"
+#ifdef _MSC_VER
+#define _USE_MATH_DEFINES
+#endif // _MSC_VER
 
-#include <../../src/cpp/mip/mip_all.hpp>
+#include <chrono>
+#include <cstdint>
+#include <cstdio>
+#include <cstdlib>
+#include <ctime>
+#include <math.h>
+#include <memory>
 
-#include <array>
+// Message format configuration
+void configureSensorMessageFormat(mip::Interface& _device);
+void configureFilterMessageFormat(mip::Interface& _device);
 
-////////////////////////////////////////////////////////////////////////////////
-// Global Variables
-////////////////////////////////////////////////////////////////////////////////
+// Event configuration
+void configureEventTriggers(mip::Interface& _device);
+void configureEventActions(mip::Interface& _device);
+void enableEvents(mip::Interface& _device);
+void handleEventTriggers(void* _user, const mip::FieldView& _field, mip::Timestamp _timestamp);
 
-//Sensor-to-vehicle frame transformation (Euler Angles)
-float sensor_to_vehicle_transformation_euler[3] = {0.0, 0.0, 0.0};
+void displayFilterState(const mip::data_filter::FilterMode _filterState);
 
-//Device data stores
-mip::data_shared::GpsTimestamp sensor_gps_time;
-mip::data_sensor::ScaledAccel  sensor_accel;
-mip::data_sensor::ScaledGyro   sensor_gyro;
-mip::data_sensor::ScaledMag    sensor_mag;
+mip::Timestamp getCurrentTimestamp();
 
-mip::data_shared::GpsTimestamp filter_gps_time;
-mip::data_filter::Status       filter_status;
-mip::data_filter::EulerAngles  filter_euler_angles;
+void initializeDevice(mip::Interface& _device);
 
-bool filter_state_ahrs = false;
-
-
-const uint8_t FILTER_ROLL_EVENT_ACTION_ID  = 1;
-const uint8_t FILTER_PITCH_EVENT_ACTION_ID = 2;
-
-
-////////////////////////////////////////////////////////////////////////////////
-// Function Prototypes
-////////////////////////////////////////////////////////////////////////////////
-
-int usage(const char* argv0);
-
-void exit_gracefully(const char *message);
-bool should_exit();
-
-void handleFilterEventSource(void*, const mip::FieldView& field, mip::Timestamp timestamp);
-
-////////////////////////////////////////////////////////////////////////////////
-// Main Function
-////////////////////////////////////////////////////////////////////////////////
-
+void terminate(mip::Interface& _device, mip::CmdResult _cmdResult, const char* _format, ...);
 
 int main(int argc, const char* argv[])
 {
+    // Unused variables
+    (void)argc;
+    (void)argv;
 
-    std::unique_ptr<ExampleUtils> utils;
-    try {
-        utils = handleCommonArgs(argc, argv);
-    } catch(const std::underflow_error&) {
-        return printCommonUsage(argv);
-    } catch(const std::exception& ex) {
-        fprintf(stderr, "Error: %s\n", ex.what());
+    // TODO: Update to the correct port name
+    // Set the port name for the connection (Serial)
+#ifdef _WIN32
+    const char* portName = "COM8";
+#else // Unix
+    const char* portName = "/dev/ttyUSB0";
+#endif // _WIN32
+
+    // TODO: Update to the correct baudrate
+    // Set the baudrate for the connection (Serial)
+    const uint32_t baudrate = 115200;
+
+    // Initialize the connection
+    printf("Initializing serial port.\n");
+    std::unique_ptr<microstrain::connections::UsbSerialConnection> connection =
+        std::make_unique<microstrain::connections::UsbSerialConnection>(portName, baudrate);
+
+    printf("Connecting to the device on port %s with %d baudrate.\n", portName, baudrate);
+
+    // Open the connection to the device
+    if (!connection->connect())
+    {
+        printf("ERROR: Could not open the connection!\n");
         return 1;
     }
 
-    std::unique_ptr<mip::Interface>& device = utils->device;
+    printf("Initializing the device interface.\n");
+    mip::Interface device = mip::Interface(
+        connection.get(),                            // Connection for the device
+        mip::C::mip_timeout_from_baudrate(baudrate), // Set the base timeout for commands (milliseconds)
+        500                                          // Set the base timeout for command replies (milliseconds)
+    );
+    initializeDevice(device);
 
-    //
-    //Ping the device (note: this is good to do to make sure the device is present)
-    //
+    // Configure the message format for sensor data
+    configureSensorMessageFormat(device);
 
-    if(mip::commands_base::ping(*device) != mip::CmdResult::ACK_OK)
-        exit_gracefully("ERROR: Could not ping the device!");
+    // Configure the message format for filter data
+    configureFilterMessageFormat(device);
 
+    // Setup event triggers/actions on > 45 degrees filter pitch and roll Euler angles
+    configureEventTriggers(device);
+    configureEventActions(device);
+    enableEvents(device);
 
-    //
-    //Idle the device (note: this is good to do during setup)
-    //
+    // Configure Sensor-to-Vehicle Transformation
+    printf("Configuring %s.\n", mip::commands_3dm::Sensor2VehicleTransformEuler::DOC_NAME);
+    mip::CmdResult cmdResult = mip::commands_3dm::writeSensor2VehicleTransformEuler(
+        device,
+        0.0f, // Roll
+        0.0f, // Pitch
+        0.0f  // Yaw
+        );
 
-    if(mip::commands_base::setIdle(*device) != mip::CmdResult::ACK_OK)
-        exit_gracefully("ERROR: Could not set the device to idle!");
+    if (!cmdResult.isAck())
+    {
+        terminate(device, cmdResult, "Could not set %s!\n", mip::commands_3dm::Sensor2VehicleTransformEuler::DOC_NAME);
+    }
 
+    // Configure Filter Aiding Measurements (GNSS position/velocity and dual antenna [aka gnss heading])
+    printf("Configuring %s.\n", mip::commands_filter::AidingMeasurementEnable::DOC_NAME);
+    cmdResult = mip::commands_filter::writeAidingMeasurementEnable(
+        device,                                                                    // Device
+        mip::commands_filter::AidingMeasurementEnable::AidingSource::MAGNETOMETER, // Aiding Source
+        true                                                                       // Enabled
+    );
 
-    //
-    //Load the device default settings (so the device is in a known state)
-    //
+    if (!cmdResult.isAck())
+    {
+        terminate(device, cmdResult, "Could not set %s!\n", mip::commands_filter::AidingMeasurementEnable::DOC_NAME);
+    }
 
-    if(mip::commands_3dm::defaultDeviceSettings(*device) != mip::CmdResult::ACK_OK)
-        exit_gracefully("ERROR: Could not load default device settings!");
+    // Reset the filter
+    // Note: This is good to do after filter setup is complete
+    printf("Attempting to %s.\n", mip::commands_filter::Reset::DOC_NAME);
+    cmdResult = mip::commands_filter::reset(device);
+    if (!cmdResult.isAck())
+    {
+        terminate(device, cmdResult, "Could not %s!\n", mip::commands_filter::Reset::DOC_NAME);
+    }
 
+    // Register data callbacks
 
-    //
-    //Setup Sensor data format to 100 Hz
-    //
+    // Sensor data callbacks
+    printf("Registering sensor data callbacks.\n");
 
-    uint16_t sensor_base_rate;
+    mip::DispatchHandler sensorDataHandlers[4];
 
-    //Note: Querying the device base rate is only one way to calculate the descriptor decimation.
-    //We could have also set it directly with information from the datasheet (shown in GNSS setup).
+    // Data stores for sensor data
+    mip::data_shared::GpsTimestamp sensorGpsTimestamp;
+    mip::data_sensor::ScaledAccel  sensorScaledAccel;
+    mip::data_sensor::ScaledGyro   sensorScaledGyro;
+    mip::data_sensor::ScaledMag    sensorScaledMag;
 
-    if(mip::commands_3dm::getBaseRate(*device, mip::data_sensor::DESCRIPTOR_SET, &sensor_base_rate) != mip::CmdResult::ACK_OK)
-         exit_gracefully("ERROR: Could not get sensor base rate format!");
+    device.registerExtractor(sensorDataHandlers[0], &sensorGpsTimestamp);
+    device.registerExtractor(sensorDataHandlers[1], &sensorScaledAccel);
+    device.registerExtractor(sensorDataHandlers[2], &sensorScaledGyro);
+    device.registerExtractor(sensorDataHandlers[3], &sensorScaledMag);
 
-    const uint16_t sensor_sample_rate = 100; // Hz
-    const uint16_t sensor_decimation = sensor_base_rate / sensor_sample_rate;
+    // Filter data callbacks
+    printf("Registering filter data callbacks.\n");
 
-    std::array<mip::DescriptorRate, 4> sensor_descriptors = {{
-        { mip::data_shared::DATA_GPS_TIME,     sensor_decimation },
-        { mip::data_sensor::DATA_ACCEL_SCALED, sensor_decimation },
-        { mip::data_sensor::DATA_GYRO_SCALED,  sensor_decimation },
-        { mip::data_sensor::DATA_MAG_SCALED,   sensor_decimation },
-    }};
+    mip::DispatchHandler filterDataHandlers[5];
 
-    if(mip::commands_3dm::writeMessageFormat(*device, mip::data_sensor::DESCRIPTOR_SET, static_cast<uint8_t>(sensor_descriptors.size()), sensor_descriptors.data()) != mip::CmdResult::ACK_OK)
-        exit_gracefully("ERROR: Could not set sensor message format!");
+    // Data stores for filter data
+    mip::data_shared::GpsTimestamp filterGpsTimestamp;
+    mip::data_filter::Status       filterStatus;
+    mip::data_filter::EulerAngles  filterEulerAngles;
+    mip::data_filter::PositionLlh  filterPositionLlh;
 
+    device.registerExtractor(filterDataHandlers[0], &filterGpsTimestamp);
+    device.registerExtractor(filterDataHandlers[1], &filterStatus);
+    device.registerExtractor(filterDataHandlers[2], &filterEulerAngles);
+    device.registerExtractor(filterDataHandlers[3], &filterPositionLlh);
+    device.registerFieldCallback<&handleEventTriggers>(
+        filterDataHandlers[4],
+        mip::data_filter::DESCRIPTOR_SET,
+        mip::data_shared::EventSource::FIELD_DESCRIPTOR
+    );
 
-    //
-    //Setup FILTER data format
-    //
+    // Resume the device
+    // Note: Since the device was idled for configuration, it needs to be resumed to output the data streams
+    printf("Resuming the device.\n");
+    cmdResult = mip::commands_base::resume(device);
+    if (!cmdResult.isAck())
+    {
+        terminate(device, cmdResult, "Could not resume the device!\n");
+    }
 
-    uint16_t filter_base_rate;
+    printf("Sensor is configured... waiting for filter to initialize.\n");
 
-    if(mip::commands_3dm::getBaseRate(*device, mip::data_filter::DESCRIPTOR_SET, &filter_base_rate) != mip::CmdResult::ACK_OK)
-         exit_gracefully("ERROR: Could not get filter base rate format!");
+    mip::data_filter::FilterMode currentState = filterStatus.filter_state;
+
+    // Wait for the device to initialize
+    while (filterStatus.filter_state != mip::data_filter::FilterMode::INIT)
+    {
+        // Update the device state
+        // Note: This will update the device callbacks to trigger the filter state change
+        device.update();
+
+        // Filter state change
+        if (currentState != filterStatus.filter_state)
+        {
+            displayFilterState(filterStatus.filter_state);
+            currentState = filterStatus.filter_state;
+        }
+    }
+
+    mip::Timestamp previousPrintTimestamp = 0;
+
+    // Device loop
+    // TODO: Update loop condition to allow for exiting
+    while (true)
+    {
+        // Update the device state
+        device.update();
+
+        // Filter state change
+        if (currentState != filterStatus.filter_state)
+        {
+            displayFilterState(filterStatus.filter_state);
+            currentState = filterStatus.filter_state;
+        }
+
+        // Print out data at 10 Hz
+        const mip::Timestamp currentTime = getCurrentTimestamp();
+
+        if (currentTime - previousPrintTimestamp >= 100)
+        {
+            if (filterStatus.filter_state >= mip::data_filter::FilterMode::AHRS)
+            {
+                printf("TOW = %f: ATT_EULER = [%f %f %f]\n",
+                    filterGpsTimestamp.tow,
+                    filterEulerAngles.roll,
+                    filterEulerAngles.pitch,
+                    filterEulerAngles.yaw
+                );
+            }
+            else if (filterStatus.filter_state >= mip::data_filter::FilterMode::VERT_GYRO)
+            {
+                printf("TOW = %f: ATT_EULER = [%f %f]\n",
+                    filterGpsTimestamp.tow,
+                    filterEulerAngles.roll,
+                    filterEulerAngles.pitch
+                );
+            }
+
+            if (filterStatus.filter_state >= mip::data_filter::FilterMode::AHRS)
+            {
+                printf("TOW = %f: POS_LLH = [%f %f %f]\n",
+                    filterGpsTimestamp.tow,
+                    filterPositionLlh.latitude,
+                    filterPositionLlh.longitude,
+                    filterPositionLlh.ellipsoid_height
+                );
+            }
+
+            previousPrintTimestamp = currentTime;
+        }
+    }
+
+    printf("Example Completed Successfully.\n");
+    printf("Closing the connection and exiting.\n");
+    connection->disconnect();
+
+    return 0;
+}
+
+// Configure Sensor data message format
+void configureSensorMessageFormat(mip::Interface& _device)
+{
+    // Note: Querying the device base rate is only one way to calculate the descriptor decimation
+    // We could have also set it directly with information from the datasheet (shown in GNSS setup)
+
+    printf("Getting the base rate for sensor data.\n");
+    uint16_t sensorBaseRate;
+    mip::CmdResult cmdResult = mip::commands_3dm::getBaseRate(_device, mip::data_sensor::DESCRIPTOR_SET, &sensorBaseRate);
+    if (!cmdResult.isAck())
+    {
+        terminate(_device, cmdResult, "Could not get sensor base rate format!\n");
+    }
+
+    const uint16_t sensorSampleRate = 100; // Hz
+    const uint16_t sensorDecimation = sensorBaseRate / sensorSampleRate;
+
+    mip::DescriptorRate sensorDescriptors[4] = {
+        { mip::data_shared::GpsTimestamp::FIELD_DESCRIPTOR, sensorDecimation },
+        { mip::data_sensor::ScaledAccel::FIELD_DESCRIPTOR,  sensorDecimation },
+        { mip::data_sensor::ScaledGyro::FIELD_DESCRIPTOR,   sensorDecimation },
+        { mip::data_sensor::ScaledMag::FIELD_DESCRIPTOR,    sensorDecimation }
+    };
+
+    printf("Configuring %s for sensor data.\n", mip::commands_3dm::MessageFormat::DOC_NAME);
+    cmdResult = mip::commands_3dm::writeMessageFormat(
+        _device,                                                  // Device
+        mip::data_sensor::DESCRIPTOR_SET,                         // Data Descriptor
+        sizeof(sensorDescriptors) / sizeof(sensorDescriptors[0]), // Size of the array
+        sensorDescriptors                                         // Descriptor array
+    );
+
+    if (!cmdResult.isAck())
+    {
+        terminate(_device, cmdResult, "Could not set %s for sensor data!\n", mip::commands_3dm::MessageFormat::DOC_NAME);
+    }
+}
+
+// Configure Filter data message format
+void configureFilterMessageFormat(mip::Interface& _device)
+{
+    printf("Getting the base rate for filter data.\n");
+    uint16_t filterBaseRate;
+    mip::CmdResult cmdResult = mip::commands_3dm::getBaseRate(_device, mip::data_filter::DESCRIPTOR_SET, &filterBaseRate);
+    if (!cmdResult.isAck())
+    {
+        terminate(_device, cmdResult, "Could not get filter base rate format!\n");
+    }
 
     const uint16_t filter_sample_rate = 100; // Hz
-    const uint16_t filter_decimation = filter_base_rate / filter_sample_rate;
+    const uint16_t filter_decimation  = filterBaseRate / filter_sample_rate;
 
-    std::array<mip::DescriptorRate, 3> filter_descriptors = {{
-        { mip::data_shared::DATA_GPS_TIME,         filter_decimation },
-        { mip::data_filter::DATA_FILTER_STATUS,    filter_decimation },
-        { mip::data_filter::DATA_ATT_EULER_ANGLES, filter_decimation },
-    }};
+    mip::DescriptorRate filterDescriptors[3] = {
+        { mip::data_shared::GpsTimestamp::FIELD_DESCRIPTOR, filter_decimation },
+        { mip::data_filter::Status::FIELD_DESCRIPTOR,       filter_decimation },
+        { mip::data_filter::EulerAngles::FIELD_DESCRIPTOR,  filter_decimation }
+    };
 
-    if(mip::commands_3dm::writeMessageFormat(*device, mip::data_filter::DESCRIPTOR_SET, static_cast<uint8_t>(filter_descriptors.size()), filter_descriptors.data()) != mip::CmdResult::ACK_OK)
-        exit_gracefully("ERROR: Could not set filter message format!");
+    printf("Configuring %s for filter data.\n", mip::commands_3dm::MessageFormat::DOC_NAME);
+    cmdResult = mip::commands_3dm::writeMessageFormat(
+        _device,                                                  // Device
+        mip::data_filter::DESCRIPTOR_SET,                         // Data Descriptor
+        sizeof(filterDescriptors) / sizeof(filterDescriptors[0]), // Size of the array
+        filterDescriptors                                         // Descriptor array
+    );
 
-
-    //
-    // Setup event triggers/actions on > 45 degrees filter pitch and roll Euler angles
-    // (Note 1: we are reusing the event and action structs, since the settings for pitch/roll are so similar)
-    // (Note 2: we are using the same value for event and action ids.  This is not necessary, but done here for convenience)
-    //
-
-    //EVENTS
-
-    //Roll
-    mip::commands_3dm::EventTrigger::Parameters event_params;
-    event_params.threshold.type       = mip::commands_3dm::EventTrigger::ThresholdParams::Type::WINDOW;
-    event_params.threshold.desc_set   = mip::data_filter::DESCRIPTOR_SET;
-    event_params.threshold.field_desc = mip::data_filter::DATA_ATT_EULER_ANGLES;
-    event_params.threshold.param_id   = 1;
-    event_params.threshold.high_thres = -0.7853981;
-    event_params.threshold.low_thres  = 0.7853981;
-
-    if(mip::commands_3dm::writeEventTrigger(*device, FILTER_ROLL_EVENT_ACTION_ID, mip::commands_3dm::EventTrigger::Type::THRESHOLD, event_params) != mip::CmdResult::ACK_OK)
-        exit_gracefully("ERROR: Could not set roll event parameters!");
-
-    //Pitch
-    event_params.threshold.param_id = 2;
-
-    if(mip::commands_3dm::writeEventTrigger(*device, FILTER_PITCH_EVENT_ACTION_ID, mip::commands_3dm::EventTrigger::Type::THRESHOLD, event_params) != mip::CmdResult::ACK_OK)
-        exit_gracefully("ERROR: Could not set pitch event parameters!");
-
-    //ACTIONS
-
-    //Roll
-    mip::commands_3dm::EventAction::Parameters event_action;
-    event_action.message.desc_set       = mip::data_filter::DESCRIPTOR_SET;
-    event_action.message.num_fields     = 1;
-    event_action.message.descriptors[0] = mip::data_shared::DATA_EVENT_SOURCE;
-    event_action.message.decimation     = 0;
-
-    if(writeEventAction(*device, FILTER_ROLL_EVENT_ACTION_ID, FILTER_ROLL_EVENT_ACTION_ID, mip::commands_3dm::EventAction::Type::MESSAGE, event_action) != mip::CmdResult::ACK_OK)
-        exit_gracefully("ERROR: Could not set roll action parameters!");
-
-    //Pitch
-    if(writeEventAction(*device, FILTER_PITCH_EVENT_ACTION_ID, FILTER_PITCH_EVENT_ACTION_ID, mip::commands_3dm::EventAction::Type::MESSAGE, event_action) != mip::CmdResult::ACK_OK)
-        exit_gracefully("ERROR: Could not set pitch action parameters!");
-
-
-    //ENABLE EVENTS
-
-    //Roll
-    if(writeEventControl(*device, FILTER_ROLL_EVENT_ACTION_ID, mip::commands_3dm::EventControl::Mode::ENABLED) != mip::CmdResult::ACK_OK)
-        exit_gracefully("ERROR: Could not enable roll event!");
-
-    //Pitch
-    if(writeEventControl(*device, FILTER_PITCH_EVENT_ACTION_ID, mip::commands_3dm::EventControl::Mode::ENABLED) != mip::CmdResult::ACK_OK)
-        exit_gracefully("ERROR: Could not enable pitch event!");
-
-    //
-    //Setup the sensor to vehicle transformation
-    //
-
-    if(mip::commands_3dm::writeSensor2VehicleTransformEuler(*device, sensor_to_vehicle_transformation_euler[0], sensor_to_vehicle_transformation_euler[1], sensor_to_vehicle_transformation_euler[2]) != mip::CmdResult::ACK_OK)
-        exit_gracefully("ERROR: Could not set sensor-to-vehicle transformation!");
-
-
-    //
-    //Setup the filter aiding measurements (GNSS position/velocity and dual antenna [aka gnss heading])
-    //
-
-    if(mip::commands_filter::writeAidingMeasurementEnable(*device, mip::commands_filter::AidingMeasurementEnable::AidingSource::MAGNETOMETER, true) != mip::CmdResult::ACK_OK)
-        exit_gracefully("ERROR: Could not set filter aiding measurement enable!");
-
-
-    //
-    //Reset the filter (note: this is good to do after filter setup is complete)
-    //
-
-    if(mip::commands_filter::reset(*device) != mip::CmdResult::ACK_OK)
-        exit_gracefully("ERROR: Could not reset the filter!");
-
-
-    //
-    // Register data callbacks
-    //
-
-    //Sensor Data
-    mip::DispatchHandler sensor_data_handlers[4];
-
-    device->registerExtractor(sensor_data_handlers[0], &sensor_gps_time, mip::data_sensor::DESCRIPTOR_SET);
-    device->registerExtractor(sensor_data_handlers[1], &sensor_accel);
-    device->registerExtractor(sensor_data_handlers[2], &sensor_gyro);
-    device->registerExtractor(sensor_data_handlers[3], &sensor_mag);
-
-    //Filter Data
-    mip::DispatchHandler filter_data_handlers[4];
-
-    device->registerExtractor(filter_data_handlers[0], &filter_gps_time, mip::data_filter::DESCRIPTOR_SET);
-    device->registerExtractor(filter_data_handlers[1], &filter_status);
-    device->registerExtractor(filter_data_handlers[2], &filter_euler_angles);
-
-    device->registerFieldCallback<&handleFilterEventSource>(filter_data_handlers[3], mip::data_filter::DESCRIPTOR_SET, mip::data_shared::DATA_EVENT_SOURCE);
-
-    //
-    //Resume the device
-    //
-
-    if(mip::commands_base::resume(*device) != mip::CmdResult::ACK_OK)
-        exit_gracefully("ERROR: Could not resume the device!");
-
-
-    //
-    //Main Loop: Update the interface and process data
-    //
-
-    bool running = true;
-    mip::Timestamp prev_print_timestamp = getCurrentTimestamp();
-
-    printf("Sensor is configured... waiting for filter to enter AHRS mode (AHRS).\n");
-
-    std::string current_state = "";
-    while(running)
+    if (!cmdResult.isAck())
     {
-        device->update();
-        displayFilterState(filter_status.filter_state, current_state);
-
-        //Check Filter State
-        if((!filter_state_ahrs) && (filter_status.filter_state == mip::data_filter::FilterMode::AHRS))
-        {
-            printf("NOTE: Filter has entered AHRS mode.\n");
-            filter_state_ahrs = true;
-        }
-
-        //Once in AHRS Flter Mode, print out data at 10 Hz
-        if(filter_state_ahrs)
-        {
-           mip::Timestamp curr_timestamp = getCurrentTimestamp();
-
-           if(curr_timestamp - prev_print_timestamp >= 1000)
-           {
-                printf("TOW = %f: ATT_EULER = [%f %f %f]\n",
-                       filter_gps_time.tow, filter_euler_angles.roll, filter_euler_angles.pitch, filter_euler_angles.yaw);
-
-                prev_print_timestamp = curr_timestamp;
-           }
-        }
-
-        running = !should_exit();
-    }
-
-
-    exit_gracefully("Example Completed Successfully.");
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-// Filter Event Source Field Handler
-////////////////////////////////////////////////////////////////////////////////
-
-void handleFilterEventSource(void*, const mip::FieldView& field, mip::Timestamp)
-{
-    mip::data_shared::EventSource data;
-
-    if(field.extract(data))
-    {
-      if(data.trigger_id == FILTER_ROLL_EVENT_ACTION_ID)
-        printf("WARNING: Roll event triggered!\n");
-      else if(data.trigger_id == FILTER_PITCH_EVENT_ACTION_ID)
-        printf("WARNING: Pitch event triggered!\n");
+        terminate(_device, cmdResult, "Could not set %s for filter data!\n", mip::commands_3dm::MessageFormat::DOC_NAME);
     }
 }
 
-
-////////////////////////////////////////////////////////////////////////////////
-// Print Usage Function
-////////////////////////////////////////////////////////////////////////////////
-
-int usage(const char* argv0)
+// Set up a trigger for filter euler angles
+void configureEventTriggers(mip::Interface& _device)
 {
-    printf("Usage: %s <port> <baudrate>\n", argv0);
-    return 1;
+    // Configure a threshold trigger
+    mip::commands_3dm::EventTrigger::Parameters eventTriggerParameters;
+    eventTriggerParameters.threshold.desc_set   = mip::data_filter::EulerAngles::DESCRIPTOR_SET;
+    eventTriggerParameters.threshold.field_desc = mip::data_filter::EulerAngles::FIELD_DESCRIPTOR;
+
+    // X-axis (roll)
+    eventTriggerParameters.threshold.param_id = 1;
+
+    // Configure the high and low thresholds for the trigger window
+    eventTriggerParameters.threshold.type       = mip::commands_3dm::EventTrigger::ThresholdParams::Type::WINDOW;
+    eventTriggerParameters.threshold.low_thres  = 45.0 * M_PI / 180.0;                         // Note: Command expects radians. Converting 45 degrees into radians
+    eventTriggerParameters.threshold.high_thres = -eventTriggerParameters.threshold.low_thres; // -45 degrees
+
+    // Note: This is independent of the param_id
+    uint8_t triggerInstanceId = 1;
+
+    printf("Configuring threshold event trigger for roll on trigger instance ID %d.\n", triggerInstanceId);
+    mip::CmdResult cmdResult = mip::commands_3dm::writeEventTrigger(
+        _device,                                          // Device
+        triggerInstanceId,                                // Trigger instance ID
+        mip::commands_3dm::EventTrigger::Type::THRESHOLD, // Trigger type
+        eventTriggerParameters                            // Trigger parameters
+    );
+
+    if (!cmdResult.isAck())
+    {
+        terminate(_device, cmdResult, "Could not set pitch event parameters!\n");
+    }
+
+    // Use the same trigger configuration, but set it to the y-axis (pitch)
+    eventTriggerParameters.threshold.param_id = 2;
+
+    // Note: This is independent of the param_id
+    triggerInstanceId = 2;
+
+    printf("Configuring threshold event trigger for pitch on trigger instance ID %d.\n", triggerInstanceId);
+    cmdResult = mip::commands_3dm::writeEventTrigger(
+        _device,                                          // Device
+        triggerInstanceId,                                // Trigger instance ID
+        mip::commands_3dm::EventTrigger::Type::THRESHOLD, // Trigger type
+        eventTriggerParameters                            // Trigger parameters
+    );
+
+    if (!cmdResult.isAck())
+    {
+        terminate(_device, cmdResult, "Could not set roll event parameters!\n");
+    }
 }
 
-
-////////////////////////////////////////////////////////////////////////////////
-// Exit Function
-////////////////////////////////////////////////////////////////////////////////
-
-void exit_gracefully(const char *message)
+// Note: Event trigger instance IDs do not need to match the Action instance IDs
+void configureEventActions(mip::Interface& _device)
 {
-    if(message)
-        printf("%s\n", message);
+    mip::commands_3dm::EventAction::Parameters eventActionParameters;
+    eventActionParameters.message.desc_set       = mip::data_filter::DESCRIPTOR_SET;
+    eventActionParameters.message.decimation     = 0;
+    eventActionParameters.message.num_fields     = 1;
+    eventActionParameters.message.descriptors[0] = mip::data_shared::EventSource::FIELD_DESCRIPTOR;
 
-#ifdef MICROSTRAIN_PLATFORM_WINDOWS
-    printf("Press ENTER to exit...\n");
-    getchar();
-#endif
+    // Note: These are independent of each other and do not need to be the same
+    // The tigger instance ID should match the configured trigger instance ID the action should be tied to
+    uint8_t action_instance_id  = 1;
+    uint8_t trigger_instance_id = 1;
 
-    exit(0);
+    printf("Configuring message action instance ID %d for trigger instance ID %d (roll).\n",
+        action_instance_id,
+        trigger_instance_id
+    );
+    // Configure an action for event trigger 1 (roll)
+    mip::CmdResult cmdResult = mip::commands_3dm::writeEventAction(
+        _device,                                       // Device
+        action_instance_id,                            // Action instance ID
+        trigger_instance_id,                           // Trigger instance ID to link to
+        mip::commands_3dm::EventAction::Type::MESSAGE, // Action type
+        eventActionParameters                          // Action parameters
+    );
+
+    if (!cmdResult.isAck())
+    {
+        terminate(_device, cmdResult, "Could not set roll action parameters!\n");
+    }
+
+    // Note: These are independent of each other and do not need to be the same
+    // The tigger instance ID should match the configured trigger instance ID the action should be tied to
+    action_instance_id  = 2;
+    trigger_instance_id = 2;
+
+    printf("Configuring message action instance ID %d for trigger instance ID %d (pitch).\n",
+        action_instance_id,
+        trigger_instance_id
+    );
+    // Configure an action for event trigger 2 (pitch)
+    cmdResult = mip::commands_3dm::writeEventAction(
+        _device,                                       // Device
+        action_instance_id,                            // Action instance ID
+        trigger_instance_id,                           // Trigger instance ID to link to
+        mip::commands_3dm::EventAction::Type::MESSAGE, // Action type
+        eventActionParameters                          // Action parameters
+    );
+
+    if (!cmdResult.isAck())
+    {
+        terminate(_device, cmdResult, "Could not set pitch action parameters!\n");
+    }
 }
 
-
-////////////////////////////////////////////////////////////////////////////////
-// Check for Exit Condition
-////////////////////////////////////////////////////////////////////////////////
-
-bool should_exit()
+// Enable the events
+void enableEvents(mip::Interface& _device)
 {
-  return false;
+    uint8_t eventTriggerInstanceId = 1;
 
+    // Enable the roll event trigger
+    printf("Enabling event trigger instance ID %d (roll).\n", eventTriggerInstanceId);
+    mip::CmdResult cmdResult = mip::commands_3dm::writeEventControl(
+        _device,                                       // Device
+        eventTriggerInstanceId,                        // Event trigger instance ID to enable
+        mip::commands_3dm::EventControl::Mode::ENABLED // Event control mode
+    );
+
+    if (!cmdResult.isAck())
+    {
+        terminate(_device, cmdResult, "Could not enable roll event!\n");
+    }
+
+    eventTriggerInstanceId = 2;
+
+    // Enable the pitch event trigger
+    printf("Enabling event trigger instance ID %d (pitch).\n", eventTriggerInstanceId);
+    cmdResult = mip::commands_3dm::writeEventControl(
+        _device,                                       // Device
+        eventTriggerInstanceId,                        // Event trigger instance ID to enable
+        mip::commands_3dm::EventControl::Mode::ENABLED // Event control mode
+    );
+
+    if (!cmdResult.isAck())
+    {
+        terminate(_device, cmdResult, "Could not enable pitch event!\n");
+    }
+}
+
+// Handler for filter event source field
+void handleEventTriggers(void* _user, const mip::FieldView& _field, mip::Timestamp _timestamp)
+{
+    // Unused variables
+    (void)_user;
+    (void)_timestamp;
+
+    mip::data_shared::EventSource eventSource;
+
+    if (!_field.extract(eventSource))
+    {
+        return;
+    }
+
+    // Event trigger instance ID 1 (roll)
+    if (eventSource.trigger_id == 1)
+    {
+        printf("EVENT: Roll event triggered! Trigger ID: %d\n", eventSource.trigger_id);
+    }
+    // Event trigger instance ID 2 (pitch)
+    else if (eventSource.trigger_id == 2)
+    {
+        printf("EVENT: Pitch event triggered! Trigger ID: %d\n", eventSource.trigger_id);
+    }
+}
+
+void displayFilterState(const mip::data_filter::FilterMode _filterState)
+{
+    printf("The filter has entered ");
+
+    switch (_filterState)
+    {
+        case mip::data_filter::FilterMode::INIT:
+        {
+            printf("initialization mode. INIT (%d)", static_cast<uint8_t>(_filterState));
+            break;
+        }
+        case mip::data_filter::FilterMode::VERT_GYRO:
+        {
+            printf("vertical gyro mode. VERT_GYRO (%d)", static_cast<uint8_t>(_filterState));
+            break;
+        }
+        case mip::data_filter::FilterMode::AHRS:
+        {
+            printf("AHRS mode. AHRS (%d)", static_cast<uint8_t>(_filterState));
+            break;
+        }
+        case mip::data_filter::FilterMode::FULL_NAV:
+        {
+            printf("full navigation mode. FULL_NAV (%d)", static_cast<uint8_t>(_filterState));
+            break;
+        }
+        default:
+        {
+            printf("startup mode. STARTUP (%d)", static_cast<uint8_t>(_filterState));
+            break;
+        }
+    }
+
+    printf("\n");
+}
+
+mip::Timestamp getCurrentTimestamp()
+{
+    std::chrono::nanoseconds timeSinceEpoch = std::chrono::steady_clock::now().time_since_epoch();
+    return static_cast<mip::Timestamp>(std::chrono::duration_cast<std::chrono::milliseconds>(timeSinceEpoch).count());
+}
+
+void initializeDevice(mip::Interface& _device)
+{
+    // Create a command result to check/print results when running commands
+    mip::CmdResult cmdResult;
+
+    // Ping the device
+    // Note: This is a good first step to make sure the device is present
+    printf("Pinging the device.\n");
+    cmdResult = mip::commands_base::ping(_device);
+    if (!cmdResult.isAck())
+    {
+        terminate(_device, cmdResult, "Could not ping the device!");
+    }
+
+    // Set the device to Idle
+    // Note: This is good to do during setup as high data traffic can cause commands to fail
+    printf("Setting device to idle.\n");
+    cmdResult = mip::commands_base::setIdle(_device);
+    if (!cmdResult.isAck())
+    {
+        terminate(_device, cmdResult, "Could not set the device to idle!\n");
+    }
+
+    // Load the default settings on the device
+    // Note: This guarantees the device is in a known state
+    printf("Loading default settings.\n");
+    cmdResult = mip::commands_3dm::defaultDeviceSettings(_device);
+    if (!cmdResult.isAck())
+    {
+        terminate(_device, cmdResult, "Could not load %s!\n", mip::commands_3dm::DeviceSettings::DOC_NAME);
+    }
+}
+
+// void terminate(mip::Interface& _device, const char* _message, mip::CmdResult _cmdResult)
+void terminate(mip::Interface& _device, mip::CmdResult _cmdResult, const char* _format, ...)
+{
+    va_list args;
+    va_start(args, _format);
+    vprintf(_format, args);
+    va_end(args);
+
+    printf("ERROR: %s Command Result: %d %s\n", _format, _cmdResult.value, _cmdResult.name());
+
+    // Get the connection pointer that was set during device initialization
+    microstrain::Connection* connection = static_cast<microstrain::Connection *>(_device.userPointer());
+
+    if (connection == nullptr)
+    {
+        // Create the device interface with a connection or set it after creation
+        printf("ERROR: Connection not set for the device interface. Cannot close the connection.\n");
+    }
+    else
+    {
+        printf("Closing the connection.\n");
+        connection->disconnect();
+    }
+
+    printf("Exiting the program.\n");
+
+    exit(1);
 }
