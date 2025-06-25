@@ -91,7 +91,7 @@ int main(int argc, const char* argv[])
     serial_port device_port;
     serial_port_init(&device_port);
 
-    // Record program start time for use with get_timestamp().
+    // Record program start time for use with get_timestamp()
     time(&g_start_time);
 
     printf("Connecting to the device on port %s with %d baudrate.\n", port_name, baudrate);
@@ -135,9 +135,9 @@ int main(int argc, const char* argv[])
     // Configure Filter Aiding Measurements (GNSS position/velocity and dual antenna [aka gnss heading])
     printf("Configuring filter aiding measurement enable.\n");
     cmd_result = mip_filter_write_aiding_measurement_enable(
-        &device,
-        MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_MAGNETOMETER,
-        true
+        &device,                                                                 // Device
+        MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_MAGNETOMETER, // Aiding Source
+        true                                                                     // Enabled
     );
 
     if (!mip_cmd_result_is_ack(cmd_result))
@@ -163,9 +163,9 @@ int main(int argc, const char* argv[])
 
     // Data stores for sensor data
     mip_shared_gps_timestamp_data sensor_gps_time;
-    mip_sensor_scaled_accel_data  sensor_accel;
-    mip_sensor_scaled_gyro_data   sensor_gyro;
-    mip_sensor_scaled_mag_data    sensor_mag;
+    mip_sensor_scaled_accel_data  sensor_scaled_accel;
+    mip_sensor_scaled_gyro_data   sensor_scaled_gyro;
+    mip_sensor_scaled_mag_data    sensor_scaled_mag;
 
     mip_interface_register_extractor(
         &device,
@@ -182,7 +182,7 @@ int main(int argc, const char* argv[])
         MIP_SENSOR_DATA_DESC_SET,
         MIP_DATA_DESC_SENSOR_ACCEL_SCALED,
         extract_mip_sensor_scaled_accel_data_from_field,
-        &sensor_accel
+        &sensor_scaled_accel
     );
 
     mip_interface_register_extractor(
@@ -191,7 +191,7 @@ int main(int argc, const char* argv[])
         MIP_SENSOR_DATA_DESC_SET,
         MIP_DATA_DESC_SENSOR_GYRO_SCALED,
         extract_mip_sensor_scaled_gyro_data_from_field,
-        &sensor_gyro
+        &sensor_scaled_gyro
     );
 
     mip_interface_register_extractor(
@@ -200,18 +200,19 @@ int main(int argc, const char* argv[])
         MIP_SENSOR_DATA_DESC_SET,
         MIP_DATA_DESC_SENSOR_MAG_SCALED,
         extract_mip_sensor_scaled_mag_data_from_field,
-        &sensor_mag
+        &sensor_scaled_mag
     );
 
     // Filter data callbacks
     printf("Registering filter data callbacks.\n");
 
-    mip_dispatch_handler filter_data_handlers[4];
+    mip_dispatch_handler filter_data_handlers[5];
 
     // Data stores for filter data
+    mip_shared_gps_timestamp_data filter_gps_timestamp;
     mip_filter_status_data        filter_status;
-    mip_shared_gps_timestamp_data filter_gps_time;
     mip_filter_euler_angles_data  filter_euler_angles;
+    mip_filter_position_llh_data  filter_position_llh;
 
     mip_interface_register_extractor(
         &device,
@@ -219,7 +220,7 @@ int main(int argc, const char* argv[])
         MIP_FILTER_DATA_DESC_SET,
         MIP_DATA_DESC_SHARED_GPS_TIME,
         extract_mip_shared_gps_timestamp_data_from_field,
-        &filter_gps_time
+        &filter_gps_timestamp
     );
 
     mip_interface_register_extractor(
@@ -240,9 +241,18 @@ int main(int argc, const char* argv[])
         &filter_euler_angles
     );
 
-    mip_interface_register_field_callback(
+    mip_interface_register_extractor(
         &device,
         &filter_data_handlers[3],
+        MIP_FILTER_DATA_DESC_SET,
+        MIP_DATA_DESC_FILTER_POS_LLH,
+        extract_mip_filter_position_llh_data_from_field,
+        &filter_position_llh
+    );
+
+    mip_interface_register_field_callback(
+        &device,
+        &filter_data_handlers[4],
         MIP_FILTER_DATA_DESC_SET,
         MIP_DATA_DESC_SHARED_EVENT_SOURCE,
         handle_event_triggers,
@@ -258,12 +268,12 @@ int main(int argc, const char* argv[])
         terminate(&device, "Could not resume the device!\n", cmd_result);
     }
 
-    printf("Sensor is configured... waiting for filter to enter vertical gyro mode.\n");
+    printf("Sensor is configured... waiting for filter to initialize.\n");
 
     mip_filter_mode current_state = filter_status.filter_state;
 
-    // Wait for the device to enter vertical gyro mode
-    while (filter_status.filter_state != MIP_FILTER_MODE_VERT_GYRO)
+    // Wait for the device to initialize
+    while (filter_status.filter_state != MIP_FILTER_MODE_INIT)
     {
         // Update the device state
         // Note: This will update the device callbacks to trigger the filter state change
@@ -277,7 +287,7 @@ int main(int argc, const char* argv[])
         }
     }
 
-    mip_timestamp prev_print_timestamp = 0;
+    mip_timestamp previous_print_timestamp = 0;
 
     // Device loop
     // TODO: Update loop condition to allow for exiting
@@ -294,18 +304,39 @@ int main(int argc, const char* argv[])
         }
 
         // Print out data at 10 Hz
-        const mip_timestamp curr_time = get_current_timestamp();
+        const mip_timestamp current_time = get_current_timestamp();
 
-        if (curr_time - prev_print_timestamp >= 100)
+        if (current_time - previous_print_timestamp >= 100)
         {
-            printf("TOW = %f: ATT_EULER = [%f %f %f]\n",
-                filter_gps_time.tow,
-                filter_euler_angles.roll,
-                filter_euler_angles.pitch,
-                filter_euler_angles.yaw
-            );
+            if (filter_status.filter_state >= MIP_FILTER_MODE_AHRS)
+            {
+                printf("TOW = %f: ATT_EULER = [%f %f %f]\n",
+                    filter_gps_timestamp.tow,
+                    filter_euler_angles.roll,
+                    filter_euler_angles.pitch,
+                    filter_euler_angles.yaw
+                );
+            }
+            else if (filter_status.filter_state >= MIP_FILTER_MODE_VERT_GYRO)
+            {
+                printf("TOW = %f: ATT_EULER = [%f %f]\n",
+                    filter_gps_timestamp.tow,
+                    filter_euler_angles.roll,
+                    filter_euler_angles.pitch
+                );
+            }
 
-            prev_print_timestamp = curr_time;
+            if (filter_status.filter_state >= MIP_FILTER_MODE_FULL_NAV)
+            {
+                printf("TOW = %f: POS_LLH = [%f %f %f]\n",
+                    filter_gps_timestamp.tow,
+                    filter_position_llh.latitude,
+                    filter_position_llh.longitude,
+                    filter_position_llh.ellipsoid_height
+                );
+            }
+
+            previous_print_timestamp = current_time;
         }
     }
 
@@ -319,8 +350,8 @@ int main(int argc, const char* argv[])
 // Configure Sensor data message format
 void configure_sensor_message_format(mip_interface* device)
 {
-    // Note: Querying the device base rate is only one way to calculate the descriptor decimation.
-    // We could have also set it directly with information from the datasheet (shown in GNSS setup).
+    // Note: Querying the device base rate is only one way to calculate the descriptor decimation
+    // We could have also set it directly with information from the datasheet (shown in GNSS setup)
 
     printf("Getting the base rate for sensor data.\n");
     uint16_t sensor_base_rate;
