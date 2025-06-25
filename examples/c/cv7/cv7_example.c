@@ -423,24 +423,27 @@ void configure_filter_message_format(mip_interface* device)
 void configure_event_triggers(mip_interface* device)
 {
     // Configure a threshold trigger
-    mip_3dm_event_trigger_command_parameters event_params;
-    event_params.threshold.desc_set   = MIP_FILTER_DATA_DESC_SET;
-    event_params.threshold.field_desc = MIP_DATA_DESC_FILTER_ATT_EULER_ANGLES;
+    mip_3dm_event_trigger_command_parameters event_parameters;
+    event_parameters.threshold.desc_set   = MIP_FILTER_DATA_DESC_SET;
+    event_parameters.threshold.field_desc = MIP_DATA_DESC_FILTER_ATT_EULER_ANGLES;
 
     // X-axis (roll)
-    event_params.threshold.param_id = 1;
+    event_parameters.threshold.param_id = 1;
 
     // Configure the high and low thresholds for the trigger window
-    event_params.threshold.type       = MIP_3DM_EVENT_TRIGGER_COMMAND_THRESHOLD_PARAMS_TYPE_WINDOW;
-    event_params.threshold.low_thres  = 45.0 * M_PI / 180.0;               // Note: Command expects radians. Converting 45 degrees into radians
-    event_params.threshold.high_thres = -event_params.threshold.low_thres; // -45 degrees
+    event_parameters.threshold.type       = MIP_3DM_EVENT_TRIGGER_COMMAND_THRESHOLD_PARAMS_TYPE_WINDOW;
+    event_parameters.threshold.low_thres  = 45.0 * M_PI / 180.0;                   // Note: Command expects radians. Converting 45 degrees into radians
+    event_parameters.threshold.high_thres = -event_parameters.threshold.low_thres; // -45 degrees
 
-    printf("Configuring threshold event trigger for roll on trigger instance ID 1.\n");
+    // Note: This is independent of the param_id
+    uint8_t trigger_instance_id = 1;
+
+    printf("Configuring threshold event trigger for roll on trigger instance ID %d.\n", trigger_instance_id);
     mip_cmd_result cmd_result = mip_3dm_write_event_trigger(
-        device,
-        1, // Trigger instance ID
-        MIP_3DM_EVENT_TRIGGER_COMMAND_TYPE_THRESHOLD,
-        &event_params
+        device,                                       // Device
+        trigger_instance_id,                          // Trigger instance ID
+        MIP_3DM_EVENT_TRIGGER_COMMAND_TYPE_THRESHOLD, // Trigger type
+        &event_parameters                             // Trigger parameters
     );
 
     if (!mip_cmd_result_is_ack(cmd_result))
@@ -449,14 +452,17 @@ void configure_event_triggers(mip_interface* device)
     }
 
     // Use the same trigger configuration, but set it to the y-axis (pitch)
-    event_params.threshold.param_id = 2;
+    event_parameters.threshold.param_id = 2;
 
-    printf("Configuring threshold event trigger for pitch on trigger instance ID 2.\n");
+    // Note: This is independent of the param_id
+    trigger_instance_id = 2;
+
+    printf("Configuring threshold event trigger for pitch on trigger instance ID %d.\n", trigger_instance_id);
     cmd_result = mip_3dm_write_event_trigger(
-        device,
-        2, // Trigger instance ID
-        MIP_3DM_EVENT_TRIGGER_COMMAND_TYPE_THRESHOLD,
-        &event_params
+        device,                                       // Device
+        trigger_instance_id,                          // Trigger instance ID
+        MIP_3DM_EVENT_TRIGGER_COMMAND_TYPE_THRESHOLD, // Trigger type
+        &event_parameters                             // Trigger parameters
     );
 
     if (!mip_cmd_result_is_ack(cmd_result))
@@ -468,20 +474,28 @@ void configure_event_triggers(mip_interface* device)
 // Note: Event trigger instance IDs do not need to match the Action instance IDs
 void configure_event_actions(mip_interface* device)
 {
-    mip_3dm_event_action_command_parameters event_action;
-    event_action.message.desc_set       = MIP_FILTER_DATA_DESC_SET;
-    event_action.message.decimation     = 0;
-    event_action.message.num_fields     = 1;
-    event_action.message.descriptors[0] = MIP_DATA_DESC_SHARED_EVENT_SOURCE;
+    mip_3dm_event_action_command_parameters event_action_parameters;
+    event_action_parameters.message.desc_set       = MIP_FILTER_DATA_DESC_SET;
+    event_action_parameters.message.decimation     = 0;
+    event_action_parameters.message.num_fields     = 1;
+    event_action_parameters.message.descriptors[0] = MIP_DATA_DESC_SHARED_EVENT_SOURCE;
 
-    printf("Configuring message action for trigger instance ID 1 (roll).\n");
+    // Note: These are independent of each other and do not need to be the same
+    // The tigger instance ID should match the configured trigger instance ID the action should be tied to
+    uint8_t action_instance_id  = 1;
+    uint8_t trigger_instance_id = 1;
+
+    printf("Configuring message action instance ID %d for trigger instance ID %d (roll).\n",
+        action_instance_id,
+        trigger_instance_id
+    );
     // Configure an action for event trigger 1 (roll)
     mip_cmd_result cmd_result = mip_3dm_write_event_action(
-        device,
-        1, // Action instance ID
-        1, // Trigger instance ID to link to
-        MIP_3DM_EVENT_ACTION_COMMAND_TYPE_MESSAGE,
-        &event_action
+        device,                                    // Device
+        action_instance_id,                        // Action instance ID
+        trigger_instance_id,                       // Trigger instance ID to link to
+        MIP_3DM_EVENT_ACTION_COMMAND_TYPE_MESSAGE, // Action type
+        &event_action_parameters                   // Action parameters
     );
 
     if (!mip_cmd_result_is_ack(cmd_result))
@@ -489,14 +503,22 @@ void configure_event_actions(mip_interface* device)
         terminate(device, "Could not set roll action parameters!\n", cmd_result);
     }
 
+    // Note: These are independent of each other and do not need to be the same
+    // The tigger instance ID should match the configured trigger instance ID the action should be tied to
+    action_instance_id  = 2;
+    trigger_instance_id = 2;
+
+    printf("Configuring message action instance ID %d for trigger instance ID %d (pitch).\n",
+        action_instance_id,
+        trigger_instance_id
+    );
     // Configure an action for event trigger 2 (pitch)
-    printf("Configuring message action for trigger instance ID 2 (pitch).\n");
     cmd_result = mip_3dm_write_event_action(
-        device,
-        2, // Action instance ID
-        2, // Trigger instance ID to link to
-        MIP_3DM_EVENT_ACTION_COMMAND_TYPE_MESSAGE,
-        &event_action
+        device,                                    // Device
+        action_instance_id,                        // Action instance ID
+        trigger_instance_id,                       // Trigger instance ID to link to
+        MIP_3DM_EVENT_ACTION_COMMAND_TYPE_MESSAGE, // Action type
+        &event_action_parameters                   // Action parameters
     );
 
     if (!mip_cmd_result_is_ack(cmd_result))
@@ -508,12 +530,14 @@ void configure_event_actions(mip_interface* device)
 // Enable the events
 void enable_events(mip_interface* device)
 {
+    uint8_t event_trigger_instance_id = 1;
+
     // Enable the roll event trigger
-    printf("Enabling event trigger instance 1 (roll).\n");
+    printf("Enabling event trigger instance ID %d (roll).\n", event_trigger_instance_id);
     mip_cmd_result cmd_result = mip_3dm_write_event_control(
-        device,
-        1, // Event trigger instance ID to enable
-        MIP_3DM_EVENT_CONTROL_COMMAND_MODE_ENABLED
+        device,                                    // Device
+        event_trigger_instance_id,                 // Event trigger instance ID to enable
+        MIP_3DM_EVENT_CONTROL_COMMAND_MODE_ENABLED // Event control mode
     );
 
     if (!mip_cmd_result_is_ack(cmd_result))
@@ -521,12 +545,14 @@ void enable_events(mip_interface* device)
         terminate(device, "Could not enable roll event!\n", cmd_result);
     }
 
+    event_trigger_instance_id = 2;
+
     // Enable the pitch event trigger
-    printf("Enabling event trigger instance 2 (pitch).\n");
+    printf("Enabling event trigger instance ID %d (pitch).\n", event_trigger_instance_id);
     cmd_result = mip_3dm_write_event_control(
-        device,
-        2, // Event trigger instance ID to enable
-        MIP_3DM_EVENT_CONTROL_COMMAND_MODE_ENABLED
+        device,                                    // Device
+        event_trigger_instance_id,                 // Event trigger instance ID to enable
+        MIP_3DM_EVENT_CONTROL_COMMAND_MODE_ENABLED // Event control mode
     );
 
     if (!mip_cmd_result_is_ack(cmd_result))
@@ -542,22 +568,22 @@ void handle_event_triggers(void* user, const mip_field_view* field, mip_timestam
     (void)user;
     (void)timestamp;
 
-    mip_shared_event_source_data data;
+    mip_shared_event_source_data event_source;
 
-    if (!extract_mip_shared_event_source_data_from_field(field, &data))
+    if (!extract_mip_shared_event_source_data_from_field(field, &event_source))
     {
         return;
     }
 
     // Event trigger instance ID 1 (roll)
-    if (data.trigger_id == 1)
+    if (event_source.trigger_id == 1)
     {
-        printf("EVENT: Roll event triggered! Trigger ID: %d\n", data.trigger_id);
+        printf("EVENT: Roll event triggered! Trigger ID: %d\n", event_source.trigger_id);
     }
     // Event trigger instance ID 2 (pitch)
-    else if (data.trigger_id == 2)
+    else if (event_source.trigger_id == 2)
     {
-        printf("EVENT: Pitch event triggered! Trigger ID: %d\n", data.trigger_id);
+        printf("EVENT: Pitch event triggered! Trigger ID: %d\n", event_source.trigger_id);
     }
 }
 
