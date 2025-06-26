@@ -23,7 +23,7 @@
 
 // Include all necessary MIP headers
 // Note: The MIP SDK has headers for each module to include all headers associated with the module
-// I.E., #include <mip/mip_all.h>
+// I.E., #include <mip/mip_all.hpp>
 #include <mip/definitions/commands_3dm.hpp>
 #include <mip/definitions/commands_base.hpp>
 #include <mip/definitions/commands_filter.hpp>
@@ -36,12 +36,27 @@
 #endif // _MSC_VER
 
 #include <chrono>
+#include <cstdarg>
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
-#include <ctime>
+#include <cstring>
 #include <math.h>
-#include <memory>
+
+// TODO: Update to the correct port name and baudrate
+////////////////////////////////////////////////////////////////////////////////
+// NOTE: Setting these globally for example purposes
+
+// Set the port name for the connection (Serial/USB)
+#ifdef _WIN32
+static const char* PORT_NAME = "COM1";
+#else // Unix
+static const char* PORT_NAME = "/dev/ttyUSB0";
+#endif // _WIN32
+
+// Set the baudrate for the connection (Serial/USB)
+static const uint32_t BAUDRATE = 115200;
+////////////////////////////////////////////////////////////////////////////////
 
 // Message format configuration
 void configureSensorMessageFormat(mip::Interface& _device);
@@ -53,12 +68,20 @@ void configureEventActions(mip::Interface& _device);
 void enableEvents(mip::Interface& _device);
 void handleEventTriggers(void* _user, const mip::FieldView& _field, mip::Timestamp _timestamp);
 
+// Filter initialization
+void initializeFilter(mip::Interface& _device);
+
+// Utility to display filter state changes
 void displayFilterState(const mip::data_filter::FilterMode _filterState);
 
+// Get the current system time (in milliseconds)
 mip::Timestamp getCurrentTimestamp();
 
+// Common device initialization procedure
 void initializeDevice(mip::Interface& _device);
 
+// Utility functions the handle application closing and printing error messages
+void terminate(microstrain::Connection* _connection, const char* _message, const bool _successful = false);
 void terminate(mip::Interface& _device, mip::CmdResult _cmdResult, const char* _format, ...);
 
 int main(int argc, const char* argv[])
@@ -67,37 +90,23 @@ int main(int argc, const char* argv[])
     (void)argc;
     (void)argv;
 
-    // TODO: Update to the correct port name
-    // Set the port name for the connection (Serial)
-#ifdef _WIN32
-    const char* portName = "COM8";
-#else // Unix
-    const char* portName = "/dev/ttyUSB0";
-#endif // _WIN32
-
-    // TODO: Update to the correct baudrate
-    // Set the baudrate for the connection (Serial)
-    const uint32_t baudrate = 115200;
-
     // Initialize the connection
-    printf("Initializing serial port.\n");
-    std::unique_ptr<microstrain::connections::UsbSerialConnection> connection =
-        std::make_unique<microstrain::connections::UsbSerialConnection>(portName, baudrate);
+    printf("Initializing the connection.\n");
+    microstrain::connections::UsbSerialConnection connection(PORT_NAME, BAUDRATE);
 
-    printf("Connecting to the device on port %s with %d baudrate.\n", portName, baudrate);
+    printf("Connecting to the device on port %s with %d baudrate.\n", PORT_NAME, BAUDRATE);
 
     // Open the connection to the device
-    if (!connection->connect())
+    if (!connection.connect())
     {
-        printf("ERROR: Could not open the connection!\n");
-        return 1;
+        terminate(&connection, "ERROR: Could not open the connection!\n");
     }
 
     printf("Initializing the device interface.\n");
     mip::Interface device = mip::Interface(
-        connection.get(),                            // Connection for the device
-        mip::C::mip_timeout_from_baudrate(baudrate), // Set the base timeout for commands (milliseconds)
-        500                                          // Set the base timeout for command replies (milliseconds)
+        &connection,                                 // Connection for the device
+        mip::C::mip_timeout_from_baudrate(BAUDRATE), // Set the base timeout for commands (milliseconds)
+        2000                                         // Set the base timeout for command replies (milliseconds)
     );
     initializeDevice(device);
 
@@ -119,7 +128,7 @@ int main(int argc, const char* argv[])
         0.0f, // Roll
         0.0f, // Pitch
         0.0f  // Yaw
-        );
+    );
 
     if (!cmdResult.isAck())
     {
@@ -139,14 +148,8 @@ int main(int argc, const char* argv[])
         terminate(device, cmdResult, "Could not set %s!\n", mip::commands_filter::AidingMeasurementEnable::DOC_NAME);
     }
 
-    // Reset the filter
-    // Note: This is good to do after filter setup is complete
-    printf("Attempting to %s.\n", mip::commands_filter::Reset::DOC_NAME);
-    cmdResult = mip::commands_filter::reset(device);
-    if (!cmdResult.isAck())
-    {
-        terminate(device, cmdResult, "Could not %s!\n", mip::commands_filter::Reset::DOC_NAME);
-    }
+    // Initialize the navigation filter
+    initializeFilter(device);
 
     // Register data callbacks
 
@@ -161,6 +164,7 @@ int main(int argc, const char* argv[])
     mip::data_sensor::ScaledGyro   sensorScaledGyro;
     mip::data_sensor::ScaledMag    sensorScaledMag;
 
+    // Register the callbacks for the sensor fields
     device.registerExtractor(sensorDataHandlers[0], &sensorGpsTimestamp);
     device.registerExtractor(sensorDataHandlers[1], &sensorScaledAccel);
     device.registerExtractor(sensorDataHandlers[2], &sensorScaledGyro);
@@ -169,20 +173,21 @@ int main(int argc, const char* argv[])
     // Filter data callbacks
     printf("Registering filter data callbacks.\n");
 
-    mip::DispatchHandler filterDataHandlers[5];
+    mip::DispatchHandler filterDataHandlers[4];
 
     // Data stores for filter data
     mip::data_shared::GpsTimestamp filterGpsTimestamp;
     mip::data_filter::Status       filterStatus;
     mip::data_filter::EulerAngles  filterEulerAngles;
-    mip::data_filter::PositionLlh  filterPositionLlh;
 
+    // Register the callbacks for the filter fields
     device.registerExtractor(filterDataHandlers[0], &filterGpsTimestamp);
     device.registerExtractor(filterDataHandlers[1], &filterStatus);
     device.registerExtractor(filterDataHandlers[2], &filterEulerAngles);
-    device.registerExtractor(filterDataHandlers[3], &filterPositionLlh);
+
+    // Register a custom callback for the event field
     device.registerFieldCallback<&handleEventTriggers>(
-        filterDataHandlers[4],
+        filterDataHandlers[3],
         mip::data_filter::DESCRIPTOR_SET,
         mip::data_shared::EventSource::FIELD_DESCRIPTOR
     );
@@ -231,15 +236,16 @@ int main(int argc, const char* argv[])
             currentState = filterStatus.filter_state;
         }
 
-        // Print out data at 10 Hz
         const mip::Timestamp currentTime = getCurrentTimestamp();
 
+        // Print out data at 10 Hz (1000ms / 100ms)
         if (currentTime - previousPrintTimestamp >= 100)
         {
             if (filterStatus.filter_state >= mip::data_filter::FilterMode::AHRS)
             {
-                printf("TOW = %f: ATT_EULER = [%f %f %f]\n",
+                printf("TOW = %.3f: %s = [%f %f %f]\n",
                     filterGpsTimestamp.tow,
+                    mip::data_filter::EulerAngles::DOC_NAME, // Built-in metadata for easy printing
                     filterEulerAngles.roll,
                     filterEulerAngles.pitch,
                     filterEulerAngles.yaw
@@ -247,20 +253,11 @@ int main(int argc, const char* argv[])
             }
             else if (filterStatus.filter_state >= mip::data_filter::FilterMode::VERT_GYRO)
             {
-                printf("TOW = %f: ATT_EULER = [%f %f]\n",
+                printf("TOW = %.3f: %s = [%f %f]\n",
                     filterGpsTimestamp.tow,
+                    mip::data_filter::EulerAngles::DOC_NAME, // Built-in metadata for easy printing
                     filterEulerAngles.roll,
                     filterEulerAngles.pitch
-                );
-            }
-
-            if (filterStatus.filter_state >= mip::data_filter::FilterMode::AHRS)
-            {
-                printf("TOW = %f: POS_LLH = [%f %f %f]\n",
-                    filterGpsTimestamp.tow,
-                    filterPositionLlh.latitude,
-                    filterPositionLlh.longitude,
-                    filterPositionLlh.ellipsoid_height
                 );
             }
 
@@ -268,9 +265,7 @@ int main(int argc, const char* argv[])
         }
     }
 
-    printf("Example Completed Successfully.\n");
-    printf("Closing the connection and exiting.\n");
-    connection->disconnect();
+    terminate(&connection, "Example Completed Successfully.\n", true);
 
     return 0;
 }
@@ -515,35 +510,53 @@ void handleEventTriggers(void* _user, const mip::FieldView& _field, mip::Timesta
     }
 }
 
+// Initialize and reset the filter
+void initializeFilter(mip::Interface& _device)
+{
+    mip::CmdResult cmdResult;
+
+    // Reset the filter
+    // Note: This is good to do after filter setup is complete
+    printf("Attempting to %s.\n", mip::commands_filter::Reset::DOC_NAME);
+    cmdResult = mip::commands_filter::reset(_device);
+    if (!cmdResult.isAck())
+    {
+        terminate(_device, cmdResult, "Could not %s!\n", mip::commands_filter::Reset::DOC_NAME);
+    }
+}
+
+// Display the filter change status
 void displayFilterState(const mip::data_filter::FilterMode _filterState)
 {
     printf("The filter has entered ");
+
+    const uint8_t filterStateValue = static_cast<uint8_t>(_filterState);
 
     switch (_filterState)
     {
         case mip::data_filter::FilterMode::INIT:
         {
-            printf("initialization mode. INIT (%d)", static_cast<uint8_t>(_filterState));
+            printf("initialization mode. INIT (%d)", filterStateValue);
             break;
         }
         case mip::data_filter::FilterMode::VERT_GYRO:
         {
-            printf("vertical gyro mode. VERT_GYRO (%d)", static_cast<uint8_t>(_filterState));
+            printf("vertical gyro mode. VERT_GYRO (%d)", filterStateValue);
             break;
         }
         case mip::data_filter::FilterMode::AHRS:
         {
-            printf("AHRS mode. AHRS (%d)", static_cast<uint8_t>(_filterState));
+            printf("AHRS mode. AHRS (%d)", filterStateValue);
             break;
         }
         case mip::data_filter::FilterMode::FULL_NAV:
         {
-            printf("full navigation mode. FULL_NAV (%d)", static_cast<uint8_t>(_filterState));
+            printf("full navigation mode. FULL_NAV (%d)", filterStateValue);
             break;
         }
         default:
         {
-            printf("startup mode. STARTUP (%d)", static_cast<uint8_t>(_filterState));
+            printf("startup mode. STARTUP (%d)", filterStateValue);
             break;
         }
     }
@@ -551,12 +564,18 @@ void displayFilterState(const mip::data_filter::FilterMode _filterState)
     printf("\n");
 }
 
+// Get the current system time (in milliseconds)
 mip::Timestamp getCurrentTimestamp()
 {
     std::chrono::nanoseconds timeSinceEpoch = std::chrono::steady_clock::now().time_since_epoch();
     return static_cast<mip::Timestamp>(std::chrono::duration_cast<std::chrono::milliseconds>(timeSinceEpoch).count());
 }
 
+////////////////////////////////////////////////////////////////////////////////
+/// Initialize a MIP device and send some commands to prepare for configuration
+///
+/// @param _device Device to initialize
+///
 void initializeDevice(mip::Interface& _device)
 {
     // Create a command result to check/print results when running commands
@@ -568,7 +587,7 @@ void initializeDevice(mip::Interface& _device)
     cmdResult = mip::commands_base::ping(_device);
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not ping the device!");
+        terminate(_device, cmdResult, "Could not ping the device!\n");
     }
 
     // Set the device to Idle
@@ -580,6 +599,38 @@ void initializeDevice(mip::Interface& _device)
         terminate(_device, cmdResult, "Could not set the device to idle!\n");
     }
 
+    // Print device info to make sure the correct device is being used
+    printf("Getting device information.\n");
+    mip::commands_base::BaseDeviceInfo deviceInfo;
+
+    cmdResult = mip::commands_base::getDeviceInfo(_device, &deviceInfo);
+    if (!cmdResult.isAck())
+    {
+        terminate(_device, cmdResult, "Could not get the device information!\n");
+    }
+
+    // Extract the major minor and patch values
+    const uint16_t major = deviceInfo.firmware_version / 1000;
+    const uint16_t minor = deviceInfo.firmware_version / 100 % 10;
+    const uint16_t patch = deviceInfo.firmware_version % 100;
+
+    // Firmware version format is x.x.xx
+    char firmwareVersion[16];
+    snprintf(firmwareVersion, sizeof(firmwareVersion) / sizeof(firmwareVersion[0]), "%d.%d.%02d",
+        major,
+        minor,
+        patch
+    );
+
+    printf("-------- Device Information --------\n");
+    printf("%-16s | %.16s\n", "Name",             deviceInfo.model_name);
+    printf("%-16s | %.16s\n", "Model Number",     deviceInfo.model_number);
+    printf("%-16s | %.16s\n", "Serial Number",    deviceInfo.serial_number);
+    printf("%-16s | %.16s\n", "Lot Number",       deviceInfo.lot_number);
+    printf("%-16s | %.16s\n", "Options",          deviceInfo.device_options);
+    printf("%-16s | %16s\n",  "Firmware Version", firmwareVersion);
+    printf("------------------------------------\n");
+
     // Load the default settings on the device
     // Note: This guarantees the device is in a known state
     printf("Loading default settings.\n");
@@ -590,31 +641,59 @@ void initializeDevice(mip::Interface& _device)
     }
 }
 
-// void terminate(mip::Interface& _device, const char* _message, mip::CmdResult _cmdResult)
-void terminate(mip::Interface& _device, mip::CmdResult _cmdResult, const char* _format, ...)
+// Print an error message and close the application
+void terminate(microstrain::Connection* _connection, const char* _message, const bool _successful /* = false */)
 {
-    va_list args;
-    va_start(args, _format);
-    vprintf(_format, args);
-    va_end(args);
+    if (strlen(_message) != 0)
+    {
+        printf(_message);
+    }
 
-    printf("ERROR: %s Command Result: %d %s\n", _format, _cmdResult.value, _cmdResult.name());
-
-    // Get the connection pointer that was set during device initialization
-    microstrain::Connection* connection = static_cast<microstrain::Connection *>(_device.userPointer());
-
-    if (connection == nullptr)
+    if (_connection == nullptr)
     {
         // Create the device interface with a connection or set it after creation
         printf("ERROR: Connection not set for the device interface. Cannot close the connection.\n");
     }
     else
     {
-        printf("Closing the connection.\n");
-        connection->disconnect();
+        if (_connection->isConnected())
+        {
+            printf("Closing the connection.\n");
+
+            if (!_connection->disconnect())
+            {
+                printf("ERROR: Failed to close the connection!\n");
+            }
+        }
     }
 
     printf("Exiting the program.\n");
 
-    exit(1);
+#ifdef _WIN32
+    // Keep the console open on Windows
+    system("pause");
+#endif // _WIN32
+
+    if (!_successful)
+    {
+        exit(1);
+    }
+}
+
+// Print an error message for a command and close the application
+void terminate(mip::Interface& _device, mip::CmdResult _cmdResult, const char* _format, ...)
+{
+    char buffer[128];
+
+    va_list args;
+    va_start(args, _format);
+    vsnprintf(buffer, sizeof(buffer) / sizeof(buffer[0]), _format, args);
+    va_end(args);
+
+    printf("ERROR: %s Command Result: (%d) %s\n", buffer, _cmdResult.value, _cmdResult.name());
+
+    // Get the connection pointer that was set during device initialization
+    microstrain::Connection* connection = static_cast<microstrain::Connection*>(_device.userPointer());
+
+    terminate(connection, buffer);
 }
