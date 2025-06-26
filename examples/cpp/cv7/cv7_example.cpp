@@ -514,6 +514,18 @@ void handleEventTriggers(void* _user, const mip::FieldView& _field, mip::Timesta
 void initializeFilter(mip::Interface& _device)
 {
     mip::CmdResult cmdResult;
+    
+    //Enable Magnetometer aiding, if AHRS
+    mip::commands_filter::AidingMeasurementEnable::AidingSource aidingSource;
+    aidingSource = mip::commands_filter::AidingMeasurementEnable::AidingSource::MAGNETOMETER;
+
+    //Using the Aiding Measurement Control command, enable magnetometer aiding
+    cmdResult = mip::commands_filter::writeAidingMeasurementEnable(_device, aidingSource, true);
+
+    if (!cmdResult.isAck())
+    {
+        printf("This device does not have a magnetometer - proceeding in VG mode");
+    }
 
     // Reset the filter
     // Note: This is good to do after filter setup is complete
