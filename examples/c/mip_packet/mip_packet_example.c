@@ -154,6 +154,7 @@ void create_packet_from_scratch()
     // Note that in this particular case, we know the field length will be 6 bytes.
     // This allows us to save going back and updating the field length after serialization (see field #6).
     int leftover3 = mip_packet_create_field(&packet, MIP_CMD_DESC_BASE_COMM_SPEED, 6, &payload4);
+    (void)leftover3;
 
     // If less than 0 bytes are left over, then allocation failed by this many bytes.
     assert(leftover3 >= 0 && payload4 != NULL);
