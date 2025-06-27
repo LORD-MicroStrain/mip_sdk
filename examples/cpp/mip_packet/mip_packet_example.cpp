@@ -7,6 +7,7 @@
 
 #include <microstrain/platform.h>
 
+#include <cinttypes>
 #include <cstdio>
 
 // This function demonstrates how to inspect and iterate fields in
@@ -36,7 +37,7 @@ void print_packet(const mip::PacketView& packet, const char* name)
     );
 
     // Print each byte in the packet, including header and checksum.
-    for(size_t i=0; i < packet.totalLength(); i++)
+    for (uint32_t i = 0; i < packet.totalLength(); i++)
     {
         std::printf("%02X", packet[i]);
     }
@@ -50,7 +51,7 @@ void print_packet(const mip::PacketView& packet, const char* name)
         std::printf("    (%02X,%02X): payload=[", field.descriptorSet(), field.fieldDescriptor());
 
         // Print field payload bytes.
-        for(size_t i=0; i < field.payloadLength(); i++)
+        for (uint32_t i = 0; i < field.payloadLength(); i++)
         {
             // Note: this indexes the payload, excluding the header, whereas packet[i] indexes the whole packet.
             std::printf("%02X", field[i]);
@@ -328,7 +329,7 @@ void create_packet_from_buffer()
 #if defined MICROSTRAIN_PLATFORM_APPLE
                     std::printf("  Ref Time = %llu\n", nanoseconds);
 #else
-                    std::printf("  Ref Time = %lu\n", nanoseconds);
+                    std::printf("  Ref Time = %" PRIu64 "\n", nanoseconds);
 #endif // MICROSTRAIN_PLATFORM_APPLE
 
                 break;
