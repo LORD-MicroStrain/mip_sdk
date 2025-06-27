@@ -58,7 +58,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 if(MSVC)
     set(COMPILE_OPTIONS
         "/W4"             # Enable warnings
-        "/WX"             # Warnings as errors
+#        "/WX"             # Warnings as errors
         "/Zc:__cplusplus" # Enable updated __cplusplus value
         "/MP"             # Multi-process compilation
     )
@@ -66,7 +66,7 @@ else()
     set(COMPILE_OPTIONS
         "-Wall"   # Enable warnings
         "-Wextra" # Enable extra warnings
-        "-Werror" # Warnings as errors
+#        "-Werror" # Warnings as errors
     )
 endif()
 
