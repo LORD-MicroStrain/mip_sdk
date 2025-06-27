@@ -52,3 +52,21 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     ${MIP_INCLUDE_DIRS}
     ${MICROSTRAIN_INCLUDE_DIRS}
 )
+
+if(MSVC)
+    set(COMPILE_OPTIONS
+        "/W4" # Enable warnings
+        "/WX" # Warnings as errors
+        "/MP" # Multi-process compilation
+    )
+else()
+    set(COMPILE_OPTIONS
+        "-Wall"   # Enable warnings
+        "-Wextra" # Enable extra warnings
+        "-Werror" # Warnings as errors
+    )
+endif()
+
+target_compile_options(${PROJECT_NAME} PRIVATE
+    "${COMPILE_OPTIONS}"
+)

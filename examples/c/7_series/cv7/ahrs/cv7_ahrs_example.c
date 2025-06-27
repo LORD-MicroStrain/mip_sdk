@@ -37,6 +37,7 @@
 #endif // _MSC_VER
 
 #include <math.h>
+#include <stdarg.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -772,7 +773,7 @@ void terminate(serial_port* device_port, const char* message, const bool success
 {
     if (strlen(message) != 0)
     {
-        printf(message);
+        printf("%s", message);
     }
 
     if (device_port == NULL)

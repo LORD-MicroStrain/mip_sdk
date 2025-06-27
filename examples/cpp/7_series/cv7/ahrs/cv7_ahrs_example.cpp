@@ -647,7 +647,7 @@ void terminate(microstrain::Connection* _connection, const char* _message, const
 {
     if (strlen(_message) != 0)
     {
-        printf(_message);
+        printf("%s", _message);
     }
 
     if (_connection == nullptr)
