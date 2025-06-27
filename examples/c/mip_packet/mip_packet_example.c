@@ -8,6 +8,7 @@
 
 #include <microstrain/platform.h>
 
+#include <inttypes.h>
 #include <stdbool.h>
 #include <stdio.h>
 
@@ -264,7 +265,7 @@ void create_packet_from_scratch()
     // 2. Descriptor set
     microstrain_insert_u8(&serializer, MIP_SENSOR_DATA_DESC_SET);
     // 3. Number of data quantities.
-    unsigned int num_data = 3;  // Configure two descriptors
+    uint8_t num_data = 3;  // Configure two descriptors
     microstrain_insert_u8(&serializer, num_data);
     // 4. Array of uint8_t descriptors.
     // Descriptor 1 - Reference timestamp
@@ -364,7 +365,7 @@ void create_packet_from_buffer()
 #if defined MICROSTRAIN_PLATFORM_APPLE
                     printf("  Ref Time = %llu\n", nanoseconds);
 #else
-                    printf("  Ref Time = %lu\n", nanoseconds);
+                    printf("  Ref Time = %" PRIu64 "\n", nanoseconds);
 #endif // MICROSTRAIN_PLATFORM_APPLE
 
                 break;
