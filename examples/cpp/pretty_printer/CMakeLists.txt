@@ -24,7 +24,7 @@ endif()
 if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_LIST_DIR})
     list(APPEND CMAKE_PREFIX_PATH "${_MIP_SDK_ROOT_DIR}")
 
-    find_package(mip REQUIRED CONFIG)
+    find_package(mip REQUIRED COMPONENTS mip_metadata CONFIG)
 
     # This example uses a serial connection and requires the microstrain_serial component
     find_package(microstrain REQUIRED COMPONENTS microstrain_serial CONFIG)
