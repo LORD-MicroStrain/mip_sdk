@@ -45,6 +45,14 @@ add_executable(${PROJECT_NAME}
     "${CMAKE_CURRENT_LIST_DIR}/threading_example.cpp"
 )
 
+if(UNIX AND NOT APPLE)
+    find_package(Threads REQUIRED)
+
+    target_link_libraries(${PROJECT_NAME} PRIVATE
+        "Threads::Threads"
+    )
+endif()
+
 target_link_libraries(${PROJECT_NAME} PRIVATE
     ${MIP_LIBRARIES}
     ${MICROSTRAIN_LIBRARIES}
@@ -55,10 +63,20 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     ${MICROSTRAIN_INCLUDE_DIRS}
 )
 
+if(WIN32)
+    set(COMPILE_DEFINITIONS
+        "NOMINMAX"
+    )
+endif()
+
+target_compile_definitions(${PROJECT_NAME} PRIVATE
+    "${COMPILE_DEFINITIONS}"
+)
+
 if(MSVC)
     set(COMPILE_OPTIONS
         "/W4"             # Enable warnings
-#        "/WX"             # Warnings as errors
+        "/WX"             # Warnings as errors
         "/Zc:__cplusplus" # Enable updated __cplusplus value
         "/MP"             # Multi-process compilation
     )
@@ -66,7 +84,7 @@ else()
     set(COMPILE_OPTIONS
         "-Wall"   # Enable warnings
         "-Wextra" # Enable extra warnings
-#        "-Werror" # Warnings as errors
+        "-Werror" # Warnings as errors
     )
 endif()
 

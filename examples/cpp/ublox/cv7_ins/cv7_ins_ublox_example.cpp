@@ -375,7 +375,7 @@ uint64_t convert_gps_tow_to_nanoseconds(int week_number, float time_of_week)
 
 time_t time_from_ymd(int year, int month, int day)
 {
-    struct tm tm = {0};
+    struct tm tm = {};
     tm.tm_year = year - 1900;
     tm.tm_mon = month - 1;
     tm.tm_mday = day;
