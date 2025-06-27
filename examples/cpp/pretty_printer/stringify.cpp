@@ -49,7 +49,7 @@ struct Formatter
 template<class T>
 std::ostream& Formatter::formatBasicType()
 {
-    T value;
+    T value = 0;
     if(!serializer.extract(value))
         return ss << "?";
     if constexpr(std::is_same_v<T,char>)
@@ -372,6 +372,7 @@ std::ostream& formatField(std::ostream& ss, const mip::FieldView& field)
         Formatter formatter = {
             mip::Serializer(field.payload(), field.payloadLength()),
             ss,
+            {}
         };
 
         formatter.formatStruct(static_cast<const mip::metadata::StructInfo *>(info));
