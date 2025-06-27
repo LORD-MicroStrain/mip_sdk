@@ -1,5 +1,3 @@
-
-
 #include <mip/metadata/mip_all_definitions.hpp>
 
 #include <mip/mip_field.hpp>

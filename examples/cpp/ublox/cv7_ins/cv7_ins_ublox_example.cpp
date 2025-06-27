@@ -24,8 +24,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "mip/mip_all.hpp"
-#include "example_utils.hpp"
-#include "../../7_series/cv7/ins/ublox_device.hpp"
+#include "../../../example_utils.hpp"
+#include "ublox_device.hpp"
 
 #include <cmath>
 #include <cstring>

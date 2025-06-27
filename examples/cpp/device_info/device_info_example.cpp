@@ -16,9 +16,9 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
-#include "../example_utils.hpp"
+#include "../../example_utils.hpp"
 
-#include <../../src/cpp/mip/definitions/commands_base.hpp>
+#include <mip/definitions/commands_base.hpp>
 
 #include <stdexcept>
 #include <vector>

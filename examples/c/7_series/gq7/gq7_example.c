@@ -27,10 +27,11 @@
 // Include Files
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "../example_utils.h"
+#include "../../../example_utils.h"
 
-#include <../../src/c/mip/mip_all.h>
-#include <../../src/c/microstrain/connections/serial/serial_port.h>
+#include <mip/mip_all.h>
+#include <microstrain/connections/serial/serial_port.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 

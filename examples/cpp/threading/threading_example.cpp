@@ -16,11 +16,11 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
-#include "../example_utils.hpp"
+#include "../../example_utils.hpp"
 
-#include <../../src/cpp/mip/definitions/commands_base.hpp>
-#include <../../src/cpp/mip/definitions/commands_3dm.hpp>
-#include <../../src/cpp/mip/definitions/data_sensor.hpp>
+#include <mip/definitions/commands_base.hpp>
+#include <mip/definitions/commands_3dm.hpp>
+#include <mip/definitions/data_sensor.hpp>
 
 #include <thread>
 #include <chrono>
