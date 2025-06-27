@@ -253,6 +253,7 @@ void create_packet_from_scratch()
     // Note that if the field would exceed the remaining space in the packet, this will
     // instead remove the field entirely and return false.
     bool ok6 = field6.commit();
+    (void)ok6;
     assert(ok6);  // Shouldn't happen in this example.
 
     //
