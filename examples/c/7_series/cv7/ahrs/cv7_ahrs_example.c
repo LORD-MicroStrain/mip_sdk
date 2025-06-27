@@ -578,7 +578,6 @@ void initialize_filter(mip_interface* device)
         true                                                                     // Enabled
     );
 
-    if (mip_cmd_result_is_ack)
     if (!mip_cmd_result_is_ack(cmd_result))
     {
         command_failure_terminate(device, cmd_result, "Could not set filter aiding measurement enable!\n");
