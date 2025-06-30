@@ -589,23 +589,21 @@ void handleEventTriggers(void* _user, const mip::FieldView& _field, mip::Timesta
     // Event trigger instance ID 1 (roll)
     if (eventSource.trigger_id == 1)
     {
-        MICROSTRAIN_LOG_INFO("EVENT: Roll event triggered! Trigger ID: %d\n", eventSource.trigger_id);
+        MICROSTRAIN_LOG_WARN("Roll event triggered! Trigger ID: %d\n", eventSource.trigger_id);
     }
     // Event trigger instance ID 2 (pitch)
     else if (eventSource.trigger_id == 2)
     {
-        MICROSTRAIN_LOG_INFO("EVENT: Pitch event triggered! Trigger ID: %d\n", eventSource.trigger_id);
+        MICROSTRAIN_LOG_WARN("Pitch event triggered! Trigger ID: %d\n", eventSource.trigger_id);
     }
 }
 
 // Initialize and reset the filter
 void initializeFilter(mip::Interface& _device)
 {
-    mip::CmdResult cmdResult;
-
     // Configure Filter Aiding Measurements (GNSS position/velocity and dual antenna [aka gnss heading])
     MICROSTRAIN_LOG_INFO("Configuring %s.\n", mip::commands_filter::AidingMeasurementEnable::DOC_NAME);
-    cmdResult = mip::commands_filter::writeAidingMeasurementEnable(
+    mip::CmdResult cmdResult = mip::commands_filter::writeAidingMeasurementEnable(
         _device,
         mip::commands_filter::AidingMeasurementEnable::AidingSource::MAGNETOMETER, // Aiding Source type
         true                                                                       // Enabled

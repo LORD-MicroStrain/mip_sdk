@@ -628,12 +628,12 @@ void handle_event_triggers(void* _user, const mip_field_view* _field, mip_timest
     // Event trigger instance ID 1 (roll)
     if (event_source.trigger_id == 1)
     {
-        printf("EVENT: Roll event triggered! Trigger ID: %d\n", event_source.trigger_id);
+        MICROSTRAIN_LOG_WARN("Roll event triggered! Trigger ID: %d\n", event_source.trigger_id);
     }
     // Event trigger instance ID 2 (pitch)
     else if (event_source.trigger_id == 2)
     {
-        printf("EVENT: Pitch event triggered! Trigger ID: %d\n", event_source.trigger_id);
+        MICROSTRAIN_LOG_WARN("Pitch event triggered! Trigger ID: %d\n", event_source.trigger_id);
     }
 }
 
