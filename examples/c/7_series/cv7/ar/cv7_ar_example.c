@@ -402,17 +402,18 @@ void configure_sensor_message_format(mip_interface* _device)
 
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        command_failure_terminate(_device, cmd_result, "Could not get sensor base rate format!\n");
+        command_failure_terminate(_device, cmd_result, "Could not get sensor base rate!\n");
     }
 
     const uint16_t sensor_sample_rate = 100; // Hz
     const uint16_t sensor_decimation  = sensor_base_rate / sensor_sample_rate;
 
     // Descriptor rate is a pair of data descriptor set and decimation
-    const mip_descriptor_rate sensor_descriptors[3] = {
+    const mip_descriptor_rate sensor_descriptors[4] = {
         { MIP_DATA_DESC_SHARED_GPS_TIME,     sensor_decimation },
         { MIP_DATA_DESC_SENSOR_ACCEL_SCALED, sensor_decimation },
-        { MIP_DATA_DESC_SENSOR_GYRO_SCALED,  sensor_decimation }
+        { MIP_DATA_DESC_SENSOR_GYRO_SCALED,  sensor_decimation },
+        { MIP_DATA_DESC_SENSOR_MAG_SCALED,   sensor_decimation }
     };
 
     MICROSTRAIN_LOG_INFO("Configuring message format for sensor data.\n");
@@ -425,7 +426,7 @@ void configure_sensor_message_format(mip_interface* _device)
 
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        command_failure_terminate(_device, cmd_result, "Could not set sensor message format!\n");
+        command_failure_terminate(_device, cmd_result, "Could not set message format for sensor data!\n");
     }
 }
 
@@ -442,7 +443,7 @@ void configure_filter_message_format(mip_interface* _device)
 
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        command_failure_terminate(_device, cmd_result, "Could not get filter base rate format!\n");
+        command_failure_terminate(_device, cmd_result, "Could not get filter base rate!\n");
     }
 
     const uint16_t filter_sample_rate = 100; // Hz
@@ -465,7 +466,7 @@ void configure_filter_message_format(mip_interface* _device)
 
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        command_failure_terminate(_device, cmd_result, "Could not set filter message format!\n");
+        command_failure_terminate(_device, cmd_result, "Could not set message format for filter data!\n");
     }
 }
 
@@ -628,12 +629,12 @@ void handle_event_triggers(void* _user, const mip_field_view* _field, mip_timest
     // Event trigger instance ID 1 (roll)
     if (event_source.trigger_id == 1)
     {
-        MICROSTRAIN_LOG_WARN("Roll event triggered! Trigger ID: %d\n", event_source.trigger_id);
+        MICROSTRAIN_LOG_WARN("Roll event triggered! Trigger ID: %d.\n", event_source.trigger_id);
     }
     // Event trigger instance ID 2 (pitch)
     else if (event_source.trigger_id == 2)
     {
-        MICROSTRAIN_LOG_WARN("Pitch event triggered! Trigger ID: %d\n", event_source.trigger_id);
+        MICROSTRAIN_LOG_WARN("Pitch event triggered! Trigger ID: %d.\n", event_source.trigger_id);
     }
 }
 
@@ -727,7 +728,7 @@ bool mip_interface_user_send_to_device(mip_interface* _device, const uint8_t* _d
 
     if (device_port == NULL)
     {
-        MICROSTRAIN_LOG_ERROR("serial_port pointer not set in mip_interface_init()\n");
+        MICROSTRAIN_LOG_ERROR("serial_port pointer not set in mip_interface_init().\n");
         return false;
     }
 
@@ -750,7 +751,7 @@ bool mip_interface_user_recv_from_device(mip_interface* _device, uint8_t* _buffe
 
     if (device_port == NULL)
     {
-        MICROSTRAIN_LOG_ERROR("serial_port pointer not set in mip_interface_init()\n");
+        MICROSTRAIN_LOG_ERROR("serial_port pointer not set in mip_interface_init().\n");
         return false;
     }
 
@@ -897,7 +898,7 @@ void command_failure_terminate(mip_interface* _device, mip_cmd_result _cmd_resul
     MICROSTRAIN_LOG_ERROR_V(_format, args);
     va_end(args);
 
-    MICROSTRAIN_LOG_ERROR("Command Result: (%d) %s\n", _cmd_result, mip_cmd_result_to_string(_cmd_result));
+    MICROSTRAIN_LOG_ERROR("Command Result: (%d) %s.\n", _cmd_result, mip_cmd_result_to_string(_cmd_result));
 
     if (_device == NULL)
     {

@@ -93,7 +93,7 @@ void terminate(mip::Interface& _device, mip::CmdResult _cmdResult, const char* _
 
 int main(int argc, const char* argv[])
 {
-    // Unused variables
+    // Unused parameters
     (void)argc;
     (void)argv;
 
@@ -109,7 +109,7 @@ int main(int argc, const char* argv[])
     // Open the connection to the device
     if (!connection.connect())
     {
-        terminate(&connection, "ERROR: Could not open the connection!\n");
+        terminate(&connection, "Could not open the connection!\n");
     }
 
     MICROSTRAIN_LOG_INFO("Initializing the device interface.\n");
@@ -362,7 +362,7 @@ void configureSensorMessageFormat(mip::Interface& _device)
 
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not get sensor base rate format!\n");
+        terminate(_device, cmdResult, "Could not get sensor base rate!\n");
     }
 
     const uint16_t sensorSampleRate = 100; // Hz
@@ -403,7 +403,7 @@ void configureFilterMessageFormat(mip::Interface& _device)
 
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not get filter base rate format!\n");
+        terminate(_device, cmdResult, "Could not get filter base rate!\n");
     }
 
     const uint16_t filter_sample_rate = 100; // Hz
@@ -575,7 +575,7 @@ void enableEvents(mip::Interface& _device)
 // Handler for filter event source field
 void handleEventTriggers(void* _user, const mip::FieldView& _field, mip::Timestamp _timestamp)
 {
-    // Unused variables
+    // Unused parameters
     (void)_user;
     (void)_timestamp;
 
@@ -589,12 +589,12 @@ void handleEventTriggers(void* _user, const mip::FieldView& _field, mip::Timesta
     // Event trigger instance ID 1 (roll)
     if (eventSource.trigger_id == 1)
     {
-        MICROSTRAIN_LOG_WARN("Roll event triggered! Trigger ID: %d\n", eventSource.trigger_id);
+        MICROSTRAIN_LOG_WARN("Roll event triggered! Trigger ID: %d.\n", eventSource.trigger_id);
     }
     // Event trigger instance ID 2 (pitch)
     else if (eventSource.trigger_id == 2)
     {
-        MICROSTRAIN_LOG_WARN("Pitch event triggered! Trigger ID: %d\n", eventSource.trigger_id);
+        MICROSTRAIN_LOG_WARN("Pitch event triggered! Trigger ID: %d.\n", eventSource.trigger_id);
     }
 }
 
@@ -811,7 +811,7 @@ void terminate(mip::Interface& _device, mip::CmdResult _cmdResult, const char* _
     MICROSTRAIN_LOG_ERROR_V(_format, args);
     va_end(args);
 
-    MICROSTRAIN_LOG_ERROR("Command Result: (%d) %s\n",  _cmdResult.value, _cmdResult.name());
+    MICROSTRAIN_LOG_ERROR("Command Result: (%d) %s.\n",  _cmdResult.value, _cmdResult.name());
 
     // Get the connection pointer that was set during device initialization
     microstrain::Connection* connection = static_cast<microstrain::Connection*>(_device.userPointer());
