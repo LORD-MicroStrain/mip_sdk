@@ -63,6 +63,7 @@ static const char* PORT_NAME = "/dev/ttyUSB0";
 static const uint32_t BAUDRATE = 115200;
 ////////////////////////////////////////////////////////////////////////////////
 
+// Custom logging handler callback
 void log_callback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args);
 
 // Message format configuration
@@ -165,7 +166,7 @@ int main(int argc, const char* argv[])
     mip_dispatch_handler sensor_data_handlers[4];
 
     // Data stores for sensor data
-    mip_shared_gps_timestamp_data sensor_gps_time;
+    mip_shared_gps_timestamp_data sensor_gps_timestamp;
     mip_sensor_scaled_accel_data  sensor_scaled_accel;
     mip_sensor_scaled_gyro_data   sensor_scaled_gyro;
     mip_sensor_scaled_mag_data    sensor_scaled_mag;
@@ -178,7 +179,7 @@ int main(int argc, const char* argv[])
         MIP_SENSOR_DATA_DESC_SET,                         // Data descriptor set
         MIP_DATA_DESC_SHARED_GPS_TIME,                    // Data field descriptor
         extract_mip_shared_gps_timestamp_data_from_field, // Callback
-        &sensor_gps_time                                  // Data field out
+        &sensor_gps_timestamp                             // Data field out
     );
 
     mip_interface_register_extractor(

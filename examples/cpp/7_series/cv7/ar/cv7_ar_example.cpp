@@ -62,6 +62,7 @@ static const char* PORT_NAME = "/dev/ttyUSB0";
 static const uint32_t BAUDRATE = 115200;
 ////////////////////////////////////////////////////////////////////////////////
 
+// Custom logging handler callback
 void logCallback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args);
 
 // Message format configuration
@@ -283,6 +284,7 @@ int main(int argc, const char* argv[])
     return 0;
 }
 
+// Custom logging handler callback
 void logCallback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args)
 {
     // Unused parameter
