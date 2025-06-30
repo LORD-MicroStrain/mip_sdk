@@ -96,6 +96,9 @@ int main(int argc, const char* argv[])
     (void)argc;
     (void)argv;
 
+    // Initialize the custom logger to print messages/errors as they occur
+    MICROSTRAIN_LOG_INIT(&logCallback, MICROSTRAIN_LOG_LEVEL_INFO, NULL);
+
     // Initialize the connection
     MICROSTRAIN_LOG_INFO("Initializing the connection.\n");
     microstrain::connections::UsbSerialConnection connection(PORT_NAME, BAUDRATE);
