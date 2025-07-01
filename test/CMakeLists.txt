@@ -9,6 +9,12 @@ add_library(${MICROSTRAIN_TEST_LIBRARY}
     "${MICROSTRAIN_TEST_SOURCES}"
 )
 
+# Configure the project in a sub-folder for IDEs that support it
+file(RELATIVE_PATH PROJECT_RELATIVE_PATH "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_LIST_DIR}/..")
+set_target_properties(${MICROSTRAIN_TEST_LIBRARY} PROPERTIES
+    FOLDER "${PROJECT_RELATIVE_PATH}"
+)
+
 set(TEST_DIR "${CMAKE_CURRENT_LIST_DIR}")
 
 if(MSVC)
