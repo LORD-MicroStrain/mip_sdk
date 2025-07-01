@@ -1,0 +1,783 @@
+/////////////////////////////////////////////////////////////////////////////
+///
+/// 5_series_ahrs_example.c
+///
+/// Example setup program for the 3DM-CX5-AHRS, 3DM-CV5-AHRS, and
+/// 3DM-GX5-AHRS using C
+///
+/// This example shows a typical setup for the 3DM-CX5-AHRS, 3DM-CV5-AHRS,
+/// and 3DM-GX5-AHRS in a wheeled-vehicle application using C.
+/// It is not an exhaustive example of all settings for those devices.
+/// If this example does not meet your specific setup needs, please consult
+/// the MIP SDK API documentation for the proper commands.
+///
+/// @section LICENSE
+///
+/// THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING
+/// CUSTOMERS WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR
+/// THEM TO SAVE TIME. AS A RESULT, MICROSTRAIN BY HBK SHALL NOT BE HELD
+/// LIABLE FOR ANY DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO
+/// ANY CLAIMS ARISING FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE
+/// BY CUSTOMERS OF THE CODING INFORMATION CONTAINED HEREIN IN CONNECTION
+/// WITH THEIR PRODUCTS.
+///
+
+// Include the MicroStrain Serial connection header
+#include <microstrain/connections/serial/serial_port.h>
+
+// Include the MicroStrain logging header for custom logging
+#include <microstrain/logging.h>
+
+// Include all necessary MIP headers
+// Note: The MIP SDK has headers for each module to include all headers associated with the module
+// I.E., #include <mip/mip_all.h>
+#include <mip/definitions/commands_3dm.h>
+#include <mip/definitions/commands_base.h>
+#include <mip/definitions/commands_filter.h>
+#include <mip/definitions/data_filter.h>
+#include <mip/definitions/data_sensor.h>
+
+#ifdef _MSC_VER
+#define _USE_MATH_DEFINES
+#endif // _MSC_VER
+
+#include <math.h>
+#include <stdarg.h>
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+// TODO: Update to the correct port name and baudrate
+////////////////////////////////////////////////////////////////////////////////
+// NOTE: Setting these globally for example purposes
+
+// Set the port name for the connection (Serial/USB)
+#ifdef _WIN32
+static const char* PORT_NAME = "COM1";
+#else // Unix
+static const char* PORT_NAME = "/dev/ttyUSB0";
+#endif // _WIN32
+
+// Set the baudrate for the connection (Serial/USB)
+static const uint32_t BAUDRATE = 115200;
+////////////////////////////////////////////////////////////////////////////////
+
+// Custom logging handler callback
+void log_callback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args);
+
+// Capture gyro bias
+void capture_gyro_bias(mip_interface* _device);
+
+// Message format configuration
+void configure_sensor_message_format(mip_interface* _device);
+void configure_filter_message_format(mip_interface* _device);
+
+// Filter initialization
+void initialize_filter(mip_interface* _device);
+
+// Utility to display filter state changes
+void display_filter_state(const mip_filter_mode _filter_state);
+
+// Utility to get the time delta since the application started (in milliseconds)
+// Used for basic timestamping
+mip_timestamp get_delta_time();
+
+// Device callbacks used for reading and writing packets
+bool mip_interface_user_send_to_device(mip_interface* _device, const uint8_t* _data, size_t _length);
+bool mip_interface_user_recv_from_device(mip_interface* _device, uint8_t* _buffer, size_t _max_length,
+    mip_timeout _wait_time, bool _from_cmd, size_t* _length_out, mip_timestamp* _timestamp_out);
+
+// Common device initialization procedure
+void initialize_device(mip_interface* _device, serial_port* _device_port, uint32_t _baudrate);
+
+// Utility functions the handle application closing and printing error messages
+void terminate(serial_port* _device_port, const char* _message, const bool _successful);
+void command_failure_terminate(mip_interface* _device, mip_cmd_result _cmd_result, const char* _format, ...);
+
+// Global time variable for get_delta_time()
+time_t g_start_time;
+
+int main(int argc, const char* argv[])
+{
+    // Unused parameters
+    (void)argc;
+    (void)argv;
+
+    // Initialize the custom logger to print messages/errors as they occur
+    MICROSTRAIN_LOG_INIT(&log_callback, MICROSTRAIN_LOG_LEVEL_INFO, NULL);
+
+    // Initialize the connection
+    MICROSTRAIN_LOG_INFO("Initializing the serial port.\n");
+    serial_port device_port;
+    serial_port_init(&device_port);
+
+    // Record the application start time for use with get_delta_time()
+    time(&g_start_time);
+
+    MICROSTRAIN_LOG_INFO("Connecting to the device on port %s with %d baudrate.\n", PORT_NAME, BAUDRATE);
+
+    // Open the connection to the device
+    if (!serial_port_open(&device_port, PORT_NAME, BAUDRATE))
+    {
+        terminate(&device_port, "Could not open device port!\n", false);
+    }
+
+    // Initialize the MIP device and send commands to prepare for configuration/use
+    mip_interface device;
+    initialize_device(&device, &device_port, BAUDRATE);
+
+    // Capture gyro bias
+    capture_gyro_bias(&device);
+
+    // Configure the message format for sensor data
+    configure_sensor_message_format(&device);
+
+    // Configure the message format for filter data
+    configure_filter_message_format(&device);
+
+    // Configure Sensor-to-Vehicle Rotation
+    MICROSTRAIN_LOG_INFO("Configuring sensor-to-vehicle rotation.\n");
+    mip_cmd_result cmd_result = mip_filter_write_sensor_to_vehicle_rotation_euler(
+        &device,
+        0.0f, // Roll
+        0.0f, // Pitch
+        0.0f  // Yaw
+    );
+
+    if (!mip_cmd_result_is_ack(cmd_result))
+    {
+        command_failure_terminate(&device, cmd_result, "Could not set sensor-to-vehicle rotation!\n");
+    }
+
+    // Initialize the navigation filter
+    initialize_filter(&device);
+
+    // Register data callbacks
+
+    // Sensor data callbacks
+    MICROSTRAIN_LOG_INFO("Registering sensor data callbacks.\n");
+
+    mip_dispatch_handler sensor_data_handlers[3];
+
+    // Data stores for sensor data
+    mip_sensor_gps_timestamp_data sensor_gps_timestamp;
+    mip_sensor_scaled_accel_data  sensor_scaled_accel;
+    mip_sensor_scaled_gyro_data   sensor_scaled_gyro;
+
+    // Register the callbacks for the sensor fields
+
+    mip_interface_register_extractor(
+        &device,
+        &sensor_data_handlers[0],                         // Data handler
+        MIP_SENSOR_DATA_DESC_SET,                         // Data descriptor set
+        MIP_DATA_DESC_SENSOR_TIME_STAMP_GPS,              // Data field descriptor
+        extract_mip_sensor_gps_timestamp_data_from_field, // Callback
+        &sensor_gps_timestamp                             // Data field out
+    );
+
+    mip_interface_register_extractor(
+        &device,
+        &sensor_data_handlers[1],                        // Data handler
+        MIP_SENSOR_DATA_DESC_SET,                        // Data descriptor set
+        MIP_DATA_DESC_SENSOR_ACCEL_SCALED,               // Data field descriptor
+        extract_mip_sensor_scaled_accel_data_from_field, // Callback
+        &sensor_scaled_accel                             // Data field out
+    );
+
+    mip_interface_register_extractor(
+        &device,
+        &sensor_data_handlers[2],                       // Data handler
+        MIP_SENSOR_DATA_DESC_SET,                       // Data descriptor set
+        MIP_DATA_DESC_SENSOR_GYRO_SCALED,               // Data field descriptor
+        extract_mip_sensor_scaled_gyro_data_from_field, // Callback
+        &sensor_scaled_gyro                             // Data field out
+    );
+
+    // Filter data callbacks
+    MICROSTRAIN_LOG_INFO("Registering filter data callbacks.\n");
+
+    mip_dispatch_handler filter_data_handlers[3];
+
+    // Data stores for filter data
+    mip_filter_timestamp_data    filter_timestamp;
+    mip_filter_status_data       filter_status;
+    mip_filter_euler_angles_data filter_euler_angles;
+
+    // Register the callbacks for the filter fields
+
+    mip_interface_register_extractor(
+        &device,
+        &filter_data_handlers[0],                     // Data handler
+        MIP_FILTER_DATA_DESC_SET,                     // Data descriptor set
+        MIP_DATA_DESC_FILTER_FILTER_TIMESTAMP,        // Data field descriptor
+        extract_mip_filter_timestamp_data_from_field, // Callback
+        &filter_timestamp                             // Data field out
+    );
+
+    mip_interface_register_extractor(
+        &device,
+        &filter_data_handlers[1],                  // Data handler
+        MIP_FILTER_DATA_DESC_SET,                  // Data descriptor set
+        MIP_DATA_DESC_FILTER_FILTER_STATUS,        // Data field descriptor
+        extract_mip_filter_status_data_from_field, // Callback
+        &filter_status                             // Data field out
+    );
+
+    mip_interface_register_extractor(
+        &device,
+        &filter_data_handlers[2],                        // Data handler
+        MIP_FILTER_DATA_DESC_SET,                        // Data descriptor set
+        MIP_DATA_DESC_FILTER_ATT_EULER_ANGLES,           // Data field descriptor
+        extract_mip_filter_euler_angles_data_from_field, // Callback
+        &filter_euler_angles                             // Data field out
+    );
+
+    // Resume the device
+    // Note: Since the device was idled for configuration, it needs to be resumed to output the data streams
+    MICROSTRAIN_LOG_INFO("Resuming the device.\n");
+    cmd_result = mip_base_resume(&device);
+    if (!mip_cmd_result_is_ack(cmd_result))
+    {
+        command_failure_terminate(&device, cmd_result, "Could not resume the device!\n");
+    }
+
+    MICROSTRAIN_LOG_INFO("Sensor is configured... waiting for filter to initialize.\n");
+
+    mip_filter_mode current_state = filter_status.filter_state;
+
+    // Wait for the device to initialize
+    while (filter_status.filter_state != MIP_FILTER_MODE_GX5_INIT)
+    {
+        // Update the device state
+        // Note: This will update the device callbacks to trigger the filter state change
+        mip_interface_update(
+            &device,
+            0,    // Time to wait
+            false // From command
+        );
+
+        // Filter state change
+        if (current_state != filter_status.filter_state)
+        {
+            display_filter_state(filter_status.filter_state);
+            current_state = filter_status.filter_state;
+        }
+    }
+
+    mip_timestamp previous_print_time = 0;
+
+    // Device loop
+    // TODO: Update loop condition to allow for exiting
+    while (true)
+    {
+        // Update the device state
+        // Note: This will update the device callbacks to trigger the filter state change
+        mip_interface_update(
+            &device,
+            0,    // Time to wait
+            false // From command
+        );
+
+        // Filter state change
+        if (current_state != filter_status.filter_state)
+        {
+            display_filter_state(filter_status.filter_state);
+            current_state = filter_status.filter_state;
+        }
+
+        const mip_timestamp delta_time = get_delta_time();
+
+        // Print out data at 10 Hz (1000ms / 100ms)
+        if (delta_time - previous_print_time >= 100)
+        {
+            if (filter_status.filter_state == MIP_FILTER_MODE_GX5_RUN_SOLUTION_VALID)
+            {
+                MICROSTRAIN_LOG_INFO("TOW = %.3f: Euler Angles = [%f %f %f]\n",
+                    filter_timestamp.tow,
+                    filter_euler_angles.roll,
+                    filter_euler_angles.pitch,
+                    filter_euler_angles.yaw
+                );
+            }
+
+            previous_print_time = delta_time;
+        }
+    }
+
+    terminate(&device_port, "Example Completed Successfully.\n", true);
+
+    return 0;
+}
+
+// Custom logging handler callback
+void log_callback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args)
+{
+    // Unused parameter
+    (void)_user;
+
+    switch (_level)
+    {
+        case MICROSTRAIN_LOG_LEVEL_FATAL:
+        {
+            fprintf(stderr, "%-9s", "FATAL: ");
+            vfprintf(stderr, _format, _args);
+            break;
+        }
+        case MICROSTRAIN_LOG_LEVEL_ERROR:
+        {
+            fprintf(stderr, "%-9s", "ERROR: ");
+            vfprintf(stderr, _format, _args);
+            break;
+        }
+        case MICROSTRAIN_LOG_LEVEL_WARN:
+        {
+            fprintf(stdout, "%-9s", "WARNING: ");
+            vfprintf(stdout, _format, _args);
+            break;
+        }
+        case MICROSTRAIN_LOG_LEVEL_INFO:
+        {
+            fprintf(stdout, "%-9s", "INFO: ");
+            vfprintf(stdout, _format, _args);
+            break;
+        }
+        case MICROSTRAIN_LOG_LEVEL_DEBUG:
+        {
+            fprintf(stdout, "%-9s", "DEBUG: ");
+            vfprintf(stdout, _format, _args);
+            break;
+        }
+        case MICROSTRAIN_LOG_LEVEL_TRACE:
+        {
+            fprintf(stdout, "%-9s", "TRACE: ");
+            vfprintf(stdout, _format, _args);
+            break;
+        }
+        case MICROSTRAIN_LOG_LEVEL_OFF:
+        default:
+        {
+            break;
+        }
+    }
+}
+
+// Capture gyro bias
+void capture_gyro_bias(mip_interface* _device)
+{
+    // Get the command queue so we can increase the reply timeout during the capture duration,
+    // then reset it afterward
+    mip_cmd_queue*    cmd_queue        = mip_interface_cmd_queue(_device);
+    const mip_timeout previous_timeout = mip_cmd_queue_base_reply_timeout(cmd_queue);
+    MICROSTRAIN_LOG_INFO("Initial command reply timeout is %dms.\n", previous_timeout);
+
+    // Note: The default is 15 s (15,000 ms)
+    // Longer sample times are recommended but shortened here for convenience
+    const uint16_t capture_duration = 2000;
+
+    const uint16_t increased_cmd_reply_timeout = capture_duration * 2;
+
+    MICROSTRAIN_LOG_INFO("Increasing command reply timeout to %dms for capture gyro bias.\n",
+        increased_cmd_reply_timeout
+    );
+    mip_cmd_queue_set_base_reply_timeout(cmd_queue, increased_cmd_reply_timeout);
+
+    float gyro_bias[3] = {
+        0.0f, // X
+        0.0f, // Y
+        0.0f  // Z
+    };
+
+    MICROSTRAIN_LOG_INFO("Capturing gyro bias. This will take %.2g seconds.\n", (float)capture_duration / 1000.0f);
+    mip_cmd_result cmd_result = mip_3dm_capture_gyro_bias(
+        _device,
+        capture_duration, // Capture duration (ms)
+        gyro_bias         // Gyro bias out (result of the capture)
+    );
+
+    if (!mip_cmd_result_is_ack(cmd_result))
+    {
+        command_failure_terminate(_device, cmd_result, "Failed to capture gyro bias!\n");
+    }
+
+    MICROSTRAIN_LOG_INFO("Capture gyro bias completed with result: [%f %f %f]\n",
+        gyro_bias[0],
+        gyro_bias[1],
+        gyro_bias[2]
+    );
+
+    MICROSTRAIN_LOG_INFO("Reverting command reply timeout to %dms.\n", previous_timeout);
+    mip_cmd_queue_set_base_reply_timeout(cmd_queue, previous_timeout);
+}
+
+// Configure Sensor data message format
+void configure_sensor_message_format(mip_interface* _device)
+{
+    // Note: Querying the device base rate is only one way to calculate the descriptor decimation
+    // We could have also set it directly with information from the datasheet
+
+    MICROSTRAIN_LOG_INFO("Getting the base rate for sensor data.\n");
+    uint16_t sensor_base_rate;
+    mip_cmd_result cmd_result = mip_3dm_imu_get_base_rate(
+        _device,
+        &sensor_base_rate // Base rate out
+    );
+
+    if (!mip_cmd_result_is_ack(cmd_result))
+    {
+        command_failure_terminate(_device, cmd_result, "Could not get sensor base rate!\n");
+    }
+
+    const uint16_t sensor_sample_rate = 100; // Hz
+    const uint16_t sensor_decimation  = sensor_base_rate / sensor_sample_rate;
+
+    // Descriptor rate is a pair of data descriptor set and decimation
+    const mip_descriptor_rate sensor_descriptors[4] = {
+        { MIP_DATA_DESC_SENSOR_TIME_STAMP_GPS, sensor_decimation },
+        { MIP_DATA_DESC_SENSOR_ACCEL_SCALED,   sensor_decimation },
+        { MIP_DATA_DESC_SENSOR_GYRO_SCALED,    sensor_decimation },
+        { MIP_DATA_DESC_SENSOR_MAG_SCALED,     sensor_decimation }
+    };
+
+    MICROSTRAIN_LOG_INFO("Configuring message format for sensor data.\n");
+    cmd_result = mip_3dm_write_imu_message_format(
+        _device,
+        sizeof(sensor_descriptors) / sizeof(sensor_descriptors[0]), // Size of the array
+        sensor_descriptors                                          // Descriptor array
+    );
+
+    if (!mip_cmd_result_is_ack(cmd_result))
+    {
+        command_failure_terminate(_device, cmd_result, "Could not set message format for sensor data!\n");
+    }
+}
+
+// Configure Filter data message format
+void configure_filter_message_format(mip_interface* _device)
+{
+    MICROSTRAIN_LOG_INFO("Getting the base rate for filter data.\n");
+    uint16_t filter_base_rate;
+    mip_cmd_result cmd_result = mip_3dm_filter_get_base_rate(
+        _device,
+        &filter_base_rate // Base rate out
+    );
+
+    if (!mip_cmd_result_is_ack(cmd_result))
+    {
+        command_failure_terminate(_device, cmd_result, "Could not get filter base rate!\n");
+    }
+
+    const uint16_t filter_sample_rate = 100; // Hz
+    const uint16_t filter_decimation  = filter_base_rate / filter_sample_rate;
+
+    // Descriptor rate is a pair of data descriptor set and decimation
+    const mip_descriptor_rate filter_descriptors[3] = {
+        { MIP_DATA_DESC_FILTER_FILTER_TIMESTAMP, filter_decimation },
+        { MIP_DATA_DESC_FILTER_FILTER_STATUS,    filter_decimation },
+        { MIP_DATA_DESC_FILTER_ATT_EULER_ANGLES, filter_decimation }
+    };
+
+    MICROSTRAIN_LOG_INFO("Configuring message format for filter data.\n");
+    cmd_result = mip_3dm_write_filter_message_format(
+        _device,
+        sizeof(filter_descriptors) / sizeof(filter_descriptors[0]), // Size of the array
+        filter_descriptors                                          // Descriptor array
+    );
+
+    if (!mip_cmd_result_is_ack(cmd_result))
+    {
+        command_failure_terminate(_device, cmd_result, "Could not set message format for filter data!\n");
+    }
+}
+
+// Initialize and reset the filter
+void initialize_filter(mip_interface* _device)
+{
+    // Configure filter heading source
+    MICROSTRAIN_LOG_INFO("Configuring filter heading source to magnetometer.\n");
+    mip_cmd_result cmd_result = mip_filter_write_heading_source(
+        _device,
+        MIP_FILTER_HEADING_SOURCE_COMMAND_SOURCE_MAG // Aiding Source type
+    );
+
+    if (!mip_cmd_result_is_ack(cmd_result))
+    {
+        command_failure_terminate(_device, cmd_result, "Could not configure filter heading source!\n");
+    }
+
+    // Enable filter auto initialization control
+    MICROSTRAIN_LOG_INFO("Enabling filter auto initialization.\n");
+    cmd_result = mip_filter_write_auto_init_control(
+        _device,
+        1 // Enabled
+    );
+
+    if (!mip_cmd_result_is_ack(cmd_result))
+    {
+        command_failure_terminate(_device, cmd_result, "Could not enable filter auto initialization!\n");
+    }
+
+    // Reset the filter
+    // Note: This is good to do after filter setup is complete
+    MICROSTRAIN_LOG_INFO("Attempting to reset the navigation filter.\n");
+    cmd_result = mip_filter_reset(_device);
+    if (!mip_cmd_result_is_ack(cmd_result))
+    {
+        command_failure_terminate(_device, cmd_result, "Could not reset the navigation filter!\n");
+    }
+}
+
+// Display the filter change status
+void display_filter_state(const mip_filter_mode _filter_state)
+{
+    const char*   header_message     = "The filter has entered";
+    const uint8_t filter_state_value = (uint8_t)_filter_state;
+
+    switch (_filter_state)
+    {
+        case MIP_FILTER_MODE_GX5_INIT:
+        {
+            MICROSTRAIN_LOG_INFO("%s initialization mode. (%d) MIP_FILTER_MODE_GX5_INIT\n",
+                header_message,
+                filter_state_value
+            );
+
+            break;
+        }
+        case MIP_FILTER_MODE_GX5_RUN_SOLUTION_VALID:
+        {
+            MICROSTRAIN_LOG_INFO("%s run solution valid mode. (%d) MIP_FILTER_MODE_GX5_RUN_SOLUTION_VALID\n",
+                header_message,
+                filter_state_value
+            );
+
+            break;
+        }
+        case MIP_FILTER_MODE_GX5_RUN_SOLUTION_ERROR:
+        {
+            MICROSTRAIN_LOG_INFO("%s run solution error mode. (%d) MIP_FILTER_MODE_GX5_RUN_SOLUTION_ERROR\n",
+                header_message,
+                filter_state_value
+            );
+
+            break;
+        }
+        default:
+        {
+            MICROSTRAIN_LOG_INFO("%s startup mode. (%d) MIP_FILTER_MODE_GX5_STARTUP\n",
+                header_message,
+                filter_state_value
+            );
+
+            break;
+        }
+    }
+}
+
+// Get the time delta since the application started (in milliseconds)
+mip_timestamp get_delta_time()
+{
+    time_t t;
+    time(&t);
+
+    // Get the time difference since application start
+    double delta = difftime(t, g_start_time);
+
+    // Convert to milliseconds
+    return (mip_timestamp)(delta * 1000);
+}
+
+// Send packet handler callback
+bool mip_interface_user_send_to_device(mip_interface* _device, const uint8_t* _data, size_t _length)
+{
+    // Extract the serial port pointer that was used in the callback initialization
+    serial_port* device_port = (serial_port*)mip_interface_user_pointer(_device);
+
+    if (device_port == NULL)
+    {
+        MICROSTRAIN_LOG_ERROR("serial_port pointer not set in mip_interface_init()\n");
+        return false;
+    }
+
+    // Get the bytes written to the device
+    size_t bytes_written;
+
+    // Send the packet to the device
+    return serial_port_write(device_port, _data, _length, &bytes_written);
+}
+
+// Receive packet handler callback
+bool mip_interface_user_recv_from_device(mip_interface* _device, uint8_t* _buffer, size_t _max_length,
+    mip_timeout _wait_time, bool _from_cmd, size_t* _length_out, mip_timestamp* _timestamp_out)
+{
+    // Unused parameter
+    (void)_from_cmd;
+
+    // Extract the serial port pointer that was used in the callback initialization
+    serial_port* device_port = (serial_port*)mip_interface_user_pointer(_device);
+
+    if (device_port == NULL)
+    {
+        MICROSTRAIN_LOG_ERROR("serial_port pointer not set in mip_interface_init()\n");
+        return false;
+    }
+
+    // Get the time that packet was received
+    *_timestamp_out = get_delta_time();
+
+    // Read the packet from the device
+    return serial_port_read(device_port, _buffer, _max_length, (int)_wait_time, _length_out);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/// Initialize a MIP device and send some commands to prepare for configuration
+///
+/// @param _device      Device to initialize
+/// @param _device_port Serial port to use for the device connection
+/// @param _baudrate    Baudrate to open the connection with
+///
+void initialize_device(mip_interface* _device, serial_port* _device_port, uint32_t _baudrate)
+{
+    MICROSTRAIN_LOG_INFO("Initializing device interface.\n");
+    mip_interface_init(
+        _device,
+        mip_timeout_from_baudrate(_baudrate), // Set the base timeout for commands (milliseconds)
+        2000,                                 // Set the base timeout for command replies (milliseconds)
+        &mip_interface_user_send_to_device,   // User-defined send packet callback
+        &mip_interface_user_recv_from_device, // User-defined receive packet callback
+        &mip_interface_default_update,        // Default update callback
+        (void*)_device_port                   // Cast the device port for use in the callbacks
+    );
+
+    // Create a command result to check/print results when running commands
+    mip_cmd_result cmd_result;
+
+    // Ping the device
+    // Note: This is a good first step to make sure the device is present
+    MICROSTRAIN_LOG_INFO("Pinging the device.\n");
+    cmd_result = mip_base_ping(_device);
+    if (!mip_cmd_result_is_ack(cmd_result))
+    {
+        command_failure_terminate(_device, cmd_result, "Could not ping the device!\n");
+    }
+
+    // Set the device to Idle
+    // Note: This is good to do during setup as high data traffic can cause commands to fail
+    MICROSTRAIN_LOG_INFO("Setting device to idle.\n");
+    cmd_result = mip_base_set_idle(_device);
+    if (!mip_cmd_result_is_ack(cmd_result))
+    {
+        command_failure_terminate(_device, cmd_result, "Could not set the device to idle!\n");
+    }
+
+    // Print device info to make sure the correct device is being used
+    MICROSTRAIN_LOG_INFO("Getting device information.\n");
+    mip_base_device_info device_info;
+    cmd_result = mip_base_get_device_info(_device, &device_info);
+    if (!mip_cmd_result_is_ack(cmd_result))
+    {
+        command_failure_terminate(_device, cmd_result, "Could not get the device information!\n");
+    }
+
+    // Extract the major minor and patch values
+    const uint16_t major = device_info.firmware_version / 1000;
+    const uint16_t minor = device_info.firmware_version / 100 % 10;
+    const uint16_t patch = device_info.firmware_version % 100;
+
+    // Firmware version format is x.x.xx
+    char firmwareVersion[16];
+    snprintf(firmwareVersion, sizeof(firmwareVersion) / sizeof(firmwareVersion[0]), "%d.%d.%02d",
+        major,
+        minor,
+        patch
+    );
+
+    MICROSTRAIN_LOG_INFO("-------- Device Information --------\n");
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Name",             device_info.model_name);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Model Number",     device_info.model_number);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Serial Number",    device_info.serial_number);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Lot Number",       device_info.lot_number);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Options",          device_info.device_options);
+    MICROSTRAIN_LOG_INFO("%-16s | %16s\n",  "Firmware Version", firmwareVersion);
+    MICROSTRAIN_LOG_INFO("------------------------------------\n");
+
+    // Load the default settings on the device
+    // Note: This guarantees the device is in a known state
+    MICROSTRAIN_LOG_INFO("Loading default settings.\n");
+    cmd_result = mip_3dm_default_device_settings(_device);
+    if (!mip_cmd_result_is_ack(cmd_result))
+    {
+        command_failure_terminate(_device, cmd_result, "Could not load device default settings!\n");
+    }
+}
+
+// Print an error message and close the application
+void terminate(serial_port* _device_port, const char* _message, const bool _successful)
+{
+    if (strlen(_message) != 0)
+    {
+        if (_successful)
+        {
+            MICROSTRAIN_LOG_INFO("%s", _message);
+        }
+        else
+        {
+            MICROSTRAIN_LOG_ERROR("%s", _message);
+        }
+    }
+
+    if (_device_port == NULL)
+    {
+        // Initialize the device interface with a serial port connection
+        MICROSTRAIN_LOG_ERROR("Serial port not set for the device interface. Cannot close the serial port.\n");
+    }
+    else
+    {
+        if (serial_port_is_open(_device_port))
+        {
+            MICROSTRAIN_LOG_INFO("Closing the serial port.\n");
+
+            if (!serial_port_close(_device_port))
+            {
+                MICROSTRAIN_LOG_ERROR("Failed to close the serial port!\n");
+            }
+        }
+    }
+
+    MICROSTRAIN_LOG_INFO("Exiting the program.\n");
+
+#ifdef _WIN32
+    // Keep the console open on Windows
+    system("pause");
+#endif // _WIN32
+
+    if (!_successful)
+    {
+        exit(1);
+    }
+}
+
+// Print an error message for a command and close the application
+void command_failure_terminate(mip_interface* _device, mip_cmd_result _cmd_result, const char* _format, ...)
+{
+    va_list args;
+    va_start(args, _format);
+    MICROSTRAIN_LOG_ERROR_V(_format, args);
+    va_end(args);
+
+    MICROSTRAIN_LOG_ERROR("Command Result: (%d) %s\n", _cmd_result, mip_cmd_result_to_string(_cmd_result));
+
+    if (_device == NULL)
+    {
+        terminate(NULL, "", false);
+    }
+    else
+    {
+        // Get the serial connection pointer that was set during device initialization
+        serial_port* device_port = (serial_port*)mip_interface_user_pointer(_device);
+
+        terminate(device_port, "", false);
+    }
+}

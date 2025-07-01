@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
 
-project("5_series_ar_ahrs_example_c"
+project("5_series_ar_example_c"
     VERSION "1.0.0"
-    DESCRIPTION "Simple example for the 3DM-CX5-AR, 3DM-CX5-AHRS, 3DM-GX5-AR, 3DM-GX5-AHRS, and 3DM-CV5-AHRS using C"
+    DESCRIPTION "Simple example for the 3DM-CX5-AR, 3DM-GX5-AR, and 3DM-CV5-AR using C"
     LANGUAGES C
 )
 
@@ -40,7 +40,7 @@ endif()
 
 # Create the example
 add_executable(${PROJECT_NAME}
-    "${CMAKE_CURRENT_LIST_DIR}/5_series_ar_ahrs_example.c"
+    "${CMAKE_CURRENT_LIST_DIR}/5_series_ar_example.c"
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE

@@ -1,13 +1,12 @@
 /////////////////////////////////////////////////////////////////////////////
 ///
-/// 5_series_ar_ahrs_example.c
+/// 5_series_ar_example.c
 ///
-/// Example setup program for the 3DM-CX5-AR, 3DM-CX5-AHRS, 3DM-CV5-AR,
-/// 3DM-CV5-AHRS, 3DM-GX5-AR, and 3DM-GX5-AHRS using C
+/// Example setup program for the 3DM-CX5-AR, 3DM-CV5-AR, and 3DM-GX5-AR
+/// using C
 ///
-/// This example shows a typical setup for the 3DM-CX5, 3DM-CV5, and 3DM-GX5
-/// sensors for both the AR and AHRS variants in a wheeled-vehicle
-/// application using C.
+/// This example shows a typical setup for the 3DM-CX5-AR, 3DM-CV5-AR,
+/// and 3DM-GX5-AR in a wheeled-vehicle application using C.
 /// It is not an exhaustive example of all settings for those devices.
 /// If this example does not meet your specific setup needs, please consult
 /// the MIP SDK API documentation for the proper commands.
@@ -296,11 +295,10 @@ int main(int argc, const char* argv[])
         {
             if (filter_status.filter_state == MIP_FILTER_MODE_GX5_RUN_SOLUTION_VALID)
             {
-                MICROSTRAIN_LOG_INFO("TOW = %.3f: Euler Angles = [%f %f %f]\n",
+                MICROSTRAIN_LOG_INFO("TOW = %.3f: Euler Angles = [%f %f]\n",
                     filter_timestamp.tow,
                     filter_euler_angles.roll,
-                    filter_euler_angles.pitch,
-                    filter_euler_angles.yaw
+                    filter_euler_angles.pitch
                 );
             }
 

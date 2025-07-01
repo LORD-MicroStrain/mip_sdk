@@ -1,13 +1,12 @@
 /////////////////////////////////////////////////////////////////////////////
 ///
-/// 5_series_ar_ahrs_example.cpp
+/// 5_series_ahrs_example.cpp
 ///
-/// Example setup program for the 3DM-CX5-AR, 3DM-CX5-AHRS, 3DM-CV5-AR,
-/// 3DM-CV5-AHRS, 3DM-GX5-AR, and 3DM-GX5-AHRS using C++
+/// Example setup program for the 3DM-CX5-AHRS, 3DM-CV5-AHRS, and
+/// 3DM-GX5-AHRS using C++
 ///
-/// This example shows a typical setup for the 3DM-CX5, 3DM-CV5, and 3DM-GX5
-/// sensors for both the AR and AHRS variants in a wheeled-vehicle
-/// application using C++.
+/// This example shows a typical setup for the 3DM-CX5-AHRS, 3DM-CV5-AHRS,
+/// and 3DM-GX5-AHRS in a wheeled-vehicle application using C++.
 /// It is not an exhaustive example of all settings for those devices.
 /// If this example does not meet your specific setup needs, please consult
 /// the MIP SDK API documentation for the proper commands.
@@ -458,9 +457,22 @@ void configureFilterMessageFormat(mip::Interface& _device)
 // Initialize and reset the filter
 void initializeFilter(mip::Interface& _device)
 {
+    // Configure filter heading source
+    MICROSTRAIN_LOG_INFO("Configuring filter %s to magnetometer.\n", mip::commands_filter::HeadingSource::DOC_NAME);
+    mip::CmdResult cmdResult = mip::commands_filter::writeHeadingSource(
+        _device,
+        mip::commands_filter::HeadingSource::Source::MAG // Aiding Source type
+    );
+
+    if (!cmdResult.isAck())
+    {
+        terminate(_device, cmdResult, "Could not configure filter %s!\n",
+            mip::commands_filter::HeadingSource::DOC_NAME
+        );
+    }
     // Enable filter auto initialization control
     MICROSTRAIN_LOG_INFO("Enabling filter %s.\n", mip::commands_filter::AutoInitControl::DOC_NAME);
-    mip::CmdResult cmdResult = mip::commands_filter::writeAutoInitControl(
+    cmdResult = mip::commands_filter::writeAutoInitControl(
         _device,
         1 // Enabled
     );
