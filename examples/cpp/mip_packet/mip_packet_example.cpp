@@ -327,11 +327,7 @@ void create_packet_from_buffer()
                 uint64_t nanoseconds;
 
                 if(serializer.extract(nanoseconds))
-#if defined MICROSTRAIN_PLATFORM_APPLE
-                    std::printf("  Ref Time = %llu\n", nanoseconds);
-#else
                     std::printf("  Ref Time = %" PRIu64 "\n", nanoseconds);
-#endif // MICROSTRAIN_PLATFORM_APPLE
 
                 break;
             }

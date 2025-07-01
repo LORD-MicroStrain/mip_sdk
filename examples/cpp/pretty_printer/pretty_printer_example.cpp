@@ -8,6 +8,7 @@
 #include <mip/metadata/definitions/data_sensor.hpp>
 #include <mip/metadata/mip_all_definitions.hpp>
 
+#include <cinttypes>
 #include <csignal>
 #include <thread>
 #include <map>
@@ -26,7 +27,7 @@ void signal_handler(int signum)
 
 void handleField(void*, const mip::FieldView& field, mip::Timestamp timestamp)
 {
-    std::printf("%zu: %s\n", timestamp, formatField(field).c_str());
+    std::printf("%" PRIu64 ": %s\n", timestamp, formatField(field).c_str());
 
     last_receive_time = timestamp;
 }
