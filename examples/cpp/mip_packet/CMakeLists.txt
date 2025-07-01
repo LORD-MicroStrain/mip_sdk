@@ -7,9 +7,9 @@ project("mip_packet_example_cpp"
 )
 
 set(CMAKE_C_STANDARD 11)
-set(CMAKE_C_STANDARD_REQUIRED)
+set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # TODO: Set MIP_SDK_ROOT_DIR if building as a standalone project
 if(DEFINED MIP_SDK_ROOT_DIR OR DEFINED CACHE{MIP_SDK_ROOT_DIR})
@@ -44,6 +44,14 @@ endif()
 add_executable(${PROJECT_NAME}
     "${CMAKE_CURRENT_LIST_DIR}/mip_packet_example.cpp"
 )
+
+# Configure the project in a sub-folder for IDEs that support it
+if(NOT ${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_LIST_DIR})
+    file(RELATIVE_PATH PROJECT_RELATIVE_PATH "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_LIST_DIR}/..")
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        FOLDER "${PROJECT_RELATIVE_PATH}"
+    )
+endif()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
     ${MIP_LIBRARIES}
