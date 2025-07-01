@@ -55,7 +55,7 @@
 
 // Set the port name for the connection (Serial/USB)
 #ifdef _WIN32
-static const char* PORT_NAME = "COM48";
+static const char* PORT_NAME = "COM1";
 #else // Unix
 static const char* PORT_NAME = "/dev/ttyUSB0";
 #endif // _WIN32
