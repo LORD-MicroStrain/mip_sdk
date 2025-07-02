@@ -1,11 +1,11 @@
 #pragma once
 
-#include <mip/metadata/definitions/common.hpp>
+#include "mip/metadata/common.hpp"
 
 #include <mip/definitions/commands_3dm.hpp>
 
 
-#include <mip/metadata/mip_metadata.hpp>
+#include "mip/metadata/mip_metadata.hpp"
 
 namespace mip::metadata
 {
@@ -4523,4 +4523,3 @@ static constexpr DescriptorSetInfo COMMANDS_3DM = {
 };
 
 } // namespace mip::metadata
-

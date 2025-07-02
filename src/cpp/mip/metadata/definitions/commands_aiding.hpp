@@ -1,6 +1,6 @@
 #pragma once
 
-#include <mip/metadata/definitions/common.hpp>
+#include "mip/metadata/common.hpp"
 
 #include <mip/definitions/commands_aiding.hpp>
 
@@ -1084,4 +1084,3 @@ static constexpr DescriptorSetInfo COMMANDS_AIDING = {
 };
 
 } // namespace mip::metadata
-

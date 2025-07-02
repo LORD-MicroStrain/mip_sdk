@@ -1,6 +1,6 @@
 #pragma once
 
-#include <mip/metadata/definitions/common.hpp>
+#include "mip/metadata/common.hpp"
 
 #include <mip/definitions/data_shared.hpp>
 
@@ -384,4 +384,3 @@ static constexpr DescriptorSetInfo DATA_SHARED = {
 };
 
 } // namespace mip::metadata
-

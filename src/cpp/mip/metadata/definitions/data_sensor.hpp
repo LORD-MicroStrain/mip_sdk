@@ -1,6 +1,6 @@
 #pragma once
 
-#include <mip/metadata/definitions/common.hpp>
+#include "mip/metadata/common.hpp"
 
 #include <mip/definitions/data_sensor.hpp>
 
@@ -842,4 +842,3 @@ static constexpr DescriptorSetInfo DATA_SENSOR = {
 };
 
 } // namespace mip::metadata
-

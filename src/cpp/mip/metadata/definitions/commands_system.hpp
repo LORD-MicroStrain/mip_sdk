@@ -1,6 +1,6 @@
 #pragma once
 
-#include <mip/metadata/definitions/common.hpp>
+#include "mip/metadata/common.hpp"
 
 #include <mip/definitions/commands_system.hpp>
 
@@ -225,4 +225,3 @@ static constexpr DescriptorSetInfo COMMANDS_SYSTEM = {
 };
 
 } // namespace mip::metadata
-

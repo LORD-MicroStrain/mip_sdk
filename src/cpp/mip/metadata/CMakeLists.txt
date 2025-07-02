@@ -15,13 +15,13 @@ if(MICROSTRAIN_CMAKE_DEBUG)
 endif()
 
 set(MIP_METADATA_SOURCES
+    "${CMAKE_CURRENT_LIST_DIR}/common.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/mip_all_definitions.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/mip_definitions.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/mip_definitions.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/mip_metadata.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/mip_structures.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/mip_meta_utils.hpp"
-    "${CMAKE_CURRENT_LIST_DIR}/definitions/common.hpp"
     ${MIP_DEF_HEADERS}
 )
 

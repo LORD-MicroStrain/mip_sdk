@@ -1,6 +1,6 @@
 #pragma once
 
-#include <mip/metadata/definitions/common.hpp>
+#include "mip/metadata/common.hpp"
 
 #include <mip/definitions/commands_rtk.hpp>
 
@@ -773,4 +773,3 @@ static constexpr DescriptorSetInfo COMMANDS_RTK = {
 };
 
 } // namespace mip::metadata
-

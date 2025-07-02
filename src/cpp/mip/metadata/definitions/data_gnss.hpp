@@ -1,6 +1,6 @@
 #pragma once
 
-#include <mip/metadata/definitions/common.hpp>
+#include "mip/metadata/common.hpp"
 
 #include <mip/definitions/data_gnss.hpp>
 
@@ -4264,4 +4264,3 @@ static constexpr DescriptorSetInfo DATA_GNSS = {
 };
 
 } // namespace mip::metadata
-

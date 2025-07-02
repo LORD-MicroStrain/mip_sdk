@@ -1,6 +1,6 @@
 #pragma once
 
-#include <mip/metadata/definitions/common.hpp>
+#include "mip/metadata/common.hpp"
 
 #include <mip/definitions/data_filter.hpp>
 
@@ -2883,4 +2883,3 @@ static constexpr DescriptorSetInfo DATA_FILTER = {
 };
 
 } // namespace mip::metadata
-

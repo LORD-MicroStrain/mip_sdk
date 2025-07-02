@@ -1,6 +1,6 @@
 #pragma once
 
-#include <mip/metadata/definitions/common.hpp>
+#include "mip/metadata/common.hpp"
 
 #include <mip/definitions/data_system.hpp>
 
@@ -160,4 +160,3 @@ static constexpr DescriptorSetInfo DATA_SYSTEM = {
 };
 
 } // namespace mip::metadata
-

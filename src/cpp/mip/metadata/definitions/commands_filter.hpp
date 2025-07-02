@@ -1,6 +1,6 @@
 #pragma once
 
-#include <mip/metadata/definitions/common.hpp>
+#include "mip/metadata/common.hpp"
 
 #include <mip/definitions/commands_filter.hpp>
 
@@ -4144,4 +4144,3 @@ static constexpr DescriptorSetInfo COMMANDS_FILTER = {
 };
 
 } // namespace mip::metadata
-
