@@ -47,8 +47,10 @@ struct Span
     using difference_type = ptrdiff_t;
     using pointer = T*;
     using reference = T&;
+    using iterator = T*;
     using const_pointer = const T*;
     using const_reference = const T&;
+    using const_iterator = const T*;
 
     constexpr Span(pointer ptr) : m_ptr(ptr) {}
 
@@ -92,8 +94,10 @@ struct Span<T, DYNAMIC_EXTENT>
     using difference_type = ptrdiff_t;
     using pointer = T*;
     using reference = T&;
+    using iterator = T*;
     using const_pointer = const T*;
     using const_reference = const T&;
+    using const_iterator = const T*;
 
     constexpr Span() = default;
     constexpr Span(pointer ptr, size_t cnt) : m_ptr(ptr), m_cnt(cnt) {}
