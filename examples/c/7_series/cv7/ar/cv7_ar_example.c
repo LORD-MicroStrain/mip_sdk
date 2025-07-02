@@ -67,6 +67,9 @@ static const uint32_t BAUDRATE = 115200;
 // Custom logging handler callback
 void log_callback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args);
 
+// Capture gyro bias
+void capture_gyro_bias(mip_interface* _device);
+
 // Filter message format configuration
 void configure_filter_message_format(mip_interface* _device);
 
@@ -128,6 +131,9 @@ int main(int argc, const char* argv[])
 
     mip_interface device;
     initialize_device(&device, &device_port, BAUDRATE);
+
+    // Capture gyro bias
+    capture_gyro_bias(&device);
 
     // Configure the message format for filter data
     configure_filter_message_format(&device);
@@ -329,6 +335,54 @@ void log_callback(void* _user, const microstrain_log_level _level, const char* _
             break;
         }
     }
+}
+
+// Capture gyro bias
+void capture_gyro_bias(mip_interface* _device)
+{
+    // Get the command queue so we can increase the reply timeout during the capture duration,
+    // then reset it afterward
+    mip_cmd_queue*    cmd_queue        = mip_interface_cmd_queue(_device);
+    const mip_timeout previous_timeout = mip_cmd_queue_base_reply_timeout(cmd_queue);
+    MICROSTRAIN_LOG_INFO("Initial command reply timeout is %dms.\n", previous_timeout);
+
+    // Note: The default is 15 s (15,000 ms)
+    // Longer sample times are recommended but shortened here for convenience
+    const uint16_t capture_duration = 2000;
+
+    const uint16_t increased_cmd_reply_timeout = capture_duration * 2;
+
+    MICROSTRAIN_LOG_INFO("Increasing command reply timeout to %dms for capture gyro bias.\n",
+        increased_cmd_reply_timeout
+    );
+    mip_cmd_queue_set_base_reply_timeout(cmd_queue, increased_cmd_reply_timeout);
+
+    float gyro_bias[3] = {
+        0.0f, // X
+        0.0f, // Y
+        0.0f  // Z
+    };
+
+    MICROSTRAIN_LOG_INFO("Capturing gyro bias. This will take %.2g seconds.\n", (float)capture_duration / 1000.0f);
+    mip_cmd_result cmd_result = mip_3dm_capture_gyro_bias(
+        _device,
+        capture_duration, // Capture duration (ms)
+        gyro_bias         // Gyro bias out (result of the capture)
+    );
+
+    if (!mip_cmd_result_is_ack(cmd_result))
+    {
+        command_failure_terminate(_device, cmd_result, "Failed to capture gyro bias!\n");
+    }
+
+    MICROSTRAIN_LOG_INFO("Capture gyro bias completed with result: [%f %f %f]\n",
+        gyro_bias[0],
+        gyro_bias[1],
+        gyro_bias[2]
+    );
+
+    MICROSTRAIN_LOG_INFO("Reverting command reply timeout to %dms.\n", previous_timeout);
+    mip_cmd_queue_set_base_reply_timeout(cmd_queue, previous_timeout);
 }
 
 // Configure Filter data message format
