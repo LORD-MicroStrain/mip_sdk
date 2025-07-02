@@ -34,6 +34,7 @@
 #include <mip/definitions/data_filter.hpp>
 #include <mip/definitions/data_sensor.hpp>
 #include <mip/definitions/data_shared.hpp>
+#include <mip/mip_interface.hpp>
 
 #ifdef _MSC_VER
 #define _USE_MATH_DEFINES
@@ -65,8 +66,10 @@ static const uint32_t BAUDRATE = 115200;
 // Custom logging handler callback
 void logCallback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args);
 
-// Message format configuration
-void configureSensorMessageFormat(mip::Interface& _device);
+// Capture gyro bias
+void captureGyroBias(mip::Interface& _device);
+
+// Filter message format configuration
 void configureFilterMessageFormat(mip::Interface& _device);
 
 // Event configuration
@@ -120,8 +123,8 @@ int main(int argc, const char* argv[])
     );
     initializeDevice(device);
 
-    // Configure the message format for sensor data
-    configureSensorMessageFormat(device);
+    // Capture gyro bias
+    captureGyroBias(device);
 
     // Configure the message format for filter data
     configureFilterMessageFormat(device);
@@ -148,41 +151,7 @@ int main(int argc, const char* argv[])
     // Initialize the navigation filter
     initializeFilter(device);
 
-    // Register data callbacks
-
-    // Sensor data callbacks
-    MICROSTRAIN_LOG_INFO("Registering sensor data callbacks.\n");
-
-    mip::DispatchHandler sensorDataHandlers[4];
-
-    // Data stores for sensor data
-    mip::data_shared::GpsTimestamp sensorGpsTimestamp;
-    mip::data_sensor::ScaledAccel  sensorScaledAccel;
-    mip::data_sensor::ScaledGyro   sensorScaledGyro;
-    mip::data_sensor::ScaledMag    sensorScaledMag;
-
-    // Register the callbacks for the sensor fields
-    device.registerExtractor(
-        sensorDataHandlers[0], // Data handler
-        &sensorGpsTimestamp    // Data field out
-    );
-
-    device.registerExtractor(
-        sensorDataHandlers[1], // Data handler
-        &sensorScaledAccel     // Data field out
-    );
-
-    device.registerExtractor(
-        sensorDataHandlers[2], // Data handler
-        &sensorScaledGyro      // Data field out
-    );
-
-    device.registerExtractor(
-        sensorDataHandlers[3], // Data handler
-        &sensorScaledMag       // Data field out
-    );
-
-    // Filter data callbacks
+    // Register filter data callbacks
     MICROSTRAIN_LOG_INFO("Registering filter data callbacks.\n");
 
     mip::DispatchHandler filterDataHandlers[4];
@@ -346,48 +315,52 @@ void logCallback(void* _user, const microstrain_log_level _level, const char* _f
     }
 }
 
-// Configure Sensor data message format
-void configureSensorMessageFormat(mip::Interface& _device)
+// Capture gyro bias
+void captureGyroBias(mip::Interface& _device)
 {
-    // Note: Querying the device base rate is only one way to calculate the descriptor decimation
-    // We could have also set it directly with information from the datasheet (shown in GNSS setup)
+    // Get the command queue so we can increase the reply timeout during the capture duration,
+    // then reset it afterward
+    mip::CmdQueue&     cmdQueue        = _device.cmdQueue();
+    const mip::Timeout previousTimeout = cmdQueue.baseReplyTimeout();
+    MICROSTRAIN_LOG_INFO("Initial command reply timeout is %dms.\n", previousTimeout);
 
-    MICROSTRAIN_LOG_INFO("Getting the base rate for sensor data.\n");
-    uint16_t sensorBaseRate;
-    mip::CmdResult cmdResult = mip::commands_3dm::getBaseRate(
-        _device,
-        mip::data_sensor::DESCRIPTOR_SET, // Data descriptor set
-        &sensorBaseRate                   // Base rate out
-    );
+    // Note: The default is 15 s (15,000 ms)
+    // Longer sample times are recommended but shortened here for convenience
+    const uint16_t captureDuration = 2000;
 
-    if (!cmdResult.isAck())
-    {
-        terminate(_device, cmdResult, "Could not get sensor base rate!\n");
-    }
+    const uint16_t increasedCmdReplyTimeout = captureDuration * 2;
 
-    const uint16_t sensorSampleRate = 100; // Hz
-    const uint16_t sensorDecimation = sensorBaseRate / sensorSampleRate;
+    MICROSTRAIN_LOG_INFO("Increasing command reply timeout to %dms for capture gyro bias.\n", increasedCmdReplyTimeout);
+    cmdQueue.setBaseReplyTimeout(increasedCmdReplyTimeout);
 
-    // Descriptor rate is a pair of data descriptor set and decimation
-    mip::DescriptorRate sensorDescriptors[4] = {
-        { mip::data_shared::GpsTimestamp::FIELD_DESCRIPTOR, sensorDecimation },
-        { mip::data_sensor::ScaledAccel::FIELD_DESCRIPTOR,  sensorDecimation },
-        { mip::data_sensor::ScaledGyro::FIELD_DESCRIPTOR,   sensorDecimation },
-        { mip::data_sensor::ScaledMag::FIELD_DESCRIPTOR,    sensorDecimation }
+    mip::Vector3f gyroBias = {
+        0.0f, // X
+        0.0f, // Y
+        0.0f  // Z
     };
 
-    MICROSTRAIN_LOG_INFO("Configuring %s for sensor data.\n", mip::commands_3dm::MessageFormat::DOC_NAME);
-    cmdResult = mip::commands_3dm::writeMessageFormat(
+    MICROSTRAIN_LOG_INFO("Capturing gyro bias. This will take %.2g seconds.\n",
+        static_cast<float>(captureDuration) / 1000.0f
+    );
+    mip::CmdResult cmdResult = mip::commands_3dm::captureGyroBias(
         _device,
-        mip::data_sensor::DESCRIPTOR_SET,                         // Data Descriptor
-        sizeof(sensorDescriptors) / sizeof(sensorDescriptors[0]), // Size of the array
-        sensorDescriptors                                         // Descriptor array
+        captureDuration, // Capture duration (ms)
+        gyroBias         // Gyro bias out (result of the capture)
     );
 
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not set %s for sensor data!\n", mip::commands_3dm::MessageFormat::DOC_NAME);
+        terminate(_device, cmdResult, "Failed to capture gyro bias!\n");
     }
+
+    MICROSTRAIN_LOG_INFO("Capture gyro bias completed with result: [%f %f %f]\n",
+        gyroBias[0],
+        gyroBias[1],
+        gyroBias[2]
+    );
+
+    MICROSTRAIN_LOG_INFO("Reverting command reply timeout to %dms.\n", previousTimeout);
+    cmdQueue.setBaseReplyTimeout(previousTimeout);
 }
 
 // Configure Filter data message format
@@ -718,7 +691,6 @@ void initializeDevice(mip::Interface& _device)
     // Print device info to make sure the correct device is being used
     MICROSTRAIN_LOG_INFO("Getting device information.\n");
     mip::commands_base::BaseDeviceInfo deviceInfo;
-
     cmdResult = mip::commands_base::getDeviceInfo(_device, &deviceInfo);
     if (!cmdResult.isAck())
     {
