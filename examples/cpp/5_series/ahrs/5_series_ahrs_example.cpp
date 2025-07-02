@@ -1,5 +1,4 @@
 /////////////////////////////////////////////////////////////////////////////
-///
 /// 5_series_ahrs_example.cpp
 ///
 /// Example setup program for the 3DM-CX5-AHRS, 3DM-CV5-AHRS, and
@@ -36,6 +35,7 @@
 #include <mip/definitions/commands_filter.hpp>
 #include <mip/definitions/data_filter.hpp>
 #include <mip/definitions/data_sensor.hpp>
+#include <mip/mip_interface.hpp>
 
 #ifdef _MSC_VER
 #define _USE_MATH_DEFINES
@@ -70,8 +70,7 @@ void logCallback(void* _user, const microstrain_log_level _level, const char* _f
 // Capture gyro bias
 void captureGyroBias(mip::Interface& _device);
 
-// Message format configuration
-void configureSensorMessageFormat(mip::Interface& _device);
+// Filter message format configuration
 void configureFilterMessageFormat(mip::Interface& _device);
 
 // Filter initialization
@@ -122,9 +121,6 @@ int main(int argc, const char* argv[])
     // Capture gyro bias
     captureGyroBias(device);
 
-    // Configure the message format for sensor data
-    configureSensorMessageFormat(device);
-
     // Configure the message format for filter data
     configureFilterMessageFormat(device);
 
@@ -147,35 +143,7 @@ int main(int argc, const char* argv[])
     // Initialize the navigation filter
     initializeFilter(device);
 
-    // Register data callbacks
-
-    // Sensor data callbacks
-    MICROSTRAIN_LOG_INFO("Registering sensor data callbacks.\n");
-
-    mip::DispatchHandler sensorDataHandlers[3];
-
-    // Data stores for sensor data
-    mip::data_sensor::GpsTimestamp sensorGpsTimestamp;
-    mip::data_sensor::ScaledAccel  sensorScaledAccel;
-    mip::data_sensor::ScaledGyro   sensorScaledGyro;
-
-    // Register the callbacks for the sensor fields
-    device.registerExtractor(
-        sensorDataHandlers[0], // Data handler
-        &sensorGpsTimestamp    // Data field out
-    );
-
-    device.registerExtractor(
-        sensorDataHandlers[1], // Data handler
-        &sensorScaledAccel     // Data field out
-    );
-
-    device.registerExtractor(
-        sensorDataHandlers[2], // Data handler
-        &sensorScaledGyro      // Data field out
-    );
-
-    // Filter data callbacks
+    // Register filter data callbacks
     MICROSTRAIN_LOG_INFO("Registering filter data callbacks.\n");
 
     mip::DispatchHandler filterDataHandlers[3];
@@ -369,49 +337,6 @@ void captureGyroBias(mip::Interface& _device)
 
     MICROSTRAIN_LOG_INFO("Reverting command reply timeout to %dms.\n", previousTimeout);
     cmdQueue.setBaseReplyTimeout(previousTimeout);
-}
-
-// Configure Sensor data message format
-void configureSensorMessageFormat(mip::Interface& _device)
-{
-    // Note: Querying the device base rate is only one way to calculate the descriptor decimation
-    // We could have also set it directly with information from the datasheet
-
-    MICROSTRAIN_LOG_INFO("Getting the base rate for sensor data.\n");
-    uint16_t sensorBaseRate;
-    mip::CmdResult cmdResult = mip::commands_3dm::imuGetBaseRate(
-        _device,
-        &sensorBaseRate // Base rate out
-    );
-
-    if (!cmdResult.isAck())
-    {
-        terminate(_device, cmdResult, "Could not get sensor base rate!\n");
-    }
-
-    const uint16_t sensorSampleRate = 100; // Hz
-    const uint16_t sensorDecimation = sensorBaseRate / sensorSampleRate;
-
-    // Descriptor rate is a pair of data descriptor set and decimation
-    mip::DescriptorRate sensorDescriptors[4] = {
-        { mip::data_sensor::GpsTimestamp::FIELD_DESCRIPTOR, sensorDecimation },
-        { mip::data_sensor::ScaledAccel::FIELD_DESCRIPTOR,  sensorDecimation },
-        { mip::data_sensor::ScaledGyro::FIELD_DESCRIPTOR,   sensorDecimation },
-        { mip::data_sensor::ScaledMag::FIELD_DESCRIPTOR,    sensorDecimation }
-    };
-
-    MICROSTRAIN_LOG_INFO("Configuring %s for sensor data.\n", mip::commands_3dm::ImuMessageFormat::DOC_NAME);
-    cmdResult = mip::commands_3dm::writeImuMessageFormat(
-        _device,
-        sizeof(sensorDescriptors) / sizeof(sensorDescriptors[0]), // Size of the array
-        sensorDescriptors                                         // Descriptor array
-    );
-
-    if (!cmdResult.isAck())
-    {
-        terminate(_device, cmdResult, "Could not set %s for sensor data!\n",
-            mip::commands_3dm::ImuMessageFormat::DOC_NAME);
-    }
 }
 
 // Configure Filter data message format
@@ -671,7 +596,7 @@ void terminate(mip::Interface& _device, mip::CmdResult _cmdResult, const char* _
     MICROSTRAIN_LOG_ERROR_V(_format, args);
     va_end(args);
 
-    MICROSTRAIN_LOG_ERROR("Command Result: (%d) %s\n",  _cmdResult.value, _cmdResult.name());
+    MICROSTRAIN_LOG_ERROR("Command Result: (%d) %s.\n",  _cmdResult.value, _cmdResult.name());
 
     // Get the connection pointer that was set during device initialization
     microstrain::Connection* connection = static_cast<microstrain::Connection*>(_device.userPointer());
