@@ -1,24 +1,22 @@
 ////////////////////////////////////////////////////////////////////////////////
 /// 5_series_ar_example.c
 ///
-/// Example setup program for the 3DM-CX5-AR, 3DM-CV5-AR, and 3DM-GX5-AR
-/// using C
+/// Example setup program for the 3DM-CX5-AR, 3DM-CV5-AR, and 3DM-GX5-AR using C
 ///
-/// This example shows a typical setup for the 3DM-CX5-AR, 3DM-CV5-AR,
-/// and 3DM-GX5-AR in a wheeled-vehicle application using C.
+/// This example shows a typical setup for the 3DM-CX5-AR, 3DM-CV5-AR, and
+/// 3DM-GX5-AR in a wheeled-vehicle application using C.
 /// It is not an exhaustive example of all settings for those devices.
-/// If this example does not meet your specific setup needs, please consult
-/// the MIP SDK API documentation for the proper commands.
+/// If this example does not meet your specific setup needs, please consult the
+/// MIP SDK API documentation for the proper commands.
 ///
 /// @section LICENSE
 ///
-/// THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING
-/// CUSTOMERS WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR
-/// THEM TO SAVE TIME. AS A RESULT, MICROSTRAIN BY HBK SHALL NOT BE HELD
-/// LIABLE FOR ANY DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO
-/// ANY CLAIMS ARISING FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE
-/// BY CUSTOMERS OF THE CODING INFORMATION CONTAINED HEREIN IN CONNECTION
-/// WITH THEIR PRODUCTS.
+/// THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+/// WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+/// TIME. AS A RESULT, MICROSTRAIN BY HBK SHALL NOT BE HELD LIABLE FOR ANY
+/// DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
+/// FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
+/// CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
 ///
 
 // Include the MicroStrain Serial connection header
