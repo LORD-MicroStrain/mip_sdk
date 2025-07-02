@@ -105,14 +105,15 @@ struct MetadataFor<data_gnss::PosLlh>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_gnss::PosLlh",
-        /* .title       = */ "GNSS LLH Position",
-        /* .docs        = */ "GNSS reported position in the WGS84 geodetic frame",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_gnss::PosLlh",
+            /* .title       = */ "GNSS LLH Position",
+            /* .docs        = */ "GNSS reported position in the WGS84 geodetic frame",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -171,14 +172,15 @@ struct MetadataFor<data_gnss::PosEcef>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_gnss::PosEcef",
-        /* .title       = */ "GNSS ECEF Position",
-        /* .docs        = */ "GNSS reported position in the Earth-centered, Earth-Fixed (ECEF) frame",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_gnss::PosEcef",
+            /* .title       = */ "GNSS ECEF Position",
+            /* .docs        = */ "GNSS reported position in the Earth-centered, Earth-Fixed (ECEF) frame",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -277,14 +279,15 @@ struct MetadataFor<data_gnss::VelNed>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_gnss::VelNed",
-        /* .title       = */ "NED Velocity",
-        /* .docs        = */ "GNSS reported velocity in the NED frame",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_gnss::VelNed",
+            /* .title       = */ "NED Velocity",
+            /* .docs        = */ "GNSS reported velocity in the NED frame",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -343,14 +346,15 @@ struct MetadataFor<data_gnss::VelEcef>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_gnss::VelEcef",
-        /* .title       = */ "GNSS ECEF Velocity",
-        /* .docs        = */ "GNSS reported velocity in the Earth-centered, Earth-Fixed (ECEF) frame",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_gnss::VelEcef",
+            /* .title       = */ "GNSS ECEF Velocity",
+            /* .docs        = */ "GNSS reported velocity in the Earth-centered, Earth-Fixed (ECEF) frame",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -459,14 +463,15 @@ struct MetadataFor<data_gnss::Dop>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_gnss::Dop",
-        /* .title       = */ "dop",
-        /* .docs        = */ "GNSS reported dilution of precision information.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_gnss::Dop",
+            /* .title       = */ "dop",
+            /* .docs        = */ "GNSS reported dilution of precision information.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -570,14 +575,15 @@ struct MetadataFor<data_gnss::UtcTime>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_gnss::UtcTime",
-        /* .title       = */ "utc_time",
-        /* .docs        = */ "GNSS reported Coordinated Universal Time",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_gnss::UtcTime",
+            /* .title       = */ "utc_time",
+            /* .docs        = */ "GNSS reported Coordinated Universal Time",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -636,14 +642,15 @@ struct MetadataFor<data_gnss::GpsTime>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_gnss::GpsTime",
-        /* .title       = */ "gps_time",
-        /* .docs        = */ "GNSS reported GPS Time",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_gnss::GpsTime",
+            /* .title       = */ "gps_time",
+            /* .docs        = */ "GNSS reported GPS Time",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -712,14 +719,15 @@ struct MetadataFor<data_gnss::ClockInfo>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_gnss::ClockInfo",
-        /* .title       = */ "clock_info",
-        /* .docs        = */ "GNSS reported receiver clock parameters",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_gnss::ClockInfo",
+            /* .title       = */ "clock_info",
+            /* .docs        = */ "GNSS reported receiver clock parameters",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -832,14 +840,15 @@ struct MetadataFor<data_gnss::FixInfo>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_gnss::FixInfo",
-        /* .title       = */ "fix_info",
-        /* .docs        = */ "GNSS reported position fix type",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_gnss::FixInfo",
+            /* .title       = */ "fix_info",
+            /* .docs        = */ "GNSS reported position fix type",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -957,14 +966,15 @@ struct MetadataFor<data_gnss::SvInfo>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_gnss::SvInfo",
-        /* .title       = */ "sv_info",
-        /* .docs        = */ "GNSS reported space vehicle information\n\nWhen enabled, these fields will arrive in separate MIP packets",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_gnss::SvInfo",
+            /* .title       = */ "sv_info",
+            /* .docs        = */ "GNSS reported space vehicle information\n\nWhen enabled, these fields will arrive in separate MIP packets",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -1095,14 +1105,15 @@ struct MetadataFor<data_gnss::HwStatus>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_gnss::HwStatus",
-        /* .title       = */ "GNSS Hardware Status",
-        /* .docs        = */ "GNSS reported hardware status",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_gnss::HwStatus",
+            /* .title       = */ "GNSS Hardware Status",
+            /* .docs        = */ "GNSS reported hardware status",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -1181,14 +1192,15 @@ struct MetadataFor<data_gnss::DgpsInfo>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_gnss::DgpsInfo",
-        /* .title       = */ "dgps_info",
-        /* .docs        = */ "GNSS reported DGNSS status\n\n<pre>Possible Base Station Status Values:</pre>\n<pre>  0 - UDRE Scale Factor = 1.0</pre>\n<pre>  1 - UDRE Scale Factor = 0.75</pre>\n<pre>  2 - UDRE Scale Factor = 0.5</pre>\n<pre>  3 - UDRE Scale Factor = 0.3</pre>\n<pre>  4 - UDRE Scale Factor = 0.2</pre>\n<pre>  5 - UDRE Scale Factor = 0.1</pre>\n<pre>  6 - Reference Station Transmission Not Monitored</pre>\n<pre>  7 - Reference Station Not Working</pre>\n\n(UDRE = User Differential Range Error)",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_gnss::DgpsInfo",
+            /* .title       = */ "dgps_info",
+            /* .docs        = */ "GNSS reported DGNSS status\n\n<pre>Possible Base Station Status Values:</pre>\n<pre>  0 - UDRE Scale Factor = 1.0</pre>\n<pre>  1 - UDRE Scale Factor = 0.75</pre>\n<pre>  2 - UDRE Scale Factor = 0.5</pre>\n<pre>  3 - UDRE Scale Factor = 0.3</pre>\n<pre>  4 - UDRE Scale Factor = 0.2</pre>\n<pre>  5 - UDRE Scale Factor = 0.1</pre>\n<pre>  6 - Reference Station Transmission Not Monitored</pre>\n<pre>  7 - Reference Station Not Working</pre>\n\n(UDRE = User Differential Range Error)",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -1267,14 +1279,15 @@ struct MetadataFor<data_gnss::DgpsChannel>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_gnss::DgpsChannel",
-        /* .title       = */ "dgps_channel",
-        /* .docs        = */ "GNSS reported DGPS Channel Status status\n\nWhen enabled, a separate field for each active space vehicle will be sent in the packet.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_gnss::DgpsChannel",
+            /* .title       = */ "dgps_channel",
+            /* .docs        = */ "GNSS reported DGPS Channel Status status\n\nWhen enabled, a separate field for each active space vehicle will be sent in the packet.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -1353,14 +1366,15 @@ struct MetadataFor<data_gnss::ClockInfo2>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_gnss::ClockInfo2",
-        /* .title       = */ "clock_info_2",
-        /* .docs        = */ "GNSS reported receiver clock parameters\n\nThis supersedes MIP_DATA_DESC_GNSS_CLOCK_INFO with additional information.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_gnss::ClockInfo2",
+            /* .title       = */ "clock_info_2",
+            /* .docs        = */ "GNSS reported receiver clock parameters\n\nThis supersedes MIP_DATA_DESC_GNSS_CLOCK_INFO with additional information.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -1408,14 +1422,15 @@ struct MetadataFor<data_gnss::GpsLeapSeconds>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_gnss::GpsLeapSeconds",
-        /* .title       = */ "gps_leap_seconds",
-        /* .docs        = */ "GNSS reported leap seconds (difference between GPS and UTC Time)",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_gnss::GpsLeapSeconds",
+            /* .title       = */ "gps_leap_seconds",
+            /* .docs        = */ "GNSS reported leap seconds (difference between GPS and UTC Time)",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -1557,14 +1572,15 @@ struct MetadataFor<data_gnss::SbasInfo>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_gnss::SbasInfo",
-        /* .title       = */ "sbas_info",
-        /* .docs        = */ "GNSS SBAS status",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_gnss::SbasInfo",
+            /* .title       = */ "sbas_info",
+            /* .docs        = */ "GNSS SBAS status",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -1710,14 +1726,15 @@ struct MetadataFor<data_gnss::SbasCorrection>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_gnss::SbasCorrection",
-        /* .title       = */ "sbas_correction",
-        /* .docs        = */ "GNSS calculated SBAS Correction\n\nUDREI - the variance of a normal distribution associated with the user differential range errors for a\nsatellite after application of fast and long-term corrections, excluding atmospheric effects\n\n<pre>UDREI  Variance</pre>\n<pre>-----------------------</pre>\n<pre>0      0.0520 m^2</pre>\n<pre>1      0.0924 m^2</pre>\n<pre>2      0.1444 m^2</pre>\n<pre>3      0.2830 m^2</pre>\n<pre>4      0.4678 m^2</pre>\n<pre>5      0.8315 m^2</pre>\n<pre>6      1.2992 m^2</pre>\n<pre>7      1.8709 m^2</pre>\n<pre>8      2.5465 m^2</pre>\n<pre>9      3.3260 m^2</pre>\n<pre>10     5.1968 m^2</pre>\n<pre>11     20.7870 m^2</pre>\n<pre>12     230.9661 m^2</pre>\n<pre>13     2078.695 m^2</pre>\n<pre>14     'Not Monitored'</pre>\n<pre>15     'Do Not Use'</pre>",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_gnss::SbasCorrection",
+            /* .title       = */ "sbas_correction",
+            /* .docs        = */ "GNSS calculated SBAS Correction\n\nUDREI - the variance of a normal distribution associated with the user differential range errors for a\nsatellite after application of fast and long-term corrections, excluding atmospheric effects\n\n<pre>UDREI  Variance</pre>\n<pre>-----------------------</pre>\n<pre>0      0.0520 m^2</pre>\n<pre>1      0.0924 m^2</pre>\n<pre>2      0.1444 m^2</pre>\n<pre>3      0.2830 m^2</pre>\n<pre>4      0.4678 m^2</pre>\n<pre>5      0.8315 m^2</pre>\n<pre>6      1.2992 m^2</pre>\n<pre>7      1.8709 m^2</pre>\n<pre>8      2.5465 m^2</pre>\n<pre>9      3.3260 m^2</pre>\n<pre>10     5.1968 m^2</pre>\n<pre>11     20.7870 m^2</pre>\n<pre>12     230.9661 m^2</pre>\n<pre>13     2078.695 m^2</pre>\n<pre>14     'Not Monitored'</pre>\n<pre>15     'Do Not Use'</pre>",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -1858,14 +1875,15 @@ struct MetadataFor<data_gnss::RfErrorDetection>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_gnss::RfErrorDetection",
-        /* .title       = */ "rf_error_detection",
-        /* .docs        = */ "GNSS Error Detection subsystem status",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_gnss::RfErrorDetection",
+            /* .title       = */ "rf_error_detection",
+            /* .docs        = */ "GNSS Error Detection subsystem status",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -1990,14 +2008,15 @@ struct MetadataFor<data_gnss::BaseStationInfo>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_gnss::BaseStationInfo",
-        /* .title       = */ "base_station_info",
-        /* .docs        = */ "RTCM reported base station information (sourced from RTCM Message 1005 or 1006)\n\nValid Flag Mapping:",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_gnss::BaseStationInfo",
+            /* .title       = */ "base_station_info",
+            /* .docs        = */ "RTCM reported base station information (sourced from RTCM Message 1005 or 1006)\n\nValid Flag Mapping:",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -2151,14 +2170,15 @@ struct MetadataFor<data_gnss::RtkCorrectionsStatus>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_gnss::RtkCorrectionsStatus",
-        /* .title       = */ "rtk_corrections_status",
-        /* .docs        = */ "",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_gnss::RtkCorrectionsStatus",
+            /* .title       = */ "rtk_corrections_status",
+            /* .docs        = */ "",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -2285,14 +2305,15 @@ struct MetadataFor<data_gnss::SatelliteStatus>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_gnss::SatelliteStatus",
-        /* .title       = */ "satellite_status",
-        /* .docs        = */ "Status information for a GNSS satellite.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_gnss::SatelliteStatus",
+            /* .title       = */ "satellite_status",
+            /* .docs        = */ "Status information for a GNSS satellite.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -2615,14 +2636,15 @@ struct MetadataFor<data_gnss::Raw>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_gnss::Raw",
-        /* .title       = */ "raw",
-        /* .docs        = */ "GNSS Raw observation.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_gnss::Raw",
+            /* .title       = */ "raw",
+            /* .docs        = */ "GNSS Raw observation.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -2961,14 +2983,15 @@ struct MetadataFor<data_gnss::GpsEphemeris>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_gnss::GpsEphemeris",
-        /* .title       = */ "GPS Ephemeris",
-        /* .docs        = */ "GPS Ephemeris Data",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_gnss::GpsEphemeris",
+            /* .title       = */ "GPS Ephemeris",
+            /* .docs        = */ "GPS Ephemeris Data",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -3307,14 +3330,15 @@ struct MetadataFor<data_gnss::GalileoEphemeris>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_gnss::GalileoEphemeris",
-        /* .title       = */ "Galileo Ephemeris",
-        /* .docs        = */ "Galileo Ephemeris Data",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_gnss::GalileoEphemeris",
+            /* .title       = */ "Galileo Ephemeris",
+            /* .docs        = */ "Galileo Ephemeris Data",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -3570,14 +3594,15 @@ struct MetadataFor<data_gnss::GloEphemeris>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_gnss::GloEphemeris",
-        /* .title       = */ "Glonass Ephemeris",
-        /* .docs        = */ "Glonass Ephemeris Data",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_gnss::GloEphemeris",
+            /* .title       = */ "Glonass Ephemeris",
+            /* .docs        = */ "Glonass Ephemeris Data",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -3916,14 +3941,15 @@ struct MetadataFor<data_gnss::BeidouEphemeris>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_gnss::BeidouEphemeris",
-        /* .title       = */ "BeiDou Ephemeris",
-        /* .docs        = */ "BeiDou Ephemeris Data",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_gnss::BeidouEphemeris",
+            /* .title       = */ "BeiDou Ephemeris",
+            /* .docs        = */ "BeiDou Ephemeris Data",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -4002,14 +4028,15 @@ struct MetadataFor<data_gnss::GpsIonoCorr>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_gnss::GpsIonoCorr",
-        /* .title       = */ "GPS Ionospheric Correction",
-        /* .docs        = */ "Ionospheric Correction Terms for GNSS",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_gnss::GpsIonoCorr",
+            /* .title       = */ "GPS Ionospheric Correction",
+            /* .docs        = */ "Ionospheric Correction Terms for GNSS",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -4088,14 +4115,15 @@ struct MetadataFor<data_gnss::GalileoIonoCorr>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_gnss::GalileoIonoCorr",
-        /* .title       = */ "Galileo Ionospheric Correction",
-        /* .docs        = */ "Ionospheric Correction Terms for Galileo",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_gnss::GalileoIonoCorr",
+            /* .title       = */ "Galileo Ionospheric Correction",
+            /* .docs        = */ "Ionospheric Correction Terms for Galileo",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -4184,14 +4212,15 @@ struct MetadataFor<data_gnss::BeidouIonoCorr>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_gnss::BeidouIonoCorr",
-        /* .title       = */ "BeiDou Ionospheric Correction",
-        /* .docs        = */ "Ionospheric Correction Terms for BeiDou",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_gnss::BeidouIonoCorr",
+            /* .title       = */ "BeiDou Ionospheric Correction",
+            /* .docs        = */ "Ionospheric Correction Terms for BeiDou",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 

@@ -55,14 +55,15 @@ struct MetadataFor<data_filter::PositionLlh>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::PositionLlh",
-        /* .title       = */ "LLH Position",
-        /* .docs        = */ "Filter reported position in the WGS84 geodetic frame.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::PositionLlh",
+            /* .title       = */ "LLH Position",
+            /* .docs        = */ "Filter reported position in the WGS84 geodetic frame.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -110,14 +111,15 @@ struct MetadataFor<data_filter::VelocityNed>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::VelocityNed",
-        /* .title       = */ "velocity_ned",
-        /* .docs        = */ "Filter reported velocity in the NED local-level frame.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::VelocityNed",
+            /* .title       = */ "velocity_ned",
+            /* .docs        = */ "Filter reported velocity in the NED local-level frame.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -147,14 +149,15 @@ struct MetadataFor<data_filter::AttitudeQuaternion>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::AttitudeQuaternion",
-        /* .title       = */ "attitude_quaternion",
-        /* .docs        = */ "4x1 vector representation of the quaternion describing the orientation of the device with respect to the NED local-level frame.\nThis quaternion satisfies the following relationship:\n\nEQSTART p^{veh} = q^{-1} p^{ned} q EQEND<br/>\n\nWhere:<br/>\nEQSTART q = (q_w, q_x, q_y, q_z) EQEND is the quaternion describing the rotation. <br/>\nEQSTART p^ned = (0, v^{ned}_x, v^{ned}_y, v^{ned}_z) EQEND and EQSTART v^{ned} EQEND is a 3-element vector expressed in the NED frame.<br/>\nEQSTART p^veh = (0, v^{veh}_x, v^{veh}_y, v^{veh}_z) EQEND and EQSTART v^{veh} EQEND is a 3-element vector expressed in the vehicle frame.<br/>",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::AttitudeQuaternion",
+            /* .title       = */ "attitude_quaternion",
+            /* .docs        = */ "4x1 vector representation of the quaternion describing the orientation of the device with respect to the NED local-level frame.\nThis quaternion satisfies the following relationship:\n\nEQSTART p^{veh} = q^{-1} p^{ned} q EQEND<br/>\n\nWhere:<br/>\nEQSTART q = (q_w, q_x, q_y, q_z) EQEND is the quaternion describing the rotation. <br/>\nEQSTART p^ned = (0, v^{ned}_x, v^{ned}_y, v^{ned}_z) EQEND and EQSTART v^{ned} EQEND is a 3-element vector expressed in the NED frame.<br/>\nEQSTART p^veh = (0, v^{veh}_x, v^{veh}_y, v^{veh}_z) EQEND and EQSTART v^{veh} EQEND is a 3-element vector expressed in the vehicle frame.<br/>",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -184,14 +187,15 @@ struct MetadataFor<data_filter::AttitudeDcm>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::AttitudeDcm",
-        /* .title       = */ "attitude_dcm",
-        /* .docs        = */ "3x3 Direction Cosine Matrix EQSTART M_{ned}^{veh} EQEND describing the orientation of the device with respect to the NED local-level frame.\nThis matrix satisfies the following relationship:\n\nEQSTART v^{veh} = M_{ned}^{veh} v^{ned} EQEND<br/>\n\nWhere:<br/>\n\nEQSTART v^{ned} EQEND is a 3-element vector expressed in the NED frame. <br/>\nEQSTART v^{veh} EQEND is the same 3-element vector expressed in the vehicle frame.  <br/>\n<br/>\nThe matrix elements are stored is row-major order: EQSTART M_{ned}^{veh} = \\begin{bmatrix} M_{11}, M_{12}, M_{13}, M_{21}, M_{22}, M_{23}, M_{31}, M_{32}, M_{33} \\end{bmatrix} EQEND",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::AttitudeDcm",
+            /* .title       = */ "attitude_dcm",
+            /* .docs        = */ "3x3 Direction Cosine Matrix EQSTART M_{ned}^{veh} EQEND describing the orientation of the device with respect to the NED local-level frame.\nThis matrix satisfies the following relationship:\n\nEQSTART v^{veh} = M_{ned}^{veh} v^{ned} EQEND<br/>\n\nWhere:<br/>\n\nEQSTART v^{ned} EQEND is a 3-element vector expressed in the NED frame. <br/>\nEQSTART v^{veh} EQEND is the same 3-element vector expressed in the vehicle frame.  <br/>\n<br/>\nThe matrix elements are stored is row-major order: EQSTART M_{ned}^{veh} = \\begin{bmatrix} M_{11}, M_{12}, M_{13}, M_{21}, M_{22}, M_{23}, M_{31}, M_{32}, M_{33} \\end{bmatrix} EQEND",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -239,14 +243,15 @@ struct MetadataFor<data_filter::EulerAngles>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::EulerAngles",
-        /* .title       = */ "euler_angles",
-        /* .docs        = */ "Filter reported Euler angles describing the orientation of the device with respect to the NED local-level frame.\nThe Euler angles are reported in 3-2-1 (Yaw-Pitch-Roll, AKA Aircraft) order.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::EulerAngles",
+            /* .title       = */ "euler_angles",
+            /* .docs        = */ "Filter reported Euler angles describing the orientation of the device with respect to the NED local-level frame.\nThe Euler angles are reported in 3-2-1 (Yaw-Pitch-Roll, AKA Aircraft) order.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -276,14 +281,15 @@ struct MetadataFor<data_filter::GyroBias>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::GyroBias",
-        /* .title       = */ "gyro_bias",
-        /* .docs        = */ "Filter reported gyro bias expressed in the sensor frame.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::GyroBias",
+            /* .title       = */ "gyro_bias",
+            /* .docs        = */ "Filter reported gyro bias expressed in the sensor frame.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -313,14 +319,15 @@ struct MetadataFor<data_filter::AccelBias>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::AccelBias",
-        /* .title       = */ "accel_bias",
-        /* .docs        = */ "Filter reported accelerometer bias expressed in the sensor frame.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::AccelBias",
+            /* .title       = */ "accel_bias",
+            /* .docs        = */ "Filter reported accelerometer bias expressed in the sensor frame.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -368,14 +375,15 @@ struct MetadataFor<data_filter::PositionLlhUncertainty>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::PositionLlhUncertainty",
-        /* .title       = */ "LLH Position Uncertainty",
-        /* .docs        = */ "Filter reported 1-sigma position uncertainty in the NED local-level frame.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::PositionLlhUncertainty",
+            /* .title       = */ "LLH Position Uncertainty",
+            /* .docs        = */ "Filter reported 1-sigma position uncertainty in the NED local-level frame.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -423,14 +431,15 @@ struct MetadataFor<data_filter::VelocityNedUncertainty>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::VelocityNedUncertainty",
-        /* .title       = */ "NED Velocity Uncertainty",
-        /* .docs        = */ "Filter reported 1-sigma velocity uncertainties in the NED local-level frame.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::VelocityNedUncertainty",
+            /* .title       = */ "NED Velocity Uncertainty",
+            /* .docs        = */ "Filter reported 1-sigma velocity uncertainties in the NED local-level frame.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -478,14 +487,15 @@ struct MetadataFor<data_filter::EulerAnglesUncertainty>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::EulerAnglesUncertainty",
-        /* .title       = */ "euler_angles_uncertainty",
-        /* .docs        = */ "Filter reported 1-sigma Euler angle uncertainties.\nThe uncertainties are reported in 3-2-1 (Yaw-Pitch-Roll, AKA Aircraft) order.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::EulerAnglesUncertainty",
+            /* .title       = */ "euler_angles_uncertainty",
+            /* .docs        = */ "Filter reported 1-sigma Euler angle uncertainties.\nThe uncertainties are reported in 3-2-1 (Yaw-Pitch-Roll, AKA Aircraft) order.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -515,14 +525,15 @@ struct MetadataFor<data_filter::GyroBiasUncertainty>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::GyroBiasUncertainty",
-        /* .title       = */ "gyro_bias_uncertainty",
-        /* .docs        = */ "Filter reported 1-sigma gyro bias uncertainties expressed in the sensor frame.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::GyroBiasUncertainty",
+            /* .title       = */ "gyro_bias_uncertainty",
+            /* .docs        = */ "Filter reported 1-sigma gyro bias uncertainties expressed in the sensor frame.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -552,14 +563,15 @@ struct MetadataFor<data_filter::AccelBiasUncertainty>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::AccelBiasUncertainty",
-        /* .title       = */ "accel_bias_uncertainty",
-        /* .docs        = */ "Filter reported 1-sigma accelerometer bias uncertainties expressed in the sensor frame.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::AccelBiasUncertainty",
+            /* .title       = */ "accel_bias_uncertainty",
+            /* .docs        = */ "Filter reported 1-sigma accelerometer bias uncertainties expressed in the sensor frame.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -598,14 +610,15 @@ struct MetadataFor<data_filter::Timestamp>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::Timestamp",
-        /* .title       = */ "timestamp",
-        /* .docs        = */ "GPS timestamp of the Filter data\n\nShould the PPS become unavailable, the device will revert to its internal clock, which will cause the reported time to drift from true GPS time.\nUpon recovering from a PPS outage, the user should expect a jump in the reported GPS time due to the accumulation of internal clock error.\nIf synchronization to an external clock or onboard GNSS receiver (for products that have one) is disabled, this time is equivalent to internal system time.\n\nNote: this data field may be deprecated in the future. The more flexible shared data field (0x82, 0xD3) should be used instead.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::Timestamp",
+            /* .title       = */ "timestamp",
+            /* .docs        = */ "GPS timestamp of the Filter data\n\nShould the PPS become unavailable, the device will revert to its internal clock, which will cause the reported time to drift from true GPS time.\nUpon recovering from a PPS outage, the user should expect a jump in the reported GPS time due to the accumulation of internal clock error.\nIf synchronization to an external clock or onboard GNSS receiver (for products that have one) is disabled, this time is equivalent to internal system time.\n\nNote: this data field may be deprecated in the future. The more flexible shared data field (0x82, 0xD3) should be used instead.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -735,14 +748,15 @@ struct MetadataFor<data_filter::Status>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::Status",
-        /* .title       = */ "status",
-        /* .docs        = */ "Device-specific filter status indicators.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::Status",
+            /* .title       = */ "status",
+            /* .docs        = */ "Device-specific filter status indicators.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -772,14 +786,15 @@ struct MetadataFor<data_filter::LinearAccel>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::LinearAccel",
-        /* .title       = */ "linear_accel",
-        /* .docs        = */ "Filter-compensated linear acceleration expressed in the vehicle frame.\nNote: The estimated gravity has been removed from this data leaving only linear acceleration.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::LinearAccel",
+            /* .title       = */ "linear_accel",
+            /* .docs        = */ "Filter-compensated linear acceleration expressed in the vehicle frame.\nNote: The estimated gravity has been removed from this data leaving only linear acceleration.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -809,14 +824,15 @@ struct MetadataFor<data_filter::GravityVector>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::GravityVector",
-        /* .title       = */ "gravity_vector",
-        /* .docs        = */ "Filter reported gravity vector expressed in the vehicle frame.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::GravityVector",
+            /* .title       = */ "gravity_vector",
+            /* .docs        = */ "Filter reported gravity vector expressed in the vehicle frame.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -846,14 +862,15 @@ struct MetadataFor<data_filter::CompAccel>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::CompAccel",
-        /* .title       = */ "Compensated Acceleration",
-        /* .docs        = */ "Filter-compensated acceleration expressed in the vehicle frame.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::CompAccel",
+            /* .title       = */ "Compensated Acceleration",
+            /* .docs        = */ "Filter-compensated acceleration expressed in the vehicle frame.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -883,14 +900,15 @@ struct MetadataFor<data_filter::CompAngularRate>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::CompAngularRate",
-        /* .title       = */ "comp_angular_rate",
-        /* .docs        = */ "Filter-compensated angular rate expressed in the vehicle frame.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::CompAngularRate",
+            /* .title       = */ "comp_angular_rate",
+            /* .docs        = */ "Filter-compensated angular rate expressed in the vehicle frame.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -920,14 +938,15 @@ struct MetadataFor<data_filter::QuaternionAttitudeUncertainty>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::QuaternionAttitudeUncertainty",
-        /* .title       = */ "quaternion_attitude_uncertainty",
-        /* .docs        = */ "Filter reported quaternion uncertainties.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::QuaternionAttitudeUncertainty",
+            /* .title       = */ "quaternion_attitude_uncertainty",
+            /* .docs        = */ "Filter reported quaternion uncertainties.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -957,14 +976,15 @@ struct MetadataFor<data_filter::Wgs84GravityMag>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::Wgs84GravityMag",
-        /* .title       = */ "wgs84_gravity_mag",
-        /* .docs        = */ "Filter reported WGS84 gravity magnitude.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::Wgs84GravityMag",
+            /* .title       = */ "wgs84_gravity_mag",
+            /* .docs        = */ "Filter reported WGS84 gravity magnitude.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -1034,14 +1054,15 @@ struct MetadataFor<data_filter::HeadingUpdateState>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::HeadingUpdateState",
-        /* .title       = */ "heading_update_state",
-        /* .docs        = */ "Filter reported heading update state.\n\nHeading updates can be applied from the sources listed below.  Note, some of these sources may be combined.\nThe heading value is always relative to true north.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::HeadingUpdateState",
+            /* .title       = */ "heading_update_state",
+            /* .docs        = */ "Filter reported heading update state.\n\nHeading updates can be applied from the sources listed below.  Note, some of these sources may be combined.\nThe heading value is always relative to true north.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -1107,14 +1128,15 @@ struct MetadataFor<data_filter::MagneticModel>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::MagneticModel",
-        /* .title       = */ "magnetic_model",
-        /* .docs        = */ "The World Magnetic Model is used for this data. Please refer to the device user manual for the current version of the model.\nA valid GNSS location is required for the model to be valid.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::MagneticModel",
+            /* .title       = */ "magnetic_model",
+            /* .docs        = */ "The World Magnetic Model is used for this data. Please refer to the device user manual for the current version of the model.\nA valid GNSS location is required for the model to be valid.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -1144,14 +1166,15 @@ struct MetadataFor<data_filter::AccelScaleFactor>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::AccelScaleFactor",
-        /* .title       = */ "accel_scale_factor",
-        /* .docs        = */ "Filter reported accelerometer scale factor expressed in the sensor frame.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::AccelScaleFactor",
+            /* .title       = */ "accel_scale_factor",
+            /* .docs        = */ "Filter reported accelerometer scale factor expressed in the sensor frame.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -1181,14 +1204,15 @@ struct MetadataFor<data_filter::AccelScaleFactorUncertainty>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::AccelScaleFactorUncertainty",
-        /* .title       = */ "accel_scale_factor_uncertainty",
-        /* .docs        = */ "Filter reported 1-sigma accelerometer scale factor uncertainty expressed in the sensor frame.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::AccelScaleFactorUncertainty",
+            /* .title       = */ "accel_scale_factor_uncertainty",
+            /* .docs        = */ "Filter reported 1-sigma accelerometer scale factor uncertainty expressed in the sensor frame.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -1218,14 +1242,15 @@ struct MetadataFor<data_filter::GyroScaleFactor>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::GyroScaleFactor",
-        /* .title       = */ "gyro_scale_factor",
-        /* .docs        = */ "Filter reported gyro scale factor expressed in the sensor frame.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::GyroScaleFactor",
+            /* .title       = */ "gyro_scale_factor",
+            /* .docs        = */ "Filter reported gyro scale factor expressed in the sensor frame.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -1255,14 +1280,15 @@ struct MetadataFor<data_filter::GyroScaleFactorUncertainty>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::GyroScaleFactorUncertainty",
-        /* .title       = */ "gyro_scale_factor_uncertainty",
-        /* .docs        = */ "Filter reported 1-sigma gyro scale factor uncertainty expressed in the sensor frame.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::GyroScaleFactorUncertainty",
+            /* .title       = */ "gyro_scale_factor_uncertainty",
+            /* .docs        = */ "Filter reported 1-sigma gyro scale factor uncertainty expressed in the sensor frame.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -1292,14 +1318,15 @@ struct MetadataFor<data_filter::MagBias>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::MagBias",
-        /* .title       = */ "mag_bias",
-        /* .docs        = */ "Filter reported magnetometer bias expressed in the sensor frame.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::MagBias",
+            /* .title       = */ "mag_bias",
+            /* .docs        = */ "Filter reported magnetometer bias expressed in the sensor frame.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -1329,14 +1356,15 @@ struct MetadataFor<data_filter::MagBiasUncertainty>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::MagBiasUncertainty",
-        /* .title       = */ "mag_bias_uncertainty",
-        /* .docs        = */ "Filter reported 1-sigma magnetometer bias uncertainty expressed in the sensor frame.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::MagBiasUncertainty",
+            /* .title       = */ "mag_bias_uncertainty",
+            /* .docs        = */ "Filter reported 1-sigma magnetometer bias uncertainty expressed in the sensor frame.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -1402,14 +1430,15 @@ struct MetadataFor<data_filter::StandardAtmosphere>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::StandardAtmosphere",
-        /* .title       = */ "standard_atmosphere",
-        /* .docs        = */ "Filter reported standard atmosphere parameters.\n\nThe US 1976 Standard Atmosphere Model is used. A valid GNSS location is required for the model to be valid.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::StandardAtmosphere",
+            /* .title       = */ "standard_atmosphere",
+            /* .docs        = */ "Filter reported standard atmosphere parameters.\n\nThe US 1976 Standard Atmosphere Model is used. A valid GNSS location is required for the model to be valid.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -1439,14 +1468,15 @@ struct MetadataFor<data_filter::PressureAltitude>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::PressureAltitude",
-        /* .title       = */ "pressure_altitude",
-        /* .docs        = */ "Filter reported pressure altitude.\n\nThe US 1976 Standard Atmosphere Model is used to calculate the pressure altitude in meters.\nA valid pressure sensor reading is required for the pressure altitude to be valid.\nThe minimum pressure reading supported by the model is 0.0037 mBar, corresponding to an altitude of 84,852 meters.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::PressureAltitude",
+            /* .title       = */ "pressure_altitude",
+            /* .docs        = */ "Filter reported pressure altitude.\n\nThe US 1976 Standard Atmosphere Model is used to calculate the pressure altitude in meters.\nA valid pressure sensor reading is required for the pressure altitude to be valid.\nThe minimum pressure reading supported by the model is 0.0037 mBar, corresponding to an altitude of 84,852 meters.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -1476,14 +1506,15 @@ struct MetadataFor<data_filter::DensityAltitude>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::DensityAltitude",
-        /* .title       = */ "density_altitude",
-        /* .docs        = */ "",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::DensityAltitude",
+            /* .title       = */ "density_altitude",
+            /* .docs        = */ "",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -1513,14 +1544,15 @@ struct MetadataFor<data_filter::AntennaOffsetCorrection>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::AntennaOffsetCorrection",
-        /* .title       = */ "antenna_offset_correction",
-        /* .docs        = */ "Filter reported GNSS antenna offset in vehicle frame.\n\nThis offset added to any previously stored offset vector to compensate for errors in definition.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::AntennaOffsetCorrection",
+            /* .title       = */ "antenna_offset_correction",
+            /* .docs        = */ "Filter reported GNSS antenna offset in vehicle frame.\n\nThis offset added to any previously stored offset vector to compensate for errors in definition.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -1550,14 +1582,15 @@ struct MetadataFor<data_filter::AntennaOffsetCorrectionUncertainty>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::AntennaOffsetCorrectionUncertainty",
-        /* .title       = */ "antenna_offset_correction_uncertainty",
-        /* .docs        = */ "Filter reported 1-sigma GNSS antenna offset uncertainties in vehicle frame.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::AntennaOffsetCorrectionUncertainty",
+            /* .title       = */ "antenna_offset_correction_uncertainty",
+            /* .docs        = */ "Filter reported 1-sigma GNSS antenna offset uncertainties in vehicle frame.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -1596,14 +1629,15 @@ struct MetadataFor<data_filter::MultiAntennaOffsetCorrection>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::MultiAntennaOffsetCorrection",
-        /* .title       = */ "multi_antenna_offset_correction",
-        /* .docs        = */ "Filter reported GNSS antenna offset in vehicle frame.\n\nThis offset added to any previously stored offset vector to compensate for errors in definition.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::MultiAntennaOffsetCorrection",
+            /* .title       = */ "multi_antenna_offset_correction",
+            /* .docs        = */ "Filter reported GNSS antenna offset in vehicle frame.\n\nThis offset added to any previously stored offset vector to compensate for errors in definition.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -1642,14 +1676,15 @@ struct MetadataFor<data_filter::MultiAntennaOffsetCorrectionUncertainty>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::MultiAntennaOffsetCorrectionUncertainty",
-        /* .title       = */ "multi_antenna_offset_correction_uncertainty",
-        /* .docs        = */ "Filter reported 1-sigma GNSS antenna offset uncertainties in vehicle frame.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::MultiAntennaOffsetCorrectionUncertainty",
+            /* .title       = */ "multi_antenna_offset_correction_uncertainty",
+            /* .docs        = */ "Filter reported 1-sigma GNSS antenna offset uncertainties in vehicle frame.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -1679,14 +1714,15 @@ struct MetadataFor<data_filter::MagnetometerOffset>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::MagnetometerOffset",
-        /* .title       = */ "magnetometer_offset",
-        /* .docs        = */ "Filter reported magnetometer hard iron offset in sensor frame.\n\nThis offset added to any previously stored hard iron offset vector to compensate for magnetometer in-run bias errors.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::MagnetometerOffset",
+            /* .title       = */ "magnetometer_offset",
+            /* .docs        = */ "Filter reported magnetometer hard iron offset in sensor frame.\n\nThis offset added to any previously stored hard iron offset vector to compensate for magnetometer in-run bias errors.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -1716,14 +1752,15 @@ struct MetadataFor<data_filter::MagnetometerMatrix>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::MagnetometerMatrix",
-        /* .title       = */ "magnetometer_matrix",
-        /* .docs        = */ "Filter reported magnetometer soft iron matrix in sensor frame.\n\nThis matrix is post multiplied to any previously stored soft iron matrix to compensate for magnetometer in-run errors.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::MagnetometerMatrix",
+            /* .title       = */ "magnetometer_matrix",
+            /* .docs        = */ "Filter reported magnetometer soft iron matrix in sensor frame.\n\nThis matrix is post multiplied to any previously stored soft iron matrix to compensate for magnetometer in-run errors.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -1753,14 +1790,15 @@ struct MetadataFor<data_filter::MagnetometerOffsetUncertainty>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::MagnetometerOffsetUncertainty",
-        /* .title       = */ "magnetometer_offset_uncertainty",
-        /* .docs        = */ "Filter reported 1-sigma magnetometer hard iron offset uncertainties in sensor frame.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::MagnetometerOffsetUncertainty",
+            /* .title       = */ "magnetometer_offset_uncertainty",
+            /* .docs        = */ "Filter reported 1-sigma magnetometer hard iron offset uncertainties in sensor frame.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -1790,14 +1828,15 @@ struct MetadataFor<data_filter::MagnetometerMatrixUncertainty>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::MagnetometerMatrixUncertainty",
-        /* .title       = */ "magnetometer_matrix_uncertainty",
-        /* .docs        = */ "Filter reported 1-sigma magnetometer soft iron matrix uncertainties in sensor frame.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::MagnetometerMatrixUncertainty",
+            /* .title       = */ "magnetometer_matrix_uncertainty",
+            /* .docs        = */ "Filter reported 1-sigma magnetometer soft iron matrix uncertainties in sensor frame.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -1827,14 +1866,15 @@ struct MetadataFor<data_filter::MagnetometerCovarianceMatrix>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::MagnetometerCovarianceMatrix",
-        /* .title       = */ "magnetometer_covariance_matrix",
-        /* .docs        = */ "",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::MagnetometerCovarianceMatrix",
+            /* .title       = */ "magnetometer_covariance_matrix",
+            /* .docs        = */ "",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -1864,14 +1904,15 @@ struct MetadataFor<data_filter::MagnetometerResidualVector>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::MagnetometerResidualVector",
-        /* .title       = */ "magnetometer_residual_vector",
-        /* .docs        = */ "Filter reported magnetometer measurement residuals in vehicle frame.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::MagnetometerResidualVector",
+            /* .title       = */ "magnetometer_residual_vector",
+            /* .docs        = */ "Filter reported magnetometer measurement residuals in vehicle frame.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -1919,14 +1960,15 @@ struct MetadataFor<data_filter::ClockCorrection>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::ClockCorrection",
-        /* .title       = */ "clock_correction",
-        /* .docs        = */ "Filter reported GNSS receiver clock error parameters.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::ClockCorrection",
+            /* .title       = */ "clock_correction",
+            /* .docs        = */ "Filter reported GNSS receiver clock error parameters.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -1974,14 +2016,15 @@ struct MetadataFor<data_filter::ClockCorrectionUncertainty>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::ClockCorrectionUncertainty",
-        /* .title       = */ "clock_correction_uncertainty",
-        /* .docs        = */ "Filter reported 1-sigma GNSS receiver clock error parameters.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::ClockCorrectionUncertainty",
+            /* .title       = */ "clock_correction_uncertainty",
+            /* .docs        = */ "Filter reported 1-sigma GNSS receiver clock error parameters.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -2062,14 +2105,15 @@ struct MetadataFor<data_filter::GnssPosAidStatus>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::GnssPosAidStatus",
-        /* .title       = */ "GNSS Position Aiding Status",
-        /* .docs        = */ "Filter reported GNSS position aiding status",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::GnssPosAidStatus",
+            /* .title       = */ "GNSS Position Aiding Status",
+            /* .docs        = */ "Filter reported GNSS position aiding status",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -2108,14 +2152,15 @@ struct MetadataFor<data_filter::GnssAttAidStatus>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::GnssAttAidStatus",
-        /* .title       = */ "GNSS Attitude Aiding Status",
-        /* .docs        = */ "Filter reported dual antenna GNSS attitude aiding status",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::GnssAttAidStatus",
+            /* .title       = */ "GNSS Attitude Aiding Status",
+            /* .docs        = */ "Filter reported dual antenna GNSS attitude aiding status",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -2173,14 +2218,15 @@ struct MetadataFor<data_filter::HeadAidStatus>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::HeadAidStatus",
-        /* .title       = */ "head_aid_status",
-        /* .docs        = */ "Filter reported GNSS heading aiding status",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::HeadAidStatus",
+            /* .title       = */ "head_aid_status",
+            /* .docs        = */ "Filter reported GNSS heading aiding status",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -2210,14 +2256,15 @@ struct MetadataFor<data_filter::RelPosNed>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::RelPosNed",
-        /* .title       = */ "NED Relative Position",
-        /* .docs        = */ "Filter reported relative position, with respect to configured reference position",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::RelPosNed",
+            /* .title       = */ "NED Relative Position",
+            /* .docs        = */ "Filter reported relative position, with respect to configured reference position",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -2247,14 +2294,15 @@ struct MetadataFor<data_filter::EcefPos>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::EcefPos",
-        /* .title       = */ "ECEF Position",
-        /* .docs        = */ "Filter reported ECEF position",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::EcefPos",
+            /* .title       = */ "ECEF Position",
+            /* .docs        = */ "Filter reported ECEF position",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -2284,14 +2332,15 @@ struct MetadataFor<data_filter::EcefVel>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::EcefVel",
-        /* .title       = */ "ECEF Velocity",
-        /* .docs        = */ "Filter reported ECEF velocity",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::EcefVel",
+            /* .title       = */ "ECEF Velocity",
+            /* .docs        = */ "Filter reported ECEF velocity",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -2321,14 +2370,15 @@ struct MetadataFor<data_filter::EcefPosUncertainty>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::EcefPosUncertainty",
-        /* .title       = */ "ECEF Position Uncertainty",
-        /* .docs        = */ "Filter reported 1-sigma position uncertainty in the ECEF frame.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::EcefPosUncertainty",
+            /* .title       = */ "ECEF Position Uncertainty",
+            /* .docs        = */ "Filter reported 1-sigma position uncertainty in the ECEF frame.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -2358,14 +2408,15 @@ struct MetadataFor<data_filter::EcefVelUncertainty>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::EcefVelUncertainty",
-        /* .title       = */ "ECEF Velocity Uncertainty",
-        /* .docs        = */ "Filter reported 1-sigma velocity uncertainties in the ECEF frame.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::EcefVelUncertainty",
+            /* .title       = */ "ECEF Velocity Uncertainty",
+            /* .docs        = */ "Filter reported 1-sigma velocity uncertainties in the ECEF frame.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -2468,14 +2519,15 @@ struct MetadataFor<data_filter::AidingMeasurementSummary>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::AidingMeasurementSummary",
-        /* .title       = */ "aiding_measurement_summary",
-        /* .docs        = */ "Filter reported aiding measurement summary. This message contains a summary of the specified aiding measurement over the previous measurement interval ending at the specified time.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::AidingMeasurementSummary",
+            /* .title       = */ "aiding_measurement_summary",
+            /* .docs        = */ "Filter reported aiding measurement summary. This message contains a summary of the specified aiding measurement over the previous measurement interval ending at the specified time.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -2505,14 +2557,15 @@ struct MetadataFor<data_filter::OdometerScaleFactorError>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::OdometerScaleFactorError",
-        /* .title       = */ "Odometer Scale Factor Error",
-        /* .docs        = */ "Filter reported odometer scale factor error. The total scale factor estimate is the user indicated scale factor, plus the user indicated scale factor times the scale factor error.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::OdometerScaleFactorError",
+            /* .title       = */ "Odometer Scale Factor Error",
+            /* .docs        = */ "Filter reported odometer scale factor error. The total scale factor estimate is the user indicated scale factor, plus the user indicated scale factor times the scale factor error.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -2542,14 +2595,15 @@ struct MetadataFor<data_filter::OdometerScaleFactorErrorUncertainty>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::OdometerScaleFactorErrorUncertainty",
-        /* .title       = */ "Odometer Scale Factor Error Uncertainty",
-        /* .docs        = */ "Filter reported odometer scale factor error uncertainty.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::OdometerScaleFactorErrorUncertainty",
+            /* .title       = */ "Odometer Scale Factor Error Uncertainty",
+            /* .docs        = */ "Filter reported odometer scale factor error uncertainty.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -2655,14 +2709,15 @@ struct MetadataFor<data_filter::GnssDualAntennaStatus>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::GnssDualAntennaStatus",
-        /* .title       = */ "GNSS Dual Antenna Status",
-        /* .docs        = */ "Summary information for status of GNSS dual antenna heading estimate.",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::GnssDualAntennaStatus",
+            /* .title       = */ "GNSS Dual Antenna Status",
+            /* .docs        = */ "Summary information for status of GNSS dual antenna heading estimate.",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -2701,14 +2756,15 @@ struct MetadataFor<data_filter::AidingFrameConfigError>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::AidingFrameConfigError",
-        /* .title       = */ "Aiding Frame Configuration Error",
-        /* .docs        = */ "Filter reported aiding source frame configuration error\n\nThese estimates are used to compensate for small errors to the user-supplied aiding frame configurations (set with (0x13, 0x01) command ).",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::AidingFrameConfigError",
+            /* .title       = */ "Aiding Frame Configuration Error",
+            /* .docs        = */ "Filter reported aiding source frame configuration error\n\nThese estimates are used to compensate for small errors to the user-supplied aiding frame configurations (set with (0x13, 0x01) command ).",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
@@ -2747,14 +2803,15 @@ struct MetadataFor<data_filter::AidingFrameConfigErrorUncertainty>
         },
     };
 
-    static constexpr inline FieldInfo value = {
-        /* .name        = */ "data_filter::AidingFrameConfigErrorUncertainty",
-        /* .title       = */ "Aiding Frame Configuration Error Uncertainty",
-        /* .docs        = */ "Filter reported aiding source frame configuration error uncertainty\n\nThese estimates are used to compensate for small errors to the user-supplied aiding frame configurations (set with (0x13, 0x01) command ).",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+    static constexpr inline FieldInfo value = {{
+            /* .name        = */ "data_filter::AidingFrameConfigErrorUncertainty",
+            /* .title       = */ "Aiding Frame Configuration Error Uncertainty",
+            /* .docs        = */ "Filter reported aiding source frame configuration error uncertainty\n\nThese estimates are used to compensate for small errors to the user-supplied aiding frame configurations (set with (0x13, 0x01) command ).",
+            /* .parameters  = */ parameters,
+        },
+        /* .descriptor      = */ type::DESCRIPTOR,
+        /* .functions       = */ NO_FUNCTIONS,
+        /* .response        = */ nullptr,
     };
 };
 
