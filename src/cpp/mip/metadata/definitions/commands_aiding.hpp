@@ -1,11 +1,9 @@
 #pragma once
 
-#include <mip/metadata/definitions/common.hpp>
+#include "mip/metadata/common.hpp"
+#include "mip/metadata/mip_metadata.hpp"
 
 #include <mip/definitions/commands_aiding.hpp>
-
-
-#include <mip/metadata/mip_metadata.hpp>
 
 namespace mip::metadata
 {
@@ -117,15 +115,16 @@ struct MetadataFor<commands_aiding::FrameConfig::Response>
         },
     };
 
-    static constexpr inline FieldInfo value = {{
+    static constexpr inline FieldInfo value = {
+        {
             /* .name        = */ "commands_aiding::FrameConfig::Response",
             /* .title       = */ "response",
             /* .docs        = */ "",
             /* .parameters  = */ parameters,
         },
-        /* .descriptor      = */ type::DESCRIPTOR,
-        /* .functions       = */ NO_FUNCTIONS,
-        /* .response        = */ nullptr,
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ NO_FUNCTIONS,
+            /* .response    = */ nullptr,
     };
 };
 
@@ -183,15 +182,16 @@ struct MetadataFor<commands_aiding::FrameConfig>
         },
     };
 
-    static constexpr inline FieldInfo value = {{
+    static constexpr inline FieldInfo value = {
+        {
             /* .name        = */ "commands_aiding::FrameConfig",
             /* .title       = */ "Frame Configuration",
             /* .docs        = */ "Defines an aiding frame associated with a specific sensor frame ID.\nThe frame ID used in this command should mirror the frame ID used in the aiding command\n(if that aiding measurement is measured in this reference frame).\n\nThis transform satisfies the following relationship:\n\nEQSTART p^{veh} = R p^{sensor_frame} + t EQEND<br/>\n\nWhere:<br/>\nEQSTART R EQEND is rotation matrix defined by the rotation component and EQSTART t EQEND is the translation vector<br/><br/>\nEQSTART p^{sensor_frame} EQEND is a 3-element position vector expressed in the external sensor frame<br/>\nEQSTART p^{veh} EQEND is a 3-element position vector expressed in the vehicle frame<br/>\n\nRotation can be defined using Euler angles OR quaternions.  If Format selector is set to Euler Angles, the fourth element\nin the rotation vector is ignored and should be set to 0.\n\nWhen the tracking_enabled flag is 1, the Kalman filter will track errors in the provided frame definition; when 0, no errors are tracked.\n\nExample: GNSS antenna lever arm\n\nFrame ID: 1\nFormat: 1 (Euler)\nTranslation: [0,1,] (GNSS with a 1 meter Y offset in the vehicle frame)\nRotation: [0,0,0,0] (Rotational component is not relevant for GNSS measurements, set to zero)",
             /* .parameters  = */ parameters,
         },
-        /* .descriptor      = */ type::DESCRIPTOR,
-        /* .functions       = */ {true, true, true, true, true},
-        /* .response        = */ &MetadataFor<type::Response>::value,
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ {true, true, true, true, true},
+            /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
 
@@ -232,15 +232,16 @@ struct MetadataFor<commands_aiding::EchoControl::Response>
         },
     };
 
-    static constexpr inline FieldInfo value = {{
+    static constexpr inline FieldInfo value = {
+        {
             /* .name        = */ "commands_aiding::EchoControl::Response",
             /* .title       = */ "response",
             /* .docs        = */ "",
             /* .parameters  = */ parameters,
         },
-        /* .descriptor      = */ type::DESCRIPTOR,
-        /* .functions       = */ NO_FUNCTIONS,
-        /* .response        = */ nullptr,
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ NO_FUNCTIONS,
+            /* .response    = */ nullptr,
     };
 };
 
@@ -262,15 +263,16 @@ struct MetadataFor<commands_aiding::EchoControl>
         },
     };
 
-    static constexpr inline FieldInfo value = {{
+    static constexpr inline FieldInfo value = {
+        {
             /* .name        = */ "commands_aiding::EchoControl",
             /* .title       = */ "Echo Control",
             /* .docs        = */ "Controls command response behavior to external aiding commands",
             /* .parameters  = */ parameters,
         },
-        /* .descriptor      = */ type::DESCRIPTOR,
-        /* .functions       = */ {true, true, true, true, true},
-        /* .response        = */ &MetadataFor<type::Response>::value,
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ {true, true, true, true, true},
+            /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
 
@@ -410,15 +412,16 @@ struct MetadataFor<commands_aiding::PosEcef>
         },
     };
 
-    static constexpr inline FieldInfo value = {{
+    static constexpr inline FieldInfo value = {
+        {
             /* .name        = */ "commands_aiding::PosEcef",
             /* .title       = */ "ECEF Position",
             /* .docs        = */ "Cartesian vector position aiding command. Coordinates are given in the WGS84 ECEF system.",
             /* .parameters  = */ parameters,
         },
-        /* .descriptor      = */ type::DESCRIPTOR,
-        /* .functions       = */ NO_FUNCTIONS,
-        /* .response        = */ nullptr,
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ NO_FUNCTIONS,
+            /* .response    = */ nullptr,
     };
 };
 
@@ -513,15 +516,16 @@ struct MetadataFor<commands_aiding::PosLlh>
         },
     };
 
-    static constexpr inline FieldInfo value = {{
+    static constexpr inline FieldInfo value = {
+        {
             /* .name        = */ "commands_aiding::PosLlh",
             /* .title       = */ "LLH Position",
             /* .docs        = */ "Geodetic position aiding command.\nCoordinates are given in WGS84 geodetic latitude, longitude, and height above the ellipsoid.\nUncertainty is given in NED coordinates, which are parallel to incremental changes in latitude, longitude, and height.",
             /* .parameters  = */ parameters,
         },
-        /* .descriptor      = */ type::DESCRIPTOR,
-        /* .functions       = */ NO_FUNCTIONS,
-        /* .response        = */ nullptr,
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ NO_FUNCTIONS,
+            /* .response    = */ nullptr,
     };
 };
 
@@ -578,15 +582,16 @@ struct MetadataFor<commands_aiding::HeightAboveEllipsoid>
         },
     };
 
-    static constexpr inline FieldInfo value = {{
+    static constexpr inline FieldInfo value = {
+        {
             /* .name        = */ "commands_aiding::HeightAboveEllipsoid",
             /* .title       = */ "Height Above Ellipsoid",
             /* .docs        = */ "Estimated value of the height above ellipsoid.",
             /* .parameters  = */ parameters,
         },
-        /* .descriptor      = */ type::DESCRIPTOR,
-        /* .functions       = */ NO_FUNCTIONS,
-        /* .response        = */ nullptr,
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ NO_FUNCTIONS,
+            /* .response    = */ nullptr,
     };
 };
 
@@ -663,15 +668,16 @@ struct MetadataFor<commands_aiding::VelEcef>
         },
     };
 
-    static constexpr inline FieldInfo value = {{
+    static constexpr inline FieldInfo value = {
+        {
             /* .name        = */ "commands_aiding::VelEcef",
             /* .title       = */ "ECEF Velocity",
             /* .docs        = */ "ECEF velocity aiding command. Coordinates are given in the WGS84 ECEF frame.",
             /* .parameters  = */ parameters,
         },
-        /* .descriptor      = */ type::DESCRIPTOR,
-        /* .functions       = */ NO_FUNCTIONS,
-        /* .response        = */ nullptr,
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ NO_FUNCTIONS,
+            /* .response    = */ nullptr,
     };
 };
 
@@ -748,15 +754,16 @@ struct MetadataFor<commands_aiding::VelNed>
         },
     };
 
-    static constexpr inline FieldInfo value = {{
+    static constexpr inline FieldInfo value = {
+        {
             /* .name        = */ "commands_aiding::VelNed",
             /* .title       = */ "NED Velocity",
             /* .docs        = */ "NED velocity aiding command. Coordinates are given in the local North East Down frame.",
             /* .parameters  = */ parameters,
         },
-        /* .descriptor      = */ type::DESCRIPTOR,
-        /* .functions       = */ NO_FUNCTIONS,
-        /* .response        = */ nullptr,
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ NO_FUNCTIONS,
+            /* .response    = */ nullptr,
     };
 };
 
@@ -833,15 +840,16 @@ struct MetadataFor<commands_aiding::VelBodyFrame>
         },
     };
 
-    static constexpr inline FieldInfo value = {{
+    static constexpr inline FieldInfo value = {
+        {
             /* .name        = */ "commands_aiding::VelBodyFrame",
             /* .title       = */ "Body Frame Velocity",
             /* .docs        = */ "Estimated of velocity of the vehicle in the frame associated with the given sensor ID, relative to the vehicle frame.",
             /* .parameters  = */ parameters,
         },
-        /* .descriptor      = */ type::DESCRIPTOR,
-        /* .functions       = */ NO_FUNCTIONS,
-        /* .response        = */ nullptr,
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ NO_FUNCTIONS,
+            /* .response    = */ nullptr,
     };
 };
 
@@ -898,15 +906,16 @@ struct MetadataFor<commands_aiding::HeadingTrue>
         },
     };
 
-    static constexpr inline FieldInfo value = {{
+    static constexpr inline FieldInfo value = {
+        {
             /* .name        = */ "commands_aiding::HeadingTrue",
             /* .title       = */ "True Heading",
             /* .docs        = */ "",
             /* .parameters  = */ parameters,
         },
-        /* .descriptor      = */ type::DESCRIPTOR,
-        /* .functions       = */ NO_FUNCTIONS,
-        /* .response        = */ nullptr,
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ NO_FUNCTIONS,
+            /* .response    = */ nullptr,
     };
 };
 
@@ -983,15 +992,16 @@ struct MetadataFor<commands_aiding::MagneticField>
         },
     };
 
-    static constexpr inline FieldInfo value = {{
+    static constexpr inline FieldInfo value = {
+        {
             /* .name        = */ "commands_aiding::MagneticField",
             /* .title       = */ "Magnetic Field",
             /* .docs        = */ "Estimate of magnetic field in the frame associated with the given sensor ID.",
             /* .parameters  = */ parameters,
         },
-        /* .descriptor      = */ type::DESCRIPTOR,
-        /* .functions       = */ NO_FUNCTIONS,
-        /* .response        = */ nullptr,
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ NO_FUNCTIONS,
+            /* .response    = */ nullptr,
     };
 };
 
@@ -1048,15 +1058,16 @@ struct MetadataFor<commands_aiding::Pressure>
         },
     };
 
-    static constexpr inline FieldInfo value = {{
+    static constexpr inline FieldInfo value = {
+        {
             /* .name        = */ "commands_aiding::Pressure",
             /* .title       = */ "Pressure",
             /* .docs        = */ "Estimated value of air pressure.",
             /* .parameters  = */ parameters,
         },
-        /* .descriptor      = */ type::DESCRIPTOR,
-        /* .functions       = */ NO_FUNCTIONS,
-        /* .response        = */ nullptr,
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ NO_FUNCTIONS,
+            /* .response    = */ nullptr,
     };
 };
 
@@ -1078,9 +1089,9 @@ static constexpr inline const FieldInfo* COMMANDS_AIDING_FIELDS[] = {
 };
 
 static constexpr DescriptorSetInfo COMMANDS_AIDING = {
-    /*.descriptor =*/ mip::commands_aiding::DESCRIPTOR_SET,
-    /*.name       =*/ "Aiding Commands",
-    /*.fields     =*/ COMMANDS_AIDING_FIELDS,
+    /* .descriptor = */ mip::commands_aiding::DESCRIPTOR_SET,
+    /* .name       = */ "Aiding Commands",
+    /* .fields     = */ COMMANDS_AIDING_FIELDS,
 };
 
 } // namespace mip::metadata

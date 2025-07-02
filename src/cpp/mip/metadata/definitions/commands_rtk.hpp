@@ -1,11 +1,9 @@
 #pragma once
 
-#include <mip/metadata/definitions/common.hpp>
+#include "mip/metadata/common.hpp"
+#include "mip/metadata/mip_metadata.hpp"
 
 #include <mip/definitions/commands_rtk.hpp>
-
-
-#include <mip/metadata/mip_metadata.hpp>
 
 namespace mip::metadata
 {
@@ -85,15 +83,16 @@ struct MetadataFor<commands_rtk::GetStatusFlags::Response>
         },
     };
 
-    static constexpr inline FieldInfo value = {{
+    static constexpr inline FieldInfo value = {
+        {
             /* .name        = */ "commands_rtk::GetStatusFlags::Response",
             /* .title       = */ "response",
             /* .docs        = */ "",
             /* .parameters  = */ parameters,
         },
-        /* .descriptor      = */ type::DESCRIPTOR,
-        /* .functions       = */ NO_FUNCTIONS,
-        /* .response        = */ nullptr,
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ NO_FUNCTIONS,
+            /* .response    = */ nullptr,
     };
 };
 
@@ -102,15 +101,16 @@ struct MetadataFor<commands_rtk::GetStatusFlags>
 {
     using type = commands_rtk::GetStatusFlags;
 
-    static constexpr inline FieldInfo value = {{
+    static constexpr inline FieldInfo value = {
+        {
             /* .name        = */ "commands_rtk::GetStatusFlags",
             /* .title       = */ "Get RTK Device Status Flags",
             /* .docs        = */ "",
             /* .parameters  = */ {},
         },
-        /* .descriptor      = */ type::DESCRIPTOR,
-        /* .functions       = */ NO_FUNCTIONS,
-        /* .response        = */ &MetadataFor<type::Response>::value,
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ NO_FUNCTIONS,
+            /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
 
@@ -131,15 +131,16 @@ struct MetadataFor<commands_rtk::GetImei::Response>
         },
     };
 
-    static constexpr inline FieldInfo value = {{
+    static constexpr inline FieldInfo value = {
+        {
             /* .name        = */ "commands_rtk::GetImei::Response",
             /* .title       = */ "response",
             /* .docs        = */ "",
             /* .parameters  = */ parameters,
         },
-        /* .descriptor      = */ type::DESCRIPTOR,
-        /* .functions       = */ NO_FUNCTIONS,
-        /* .response        = */ nullptr,
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ NO_FUNCTIONS,
+            /* .response    = */ nullptr,
     };
 };
 
@@ -148,15 +149,16 @@ struct MetadataFor<commands_rtk::GetImei>
 {
     using type = commands_rtk::GetImei;
 
-    static constexpr inline FieldInfo value = {{
+    static constexpr inline FieldInfo value = {
+        {
             /* .name        = */ "commands_rtk::GetImei",
             /* .title       = */ "Get RTK Device IMEI (International Mobile Equipment Identifier)",
             /* .docs        = */ "",
             /* .parameters  = */ {},
         },
-        /* .descriptor      = */ type::DESCRIPTOR,
-        /* .functions       = */ NO_FUNCTIONS,
-        /* .response        = */ &MetadataFor<type::Response>::value,
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ NO_FUNCTIONS,
+            /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
 
@@ -177,15 +179,16 @@ struct MetadataFor<commands_rtk::GetImsi::Response>
         },
     };
 
-    static constexpr inline FieldInfo value = {{
+    static constexpr inline FieldInfo value = {
+        {
             /* .name        = */ "commands_rtk::GetImsi::Response",
             /* .title       = */ "response",
             /* .docs        = */ "",
             /* .parameters  = */ parameters,
         },
-        /* .descriptor      = */ type::DESCRIPTOR,
-        /* .functions       = */ NO_FUNCTIONS,
-        /* .response        = */ nullptr,
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ NO_FUNCTIONS,
+            /* .response    = */ nullptr,
     };
 };
 
@@ -194,15 +197,16 @@ struct MetadataFor<commands_rtk::GetImsi>
 {
     using type = commands_rtk::GetImsi;
 
-    static constexpr inline FieldInfo value = {{
+    static constexpr inline FieldInfo value = {
+        {
             /* .name        = */ "commands_rtk::GetImsi",
             /* .title       = */ "Get RTK Device IMSI (International Mobile Subscriber Identifier)",
             /* .docs        = */ "",
             /* .parameters  = */ {},
         },
-        /* .descriptor      = */ type::DESCRIPTOR,
-        /* .functions       = */ NO_FUNCTIONS,
-        /* .response        = */ &MetadataFor<type::Response>::value,
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ NO_FUNCTIONS,
+            /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
 
@@ -223,15 +227,16 @@ struct MetadataFor<commands_rtk::GetIccid::Response>
         },
     };
 
-    static constexpr inline FieldInfo value = {{
+    static constexpr inline FieldInfo value = {
+        {
             /* .name        = */ "commands_rtk::GetIccid::Response",
             /* .title       = */ "response",
             /* .docs        = */ "",
             /* .parameters  = */ parameters,
         },
-        /* .descriptor      = */ type::DESCRIPTOR,
-        /* .functions       = */ NO_FUNCTIONS,
-        /* .response        = */ nullptr,
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ NO_FUNCTIONS,
+            /* .response    = */ nullptr,
     };
 };
 
@@ -240,15 +245,16 @@ struct MetadataFor<commands_rtk::GetIccid>
 {
     using type = commands_rtk::GetIccid;
 
-    static constexpr inline FieldInfo value = {{
+    static constexpr inline FieldInfo value = {
+        {
             /* .name        = */ "commands_rtk::GetIccid",
             /* .title       = */ "Get RTK Device ICCID (Integrated Circuit Card Identification [SIM Number])",
             /* .docs        = */ "",
             /* .parameters  = */ {},
         },
-        /* .descriptor      = */ type::DESCRIPTOR,
-        /* .functions       = */ NO_FUNCTIONS,
-        /* .response        = */ &MetadataFor<type::Response>::value,
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ NO_FUNCTIONS,
+            /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
 
@@ -288,15 +294,16 @@ struct MetadataFor<commands_rtk::ConnectedDeviceType::Response>
         },
     };
 
-    static constexpr inline FieldInfo value = {{
+    static constexpr inline FieldInfo value = {
+        {
             /* .name        = */ "commands_rtk::ConnectedDeviceType::Response",
             /* .title       = */ "response",
             /* .docs        = */ "",
             /* .parameters  = */ parameters,
         },
-        /* .descriptor      = */ type::DESCRIPTOR,
-        /* .functions       = */ NO_FUNCTIONS,
-        /* .response        = */ nullptr,
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ NO_FUNCTIONS,
+            /* .response    = */ nullptr,
     };
 };
 
@@ -318,15 +325,16 @@ struct MetadataFor<commands_rtk::ConnectedDeviceType>
         },
     };
 
-    static constexpr inline FieldInfo value = {{
+    static constexpr inline FieldInfo value = {
+        {
             /* .name        = */ "commands_rtk::ConnectedDeviceType",
             /* .title       = */ "Configure or read the type of the connected device",
             /* .docs        = */ "",
             /* .parameters  = */ parameters,
         },
-        /* .descriptor      = */ type::DESCRIPTOR,
-        /* .functions       = */ {true, true, true, true, true},
-        /* .response        = */ &MetadataFor<type::Response>::value,
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ {true, true, true, true, true},
+            /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
 
@@ -347,15 +355,16 @@ struct MetadataFor<commands_rtk::GetActCode::Response>
         },
     };
 
-    static constexpr inline FieldInfo value = {{
+    static constexpr inline FieldInfo value = {
+        {
             /* .name        = */ "commands_rtk::GetActCode::Response",
             /* .title       = */ "response",
             /* .docs        = */ "",
             /* .parameters  = */ parameters,
         },
-        /* .descriptor      = */ type::DESCRIPTOR,
-        /* .functions       = */ NO_FUNCTIONS,
-        /* .response        = */ nullptr,
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ NO_FUNCTIONS,
+            /* .response    = */ nullptr,
     };
 };
 
@@ -364,15 +373,16 @@ struct MetadataFor<commands_rtk::GetActCode>
 {
     using type = commands_rtk::GetActCode;
 
-    static constexpr inline FieldInfo value = {{
+    static constexpr inline FieldInfo value = {
+        {
             /* .name        = */ "commands_rtk::GetActCode",
             /* .title       = */ "Get RTK Device Activation Code",
             /* .docs        = */ "",
             /* .parameters  = */ {},
         },
-        /* .descriptor      = */ type::DESCRIPTOR,
-        /* .functions       = */ NO_FUNCTIONS,
-        /* .response        = */ &MetadataFor<type::Response>::value,
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ NO_FUNCTIONS,
+            /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
 
@@ -393,15 +403,16 @@ struct MetadataFor<commands_rtk::GetModemFirmwareVersion::Response>
         },
     };
 
-    static constexpr inline FieldInfo value = {{
+    static constexpr inline FieldInfo value = {
+        {
             /* .name        = */ "commands_rtk::GetModemFirmwareVersion::Response",
             /* .title       = */ "response",
             /* .docs        = */ "",
             /* .parameters  = */ parameters,
         },
-        /* .descriptor      = */ type::DESCRIPTOR,
-        /* .functions       = */ NO_FUNCTIONS,
-        /* .response        = */ nullptr,
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ NO_FUNCTIONS,
+            /* .response    = */ nullptr,
     };
 };
 
@@ -410,15 +421,16 @@ struct MetadataFor<commands_rtk::GetModemFirmwareVersion>
 {
     using type = commands_rtk::GetModemFirmwareVersion;
 
-    static constexpr inline FieldInfo value = {{
+    static constexpr inline FieldInfo value = {
+        {
             /* .name        = */ "commands_rtk::GetModemFirmwareVersion",
             /* .title       = */ "Get RTK Device's Cell Modem Firmware version number",
             /* .docs        = */ "",
             /* .parameters  = */ {},
         },
-        /* .descriptor      = */ type::DESCRIPTOR,
-        /* .functions       = */ NO_FUNCTIONS,
-        /* .response        = */ &MetadataFor<type::Response>::value,
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ NO_FUNCTIONS,
+            /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
 
@@ -457,15 +469,16 @@ struct MetadataFor<commands_rtk::GetRssi::Response>
         },
     };
 
-    static constexpr inline FieldInfo value = {{
+    static constexpr inline FieldInfo value = {
+        {
             /* .name        = */ "commands_rtk::GetRssi::Response",
             /* .title       = */ "response",
             /* .docs        = */ "",
             /* .parameters  = */ parameters,
         },
-        /* .descriptor      = */ type::DESCRIPTOR,
-        /* .functions       = */ NO_FUNCTIONS,
-        /* .response        = */ nullptr,
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ NO_FUNCTIONS,
+            /* .response    = */ nullptr,
     };
 };
 
@@ -474,15 +487,16 @@ struct MetadataFor<commands_rtk::GetRssi>
 {
     using type = commands_rtk::GetRssi;
 
-    static constexpr inline FieldInfo value = {{
+    static constexpr inline FieldInfo value = {
+        {
             /* .name        = */ "commands_rtk::GetRssi",
             /* .title       = */ "get_rssi",
             /* .docs        = */ "Get the RSSI and connected/disconnected status of modem",
             /* .parameters  = */ {},
         },
-        /* .descriptor      = */ type::DESCRIPTOR,
-        /* .functions       = */ NO_FUNCTIONS,
-        /* .response        = */ &MetadataFor<type::Response>::value,
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ NO_FUNCTIONS,
+            /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
 
@@ -550,15 +564,16 @@ struct MetadataFor<commands_rtk::ServiceStatus::Response>
         },
     };
 
-    static constexpr inline FieldInfo value = {{
+    static constexpr inline FieldInfo value = {
+        {
             /* .name        = */ "commands_rtk::ServiceStatus::Response",
             /* .title       = */ "response",
             /* .docs        = */ "",
             /* .parameters  = */ parameters,
         },
-        /* .descriptor      = */ type::DESCRIPTOR,
-        /* .functions       = */ NO_FUNCTIONS,
-        /* .response        = */ nullptr,
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ NO_FUNCTIONS,
+            /* .response    = */ nullptr,
     };
 };
 
@@ -588,15 +603,16 @@ struct MetadataFor<commands_rtk::ServiceStatus>
         },
     };
 
-    static constexpr inline FieldInfo value = {{
+    static constexpr inline FieldInfo value = {
+        {
             /* .name        = */ "commands_rtk::ServiceStatus",
             /* .title       = */ "service_status",
             /* .docs        = */ "The 3DMRTK will send this message to the server to indicate that the connection should remain open. The Server will respond with information and status.",
             /* .parameters  = */ parameters,
         },
-        /* .descriptor      = */ type::DESCRIPTOR,
-        /* .functions       = */ NO_FUNCTIONS,
-        /* .response        = */ &MetadataFor<type::Response>::value,
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ NO_FUNCTIONS,
+            /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
 
@@ -636,15 +652,16 @@ struct MetadataFor<commands_rtk::ProdEraseStorage>
         },
     };
 
-    static constexpr inline FieldInfo value = {{
+    static constexpr inline FieldInfo value = {
+        {
             /* .name        = */ "commands_rtk::ProdEraseStorage",
             /* .title       = */ "prod_erase_storage",
             /* .docs        = */ "This command will erase the selected media to a raw and uninitialized state. ALL DATA WILL BE LOST.\nThis command is only available in calibration mode.",
             /* .parameters  = */ parameters,
         },
-        /* .descriptor      = */ type::DESCRIPTOR,
-        /* .functions       = */ NO_FUNCTIONS,
-        /* .response        = */ nullptr,
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ NO_FUNCTIONS,
+            /* .response    = */ nullptr,
     };
 };
 
@@ -712,15 +729,16 @@ struct MetadataFor<commands_rtk::LedControl>
         },
     };
 
-    static constexpr inline FieldInfo value = {{
+    static constexpr inline FieldInfo value = {
+        {
             /* .name        = */ "commands_rtk::LedControl",
             /* .title       = */ "led_control",
             /* .docs        = */ "This command allows direct control of the LED on the 3DM RTK. This command is only available in calibration mode or Production Test Mode.",
             /* .parameters  = */ parameters,
         },
-        /* .descriptor      = */ type::DESCRIPTOR,
-        /* .functions       = */ NO_FUNCTIONS,
-        /* .response        = */ nullptr,
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ NO_FUNCTIONS,
+            /* .response    = */ nullptr,
     };
 };
 
@@ -729,15 +747,16 @@ struct MetadataFor<commands_rtk::ModemHardReset>
 {
     using type = commands_rtk::ModemHardReset;
 
-    static constexpr inline FieldInfo value = {{
+    static constexpr inline FieldInfo value = {
+        {
             /* .name        = */ "commands_rtk::ModemHardReset",
             /* .title       = */ "modem_hard_reset",
             /* .docs        = */ "This command will clear the modem flash.  THIS MUST NOT BE DONE OFTEN AS IT CAN DAMAGE THE FLASH!\nThis command is only available in calibration mode.",
             /* .parameters  = */ {},
         },
-        /* .descriptor      = */ type::DESCRIPTOR,
-        /* .functions       = */ NO_FUNCTIONS,
-        /* .response        = */ nullptr,
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ NO_FUNCTIONS,
+            /* .response    = */ nullptr,
     };
 };
 
@@ -767,9 +786,9 @@ static constexpr inline const FieldInfo* COMMANDS_RTK_FIELDS[] = {
 };
 
 static constexpr DescriptorSetInfo COMMANDS_RTK = {
-    /*.descriptor =*/ mip::commands_rtk::DESCRIPTOR_SET,
-    /*.name       =*/ "Rtk Commands",
-    /*.fields     =*/ COMMANDS_RTK_FIELDS,
+    /* .descriptor = */ mip::commands_rtk::DESCRIPTOR_SET,
+    /* .name       = */ "Rtk Commands",
+    /* .fields     = */ COMMANDS_RTK_FIELDS,
 };
 
 } // namespace mip::metadata
