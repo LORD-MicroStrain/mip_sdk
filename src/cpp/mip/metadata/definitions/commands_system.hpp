@@ -1,11 +1,9 @@
 #pragma once
 
 #include "mip/metadata/common.hpp"
+#include "mip/metadata/mip_metadata.hpp"
 
 #include <mip/definitions/commands_system.hpp>
-
-
-#include <mip/metadata/mip_metadata.hpp>
 
 namespace mip::metadata
 {
@@ -28,15 +26,16 @@ struct MetadataFor<commands_system::CommMode::Response>
         },
     };
 
-    static constexpr inline FieldInfo value = {{
+    static constexpr inline FieldInfo value = {
+        {
             /* .name        = */ "commands_system::CommMode::Response",
             /* .title       = */ "response",
             /* .docs        = */ "",
             /* .parameters  = */ parameters,
         },
-        /* .descriptor      = */ type::DESCRIPTOR,
-        /* .functions       = */ NO_FUNCTIONS,
-        /* .response        = */ nullptr,
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ NO_FUNCTIONS,
+            /* .response    = */ nullptr,
     };
 };
 
@@ -58,15 +57,16 @@ struct MetadataFor<commands_system::CommMode>
         },
     };
 
-    static constexpr inline FieldInfo value = {{
+    static constexpr inline FieldInfo value = {
+        {
             /* .name        = */ "commands_system::CommMode",
             /* .title       = */ "comm_mode",
             /* .docs        = */ "Advanced specialized communication modes.\n\nThis command allows the user to communicate directly with various subsystems which may be present in MIP devices (i.e. IMU, GNSS, etc.)\nPlease see the specific device's user manual for possible modes.\n\nThis command responds with an ACK/NACK just prior to switching to the new protocol.\nFor all functions except 0x01 (use new settings), the new communications mode value is ignored.\n\n",
             /* .parameters  = */ parameters,
         },
-        /* .descriptor      = */ type::DESCRIPTOR,
-        /* .functions       = */ {true, true, false, false, true},
-        /* .response        = */ &MetadataFor<type::Response>::value,
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ {true, true, false, false, true},
+            /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
 
@@ -150,15 +150,16 @@ struct MetadataFor<commands_system::InterfaceControl::Response>
         },
     };
 
-    static constexpr inline FieldInfo value = {{
+    static constexpr inline FieldInfo value = {
+        {
             /* .name        = */ "commands_system::InterfaceControl::Response",
             /* .title       = */ "response",
             /* .docs        = */ "",
             /* .parameters  = */ parameters,
         },
-        /* .descriptor      = */ type::DESCRIPTOR,
-        /* .functions       = */ NO_FUNCTIONS,
-        /* .response        = */ nullptr,
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ NO_FUNCTIONS,
+            /* .response    = */ nullptr,
     };
 };
 
@@ -198,15 +199,16 @@ struct MetadataFor<commands_system::InterfaceControl>
         },
     };
 
-    static constexpr inline FieldInfo value = {{
+    static constexpr inline FieldInfo value = {
+        {
             /* .name        = */ "commands_system::InterfaceControl",
             /* .title       = */ "Interface Control",
             /* .docs        = */ "Reassign data protocols, both incoming and outgoing.\n\nResponds over the port that sent the command with an ACK/NACK immediately after the operation is complete. It is the user's responsibility to not\nsend any critical information or commands while awaiting a response! Doing so while this command processes may cause those packets to be dropped.\n\nConstraints:\n- Limited parsers and data streams are available. Refer to your device manual for more information.\n- The Main port always has a MIP parser and MIP data stream bound. Additionally, Main is the only port that can process interface control commands.\n\nIf response is NACK, no change was made. Here's what can cause a NACK:\n- The requested protocol isn't supported on this device, or on this port, or this device doesn't support that many parsers.\n- The request would break the general constraints listed above, or a device-specific constraint.\n\n",
             /* .parameters  = */ parameters,
         },
-        /* .descriptor      = */ type::DESCRIPTOR,
-        /* .functions       = */ {true, true, true, true, true},
-        /* .response        = */ &MetadataFor<type::Response>::value,
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ {true, true, true, true, true},
+            /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
 
@@ -219,9 +221,10 @@ static constexpr inline const FieldInfo* COMMANDS_SYSTEM_FIELDS[] = {
 };
 
 static constexpr DescriptorSetInfo COMMANDS_SYSTEM = {
-    /*.descriptor =*/ mip::commands_system::DESCRIPTOR_SET,
-    /*.name       =*/ "System Commands",
-    /*.fields     =*/ COMMANDS_SYSTEM_FIELDS,
+    /* .descriptor = */ mip::commands_system::DESCRIPTOR_SET,
+    /* .name       = */ "System Commands",
+    /* .fields     = */ COMMANDS_SYSTEM_FIELDS,
 };
 
 } // namespace mip::metadata
+
