@@ -34,6 +34,7 @@
 #include <mip/definitions/data_filter.h>
 #include <mip/definitions/data_sensor.h>
 #include <mip/definitions/data_shared.h>
+#include <mip/mip_interface.h>
 
 #ifdef _MSC_VER
 #define _USE_MATH_DEFINES
@@ -66,8 +67,7 @@ static const uint32_t BAUDRATE = 115200;
 // Custom logging handler callback
 void log_callback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args);
 
-// Message format configuration
-void configure_sensor_message_format(mip_interface* _device);
+// Filter message format configuration
 void configure_filter_message_format(mip_interface* _device);
 
 // Event configuration
@@ -92,7 +92,7 @@ bool mip_interface_user_recv_from_device(mip_interface* _device, uint8_t* _buffe
     mip_timeout _wait_time, bool _from_cmd, size_t* _length_out, mip_timestamp* _timestamp_out);
 
 // Common device initialization procedure
-void initialize_device(mip_interface* _device, serial_port* _device_port, uint32_t _baudrate);
+void initialize_device(mip_interface* _device, serial_port* _device_port, const uint32_t _baudrate);
 
 // Utility functions the handle application closing and printing error messages
 void terminate(serial_port* _device_port, const char* _message, const bool _successful);
@@ -126,12 +126,8 @@ int main(int argc, const char* argv[])
         terminate(&device_port, "Could not open device port!\n", false);
     }
 
-    // Initialize the MIP device and send commands to prepare for configuration/use
     mip_interface device;
     initialize_device(&device, &device_port, BAUDRATE);
-
-    // Configure the message format for sensor data
-    configure_sensor_message_format(&device);
 
     // Configure the message format for filter data
     configure_filter_message_format(&device);
@@ -158,58 +154,7 @@ int main(int argc, const char* argv[])
     // Initialize the navigation filter
     initialize_filter(&device);
 
-    // Register data callbacks
-
-    // Sensor data callbacks
-    MICROSTRAIN_LOG_INFO("Registering sensor data callbacks.\n");
-
-    mip_dispatch_handler sensor_data_handlers[4];
-
-    // Data stores for sensor data
-    mip_shared_gps_timestamp_data sensor_gps_timestamp;
-    mip_sensor_scaled_accel_data  sensor_scaled_accel;
-    mip_sensor_scaled_gyro_data   sensor_scaled_gyro;
-    mip_sensor_scaled_mag_data    sensor_scaled_mag;
-
-    // Register the callbacks for the sensor fields
-
-    mip_interface_register_extractor(
-        &device,
-        &sensor_data_handlers[0],                         // Data handler
-        MIP_SENSOR_DATA_DESC_SET,                         // Data descriptor set
-        MIP_DATA_DESC_SHARED_GPS_TIME,                    // Data field descriptor
-        extract_mip_shared_gps_timestamp_data_from_field, // Callback
-        &sensor_gps_timestamp                             // Data field out
-    );
-
-    mip_interface_register_extractor(
-        &device,
-        &sensor_data_handlers[1],                        // Data handler
-        MIP_SENSOR_DATA_DESC_SET,                        // Data descriptor set
-        MIP_DATA_DESC_SENSOR_ACCEL_SCALED,               // Data field descriptor
-        extract_mip_sensor_scaled_accel_data_from_field, // Callback
-        &sensor_scaled_accel                             // Data field out
-    );
-
-    mip_interface_register_extractor(
-        &device,
-        &sensor_data_handlers[2],                       // Data handler
-        MIP_SENSOR_DATA_DESC_SET,                       // Data descriptor set
-        MIP_DATA_DESC_SENSOR_GYRO_SCALED,               // Data field descriptor
-        extract_mip_sensor_scaled_gyro_data_from_field, // Callback
-        &sensor_scaled_gyro                             // Data field out
-    );
-
-    mip_interface_register_extractor(
-        &device,
-        &sensor_data_handlers[3],                      // Data handler
-        MIP_SENSOR_DATA_DESC_SET,                      // Data descriptor set
-        MIP_DATA_DESC_SENSOR_MAG_SCALED,               // Data field descriptor
-        extract_mip_sensor_scaled_mag_data_from_field, // Callback
-        &sensor_scaled_mag                             // Data field out
-    );
-
-    // Filter data callbacks
+    // Register filter data callbacks
     MICROSTRAIN_LOG_INFO("Registering filter data callbacks.\n");
 
     mip_dispatch_handler filter_data_handlers[4];
@@ -383,50 +328,6 @@ void log_callback(void* _user, const microstrain_log_level _level, const char* _
         {
             break;
         }
-    }
-}
-
-// Configure Sensor data message format
-void configure_sensor_message_format(mip_interface* _device)
-{
-    // Note: Querying the device base rate is only one way to calculate the descriptor decimation
-    // We could have also set it directly with information from the datasheet (shown in GNSS setup)
-
-    MICROSTRAIN_LOG_INFO("Getting the base rate for sensor data.\n");
-    uint16_t sensor_base_rate;
-    mip_cmd_result cmd_result = mip_3dm_get_base_rate(
-        _device,
-        MIP_SENSOR_DATA_DESC_SET, // Data descriptor set
-        &sensor_base_rate         // Base rate out
-    );
-
-    if (!mip_cmd_result_is_ack(cmd_result))
-    {
-        command_failure_terminate(_device, cmd_result, "Could not get sensor base rate!\n");
-    }
-
-    const uint16_t sensor_sample_rate = 100; // Hz
-    const uint16_t sensor_decimation  = sensor_base_rate / sensor_sample_rate;
-
-    // Descriptor rate is a pair of data descriptor set and decimation
-    const mip_descriptor_rate sensor_descriptors[4] = {
-        { MIP_DATA_DESC_SHARED_GPS_TIME,     sensor_decimation },
-        { MIP_DATA_DESC_SENSOR_ACCEL_SCALED, sensor_decimation },
-        { MIP_DATA_DESC_SENSOR_GYRO_SCALED,  sensor_decimation },
-        { MIP_DATA_DESC_SENSOR_MAG_SCALED,   sensor_decimation }
-    };
-
-    MICROSTRAIN_LOG_INFO("Configuring message format for sensor data.\n");
-    cmd_result = mip_3dm_write_message_format(
-        _device,
-        MIP_SENSOR_DATA_DESC_SET,                                   // Data Descriptor
-        sizeof(sensor_descriptors) / sizeof(sensor_descriptors[0]), // Size of the array
-        sensor_descriptors                                          // Descriptor array
-    );
-
-    if (!mip_cmd_result_is_ack(cmd_result))
-    {
-        command_failure_terminate(_device, cmd_result, "Could not set message format for sensor data!\n");
     }
 }
 
@@ -765,11 +666,11 @@ bool mip_interface_user_recv_from_device(mip_interface* _device, uint8_t* _buffe
 ////////////////////////////////////////////////////////////////////////////////
 /// Initialize a MIP device and send some commands to prepare for configuration
 ///
-/// @param _device      Device to initialize
+/// @param _device Device to initialize
 /// @param _device_port Serial port to use for the device connection
-/// @param _baudrate    Baudrate to open the connection with
+/// @param _baudrate Baudrate to open the connection with
 ///
-void initialize_device(mip_interface* _device, serial_port* _device_port, uint32_t _baudrate)
+void initialize_device(mip_interface* _device, serial_port* _device_port, const uint32_t _baudrate)
 {
     MICROSTRAIN_LOG_INFO("Initializing device interface.\n");
     mip_interface_init(
