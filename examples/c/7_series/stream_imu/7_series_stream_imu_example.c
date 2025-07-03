@@ -155,7 +155,7 @@ int main(const int argc, const char* argv[])
     }
 
     // Configure the message format for sensor data
-    configure_sensor_message_format(&device, supported_descriptors, descriptors_count);
+    configure_sensor_message_format(&device, supported_descriptors, descriptors_count + extended_descriptors_count);
 
     // Register packet and data callbacks
 
