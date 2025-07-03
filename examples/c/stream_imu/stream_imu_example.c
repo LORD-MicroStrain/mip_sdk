@@ -59,7 +59,7 @@ static const uint32_t BAUDRATE = 115200;
 
 // TODO: Update to the desired streaming rate. Setting low for readability purposes
 // Streaming rate in Hz
-static const uint16_t SAMPLE_RATE = 1; // Hz
+static const uint16_t SAMPLE_RATE = 1;
 ////////////////////////////////////////////////////////////////////////////////
 
 // Custom logging handler callback
@@ -134,7 +134,7 @@ int main(const int argc, const char* argv[])
 
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        command_failure_terminate(&device, cmd_result, "Could not set get supported descriptors!\n");
+        command_failure_terminate(&device, cmd_result, "Could not get supported descriptors!\n");
     }
 
     // Some devices have a large number of descriptors
@@ -150,7 +150,7 @@ int main(const int argc, const char* argv[])
 
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        command_failure_terminate(&device, cmd_result, "Could not set get extended supported descriptors!\n");
+        command_failure_terminate(&device, cmd_result, "Could not get extended supported descriptors!\n");
     }
 
     // Configure the message format for sensor data
@@ -166,11 +166,11 @@ int main(const int argc, const char* argv[])
     // Register the callback for packets
     mip_interface_register_packet_callback(
         &device,
-        &packet_handler,
-        MIP_DISPATCH_ANY_DATA_SET,
-        false,
-        &packet_callback,
-        NULL
+        &packet_handler,           // Packet handler
+        MIP_DISPATCH_ANY_DATA_SET, // Data field descriptor
+        false,                     // Process after field callback
+        &packet_callback,          // Callback
+        NULL                       // User data
     );
 
     // Sensor data callbacks
@@ -288,6 +288,22 @@ void log_callback(void* _user, const microstrain_log_level _level, const char* _
             break;
         }
     }
+}
+
+// Used for basic timestamping (since epoch in milliseconds)
+// TODO: Update this to whatever timestamping method is desired
+mip_timestamp get_timestamp()
+{
+    struct timespec ts;
+
+    // Get system UTC time since epoch
+    if (timespec_get(&ts, TIME_UTC) != TIME_UTC)
+    {
+        return 0;
+    }
+
+    // Get the time in milliseconds
+    return (mip_timestamp)ts.tv_sec * 1000 + (mip_timestamp)ts.tv_nsec / 1000000;
 }
 
 // Send packet handler callback
@@ -489,22 +505,6 @@ void configure_sensor_message_format(mip_interface* _device, const uint16_t* _su
     {
         command_failure_terminate(_device, cmd_result, "Could not set message format for sensor data!\n");
     }
-}
-
-// Used for basic timestamping (since epoch in milliseconds)
-// TODO: Update this to whatever timestamping method is desired
-mip_timestamp get_timestamp()
-{
-    struct timespec ts;
-
-    // Get system UTC time since epoch
-    if (timespec_get(&ts, TIME_UTC) != TIME_UTC)
-    {
-        return 0;
-    }
-
-    // Get the time in milliseconds
-    return (mip_timestamp)ts.tv_sec * 1000 + (mip_timestamp)ts.tv_nsec / 1000000;
 }
 
 // Generic packet callback handler
