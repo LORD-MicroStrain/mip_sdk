@@ -1,3 +1,4 @@
 add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/ahrs")
 add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/ar")
 add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/gnss_ins")
+add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/stream_imu")
