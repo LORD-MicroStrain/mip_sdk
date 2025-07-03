@@ -197,7 +197,7 @@ int main(const int argc, const char* argv[])
         NULL                              // User data
     );
 
-    // Even if the device doesn't support mag data registering this won't break anything
+    // Note: Even if the device doesn't support mag data, registering this won't break anything
     // The callback will just never be called
     mip_interface_register_field_callback(
         &device,
@@ -206,7 +206,7 @@ int main(const int argc, const char* argv[])
         MIP_DATA_DESC_SENSOR_MAG_SCALED, // Data field descriptor
         mag_field_callback,              // Callback
         NULL                             // User data
-        );
+    );
 
     // Resume the device
     // Note: Since the device was idled for configuration, it needs to be resumed to output the data streams
