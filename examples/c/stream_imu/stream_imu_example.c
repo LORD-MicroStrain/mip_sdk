@@ -66,6 +66,7 @@ static const uint16_t SAMPLE_RATE = 1; // Hz
 void log_callback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args);
 
 // Used for basic timestamping (since epoch in milliseconds)
+// TODO: Update this to whatever timestamping method is desired
 mip_timestamp get_timestamp();
 
 // Device callbacks used for reading and writing packets
@@ -324,7 +325,7 @@ bool mip_interface_user_recv_from_device(mip_interface* _device, uint8_t* _buffe
         return false;
     }
 
-    // Get the time that packet was received
+    // Get the time that the packet was received (system epoch UTC time in milliseconds)
     *_timestamp_out = get_timestamp();
 
     // Read the packet from the device
@@ -490,16 +491,19 @@ void configure_sensor_message_format(mip_interface* _device, const uint16_t* _su
     }
 }
 
-// Get the time delta since the application started (in milliseconds)
+// Used for basic timestamping (since epoch in milliseconds)
+// TODO: Update this to whatever timestamping method is desired
 mip_timestamp get_timestamp()
 {
     struct timespec ts;
 
+    // Get system UTC time since epoch
     if (timespec_get(&ts, TIME_UTC) != TIME_UTC)
     {
-        return 0; // Handle error
+        return 0;
     }
 
+    // Get the time in milliseconds
     return (mip_timestamp)ts.tv_sec * 1000 + (mip_timestamp)ts.tv_nsec / 1000000;
 }
 
