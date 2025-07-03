@@ -1,9 +1,10 @@
 ////////////////////////////////////////////////////////////////////////////////
-/// stream_imu_example.c
+/// 7_series_stream_imu_example.c
 ///
-/// Example setup program for streaming IMU data using C
+/// Example setup program for streaming IMU data on 7-series devices using C
 ///
-/// This example shows a basic setup for streaming IMU data using C.
+/// This example shows a basic setup for streaming IMU data on 7-series devices
+/// using C.
 /// It is not an exhaustive example of all streaming options.
 /// If this example does not meet your specific setup needs, please consult the
 /// MIP SDK API documentation for the proper commands.
@@ -49,7 +50,7 @@
 // TODO: Update to the correct port name and baudrate
 // Set the port name for the connection (Serial/USB)
 #ifdef _WIN32
-static const char* PORT_NAME = "COM1";
+static const char* PORT_NAME = "COM46";
 #else // Unix
 static const char* PORT_NAME = "/dev/ttyUSB0";
 #endif // _WIN32
@@ -455,9 +456,10 @@ void configure_sensor_message_format(mip_interface* _device, const uint16_t* _su
 
     MICROSTRAIN_LOG_INFO("Getting the base rate for sensor data.\n");
     uint16_t sensor_base_rate;
-    mip_cmd_result cmd_result = mip_3dm_imu_get_base_rate(
+    mip_cmd_result cmd_result = mip_3dm_get_base_rate(
         _device,
-        &sensor_base_rate // Base rate out
+        MIP_SENSOR_DATA_DESC_SET, // Data descriptor set
+        &sensor_base_rate         // Base rate out
     );
 
     if (!mip_cmd_result_is_ack(cmd_result))
@@ -495,10 +497,11 @@ void configure_sensor_message_format(mip_interface* _device, const uint16_t* _su
     }
 
     MICROSTRAIN_LOG_INFO("Configuring message format for sensor data at %dHz.\n", SAMPLE_RATE);
-    cmd_result = mip_3dm_write_imu_message_format(
+    cmd_result = mip_3dm_write_message_format(
         _device,
-        sensor_descriptor_count, // Number of descriptors to include
-        sensor_descriptors       // Descriptor array
+        MIP_SENSOR_DATA_DESC_SET, // Data descriptor set
+        sensor_descriptor_count,  // Number of descriptors to include
+        sensor_descriptors        // Descriptor array
     );
 
     if (!mip_cmd_result_is_ack(cmd_result))

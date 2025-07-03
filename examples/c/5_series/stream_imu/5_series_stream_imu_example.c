@@ -1,0 +1,685 @@
+////////////////////////////////////////////////////////////////////////////////
+/// 5_series_stream_imu_example.c
+///
+/// Example setup program for streaming IMU data on 5-series devices using C
+///
+/// This example shows a basic setup for streaming IMU data on 5-series devices
+/// using C.
+/// It is not an exhaustive example of all streaming options.
+/// If this example does not meet your specific setup needs, please consult the
+/// MIP SDK API documentation for the proper commands.
+///
+/// @section LICENSE
+///
+/// THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+/// WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+/// TIME. AS A RESULT, MICROSTRAIN BY HBK SHALL NOT BE HELD LIABLE FOR ANY
+/// DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
+/// FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
+/// CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+///
+
+// Include the MicroStrain Serial connection header
+#include <microstrain/connections/serial/serial_port.h>
+
+// Include the MicroStrain logging header for custom logging
+#include <microstrain/logging.h>
+
+// Include all necessary MIP headers
+// Note: The MIP SDK has headers for each module to include all headers associated with the module
+// I.E., #include <mip/mip_all.h>
+#include <mip/mip_dispatch.h>
+#include <mip/mip_interface.h>
+#include <mip/definitions/commands_3dm.h>
+#include <mip/definitions/commands_base.h>
+#include <mip/definitions/data_sensor.h>
+
+#include <inttypes.h>
+#include <stdarg.h>
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+
+////////////////////////////////////////////////////////////////////////////////
+// NOTE: Setting these globally for example purposes
+
+// TODO: Update to the correct port name and baudrate
+// Set the port name for the connection (Serial/USB)
+#ifdef _WIN32
+static const char* PORT_NAME = "COM1";
+#else // Unix
+static const char* PORT_NAME = "/dev/ttyUSB0";
+#endif // _WIN32
+
+// Set the baudrate for the connection (Serial/USB)
+static const uint32_t BAUDRATE = 115200;
+
+// TODO: Update to the desired streaming rate. Setting low for readability purposes
+// Streaming rate in Hz
+static const uint16_t SAMPLE_RATE = 1;
+////////////////////////////////////////////////////////////////////////////////
+
+// Custom logging handler callback
+void log_callback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args);
+
+// Used for basic timestamping (since epoch in milliseconds)
+// TODO: Update this to whatever timestamping method is desired
+mip_timestamp get_timestamp();
+
+// Device callbacks used for reading and writing packets
+bool mip_interface_user_send_to_device(mip_interface* _device, const uint8_t* _data, size_t _length);
+bool mip_interface_user_recv_from_device(mip_interface* _device, uint8_t* _buffer, size_t _max_length,
+    mip_timeout _wait_time, bool _from_cmd, size_t* _length_out, mip_timestamp* _timestamp_out);
+
+// Common device initialization procedure
+void initialize_device(mip_interface* _device, serial_port* _device_port, const uint32_t _baudrate);
+
+// Utility to help check if the device supports a descriptor
+bool is_descriptor_supported(const uint8_t _descriptor_set, const uint8_t _field_descriptor,
+    const uint16_t* _supported_descriptors, const uint8_t _supported_descriptor_count);
+
+// Message format configuration
+void configure_sensor_message_format(mip_interface* _device, const uint16_t* _supported_descriptors,
+    const uint8_t _supported_descriptor_count);
+
+// Callback handlers
+void packet_callback(void* _user, const mip_packet_view* _packet_view, mip_timestamp _timestamp);
+void accel_field_callback(void* _user, const mip_field_view* _field_view, mip_timestamp _timestamp);
+void gyro_field_callback(void* _user, const mip_field_view* _field_view, mip_timestamp _timestamp);
+void mag_field_callback(void* _user, const mip_field_view* _field_view, mip_timestamp _timestamp);
+
+// Utility functions the handle application closing and printing error messages
+void terminate(serial_port* _device_port, const char* _message, const bool _successful);
+void command_failure_terminate(const mip_interface* _device, const mip_cmd_result _cmd_result, const char* _format, ...);
+
+int main(const int argc, const char* argv[])
+{
+    // Unused parameters
+    (void)argc;
+    (void)argv;
+
+    // Initialize the custom logger to print messages/errors as they occur
+    MICROSTRAIN_LOG_INIT(&log_callback, MICROSTRAIN_LOG_LEVEL_INFO, NULL);
+
+    // Initialize the connection
+    MICROSTRAIN_LOG_INFO("Initializing the serial port.\n");
+    serial_port device_port;
+    serial_port_init(&device_port);
+
+    MICROSTRAIN_LOG_INFO("Connecting to the device on port %s with %d baudrate.\n", PORT_NAME, BAUDRATE);
+
+    // Open the connection to the device
+    if (!serial_port_open(&device_port, PORT_NAME, BAUDRATE))
+    {
+        terminate(&device_port, "Could not open device port!\n", false);
+    }
+
+    mip_interface device;
+    initialize_device(&device, &device_port, BAUDRATE);
+
+    // Get supported descriptors to check if certain data descriptors are supported for streaming
+    MICROSTRAIN_LOG_INFO("Getting supported descriptors for the device.\n");
+    uint8_t  descriptors_count = 0;
+    uint16_t supported_descriptors[256];
+    memset(supported_descriptors, 0, sizeof(supported_descriptors) / sizeof(supported_descriptors[0]));
+    mip_cmd_result cmd_result = mip_base_get_device_descriptors(
+        &device,
+        supported_descriptors,                                            // Descriptors array from the device
+        sizeof(supported_descriptors) / sizeof(supported_descriptors[0]), // Max array size
+        &descriptors_count                                                // Descriptor count returned from the device
+    );
+
+    if (!mip_cmd_result_is_ack(cmd_result))
+    {
+        command_failure_terminate(&device, cmd_result, "Could not get supported descriptors!\n");
+    }
+
+    // Some devices have a large number of descriptors
+    // The extended descriptors command can get the remaining descriptors
+    MICROSTRAIN_LOG_INFO("Getting extended supported descriptors for the device.\n");
+    uint8_t extended_descriptors_count = 0;
+    cmd_result = mip_base_get_extended_descriptors(
+        &device,
+        &supported_descriptors[descriptors_count],                                            // Append to the existing array
+        sizeof(supported_descriptors) / sizeof(supported_descriptors[0]) - descriptors_count, // Remaining size of the array
+        &extended_descriptors_count
+    );
+
+    if (!mip_cmd_result_is_ack(cmd_result))
+    {
+        command_failure_terminate(&device, cmd_result, "Could not get extended supported descriptors!\n");
+    }
+
+    // Configure the message format for sensor data
+    configure_sensor_message_format(&device, supported_descriptors, descriptors_count);
+
+    // Register packet and data callbacks
+
+    // Generic packet callback
+    MICROSTRAIN_LOG_INFO("Registering a generic packet callback.\n");
+
+    mip_dispatch_handler packet_handler;
+
+    // Register the callback for packets
+    mip_interface_register_packet_callback(
+        &device,
+        &packet_handler,           // Packet handler
+        MIP_DISPATCH_ANY_DATA_SET, // Data field descriptor
+        false,                     // Process after field callback
+        &packet_callback,          // Callback
+        NULL                       // User data
+    );
+
+    // Sensor data callbacks
+    MICROSTRAIN_LOG_INFO("Registering sensor data callbacks.\n");
+
+    mip_dispatch_handler sensor_data_handlers[3];
+
+    // Register the callbacks for the sensor fields
+
+    mip_interface_register_field_callback(
+        &device,
+        &sensor_data_handlers[0],          // Data handler
+        MIP_SENSOR_DATA_DESC_SET,          // Data descriptor set
+        MIP_DATA_DESC_SENSOR_ACCEL_SCALED, // Data field descriptor
+        accel_field_callback,              // Callback
+        NULL                               // User data
+    );
+
+    mip_interface_register_field_callback(
+        &device,
+        &sensor_data_handlers[1],         // Data handler
+        MIP_SENSOR_DATA_DESC_SET,         // Data descriptor set
+        MIP_DATA_DESC_SENSOR_GYRO_SCALED, // Data field descriptor
+        gyro_field_callback,              // Callback
+        NULL                              // User data
+    );
+
+    // Note: Even if the device doesn't support mag data, registering this won't break anything
+    // The callback will just never be called
+    mip_interface_register_field_callback(
+        &device,
+        &sensor_data_handlers[2],        // Data handler
+        MIP_SENSOR_DATA_DESC_SET,        // Data descriptor set
+        MIP_DATA_DESC_SENSOR_MAG_SCALED, // Data field descriptor
+        mag_field_callback,              // Callback
+        NULL                             // User data
+    );
+
+    // Resume the device
+    // Note: Since the device was idled for configuration, it needs to be resumed to output the data streams
+    MICROSTRAIN_LOG_INFO("Resuming the device.\n");
+    cmd_result = mip_base_resume(&device);
+    if (!mip_cmd_result_is_ack(cmd_result))
+    {
+        command_failure_terminate(&device, cmd_result, "Could not resume the device!\n");
+    }
+
+    MICROSTRAIN_LOG_INFO("Sensor is configured... waiting for data.\n");
+
+    // Device loop
+    // TODO: Update loop condition to allow for exiting
+    while (true)
+    {
+        // Update the device state
+        // Note: This will update the device callbacks
+        mip_interface_update(
+            &device,
+            0,    // Time to wait
+            false // From command
+        );
+    }
+
+    terminate(&device_port, "Example Completed Successfully.\n", true);
+
+    return 0;
+}
+
+// Custom logging handler callback
+void log_callback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args)
+{
+    // Unused parameter
+    (void)_user;
+
+    switch (_level)
+    {
+        case MICROSTRAIN_LOG_LEVEL_FATAL:
+        {
+            fprintf(stderr, "%-9s", "FATAL: ");
+            vfprintf(stderr, _format, _args);
+            break;
+        }
+        case MICROSTRAIN_LOG_LEVEL_ERROR:
+        {
+            fprintf(stderr, "%-9s", "ERROR: ");
+            vfprintf(stderr, _format, _args);
+            break;
+        }
+        case MICROSTRAIN_LOG_LEVEL_WARN:
+        {
+            fprintf(stdout, "%-9s", "WARNING: ");
+            vfprintf(stdout, _format, _args);
+            break;
+        }
+        case MICROSTRAIN_LOG_LEVEL_INFO:
+        {
+            fprintf(stdout, "%-9s", "INFO: ");
+            vfprintf(stdout, _format, _args);
+            break;
+        }
+        case MICROSTRAIN_LOG_LEVEL_DEBUG:
+        {
+            fprintf(stdout, "%-9s", "DEBUG: ");
+            vfprintf(stdout, _format, _args);
+            break;
+        }
+        case MICROSTRAIN_LOG_LEVEL_TRACE:
+        {
+            fprintf(stdout, "%-9s", "TRACE: ");
+            vfprintf(stdout, _format, _args);
+            break;
+        }
+        case MICROSTRAIN_LOG_LEVEL_OFF:
+        default:
+        {
+            break;
+        }
+    }
+}
+
+// Used for basic timestamping (since epoch in milliseconds)
+// TODO: Update this to whatever timestamping method is desired
+mip_timestamp get_timestamp()
+{
+    struct timespec ts;
+
+    // Get system UTC time since epoch
+    if (timespec_get(&ts, TIME_UTC) != TIME_UTC)
+    {
+        return 0;
+    }
+
+    // Get the time in milliseconds
+    return (mip_timestamp)ts.tv_sec * 1000 + (mip_timestamp)ts.tv_nsec / 1000000;
+}
+
+// Send packet handler callback
+bool mip_interface_user_send_to_device(mip_interface* _device, const uint8_t* _data, size_t _length)
+{
+    // Extract the serial port pointer that was used in the callback initialization
+    serial_port* device_port = (serial_port*)mip_interface_user_pointer(_device);
+
+    if (device_port == NULL)
+    {
+        MICROSTRAIN_LOG_ERROR("serial_port pointer not set in mip_interface_init().\n");
+        return false;
+    }
+
+    // Get the bytes written to the device
+    size_t bytes_written;
+
+    // Send the packet to the device
+    return serial_port_write(device_port, _data, _length, &bytes_written);
+}
+
+// Receive packet handler callback
+bool mip_interface_user_recv_from_device(mip_interface* _device, uint8_t* _buffer, size_t _max_length,
+    mip_timeout _wait_time, bool _from_cmd, size_t* _length_out, mip_timestamp* _timestamp_out)
+{
+    // Unused parameter
+    (void)_from_cmd;
+
+    // Extract the serial port pointer that was used in the callback initialization
+    serial_port* device_port = (serial_port*)mip_interface_user_pointer(_device);
+
+    if (device_port == NULL)
+    {
+        MICROSTRAIN_LOG_ERROR("serial_port pointer not set in mip_interface_init().\n");
+        return false;
+    }
+
+    // Get the time that the packet was received (system epoch UTC time in milliseconds)
+    *_timestamp_out = get_timestamp();
+
+    // Read the packet from the device
+    return serial_port_read(device_port, _buffer, _max_length, (int)_wait_time, _length_out);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/// Initialize a MIP device and send some commands to prepare for configuration
+///
+/// @param _device Device to initialize
+/// @param _device_port Serial port to use for the device connection
+/// @param _baudrate Baudrate to open the connection with
+///
+void initialize_device(mip_interface* _device, serial_port* _device_port, const uint32_t _baudrate)
+{
+    MICROSTRAIN_LOG_INFO("Initializing device interface.\n");
+    mip_interface_init(
+        _device,
+        mip_timeout_from_baudrate(_baudrate), // Set the base timeout for commands (milliseconds)
+        2000,                                 // Set the base timeout for command replies (milliseconds)
+        &mip_interface_user_send_to_device,   // User-defined send packet callback
+        &mip_interface_user_recv_from_device, // User-defined receive packet callback
+        &mip_interface_default_update,        // Default update callback
+        (void*)_device_port                   // Cast the device port for use in the callbacks
+    );
+
+    // Ping the device
+    // Note: This is a good first step to make sure the device is present
+    MICROSTRAIN_LOG_INFO("Pinging the device.\n");
+    mip_cmd_result cmd_result = mip_base_ping(_device);
+    if (!mip_cmd_result_is_ack(cmd_result))
+    {
+        command_failure_terminate(_device, cmd_result, "Could not ping the device!\n");
+    }
+
+    // Set the device to Idle
+    // Note: This is good to do during setup as high data traffic can cause commands to fail
+    MICROSTRAIN_LOG_INFO("Setting device to idle.\n");
+    cmd_result = mip_base_set_idle(_device);
+    if (!mip_cmd_result_is_ack(cmd_result))
+    {
+        command_failure_terminate(_device, cmd_result, "Could not set the device to idle!\n");
+    }
+
+    // Print device info to make sure the correct device is being used
+    MICROSTRAIN_LOG_INFO("Getting device information.\n");
+    mip_base_device_info device_info;
+    cmd_result = mip_base_get_device_info(_device, &device_info);
+    if (!mip_cmd_result_is_ack(cmd_result))
+    {
+        command_failure_terminate(_device, cmd_result, "Could not get the device information!\n");
+    }
+
+    // Extract the major minor and patch values
+    const uint16_t major = device_info.firmware_version / 1000;
+    const uint16_t minor = device_info.firmware_version / 100 % 10;
+    const uint16_t patch = device_info.firmware_version % 100;
+
+    // Firmware version format is x.x.xx
+    char firmwareVersion[16];
+    snprintf(firmwareVersion, sizeof(firmwareVersion) / sizeof(firmwareVersion[0]), "%d.%d.%02d",
+        major,
+        minor,
+        patch
+    );
+
+    MICROSTRAIN_LOG_INFO("-------- Device Information --------\n");
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Name",             device_info.model_name);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Model Number",     device_info.model_number);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Serial Number",    device_info.serial_number);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Lot Number",       device_info.lot_number);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Options",          device_info.device_options);
+    MICROSTRAIN_LOG_INFO("%-16s | %16s\n",  "Firmware Version", firmwareVersion);
+    MICROSTRAIN_LOG_INFO("------------------------------------\n");
+
+    // Load the default settings on the device
+    // Note: This guarantees the device is in a known state
+    MICROSTRAIN_LOG_INFO("Loading default settings.\n");
+    cmd_result = mip_3dm_default_device_settings(_device);
+    if (!mip_cmd_result_is_ack(cmd_result))
+    {
+        command_failure_terminate(_device, cmd_result, "Could not load device default settings!\n");
+    }
+}
+
+// Check if the device supports a descriptor
+bool is_descriptor_supported(const uint8_t _descriptor_set, const uint8_t _field_descriptor,
+    const uint16_t* _supported_descriptors, const uint8_t _supported_descriptor_count)
+{
+    // The device returns a list of composite descriptors I.E., 0x80, 0x01 (0x8001)
+    // Combine the 2 descriptors for proper comparison
+    const uint16_t composite_descriptor = (uint16_t)_descriptor_set << 8 | (uint16_t)_field_descriptor;
+
+    for (uint8_t index = 0; index < _supported_descriptor_count; ++index)
+    {
+        if (_supported_descriptors[index] == composite_descriptor)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+// Configure Sensor data message format
+void configure_sensor_message_format(mip_interface* _device, const uint16_t* _supported_descriptors,
+    const uint8_t _supported_descriptor_count)
+{
+    // Note: Querying the device base rate is only one way to calculate the descriptor decimation
+    // We could have also set it directly with information from the datasheet
+
+    MICROSTRAIN_LOG_INFO("Getting the base rate for sensor data.\n");
+    uint16_t sensor_base_rate;
+    mip_cmd_result cmd_result = mip_3dm_imu_get_base_rate(
+        _device,
+        &sensor_base_rate // Base rate out
+    );
+
+    if (!mip_cmd_result_is_ack(cmd_result))
+    {
+        command_failure_terminate(_device, cmd_result, "Could not get sensor base rate!\n");
+    }
+
+    // Calculate the decimation (stream rate) for the device based on its base rate
+    const uint16_t sensor_decimation  = sensor_base_rate / SAMPLE_RATE;
+
+    // Descriptor rate is a pair of data descriptor set and decimation
+    const mip_descriptor_rate sensor_descriptors[3] = {
+        { MIP_DATA_DESC_SENSOR_ACCEL_SCALED, sensor_decimation },
+        { MIP_DATA_DESC_SENSOR_GYRO_SCALED,  sensor_decimation },
+        { MIP_DATA_DESC_SENSOR_MAG_SCALED,   sensor_decimation }
+    };
+
+    // Assume all descriptors are supported until the check below
+    uint8_t sensor_descriptor_count = sizeof(sensor_descriptors) / sizeof(sensor_descriptors[0]);
+
+    MICROSTRAIN_LOG_INFO("Checking if the device supports magnetometer data.\n");
+
+    // Not all devices have a magnetometer
+    if (is_descriptor_supported(MIP_SENSOR_DATA_DESC_SET, MIP_DATA_DESC_SENSOR_MAG_SCALED, _supported_descriptors,
+        _supported_descriptor_count))
+    {
+        MICROSTRAIN_LOG_INFO("The device supports magnetometer data.\n");
+    }
+    else
+    {
+        MICROSTRAIN_LOG_INFO("The device does not support magnetometer data.\n");
+
+        // Don't include the magnetometer data descriptor in the array for message format configuration
+        --sensor_descriptor_count;
+    }
+
+    MICROSTRAIN_LOG_INFO("Configuring message format for sensor data at %dHz.\n", SAMPLE_RATE);
+    cmd_result = mip_3dm_write_imu_message_format(
+        _device,
+        sensor_descriptor_count, // Number of descriptors to include
+        sensor_descriptors       // Descriptor array
+    );
+
+    if (!mip_cmd_result_is_ack(cmd_result))
+    {
+        command_failure_terminate(_device, cmd_result, "Could not set message format for sensor data!\n");
+    }
+}
+
+// Generic packet callback handler
+void packet_callback(void* _user, const mip_packet_view* _packet_view, mip_timestamp _timestamp)
+{
+    // Unused parameter
+    (void)_user;
+
+    // Create a buffer for printing purposes
+    char field_descriptors_buffer[255];
+    memset(field_descriptors_buffer, 0, sizeof(field_descriptors_buffer) / sizeof(field_descriptors_buffer[0]));
+    int buffer_offset = 0;
+
+    // Field object for iterating the packet and extracting each field
+    mip_field_view field_view;
+    mip_field_init_empty(&field_view);
+
+    // Iterate the packet and extract each field
+    while (mip_field_next_in_packet(&field_view, _packet_view))
+    {
+        buffer_offset += snprintf(
+            &field_descriptors_buffer[buffer_offset],
+            sizeof(field_descriptors_buffer) / sizeof(field_descriptors_buffer[0]) - buffer_offset,
+            " 0x%02X,",
+            mip_field_field_descriptor(&field_view)
+        );
+    }
+
+    // Trim off the last comma
+    if (buffer_offset > 0)
+    {
+        field_descriptors_buffer[buffer_offset - 1] = '\0';
+    }
+
+    MICROSTRAIN_LOG_INFO("Received a packet at %" PRIu64 " with descriptor set 0x%02X:%s\n",
+        _timestamp,
+        mip_packet_descriptor_set(_packet_view),
+        field_descriptors_buffer
+    );
+}
+
+// Accel data callback handler
+void accel_field_callback(void* _user, const mip_field_view* _field_view, mip_timestamp _timestamp)
+{
+    // Unused parameters
+    (void)_user;
+    (void)_timestamp;
+
+    mip_sensor_scaled_accel_data scaled_accel_data;
+
+    if (extract_mip_sensor_scaled_accel_data_from_field(_field_view, &scaled_accel_data))
+    {
+        MICROSTRAIN_LOG_INFO("%-17s (0x%02X, 0x%02X): [%9.6f, %9.6f, %9.6f]\n",
+            "Scaled Accel Data",
+            MIP_SENSOR_DATA_DESC_SET,          // Data descriptor set
+            MIP_DATA_DESC_SENSOR_ACCEL_SCALED, // Data field descriptor
+            scaled_accel_data.scaled_accel[0], // X
+            scaled_accel_data.scaled_accel[1], // Y
+            scaled_accel_data.scaled_accel[2]  // Z
+        );
+    }
+}
+
+// Gyro data callback handler
+void gyro_field_callback(void* _user, const mip_field_view* _field_view, mip_timestamp _timestamp)
+{
+    // Unused parameters
+    (void)_user;
+    (void)_timestamp;
+
+    mip_sensor_scaled_gyro_data scaled_gyro_data;
+
+    if (extract_mip_sensor_scaled_gyro_data_from_field(_field_view, &scaled_gyro_data))
+    {
+        MICROSTRAIN_LOG_INFO("%-17s (0x%02X, 0x%02X): [%9.6f, %9.6f, %9.6f]\n",
+            "Scaled Gyro Data",
+            MIP_SENSOR_DATA_DESC_SET,         // Data descriptor set
+            MIP_DATA_DESC_SENSOR_GYRO_SCALED, // Data field descriptor
+            scaled_gyro_data.scaled_gyro[0],  // X
+            scaled_gyro_data.scaled_gyro[1],  // Y
+            scaled_gyro_data.scaled_gyro[2]   // Z
+        );
+    }
+}
+
+// Mag data callback handler
+void mag_field_callback(void* _user, const mip_field_view* _field_view, mip_timestamp _timestamp)
+{
+    // Unused parameters
+    (void)_user;
+    (void)_timestamp;
+
+    mip_sensor_scaled_mag_data scaled_mag_data;
+
+    if (extract_mip_sensor_scaled_mag_data_from_field(_field_view, &scaled_mag_data))
+    {
+        MICROSTRAIN_LOG_INFO("%-17s (0x%02X, 0x%02X): [%9.6f, %9.6f, %9.6f]\n",
+            "Scaled Mag Data",
+            MIP_SENSOR_DATA_DESC_SET,        // Data descriptor set
+            MIP_DATA_DESC_SENSOR_MAG_SCALED, // Data field descriptor
+            scaled_mag_data.scaled_mag[0],   // X
+            scaled_mag_data.scaled_mag[1],   // Y
+            scaled_mag_data.scaled_mag[2]    // Z
+        );
+    }
+}
+
+// Print an error message and close the application
+void terminate(serial_port* _device_port, const char* _message, const bool _successful)
+{
+    if (strlen(_message) != 0)
+    {
+        if (_successful)
+        {
+            MICROSTRAIN_LOG_INFO("%s", _message);
+        }
+        else
+        {
+            MICROSTRAIN_LOG_ERROR("%s", _message);
+        }
+    }
+
+    if (_device_port == NULL)
+    {
+        // Initialize the device interface with a serial port connection
+        MICROSTRAIN_LOG_ERROR("Serial port not set for the device interface. Cannot close the serial port.\n");
+    }
+    else
+    {
+        if (serial_port_is_open(_device_port))
+        {
+            MICROSTRAIN_LOG_INFO("Closing the serial port.\n");
+
+            if (!serial_port_close(_device_port))
+            {
+                MICROSTRAIN_LOG_ERROR("Failed to close the serial port!\n");
+            }
+        }
+    }
+
+    MICROSTRAIN_LOG_INFO("Exiting the program.\n");
+
+#ifdef _WIN32
+    // Keep the console open on Windows
+    system("pause");
+#endif // _WIN32
+
+    if (!_successful)
+    {
+        exit(1);
+    }
+
+    exit(0);
+}
+
+// Print an error message for a command and close the application
+void command_failure_terminate(const mip_interface* _device, const mip_cmd_result _cmd_result, const char* _format, ...)
+{
+    va_list args;
+    va_start(args, _format);
+    MICROSTRAIN_LOG_ERROR_V(_format, args);
+    va_end(args);
+
+    MICROSTRAIN_LOG_ERROR("Command Result: (%d) %s.\n", _cmd_result, mip_cmd_result_to_string(_cmd_result));
+
+    if (_device == NULL)
+    {
+        terminate(NULL, "", false);
+    }
+    else
+    {
+        // Get the serial connection pointer that was set during device initialization
+        serial_port* device_port = (serial_port*)mip_interface_user_pointer(_device);
+
+        terminate(device_port, "", false);
+    }
+}

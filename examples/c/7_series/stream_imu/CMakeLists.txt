@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
 
-project("stream_imu_example_c"
+project("7_series_stream_imu_example_c"
     VERSION "1.0.0"
-    DESCRIPTION "Simple example for streaming IMU data using C"
+    DESCRIPTION "Simple example for streaming IMU data on 7-Series devices using C"
     LANGUAGES C
 )
 
@@ -43,10 +43,10 @@ endif()
 
 # Create the example
 add_executable(${PROJECT_NAME}
-    "${CMAKE_CURRENT_LIST_DIR}/stream_imu_example.c"
+    "${CMAKE_CURRENT_LIST_DIR}/7_series_stream_imu_example.c"
 )
 
-# Configure the project in a sub-folder for IDEs that support it
+# Configure the project in an examples sub-folder for IDEs that support it
 if(NOT ${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_LIST_DIR})
     file(RELATIVE_PATH PROJECT_RELATIVE_PATH "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_LIST_DIR}/..")
     set_target_properties(${PROJECT_NAME} PROPERTIES
