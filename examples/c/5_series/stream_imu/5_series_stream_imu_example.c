@@ -60,7 +60,7 @@ static const uint32_t BAUDRATE = 115200;
 
 // TODO: Update to the desired streaming rate. Setting low for readability purposes
 // Streaming rate in Hz
-static const uint16_t SAMPLE_RATE = 1;
+static const uint16_t SAMPLE_RATE_HZ = 1;
 ////////////////////////////////////////////////////////////////////////////////
 
 // Custom logging handler callback
@@ -68,7 +68,7 @@ void log_callback(void* _user, const microstrain_log_level _level, const char* _
 
 // Used for basic timestamping (since epoch in milliseconds)
 // TODO: Update this to whatever timestamping method is desired
-mip_timestamp get_timestamp();
+mip_timestamp get_current_timestamp();
 
 // Device callbacks used for reading and writing packets
 bool mip_interface_user_send_to_device(mip_interface* _device, const uint8_t* _data, size_t _length);
@@ -168,7 +168,7 @@ int main(const int argc, const char* argv[])
     mip_interface_register_packet_callback(
         &device,
         &packet_handler,
-        MIP_DISPATCH_ANY_DATA_SET, // Data field descriptor
+        MIP_DISPATCH_ANY_DATA_SET, // Data field descriptor set
         false,                     // Process after field callback
         &packet_callback,          // Callback
         NULL                       // User data
@@ -185,7 +185,7 @@ int main(const int argc, const char* argv[])
         &device,
         &sensor_data_handlers[0],
         MIP_SENSOR_DATA_DESC_SET,          // Data descriptor set
-        MIP_DATA_DESC_SENSOR_ACCEL_SCALED, // Data field descriptor
+        MIP_DATA_DESC_SENSOR_ACCEL_SCALED, // Data field descriptor set
         accel_field_callback,              // Callback
         NULL                               // User data
     );
@@ -194,7 +194,7 @@ int main(const int argc, const char* argv[])
         &device,
         &sensor_data_handlers[1],
         MIP_SENSOR_DATA_DESC_SET,         // Data descriptor set
-        MIP_DATA_DESC_SENSOR_GYRO_SCALED, // Data field descriptor
+        MIP_DATA_DESC_SENSOR_GYRO_SCALED, // Data field descriptor set
         gyro_field_callback,              // Callback
         NULL                              // User data
     );
@@ -205,7 +205,7 @@ int main(const int argc, const char* argv[])
         &device,
         &sensor_data_handlers[2],
         MIP_SENSOR_DATA_DESC_SET,        // Data descriptor set
-        MIP_DATA_DESC_SENSOR_MAG_SCALED, // Data field descriptor
+        MIP_DATA_DESC_SENSOR_MAG_SCALED, // Data field descriptor set
         mag_field_callback,              // Callback
         NULL                             // User data
     );
@@ -293,7 +293,7 @@ void log_callback(void* _user, const microstrain_log_level _level, const char* _
 
 // Used for basic timestamping (since epoch in milliseconds)
 // TODO: Update this to whatever timestamping method is desired
-mip_timestamp get_timestamp()
+mip_timestamp get_current_timestamp()
 {
     struct timespec ts;
 
@@ -343,7 +343,7 @@ bool mip_interface_user_recv_from_device(mip_interface* _device, uint8_t* _buffe
     }
 
     // Get the time that the packet was received (system epoch UTC time in milliseconds)
-    *_timestamp_out = get_timestamp();
+    *_timestamp_out = get_current_timestamp();
 
     // Read the packet from the device
     return serial_port_read(device_port, _buffer, _max_length, (int)_wait_time, _length_out);
@@ -467,7 +467,7 @@ void configure_sensor_message_format(mip_interface* _device, const uint16_t* _su
     }
 
     // Calculate the decimation (stream rate) for the device based on its base rate
-    const uint16_t sensor_decimation  = sensor_base_rate / SAMPLE_RATE;
+    const uint16_t sensor_decimation  = sensor_base_rate / SAMPLE_RATE_HZ;
 
     // Descriptor rate is a pair of data descriptor set and decimation
     const mip_descriptor_rate sensor_descriptors[3] = {
@@ -495,7 +495,7 @@ void configure_sensor_message_format(mip_interface* _device, const uint16_t* _su
         --sensor_descriptor_count;
     }
 
-    MICROSTRAIN_LOG_INFO("Configuring message format for sensor data at %dHz.\n", SAMPLE_RATE);
+    MICROSTRAIN_LOG_INFO("Configuring message format for sensor data at %dHz.\n", SAMPLE_RATE_HZ);
     cmd_result = mip_3dm_write_imu_message_format(
         _device,
         sensor_descriptor_count, // Number of descriptors to include
@@ -560,7 +560,7 @@ void accel_field_callback(void* _user, const mip_field_view* _field_view, mip_ti
         MICROSTRAIN_LOG_INFO("%-17s (0x%02X, 0x%02X): [%9.6f, %9.6f, %9.6f]\n",
             "Scaled Accel Data",
             MIP_SENSOR_DATA_DESC_SET,          // Data descriptor set
-            MIP_DATA_DESC_SENSOR_ACCEL_SCALED, // Data field descriptor
+            MIP_DATA_DESC_SENSOR_ACCEL_SCALED, // Data field descriptor set
             scaled_accel_data.scaled_accel[0], // X
             scaled_accel_data.scaled_accel[1], // Y
             scaled_accel_data.scaled_accel[2]  // Z
@@ -582,7 +582,7 @@ void gyro_field_callback(void* _user, const mip_field_view* _field_view, mip_tim
         MICROSTRAIN_LOG_INFO("%-17s (0x%02X, 0x%02X): [%9.6f, %9.6f, %9.6f]\n",
             "Scaled Gyro Data",
             MIP_SENSOR_DATA_DESC_SET,         // Data descriptor set
-            MIP_DATA_DESC_SENSOR_GYRO_SCALED, // Data field descriptor
+            MIP_DATA_DESC_SENSOR_GYRO_SCALED, // Data field descriptor set
             scaled_gyro_data.scaled_gyro[0],  // X
             scaled_gyro_data.scaled_gyro[1],  // Y
             scaled_gyro_data.scaled_gyro[2]   // Z
@@ -604,7 +604,7 @@ void mag_field_callback(void* _user, const mip_field_view* _field_view, mip_time
         MICROSTRAIN_LOG_INFO("%-17s (0x%02X, 0x%02X): [%9.6f, %9.6f, %9.6f]\n",
             "Scaled Mag Data",
             MIP_SENSOR_DATA_DESC_SET,        // Data descriptor set
-            MIP_DATA_DESC_SENSOR_MAG_SCALED, // Data field descriptor
+            MIP_DATA_DESC_SENSOR_MAG_SCALED, // Data field descriptor set
             scaled_mag_data.scaled_mag[0],   // X
             scaled_mag_data.scaled_mag[1],   // Y
             scaled_mag_data.scaled_mag[2]    // Z

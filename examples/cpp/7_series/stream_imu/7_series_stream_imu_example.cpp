@@ -1,9 +1,9 @@
 ////////////////////////////////////////////////////////////////////////////////
-/// 5_series_stream_imu_example.cpp
+/// 7_series_stream_imu_example.cpp
 ///
-/// Example setup program for streaming IMU data on 5-series devices using C++
+/// Example setup program for streaming IMU data on 7-series devices using C++
 ///
-/// This example shows a basic setup for streaming IMU data on 5-series devices
+/// This example shows a basic setup for streaming IMU data on 7-series devices
 /// using C++.
 /// It is not an exhaustive example of all streaming options.
 /// If this example does not meet your specific setup needs, please consult the
@@ -373,9 +373,10 @@ void configureSensorMessageFormat(mip::Interface& _device, const uint16_t* _supp
 
     MICROSTRAIN_LOG_INFO("Getting the base rate for sensor data.\n");
     uint16_t sensorBaseRate;
-    mip::CmdResult cmdResult = mip::commands_3dm::imuGetBaseRate(
+    mip::CmdResult cmdResult = mip::commands_3dm::getBaseRate(
         _device,
-        &sensorBaseRate // Base rate out
+        mip::data_sensor::DESCRIPTOR_SET, // Data descriptor set
+        &sensorBaseRate                   // Base rate out
     );
 
     if (!cmdResult.isAck())
@@ -412,19 +413,20 @@ void configureSensorMessageFormat(mip::Interface& _device, const uint16_t* _supp
         --sensorDescriptorCount;
     }
 
-    MICROSTRAIN_LOG_INFO("Configuring %s for sensor data at %dHz.\n", mip::commands_3dm::ImuMessageFormat::DOC_NAME,
+    MICROSTRAIN_LOG_INFO("Configuring %s for sensor data at %dHz.\n", mip::commands_3dm::MessageFormat::DOC_NAME,
         SAMPLE_RATE_HZ
     );
-    cmdResult = mip::commands_3dm::writeImuMessageFormat(
+    cmdResult = mip::commands_3dm::writeMessageFormat(
         _device,
-        sensorDescriptorCount, // Number of descriptors to include
-        sensorDescriptors      // Descriptor array
+        mip::data_sensor::DESCRIPTOR_SET, // Data descriptor set
+        sensorDescriptorCount,            // Number of descriptors to include
+        sensorDescriptors                 // Descriptor array
     );
 
     if (!cmdResult.isAck())
     {
         terminate(_device, cmdResult, "Could not set %s for sensor data!\n",
-            mip::commands_3dm::ImuMessageFormat::DOC_NAME
+            mip::commands_3dm::MessageFormat::DOC_NAME
         );
     }
 }
