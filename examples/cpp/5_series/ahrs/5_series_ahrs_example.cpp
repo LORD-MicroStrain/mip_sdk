@@ -29,12 +29,11 @@
 // Include all necessary MIP headers
 // Note: The MIP SDK has headers for each module to include all headers associated with the module
 // I.E., #include <mip/mip_all.hpp>
+#include <mip/mip_interface.hpp>
 #include <mip/definitions/commands_3dm.hpp>
 #include <mip/definitions/commands_base.hpp>
 #include <mip/definitions/commands_filter.hpp>
 #include <mip/definitions/data_filter.hpp>
-#include <mip/definitions/data_sensor.hpp>
-#include <mip/mip_interface.hpp>
 
 #ifdef _MSC_VER
 #define _USE_MATH_DEFINES
@@ -48,19 +47,23 @@
 #include <cstring>
 #include <math.h>
 
-// TODO: Update to the correct port name and baudrate
 ////////////////////////////////////////////////////////////////////////////////
 // NOTE: Setting these globally for example purposes
 
+// TODO: Update to the correct port name and baudrate
 // Set the port name for the connection (Serial/USB)
 #ifdef _WIN32
-static const char* PORT_NAME = "COM1";
+static constexpr const char* PORT_NAME = "COM1";
 #else // Unix
 static const char* PORT_NAME = "/dev/ttyUSB0";
 #endif // _WIN32
 
 // Set the baudrate for the connection (Serial/USB)
-static const uint32_t BAUDRATE = 115200;
+static constexpr uint32_t BAUDRATE = 115200;
+
+// TODO: Update to the desired streaming rate. Setting low for readability purposes
+// Streaming rate in Hz
+static constexpr uint16_t SAMPLE_RATE_HZ = 1;
 ////////////////////////////////////////////////////////////////////////////////
 
 // Custom logging handler callback
@@ -78,7 +81,8 @@ void initializeFilter(mip::Interface& _device);
 // Utility to display filter state changes
 void displayFilterState(const mip::data_filter::FilterMode _filterState);
 
-// Get the current system time (in milliseconds)
+// Used for basic timestamping (since epoch in milliseconds)
+// TODO: Update this to whatever timestamping method is desired
 mip::Timestamp getCurrentTimestamp();
 
 // Common device initialization procedure
@@ -86,16 +90,16 @@ void initializeDevice(mip::Interface& _device);
 
 // Utility functions the handle application closing and printing error messages
 void terminate(microstrain::Connection* _connection, const char* _message, const bool _successful = false);
-void terminate(mip::Interface& _device, mip::CmdResult _cmdResult, const char* _format, ...);
+void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const char* _format, ...);
 
-int main(int argc, const char* argv[])
+int main(const int argc, const char* argv[])
 {
     // Unused parameters
     (void)argc;
     (void)argv;
 
     // Initialize the custom logger to print messages/errors as they occur
-    MICROSTRAIN_LOG_INIT(&logCallback, MICROSTRAIN_LOG_LEVEL_INFO, NULL);
+    MICROSTRAIN_LOG_INIT(&logCallback, MICROSTRAIN_LOG_LEVEL_INFO, nullptr);
 
     // Initialize the connection
     MICROSTRAIN_LOG_INFO("Initializing the connection.\n");
@@ -153,19 +157,20 @@ int main(int argc, const char* argv[])
     mip::data_filter::EulerAngles filterEulerAngles;
 
     // Register the callbacks for the filter fields
+
     device.registerExtractor(
-        filterDataHandlers[0], // Data handler
-        &filterTimestamp       // Data field out
+        filterDataHandlers[0],
+        &filterTimestamp // Data field out
     );
 
     device.registerExtractor(
-        filterDataHandlers[1], // Data handler
-        &filterStatus          // Data field out
+        filterDataHandlers[1],
+        &filterStatus // Data field out
     );
 
     device.registerExtractor(
-        filterDataHandlers[2], // Data handler
-        &filterEulerAngles     // Data field out
+        filterDataHandlers[2],
+        &filterEulerAngles // Data field out
     );
 
     // Resume the device
@@ -213,14 +218,14 @@ int main(int argc, const char* argv[])
             currentState = filterStatus.filter_state;
         }
 
-        const mip::Timestamp currentTime = getCurrentTimestamp();
+        const mip::Timestamp currentTimestamp = getCurrentTimestamp();
 
-        // Print out data at 10 Hz (1000ms / 100ms)
-        if (currentTime - previousPrintTimestamp >= 100)
+        // Print out data based on the sample rate (1000 ms / SAMPLE_RATE_HZ)
+        if (currentTimestamp - previousPrintTimestamp >= 1000 / SAMPLE_RATE_HZ)
         {
             if (filterStatus.filter_state == mip::data_filter::FilterMode::GX5_RUN_SOLUTION_VALID)
             {
-                MICROSTRAIN_LOG_INFO("TOW = %.3f: %s = [%f %f %f]\n",
+                MICROSTRAIN_LOG_INFO("TOW = %.3f: %s = [%9.6f %9.6f %9.6f]\n",
                     filterTimestamp.tow,
                     mip::data_filter::EulerAngles::DOC_NAME, // Built-in metadata for easy printing
                     filterEulerAngles.roll,
@@ -229,7 +234,7 @@ int main(int argc, const char* argv[])
                 );
             }
 
-            previousPrintTimestamp = currentTime;
+            previousPrintTimestamp = currentTimestamp;
         }
     }
 
@@ -301,9 +306,9 @@ void captureGyroBias(mip::Interface& _device)
 
     // Note: The default is 15 s (15,000 ms)
     // Longer sample times are recommended but shortened here for convenience
-    const uint16_t captureDuration = 2000;
+    constexpr uint16_t captureDuration = 2000;
 
-    const uint16_t increasedCmdReplyTimeout = captureDuration * 2;
+    constexpr uint16_t increasedCmdReplyTimeout = captureDuration * 2;
 
     MICROSTRAIN_LOG_INFO("Increasing command reply timeout to %dms for capture gyro bias.\n", increasedCmdReplyTimeout);
     cmdQueue.setBaseReplyTimeout(increasedCmdReplyTimeout);
@@ -317,7 +322,7 @@ void captureGyroBias(mip::Interface& _device)
     MICROSTRAIN_LOG_INFO("Capturing gyro bias. This will take %.2g seconds.\n",
         static_cast<float>(captureDuration) / 1000.0f
     );
-    mip::CmdResult cmdResult = mip::commands_3dm::captureGyroBias(
+    const mip::CmdResult cmdResult = mip::commands_3dm::captureGyroBias(
         _device,
         captureDuration, // Capture duration (ms)
         gyroBias         // Gyro bias out (result of the capture)
@@ -341,6 +346,9 @@ void captureGyroBias(mip::Interface& _device)
 // Configure Filter data message format
 void configureFilterMessageFormat(mip::Interface& _device)
 {
+    // Note: Querying the device base rate is only one way to calculate the descriptor decimation
+    // We could have also set it directly with information from the datasheet
+
     MICROSTRAIN_LOG_INFO("Getting the base rate for filter data.\n");
     uint16_t filterBaseRate;
     mip::CmdResult cmdResult = mip::commands_3dm::filterGetBaseRate(
@@ -353,20 +361,22 @@ void configureFilterMessageFormat(mip::Interface& _device)
         terminate(_device, cmdResult, "Could not get filter base rate!\n");
     }
 
-    const uint16_t filter_sample_rate = 100; // Hz
-    const uint16_t filter_decimation  = filterBaseRate / filter_sample_rate;
+    // Calculate the decimation (stream rate) for the device based on its base rate
+    const uint16_t filterDecimation  = filterBaseRate / SAMPLE_RATE_HZ;
 
     // Descriptor rate is a pair of data descriptor set and decimation
-    mip::DescriptorRate filterDescriptors[3] = {
-        { mip::data_filter::Timestamp::FIELD_DESCRIPTOR,   filter_decimation },
-        { mip::data_filter::Status::FIELD_DESCRIPTOR,      filter_decimation },
-        { mip::data_filter::EulerAngles::FIELD_DESCRIPTOR, filter_decimation }
+    const mip::DescriptorRate filterDescriptors[3] = {
+        { mip::data_filter::Timestamp::FIELD_DESCRIPTOR,   filterDecimation },
+        { mip::data_filter::Status::FIELD_DESCRIPTOR,      filterDecimation },
+        { mip::data_filter::EulerAngles::FIELD_DESCRIPTOR, filterDecimation }
     };
 
-    MICROSTRAIN_LOG_INFO("Configuring %s for filter data.\n", mip::commands_3dm::FilterMessageFormat::DOC_NAME);
+    MICROSTRAIN_LOG_INFO("Configuring %s for filter data at %dHz.\n", mip::commands_3dm::FilterMessageFormat::DOC_NAME,
+        SAMPLE_RATE_HZ
+    );
     cmdResult = mip::commands_3dm::writeFilterMessageFormat(
         _device,
-        sizeof(filterDescriptors) / sizeof(filterDescriptors[0]), // Size of the array
+        sizeof(filterDescriptors) / sizeof(filterDescriptors[0]), // Number of descriptors to include
         filterDescriptors                                         // Descriptor array
     );
 
@@ -394,6 +404,7 @@ void initializeFilter(mip::Interface& _device)
             mip::commands_filter::HeadingSource::DOC_NAME
         );
     }
+
     // Enable filter auto initialization control
     MICROSTRAIN_LOG_INFO("Enabling filter %s.\n", mip::commands_filter::AutoInitControl::DOC_NAME);
     cmdResult = mip::commands_filter::writeAutoInitControl(
@@ -465,10 +476,11 @@ void displayFilterState(const mip::data_filter::FilterMode _filterState)
     }
 }
 
-// Get the current system time (in milliseconds)
+// Used for basic timestamping (since epoch in milliseconds)
+// TODO: Update this to whatever timestamping method is desired
 mip::Timestamp getCurrentTimestamp()
 {
-    std::chrono::nanoseconds timeSinceEpoch = std::chrono::steady_clock::now().time_since_epoch();
+    const std::chrono::nanoseconds timeSinceEpoch = std::chrono::steady_clock::now().time_since_epoch();
     return static_cast<mip::Timestamp>(std::chrono::duration_cast<std::chrono::milliseconds>(timeSinceEpoch).count());
 }
 
@@ -479,13 +491,10 @@ mip::Timestamp getCurrentTimestamp()
 ///
 void initializeDevice(mip::Interface& _device)
 {
-    // Create a command result to check/print results when running commands
-    mip::CmdResult cmdResult;
-
     // Ping the device
     // Note: This is a good first step to make sure the device is present
     MICROSTRAIN_LOG_INFO("Pinging the device.\n");
-    cmdResult = mip::commands_base::ping(_device);
+    mip::CmdResult cmdResult = mip::commands_base::ping(_device);
     if (!cmdResult.isAck())
     {
         terminate(_device, cmdResult, "Could not ping the device!\n");
@@ -556,7 +565,7 @@ void terminate(microstrain::Connection* _connection, const char* _message, const
         }
     }
 
-    if (_connection == nullptr)
+    if (!_connection)
     {
         // Create the device interface with a connection or set it after creation
         MICROSTRAIN_LOG_ERROR("Connection not set for the device interface. Cannot close the connection.\n");
@@ -585,17 +594,19 @@ void terminate(microstrain::Connection* _connection, const char* _message, const
     {
         exit(1);
     }
+
+    exit(0);
 }
 
 // Print an error message for a command and close the application
-void terminate(mip::Interface& _device, mip::CmdResult _cmdResult, const char* _format, ...)
+void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const char* _format, ...)
 {
     va_list args;
     va_start(args, _format);
     MICROSTRAIN_LOG_ERROR_V(_format, args);
     va_end(args);
 
-    MICROSTRAIN_LOG_ERROR("Command Result: (%d) %s.\n",  _cmdResult.value, _cmdResult.name());
+    MICROSTRAIN_LOG_ERROR("Command Result: (%d) %s.\n", _cmdResult.value, _cmdResult.name());
 
     // Get the connection pointer that was set during device initialization
     microstrain::Connection* connection = static_cast<microstrain::Connection*>(_device.userPointer());

@@ -28,12 +28,11 @@
 // Include all necessary MIP headers
 // Note: The MIP SDK has headers for each module to include all headers associated with the module
 // I.E., #include <mip/mip_all.h>
+#include <mip/mip_interface.h>
 #include <mip/definitions/commands_3dm.h>
 #include <mip/definitions/commands_base.h>
 #include <mip/definitions/commands_filter.h>
 #include <mip/definitions/data_filter.h>
-#include <mip/definitions/data_sensor.h>
-#include <mip/mip_interface.h>
 
 #ifdef _MSC_VER
 #define _USE_MATH_DEFINES
@@ -46,12 +45,13 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
-// TODO: Update to the correct port name and baudrate
 ////////////////////////////////////////////////////////////////////////////////
 // NOTE: Setting these globally for example purposes
 
+// TODO: Update to the correct port name and baudrate
 // Set the port name for the connection (Serial/USB)
 #ifdef _WIN32
 static const char* PORT_NAME = "COM1";
@@ -61,6 +61,10 @@ static const char* PORT_NAME = "/dev/ttyUSB0";
 
 // Set the baudrate for the connection (Serial/USB)
 static const uint32_t BAUDRATE = 115200;
+
+// TODO: Update to the desired streaming rate. Setting low for readability purposes
+// Streaming rate in Hz
+static const uint16_t SAMPLE_RATE_HZ = 1;
 ////////////////////////////////////////////////////////////////////////////////
 
 // Custom logging handler callback
@@ -78,9 +82,9 @@ void initialize_filter(mip_interface* _device);
 // Utility to display filter state changes
 void display_filter_state(const mip_filter_mode _filter_state);
 
-// Utility to get the time delta since the application started (in milliseconds)
-// Used for basic timestamping
-mip_timestamp get_delta_time();
+// Used for basic timestamping (since epoch in milliseconds)
+// TODO: Update this to whatever timestamping method is desired
+mip_timestamp get_current_timestamp();
 
 // Device callbacks used for reading and writing packets
 bool mip_interface_user_send_to_device(mip_interface* _device, const uint8_t* _data, size_t _length);
@@ -92,12 +96,9 @@ void initialize_device(mip_interface* _device, serial_port* _device_port, const 
 
 // Utility functions the handle application closing and printing error messages
 void terminate(serial_port* _device_port, const char* _message, const bool _successful);
-void command_failure_terminate(mip_interface* _device, mip_cmd_result _cmd_result, const char* _format, ...);
+void command_failure_terminate(const mip_interface* _device, const mip_cmd_result _cmd_result, const char* _format, ...);
 
-// Global time variable for get_delta_time()
-time_t g_start_time;
-
-int main(int argc, const char* argv[])
+int main(const int argc, const char* argv[])
 {
     // Unused parameters
     (void)argc;
@@ -110,9 +111,6 @@ int main(int argc, const char* argv[])
     MICROSTRAIN_LOG_INFO("Initializing the serial port.\n");
     serial_port device_port;
     serial_port_init(&device_port);
-
-    // Record the application start time for use with get_delta_time()
-    time(&g_start_time);
 
     MICROSTRAIN_LOG_INFO("Connecting to the device on port %s with %d baudrate.\n", PORT_NAME, BAUDRATE);
 
@@ -162,27 +160,27 @@ int main(int argc, const char* argv[])
 
     mip_interface_register_extractor(
         &device,
-        &filter_data_handlers[0],                     // Data handler
+        &filter_data_handlers[0],
         MIP_FILTER_DATA_DESC_SET,                     // Data descriptor set
-        MIP_DATA_DESC_FILTER_FILTER_TIMESTAMP,        // Data field descriptor
+        MIP_DATA_DESC_FILTER_FILTER_TIMESTAMP,        // Data field descriptor set
         extract_mip_filter_timestamp_data_from_field, // Callback
         &filter_timestamp                             // Data field out
     );
 
     mip_interface_register_extractor(
         &device,
-        &filter_data_handlers[1],                  // Data handler
+        &filter_data_handlers[1],
         MIP_FILTER_DATA_DESC_SET,                  // Data descriptor set
-        MIP_DATA_DESC_FILTER_FILTER_STATUS,        // Data field descriptor
+        MIP_DATA_DESC_FILTER_FILTER_STATUS,        // Data field descriptor set
         extract_mip_filter_status_data_from_field, // Callback
         &filter_status                             // Data field out
     );
 
     mip_interface_register_extractor(
         &device,
-        &filter_data_handlers[2],                        // Data handler
+        &filter_data_handlers[2],
         MIP_FILTER_DATA_DESC_SET,                        // Data descriptor set
-        MIP_DATA_DESC_FILTER_ATT_EULER_ANGLES,           // Data field descriptor
+        MIP_DATA_DESC_FILTER_ATT_EULER_ANGLES,           // Data field descriptor set
         extract_mip_filter_euler_angles_data_from_field, // Callback
         &filter_euler_angles                             // Data field out
     );
@@ -240,21 +238,21 @@ int main(int argc, const char* argv[])
             current_state = filter_status.filter_state;
         }
 
-        const mip_timestamp delta_time = get_delta_time();
+        const mip_timestamp current_timestamp = get_current_timestamp();
 
-        // Print out data at 10 Hz (1000ms / 100ms)
-        if (delta_time - previous_print_time >= 100)
+        // Print out data based on the sample rate (1000 ms / SAMPLE_RATE_HZ)
+        if (current_timestamp - previous_print_time >= 1000 / SAMPLE_RATE_HZ)
         {
             if (filter_status.filter_state == MIP_FILTER_MODE_GX5_RUN_SOLUTION_VALID)
             {
-                MICROSTRAIN_LOG_INFO("TOW = %.3f: Euler Angles = [%f %f]\n",
+                MICROSTRAIN_LOG_INFO("TOW = %.3f: Euler Angles = [%9.6f %9.6f]\n",
                     filter_timestamp.tow,
                     filter_euler_angles.roll,
                     filter_euler_angles.pitch
                 );
             }
 
-            previous_print_time = delta_time;
+            previous_print_time = current_timestamp;
         }
     }
 
@@ -335,14 +333,14 @@ void capture_gyro_bias(mip_interface* _device)
     );
     mip_cmd_queue_set_base_reply_timeout(cmd_queue, increased_cmd_reply_timeout);
 
-    float gyro_bias[3] = {
+    mip_vector3f gyro_bias = {
         0.0f, // X
         0.0f, // Y
         0.0f  // Z
     };
 
     MICROSTRAIN_LOG_INFO("Capturing gyro bias. This will take %.2g seconds.\n", (float)capture_duration / 1000.0f);
-    mip_cmd_result cmd_result = mip_3dm_capture_gyro_bias(
+    const mip_cmd_result cmd_result = mip_3dm_capture_gyro_bias(
         _device,
         capture_duration, // Capture duration (ms)
         gyro_bias         // Gyro bias out (result of the capture)
@@ -366,6 +364,9 @@ void capture_gyro_bias(mip_interface* _device)
 // Configure Filter data message format
 void configure_filter_message_format(mip_interface* _device)
 {
+    // Note: Querying the device base rate is only one way to calculate the descriptor decimation
+    // We could have also set it directly with information from the datasheet
+
     MICROSTRAIN_LOG_INFO("Getting the base rate for filter data.\n");
     uint16_t filter_base_rate;
     mip_cmd_result cmd_result = mip_3dm_filter_get_base_rate(
@@ -378,8 +379,8 @@ void configure_filter_message_format(mip_interface* _device)
         command_failure_terminate(_device, cmd_result, "Could not get filter base rate!\n");
     }
 
-    const uint16_t filter_sample_rate = 100; // Hz
-    const uint16_t filter_decimation  = filter_base_rate / filter_sample_rate;
+    // Calculate the decimation (stream rate) for the device based on its base rate
+    const uint16_t filter_decimation  = filter_base_rate / SAMPLE_RATE_HZ;
 
     // Descriptor rate is a pair of data descriptor set and decimation
     const mip_descriptor_rate filter_descriptors[3] = {
@@ -388,10 +389,10 @@ void configure_filter_message_format(mip_interface* _device)
         { MIP_DATA_DESC_FILTER_ATT_EULER_ANGLES, filter_decimation }
     };
 
-    MICROSTRAIN_LOG_INFO("Configuring message format for filter data.\n");
+    MICROSTRAIN_LOG_INFO("Configuring message format for filter data at %dHz.\n", SAMPLE_RATE_HZ);
     cmd_result = mip_3dm_write_filter_message_format(
         _device,
-        sizeof(filter_descriptors) / sizeof(filter_descriptors[0]), // Size of the array
+        sizeof(filter_descriptors) / sizeof(filter_descriptors[0]), // Number of descriptors to include
         filter_descriptors                                          // Descriptor array
     );
 
@@ -473,17 +474,20 @@ void display_filter_state(const mip_filter_mode _filter_state)
     }
 }
 
-// Get the time delta since the application started (in milliseconds)
-mip_timestamp get_delta_time()
+// Used for basic timestamping (since epoch in milliseconds)
+// TODO: Update this to whatever timestamping method is desired
+mip_timestamp get_current_timestamp()
 {
-    time_t t;
-    time(&t);
+    struct timespec ts;
 
-    // Get the time difference since application start
-    double delta = difftime(t, g_start_time);
+    // Get system UTC time since epoch
+    if (timespec_get(&ts, TIME_UTC) != TIME_UTC)
+    {
+        return 0;
+    }
 
-    // Convert to milliseconds
-    return (mip_timestamp)(delta * 1000);
+    // Get the time in milliseconds
+    return (mip_timestamp)ts.tv_sec * 1000 + (mip_timestamp)ts.tv_nsec / 1000000;
 }
 
 // Send packet handler callback
@@ -521,8 +525,8 @@ bool mip_interface_user_recv_from_device(mip_interface* _device, uint8_t* _buffe
         return false;
     }
 
-    // Get the time that packet was received
-    *_timestamp_out = get_delta_time();
+    // Get the time that the packet was received (system epoch UTC time in milliseconds)
+    *_timestamp_out = get_current_timestamp();
 
     // Read the packet from the device
     return serial_port_read(device_port, _buffer, _max_length, (int)_wait_time, _length_out);
@@ -548,13 +552,10 @@ void initialize_device(mip_interface* _device, serial_port* _device_port, const 
         (void*)_device_port                   // Cast the device port for use in the callbacks
     );
 
-    // Create a command result to check/print results when running commands
-    mip_cmd_result cmd_result;
-
     // Ping the device
     // Note: This is a good first step to make sure the device is present
     MICROSTRAIN_LOG_INFO("Pinging the device.\n");
-    cmd_result = mip_base_ping(_device);
+    mip_cmd_result cmd_result = mip_base_ping(_device);
     if (!mip_cmd_result_is_ack(cmd_result))
     {
         command_failure_terminate(_device, cmd_result, "Could not ping the device!\n");
@@ -654,10 +655,12 @@ void terminate(serial_port* _device_port, const char* _message, const bool _succ
     {
         exit(1);
     }
+
+    exit(0);
 }
 
 // Print an error message for a command and close the application
-void command_failure_terminate(mip_interface* _device, mip_cmd_result _cmd_result, const char* _format, ...)
+void command_failure_terminate(const mip_interface* _device, const mip_cmd_result _cmd_result, const char* _format, ...)
 {
     va_list args;
     va_start(args, _format);
