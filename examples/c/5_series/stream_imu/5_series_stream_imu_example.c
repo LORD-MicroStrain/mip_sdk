@@ -167,7 +167,7 @@ int main(const int argc, const char* argv[])
     // Register the callback for packets
     mip_interface_register_packet_callback(
         &device,
-        &packet_handler,           // Packet handler
+        &packet_handler,
         MIP_DISPATCH_ANY_DATA_SET, // Data field descriptor
         false,                     // Process after field callback
         &packet_callback,          // Callback
@@ -183,7 +183,7 @@ int main(const int argc, const char* argv[])
 
     mip_interface_register_field_callback(
         &device,
-        &sensor_data_handlers[0],          // Data handler
+        &sensor_data_handlers[0],
         MIP_SENSOR_DATA_DESC_SET,          // Data descriptor set
         MIP_DATA_DESC_SENSOR_ACCEL_SCALED, // Data field descriptor
         accel_field_callback,              // Callback
@@ -192,7 +192,7 @@ int main(const int argc, const char* argv[])
 
     mip_interface_register_field_callback(
         &device,
-        &sensor_data_handlers[1],         // Data handler
+        &sensor_data_handlers[1],
         MIP_SENSOR_DATA_DESC_SET,         // Data descriptor set
         MIP_DATA_DESC_SENSOR_GYRO_SCALED, // Data field descriptor
         gyro_field_callback,              // Callback
@@ -203,7 +203,7 @@ int main(const int argc, const char* argv[])
     // The callback will just never be called
     mip_interface_register_field_callback(
         &device,
-        &sensor_data_handlers[2],        // Data handler
+        &sensor_data_handlers[2],
         MIP_SENSOR_DATA_DESC_SET,        // Data descriptor set
         MIP_DATA_DESC_SENSOR_MAG_SCALED, // Data field descriptor
         mag_field_callback,              // Callback
@@ -515,9 +515,8 @@ void packet_callback(void* _user, const mip_packet_view* _packet_view, mip_times
     (void)_user;
 
     // Create a buffer for printing purposes
-    char field_descriptors_buffer[255];
-    memset(field_descriptors_buffer, 0, sizeof(field_descriptors_buffer) / sizeof(field_descriptors_buffer[0]));
-    int buffer_offset = 0;
+    char field_descriptors_buffer[255] = { 0 };
+    int  buffer_offset                 = 0;
 
     // Field object for iterating the packet and extracting each field
     mip_field_view field_view;

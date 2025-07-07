@@ -71,7 +71,7 @@ mip::Timestamp getTimestamp();
 void initializeDevice(mip::Interface& _device);
 
 // Utility to help check if the device supports a descriptor
-bool isDescriptorSupported(const mip::CompositeDescriptor &_compositeDescriptor, const uint16_t* _supportedDescriptors,
+bool isDescriptorSupported(const mip::CompositeDescriptor& _compositeDescriptor, const uint16_t* _supportedDescriptors,
     const uint8_t _supportedDescriptorCount);
 
 // Message format configuration
@@ -543,7 +543,7 @@ void terminate(microstrain::Connection* _connection, const char* _message, const
         }
     }
 
-    if (_connection == nullptr)
+    if (!_connection)
     {
         // Create the device interface with a connection or set it after creation
         MICROSTRAIN_LOG_ERROR("Connection not set for the device interface. Cannot close the connection.\n");
