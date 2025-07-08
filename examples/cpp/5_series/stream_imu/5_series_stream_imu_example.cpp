@@ -36,7 +36,6 @@
 #include <chrono>
 #include <cinttypes>
 #include <cstdarg>
-#include <cstdint>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -49,7 +48,7 @@
 #ifdef _WIN32
 static constexpr const char* PORT_NAME = "COM1";
 #else // Unix
-static const char* PORT_NAME = "/dev/ttyUSB0";
+static constexpr const char* PORT_NAME = "/dev/ttyUSB0";
 #endif // _WIN32
 
 // Set the baudrate for the connection (Serial/USB)
@@ -58,6 +57,10 @@ static constexpr uint32_t BAUDRATE = 115200;
 // TODO: Update to the desired streaming rate. Setting low for readability purposes
 // Streaming rate in Hz
 static constexpr uint16_t SAMPLE_RATE_HZ = 1;
+
+// TODO: Update to change the example run time
+// Example run time
+static constexpr uint32_t RUN_TIME_SECONDS = 30;
 ////////////////////////////////////////////////////////////////////////////////
 
 // Custom logging handler callback
@@ -99,7 +102,7 @@ int main(const int argc, const char* argv[])
 
     // Initialize the connection
     MICROSTRAIN_LOG_INFO("Initializing the connection.\n");
-    microstrain::connections::UsbSerialConnection connection(PORT_NAME, BAUDRATE);
+    microstrain::connections::SerialConnection connection(PORT_NAME, BAUDRATE);
 
     MICROSTRAIN_LOG_INFO("Connecting to the device on port %s with %d baudrate.\n", PORT_NAME, BAUDRATE);
 
@@ -110,7 +113,7 @@ int main(const int argc, const char* argv[])
     }
 
     MICROSTRAIN_LOG_INFO("Initializing the device interface.\n");
-    mip::Interface device = mip::Interface(
+    mip::Interface device(
         &connection,                                 // Connection for the device
         mip::C::mip_timeout_from_baudrate(BAUDRATE), // Set the base timeout for commands (milliseconds)
         2000                                         // Set the base timeout for command replies (milliseconds)
@@ -209,9 +212,12 @@ int main(const int argc, const char* argv[])
 
     MICROSTRAIN_LOG_INFO("Sensor is configured... waiting for data.\n");
 
+    // Get the start time of the device update loop to handle exiting the application
+    const mip::Timestamp loopStartTime = getCurrentTimestamp();
+
     // Device loop
-    // TODO: Update loop condition to allow for exiting
-    while (true)
+    // Exit after predetermined time in seconds
+    while (getCurrentTimestamp() - loopStartTime <= RUN_TIME_SECONDS * 1000)
     {
         // Update the device state
         // Note: This will update the device callbacks
@@ -219,8 +225,6 @@ int main(const int argc, const char* argv[])
     }
 
     terminate(&connection, "Example Completed Successfully.\n", true);
-
-    return 0;
 }
 
 // Custom logging handler callback
@@ -383,8 +387,26 @@ void configureSensorMessageFormat(mip::Interface& _device, const uint16_t* _supp
         terminate(_device, cmdResult, "Could not get sensor base rate!\n");
     }
 
+    // Supported sample rates can be any value from 1 up to the base rate
+    // Note: Decimation can be anything from 1 to 65,565 (uint16_t::max)
+    if (SAMPLE_RATE_HZ == 0 || SAMPLE_RATE_HZ > sensorBaseRate)
+    {
+        terminate(
+            _device,
+            mip::CmdResult::NACK_INVALID_PARAM,
+            "Invalid sample rate of %dHz! Supported rates are [1, %d].\n",
+            SAMPLE_RATE_HZ,
+            sensorBaseRate
+        );
+    }
+
     // Calculate the decimation (stream rate) for the device based on its base rate
     const uint16_t sensorDecimation  = sensorBaseRate / SAMPLE_RATE_HZ;
+    MICROSTRAIN_LOG_INFO("Decimating sensor base rate %d by %d to stream data at %dHz.\n",
+        sensorBaseRate,
+        sensorDecimation,
+        SAMPLE_RATE_HZ
+    );
 
     // Descriptor rate is a pair of data descriptor set and decimation
     const mip::DescriptorRate sensorDescriptors[3] = {
@@ -412,9 +434,7 @@ void configureSensorMessageFormat(mip::Interface& _device, const uint16_t* _supp
         --sensorDescriptorCount;
     }
 
-    MICROSTRAIN_LOG_INFO("Configuring %s for sensor data at %dHz.\n", mip::commands_3dm::ImuMessageFormat::DOC_NAME,
-        SAMPLE_RATE_HZ
-    );
+    MICROSTRAIN_LOG_INFO("Configuring %s for sensor data.\n", mip::commands_3dm::ImuMessageFormat::DOC_NAME);
     cmdResult = mip::commands_3dm::writeImuMessageFormat(
         _device,
         sensorDescriptorCount, // Number of descriptors to include

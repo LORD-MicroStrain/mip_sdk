@@ -61,6 +61,10 @@ static const uint32_t BAUDRATE = 115200;
 // TODO: Update to the desired streaming rate. Setting low for readability purposes
 // Streaming rate in Hz
 static const uint16_t SAMPLE_RATE_HZ = 1;
+
+// TODO: Update to change the example run time
+// Example run time
+static const uint32_t RUN_TIME_SECONDS = 30;
 ////////////////////////////////////////////////////////////////////////////////
 
 // Custom logging handler callback
@@ -106,7 +110,7 @@ int main(const int argc, const char* argv[])
     MICROSTRAIN_LOG_INIT(&log_callback, MICROSTRAIN_LOG_LEVEL_INFO, NULL);
 
     // Initialize the connection
-    MICROSTRAIN_LOG_INFO("Initializing the serial port.\n");
+    MICROSTRAIN_LOG_INFO("Initializing the connection.\n");
     serial_port device_port;
     serial_port_init(&device_port);
 
@@ -115,7 +119,7 @@ int main(const int argc, const char* argv[])
     // Open the connection to the device
     if (!serial_port_open(&device_port, PORT_NAME, BAUDRATE))
     {
-        terminate(&device_port, "Could not open device port!\n", false);
+        terminate(&device_port, "Could not open the connection!\n", false);
     }
 
     mip_interface device;
@@ -221,9 +225,12 @@ int main(const int argc, const char* argv[])
 
     MICROSTRAIN_LOG_INFO("Sensor is configured... waiting for data.\n");
 
+    // Get the start time of the device update loop to handle exiting the application
+    const mip_timestamp loop_start_time = get_current_timestamp();
+
     // Device loop
-    // TODO: Update loop condition to allow for exiting
-    while (true)
+    // Exit after predetermined time in seconds
+    while (get_current_timestamp() - loop_start_time <= RUN_TIME_SECONDS * 1000)
     {
         // Update the device state
         // Note: This will update the device callbacks
@@ -235,8 +242,6 @@ int main(const int argc, const char* argv[])
     }
 
     terminate(&device_port, "Example Completed Successfully.\n", true);
-
-    return 0;
 }
 
 // Custom logging handler callback
@@ -467,8 +472,26 @@ void configure_sensor_message_format(mip_interface* _device, const uint16_t* _su
         command_failure_terminate(_device, cmd_result, "Could not get sensor base rate!\n");
     }
 
+    // Supported sample rates can be any value from 1 up to the base rate
+    // Note: Decimation can be anything from 1 to 65,565 (uint16_t::max)
+    if (SAMPLE_RATE_HZ == 0 || SAMPLE_RATE_HZ > sensor_base_rate)
+    {
+        command_failure_terminate(
+            _device,
+            MIP_NACK_INVALID_PARAM,
+            "Invalid sample rate of %dHz! Supported rates are [1, %d].\n",
+            SAMPLE_RATE_HZ,
+            sensor_base_rate
+        );
+    }
+
     // Calculate the decimation (stream rate) for the device based on its base rate
     const uint16_t sensor_decimation  = sensor_base_rate / SAMPLE_RATE_HZ;
+    MICROSTRAIN_LOG_INFO("Decimating sensor base rate %d by %d to stream data at %dHz.\n",
+        sensor_base_rate,
+        sensor_decimation,
+        SAMPLE_RATE_HZ
+    );
 
     // Descriptor rate is a pair of data descriptor set and decimation
     const mip_descriptor_rate sensor_descriptors[3] = {
@@ -496,7 +519,7 @@ void configure_sensor_message_format(mip_interface* _device, const uint16_t* _su
         --sensor_descriptor_count;
     }
 
-    MICROSTRAIN_LOG_INFO("Configuring message format for sensor data at %dHz.\n", SAMPLE_RATE_HZ);
+    MICROSTRAIN_LOG_INFO("Configuring message format for sensor data.\n");
     cmd_result = mip_3dm_write_message_format(
         _device,
         MIP_SENSOR_DATA_DESC_SET, // Data descriptor set
@@ -632,17 +655,17 @@ void terminate(serial_port* _device_port, const char* _message, const bool _succ
     if (_device_port == NULL)
     {
         // Initialize the device interface with a serial port connection
-        MICROSTRAIN_LOG_ERROR("Serial port not set for the device interface. Cannot close the serial port.\n");
+        MICROSTRAIN_LOG_ERROR("Connection not set for the device interface. Cannot close the connection.\n");
     }
     else
     {
         if (serial_port_is_open(_device_port))
         {
-            MICROSTRAIN_LOG_INFO("Closing the serial port.\n");
+            MICROSTRAIN_LOG_INFO("Closing the connection.\n");
 
             if (!serial_port_close(_device_port))
             {
-                MICROSTRAIN_LOG_ERROR("Failed to close the serial port!\n");
+                MICROSTRAIN_LOG_ERROR("Failed to close the connection!\n");
             }
         }
     }
@@ -678,7 +701,7 @@ void command_failure_terminate(const mip_interface* _device, const mip_cmd_resul
     }
     else
     {
-        // Get the serial connection pointer that was set during device initialization
+        // Get the connection pointer that was set during device initialization
         serial_port* device_port = (serial_port*)mip_interface_user_pointer(_device);
 
         terminate(device_port, "", false);
