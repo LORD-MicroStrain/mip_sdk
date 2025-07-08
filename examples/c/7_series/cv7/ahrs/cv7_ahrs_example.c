@@ -285,8 +285,6 @@ int main(const int argc, const char* argv[])
     }
 
     terminate(&device_port, "Example Completed Successfully.\n", true);
-
-    return 0;
 }
 
 // Custom logging handler callback
