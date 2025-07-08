@@ -695,8 +695,6 @@ void terminate(serial_port* _device_port, const char* _message, const bool _succ
     {
         exit(1);
     }
-
-    exit(0);
 }
 
 // Print an error message for a command and close the application

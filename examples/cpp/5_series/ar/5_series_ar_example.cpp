@@ -241,8 +241,6 @@ int main(const int argc, const char* argv[])
     }
 
     terminate(&connection, "Example Completed Successfully.\n", true);
-
-    return 0;
 }
 
 // Custom logging handler callback
