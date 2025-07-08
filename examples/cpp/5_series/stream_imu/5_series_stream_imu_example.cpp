@@ -122,9 +122,8 @@ int main(const int argc, const char* argv[])
 
     // Get supported descriptors to check if certain data descriptors are supported for streaming
     MICROSTRAIN_LOG_INFO("Getting supported descriptors for the device.\n");
-    uint8_t  descriptorsCount = 0;
-    uint16_t supportedDescriptors[256];
-    memset(supportedDescriptors, 0, sizeof(supportedDescriptors) / sizeof(supportedDescriptors[0]));
+    uint8_t  descriptorsCount          = 0;
+    uint16_t supportedDescriptors[256] = { 0 };
     mip::CmdResult cmdResult = mip::commands_base::getDeviceDescriptors(
         device,
         supportedDescriptors,                                           // Descriptors array from the device
