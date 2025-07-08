@@ -41,7 +41,6 @@
 #include <math.h>
 #include <stdarg.h>
 #include <stdbool.h>
-#include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -65,6 +64,10 @@ static const uint32_t BAUDRATE = 115200;
 // TODO: Update to the desired streaming rate. Setting low for readability purposes
 // Streaming rate in Hz
 static const uint16_t SAMPLE_RATE_HZ = 1;
+
+// TODO: Update to change the example run time
+// Example run time
+static const uint32_t RUN_TIME_SECONDS = 30;
 ////////////////////////////////////////////////////////////////////////////////
 
 // Custom logging handler callback
@@ -114,7 +117,7 @@ int main(const int argc, const char* argv[])
     MICROSTRAIN_LOG_INIT(&log_callback, MICROSTRAIN_LOG_LEVEL_INFO, NULL);
 
     // Initialize the connection
-    MICROSTRAIN_LOG_INFO("Initializing the serial port.\n");
+    MICROSTRAIN_LOG_INFO("Initializing the connection.\n");
     serial_port device_port;
     serial_port_init(&device_port);
 
@@ -123,7 +126,7 @@ int main(const int argc, const char* argv[])
     // Open the connection to the device
     if (!serial_port_open(&device_port, PORT_NAME, BAUDRATE))
     {
-        terminate(&device_port, "Could not open device port!\n", false);
+        terminate(&device_port, "Could not open the connection!\n", false);
     }
 
     mip_interface device;
@@ -238,11 +241,14 @@ int main(const int argc, const char* argv[])
         }
     }
 
-    mip_timestamp previous_print_time = 0;
+    // Get the start time of the device update loop to handle exiting the application
+    const mip_timestamp loop_start_time = get_current_timestamp();
+
+    mip_timestamp previous_print_timestamp = 0;
 
     // Device loop
-    // TODO: Update loop condition to allow for exiting
-    while (true)
+    // Exit after predetermined time in seconds
+    while (get_current_timestamp() - loop_start_time <= RUN_TIME_SECONDS * 1000)
     {
         // Update the device state
         // Note: This will update the device callbacks to trigger the filter state change
@@ -262,27 +268,19 @@ int main(const int argc, const char* argv[])
         const mip_timestamp current_timestamp = get_current_timestamp();
 
         // Print out data based on the sample rate (1000 ms / SAMPLE_RATE_HZ)
-        if (current_timestamp - previous_print_time >= 1000 / SAMPLE_RATE_HZ)
+        if (current_timestamp - previous_print_timestamp >= 1000 / SAMPLE_RATE_HZ)
         {
-            if (filter_status.filter_state >= MIP_FILTER_MODE_AHRS)
+            if (filter_status.filter_state >= MIP_FILTER_MODE_VERT_GYRO)
             {
-                MICROSTRAIN_LOG_INFO("TOW = %.3f: Euler Angles = [%9.6f %9.6f %9.6f]\n",
+                MICROSTRAIN_LOG_INFO("TOW = %10.3f    Euler Angles = [%9.6f, %9.6f, %9.6f]\n",
                     filter_gps_timestamp.tow,
                     filter_euler_angles.roll,
                     filter_euler_angles.pitch,
                     filter_euler_angles.yaw
                 );
             }
-            else if (filter_status.filter_state >= MIP_FILTER_MODE_VERT_GYRO)
-            {
-                MICROSTRAIN_LOG_INFO("TOW = %.3f: Euler Angles = [%9.6f %9.6f]\n",
-                    filter_gps_timestamp.tow,
-                    filter_euler_angles.roll,
-                    filter_euler_angles.pitch
-                );
-            }
 
-            previous_print_time = current_timestamp;
+            previous_print_timestamp = current_timestamp;
         }
     }
 
@@ -353,10 +351,8 @@ void capture_gyro_bias(mip_interface* _device)
     MICROSTRAIN_LOG_INFO("Initial command reply timeout is %dms.\n", previous_timeout);
 
     // Note: The default is 15 s (15,000 ms)
-    // Longer sample times are recommended but shortened here for convenience
-    const uint16_t capture_duration = 2000;
-
-    const uint16_t increased_cmd_reply_timeout = capture_duration * 2;
+    const uint16_t capture_duration            = 15000;
+    const uint16_t increased_cmd_reply_timeout = capture_duration + 1000;
 
     MICROSTRAIN_LOG_INFO("Increasing command reply timeout to %dms for capture gyro bias.\n",
         increased_cmd_reply_timeout
@@ -369,7 +365,16 @@ void capture_gyro_bias(mip_interface* _device)
         0.0f  // Z
     };
 
-    MICROSTRAIN_LOG_INFO("Capturing gyro bias. This will take %.2g seconds.\n", (float)capture_duration / 1000.0f);
+    // Note: When capturing gyro bias, the device needs to remain still on a flat surface
+    MICROSTRAIN_LOG_WARN("About to capture gyro bias for %.2g seconds!\n", (float)capture_duration / 1000.0f);
+    MICROSTRAIN_LOG_WARN("Please do not move the device during this time!\n");
+    MICROSTRAIN_LOG_WARN("Press 'Enter' when ready...");
+
+    // Wait for anything to be entered
+    const int confirm_capture = getc(stdin);
+    (void)confirm_capture; // Unused
+
+    MICROSTRAIN_LOG_WARN("Capturing gyro bias...\n");
     const mip_cmd_result cmd_result = mip_3dm_capture_gyro_bias(
         _device,
         capture_duration, // Capture duration (ms)
@@ -381,7 +386,7 @@ void capture_gyro_bias(mip_interface* _device)
         command_failure_terminate(_device, cmd_result, "Failed to capture gyro bias!\n");
     }
 
-    MICROSTRAIN_LOG_INFO("Capture gyro bias completed with result: [%f %f %f]\n",
+    MICROSTRAIN_LOG_INFO("Capture gyro bias completed with result: [%f, %f, %f]\n",
         gyro_bias[0],
         gyro_bias[1],
         gyro_bias[2]
@@ -410,8 +415,26 @@ void configure_filter_message_format(mip_interface* _device)
         command_failure_terminate(_device, cmd_result, "Could not get filter base rate!\n");
     }
 
+    // Supported sample rates can be any value from 1 up to the base rate
+    // Note: Decimation can be anything from 1 to 65,565 (uint16_t::max)
+    if (SAMPLE_RATE_HZ == 0 || SAMPLE_RATE_HZ > filter_base_rate)
+    {
+        command_failure_terminate(
+            _device,
+            MIP_NACK_INVALID_PARAM,
+            "Invalid sample rate of %dHz! Supported rates are [1, %d].\n",
+            SAMPLE_RATE_HZ,
+            filter_base_rate
+        );
+    }
+
     // Calculate the decimation (stream rate) for the device based on its base rate
     const uint16_t filter_decimation  = filter_base_rate / SAMPLE_RATE_HZ;
+    MICROSTRAIN_LOG_INFO("Decimating filter base rate %d by %d to stream data at %dHz.\n",
+        filter_base_rate,
+        filter_decimation,
+        SAMPLE_RATE_HZ
+    );
 
     // Descriptor rate is a pair of data descriptor set and decimation
     const mip_descriptor_rate filter_descriptors[3] = {
@@ -420,7 +443,7 @@ void configure_filter_message_format(mip_interface* _device)
         { MIP_DATA_DESC_FILTER_ATT_EULER_ANGLES, filter_decimation }
     };
 
-    MICROSTRAIN_LOG_INFO("Configuring message format for filter data at %dHz.\n", SAMPLE_RATE_HZ);
+    MICROSTRAIN_LOG_INFO("Configuring message format for filter data.\n");
     cmd_result = mip_3dm_write_message_format(
         _device,
         MIP_FILTER_DATA_DESC_SET,                                   // Data descriptor set
@@ -453,7 +476,9 @@ void configure_event_triggers(mip_interface* _device)
     // Note: This is independent of the param_id
     uint8_t trigger_instance_id = 1;
 
-    MICROSTRAIN_LOG_INFO("Configuring threshold event trigger for roll on trigger instance ID %d.\n", trigger_instance_id);
+    MICROSTRAIN_LOG_INFO("Configuring threshold event trigger for roll on trigger instance ID %d.\n",
+        trigger_instance_id
+    );
     mip_cmd_result cmd_result = mip_3dm_write_event_trigger(
         _device,
         trigger_instance_id,
@@ -472,7 +497,9 @@ void configure_event_triggers(mip_interface* _device)
     // Note: This is independent of the param_id
     trigger_instance_id = 2;
 
-    MICROSTRAIN_LOG_INFO("Configuring threshold event trigger for pitch on trigger instance ID %d.\n", trigger_instance_id);
+    MICROSTRAIN_LOG_INFO("Configuring threshold event trigger for pitch on trigger instance ID %d.\n",
+        trigger_instance_id
+    );
     cmd_result = mip_3dm_write_event_trigger(
         _device,
         trigger_instance_id,
@@ -839,17 +866,17 @@ void terminate(serial_port* _device_port, const char* _message, const bool _succ
     if (_device_port == NULL)
     {
         // Initialize the device interface with a serial port connection
-        MICROSTRAIN_LOG_ERROR("Serial port not set for the device interface. Cannot close the serial port.\n");
+        MICROSTRAIN_LOG_ERROR("Connection not set for the device interface. Cannot close the connection.\n");
     }
     else
     {
         if (serial_port_is_open(_device_port))
         {
-            MICROSTRAIN_LOG_INFO("Closing the serial port.\n");
+            MICROSTRAIN_LOG_INFO("Closing the connection.\n");
 
             if (!serial_port_close(_device_port))
             {
-                MICROSTRAIN_LOG_ERROR("Failed to close the serial port!\n");
+                MICROSTRAIN_LOG_ERROR("Failed to close the connection!\n");
             }
         }
     }
@@ -885,7 +912,7 @@ void command_failure_terminate(const mip_interface* _device, const mip_cmd_resul
     }
     else
     {
-        // Get the serial connection pointer that was set during device initialization
+        // Get the connection pointer that was set during device initialization
         serial_port* device_port = (serial_port*)mip_interface_user_pointer(_device);
 
         terminate(device_port, "", false);

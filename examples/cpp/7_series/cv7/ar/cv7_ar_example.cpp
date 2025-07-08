@@ -39,8 +39,8 @@
 #endif // _MSC_VER
 
 #include <chrono>
+#include <cinttypes>
 #include <cstdarg>
-#include <cstdint>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -54,7 +54,7 @@
 #ifdef _WIN32
 static constexpr const char* PORT_NAME = "COM1";
 #else // Unix
-static const char* PORT_NAME = "/dev/ttyUSB0";
+static constexpr const char* PORT_NAME = "/dev/ttyUSB0";
 #endif // _WIN32
 
 // Set the baudrate for the connection (Serial/USB)
@@ -63,6 +63,10 @@ static constexpr uint32_t BAUDRATE = 115200;
 // TODO: Update to the desired streaming rate. Setting low for readability purposes
 // Streaming rate in Hz
 static constexpr uint16_t SAMPLE_RATE_HZ = 1;
+
+// TODO: Update to change the example run time
+// Example run time
+static constexpr uint32_t RUN_TIME_SECONDS = 30;
 ////////////////////////////////////////////////////////////////////////////////
 
 // Custom logging handler callback
@@ -108,7 +112,7 @@ int main(const int argc, const char* argv[])
 
     // Initialize the connection
     MICROSTRAIN_LOG_INFO("Initializing the connection.\n");
-    microstrain::connections::UsbSerialConnection connection(PORT_NAME, BAUDRATE);
+    microstrain::connections::SerialConnection connection(PORT_NAME, BAUDRATE);
 
     MICROSTRAIN_LOG_INFO("Connecting to the device on port %s with %d baudrate.\n", PORT_NAME, BAUDRATE);
 
@@ -119,7 +123,7 @@ int main(const int argc, const char* argv[])
     }
 
     MICROSTRAIN_LOG_INFO("Initializing the device interface.\n");
-    mip::Interface device = mip::Interface(
+    mip::Interface device(
         &connection,                                 // Connection for the device
         mip::C::mip_timeout_from_baudrate(BAUDRATE), // Set the base timeout for commands (milliseconds)
         2000                                         // Set the base timeout for command replies (milliseconds)
@@ -216,11 +220,14 @@ int main(const int argc, const char* argv[])
         }
     }
 
+    // Get the start time of the device update loop to handle exiting the application
+    const mip::Timestamp loopStartTime = getCurrentTimestamp();
+
     mip::Timestamp previousPrintTimestamp = 0;
 
     // Device loop
-    // TODO: Update loop condition to allow for exiting
-    while (true)
+    // Exit after predetermined time in seconds
+    while (getCurrentTimestamp() - loopStartTime <= RUN_TIME_SECONDS * 1000)
     {
         // Update the device state
         // Note: This will update the device callbacks to trigger the filter state change
@@ -240,11 +247,12 @@ int main(const int argc, const char* argv[])
         {
             if (filterStatus.filter_state >= mip::data_filter::FilterMode::VERT_GYRO)
             {
-                MICROSTRAIN_LOG_INFO("TOW = %.3f: %s = [%9.6f %9.6f]\n",
+                MICROSTRAIN_LOG_INFO("TOW = %10.3f    %s = [%9.6f, %9.6f, %9.6f]\n",
                     filterGpsTimestamp.tow,
                     mip::data_filter::EulerAngles::DOC_NAME, // Built-in metadata for easy printing
                     filterEulerAngles.roll,
-                    filterEulerAngles.pitch
+                    filterEulerAngles.pitch,
+                    filterEulerAngles.yaw
                 );
             }
 
@@ -320,9 +328,8 @@ void captureGyroBias(mip::Interface& _device)
 
     // Note: The default is 15 s (15,000 ms)
     // Longer sample times are recommended but shortened here for convenience
-    constexpr uint16_t captureDuration = 2000;
-
-    constexpr uint16_t increasedCmdReplyTimeout = captureDuration * 2;
+    constexpr uint16_t captureDuration          = 15000;
+    constexpr uint16_t increasedCmdReplyTimeout = captureDuration + 1000;
 
     MICROSTRAIN_LOG_INFO("Increasing command reply timeout to %dms for capture gyro bias.\n", increasedCmdReplyTimeout);
     cmdQueue.setBaseReplyTimeout(increasedCmdReplyTimeout);
@@ -333,9 +340,18 @@ void captureGyroBias(mip::Interface& _device)
         0.0f  // Z
     };
 
-    MICROSTRAIN_LOG_INFO("Capturing gyro bias. This will take %.2g seconds.\n",
+    // Note: When capturing gyro bias, the device needs to remain still on a flat surface
+    MICROSTRAIN_LOG_WARN("About to capture gyro bias for %.2g seconds!\n",
         static_cast<float>(captureDuration) / 1000.0f
     );
+    MICROSTRAIN_LOG_WARN("Please do not move the device during this time!\n");
+    MICROSTRAIN_LOG_WARN("Press 'Enter' when ready...");
+
+    // Wait for anything to be entered
+    const int confirmCapture = getc(stdin);
+    (void)confirmCapture; // Unused
+
+    MICROSTRAIN_LOG_WARN("Capturing gyro bias...\n");
     const mip::CmdResult cmdResult = mip::commands_3dm::captureGyroBias(
         _device,
         captureDuration, // Capture duration (ms)
@@ -347,7 +363,7 @@ void captureGyroBias(mip::Interface& _device)
         terminate(_device, cmdResult, "Failed to capture gyro bias!\n");
     }
 
-    MICROSTRAIN_LOG_INFO("Capture gyro bias completed with result: [%f %f %f]\n",
+    MICROSTRAIN_LOG_INFO("Capture gyro bias completed with result: [%f, %f, %f]\n",
         gyroBias[0],
         gyroBias[1],
         gyroBias[2]
@@ -376,8 +392,26 @@ void configureFilterMessageFormat(mip::Interface& _device)
         terminate(_device, cmdResult, "Could not get filter base rate!\n");
     }
 
+    // Supported sample rates can be any value from 1 up to the base rate
+    // Note: Decimation can be anything from 1 to 65,565 (uint16_t::max)
+    if (SAMPLE_RATE_HZ == 0 || SAMPLE_RATE_HZ > filterBaseRate)
+    {
+        terminate(
+            _device,
+            mip::CmdResult::NACK_INVALID_PARAM,
+            "Invalid sample rate of %dHz! Supported rates are [1, %d].\n",
+            SAMPLE_RATE_HZ,
+            filterBaseRate
+        );
+    }
+
     // Calculate the decimation (stream rate) for the device based on its base rate
     const uint16_t filterDecimation  = filterBaseRate / SAMPLE_RATE_HZ;
+    MICROSTRAIN_LOG_INFO("Decimating filter base rate %d by %d to stream data at %dHz.\n",
+        filterBaseRate,
+        filterDecimation,
+        SAMPLE_RATE_HZ
+    );
 
     // Descriptor rate is a pair of data descriptor set and decimation
     const mip::DescriptorRate filterDescriptors[3] = {
@@ -386,9 +420,7 @@ void configureFilterMessageFormat(mip::Interface& _device)
         { mip::data_filter::EulerAngles::FIELD_DESCRIPTOR, filterDecimation }
     };
 
-    MICROSTRAIN_LOG_INFO("Configuring %s for filter data at %dHz.\n", mip::commands_3dm::MessageFormat::DOC_NAME,
-        SAMPLE_RATE_HZ
-    );
+    MICROSTRAIN_LOG_INFO("Configuring %s for filter data.\n", mip::commands_3dm::MessageFormat::DOC_NAME);
     cmdResult = mip::commands_3dm::writeMessageFormat(
         _device,
         mip::data_filter::DESCRIPTOR_SET,                         // Data descriptor set
