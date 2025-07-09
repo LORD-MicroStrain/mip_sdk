@@ -273,38 +273,18 @@ void log_callback(void* _user, const microstrain_log_level _level, const char* _
     switch (_level)
     {
         case MICROSTRAIN_LOG_LEVEL_FATAL:
-        {
-            fprintf(stderr, "%-9s", "FATAL: ");
-            vfprintf(stderr, _format, _args);
-            break;
-        }
         case MICROSTRAIN_LOG_LEVEL_ERROR:
         {
-            fprintf(stderr, "%-9s", "ERROR: ");
+            fprintf(stderr, "%s: ", microstrain_logging_level_name(_level));
             vfprintf(stderr, _format, _args);
             break;
         }
         case MICROSTRAIN_LOG_LEVEL_WARN:
-        {
-            fprintf(stdout, "%-9s", "WARNING: ");
-            vfprintf(stdout, _format, _args);
-            break;
-        }
         case MICROSTRAIN_LOG_LEVEL_INFO:
-        {
-            fprintf(stdout, "%-9s", "INFO: ");
-            vfprintf(stdout, _format, _args);
-            break;
-        }
         case MICROSTRAIN_LOG_LEVEL_DEBUG:
-        {
-            fprintf(stdout, "%-9s", "DEBUG: ");
-            vfprintf(stdout, _format, _args);
-            break;
-        }
         case MICROSTRAIN_LOG_LEVEL_TRACE:
         {
-            fprintf(stdout, "%-9s", "TRACE: ");
+            fprintf(stdout, "%s: ", microstrain_logging_level_name(_level));
             vfprintf(stdout, _format, _args);
             break;
         }
