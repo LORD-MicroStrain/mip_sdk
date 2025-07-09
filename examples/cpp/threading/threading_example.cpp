@@ -1,8 +1,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 /// threading_example.cpp
 ///
-/// Example program to print device information from any MIP-enabled MicroStrain
-/// device using C++
+/// Example program to demonstrate multithreading for data collection updates
+/// and command updates using C++
 ///
 /// If this example does not meet your specific setup needs, please consult the
 /// MIP SDK API documentation for the proper commands.
@@ -17,20 +17,6 @@
 /// CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
 ///
 
-///
-/// TODO: UPDATE THE INFO ABOVE TO EXPLAIN WHAT THIS EXAMPLES DOES
-///
-///
-///
-///
-///
-///
-///
-///
-///
-///
-///
-
 // Include the MicroStrain Serial connection header
 #include <microstrain/connections/serial/serial_connection.hpp>
 
@@ -42,24 +28,16 @@
 // I.E., #include <mip/mip_all.hpp>
 #include <mip/mip_interface.hpp>
 #include <mip/definitions/commands_base.hpp>
-
-
 #include <mip/definitions/commands_3dm.hpp>
 #include <mip/definitions/data_sensor.hpp>
 
+#include <chrono>
 #include <cstdarg>
 #include <cinttypes>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-
-
-
 #include <thread>
-#include <chrono>
-#include <cmath>
-#include <stdexcept>
-#include <algorithm>
 
 ////////////////////////////////////////////////////////////////////////////////
 // NOTE: Setting these globally for example purposes
@@ -67,7 +45,7 @@
 // TODO: Update to the correct port name and baudrate
 // Set the port name for the connection (Serial/USB)
 #ifdef _WIN32
-static constexpr const char* PORT_NAME = "COM11";
+static constexpr const char* PORT_NAME = "COM1";
 #else // Unix
 static constexpr const char* PORT_NAME = "/dev/ttyUSB0";
 #endif // _WIN32
@@ -83,9 +61,9 @@ static constexpr uint16_t SAMPLE_RATE_HZ = 1;
 // Example run time
 static constexpr uint32_t RUN_TIME_SECONDS = 30;
 
-// TODO: Enable/disable device update callback for threading
-// Use this to test the behavior of the update call in and out of threads
-#define THREADED_UPDATED true
+// TODO: Enable/disable data collection threading
+// Use this to test the behaviors of threading
+#define USE_THREADS 1
 ////////////////////////////////////////////////////////////////////////////////
 
 // Custom logging handler callback
@@ -101,13 +79,14 @@ void initializeDevice(mip::Interface& _device);
 // Message format configuration
 void configureSensorMessageFormat(mip::Interface& _device);
 
-// Callback handlers
+// Packet callback handler
 void packetCallback(void* _user, const mip::PacketView& _packetView, mip::Timestamp _timestamp);
-void accelFieldCallback(void* _user, const mip::FieldView& _fieldView, mip::Timestamp _timestamp);
 
+#if USE_THREADS
 // Threaded functions
 bool updateDevice(mip::Interface& _device, mip::Timeout _waitTime, bool _fromCmd);
-void deviceThreadLoop(mip::Interface& _device, const volatile bool& _running);
+void dataCollectionThread(mip::Interface& _device, const volatile bool& _running);
+#endif // USE_THREADS
 
 // Utility functions the handle application closing and printing error messages
 void terminate(microstrain::Connection* _connection, const char* _message, const bool _successful = false);
@@ -145,10 +124,8 @@ int main(const int argc, const char* argv[])
     // Configure the message format for sensor data
     configureSensorMessageFormat(device);
 
-    // Register packet and data callbacks
-
-    // Generic packet callback
-    MICROSTRAIN_LOG_INFO("Registering a generic packet callback.\n");
+    // Sensor data packet callback
+    MICROSTRAIN_LOG_INFO("Registering a sensor data packet callback.\n");
 
     mip::DispatchHandler packetHandler;
 
@@ -160,18 +137,19 @@ int main(const int argc, const char* argv[])
         nullptr                           // User data
     );
 
-#if THREADED_UPDATED
+#if USE_THREADS
     MICROSTRAIN_LOG_INFO("Initializing the device update function for threading.\n");
     // Set the update function. Before this call, command replies are processed by the main thread.
     // After this, replies will be processed by the device thread.
     device.setUpdateFunctionFree<&updateDevice>();
-#endif // THREADED_UPDATED
 
+    // Data collection thread run flag
     volatile bool running = true;
 
-    MICROSTRAIN_LOG_INFO("Creating the device thread loop.\n");
+    MICROSTRAIN_LOG_INFO("Creating the data collection thread.\n");
     // Start the device thread.
-    std::thread deviceThread(deviceThreadLoop, std::ref(device), std::ref(running));
+    std::thread dataThread(dataCollectionThread, std::ref(device), std::ref(running));
+#endif // USE_THREADS
 
     // Resume the device
     // Note: Since the device was idled for configuration, it needs to be resumed to output the data streams
@@ -187,8 +165,8 @@ int main(const int argc, const char* argv[])
     // Get the start time of the device update loop to handle exiting the application
     const mip::Timestamp loopStartTime = getCurrentTimestamp();
 
-    // Device loop
-    // Exit after predetermined time in seconds
+    // Running loop
+    // Exit after a predetermined time in seconds
     while (getCurrentTimestamp() - loopStartTime <= RUN_TIME_SECONDS * 1000)
     {
         // Stress testing the device with ping
@@ -197,15 +175,18 @@ int main(const int argc, const char* argv[])
         MICROSTRAIN_LOG_WARN("Running device stress test!\n");
         for (uint8_t counter = 0; counter < 100; ++counter)
         {
+            // Note: Sending commands calls the device update function every time
             mip::commands_base::ping(device);
         }
     }
 
-    // Signal the device thread to stop
+#if USE_THREADS
+    // Signal the data collection thread to stop
     running = false;
 
     // Join the thread back before exiting the program
-    deviceThread.join();
+    dataThread.join();
+#endif // USE_THREADS
 
     terminate(&connection, "Example Completed Successfully.\n", true);
 }
@@ -411,59 +392,40 @@ void packetCallback(void* _user, const mip::PacketView& _packetView, mip::Timest
     );
 }
 
-// Accel data callback handler
-void accelFieldCallback(void* _user, const mip::FieldView& _fieldView, mip::Timestamp _timestamp)
-{
-    // Unused parameters
-    (void)_user;
-    (void)_timestamp;
-
-    mip::data_sensor::ScaledAccel scaledAccelData;
-
-    if (_fieldView.extract(scaledAccelData))
-    {
-        MICROSTRAIN_LOG_INFO("%-17s (0x%02X, 0x%02X): [%9.6f, %9.6f, %9.6f]\n",
-            "Scaled Accel Data",
-            mip::data_sensor::ScaledAccel::DESCRIPTOR_SET,   // Data descriptor set
-            mip::data_sensor::ScaledAccel::FIELD_DESCRIPTOR, // Data field descriptor set
-            scaledAccelData.scaled_accel[0],              // X
-            scaledAccelData.scaled_accel[1],              // Y
-            scaledAccelData.scaled_accel[2]               // Z
-        );
-    }
-}
-
+#if USE_THREADS
+// Device update callback
+// Note: This handles separation of data collection updates and command updates
 bool updateDevice(mip::Interface& _device, mip::Timeout _waitTime, bool _fromCmd)
 {
-    // Do normal updates only if called from a command handler.
-    // This separates the main thread from the data collection thread.
+    // Do normal updates only if not called from a command handler
+    // Note: This is the separation between the main/other thread and the data collection thread
     if (!_fromCmd)
     {
         return _device.defaultUpdate(_waitTime, true);
     }
 
-    // Optionally display progress while waiting for command replies.
-    // Displaying it here instead makes it update more frequently.
-    //display_progress();
-
-    // Sleep for a bit to save power. Note that waiting too long
-    // in here can extend command timeout times.
+    // Sleep for a bit to save power
+    // Note: Waiting too long in here will cause commands to timeout
     std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
-    // Avoid failing the update function as long as the other thread is still running.
-    // Doing so may cause a race condition (see comments in mip_interface_wait_for_reply).
+    // Note: This needs to return true to avoid terminating the data collection thread
+    // Note: Returning false may cause a race condition (see comments in mip_interface_wait_for_reply)
     return true;
 }
 
-void deviceThreadLoop(mip::Interface& _device, const volatile bool& _running)
+// Handle data collection from the device on a separate thread than commands
+void dataCollectionThread(mip::Interface& _device, const volatile bool& _running)
 {
-    MICROSTRAIN_LOG_INFO("Device thread loop created!\n");
+    MICROSTRAIN_LOG_INFO("Data collection thread created!\n");
 
     while (_running)
     {
-        if (!_device.update(0))
+        // Update the device for data collection
+        if (!_device.update(
+            0,      // Wait time for the update (Typically only used from commands)
+            false)) // From a command (This update is for data handling, not from a command)
         {
-            // Avoid deadlocks if the socket is closed.
+            // Avoid deadlocks if the connection is closed
             _device.cmdQueue().clear();
             break;
         }
@@ -471,6 +433,7 @@ void deviceThreadLoop(mip::Interface& _device, const volatile bool& _running)
         std::this_thread::yield();
     }
 }
+#endif // USE_THREADS
 
 // Print an error message and close the application
 void terminate(microstrain::Connection* _connection, const char* _message, const bool _successful /* = false */)
@@ -535,166 +498,3 @@ void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const c
 
     terminate(connection, "");
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// constexpr unsigned int maxSamples = 50;
-// volatile unsigned int  numSamples = 0;
-// volatile bool          stop       = false;
-//
-// unsigned int displayProgress()
-// {
-//     // Display progress.
-//
-//     std::printf("Progress: [");
-//
-//     const unsigned int count = numSamples;
-//
-//     // Compute progress as a fraction from 0 to 1 (may exceed 100% if some extra packets get through).
-//     const float progress = std::min(count / static_cast<float>(maxSamples), 1.0f);
-//
-//     const unsigned int threshold = std::lround(progress * 50);
-//
-//     unsigned int i = 0;
-//
-//     for (; i < threshold; ++i)
-//     {
-//         std::putchar('#');
-//     }
-//
-//     for (; i < 50; ++i)
-//     {
-//         std::putchar(' ');
-//     }
-//
-//     std::printf("] %.0f%%\r", progress * 100);
-//     std::fflush(stdout);
-//
-//     return count;
-// }
-//
-// // void packetCallback(void*, const mip::PacketView&, mip::Timestamp)
-// // {
-// //     ++numSamples;
-// // }
-//
-// // void deviceThreadLoop(mip::Interface* _device)
-// // {
-// //     while (!stop)
-// //     {
-// //         if (!_device->update(0))
-// //         {
-// //             _device->cmdQueue().clear(); // Avoid deadlocks if the socket is closed.
-// //             break;
-// //         }
-// //
-// //         std::this_thread::yield();
-// //     }
-// // }
-//
-// // bool updateDevice(mip::Interface& _device, mip::Timeout _waitTime, bool _fromCmd)
-// // {
-// //     // Do normal updates only if called from a command handler.
-// //     // This separates the main thread from the data collection thread.
-// //     if (!_fromCmd)
-// //     {
-// //         return _device.defaultUpdate(_waitTime, true);
-// //     }
-// //
-// //     // Optionally display progress while waiting for command replies.
-// //     // Displaying it here instead makes it update more frequently.
-// //     //display_progress();
-// //
-// //     // Sleep for a bit to save power. Note that waiting too long
-// //     // in here can extend command timeout times.
-// //     std::this_thread::sleep_for(std::chrono::milliseconds(5));
-// //
-// //     // Avoid failing the update function as long as the other thread is still running.
-// //     // Doing so may cause a race condition (see comments in mip_interface_wait_for_reply).
-// //     return true;
-// // }
-//
-// #define USE_THREADS 1
-//
-// int main(int argc, const char* argv[])
-// {
-//         std::unique_ptr<ExampleUtils> utils = handleCommonArgs(argc, argv);
-//         std::unique_ptr<mip::Interface>& device = utils->device;
-//
-//         // Disable all streaming channels.
-//         // mip::commands_base::setIdle(*device);
-//         // mip::commands_3dm::writeDatastreamControl(*device, 0x00, false);
-//
-//
-//
-//
-//
-//
-//         // Register a sensor data packet callback.
-//         // mip::DispatchHandler dispatchHandler;
-//         // device->registerPacketCallback<&packetCallback>(dispatchHandler, mip::data_sensor::DESCRIPTOR_SET, false);
-//
-//         // Set the message format to stream scaled accel at 1/100th the base rate (around a few Hz).
-//         // mip::DescriptorRate descriptor{ mip::data_sensor::DATA_ACCEL_SCALED, 100 };
-//         // mip::commands_3dm::writeMessageFormat(*device, mip::data_sensor::DESCRIPTOR_SET, 1, &descriptor);
-//
-// #if USE_THREADS
-//         // Set the update function. Before this call, command replies are processed by the main thread.
-//         // After this, replies will be processed by the device thread.
-//         device->setUpdateFunctionFree<&updateDevice>();
-//
-//         // Start the device thread.
-//         std::thread deviceThread(&deviceThreadLoop, device.get());
-// #endif // USE_THREADS
-//
-//         // Enable streaming.
-//         mip::commands_3dm::writeDatastreamControl(*device, mip::data_sensor::DESCRIPTOR_SET, true);
-//         mip::commands_base::resume(*device);
-//
-//         unsigned int count = 0;
-//         do
-//         {
-//             count = displayProgress();
-//
-//             // Ping the device a bunch (stress test).
-//             // This attempts to trigger race conditions by having the main thread
-//             // send pings while the other thread tries to collect data.
-//             // Try commenting out the setUpdateFunction call
-//             // above and notice the erratic or errant behavior.
-//             // Note that only one thread at a time can safely send commands.
-//             for (unsigned int i = 0; i < 100; ++i)
-//             {
-//                 mip::commands_base::ping(*device);
-//             }
-//
-//         } while (count < maxSamples);
-//
-//         std::printf("\nDone!\n");
-//
-//         // Return the device to idle.
-//         mip::commands_base::setIdle(*device);
-//
-//         stop = true;
-// #if USE_THREADS
-//         deviceThread.join();
-// #endif // USE_THREADS
-//
-//     return 0;
-// }
