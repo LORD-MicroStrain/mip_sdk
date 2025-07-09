@@ -60,7 +60,6 @@ void initializeDevice(mip::Interface& _device);
 void terminate(microstrain::Connection* _connection, const char* _message, const bool _successful = false);
 void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const char* _format, ...);
 
-
 int main(const int argc, const char* argv[])
 {
     // Unused parameters

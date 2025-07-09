@@ -71,7 +71,6 @@ void initialize_device(mip_interface* _device, serial_port* _device_port, const 
 void terminate(serial_port* _device_port, const char* _message, const bool _successful);
 void command_failure_terminate(const mip_interface* _device, const mip_cmd_result _cmd_result, const char* _format, ...);
 
-
 int main(const int argc, const char* argv[])
 {
     // Unused parameters
