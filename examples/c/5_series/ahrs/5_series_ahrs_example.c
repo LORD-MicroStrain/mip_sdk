@@ -260,8 +260,6 @@ int main(const int argc, const char* argv[])
     }
 
     terminate(&device_port, "Example Completed Successfully.\n", true);
-
-    return 0;
 }
 
 // Custom logging handler callback
@@ -561,7 +559,7 @@ bool mip_interface_user_recv_from_device(mip_interface* _device, uint8_t* _buffe
 ///
 void initialize_device(mip_interface* _device, serial_port* _device_port, const uint32_t _baudrate)
 {
-    MICROSTRAIN_LOG_INFO("Initializing device interface.\n");
+    MICROSTRAIN_LOG_INFO("Initializing the device interface.\n");
     mip_interface_init(
         _device,
         mip_timeout_from_baudrate(_baudrate), // Set the base timeout for commands (milliseconds)
@@ -583,7 +581,7 @@ void initialize_device(mip_interface* _device, serial_port* _device_port, const 
 
     // Set the device to Idle
     // Note: This is good to do during setup as high data traffic can cause commands to fail
-    MICROSTRAIN_LOG_INFO("Setting device to idle.\n");
+    MICROSTRAIN_LOG_INFO("Setting the device to idle.\n");
     cmd_result = mip_base_set_idle(_device);
     if (!mip_cmd_result_is_ack(cmd_result))
     {
@@ -591,7 +589,7 @@ void initialize_device(mip_interface* _device, serial_port* _device_port, const 
     }
 
     // Print device info to make sure the correct device is being used
-    MICROSTRAIN_LOG_INFO("Getting device information.\n");
+    MICROSTRAIN_LOG_INFO("Getting the device information.\n");
     mip_base_device_info device_info;
     cmd_result = mip_base_get_device_info(_device, &device_info);
     if (!mip_cmd_result_is_ack(cmd_result))
@@ -675,6 +673,8 @@ void terminate(serial_port* _device_port, const char* _message, const bool _succ
     {
         exit(1);
     }
+
+    exit(0);
 }
 
 // Print an error message for a command and close the application

@@ -506,7 +506,7 @@ void initializeDevice(mip::Interface& _device)
 
     // Set the device to Idle
     // Note: This is good to do during setup as high data traffic can cause commands to fail
-    MICROSTRAIN_LOG_INFO("Setting device to idle.\n");
+    MICROSTRAIN_LOG_INFO("Setting the device to idle.\n");
     cmdResult = mip::commands_base::setIdle(_device);
     if (!cmdResult.isAck())
     {
@@ -514,7 +514,7 @@ void initializeDevice(mip::Interface& _device)
     }
 
     // Print device info to make sure the correct device is being used
-    MICROSTRAIN_LOG_INFO("Getting device information.\n");
+    MICROSTRAIN_LOG_INFO("Getting the device information.\n");
     mip::commands_base::BaseDeviceInfo deviceInfo;
     cmdResult = mip::commands_base::getDeviceInfo(_device, &deviceInfo);
     if (!cmdResult.isAck())
