@@ -7,5 +7,4 @@ if(MIP_ENABLE_METADATA)
     add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/pretty_printer")
 endif()
 
-add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/threading")
 add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/ublox")

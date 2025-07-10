@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
 
-project("threading_example_cpp"
+project("5_series_threading_example_cpp"
     VERSION "1.0.0"
-    DESCRIPTION "Simple example for threading a MIP device to acquire data using C++"
+    DESCRIPTION "Simple example for threading a 5-Series MIP device to acquire data using C++"
     LANGUAGES C
 )
 
@@ -45,7 +45,7 @@ endif()
 
 # Create the example
 add_executable(${PROJECT_NAME}
-    "${CMAKE_CURRENT_LIST_DIR}/threading_example.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/5_series_threading_example.cpp"
 )
 
 # Configure the project in a sub-folder for IDEs that support it
