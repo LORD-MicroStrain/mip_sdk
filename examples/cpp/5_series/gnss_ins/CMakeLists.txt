@@ -3,13 +3,13 @@ cmake_minimum_required(VERSION 3.16)
 project("5_series_gnss_ins_example_cpp"
     VERSION "1.0.0"
     DESCRIPTION "Simple example for the 3DM-CX5-GNSS/INS, and 3DM-GX5-GNSS/INS using C++"
-    LANGUAGES C
+    LANGUAGES C CXX
 )
 
 set(CMAKE_C_STANDARD 11)
-set(CMAKE_C_STANDARD_REQUIRED)
+set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # TODO: Set MIP_SDK_ROOT_DIR if building as a standalone project
 if(DEFINED MIP_SDK_ROOT_DIR OR DEFINED CACHE{MIP_SDK_ROOT_DIR})
@@ -47,6 +47,14 @@ endif()
 add_executable(${PROJECT_NAME}
     "${CMAKE_CURRENT_LIST_DIR}/5_series_gnss_ins_example.cpp"
 )
+
+# Configure the project in an examples sub-folder for IDEs that support it
+if(NOT ${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_LIST_DIR})
+    file(RELATIVE_PATH PROJECT_RELATIVE_PATH "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_LIST_DIR}/..")
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        FOLDER "${PROJECT_RELATIVE_PATH}"
+    )
+endif()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
     ${MIP_LIBRARIES}
