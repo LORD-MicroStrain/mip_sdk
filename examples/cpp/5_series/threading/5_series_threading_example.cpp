@@ -31,7 +31,6 @@
 #include <mip/definitions/commands_base.hpp>
 #include <mip/definitions/data_sensor.hpp>
 
-#include <atomic>
 #include <chrono>
 #include <cinttypes>
 #include <cstdarg>
@@ -86,7 +85,7 @@ void packetCallback(void* _user, const mip::PacketView& _packetView, mip::Timest
 #if USE_THREADS
 // Threaded functions
 bool updateDevice(mip::Interface& _device, mip::Timeout _waitTime, bool _fromCmd);
-void dataCollectionThread(mip::Interface& _device, const std::atomic_bool& _running);
+void dataCollectionThread(mip::Interface& _device, const volatile bool& _running);
 #endif // USE_THREADS
 
 // Utility functions the handle application closing and printing error messages
@@ -144,7 +143,7 @@ int main(const int argc, const char* argv[])
     device.setUpdateFunctionFree<&updateDevice>();
 
     // Data collection thread run flag
-    std::atomic_bool running = true;
+    volatile bool running = true;
 
     MICROSTRAIN_LOG_INFO("Creating the data collection thread.\n");
     std::thread dataThread(dataCollectionThread, std::ref(device), std::ref(running));
@@ -181,9 +180,10 @@ int main(const int argc, const char* argv[])
 
 #if USE_THREADS
     // Signal the data collection thread to stop
-    running.store(false);
+    running = false;
 
     // Join the thread back before exiting the program
+    MICROSTRAIN_LOG_INFO("Waiting for the thread to join.\n");
     dataThread.join();
 #endif // USE_THREADS
 
@@ -411,11 +411,11 @@ bool updateDevice(mip::Interface& _device, mip::Timeout _waitTime, bool _fromCmd
 }
 
 // Handle data collection from the device on a separate thread than commands
-void dataCollectionThread(mip::Interface& _device, const std::atomic_bool& _running)
+void dataCollectionThread(mip::Interface& _device, const volatile bool& _running)
 {
     MICROSTRAIN_LOG_INFO("Data collection thread created!\n");
 
-    while (_running.load())
+    while (_running)
     {
         // Update the device for data collection
         if (!_device.update(
