@@ -414,7 +414,7 @@ void configureSensorMessageFormat(mip::Interface& _device, const uint16_t* _supp
         --sensorDescriptorCount;
     }
 
-    MICROSTRAIN_LOG_INFO("Configuring %s for sensor data.\n", mip::commands_3dm::ImuMessageFormat::DOC_NAME);
+    MICROSTRAIN_LOG_INFO("Configuring %s for sensor data.\n", mip::commands_3dm::MessageFormat::DOC_NAME);
     cmdResult = mip::commands_3dm::writeMessageFormat(
         _device,
         mip::data_sensor::DESCRIPTOR_SET, // Data descriptor set
