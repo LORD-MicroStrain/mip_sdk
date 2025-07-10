@@ -27,14 +27,14 @@
 // Note: The MIP SDK has headers for each module to include all headers associated with the module
 // I.E., #include <mip/mip_all.hpp>
 #include <mip/mip_interface.hpp>
-#include <mip/definitions/commands_base.hpp>
 #include <mip/definitions/commands_3dm.hpp>
+#include <mip/definitions/commands_base.hpp>
 #include <mip/definitions/data_sensor.hpp>
 
 #include <atomic>
 #include <chrono>
-#include <cstdarg>
 #include <cinttypes>
+#include <cstdarg>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
