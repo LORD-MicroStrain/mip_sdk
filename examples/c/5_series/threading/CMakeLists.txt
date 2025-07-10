@@ -54,6 +54,14 @@ if(NOT ${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_LIST_DIR})
     )
 endif()
 
+if(UNIX AND NOT APPLE)
+    find_package(Threads REQUIRED)
+
+    target_link_libraries(${PROJECT_NAME} PRIVATE
+        "Threads::Threads"
+    )
+endif()
+
 target_link_libraries(${PROJECT_NAME} PRIVATE
     ${MIP_LIBRARIES}
     ${MICROSTRAIN_LIBRARIES}
