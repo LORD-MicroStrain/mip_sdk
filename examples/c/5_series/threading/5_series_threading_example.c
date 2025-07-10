@@ -39,8 +39,25 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <threads.h>
 #include <time.h>
+
+#ifdef __APPLE__
+// Clang doesn't support threads.h
+// Adding basic functionality from threads.h for Clang support
+#include <pthread.h>
+
+typedef pthread_t thrd_t;
+typedef int (thrd_start_t)(void*);
+
+enum { thrd_success, thrd_busy, thrd_error, thrd_nomem, thrd_timedout };
+
+int thrd_create(thrd_t* __thr, void* __func, void* __arg);
+int thrd_join(thrd_t __thr, int* __res);
+int thrd_sleep(const struct timespec* __time_point, struct timespec* __remaining);
+void thrd_yield(void);
+#else
+#include <threads.h>
+#endif // __APPLE__
 
 ////////////////////////////////////////////////////////////////////////////////
 // NOTE: Setting these globally for example purposes
@@ -602,3 +619,32 @@ void command_failure_terminate(const mip_interface* _device, const mip_cmd_resul
         terminate(device_port, "", false);
     }
 }
+
+#ifdef __APPLE__
+// pthread wrappers for unsupported threads.h functionality used in this example
+
+// pthread wrapper for threads.h thrd_create
+int thrd_create(thrd_t* __thr, void* __func, void* __arg)
+{
+    return pthread_create(__thr, NULL, __func, __arg);
+}
+
+// pthread wrapper for threads.h thrd_join
+int thrd_join(thrd_t __thr, int* __res)
+{
+    return pthread_join(__thr, (void**)__res);
+}
+
+// sleep wrapper for threads.h thrd_sleep
+int thrd_sleep(const struct timespec* __time_point, struct timespec* __remaining)
+{
+    // Sleep for some duration
+    return nanosleep(__time_point, __remaining);
+}
+
+// pthread wrapper for threads.h thrd_yield
+void thrd_yield()
+{
+    sched_yield();
+}
+#endif // __APPLE__
