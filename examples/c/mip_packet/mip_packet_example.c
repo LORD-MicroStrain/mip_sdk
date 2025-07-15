@@ -146,11 +146,11 @@ void print_packet(const mip_packet_view* _packet_view)
 
     const uint8_t payload_length = mip_packet_payload_length(_packet_view);
 
-    // Print descriptor set, total length, and payload length
-    printf("%4s%-20s = %u\n",     " ", "Total Length",   mip_packet_total_length(_packet_view));
-    printf("%4s%-20s = %s\n",     " ", "Raw Packet",     packet_byte_buffer);
-    printf("%4s%-20s = 0x%02X\n", " ", "MIP SYNC1",      packet_pointer[0]);
-    printf("%4s%-20s = 0x%02X\n", " ", "MIP SYNC2",      packet_pointer[1]);
+    // Print the packet details before the fields
+    printf("%4s%-20s = %u\n", " ", "Total Length", mip_packet_total_length(_packet_view));
+    printf("%4s%-20s = %s\n", " ", "Raw Packet", packet_byte_buffer);
+    printf("%4s%-20s = 0x%02X\n", " ", "MIP SYNC1", packet_pointer[0]);
+    printf("%4s%-20s = 0x%02X\n", " ", "MIP SYNC2", packet_pointer[1]);
     printf("%4s%-20s = 0x%02X\n", " ", "Descriptor Set", mip_packet_descriptor_set(_packet_view));
     printf("%4s%-20s = 0x%02X\n", " ", "Payload Length", payload_length);
 
@@ -184,11 +184,11 @@ void print_packet(const mip_packet_view* _packet_view)
         printf("\n");
     }
 
-    // Print the checksum most significant and least significant bytes, and if it's valid or not
+    // Print the checksum most and least significant bytes, and if it's valid or not
     const uint16_t checksum_value = mip_packet_checksum_value(_packet_view);
     printf("%4sChecksum (%s):\n", " ", mip_packet_is_valid(_packet_view) ? "Valid" : "Invalid");
-    printf("%8s%-16s = 0x%02X\n", " ", "MSB",   checksum_value >> 0x08);
-    printf("%8s%-16s = 0x%02X\n\n", " ", "LSB",   checksum_value &  0xFF);
+    printf("%8s%-16s = 0x%02X\n", " ", "MSB", checksum_value >> 0x08);
+    printf("%8s%-16s = 0x%02X\n\n", " ", "LSB", checksum_value &  0xFF);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -234,6 +234,7 @@ void add_checksum_to_packet(mip_packet_view* _packet_view)
     printf("Added a checksum to the packet.\n");
 
     // Print the current state of the packet
+    // Note: The packet is now validated
     print_packet(_packet_view);
 }
 
