@@ -31,12 +31,11 @@
 
 #include <cassert>
 #include <cinttypes>
-#include <cstdarg>
 #include <cstdio>
 #include <cstdlib>
 
 // Whether to create packets with a user-defined buffer or not
-// Note: Manual buffers are a similar approach to the C api of the MIP SDK
+// Note: Manual buffers are a similar approach to the C API of the MIP SDK
 #define USE_MANUAL_BUFFERS false
 
 // Print the state of a packet
@@ -44,41 +43,40 @@ void printPacket(const mip::PacketView& _packetView);
 
 #if USE_MANUAL_BUFFERS
 // Initialize an empty packet for a given descriptor set
-// Note: This is a similar approach to the C api of the MIP SDK
+// Note: This is a similar approach to the C API of the MIP SDK
 mip::PacketView initializeEmptyPacket(uint8_t* _buffer, const size_t _bufferSize, const uint8_t _descriptorSet);
 #else // !USE_MANUAL_BUFFERS
-// TODO: implement
 // Initialize an empty packet for a given descriptor set
 mip::PacketBuf initializeEmptyPacket(const uint8_t _descriptorSet);
 #endif // USE_MANUAL_BUFFERS
 
 // Compute and add the checksum to a packet
-void add_checksum_to_packet(mip::PacketView& _packetView);
+void addChecksumToPacket(mip::PacketView& _packetView);
 
 // Fields added to packet 1
-void add_ping_command_to_packet(mip::PacketView& _packetView);
-void add_comm_speed_bytes_to_packet(mip::PacketView& _packetView);
-void add_comm_speed_field_to_packet(mip::PacketView& _packetView);
-void add_comm_speed_serializer_bytes_to_packet(mip::PacketView& _packetView);
+void addPingCommandToPacket(mip::PacketView& _packetView);
+void addCommSpeedBytesToPacket(mip::PacketView& _packetView);
+void addCommSpeedFieldToPacket(mip::PacketView& _packetView);
+void addCommSpeedSerializerBytesToPacket(mip::PacketView& _packetView);
 
 // Fields added to packet 2
-void add_message_format_field_to_packet(mip::PacketView& _packetView);
+void addMessageFormatFieldToPacket(mip::PacketView& _packetView);
 
 // Fields added to packet 3
-void add_poll_data_field_to_packet(mip::PacketView& _packetView);
+void addPollDataFieldToPacket(mip::PacketView& _packetView);
 
 // Fields extracted from packet 4
-void extract_shared_reference_time_field(mip::Serializer& _serializer);
-void extract_shared_reference_time_delta_field(mip::Serializer& _serializer);
-void extract_sensor_accel_scaled_field(mip::Serializer& _serializer);
-void extract_sensor_gyro_scaled_field(mip::Serializer& _serializer);
-void extract_sensor_delta_theta_field(mip::Serializer& _serializer);
-void extract_sensor_delta_velocity_field(const mip::FieldView& _fieldView);
+void extractSharedReferenceTimeField(mip::Serializer& _serializer);
+void extractSharedReferenceTimeDeltaField(mip::Serializer& _serializer);
+void extractSensorAccelScaledField(mip::Serializer& _serializer);
+void extractSensorGyroScaledField(mip::Serializer& _serializer);
+void extractSensorDeltaThetaField(mip::Serializer& _serializer);
+void extractSensorDeltaVelocityField(const mip::FieldView& _fieldView);
 
 // Packet creation
-void create_packet_1_from_scratch();
-void create_packet_2_and_3_from_scratch();
-void create_packet_4_from_raw_buffer();
+void createFromScratchPacket1();
+void createFromScratchPacket2And3();
+void createFromRawBufferPacket4();
 
 int main(const int argc, const char* argv[])
 {
@@ -87,13 +85,13 @@ int main(const int argc, const char* argv[])
     (void)argv;
 
     // Create packet 1 with multiple fields
-    create_packet_1_from_scratch();
+    createFromScratchPacket1();
 
     // Create packet 2 with a single field, then reset the packet and create packet 3 with a single field
-    create_packet_2_and_3_from_scratch();
+    createFromScratchPacket2And3();
 
     // Create packet 4 with a raw buffer and extract each field from the packet
-    create_packet_4_from_raw_buffer();
+    createFromRawBufferPacket4();
 
     printf("Example Completed Successfully.\n");
 
@@ -118,7 +116,7 @@ int main(const int argc, const char* argv[])
 /// - Field information for each field in the packet
 /// - Checksum values and validity
 ///
-/// @param _packetView Pointer to the MIP packet view to inspect
+/// @param _packetView Reference to the MIP packet view to inspect
 ///
 void printPacket(const mip::PacketView& _packetView)
 {
@@ -127,10 +125,10 @@ void printPacket(const mip::PacketView& _packetView)
     // Ensure the packet structure is correct, otherwise a crash may result
     // This checks the following:
     //     1. The packet buffer is not NULL
-    //     2. The buffer size is at least MIP_PACKET_LENGTH_MIN
+    //     2. The buffer size is at least mip::PACKET_LENGTH_MIN
     //     3. The payload length does not exceed the buffer size
     // There's generally no need to check this if you're getting packets
-    // directly from mip_packet_create (with sufficient buffer space) or
+    // directly from mip::PacketView (with sufficient buffer space) or
     // from the mip parser
     // If you're reading packets from a file, etc., without parsing, use
     // this as an inexpensive validation step
@@ -176,40 +174,42 @@ void printPacket(const mip::PacketView& _packetView)
 
         // Print descriptors (the descriptor set always matches the packet)
         // Include the size of the length byte
-        printf("%8s%-16s = 0x%02X\n", " ", "Field Length", mip_field_payload_length(&fieldView) + 2);
-        printf("%8s%-16s = 0x%02X\n", " ", "Field Descriptor", mip_field_field_descriptor(&fieldView));
+        printf("%8s%-16s = 0x%02X\n", " ", "Field Length", fieldView.payloadLength() + 2);
+        printf("%8s%-16s = 0x%02X\n", " ", "Field Descriptor", fieldView.fieldDescriptor());
         printf("%8s%-16s = ", " ", "Raw Payload");
 
         // Print field payload bytes.
-        for (size_t i = 0; i < mip_field_payload_length(&fieldView); i++)
+        for (size_t i = 0; i < fieldView.payloadLength(); i++)
         {
-            printf("%02X", mip_field_payload(&fieldView)[i]);
+            printf("%02X", fieldView.payload()[i]);
         }
 
         printf("\n");
     }
 
     // Print the checksum most and least significant bytes, and if it's valid or not
-    const uint16_t checksum_value = _packetView.checksumValue();
+    const uint16_t checksumValue = _packetView.checksumValue();
     printf("%4sChecksum (%s):\n", " ", _packetView.isValid() ? "Valid" : "Invalid");
-    printf("%8s%-16s = 0x%02X\n", " ", "MSB", checksum_value >> 0x08);
-    printf("%8s%-16s = 0x%02X\n\n", " ", "LSB", checksum_value &  0xFF);
+    printf("%8s%-16s = 0x%02X\n", " ", "MSB", checksumValue >> 0x08);
+    printf("%8s%-16s = 0x%02X\n\n", " ", "LSB", checksumValue &  0xFF);
 }
 
 #if USE_MANUAL_BUFFERS
-// TODO: docs
 ////////////////////////////////////////////////////////////////////////////////
-/// @brief Initializes an empty MIP packet with the specified descriptor set
+/// @brief Creates an empty MIP packet for manual construction
 ///
-/// @details Creates a new MIP packet in the provided buffer and initializes it
-///          with the given descriptor set. The packet is initially empty and
-///          invalid until fields are added.
+/// @details Initializes a MIP packet in a user-provided buffer with the specified
+///          descriptor set. Demonstrates low-level packet creation using the
+///          PacketView class for manual buffer management. The packet is
+///          initially empty and invalid until fields are added.
 ///
-/// @note This is a similar approach to the C api of the MIP SDK
+/// @note This is a similar approach to the C API of the MIP SDK
 ///
 /// @param _buffer Buffer to store the packet data
 /// @param _bufferSize Size of the buffer in bytes
 /// @param _descriptorSet Descriptor set to use for the packet
+///
+/// @return A PacketView referencing the initialized packet
 ///
 mip::PacketView initializeEmptyPacket(uint8_t* _buffer, const size_t _bufferSize, const uint8_t _descriptorSet)
 {
@@ -227,15 +227,17 @@ mip::PacketView initializeEmptyPacket(uint8_t* _buffer, const size_t _bufferSize
     return packetView;
 }
 #else // !USE_MANUAL_BUFFERS
-// TODO: docs
 ////////////////////////////////////////////////////////////////////////////////
-/// @brief Initializes an empty MIP packet with the specified descriptor set
+/// @brief Creates an empty MIP packet using automatic buffer management
 ///
-/// @details Creates a new MIP packet in the provided buffer and initializes it
-///          with the given descriptor set. The packet is initially empty and
-///          invalid until fields are added.
+/// @details Initializes a MIP packet using the PacketBuf class which handles
+///          buffer allocation internally. This demonstrates the higher-level
+///          packet creation API. The packet is initially empty and invalid
+///          until fields are added.
 ///
 /// @param _descriptorSet Descriptor set to use for the packet
+///
+/// @return A PacketBuf containing the initialized packet
 ///
 mip::PacketBuf initializeEmptyPacket(const uint8_t _descriptorSet)
 {
@@ -261,9 +263,9 @@ mip::PacketBuf initializeEmptyPacket(const uint8_t _descriptorSet)
 ///          This should be called after all fields have been added to the
 ///          packet.
 ///
-/// @param _packetView Pointer to the packet to finalize with checksum
+/// @param _packetView Reference to the packet to finalize with checksum
 ///
-void add_checksum_to_packet(mip::PacketView& _packetView)
+void addChecksumToPacket(mip::PacketView& _packetView)
 {
     _packetView.finalize();
 
@@ -277,14 +279,14 @@ void add_checksum_to_packet(mip::PacketView& _packetView)
 ////////////////////////////////////////////////////////////////////////////////
 /// @brief Adds a Ping command field to a MIP packet
 ///
-/// @details Creates a field with the Base Ping command descriptor (0x01)
-/// with no payload data.
+/// @details Creates a field with the Base Ping command descriptor (0x01) with
+///          no payload data.
 ///
 /// @remark Field 1
 ///
-/// @param _packetView Pointer to the packet to add the field to
+/// @param _packetView Reference to the packet to add the field to
 ///
-void add_ping_command_to_packet(mip::PacketView& _packetView)
+void addPingCommandToPacket(mip::PacketView& _packetView)
 {
     _packetView.addField(
         mip::commands_base::Ping::FIELD_DESCRIPTOR, // Field descriptor set
@@ -307,9 +309,9 @@ void add_ping_command_to_packet(mip::PacketView& _packetView)
 ///
 /// @remark Field 2
 ///
-/// @param _packetView Pointer to the packet to add the field to
+/// @param _packetView Reference to the packet to add the field to
 ///
-void add_comm_speed_bytes_to_packet(mip::PacketView& _packetView)
+void addCommSpeedBytesToPacket(mip::PacketView& _packetView)
 {
     // Build the raw payload for the packet
     const uint8_t commSpeedPayload[] = {
@@ -339,9 +341,9 @@ void add_comm_speed_bytes_to_packet(mip::PacketView& _packetView)
 ///
 /// @remark Field 3
 ///
-/// @param _packetView Pointer to the packet to add the field to
+/// @param _packetView Reference to the packet to add the field to
 ///
-void add_comm_speed_field_to_packet(mip::PacketView& _packetView)
+void addCommSpeedFieldToPacket(mip::PacketView& _packetView)
 {
     mip::commands_base::CommSpeed commSpeed;
     commSpeed.function = mip::FunctionSelector::WRITE;
@@ -368,9 +370,9 @@ void add_comm_speed_field_to_packet(mip::PacketView& _packetView)
 /// @note This is exactly the same as field 3 but without the helper functions.
 ///       This is intended to show what happens "behind the scenes".
 ///
-/// @param _packetView Pointer to the packet to add the field to
+/// @param _packetView Reference to the packet to add the field to
 ///
-void add_comm_speed_serializer_bytes_to_packet(mip::PacketView& _packetView)
+void addCommSpeedSerializerBytesToPacket(mip::PacketView& _packetView)
 {
     // Create a field and get the payload pointer
     // The return value is the number of bytes remaining after allocating this field
@@ -413,9 +415,9 @@ void add_comm_speed_serializer_bytes_to_packet(mip::PacketView& _packetView)
 /// @note Similar to field 3 except that we have a variable-length payload.
 ///       Again, this is the recommended method for field creation.
 ///
-/// @param _packetView Pointer to the packet to add the field to
+/// @param _packetView Reference to the packet to add the field to
 ///
-void add_message_format_field_to_packet(mip::PacketView& _packetView)
+void addMessageFormatFieldToPacket(mip::PacketView& _packetView)
 {
     mip::commands_3dm::MessageFormat messageFormat;
 
@@ -466,13 +468,10 @@ void add_message_format_field_to_packet(mip::PacketView& _packetView)
 ///       This is also similar to field 5 but with lower level function calls
 ///       and a slightly different command.
 ///
-/// @param _packetView Pointer to the packet to add the field to
+/// @param _packetView Reference to the packet to add the field to
 ///
-void add_poll_data_field_to_packet(mip::PacketView& _packetView)
+void addPollDataFieldToPacket(mip::PacketView& _packetView)
 {
-    // This part is analogous to 'mip_serializer_init_new_field' from field 3
-    // It's almost the same as in field 4, except we use a zero-length field
-
     // Create a field of unknown length
     mip::PacketView::AllocatedField pollData = _packetView.createField(mip::commands_3dm::PollData::FIELD_DESCRIPTOR);
 
@@ -500,7 +499,7 @@ void add_poll_data_field_to_packet(mip::PacketView& _packetView)
     // An assertion shouldn't happen in this example but is a good check to have
     assert(ok);
 
-    printf("Added a Poll Data command field to the packet using a field and a serializer.\n");
+    printf("Added a Poll Data command field to the packet using AllocatedField.\n");
 
     // Print the current state of the packet
     printPacket(_packetView);
@@ -513,9 +512,9 @@ void add_poll_data_field_to_packet(mip::PacketView& _packetView)
 ///          and displays it if successfully extracted. This represents the
 ///          device's reference time.
 ///
-/// @param _serializer Pointer to serializer containing field data
+/// @param _serializer Reference to the serializer containing the field data
 ///
-void extract_shared_reference_time_field(mip::Serializer& _serializer)
+void extractSharedReferenceTimeField(mip::Serializer& _serializer)
 {
     uint64_t nanoseconds;
 
@@ -536,9 +535,9 @@ void extract_shared_reference_time_field(mip::Serializer& _serializer)
 ///          payload and displays it if successfully extracted. This represents
 ///          the time elapsed since the last reference time.
 ///
-/// @param _serializer Pointer to serializer containing field data
+/// @param _serializer Reference to the serializer containing the field data
 ///
-void extract_shared_reference_time_delta_field(mip::Serializer& _serializer)
+void extractSharedReferenceTimeDeltaField(mip::Serializer& _serializer)
 {
     uint64_t dtNanoseconds;
 
@@ -559,9 +558,9 @@ void extract_shared_reference_time_delta_field(mip::Serializer& _serializer)
 ///          accelerometer measurements in m/s^2 and displays them if
 ///          successfully extracted.
 ///
-/// @param _serializer Pointer to serializer containing field data
+/// @param _serializer Reference to the serializer containing the field data
 ///
-void extract_sensor_accel_scaled_field(mip::Serializer& _serializer)
+void extractSensorAccelScaledField(mip::Serializer& _serializer)
 {
     // Note: This is not one of the recommended methods
     mip::Vector3f scaledAccelData;
@@ -585,9 +584,9 @@ void extract_sensor_accel_scaled_field(mip::Serializer& _serializer)
 ///          gyroscope measurements in rad/s using the field structure. Displays
 ///          the values if successfully extracted.
 ///
-/// @param _serializer Pointer to serializer containing field data
+/// @param _serializer Reference to the serializer containing the field data
 ///
-void extract_sensor_gyro_scaled_field(mip::Serializer& _serializer)
+void extractSensorGyroScaledField(mip::Serializer& _serializer)
 {
     // Same as scaled accel except using the field data structure
     // Note: This is one of the recommended methods
@@ -612,9 +611,9 @@ void extract_sensor_gyro_scaled_field(mip::Serializer& _serializer)
 ///          displacement measurements in radians using the field structure.
 ///          Displays the values if successfully extracted.
 ///
-/// @param _serializer Pointer to serializer containing field data
+/// @param _serializer Reference to the serializer containing the field data
 ///
-void extract_sensor_delta_theta_field(mip::Serializer& _serializer)
+void extractSensorDeltaThetaField(mip::Serializer& _serializer)
 {
     // Same as scaled accel except using the field data structure
     // Note: This is one of the recommended methods
@@ -639,9 +638,9 @@ void extract_sensor_delta_theta_field(mip::Serializer& _serializer)
 ///          change measurements in m/s using the field structure. Displays
 ///          the values if successfully extracted.
 ///
-/// @param _fieldView Pointer to the field view containing the data
+/// @param _fieldView Reference to the field view containing the data
 ///
-void extract_sensor_delta_velocity_field(const mip::FieldView& _fieldView)
+void extractSensorDeltaVelocityField(const mip::FieldView& _fieldView)
 {
     // Same as scaled accel except using the field data structure
     // Note: This is the recommended method
@@ -682,14 +681,14 @@ void extract_sensor_delta_velocity_field(const mip::FieldView& _fieldView)
 ///       packet from scratch. The packet created would typically be sent to
 ///       a device immediately after creation.
 ///
-/// @see initialize_empty_packet
-/// @see add_checksum_to_packet
-/// @see add_ping_command_to_packet
-/// @see add_comm_speed_bytes_to_packet
-/// @see add_comm_speed_field_to_packet
-/// @see add_comm_speed_serializer_bytes_to_packet
+/// @see initializeEmptyPacket
+/// @see addChecksumToPacket
+/// @see addPingCommandToPacket
+/// @see addCommSpeedBytesToPacket
+/// @see addCommSpeedFieldToPacket
+/// @see addCommSpeedSerializerBytesToPacket
 ///
-void create_packet_1_from_scratch()
+void createFromScratchPacket1()
 {
     printf("Creating packet 1 from scratch.\n\n");
 
@@ -697,7 +696,7 @@ void create_packet_1_from_scratch()
 
 #if USE_MANUAL_BUFFERS
     // Create a packet and an empty storage buffer for the packet
-    // Note: This approach is similar to the C api
+    // Note: This approach is similar to the C API
     uint8_t buffer[mip::PacketView::PACKET_SIZE_MAX] = { 0 };
     mip::PacketView packet = initializeEmptyPacket(
         buffer,
@@ -710,23 +709,23 @@ void create_packet_1_from_scratch()
 #endif // USE_MANUAL_BUFFERS
 
     // Write the checksum
-    add_checksum_to_packet(packet);
+    addChecksumToPacket(packet);
 
     // Field 1
-    add_ping_command_to_packet(packet);
+    addPingCommandToPacket(packet);
 
     // Field 2
-    add_comm_speed_bytes_to_packet(packet);
+    addCommSpeedBytesToPacket(packet);
 
     // Field 3
-    add_comm_speed_field_to_packet(packet);
+    addCommSpeedFieldToPacket(packet);
 
     // Field 4
-    add_comm_speed_serializer_bytes_to_packet(packet);
+    addCommSpeedSerializerBytesToPacket(packet);
 
     // Complete packet 1
     // Write the checksum
-    add_checksum_to_packet(packet);
+    addChecksumToPacket(packet);
 
     // Note: This would be the time to send the packet to the device
     printf("Packet 1 is complete.\n\n");
@@ -748,14 +747,14 @@ void create_packet_1_from_scratch()
 /// @note This is a demonstration function and the packets created would
 ///       typically be sent to a device immediately after creation
 ///
-/// @see initialize_empty_packet
-/// @see add_message_format_field_to_packet
-/// @see add_poll_data_field_to_packet
-/// @see add_checksum_to_packet
-/// @see mip_packet_reset
-/// @see print_packet
+/// @see initializeEmptyPacket
+/// @see addMessageFormatFieldToPacket
+/// @see addPollDataFieldToPacket
+/// @see addChecksumToPacket
+/// @see mip::PacketView::reset
+/// @see printPacket
 ///
-void create_packet_2_and_3_from_scratch()
+void createFromScratchPacket2And3()
 {
     printf("\nCreating packet 2 (3DM Message Format command) from scratch.\n\n");
 
@@ -764,7 +763,7 @@ void create_packet_2_and_3_from_scratch()
 #if USE_MANUAL_BUFFERS
     // Create a packet and an empty storage buffer for the packet
     // Note: Declared here to demonstrate resetting packets for reuse
-    // Note: This approach is similar to the C api
+    // Note: This approach is similar to the C API
     uint8_t buffer[mip::PacketView::PACKET_SIZE_MAX] = { 0 };
     mip::PacketView packet = initializeEmptyPacket(
         buffer,
@@ -778,21 +777,21 @@ void create_packet_2_and_3_from_scratch()
 #endif // USE_MANUAL_BUFFERS
 
     // Field 5
-    add_message_format_field_to_packet(packet);
+    addMessageFormatFieldToPacket(packet);
 
     // Complete packet 2
     // Write the checksum
-    add_checksum_to_packet(packet);
+    addChecksumToPacket(packet);
 
     // Note: This would be the time to send the packet to the device
     printf("Packet 2 (3DM Message Format command) is complete.\n\n");
 
     packetDescriptorSet = mip::commands_3dm::DESCRIPTOR_SET;
 
-    printf("\nResetting the packet for use with descriptor set 0x%02X.\n", packetDescriptorSet);
-
     // Start over with a new descriptor set.
     packet.reset(packetDescriptorSet);
+
+    printf("\nReset the packet for use with descriptor set 0x%02X.\n", packetDescriptorSet);
 
     // Packet is now empty and invalid again
     printPacket(packet);
@@ -800,11 +799,11 @@ void create_packet_2_and_3_from_scratch()
     printf("\nCreating packet 3 (3DM Poll Data command) from scratch.\n\n");
 
     // Field 6
-    add_poll_data_field_to_packet(packet);
+    addPollDataFieldToPacket(packet);
 
     // Complete packet 3
     // Write the checksum
-    add_checksum_to_packet(packet);
+    addChecksumToPacket(packet);
 
     // Note: This would be the time to send the packet to the device
     printf("Packet 3 (3DM Poll Data command) is complete.\n\n");
@@ -827,14 +826,14 @@ void create_packet_2_and_3_from_scratch()
 /// @note This is typically not done and is used to demonstrate how to extract
 ///       data from a raw buffer
 ///
-/// @see print_packet
-/// @see extract_shared_reference_time_field
-/// @see extract_sensor_accel_scaled_field
-/// @see extract_sensor_gyro_scaled_field
-/// @see extract_sensor_delta_theta_field
-/// @see extract_sensor_delta_velocity_field
+/// @see printPacket
+/// @see extractSharedReferenceTimeField
+/// @see extractSensorAccelScaledField
+/// @see extractSensorGyroScaledField
+/// @see extractSensorDeltaThetaField
+/// @see extractSensorDeltaVelocityField
 ///
-void create_packet_4_from_raw_buffer()
+void createFromRawBufferPacket4()
 {
     printf("\nCreating packet 4 from a raw byte buffer.\n\n");
 
@@ -884,7 +883,7 @@ void create_packet_4_from_raw_buffer()
 
     // Ensure the packet is valid before inspecting it.
     // This is the combination of checking:
-    // 1. mip_packet_is_sane (buffer size and payload length checks)
+    // 1. packet.isSane() (buffer size and payload length checks)
     // 2. The packet has a non-zero descriptor set.
     // 3. The checksum is valid.
     if (!packetView.isValid())
@@ -919,32 +918,32 @@ void create_packet_4_from_raw_buffer()
         {
             case mip::data_shared::ReferenceTimestamp::FIELD_DESCRIPTOR:
             {
-                extract_shared_reference_time_field(serializer);
+                extractSharedReferenceTimeField(serializer);
                 break;
             }
             case mip::data_shared::ReferenceTimeDelta::FIELD_DESCRIPTOR:
             {
-                extract_shared_reference_time_delta_field(serializer);
+                extractSharedReferenceTimeDeltaField(serializer);
                 break;
             }
             case mip::data_sensor::ScaledAccel::FIELD_DESCRIPTOR:
             {
-                extract_sensor_accel_scaled_field(serializer);
+                extractSensorAccelScaledField(serializer);
                 break;
             }
             case mip::data_sensor::ScaledGyro::FIELD_DESCRIPTOR:
             {
-                extract_sensor_gyro_scaled_field(serializer);
+                extractSensorGyroScaledField(serializer);
                 break;
             }
             case mip::data_sensor::DeltaTheta::FIELD_DESCRIPTOR:
             {
-                extract_sensor_delta_theta_field(serializer);
+                extractSensorDeltaThetaField(serializer);
                 break;
             }
             case mip::data_sensor::DeltaVelocity::FIELD_DESCRIPTOR:
             {
-                extract_sensor_delta_velocity_field(fieldView);
+                extractSensorDeltaVelocityField(fieldView);
                 break;
             }
             default:

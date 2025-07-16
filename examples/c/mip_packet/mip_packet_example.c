@@ -53,7 +53,7 @@ void add_comm_speed_field_to_packet(mip_packet_view* _packet_view);
 void add_comm_speed_serializer_bytes_to_packet(mip_packet_view* _packet_view);
 
 // Fields added to packet 2
-void add_message_format_field_to_packet(mip_packet_view *_packet_view);
+void add_message_format_field_to_packet(mip_packet_view* _packet_view);
 
 // Fields added to packet 3
 void add_poll_data_field_to_packet(mip_packet_view* _packet_view);
@@ -64,7 +64,7 @@ void extract_shared_reference_time_delta_field(microstrain_serializer* _serializ
 void extract_sensor_accel_scaled_field(microstrain_serializer* _serializer);
 void extract_sensor_gyro_scaled_field(microstrain_serializer* _serializer);
 void extract_sensor_delta_theta_field(microstrain_serializer* _serializer);
-void extract_sensor_delta_velocity_field(const mip_field_view* field_view);
+void extract_sensor_delta_velocity_field(const mip_field_view* _field_view);
 
 // Packet creation
 void create_packet_1_from_scratch();
@@ -241,8 +241,8 @@ void add_checksum_to_packet(mip_packet_view* _packet_view)
 ////////////////////////////////////////////////////////////////////////////////
 /// @brief Adds a Ping command field to a MIP packet
 ///
-/// @details Creates a field with the Base Ping command descriptor (0x01)
-/// with no payload data.
+/// @details Creates a field with the Base Ping command descriptor (0x01) with
+///          no payload data.
 ///
 /// @remark Field 1
 ///
@@ -278,7 +278,9 @@ void add_comm_speed_bytes_to_packet(mip_packet_view* _packet_view)
 {
     // Build the raw payload for the packet
     const uint8_t comm_speed_payload[] = {
-        0x01, 0x01, 0x00, 0x01, 0xC2, 0x00
+        0x01,                  // Function selector
+        0x01,                  // Port
+        0x00, 0x01, 0xC2, 0x00 // Baudrate
     };
 
     mip_packet_add_field(
@@ -352,7 +354,7 @@ void add_comm_speed_serializer_bytes_to_packet(mip_packet_view* _packet_view)
     // Create a field and get the payload pointer
     // The return value is the number of bytes remaining after allocating this field
     // Note: We know the field length will be 6 bytes, allowing us to not have to update
-    // the field length after initialization as field #6 does
+    // the field length after initialization as field 6 does
     const int remaining_bytes = mip_packet_create_field(
         _packet_view,
         MIP_CMD_DESC_BASE_COMM_SPEED,
@@ -376,7 +378,7 @@ void add_comm_speed_serializer_bytes_to_packet(mip_packet_view* _packet_view)
 
     // Write parameters to the payload
     // Note: This is analogous to insert_mip_base_comm_speed_command
-    microstrain_insert_u8(&serializer, 0x01);
+    microstrain_insert_u8(&serializer, MIP_FUNCTION_WRITE);
     microstrain_insert_u8(&serializer, 0x01);
     microstrain_insert_u32(&serializer, 115200);
 
@@ -405,7 +407,7 @@ void add_comm_speed_serializer_bytes_to_packet(mip_packet_view* _packet_view)
 ///
 /// @param _packet_view Pointer to the packet to add the field to
 ///
-void add_message_format_field_to_packet(mip_packet_view *_packet_view)
+void add_message_format_field_to_packet(mip_packet_view* _packet_view)
 {
     mip_3dm_message_format_command message_format;
 
@@ -489,11 +491,11 @@ void add_poll_data_field_to_packet(mip_packet_view* _packet_view)
 
     // Build the 3DM Poll Data command
 
-    // 1. Suppress_ack
-    microstrain_insert_bool(&serializer, false);
-
-    // 2. Descriptor set
+    // 1. Descriptor set
     microstrain_insert_u8(&serializer, MIP_SENSOR_DATA_DESC_SET);
+
+    // 2. Suppress_ack
+    microstrain_insert_bool(&serializer, false);
 
     // 3. Number of data quantities
     const uint8_t num_data = 3;
@@ -680,16 +682,16 @@ void extract_sensor_delta_theta_field(microstrain_serializer* _serializer)
 ///          change measurements in m/s using the field structure. Displays
 ///          the values if successfully extracted.
 ///
-/// @param field_view Pointer to the field view containing the data
+/// @param _field_view Pointer to the field view containing the data
 ///
-void extract_sensor_delta_velocity_field(const mip_field_view* field_view)
+void extract_sensor_delta_velocity_field(const mip_field_view* _field_view)
 {
     // Same as scaled accel except using the field data structure
     // Note: This is the recommended method
     mip_sensor_delta_velocity_data delta_velocity_data;
 
     // Extract the entire data field and check that it was deserialized (validity check)
-    if (extract_mip_sensor_delta_velocity_data_from_field(field_view, &delta_velocity_data))
+    if (extract_mip_sensor_delta_velocity_data_from_field(_field_view, &delta_velocity_data))
     {
         printf("    %-20s = [%9.6f, %9.6f, %9.6f]\n",
             "Delta Velocity",
@@ -901,7 +903,7 @@ void create_packet_4_from_raw_buffer()
 
     // Create a view of the packet in the buffer.
     // Note: The buffer must not be modified, so do not call functions that manipulate the packet.
-    // E.g. finalize(), addField, createField, reset, etc.
+    // E.g., mip_packet_finalize(), mip_packet_add_field, mip_packet_create_field, mip_packet_reset, etc.
     mip_packet_from_buffer(&packet_view, raw_buffer, sizeof(raw_buffer) / sizeof(raw_buffer[0]));
 
     // Ensure the packet is valid before inspecting it.
