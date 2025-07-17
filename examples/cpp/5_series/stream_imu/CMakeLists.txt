@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.16)
 project("5_series_stream_imu_example_cpp"
     VERSION "1.0.0"
     DESCRIPTION "Simple example for streaming IMU data on 5-Series devices using C++"
-    LANGUAGES C
+    LANGUAGES C CXX
 )
 
 set(CMAKE_C_STANDARD 11)

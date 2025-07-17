@@ -90,9 +90,23 @@ int main(const int argc, const char* argv[])
     initializeDevice(device);
 
     terminate(&connection, "Example Completed Successfully.\n", true);
+
+    return 0;
 }
 
-// Custom logging handler callback
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Custom logging callback for MIP SDK message formatting and output
+///
+/// @details Processes and formats log messages from the MIP SDK based on
+///          severity level. Routes messages to appropriate output streams -
+///          errors and fatal messages go to stderr while other levels go to
+///          stdout. Each message is prefixed with its severity level name.
+///
+/// @param _user Pointer to user data (unused in this implementation)
+/// @param _level Log message severity level from microstrain_log_level enum
+/// @param _format Printf-style format string for the message
+/// @param _args Variable argument list containing message parameters
+///
 void logCallback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args)
 {
     // Unused parameter
@@ -125,9 +139,14 @@ void logCallback(void* _user, const microstrain_log_level _level, const char* _f
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-/// Initialize a MIP device and send some commands to prepare for configuration
+/// @brief Initializes and configures a MIP device interface
 ///
-/// @param _device Device to initialize
+/// @details Performs a complete device initialization sequence:
+///          1. Verifies device communication with a ping command
+///          2. Sets the device to idle mode to ensure reliable configuration
+///          3. Queries and displays detailed device information
+///
+/// @param _device Reference to a MIP device interface to initialize
 ///
 void initializeDevice(mip::Interface& _device)
 {
@@ -181,7 +200,18 @@ void initializeDevice(mip::Interface& _device)
     MICROSTRAIN_LOG_INFO("------------------------------------\n");
 }
 
-// Print an error message and close the application
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Handles graceful program termination and cleanup
+///
+/// @details Handles graceful shutdown when errors occur:
+///          - Outputs provided error message
+///          - Closes device connection if open
+///          - Exits with appropriate status code
+///
+/// @param _connection Pointer to the device connection to close
+/// @param _message Error message to display
+/// @param _successful Whether termination is due to success or failure
+///
 void terminate(microstrain::Connection* _connection, const char* _message, const bool _successful /* = false */)
 {
     if (strlen(_message) != 0)
@@ -225,11 +255,21 @@ void terminate(microstrain::Connection* _connection, const char* _message, const
     {
         exit(1);
     }
-
-    exit(0);
 }
 
-// Print an error message for a command and close the application
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Handles graceful program termination and command failure cleanup
+///
+/// @details Handles command failure scenarios:
+///          - Formats and displays an error message with command result
+///          - Closes device connection
+///          - Exits with failure status
+///
+/// @param _device MIP device interface for the command that failed
+/// @param _cmdResult Result code from a failed command
+/// @param _format Printf-style format string for error message
+/// @param ... Variable arguments for format string
+///
 void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const char* _format, ...)
 {
     va_list args;
