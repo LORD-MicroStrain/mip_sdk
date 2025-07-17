@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.16)
 project("mip_packet_example_cpp"
     VERSION "1.0.0"
     DESCRIPTION "Simple example for creating MIP packets using C++"
-    LANGUAGES C
+    LANGUAGES C CXX
 )
 
 set(CMAKE_C_STANDARD 11)
