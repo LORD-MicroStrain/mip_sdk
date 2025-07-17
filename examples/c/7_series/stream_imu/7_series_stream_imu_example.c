@@ -241,9 +241,23 @@ int main(const int argc, const char* argv[])
     }
 
     terminate(&device_port, "Example Completed Successfully.\n", true);
+
+    return 0;
 }
 
-// Custom logging handler callback
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Custom logging callback for MIP SDK message formatting and output
+///
+/// @details Processes and formats log messages from the MIP SDK based on
+///          severity level. Routes messages to appropriate output streams -
+///          errors and fatal messages go to stderr while other levels go to
+///          stdout. Each message is prefixed with its severity level name.
+///
+/// @param _user Pointer to user data (unused in this implementation)
+/// @param _level Log message severity level from microstrain_log_level enum
+/// @param _format Printf-style format string for the message
+/// @param _args Variable argument list containing message parameters
+///
 void log_callback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args)
 {
     // Unused parameter
@@ -275,8 +289,19 @@ void log_callback(void* _user, const microstrain_log_level _level, const char* _
     }
 }
 
-// Used for basic timestamping (since epoch in milliseconds)
-// TODO: Update this to whatever timestamping method is desired
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Gets the current system timestamp in milliseconds
+///
+/// @details Provides basic timestamping using system time:
+///          - Returns milliseconds since Unix epoch
+///          - Uses timespec_get() with UTC time base
+///          - Returns 0 if time cannot be obtained
+///
+/// @note Update this function to use a different time source if needed for
+///       your specific application requirements
+///
+/// @return Current system time in milliseconds since epoch
+///
 mip_timestamp get_current_timestamp()
 {
     struct timespec ts;
@@ -291,7 +316,20 @@ mip_timestamp get_current_timestamp()
     return (mip_timestamp)ts.tv_sec * 1000 + (mip_timestamp)ts.tv_nsec / 1000000;
 }
 
-// Send packet handler callback
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Handles sending packets to the device
+///
+/// @details Implements the MIP device interface send callback:
+///          - Extracts serial port from device user pointer
+///          - Validates connection state
+///          - Writes data buffer to serial port
+///
+/// @param _device MIP device interface containing the connection
+/// @param _data Buffer containing packet data to send
+/// @param _length Number of bytes to send
+///
+/// @return True if send was successful, false otherwise
+///
 bool mip_interface_user_send_to_device(mip_interface* _device, const uint8_t* _data, size_t _length)
 {
     // Extract the serial port pointer that was used in the callback initialization
@@ -310,7 +348,25 @@ bool mip_interface_user_send_to_device(mip_interface* _device, const uint8_t* _d
     return serial_port_write(device_port, _data, _length, &bytes_written);
 }
 
-// Receive packet handler callback
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Handles receiving packets from the device
+///
+/// @details Implements the MIP device interface receive callback:
+///          - Extracts serial port from device user pointer
+///          - Validates connection state
+///          - Reads available data into provided buffer
+///          - Timestamps the received data
+///
+/// @param _device MIP device interface containing the connection
+/// @param _buffer Buffer to store received data
+/// @param _max_length Maximum number of bytes to read
+/// @param _wait_time How long to wait for data in milliseconds
+/// @param _from_cmd Whether this read is from a command response (unused)
+/// @param _length_out Number of bytes actually read
+/// @param _timestamp_out Timestamp when data was received
+///
+/// @return True if receive was successful, false otherwise
+///
 bool mip_interface_user_recv_from_device(mip_interface* _device, uint8_t* _buffer, size_t _max_length,
     mip_timeout _wait_time, bool _from_cmd, size_t* _length_out, mip_timestamp* _timestamp_out)
 {
@@ -334,15 +390,24 @@ bool mip_interface_user_recv_from_device(mip_interface* _device, uint8_t* _buffe
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-/// Initialize a MIP device and send some commands to prepare for configuration
+/// @brief Initializes and configures a MIP device interface
 ///
-/// @param _device Device to initialize
-/// @param _device_port Serial port to use for the device connection
-/// @param _baudrate Baudrate to open the connection with
+/// @details Performs a complete device initialization sequence:
+///          1. Sets up a MIP device interface with specified timeouts and
+///             callbacks
+///          2. Verifies device communication with a ping command
+///          3. Sets the device to idle mode to ensure reliable configuration
+///          4. Queries and displays detailed device information
+///          5. Loads default device settings for a known state
+///
+/// @param _device Pointer to a MIP device interface to initialize
+/// @param _device_port Pointer to an initialized serial port for device
+///                     communication
+/// @param _baudrate Serial communication baudrate for the device
 ///
 void initialize_device(mip_interface* _device, serial_port* _device_port, const uint32_t _baudrate)
 {
-    MICROSTRAIN_LOG_INFO("Initializing device interface.\n");
+    MICROSTRAIN_LOG_INFO("Initializing the device interface.\n");
     mip_interface_init(
         _device,
         mip_timeout_from_baudrate(_baudrate), // Set the base timeout for commands (milliseconds)
@@ -364,7 +429,7 @@ void initialize_device(mip_interface* _device, serial_port* _device_port, const 
 
     // Set the device to Idle
     // Note: This is good to do during setup as high data traffic can cause commands to fail
-    MICROSTRAIN_LOG_INFO("Setting device to idle.\n");
+    MICROSTRAIN_LOG_INFO("Setting the device to idle.\n");
     cmd_result = mip_base_set_idle(_device);
     if (!mip_cmd_result_is_ack(cmd_result))
     {
@@ -372,7 +437,7 @@ void initialize_device(mip_interface* _device, serial_port* _device_port, const 
     }
 
     // Print device info to make sure the correct device is being used
-    MICROSTRAIN_LOG_INFO("Getting device information.\n");
+    MICROSTRAIN_LOG_INFO("Getting the device information.\n");
     mip_base_device_info device_info;
     cmd_result = mip_base_get_device_info(_device, &device_info);
     if (!mip_cmd_result_is_ack(cmd_result))
@@ -412,11 +477,24 @@ void initialize_device(mip_interface* _device, serial_port* _device_port, const 
     }
 }
 
-// Check if the device supports a descriptor
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Determines if the device supports a specific descriptor
+///
+/// @details Checks if a given descriptor set and field descriptor combination
+///          is supported by comparing against an array of supported
+///          descriptors. The device returns descriptors as composite values
+///          (e.g., 0x8001 from 0x80,0x01).
+///
+/// @param _descriptor_set The high byte of the composite descriptor
+/// @param _field_descriptor The low byte of the composite descriptor
+/// @param _supported_descriptors Array of supported composite descriptors
+/// @param _supported_descriptor_count Number of entries in the array
+///
+/// @returns true if the descriptor combination is supported, false otherwise
+///
 bool is_descriptor_supported(const uint8_t _descriptor_set, const uint8_t _field_descriptor,
     const uint16_t* _supported_descriptors, const uint8_t _supported_descriptor_count)
 {
-    // The device returns a list of composite descriptors I.E., 0x80, 0x01 (0x8001)
     // Combine the 2 descriptors for proper comparison
     const uint16_t composite_descriptor = (uint16_t)_descriptor_set << 8 | (uint16_t)_field_descriptor;
 
@@ -431,7 +509,22 @@ bool is_descriptor_supported(const uint8_t _descriptor_set, const uint8_t _field
     return false;
 }
 
-// Configure Sensor data message format
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Configures message format for sensor data streaming
+///
+/// @details Sets up sensor data output by:
+///          1. Querying device base rate
+///          2. Validating desired sample rate against base rate
+///          3. Calculating proper decimation
+///          4. Configuring message format with:
+///             - Scaled accelerometer
+///             - Scaled gyroscope
+///             - Scaled magnetometer
+///
+/// @param _device Pointer to the initialized MIP device interface
+/// @param _supported_descriptors Array of descriptors supported by the device
+/// @param _supported_descriptor_count Number of descriptors in the array
+///
 void configure_sensor_message_format(mip_interface* _device, const uint16_t* _supported_descriptors,
     const uint8_t _supported_descriptor_count)
 {
@@ -512,7 +605,21 @@ void configure_sensor_message_format(mip_interface* _device, const uint16_t* _su
     }
 }
 
-// Generic packet callback handler
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Callback function that processes received MIP packets
+///
+/// @details This function is called whenever a MIP packet is received from the
+///          device.
+///          It processes the packet by:
+///          1. Extracting all fields from the packet
+///          2. Building a formatted string of field descriptors
+///          3. Logging packet information including timestamp, descriptor set,
+///             and field descriptors
+///
+/// @param _user Pointer to user data (unused in this implementation)
+/// @param _packet_view Pointer to the received MIP packet
+/// @param _timestamp Timestamp when the packet was received
+///
 void packet_callback(void* _user, const mip_packet_view* _packet_view, mip_timestamp _timestamp)
 {
     // Unused parameter
@@ -549,8 +656,18 @@ void packet_callback(void* _user, const mip_packet_view* _packet_view, mip_times
         field_descriptors_buffer
     );
 }
-
-// Accel data callback handler
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Callback handler for accelerometer data fields
+///
+/// @details Processes scaled accelerometer data fields by:
+///          1. Extracting the scaled acceleration vector from the field
+///          2. Logging the X, Y, Z acceleration values with descriptors
+///
+/// @param _user Pointer to user data (unused in this implementation)
+/// @param _field_view Pointer to the field containing accelerometer data
+/// @param _timestamp Timestamp indicating when the field was received from the
+///                   device (unused in this implementation)
+///
 void accel_field_callback(void* _user, const mip_field_view* _field_view, mip_timestamp _timestamp)
 {
     // Unused parameters
@@ -572,7 +689,18 @@ void accel_field_callback(void* _user, const mip_field_view* _field_view, mip_ti
     }
 }
 
-// Gyro data callback handler
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Callback handler for gyroscope data fields
+///
+/// @details Processes scaled gyroscope data fields by:
+///          1. Extracting the scaled angular rates from the field
+///          2. Logging the X, Y, Z angular rate values with descriptors
+///
+/// @param _user Pointer to user data (unused in this implementation)
+/// @param _field_view Pointer to the field containing gyroscope data
+/// @param _timestamp Timestamp indicating when the field was received from the
+///                   device (unused in this implementation)
+///
 void gyro_field_callback(void* _user, const mip_field_view* _field_view, mip_timestamp _timestamp)
 {
     // Unused parameters
@@ -594,7 +722,18 @@ void gyro_field_callback(void* _user, const mip_field_view* _field_view, mip_tim
     }
 }
 
-// Mag data callback handler
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Callback handler for magnetometer data fields
+///
+/// @details Processes scaled magnetometer data fields by:
+///          1. Extracting the scaled magnetic field vector from the field
+///          2. Logging the X, Y, Z magnetic field values with descriptors
+///
+/// @param _user Pointer to user data (unused in this implementation)
+/// @param _field_view Pointer to the field containing magnetometer data
+/// @param _timestamp Timestamp indicating when the field was received from the
+///                   device (unused in this implementation)
+///
 void mag_field_callback(void* _user, const mip_field_view* _field_view, mip_timestamp _timestamp)
 {
     // Unused parameters
@@ -616,7 +755,18 @@ void mag_field_callback(void* _user, const mip_field_view* _field_view, mip_time
     }
 }
 
-// Print an error message and close the application
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Handles graceful program termination and cleanup
+///
+/// @details Handles graceful shutdown when errors occur:
+///          - Outputs provided error message
+///          - Closes device connection if open
+///          - Exits with appropriate status code
+///
+/// @param _device_port Serial port connection to close
+/// @param _message Error message to display
+/// @param _successful Whether termination is due to success or failure
+///
 void terminate(serial_port* _device_port, const char* _message, const bool _successful)
 {
     if (strlen(_message) != 0)
@@ -660,11 +810,21 @@ void terminate(serial_port* _device_port, const char* _message, const bool _succ
     {
         exit(1);
     }
-
-    exit(0);
 }
 
-// Print an error message for a command and close the application
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Handles graceful program termination and command failure cleanup
+///
+/// @details Handles command failure scenarios:
+///          - Formats and displays an error message with command result
+///          - Closes device connection
+///          - Exits with failure status
+///
+/// @param _device MIP device interface for the command that failed
+/// @param _cmd_result Result code from a failed command
+/// @param _format Printf-style format string for error message
+/// @param ... Variable arguments for format string
+///
 void command_failure_terminate(const mip_interface* _device, const mip_cmd_result _cmd_result, const char* _format, ...)
 {
     va_list args;

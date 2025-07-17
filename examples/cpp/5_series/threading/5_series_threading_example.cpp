@@ -188,9 +188,23 @@ int main(const int argc, const char* argv[])
 #endif // USE_THREADS
 
     terminate(&connection, "Example Completed Successfully.\n", true);
+
+    return 0;
 }
 
-// Custom logging handler callback
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Custom logging callback for MIP SDK message formatting and output
+///
+/// @details Processes and formats log messages from the MIP SDK based on
+///          severity level. Routes messages to appropriate output streams -
+///          errors and fatal messages go to stderr while other levels go to
+///          stdout. Each message is prefixed with its severity level name.
+///
+/// @param _user Pointer to user data (unused in this implementation)
+/// @param _level Log message severity level from microstrain_log_level enum
+/// @param _format Printf-style format string for the message
+/// @param _args Variable argument list containing message parameters
+///
 void logCallback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args)
 {
     // Unused parameter
@@ -222,8 +236,18 @@ void logCallback(void* _user, const microstrain_log_level _level, const char* _f
     }
 }
 
-// Used for basic timestamping (since epoch in milliseconds)
-// TODO: Update this to whatever timestamping method is desired
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Gets the current system timestamp in milliseconds
+///
+/// @details Provides system time measurement using std::chrono for milliseconds
+///          since steady clock epoch. Uses steady_clock to ensure monotonic
+///          time that won't be affected by system time changes.
+///
+/// @note Update this function to use a different time source if needed for
+///       your specific application requirements
+///
+/// @return Current timestamp in milliseconds since epoch
+///
 mip::Timestamp getCurrentTimestamp()
 {
     const std::chrono::nanoseconds timeSinceEpoch = std::chrono::steady_clock::now().time_since_epoch();
@@ -231,9 +255,15 @@ mip::Timestamp getCurrentTimestamp()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-/// Initialize a MIP device and send some commands to prepare for configuration
+/// @brief Initializes and configures a MIP device interface
 ///
-/// @param _device Device to initialize
+/// @details Performs a complete device initialization sequence:
+///          1. Verifies device communication with a ping command
+///          2. Sets the device to idle mode to ensure reliable configuration
+///          3. Queries and displays detailed device information
+///          4. Loads default device settings for a known state
+///
+/// @param _device Reference to a MIP device interface to initialize
 ///
 void initializeDevice(mip::Interface& _device)
 {
@@ -296,7 +326,18 @@ void initializeDevice(mip::Interface& _device)
     }
 }
 
-// Configure Sensor data message format
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Configures message format for sensor data streaming
+///
+/// @details Sets up sensor data output by:
+///          1. Querying device base rate
+///          2. Validating desired sample rate against base rate
+///          3. Calculating proper decimation
+///          4. Configuring message format with:
+///             - Scaled accelerometer
+///
+/// @param _device Reference to the initialized MIP device interface
+///
 void configureSensorMessageFormat(mip::Interface& _device)
 {
     // Note: Querying the device base rate is only one way to calculate the descriptor decimation
@@ -355,7 +396,21 @@ void configureSensorMessageFormat(mip::Interface& _device)
     }
 }
 
-// Generic packet callback handler
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Callback function that processes received MIP packets
+///
+/// @details This function is called whenever a MIP packet is received from the
+///          device.
+///          It processes the packet by:
+///          1. Extracting all fields from the packet
+///          2. Building a formatted string of field descriptors
+///          3. Logging packet information including timestamp, descriptor set,
+///             and field descriptors
+///
+/// @param _user Pointer to user data (unused in this implementation)
+/// @param _packetView Reference to the received MIP packet
+/// @param _timestamp Timestamp when the packet was received
+///
 void packetCallback(void* _user, const mip::PacketView& _packetView, mip::Timestamp _timestamp)
 {
     // Unused parameter
@@ -390,8 +445,26 @@ void packetCallback(void* _user, const mip::PacketView& _packetView, mip::Timest
 }
 
 #if USE_THREADS
-// Device update callback
-// Note: This handles separation of data collection updates and command updates
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Updates the device state based on command or data collection context
+///
+/// @details Handles device updates differently depending on whether called from
+///          command handling or data collection:
+///          - For data collection (_fromCmd = false): Performs normal device
+///            updates
+///          - For commands (_fromCmd = true): Sleeps briefly to save power
+///            while avoiding command timeouts
+///
+/// @param _device Pointer to the MIP device interface
+/// @param _waitTime Time to wait for updates (typically used only from
+///                   commands)
+/// @param _fromCmd True if called from command handling, false for data
+///                  collection
+///
+/// @returns true if the update was successful, false on error.
+///          Always returns true when called from commands to avoid race
+///          conditions.
+///
 bool updateDevice(mip::Interface& _device, mip::Timeout _waitTime, bool _fromCmd)
 {
     // Do normal updates only if not called from a command handler
@@ -410,7 +483,20 @@ bool updateDevice(mip::Interface& _device, mip::Timeout _waitTime, bool _fromCmd
     return true;
 }
 
-// Handle data collection from the device on a separate thread than commands
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Handles continuous data collection from the device in a separate
+///        thread
+///
+/// @details Main function for the data collection thread that:
+///          1. Continuously updates device state for receiving data
+///          2. Clears command queue if the connection closes to avoid
+///             deadlocks
+///          3. Yields thread time when possible
+///          4. Runs until the running state becomes false
+///
+/// @param _device Reference to the MIP device interface
+/// @param _running Reference to volatile boolean controlling thread execution
+///
 void dataCollectionThread(mip::Interface& _device, const volatile bool& _running)
 {
     MICROSTRAIN_LOG_INFO("Data collection thread created!\n");
@@ -432,7 +518,18 @@ void dataCollectionThread(mip::Interface& _device, const volatile bool& _running
 }
 #endif // USE_THREADS
 
-// Print an error message and close the application
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Handles graceful program termination and cleanup
+///
+/// @details Handles graceful shutdown when errors occur:
+///          - Outputs provided error message
+///          - Closes device connection if open
+///          - Exits with appropriate status code
+///
+/// @param _connection Pointer to the device connection to close
+/// @param _message Error message to display
+/// @param _successful Whether termination is due to success or failure
+///
 void terminate(microstrain::Connection* _connection, const char* _message, const bool _successful /* = false */)
 {
     if (strlen(_message) != 0)
@@ -476,11 +573,21 @@ void terminate(microstrain::Connection* _connection, const char* _message, const
     {
         exit(1);
     }
-
-    exit(0);
 }
 
-// Print an error message for a command and close the application
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Handles graceful program termination and command failure cleanup
+///
+/// @details Handles command failure scenarios:
+///          - Formats and displays an error message with command result
+///          - Closes device connection
+///          - Exits with failure status
+///
+/// @param _device MIP device interface for the command that failed
+/// @param _cmdResult Result code from a failed command
+/// @param _format Printf-style format string for error message
+/// @param ... Variable arguments for format string
+///
 void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const char* _format, ...)
 {
     va_list args;
