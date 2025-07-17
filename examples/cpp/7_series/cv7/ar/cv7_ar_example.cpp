@@ -261,9 +261,23 @@ int main(const int argc, const char* argv[])
     }
 
     terminate(&connection, "Example Completed Successfully.\n", true);
+
+    return 0;
 }
 
-// Custom logging handler callback
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Custom logging callback for MIP SDK message formatting and output
+///
+/// @details Processes and formats log messages from the MIP SDK based on
+///          severity level. Routes messages to appropriate output streams -
+///          errors and fatal messages go to stderr while other levels go to
+///          stdout. Each message is prefixed with its severity level name.
+///
+/// @param _user Pointer to user data (unused in this implementation)
+/// @param _level Log message severity level from microstrain_log_level enum
+/// @param _format Printf-style format string for the message
+/// @param _args Variable argument list containing message parameters
+///
 void logCallback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args)
 {
     // Unused parameter
@@ -295,7 +309,11 @@ void logCallback(void* _user, const microstrain_log_level _level, const char* _f
     }
 }
 
-// Capture gyro bias
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Captures and configures device gyro bias
+///
+/// @param _device Reference to the initialized MIP device interface
+///
 void captureGyroBias(mip::Interface& _device)
 {
     // Get the command queue so we can increase the reply timeout during the capture duration,
@@ -351,7 +369,20 @@ void captureGyroBias(mip::Interface& _device)
     cmdQueue.setBaseReplyTimeout(previousTimeout);
 }
 
-// Configure Filter data message format
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Configures message format for filter data streaming
+///
+/// @details Sets up filter data output by:
+///          1. Querying device base rate
+///          2. Validating desired sample rate against base rate
+///          3. Calculating proper decimation
+///          4. Configuring message format with:
+///             - GPS time
+///             - Filter status
+///             - Euler angles
+///
+/// @param _device Reference to the initialized MIP device interface
+///
 void configureFilterMessageFormat(mip::Interface& _device)
 {
     // Note: Querying the device base rate is only one way to calculate the descriptor decimation
@@ -414,7 +445,19 @@ void configureFilterMessageFormat(mip::Interface& _device)
     }
 }
 
-// Set up a trigger for filter euler angles
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Configures threshold event triggers for roll and pitch angles
+///
+/// @details Sets up two event triggers for monitoring Euler angles:
+///          1. Roll angle threshold (Trigger ID 1)
+///             - Monitors X-axis rotation
+///             - Triggers when the angle exceeds +/-45 degrees
+///          2. Pitch angle threshold (Trigger ID 2)
+///             - Monitors Y-axis rotation
+///             - Triggers when the angle exceeds +/-45 degrees
+///
+/// @param _device Reference to the initialized MIP device interface
+///
 void configureEventTriggers(mip::Interface& _device)
 {
     // Configure a threshold trigger
@@ -470,7 +513,16 @@ void configureEventTriggers(mip::Interface& _device)
     }
 }
 
-// Note: Event trigger instance IDs do not need to match the Action instance IDs
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Configures event actions to occur when triggers are activated
+///
+/// @details Sets up message actions for each event trigger:
+///          - Links action instance 1 to trigger instance 1 (roll)
+///          - Links action instance 2 to trigger instance 2 (pitch)
+///          - Configures both to output event source data when triggered
+///
+/// @param _device Reference to the initialized MIP device interface
+///
 void configureEventActions(mip::Interface& _device)
 {
     mip::commands_3dm::EventAction::Parameters eventActionParameters;
@@ -526,7 +578,15 @@ void configureEventActions(mip::Interface& _device)
     }
 }
 
-// Enable the events
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Enables the configured event triggers
+///
+/// @details Activates both event triggers:
+///          1. Enables roll threshold monitoring (Trigger ID 1)
+///          2. Enables pitch threshold monitoring (Trigger ID 2)
+///
+/// @param _device Reference to the initialized MIP device interface
+///
 void enableEvents(mip::Interface& _device)
 {
     uint8_t eventTriggerInstanceId = 1;
@@ -560,7 +620,18 @@ void enableEvents(mip::Interface& _device)
     }
 }
 
-// Handler for filter event source field
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Event handler for filter data source triggers
+///
+/// @details Processes event trigger notifications for:
+///          - Roll threshold events (Trigger ID 1)
+///          - Pitch threshold events (Trigger ID 2)
+///          Outputs appropriate warning messages when thresholds are exceeded.
+///
+/// @param _user User data pointer (unused)
+/// @param _field Reference to the MIP field containing event data
+/// @param _timestamp Timestamp of when the event occurred (unused)
+///
 void handleEventTriggers(void* _user, const mip::FieldView& _field, mip::Timestamp _timestamp)
 {
     // Unused parameters
@@ -586,7 +657,13 @@ void handleEventTriggers(void* _user, const mip::FieldView& _field, mip::Timesta
     }
 }
 
-// Initialize and reset the filter
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Initializes and resets the navigation filter
+///
+/// @details Configures the filter by resetting it.
+///
+/// @param _device Reference to the initialized MIP device interface
+///
 void initializeFilter(mip::Interface& _device)
 {
     // Reset the filter
@@ -599,7 +676,17 @@ void initializeFilter(mip::Interface& _device)
     }
 }
 
-// Display the filter change status
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Displays the current filter state when changes occur
+///
+/// @details Outputs readable messages for filter state transitions:
+///          - Initialization mode
+///          - Vertical gyro mode
+///          - AHRS mode
+///          - Full navigation mode
+///
+/// @param _filterState Current filter mode from the MIP device interface
+///
 void displayFilterState(const mip::data_filter::FilterMode _filterState)
 {
     const char*   headerMessage    = "The filter has entered";
@@ -655,8 +742,18 @@ void displayFilterState(const mip::data_filter::FilterMode _filterState)
     }
 }
 
-// Used for basic timestamping (since epoch in milliseconds)
-// TODO: Update this to whatever timestamping method is desired
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Gets the current system timestamp in milliseconds
+///
+/// @details Provides system time measurement using std::chrono for milliseconds
+///          since steady clock epoch. Uses steady_clock to ensure monotonic
+///          time that won't be affected by system time changes.
+///
+/// @note Update this function to use a different time source if needed for
+///       your specific application requirements
+///
+/// @return Current timestamp in milliseconds since epoch
+///
 mip::Timestamp getCurrentTimestamp()
 {
     const std::chrono::nanoseconds timeSinceEpoch = std::chrono::steady_clock::now().time_since_epoch();
@@ -664,9 +761,17 @@ mip::Timestamp getCurrentTimestamp()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-/// Initialize a MIP device and send some commands to prepare for configuration
+/// @brief Initializes and configures a MIP device interface
 ///
-/// @param _device Device to initialize
+/// @details Performs a complete device initialization sequence:
+///          1. Sets up a MIP device interface with specified timeouts and
+///             callbacks
+///          2. Verifies device communication with a ping command
+///          3. Sets the device to idle mode to ensure reliable configuration
+///          4. Queries and displays detailed device information
+///          5. Loads default device settings for a known state
+///
+/// @param _device Reference to a MIP device interface to initialize
 ///
 void initializeDevice(mip::Interface& _device)
 {
@@ -729,7 +834,18 @@ void initializeDevice(mip::Interface& _device)
     }
 }
 
-// Print an error message and close the application
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Handles graceful program termination and cleanup
+///
+/// @details Handles graceful shutdown when errors occur:
+///          - Outputs provided error message
+///          - Closes device connection if open
+///          - Exits with appropriate status code
+///
+/// @param _connection Pointer to the device connection to close
+/// @param _message Error message to display
+/// @param _successful Whether termination is due to success or failure
+///
 void terminate(microstrain::Connection* _connection, const char* _message, const bool _successful /* = false */)
 {
     if (strlen(_message) != 0)
@@ -773,11 +889,21 @@ void terminate(microstrain::Connection* _connection, const char* _message, const
     {
         exit(1);
     }
-
-    exit(0);
 }
 
-// Print an error message for a command and close the application
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Handles graceful program termination and command failure cleanup
+///
+/// @details Handles command failure scenarios:
+///          - Formats and displays an error message with command result
+///          - Closes device connection
+///          - Exits with failure status
+///
+/// @param _device MIP device interface for the command that failed
+/// @param _cmdResult Result code from a failed command
+/// @param _format Printf-style format string for error message
+/// @param ... Variable arguments for format string
+///
 void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const char* _format, ...)
 {
     va_list args;
