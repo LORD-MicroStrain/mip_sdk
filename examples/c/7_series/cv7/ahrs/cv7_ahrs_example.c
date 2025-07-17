@@ -967,7 +967,7 @@ void initialize_device(mip_interface* _device, serial_port* _device_port, const 
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-/// @brief Displays an error message and terminates program execution
+/// @brief Handles graceful program termination and cleanup
 ///
 /// @details Handles graceful shutdown when errors occur:
 ///          - Outputs provided error message
@@ -1024,7 +1024,7 @@ void terminate(serial_port* _device_port, const char* _message, const bool _succ
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-/// @brief Displays command failure details and terminates the program
+/// @brief Handles graceful program termination and command failure cleanup
 ///
 /// @details Handles command failure scenarios:
 ///          - Formats and displays an error message with command result

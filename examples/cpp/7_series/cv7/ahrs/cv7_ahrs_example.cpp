@@ -779,12 +779,10 @@ mip::Timestamp getCurrentTimestamp()
 /// @brief Initializes and configures a MIP device interface
 ///
 /// @details Performs a complete device initialization sequence:
-///          1. Sets up a MIP device interface with specified timeouts and
-///             callbacks
-///          2. Verifies device communication with a ping command
-///          3. Sets the device to idle mode to ensure reliable configuration
-///          4. Queries and displays detailed device information
-///          5. Loads default device settings for a known state
+///          1. Verifies device communication with a ping command
+///          2. Sets the device to idle mode to ensure reliable configuration
+///          3. Queries and displays detailed device information
+///          4. Loads default device settings for a known state
 ///
 /// @param _device Reference to a MIP device interface to initialize
 ///
