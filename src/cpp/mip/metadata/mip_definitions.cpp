@@ -5,6 +5,9 @@
 #include "mip/metadata/definitions/data_shared.hpp"
 #include "mip/metadata/common.hpp"
 
+#include <algorithm>
+
+
 namespace mip::metadata
 {
     ////////////////////////////////////////////////////////////////////////////////
