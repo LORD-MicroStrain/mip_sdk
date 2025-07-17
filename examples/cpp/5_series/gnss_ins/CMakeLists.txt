@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.16)
 project("5_series_gnss_ins_example_cpp"
     VERSION "1.0.0"
     DESCRIPTION "Simple example for the 3DM-CX5-GNSS/INS, and 3DM-GX5-GNSS/INS using C++"
-    LANGUAGES C
+    LANGUAGES C CXX
 )
 
 set(CMAKE_C_STANDARD 11)
