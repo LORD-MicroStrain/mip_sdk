@@ -15,6 +15,12 @@ add_library(${MIP_EXTRAS_LIBRARY}
     "${MIP_EXTRAS_SOURCES}"
 )
 
+# Configure the project in a sub-folder for IDEs that support it
+file(RELATIVE_PATH PROJECT_RELATIVE_PATH "${MICROSTRAIN_SRC_DIR}" "${CMAKE_CURRENT_LIST_DIR}")
+set_target_properties(${MIP_EXTRAS_LIBRARY} PROPERTIES
+    FOLDER "${PROJECT_RELATIVE_PATH}"
+)
+
 if(MSVC)
     source_group(TREE ${MICROSTRAIN_SRC_DIR} FILES ${MIP_EXTRAS_SOURCES})
 endif()
