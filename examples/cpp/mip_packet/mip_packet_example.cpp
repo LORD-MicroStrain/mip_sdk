@@ -108,13 +108,13 @@ int main(const int argc, const char* argv[])
 ///        contents
 ///
 /// @details This function inspects and displays:
-/// - Total packet length
-/// - Raw packet bytes in hex format
-/// - MIP SYNC bytes
-/// - Descriptor set
-/// - Payload length
-/// - Field information for each field in the packet
-/// - Checksum values and validity
+///          - Total packet length
+///          - Raw packet bytes in hex format
+///          - MIP SYNC bytes
+///          - Descriptor set
+///          - Payload length
+///          - Field information for each field in the packet
+///          - Checksum values and validity
 ///
 /// @param _packetView Reference to the MIP packet view to inspect
 ///
@@ -198,10 +198,10 @@ void printPacket(const mip::PacketView& _packetView)
 ////////////////////////////////////////////////////////////////////////////////
 /// @brief Creates an empty MIP packet for manual construction
 ///
-/// @details Initializes a MIP packet in a user-provided buffer with the specified
-///          descriptor set. Demonstrates low-level packet creation using the
-///          PacketView class for manual buffer management. The packet is
-///          initially empty and invalid until fields are added.
+/// @details Initializes a MIP packet in a user-provided buffer with the
+///          specified descriptor set. Demonstrates low-level packet creation
+///          using the PacketView class for manual buffer management. The
+///          packet is initially empty and invalid until fields are added.
 ///
 /// @note This is a similar approach to the C API of the MIP SDK
 ///
@@ -671,11 +671,11 @@ void extractSensorDeltaVelocityField(const mip::FieldView& _fieldView)
 /// 6. Final checksum
 ///
 /// @details The function shows several important concepts:
-/// - Creating an empty packet with a buffer
-/// - Initializing a packet with a descriptor set
-/// - Adding multiple fields to a packet
-/// - Adding checksums at different stages
-/// - Proper packet completion sequence
+///          - Creating an empty packet with a buffer
+///          - Initializing a packet with a descriptor set
+///          - Adding multiple fields to a packet
+///          - Adding checksums at different stages
+///          - Proper packet completion sequence
 ///
 /// @note This is a demonstration function showing how to build a complex MIP
 ///       packet from scratch. The packet created would typically be sent to
@@ -738,11 +738,11 @@ void createFromScratchPacket1()
 /// 1. A 3DM Message Format command packet (Packet 2)
 /// 2. A 3DM Poll Data command packet (Packet 3)
 ///
-/// The function shows the process of:
-/// - Initializing an empty packet
-/// - Different ways of adding fields to the packet
-/// - Adding checksums
-/// - Resetting and reusing the packet buffer
+/// @details The function shows the process of:
+///          - Initializing an empty packet
+///          - Different ways of adding fields to the packet
+///          - Adding checksums
+///          - Resetting and reusing the packet buffer
 ///
 /// @note This is a demonstration function and the packets created would
 ///       typically be sent to a device immediately after creation
@@ -814,14 +814,14 @@ void createFromScratchPacket2And3()
 ///        data
 ///
 /// @details This function shows how to:
-/// - Create a packet view from existing raw buffer data
-/// - Validate the packet structure and checksum
-/// - Access and display packet contents
-/// - Extract specific sensor data fields based on their descriptors
-/// - Process field data using the serialization tools
+///          - Create a packet view from existing raw buffer data
+///          - Validate the packet structure and checksum
+///          - Access and display packet contents
+///          - Extract specific sensor data fields based on their descriptors
+///          - Process field data using the serialization tools
 ///
-/// The example uses a hardcoded packet containing multiple sensor data fields
-/// for demonstration purposes.
+/// @remark The example uses a hardcoded packet containing multiple sensor data
+///         fields for demonstration purposes.
 ///
 /// @note This is typically not done and is used to demonstrate how to extract
 ///       data from a raw buffer
