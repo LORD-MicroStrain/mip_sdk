@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.16)
 
-project("threading_example_cpp"
+project("5_series_threading_example_cpp"
     VERSION "1.0.0"
-    DESCRIPTION "Simple example for threading a MIP device to acquire data using C++"
-    LANGUAGES C
+    DESCRIPTION "Simple example for threading a 5-Series MIP device to acquire data using C++"
+    LANGUAGES C CXX
 )
 
 set(CMAKE_C_STANDARD 11)
@@ -45,7 +45,7 @@ endif()
 
 # Create the example
 add_executable(${PROJECT_NAME}
-    "${CMAKE_CURRENT_LIST_DIR}/threading_example.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/5_series_threading_example.cpp"
 )
 
 # Configure the project in a sub-folder for IDEs that support it
@@ -72,16 +72,6 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${MIP_INCLUDE_DIRS}
     ${MICROSTRAIN_INCLUDE_DIRS}
-)
-
-if(WIN32)
-    set(COMPILE_DEFINITIONS
-        "NOMINMAX"
-    )
-endif()
-
-target_compile_definitions(${PROJECT_NAME} PRIVATE
-    "${COMPILE_DEFINITIONS}"
 )
 
 if(MSVC)
