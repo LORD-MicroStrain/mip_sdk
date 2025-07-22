@@ -1,11 +1,11 @@
 ////////////////////////////////////////////////////////////////////////////////
-/// gq7_example.c
+/// 7_series_gnss_ins_example.c
 ///
-/// Example setup program for the 3DM-GQ7-GNSS/INS using C
+/// Example setup program for the 3DM-GQ7-GNSS/INS, and 3DM-CV7-GNSS/INS using C
 ///
-/// This example shows a typical setup for the 3DM-GQ7-GNSS/INS sensor in a
-/// wheeled-vehicle application using C.
-/// It is not an exhaustive example of all settings for the 3DM-GQ7-GNSS/INS.
+/// This example shows a typical setup for the 3DM-GQ7-GNSS/INS and
+/// 3DM-CV7-GNSS/INS sensors in a wheeled-vehicle application using C.
+/// It is not an exhaustive example of all settings for those devices.
 /// If this example does not meet your specific setup needs, please consult the
 /// MIP SDK API documentation for the proper commands.
 ///
