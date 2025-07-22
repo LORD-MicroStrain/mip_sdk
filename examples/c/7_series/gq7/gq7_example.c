@@ -270,7 +270,7 @@ int main(const int argc, const char* argv[])
         command_failure_terminate(&device, cmd_result, "Could not resume the device!\n");
     }
 
-    MICROSTRAIN_LOG_INFO("Sensor is configured... waiting for filter to initialize.\n");
+    MICROSTRAIN_LOG_INFO("Sensor is configured... waiting for filter to enter full navigation mode.\n");
 
     mip_gnss_fix_info_data_fix_type current_fix_type[2] = {
         gnss_fix_info[0].fix_type,
@@ -279,7 +279,7 @@ int main(const int argc, const char* argv[])
     mip_filter_mode current_state = filter_status.filter_state;
 
     // Wait for the device to initialize
-    while (filter_status.filter_state < MIP_FILTER_MODE_INIT)
+    while (filter_status.filter_state != MIP_FILTER_MODE_FULL_NAV)
     {
         // Update the device state
         // Note: This will update the device callbacks to trigger the filter state change
@@ -713,7 +713,7 @@ void configure_antennas(mip_interface* _device)
         0.0f    // Z
     };
 
-    MICROSTRAIN_LOG_INFO("Configuring GNSS 1 antenna offset for [%gm, &gm, %gm].\n",
+    MICROSTRAIN_LOG_INFO("Configuring GNSS 1 antenna offset for [%gm, %gm, %gm].\n",
         antenna_offset_1[0],
         antenna_offset_1[1],
         antenna_offset_1[2]
@@ -736,7 +736,7 @@ void configure_antennas(mip_interface* _device)
         0.0f   // Z
     };
 
-    MICROSTRAIN_LOG_INFO("Configuring GNSS 2 antenna offset for [%gm, &gm, %gm].\n",
+    MICROSTRAIN_LOG_INFO("Configuring GNSS 2 antenna offset for [%gm, %gm, %gm].\n",
         antenna_offset_2[0],
         antenna_offset_2[1],
         antenna_offset_2[2]
@@ -816,6 +816,9 @@ void initialize_filter(mip_interface* _device)
         0.0f
     };
 
+    // Note: This is the default setting on the device and will automatically configure
+    // the initial conditions required to initialize the filter based on the alignment selector
+    // and readings from the device's sensors
     const mip_filter_initialization_configuration_command_initial_condition_source initial_condition_source =
         MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_INITIAL_CONDITION_SOURCE_AUTO_POS_VEL_ATT;
 
