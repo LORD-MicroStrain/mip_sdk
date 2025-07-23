@@ -78,6 +78,9 @@ void configure_gnss_message_format(mip_interface* _device);
 // Filter message format configuration
 void configure_filter_message_format(mip_interface* _device);
 
+// Antenna offset configuration
+void configure_antenna_offset(mip_interface* _device);
+
 // Filter initialization
 void initialize_filter(mip_interface* _device);
 
@@ -150,24 +153,8 @@ int main(const int argc, const char* argv[])
         command_failure_terminate(&device, cmd_result, "Could not set sensor-to-vehicle rotation!\n");
     }
 
-    // Configure the GNSS antenna offset X, Y, Z (in meters)
-    const mip_vector3f antenna_offset = {
-        -0.25f,
-        0.0f,
-        0.0f
-    };
-
-    MICROSTRAIN_LOG_INFO("Configuring the GNSS antenna offset for [%gm, &gm, %gm].\n",
-        antenna_offset[0],
-        antenna_offset[1],
-        antenna_offset[2]
-    );
-    cmd_result = mip_filter_write_antenna_offset(&device, antenna_offset);
-
-    if (!mip_cmd_result_is_ack(cmd_result))
-    {
-        command_failure_terminate(&device, cmd_result, "Could not set the GNSS antenna offset!\n");
-    }
+    // Configure the GNSS antenna offset
+    configure_antenna_offset(&device);
 
     // Initialize the navigation filter
     initialize_filter(&device);
@@ -256,18 +243,19 @@ int main(const int argc, const char* argv[])
     // Note: Since the device was idled for configuration, it needs to be resumed to output the data streams
     MICROSTRAIN_LOG_INFO("Resuming the device.\n");
     cmd_result = mip_base_resume(&device);
+
     if (!mip_cmd_result_is_ack(cmd_result))
     {
         command_failure_terminate(&device, cmd_result, "Could not resume the device!\n");
     }
 
-    MICROSTRAIN_LOG_INFO("Sensor is configured... waiting for filter to initialize.\n");
+    MICROSTRAIN_LOG_INFO("Sensor is configured... waiting for a valid filter solution.\n");
 
     mip_gnss_fix_info_data_fix_type current_fix_type = gnss_fix_info.fix_type;
     mip_filter_mode                 current_state    = filter_status.filter_state;
 
     // Wait for the device to initialize
-    while (filter_status.filter_state != MIP_FILTER_MODE_GX5_INIT)
+    while (filter_status.filter_state < MIP_FILTER_MODE_GX5_RUN_SOLUTION_VALID)
     {
         // Update the device state
         // Note: This will update the device callbacks to trigger the filter state change
@@ -328,7 +316,7 @@ int main(const int argc, const char* argv[])
         // Print out data based on the sample rate (1000 ms / SAMPLE_RATE_HZ)
         if (current_timestamp - previous_print_timestamp >= 1000 / SAMPLE_RATE_HZ)
         {
-            if (filter_status.filter_state == MIP_FILTER_MODE_GX5_RUN_SOLUTION_VALID)
+            if (filter_status.filter_state >= MIP_FILTER_MODE_GX5_RUN_SOLUTION_VALID)
             {
                 MICROSTRAIN_LOG_INFO(
                     "%s = %10.3f%16s = [%9.6f, %9.6f, %9.6f]%16s = [%9.6f, %9.6f, %9.6f]%16s = [%9.6f, %9.6f, %9.6f]\n",
@@ -509,7 +497,7 @@ void configure_gnss_message_format(mip_interface* _device)
 
     // Calculate the decimation (stream rate) for the device based on its base rate
     const uint16_t gnss_decimation = gnss_base_rate / SAMPLE_RATE_HZ;
-    MICROSTRAIN_LOG_INFO("Decimating gnss base rate %d by %d to stream data at %dHz.\n",
+    MICROSTRAIN_LOG_INFO("Decimating GNSS base rate %d by %d to stream data at %dHz.\n",
         gnss_base_rate,
         gnss_decimation,
         SAMPLE_RATE_HZ
@@ -610,6 +598,43 @@ void configure_filter_message_format(mip_interface* _device)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+/// @brief Configures the GNSS antenna offset parameters for the device
+///
+/// @details Sets up the physical antenna offset values relative to the device's
+///          reference point. The offset is specified in meters using a 3D
+///          vector:
+///          - X: forward/back
+///          - Y: left/right
+///          - Z: up/down
+///
+/// @param _device Pointer to the initialized MIP device interface
+///
+/// @note Offset values are specific to physical device setup and may need to be
+///       adjusted based on actual antenna placement
+///
+void configure_antenna_offset(mip_interface* _device)
+{
+    // Configure the GNSS antenna offset X, Y, Z (in meters)
+    const mip_vector3f antenna_offset = {
+        -0.25f,
+        0.0f,
+        0.0f
+    };
+
+    MICROSTRAIN_LOG_INFO("Configuring GNSS antenna offset for [%gm, &gm, %gm].\n",
+        antenna_offset[0],
+        antenna_offset[1],
+        antenna_offset[2]
+    );
+    const mip_cmd_result cmd_result = mip_filter_write_antenna_offset(_device, antenna_offset);
+
+    if (!mip_cmd_result_is_ack(cmd_result))
+    {
+        command_failure_terminate(_device, cmd_result, "Could not set GNSS antenna offset!\n");
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
 /// @brief Initializes and resets the navigation filter
 ///
 /// @details Configures the navigation filter by:
@@ -630,7 +655,11 @@ void initialize_filter(mip_interface* _device)
 
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        command_failure_terminate(_device, cmd_result, "Could not configure filter heading source!\n");
+        command_failure_terminate(
+            _device,
+            cmd_result,
+            "Could not configure filter heading source for GNSS velocity and magnetometer!\n"
+        );
     }
 
     // Enable filter auto initialization control
@@ -649,6 +678,7 @@ void initialize_filter(mip_interface* _device)
     // Note: This is good to do after filter setup is complete
     MICROSTRAIN_LOG_INFO("Attempting to reset the navigation filter.\n");
     cmd_result = mip_filter_reset(_device);
+
     if (!mip_cmd_result_is_ack(cmd_result))
     {
         command_failure_terminate(_device, cmd_result, "Could not reset the navigation filter!\n");
@@ -924,6 +954,7 @@ void initialize_device(mip_interface* _device, serial_port* _device_port, const 
     // Note: This is a good first step to make sure the device is present
     MICROSTRAIN_LOG_INFO("Pinging the device.\n");
     mip_cmd_result cmd_result = mip_base_ping(_device);
+
     if (!mip_cmd_result_is_ack(cmd_result))
     {
         command_failure_terminate(_device, cmd_result, "Could not ping the device!\n");
@@ -933,6 +964,7 @@ void initialize_device(mip_interface* _device, serial_port* _device_port, const 
     // Note: This is good to do during setup as high data traffic can cause commands to fail
     MICROSTRAIN_LOG_INFO("Setting the device to idle.\n");
     cmd_result = mip_base_set_idle(_device);
+
     if (!mip_cmd_result_is_ack(cmd_result))
     {
         command_failure_terminate(_device, cmd_result, "Could not set the device to idle!\n");
@@ -942,6 +974,7 @@ void initialize_device(mip_interface* _device, serial_port* _device_port, const 
     MICROSTRAIN_LOG_INFO("Getting the device information.\n");
     mip_base_device_info device_info;
     cmd_result = mip_base_get_device_info(_device, &device_info);
+
     if (!mip_cmd_result_is_ack(cmd_result))
     {
         command_failure_terminate(_device, cmd_result, "Could not get the device information!\n");
@@ -973,6 +1006,7 @@ void initialize_device(mip_interface* _device, serial_port* _device_port, const 
     // Note: This guarantees the device is in a known state
     MICROSTRAIN_LOG_INFO("Loading default settings.\n");
     cmd_result = mip_3dm_default_device_settings(_device);
+
     if (!mip_cmd_result_is_ack(cmd_result))
     {
         command_failure_terminate(_device, cmd_result, "Could not load device default settings!\n");

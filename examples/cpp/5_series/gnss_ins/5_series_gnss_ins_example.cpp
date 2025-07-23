@@ -77,6 +77,9 @@ void configureGnssMessageFormat(mip::Interface& _device);
 // Filter message format configuration
 void configureFilterMessageFormat(mip::Interface& _device);
 
+// Antenna offset configuration
+void configureAntennaOffset(mip::Interface& _device);
+
 // Filter initialization
 void initializeFilter(mip::Interface& _device);
 
@@ -127,6 +130,9 @@ int main(const int argc, const char* argv[])
     // Capture gyro bias
     captureGyroBias(device);
 
+    // Configure the message format for GNSS data
+    configureGnssMessageFormat(device);
+
     // Configure the message format for filter data
     configureFilterMessageFormat(device);
 
@@ -146,28 +152,8 @@ int main(const int argc, const char* argv[])
         );
     }
 
-    // Configure the GNSS antenna offset X, Y, Z (in meters)
-    const mip::Vector3f antennaOffset = {
-        -0.25f,
-        0.0f,
-        0.0f
-    };
-
-    MICROSTRAIN_LOG_INFO("Configuring the %s for [%gm, &gm, %gm].\n",
-        mip::commands_filter::AntennaOffset::DOC_NAME,
-        antennaOffset[0],
-        antennaOffset[1],
-        antennaOffset[2]
-    );
-    cmdResult = mip::commands_filter::writeAntennaOffset(
-        device,
-        antennaOffset
-    );
-
-    if (!cmdResult.isAck())
-    {
-        terminate(device, cmdResult, "Could not set the %s!\n", mip::commands_filter::AntennaOffset::DOC_NAME);
-    }
+    // Configure the GNSS antenna offset
+    configureAntennaOffset(device);
 
     // Initialize the navigation filter
     initializeFilter(device);
@@ -232,18 +218,19 @@ int main(const int argc, const char* argv[])
     // Note: Since the device was idled for configuration, it needs to be resumed to output the data streams
     MICROSTRAIN_LOG_INFO("Resuming the device.\n");
     cmdResult = mip::commands_base::resume(device);
+
     if (!cmdResult.isAck())
     {
         terminate(device, cmdResult, "Could not resume the device!\n");
     }
 
-    MICROSTRAIN_LOG_INFO("Sensor is configured... waiting for filter to initialize.\n");
+    MICROSTRAIN_LOG_INFO("Sensor is configured... waiting for a valid filter solution.\n");
 
     mip::data_gnss::FixInfo::FixType currentFixType = gnssFixInfo.fix_type;
     mip::data_filter::FilterMode     currentState   = filterStatus.filter_state;
 
     // Wait for the device to initialize
-    while (filterStatus.filter_state != mip::data_filter::FilterMode::GX5_INIT)
+    while (filterStatus.filter_state < mip::data_filter::FilterMode::GX5_RUN_SOLUTION_VALID)
     {
         // Update the device state
         // Note: This will update the device callbacks to trigger the filter state change
@@ -296,7 +283,7 @@ int main(const int argc, const char* argv[])
         // Print out data based on the sample rate (1000 ms / SAMPLE_RATE_HZ)
         if (currentTimestamp - previousPrintTimestamp >= 1000 / SAMPLE_RATE_HZ)
         {
-            if (filterStatus.filter_state == mip::data_filter::FilterMode::GX5_RUN_SOLUTION_VALID)
+            if (filterStatus.filter_state >= mip::data_filter::FilterMode::GX5_RUN_SOLUTION_VALID)
             {
                 MICROSTRAIN_LOG_INFO(
                     "%s = %10.3f%16s = [%9.6f, %9.6f, %9.6f]%16s = [%9.6f, %9.6f, %9.6f]%16s = [%9.6f, %9.6f, %9.6f]\n",
@@ -498,7 +485,10 @@ void configureGnssMessageFormat(mip::Interface& _device)
 
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not set %s for GNSS data!\n",
+        terminate(
+            _device,
+            cmdResult,
+            "Could not set %s for GNSS data!\n",
             mip::commands_3dm::GnssMessageFormat::DOC_NAME
         );
     }
@@ -581,6 +571,47 @@ void configureFilterMessageFormat(mip::Interface& _device)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+/// @brief Configures the GNSS antenna offset parameters for the device
+///
+/// @details Sets up the physical antenna offset values relative to the device's
+///          reference point. The offset is specified in meters using a 3D
+///          vector:
+///          - X: forward/back
+///          - Y: left/right
+///          - Z: up/down
+///
+/// @param _device Reference to the initialized MIP device interface
+///
+/// @note Offset values are specific to physical device setup and may need to be
+///       adjusted based on actual antenna placement
+///
+void configureAntennaOffset(mip::Interface& _device)
+{
+    // Configure the GNSS antenna offset X, Y, Z (in meters)
+    const mip::Vector3f antennaOffset = {
+        -0.25f,
+        0.0f,
+        0.0f
+    };
+
+    MICROSTRAIN_LOG_INFO("Configuring the %s for [%gm, &gm, %gm].\n",
+        mip::commands_filter::AntennaOffset::DOC_NAME,
+        antennaOffset[0],
+        antennaOffset[1],
+        antennaOffset[2]
+    );
+    const mip::CmdResult cmdResult = mip::commands_filter::writeAntennaOffset(
+        _device,
+        antennaOffset
+    );
+
+    if (!cmdResult.isAck())
+    {
+        terminate(_device, cmdResult, "Could not set the %s!\n", mip::commands_filter::AntennaOffset::DOC_NAME);
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
 /// @brief Initializes and resets the navigation filter
 ///
 /// @details Configures the navigation filter by:
@@ -593,15 +624,20 @@ void configureFilterMessageFormat(mip::Interface& _device)
 void initializeFilter(mip::Interface& _device)
 {
     // Configure filter heading source
-    MICROSTRAIN_LOG_INFO("Configuring filter %s to magnetometer.\n", mip::commands_filter::HeadingSource::DOC_NAME);
+    MICROSTRAIN_LOG_INFO("Configuring filter %s to GNSS velocity and magnetometer.\n",
+        mip::commands_filter::HeadingSource::DOC_NAME
+    );
     mip::CmdResult cmdResult = mip::commands_filter::writeHeadingSource(
         _device,
-        mip::commands_filter::HeadingSource::Source::MAG // Aiding Source type
+        mip::commands_filter::HeadingSource::Source::GNSS_VEL_AND_MAG // Aiding Source type
     );
 
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not configure filter %s!\n",
+        terminate(
+            _device,
+            cmdResult,
+            "Could not configure filter %s for GNSS velocity and magnetometer!\n",
             mip::commands_filter::HeadingSource::DOC_NAME
         );
     }
@@ -624,6 +660,7 @@ void initializeFilter(mip::Interface& _device)
     // Note: This is good to do after filter setup is complete
     MICROSTRAIN_LOG_INFO("Attempting to %s.\n", mip::commands_filter::Reset::DOC_NAME);
     cmdResult = mip::commands_filter::reset(_device);
+
     if (!cmdResult.isAck())
     {
         terminate(_device, cmdResult, "Could not %s!\n", mip::commands_filter::Reset::DOC_NAME);
@@ -799,6 +836,7 @@ void initializeDevice(mip::Interface& _device)
     // Note: This is a good first step to make sure the device is present
     MICROSTRAIN_LOG_INFO("Pinging the device.\n");
     mip::CmdResult cmdResult = mip::commands_base::ping(_device);
+
     if (!cmdResult.isAck())
     {
         terminate(_device, cmdResult, "Could not ping the device!\n");
@@ -808,6 +846,7 @@ void initializeDevice(mip::Interface& _device)
     // Note: This is good to do during setup as high data traffic can cause commands to fail
     MICROSTRAIN_LOG_INFO("Setting the device to idle.\n");
     cmdResult = mip::commands_base::setIdle(_device);
+
     if (!cmdResult.isAck())
     {
         terminate(_device, cmdResult, "Could not set the device to idle!\n");
@@ -817,6 +856,7 @@ void initializeDevice(mip::Interface& _device)
     MICROSTRAIN_LOG_INFO("Getting the device information.\n");
     mip::commands_base::BaseDeviceInfo deviceInfo;
     cmdResult = mip::commands_base::getDeviceInfo(_device, &deviceInfo);
+
     if (!cmdResult.isAck())
     {
         terminate(_device, cmdResult, "Could not get the device information!\n");
@@ -848,6 +888,7 @@ void initializeDevice(mip::Interface& _device)
     // Note: This guarantees the device is in a known state
     MICROSTRAIN_LOG_INFO("Loading default settings.\n");
     cmdResult = mip::commands_3dm::defaultDeviceSettings(_device);
+
     if (!cmdResult.isAck())
     {
         terminate(_device, cmdResult, "Could not load %s!\n", mip::commands_3dm::DeviceSettings::DOC_NAME);
