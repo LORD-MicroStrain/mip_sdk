@@ -970,8 +970,8 @@ void display_gnss_fix_state(const mip_gnss_fix_info_data* _fix_info_array, const
 
     const char* valid_entry_display =
         (_fix_info_array[_array_index].valid_flags & MIP_GNSS_FIX_INFO_DATA_VALID_FLAGS_FIX_TYPE) != 0 ?
-            "valid" :
-            "invalid";
+        "valid" :
+        "invalid";
 
     // Confirm a valid fix was acquired
     MICROSTRAIN_LOG_INFO("The current GNSS %d fix is %s.\n", antenna_id, valid_entry_display);
