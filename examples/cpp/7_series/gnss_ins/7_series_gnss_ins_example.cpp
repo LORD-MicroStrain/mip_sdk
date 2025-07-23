@@ -957,6 +957,97 @@ void display_gnss_fix_state(const mip::data_gnss::FixInfo* _fixInfoArray, const 
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+/// @brief Displays the current GNSS fix state for a specific antenna when
+///        changes occur
+///
+/// @details Outputs readable messages for GNSS fix state transitions:
+///          - 3D fix
+///          - 2D fix
+///          - Time-only fix
+///          - No fix
+///          - Invalid fix
+///          - RTK float
+///          - RTK fixed
+///          - Differential fix
+///          Also indicates whether the current fix is valid based on flag
+///          checks.
+///
+/// @param _fixInfoArray Pointer to an array of GNSS fix information structures
+///                      containing fix types and validity flags
+/// @param _arrayIndex Zero-based index into the fix info array identifying
+///                    which GNSS receiver to report (0 = primary antenna,
+///                    1 = secondary antenna)
+///
+void displayGnssFixState(const mip::data_gnss::FixInfo* _fixInfoArray, const uint8_t _arrayIndex)
+{
+    const uint8_t antennaId         = _arrayIndex + 1;
+    char          headerMessage[16] = "";
+    snprintf(headerMessage, sizeof(headerMessage) / sizeof(headerMessage[0]), "GNSS %d acquired", antennaId);
+    const uint8_t fixTypeValue = static_cast<uint8_t>(_fixInfoArray[_arrayIndex].fix_type);
+
+    switch (_fixInfoArray[_arrayIndex].fix_type)
+    {
+        case mip::data_gnss::FixInfo::FixType::FIX_3D:
+        {
+            MICROSTRAIN_LOG_INFO("%s a 3D fix. (%d) FIX_3D\n",
+                headerMessage,
+                fixTypeValue
+            );
+
+            break;
+        }
+        case mip::data_gnss::FixInfo::FixType::FIX_2D:
+        {
+            MICROSTRAIN_LOG_INFO("%s a 2D fix. (%d) FIX_2D\n",
+                headerMessage,
+                fixTypeValue
+            );
+
+            break;
+        }
+        case mip::data_gnss::FixInfo::FixType::FIX_TIME_ONLY:
+        {
+            MICROSTRAIN_LOG_INFO("%s a time only fix. (%d) FIX_TIME_ONLY\n",
+                headerMessage,
+                fixTypeValue
+            );
+
+            break;
+        }
+        case mip::data_gnss::FixInfo::FixType::FIX_NONE:
+        {
+            MICROSTRAIN_LOG_INFO("GNSS has no fix. (%d) FIX_NONE\n",
+                fixTypeValue
+            );
+
+            // No fix, exit early
+            return;
+        }
+        case mip::data_gnss::FixInfo::FixType::FIX_INVALID:
+        {
+            MICROSTRAIN_LOG_INFO("%s an invalid fix. (%d) FIX_INVALID\n",
+                headerMessage,
+                fixTypeValue
+            );
+
+            // The fix is already invalid, exit early
+            return;
+        }
+        default:
+        {
+            break;
+        }
+    }
+
+    const char* validEntryDisplay = _fixInfoArray[_arrayIndex].valid_flags.fixType() ?
+        "valid" :
+        "invalid";
+
+    // Confirm a valid fix was acquired
+    MICROSTRAIN_LOG_INFO("The current GNSS %d fix is %s.\n", antennaId, validEntryDisplay);
+}
+
+////////////////////////////////////////////////////////////////////////////////
 /// @brief Displays the current filter state when changes occur
 ///
 /// @details Outputs readable messages for filter state transitions:
