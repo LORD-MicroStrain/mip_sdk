@@ -146,11 +146,11 @@ int main(const int argc, const char* argv[])
         );
     }
 
-    // Configure the GNSS antenna offset (in meters)
+    // Configure the GNSS antenna offset X, Y, Z (in meters)
     const mip::Vector3f antennaOffset = {
-        -0.25f, // X
-        0.0f,   // Y
-        0.0f    // Z
+        -0.25f,
+        0.0f,
+        0.0f
     };
 
     MICROSTRAIN_LOG_INFO("Configuring the %s for [%gm, &gm, %gm].\n",
@@ -396,9 +396,9 @@ void captureGyroBias(mip::Interface& _device)
     cmdQueue.setBaseReplyTimeout(increasedCmdReplyTimeout);
 
     mip::Vector3f gyroBias = {
-        0.0f, // X
-        0.0f, // Y
-        0.0f  // Z
+        0.0f,
+        0.0f,
+        0.0f
     };
 
     // Note: When capturing gyro bias, the device needs to remain still on a flat surface
@@ -452,7 +452,7 @@ void configureGnssMessageFormat(mip::Interface& _device)
     // We could have also set it directly with information from the datasheet
 
     MICROSTRAIN_LOG_INFO("Getting the base rate for GNSS data.\n");
-    uint16_t gnssBaseRate;
+    uint16_t       gnssBaseRate;
     mip::CmdResult cmdResult = mip::commands_3dm::gnssGetBaseRate(
         _device,
         &gnssBaseRate // Base rate out
@@ -524,7 +524,7 @@ void configureFilterMessageFormat(mip::Interface& _device)
     // We could have also set it directly with information from the datasheet
 
     MICROSTRAIN_LOG_INFO("Getting the base rate for filter data.\n");
-    uint16_t filterBaseRate;
+    uint16_t       filterBaseRate;
     mip::CmdResult cmdResult = mip::commands_3dm::filterGetBaseRate(
         _device,
         &filterBaseRate // Base rate out
@@ -558,8 +558,8 @@ void configureFilterMessageFormat(mip::Interface& _device)
 
     // Descriptor rate is a pair of data descriptor set and decimation
     const mip::DescriptorRate filterDescriptors[5] = {
-        { mip::data_filter::Timestamp::FIELD_DESCRIPTOR,   filterDecimation },
-        { mip::data_filter::Status::FIELD_DESCRIPTOR,      filterDecimation },
+        { mip::data_filter::Timestamp::FIELD_DESCRIPTOR, filterDecimation },
+        { mip::data_filter::Status::FIELD_DESCRIPTOR, filterDecimation },
         { mip::data_filter::PositionLlh::FIELD_DESCRIPTOR, filterDecimation },
         { mip::data_filter::VelocityNed::FIELD_DESCRIPTOR, filterDecimation },
         { mip::data_filter::EulerAngles::FIELD_DESCRIPTOR, filterDecimation }
@@ -836,12 +836,12 @@ void initializeDevice(mip::Interface& _device)
     );
 
     MICROSTRAIN_LOG_INFO("-------- Device Information --------\n");
-    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Name",             deviceInfo.model_name);
-    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Model Number",     deviceInfo.model_number);
-    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Serial Number",    deviceInfo.serial_number);
-    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Lot Number",       deviceInfo.lot_number);
-    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Options",          deviceInfo.device_options);
-    MICROSTRAIN_LOG_INFO("%-16s | %16s\n",  "Firmware Version", firmwareVersion);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Name", deviceInfo.model_name);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Model Number", deviceInfo.model_number);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Serial Number", deviceInfo.serial_number);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Lot Number", deviceInfo.lot_number);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Options", deviceInfo.device_options);
+    MICROSTRAIN_LOG_INFO("%-16s | %16s\n", "Firmware Version", firmwareVersion);
     MICROSTRAIN_LOG_INFO("------------------------------------\n");
 
     // Load the default settings on the device
