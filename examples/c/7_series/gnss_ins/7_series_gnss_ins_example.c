@@ -883,7 +883,7 @@ void initialize_filter(mip_interface* _device)
 void display_gnss_fix_state(const mip_gnss_fix_info_data* _fix_info_array, const uint8_t _array_index)
 {
     const uint8_t antenna_id         = _array_index + 1;
-    char          header_message[16] = "";
+    char          header_message[32] = "";
     snprintf(header_message, sizeof(header_message) / sizeof(header_message[0]), "GNSS %d acquired", antenna_id);
     const uint8_t fix_type_value = (uint8_t)_fix_info_array[_array_index].fix_type;
 

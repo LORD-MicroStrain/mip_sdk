@@ -865,7 +865,7 @@ void initializeFilter(mip::Interface& _device)
 void display_gnss_fix_state(const mip::data_gnss::FixInfo* _fixInfoArray, const uint8_t _arrayIndex)
 {
     const uint8_t antennaId         = _arrayIndex + 1;
-    char          headerMessage[16] = "";
+    char          headerMessage[32] = "";
     snprintf(headerMessage, sizeof(headerMessage) / sizeof(headerMessage[0]), "GNSS %d acquired", antennaId);
     const uint8_t fixTypeValue = static_cast<uint8_t>(_fixInfoArray[_arrayIndex].fix_type);
 
