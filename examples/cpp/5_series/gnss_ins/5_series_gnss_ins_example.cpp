@@ -160,7 +160,7 @@ int main(const int argc, const char* argv[])
 
     // Register data callbacks
 
-    // Register filter data callbacks
+    // Register GNSS data callbacks
     MICROSTRAIN_LOG_INFO("Registering GNSS data callbacks.\n");
 
     mip::DispatchHandler gnssDataHandlers[1];
@@ -504,6 +504,8 @@ void configureGnssMessageFormat(mip::Interface& _device)
 ///          4. Configuring message format with:
 ///             - GPS time
 ///             - Filter status
+///             - LLH position
+///             - NED velocity
 ///             - Euler angles
 ///
 /// @param _device Reference to the initialized MIP device interface
@@ -637,7 +639,7 @@ void initializeFilter(mip::Interface& _device)
         terminate(
             _device,
             cmdResult,
-            "Could not configure filter %s for GNSS velocity and magnetometer!\n",
+            "Could not configure filter %s to GNSS velocity and magnetometer!\n",
             mip::commands_filter::HeadingSource::DOC_NAME
         );
     }

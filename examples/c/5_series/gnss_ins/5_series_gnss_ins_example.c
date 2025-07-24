@@ -621,7 +621,7 @@ void configure_antenna_offset(mip_interface* _device)
         0.0f
     };
 
-    MICROSTRAIN_LOG_INFO("Configuring GNSS antenna offset for [%gm, &gm, %gm].\n",
+    MICROSTRAIN_LOG_INFO("Configuring the GNSS antenna offset for [%gm, &gm, %gm].\n",
         antenna_offset[0],
         antenna_offset[1],
         antenna_offset[2]
@@ -630,7 +630,7 @@ void configure_antenna_offset(mip_interface* _device)
 
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        command_failure_terminate(_device, cmd_result, "Could not set GNSS antenna offset!\n");
+        command_failure_terminate(_device, cmd_result, "Could not set the GNSS antenna offset!\n");
     }
 }
 
@@ -658,7 +658,7 @@ void initialize_filter(mip_interface* _device)
         command_failure_terminate(
             _device,
             cmd_result,
-            "Could not configure filter heading source for GNSS velocity and magnetometer!\n"
+            "Could not configure filter heading source to GNSS velocity and magnetometer!\n"
         );
     }
 
