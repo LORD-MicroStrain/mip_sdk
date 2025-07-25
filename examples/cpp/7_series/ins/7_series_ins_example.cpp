@@ -88,25 +88,25 @@ void initializeFilter(mip::Interface& _device);
 // Utility to display filter state changes
 void displayFilterState(const mip::data_filter::FilterMode _filterState);
 
-// Used for basic timestamping (since epoch in milliseconds)
+// Used for basic timestamping (since epoch in milliseconds or nanoseconds)
 // TODO: Update this to whatever timestamping method is desired
 mip::Timestamp getCurrentTimestamp(const bool nanoseconds = false);
 
 // Common device initialization procedure
 void initializeDevice(mip::Interface& _device);
 
-// Utilities to send dummy external data to the device
+// Utilities to send simulated external data to the device
 // Note: All of this data should ideally come from a valid external source
-void sendDummyExternalMeasurementsHeading(mip::Interface& _device,
+void sendSimulatedExternalMeasurementsHeading(mip::Interface& _device,
     const mip::commands_aiding::Time& _externalMeasurementTime);
 
-void sendDummyExternalMeasurementsPosition(mip::Interface& _device,
+void sendSimulatedExternalMeasurementsPosition(mip::Interface& _device,
     const mip::commands_aiding::Time& _externalMeasurementTime);
 
-void sendDummyExternalMeasurementsNedVelocity(mip::Interface& _device,
+void sendSimulatedExternalMeasurementsNedVelocity(mip::Interface& _device,
     const mip::commands_aiding::Time& _externalMeasurementTime);
 
-void sendDummyExternalMeasurementsVehicleFrameVelocity(mip::Interface& _device,
+void sendSimulatedExternalMeasurementsVehicleFrameVelocity(mip::Interface& _device,
     const mip::commands_aiding::Time& _externalMeasurementTime);
 
 // Utility functions the handle application closing and printing error messages
@@ -238,10 +238,10 @@ int main(const int argc, const char* argv[])
             // Update the time-of-arrival to now
             externalMeasurementTime.nanoseconds = static_cast<uint64_t>(getCurrentTimestamp(true));
 
-            sendDummyExternalMeasurementsHeading(device, externalMeasurementTime);
-            sendDummyExternalMeasurementsPosition(device, externalMeasurementTime);
-            sendDummyExternalMeasurementsNedVelocity(device, externalMeasurementTime);
-            sendDummyExternalMeasurementsVehicleFrameVelocity(device, externalMeasurementTime);
+            sendSimulatedExternalMeasurementsHeading(device, externalMeasurementTime);
+            sendSimulatedExternalMeasurementsPosition(device, externalMeasurementTime);
+            sendSimulatedExternalMeasurementsNedVelocity(device, externalMeasurementTime);
+            sendSimulatedExternalMeasurementsVehicleFrameVelocity(device, externalMeasurementTime);
 
             previousExternalDataTimestamp = currentTimestamp;
         }
@@ -275,10 +275,10 @@ int main(const int argc, const char* argv[])
             // Update the time-of-arrival to now
             externalMeasurementTime.nanoseconds = static_cast<uint64_t>(getCurrentTimestamp(true));
 
-            sendDummyExternalMeasurementsHeading(device, externalMeasurementTime);
-            sendDummyExternalMeasurementsPosition(device, externalMeasurementTime);
-            sendDummyExternalMeasurementsNedVelocity(device, externalMeasurementTime);
-            sendDummyExternalMeasurementsVehicleFrameVelocity(device, externalMeasurementTime);
+            sendSimulatedExternalMeasurementsHeading(device, externalMeasurementTime);
+            sendSimulatedExternalMeasurementsPosition(device, externalMeasurementTime);
+            sendSimulatedExternalMeasurementsNedVelocity(device, externalMeasurementTime);
+            sendSimulatedExternalMeasurementsVehicleFrameVelocity(device, externalMeasurementTime);
 
             previousExternalDataTimestamp = currentTimestamp;
         }
@@ -504,7 +504,30 @@ void configureFilterMessageFormat(mip::Interface& _device)
     }
 }
 
-// TODO: docs
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Configures reference frames for external aiding measurements
+///
+/// @details Sets up three distinct reference frames for external sensor data:
+///          1. External heading reference (Frame ID 1)
+///             - Translation: [0, 0, 0] m
+///             - Rotation: [0, 0, 0] deg (no rotation)
+///          2. External GNSS antenna reference (Frame ID 2)
+///             - Translation: [0, 1, 0] m (1m offset in Y-axis)
+///             - Rotation: [0, 0, 0] deg (no rotation)
+///          3. External body frame velocity reference (Frame ID 3)
+///             - Translation: [1, 0, 0] m (1m offset in X-axis)
+///             - Rotation: [0, 0, 90] deg (90 deg yaw rotation)
+///
+///          All frames are configured with tracking enabled and use Euler
+///          angle rotation format.
+///
+/// @param _device Reference to the initialized MIP device interface
+///
+/// @note This function is typically called during device initialization to
+///       establish the coordinate system relationships for external
+///       measurements. Frame IDs correspond to those used in external
+///       measurement functions.
+///
 void configureExternalAiding(mip::Interface& _device)
 {
     MICROSTRAIN_LOG_INFO("Configuring the reference frame for external heading.\n");
@@ -592,13 +615,12 @@ void configureExternalAiding(mip::Interface& _device)
     }
 }
 
-// TODO: docs
 ////////////////////////////////////////////////////////////////////////////////
 /// @brief Initializes and resets the navigation filter
 ///
 /// @details Configures the navigation filter by:
 ///          1. Enabling GNSS position and velocity aiding measurements
-///          2. Enabling dual-antenna GNSS heading aiding
+///          2. Enabling external heading aiding measurements
 ///          3. Configuring filter initialization settings:
 ///             - Setting initial position and velocity to zero
 ///             - Enabling automatic position/velocity/attitude determination
@@ -879,13 +901,24 @@ void initializeDevice(mip::Interface& _device)
         terminate(_device, cmdResult, "Could not load %s!\n", mip::commands_3dm::DeviceSettings::DOC_NAME);
     }
 }
-
-// TODO: docs
-void sendDummyExternalMeasurementsHeading(mip::Interface& _device,
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Sends simulated external heading measurements to the device
+///
+/// @details Provides simulated true heading data to the device for filter
+///          aiding. Uses fixed values:
+///          - Heading:     0.0 deg (North)
+///          - Uncertainty: 0.001 radians
+///          - Frame ID:    1
+///
+/// @param _device Reference to the initialized MIP device interface
+/// @param _externalMeasurementTime Timestamp for the external measurement
+///
+/// @note Issues warning if the command fails but does not terminate execution.
+///       Used for testing external aiding functionality with known data.
+///
+void sendSimulatedExternalMeasurementsHeading(mip::Interface& _device,
     const mip::commands_aiding::Time& _externalMeasurementTime)
 {
-    // External heading command
-
     constexpr float heading     = 0.0f;
     constexpr float uncertainty = 0.001f;
 
@@ -906,12 +939,26 @@ void sendDummyExternalMeasurementsHeading(mip::Interface& _device,
     }
 }
 
-// TODO: docs
-void sendDummyExternalMeasurementsPosition(mip::Interface& _device,
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Sends simulated external position measurements to the device
+///
+/// @details Provides simulated LLH position data to the device for filter
+///          aiding. Uses fixed coordinates for MicroStrain headquarters:
+///          - Latitude:    44.437 deg N
+///          - Longitude:   73.106 deg W
+///          - Height:      122.0 m
+///          - Uncertainty: 1.0 m in all axes
+///          - Frame ID:    2
+///
+/// @param _device Reference to the initialized MIP device interface
+/// @param _externalMeasurementTime Timestamp for the external measurement
+///
+/// @note Issues warning if the command fails but does not terminate execution.
+///       Used for testing external aiding functionality with a known location.
+///
+void sendSimulatedExternalMeasurementsPosition(mip::Interface& _device,
     const mip::commands_aiding::Time& _externalMeasurementTime)
 {
-    // External position command
-
     // Coordinates for MicroStrain headquarters
     constexpr double latitude  = 44.43729093897896;
     constexpr double longitude = -73.10628129871753;
@@ -942,12 +989,24 @@ void sendDummyExternalMeasurementsPosition(mip::Interface& _device,
     }
 }
 
-// TODO: docs
-void sendDummyExternalMeasurementsNedVelocity(mip::Interface& _device,
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Sends simulated external NED velocity measurements to the device
+///
+/// @details Provides simulated North-East-Down velocity data to the device for
+///          filter aiding. Uses stationary target values:
+///          - Velocity:    [0, 0, 0] m/s (stationary)
+///          - Uncertainty: 0.1 m/s in all axes
+///          - Frame ID:    2
+///
+/// @param _device Reference to the initialized MIP device interface
+/// @param _externalMeasurementTime Timestamp for the external measurement
+///
+/// @note Issues warning if the command fails but does not terminate execution.
+///       Used for testing external aiding functionality with stationary data.
+///
+void sendSimulatedExternalMeasurementsNedVelocity(mip::Interface& _device,
     const mip::commands_aiding::Time& _externalMeasurementTime)
 {
-    // External global velocity command
-
     const mip::Vector3f velocity = {
         0.0f,
         0.0f,
@@ -976,9 +1035,23 @@ void sendDummyExternalMeasurementsNedVelocity(mip::Interface& _device,
         );
     }
 }
-
-// TODO: docs
-void sendDummyExternalMeasurementsVehicleFrameVelocity(mip::Interface& _device,
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Sends simulated external vehicle frame velocity measurements to the
+///        device
+///
+/// @details Provides simulated body-frame velocity data to the device for
+///          filter aiding. Uses stationary target values:
+///          - Velocity:    [0, 0, 0] m/s (stationary in body frame)
+///          - Uncertainty: 0.1 m/s in all axes
+///          - Frame ID:    3
+///
+/// @param _device Reference to the initialized MIP device interface
+/// @param _externalMeasurementTime Timestamp for the external measurement
+///
+/// @note Issues warning if the command fails but does not terminate execution.
+///       Used for testing external aiding functionality with vehicle-relative data.
+///
+void sendSimulatedExternalMeasurementsVehicleFrameVelocity(mip::Interface& _device,
     const mip::commands_aiding::Time& _externalMeasurementTime)
 {
     // External vehicle frame velocity command
