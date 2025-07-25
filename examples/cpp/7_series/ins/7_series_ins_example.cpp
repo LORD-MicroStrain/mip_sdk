@@ -204,7 +204,7 @@ int main(const int argc, const char* argv[])
         terminate(device, cmdResult, "Could not resume the device!\n");
     }
 
-    MICROSTRAIN_LOG_INFO("Sensor is configured... waiting for filter to enter full navigation mode.\n");
+    MICROSTRAIN_LOG_INFO("Sensor is configured... waiting for the filter to enter full navigation mode.\n");
 
     mip::data_filter::FilterMode currentState = filterStatus.filter_state;
 
@@ -289,7 +289,7 @@ int main(const int argc, const char* argv[])
             if (filterStatus.filter_state >= mip::data_filter::FilterMode::VERT_GYRO)
             {
                 MICROSTRAIN_LOG_INFO(
-                    "%s = %10.3f%16s = [%10.6f, %10.6f, %11.6f]%16s = [%9.6f, %9.6f, %9.6f]%16s = [%9.6f, %9.6f, %9.6f]\n",
+                    "%s = %10.3f%16s = [%10.6f, %10.6f, %16.6f]%16s = [%11.6f, %11.6f, %11.6f]%16s = [%9.6f, %9.6f, %9.6f]\n",
 
                     "TOW",
                     filterGpsTimestamp.tow,
@@ -816,11 +816,11 @@ void displayFilterState(const mip::data_filter::FilterMode _filterState)
 ///
 mip::Timestamp getCurrentTimestamp(const bool nanoseconds /* = false */)
 {
-    const std::chrono::nanoseconds timeSinceEpoch = std::chrono::steady_clock::now().time_since_epoch();
+    const std::chrono::nanoseconds timeSinceEpoch = std::chrono::system_clock::now().time_since_epoch();
 
     if (nanoseconds)
     {
-        return static_cast<mip::Timestamp>(timeSinceEpoch.count());
+        return static_cast<mip::Timestamp>(std::chrono::duration_cast<std::chrono::nanoseconds>(timeSinceEpoch).count());
     }
 
     return static_cast<mip::Timestamp>(std::chrono::duration_cast<std::chrono::milliseconds>(timeSinceEpoch).count());
@@ -901,6 +901,7 @@ void initializeDevice(mip::Interface& _device)
         terminate(_device, cmdResult, "Could not load %s!\n", mip::commands_3dm::DeviceSettings::DOC_NAME);
     }
 }
+
 ////////////////////////////////////////////////////////////////////////////////
 /// @brief Sends simulated external heading measurements to the device
 ///
@@ -1035,6 +1036,7 @@ void sendSimulatedExternalMeasurementsNedVelocity(mip::Interface& _device,
         );
     }
 }
+
 ////////////////////////////////////////////////////////////////////////////////
 /// @brief Sends simulated external vehicle frame velocity measurements to the
 ///        device
@@ -1054,8 +1056,6 @@ void sendSimulatedExternalMeasurementsNedVelocity(mip::Interface& _device,
 void sendSimulatedExternalMeasurementsVehicleFrameVelocity(mip::Interface& _device,
     const mip::commands_aiding::Time& _externalMeasurementTime)
 {
-    // External vehicle frame velocity command
-
     const mip::Vector3f velocity = {
         0.0f,
         0.0f,
