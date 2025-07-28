@@ -803,8 +803,7 @@ void displayFilterState(const mip::data_filter::FilterMode _filterState)
 ///        nanoseconds
 ///
 /// @details Provides system time measurement using std::chrono since steady
-///          clock epoch. Uses steady_clock to ensure monotonic time that won't
-///          be affected by system time changes.
+///          clock epoch.
 ///
 /// @param nanoseconds Set to true to request the time as nanoseconds otherwise,
 ///                    gets the time in milliseconds
