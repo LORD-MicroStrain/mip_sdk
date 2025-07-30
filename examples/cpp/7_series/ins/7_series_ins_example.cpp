@@ -70,6 +70,15 @@ static constexpr uint16_t SAMPLE_RATE_HZ = 1;
 static constexpr uint32_t RUN_TIME_SECONDS = 30;
 ////////////////////////////////////////////////////////////////////////////////
 
+// Time of arrival latency in nanoseconds
+// Note: This is the time it takes to package the command before it arrives and is typically around 100 ms
+static const uint64_t TIME_OF_ARRIVAL_LATENCY_NS = 100 * 1000000;
+
+// Frame config identifiers
+static const uint8_t HEADING_FRAME_CONFIG_ID       = 1;
+static const uint8_t GNSS_FRAME_CONFIG_ID          = 2;
+static const uint8_t BODY_VELOCITY_FRAME_CONFIG_ID = 3;
+
 // Custom logging handler callback
 void logCallback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args);
 
@@ -88,9 +97,9 @@ void initializeFilter(mip::Interface& _device);
 // Utility to display filter state changes
 void displayFilterState(const mip::data_filter::FilterMode _filterState);
 
-// Used for basic timestamping (since epoch in milliseconds or nanoseconds)
+// Used for basic timestamping (since epoch in milliseconds)
 // TODO: Update this to whatever timestamping method is desired
-mip::Timestamp getCurrentTimestamp(const bool nanoseconds = false);
+mip::Timestamp getCurrentTimestamp();
 
 // Common device initialization procedure
 void initializeDevice(mip::Interface& _device);
@@ -212,8 +221,8 @@ int main(const int argc, const char* argv[])
 
     mip::commands_aiding::Time externalMeasurementTime = {
         mip::commands_aiding::Time::Timebase::TIME_OF_ARRIVAL,
-        1,                                               // Reserved (needs to be 1)
-        static_cast<uint64_t>(getCurrentTimestamp(true)) // Nanoseconds
+        1,                         // Reserved (needs to be 1)
+        TIME_OF_ARRIVAL_LATENCY_NS // Nanoseconds
     };
 
     // Wait for the device to initialize
@@ -235,9 +244,6 @@ int main(const int argc, const char* argv[])
         // Send the external updates every 500 ms
         if (currentTimestamp - previousExternalDataTimestamp >= 500)
         {
-            // Update the time-of-arrival to now
-            externalMeasurementTime.nanoseconds = static_cast<uint64_t>(getCurrentTimestamp(true));
-
             sendSimulatedExternalMeasurementsHeading(device, externalMeasurementTime);
             sendSimulatedExternalMeasurementsPosition(device, externalMeasurementTime);
             sendSimulatedExternalMeasurementsNedVelocity(device, externalMeasurementTime);
@@ -272,9 +278,6 @@ int main(const int argc, const char* argv[])
         // Send the external updates every 500 ms
         if (currentTimestamp - previousExternalDataTimestamp >= 500)
         {
-            // Update the time-of-arrival to now
-            externalMeasurementTime.nanoseconds = static_cast<uint64_t>(getCurrentTimestamp(true));
-
             sendSimulatedExternalMeasurementsHeading(device, externalMeasurementTime);
             sendSimulatedExternalMeasurementsPosition(device, externalMeasurementTime);
             sendSimulatedExternalMeasurementsNedVelocity(device, externalMeasurementTime);
@@ -289,7 +292,7 @@ int main(const int argc, const char* argv[])
             if (filterStatus.filter_state >= mip::data_filter::FilterMode::VERT_GYRO)
             {
                 MICROSTRAIN_LOG_INFO(
-                    "%s = %10.3f%16s = [%10.6f, %10.6f, %16.6f]%16s = [%11.6f, %11.6f, %11.6f]%16s = [%9.6f, %9.6f, %9.6f]\n",
+                    "%s = %10.3f%16s = [%10.6f, %10.6f, %11.6f]%16s = [%9.6f, %9.6f, %9.6f]%16s = [%9.6f, %9.6f, %9.6f]\n",
 
                     "TOW",
                     filterGpsTimestamp.tow,
@@ -508,13 +511,13 @@ void configureFilterMessageFormat(mip::Interface& _device)
 /// @brief Configures reference frames for external aiding measurements
 ///
 /// @details Sets up three distinct reference frames for external sensor data:
-///          1. External heading reference (Frame ID 1)
+///          1. External heading reference
 ///             - Translation: [0, 0, 0] m
 ///             - Rotation: [0, 0, 0] deg (no rotation)
-///          2. External GNSS antenna reference (Frame ID 2)
+///          2. External GNSS antenna reference
 ///             - Translation: [0, 1, 0] m (1m offset in Y-axis)
 ///             - Rotation: [0, 0, 0] deg (no rotation)
-///          3. External body frame velocity reference (Frame ID 3)
+///          3. External body frame velocity reference
 ///             - Translation: [1, 0, 0] m (1m offset in X-axis)
 ///             - Rotation: [0, 0, 90] deg (90 deg yaw rotation)
 ///
@@ -546,9 +549,9 @@ void configureExternalAiding(mip::Interface& _device)
 
     mip::CmdResult cmdResult = mip::commands_aiding::writeFrameConfig(
         _device,
-        1,                                                // Frame ID
+        HEADING_FRAME_CONFIG_ID,
         mip::commands_aiding::FrameConfig::Format::EULER,
-        true,                                             // Tracking enabled
+        true, // Tracking enabled
         externalHeadingTranslation,
         externalHeadingRotation
     );
@@ -574,9 +577,9 @@ void configureExternalAiding(mip::Interface& _device)
 
     cmdResult = mip::commands_aiding::writeFrameConfig(
         _device,
-        2,                                                // Frame ID
+        GNSS_FRAME_CONFIG_ID,
         mip::commands_aiding::FrameConfig::Format::EULER,
-        true,                                             // Tracking enabled
+        true, // Tracking enabled
         externalGnssAntennaTranslation,
         externalGnssAntennaRotation
     );
@@ -602,9 +605,9 @@ void configureExternalAiding(mip::Interface& _device)
 
     cmdResult = mip::commands_aiding::writeFrameConfig(
         _device,
-        3,                                                // Frame ID
+        BODY_VELOCITY_FRAME_CONFIG_ID,
         mip::commands_aiding::FrameConfig::Format::EULER,
-        true,                                             // Tracking enabled
+        true, // Tracking enabled
         externalBodyFrameVelocityTranslation,
         externalBodyFrameVelocityRotation
     );
@@ -799,29 +802,19 @@ void displayFilterState(const mip::data_filter::FilterMode _filterState)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-/// @brief Gets the current system timestamp in milliseconds or, if requested,
-///        nanoseconds
+/// @brief Gets the current system timestamp in milliseconds
 ///
-/// @details Provides system time measurement using std::chrono since steady
-///          clock epoch.
-///
-/// @param nanoseconds Set to true to request the time as nanoseconds otherwise,
-///                    gets the time in milliseconds
+/// @details Provides system time measurement using std::chrono since system
+///          clock epoch
 ///
 /// @note Update this function to use a different time source if needed for
 ///       your specific application requirements
 ///
-/// @return Current timestamp in milliseconds or nanoseconds since epoch
+/// @return Current timestamp in milliseconds since epoch
 ///
-mip::Timestamp getCurrentTimestamp(const bool nanoseconds /* = false */)
+mip::Timestamp getCurrentTimestamp()
 {
     const std::chrono::nanoseconds timeSinceEpoch = std::chrono::system_clock::now().time_since_epoch();
-
-    if (nanoseconds)
-    {
-        return static_cast<mip::Timestamp>(std::chrono::duration_cast<std::chrono::nanoseconds>(timeSinceEpoch).count());
-    }
-
     return static_cast<mip::Timestamp>(std::chrono::duration_cast<std::chrono::milliseconds>(timeSinceEpoch).count());
 }
 
@@ -908,7 +901,6 @@ void initializeDevice(mip::Interface& _device)
 ///          aiding. Uses fixed values:
 ///          - Heading:     0.0 deg (North)
 ///          - Uncertainty: 0.001 radians
-///          - Frame ID:    1
 ///
 /// @param _device Reference to the initialized MIP device interface
 /// @param _externalMeasurementTime Timestamp for the external measurement
@@ -925,7 +917,7 @@ void sendSimulatedExternalMeasurementsHeading(mip::Interface& _device,
     const mip::CmdResult cmdResult = mip::commands_aiding::headingTrue(
         _device,
         _externalMeasurementTime,
-        1, // Frame ID
+        HEADING_FRAME_CONFIG_ID,
         heading,
         uncertainty,
         0x0001 // Valid flags (true/false)
@@ -948,7 +940,6 @@ void sendSimulatedExternalMeasurementsHeading(mip::Interface& _device,
 ///          - Longitude:   73.106 deg W
 ///          - Height:      122.0 m
 ///          - Uncertainty: 1.0 m in all axes
-///          - Frame ID:    2
 ///
 /// @param _device Reference to the initialized MIP device interface
 /// @param _externalMeasurementTime Timestamp for the external measurement
@@ -973,7 +964,7 @@ void sendSimulatedExternalMeasurementsPosition(mip::Interface& _device,
     const mip::CmdResult cmdResult = mip::commands_aiding::posLlh(
         _device,
         _externalMeasurementTime,
-        2, // Frame ID,
+        GNSS_FRAME_CONFIG_ID,
         latitude,
         longitude,
         height,
@@ -996,7 +987,6 @@ void sendSimulatedExternalMeasurementsPosition(mip::Interface& _device,
 ///          filter aiding. Uses stationary target values:
 ///          - Velocity:    [0, 0, 0] m/s (stationary)
 ///          - Uncertainty: 0.1 m/s in all axes
-///          - Frame ID:    2
 ///
 /// @param _device Reference to the initialized MIP device interface
 /// @param _externalMeasurementTime Timestamp for the external measurement
@@ -1022,7 +1012,7 @@ void sendSimulatedExternalMeasurementsNedVelocity(mip::Interface& _device,
     const mip::CmdResult cmdResult = mip::commands_aiding::velNed(
         _device,
         _externalMeasurementTime,
-        2, // Frame ID
+        GNSS_FRAME_CONFIG_ID,
         velocity,
         uncertainty,
         mip::commands_aiding::VelNed::ValidFlags::ALL
@@ -1044,7 +1034,6 @@ void sendSimulatedExternalMeasurementsNedVelocity(mip::Interface& _device,
 ///          filter aiding. Uses stationary target values:
 ///          - Velocity:    [0, 0, 0] m/s (stationary in body frame)
 ///          - Uncertainty: 0.1 m/s in all axes
-///          - Frame ID:    3
 ///
 /// @param _device Reference to the initialized MIP device interface
 /// @param _externalMeasurementTime Timestamp for the external measurement
@@ -1070,7 +1059,7 @@ void sendSimulatedExternalMeasurementsVehicleFrameVelocity(mip::Interface& _devi
     const mip::CmdResult cmdResult = mip::commands_aiding::velBodyFrame(
         _device,
         _externalMeasurementTime,
-        3, // Frame ID
+        BODY_VELOCITY_FRAME_CONFIG_ID,
         velocity,
         uncertainty,
         mip::commands_aiding::VelBodyFrame::ValidFlags::ALL
