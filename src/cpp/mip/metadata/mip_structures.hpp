@@ -39,6 +39,8 @@ namespace mip::metadata
         BITS,
         STRUCT,
         UNION,
+
+        FIELD,  ///< Only used in some limited circumstances.
     };
 
     struct TypeInfo

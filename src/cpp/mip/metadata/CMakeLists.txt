@@ -17,6 +17,8 @@ endif()
 set(MIP_METADATA_SOURCES
     "${CMAKE_CURRENT_LIST_DIR}/common.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/mip_all_definitions.hpp"
+    "${CMAKE_CURRENT_LIST_DIR}/mip_all_definitions_runtime.hpp"
+    "${CMAKE_CURRENT_LIST_DIR}/mip_all_definitions_runtime.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/mip_definitions.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/mip_definitions.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/mip_metadata.hpp"

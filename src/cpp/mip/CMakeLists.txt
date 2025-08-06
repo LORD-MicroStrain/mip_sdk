@@ -56,6 +56,7 @@ if(MIP_ENABLE_METADATA)
 endif()
 
 if(MIP_ENABLE_EXTRAS)
+    # Metadata must be included first!
     add_subdirectory(extras)
 endif()
 

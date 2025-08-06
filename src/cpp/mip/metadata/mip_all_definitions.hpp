@@ -74,4 +74,5 @@ namespace mip::metadata
         &DATA_SYSTEM,
         &DATA_SHARED,
     };
+
 } // namespace mip::metadata
