@@ -11,14 +11,13 @@ set(MIP_EXTRAS_SOURCES
     "${CMAKE_CURRENT_LIST_DIR}/platform_connection.hpp"
 )
 
+if(MIP_ENABLE_METADATA)
+    add_subdirectory("pretty_print")
+endif()
+
 add_library(${MIP_EXTRAS_LIBRARY}
     "${MIP_EXTRAS_SOURCES}"
 )
-
-if(MIP_ENABLE_METADATA)
-    add_subdirectory("pretty_print")
-    target_link_libraries(${MIP_EXTRAS_LIBRARY} PUBLIC ${MIP_PRETTY_PRINTER_LIBRARY})
-endif()
 
 
 # Configure the project in a sub-folder for IDEs that support it

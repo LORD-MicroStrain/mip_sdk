@@ -58,7 +58,7 @@ void logCallback(void* _user, const microstrain_log_level _level, const char* _f
 
 void handlePacket(void*, const mip::PacketView& packet, mip::Timestamp)
 {
-    mip::debugPrint(packet, MICROSTRAIN_LOG_LEVEL_INFO);
+    mip::prettyPrint(packet, MICROSTRAIN_LOG_LEVEL_INFO);
 
     //// Create the formatter and printers.
     //// Note that this has some (relatively low) overhead, but you may wish

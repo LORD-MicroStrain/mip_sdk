@@ -1,19 +1,13 @@
 
-set(MIP_PRETTY_PRINTER_LIBRARY mip_pretty_print)
-
-add_library("${MIP_PRETTY_PRINTER_LIBRARY}" STATIC
-    "formatter.cpp"
-    "formatter.hpp"
-    "basic_formatter.hpp"
-    "basic_formatter.cpp"
-    "packet_printer.hpp"
-    "packet_printer.cpp"
-    "debug_print.cpp"
-    "debug_print.hpp"
+list(APPEND MIP_EXTRAS_SOURCES
+    "${CMAKE_CURRENT_LIST_DIR}/formatter.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/formatter.hpp"
+    "${CMAKE_CURRENT_LIST_DIR}/basic_formatter.hpp"
+    "${CMAKE_CURRENT_LIST_DIR}/basic_formatter.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/packet_printer.hpp"
+    "${CMAKE_CURRENT_LIST_DIR}/packet_printer.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/debug_print.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/debug_print.hpp"
 )
 
-target_include_directories(${MIP_PRETTY_PRINTER_LIBRARY} PRIVATE )
-
-target_link_libraries(${MIP_PRETTY_PRINTER_LIBRARY} PUBLIC ${MIP_LIBRARY} ${MIP_METADATA_LIBRARY})
-
-set(MIP_PRETTY_PRINTER_LIBRARY ${MIP_PRETTY_PRINTER_LIBRARY} PARENT_SCOPE)
+set(MIP_EXTRAS_SOURCES ${MIP_EXTRAS_SOURCES} PARENT_SCOPE)

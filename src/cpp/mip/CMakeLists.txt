@@ -51,13 +51,14 @@ if(MSVC)
     source_group(TREE ${MICROSTRAIN_SRC_DIR} FILES ${MIP_DEF_SOURCES})
 endif()
 
-if(MIP_ENABLE_METADATA)
-    add_subdirectory(metadata)
+if(MIP_ENABLE_EXTRAS)
+    # Extras must appear first in the library list due to linking order.
+    # The pretty printer module relies on metadata (if enabled).
+    add_subdirectory(extras)
 endif()
 
-if(MIP_ENABLE_EXTRAS)
-    # Metadata must be included first!
-    add_subdirectory(extras)
+if(MIP_ENABLE_METADATA)
+    add_subdirectory(metadata)
 endif()
 
 set(MIP_LIBRARIES_TMP ${MIP_LIBRARIES_TMP} PARENT_SCOPE)

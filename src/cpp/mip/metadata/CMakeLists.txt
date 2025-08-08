@@ -11,7 +11,7 @@ list(TRANSFORM MIP_DEF_HEADERS PREPEND "${CMAKE_CURRENT_LIST_DIR}/definitions/")
 if(MICROSTRAIN_CMAKE_DEBUG)
     set(INCLUDED_DEF_HEADERS ${MIP_DEF_HEADERS})
     list(TRANSFORM INCLUDED_DEF_HEADERS REPLACE "${CMAKE_CURRENT_LIST_DIR}/" "")
-   message("C++ metadata definitions = ${INCLUDED_DEF_HEADERS}")
+    message("C++ metadata definitions = ${INCLUDED_DEF_HEADERS}")
 endif()
 
 set(MIP_METADATA_SOURCES

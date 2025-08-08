@@ -17,7 +17,7 @@
 namespace mip
 {
 
-void debugPrint(const mip::PacketView& packet, microstrain_log_level level)
+void prettyPrint(const mip::PacketView& packet, microstrain_log_level level)
 {
 #if ENABLE_DEBUG_PRINTING
     if(microstrain_logging_level() >= level)
@@ -33,7 +33,7 @@ void debugPrint(const mip::PacketView& packet, microstrain_log_level level)
 #endif
 }
 
-void debugPrint(const mip::FieldView& field, microstrain_log_level level)
+void prettyPrint(const mip::FieldView& field, microstrain_log_level level)
 {
 #if ENABLE_DEBUG_PRINTING
     if(microstrain_logging_level() >= level)
@@ -57,15 +57,15 @@ namespace mip::C
 extern "C"
 {
 
-void mip_debug_print_packet(const mip::C::mip_packet_view* packet)
+void mip_pretty_print_packet(const mip_packet_view* packet, microstrain_log_level level)
 {
     assert(packet);
-    debugPrint(PacketView(*packet));
+    prettyPrint(PacketView(*packet), level);
 }
-void mip_debug_print_field(const mip::C::mip_field_view* field)
+void mip_pretty_print_field(const mip_field_view* field, microstrain_log_level level)
 {
     assert(field);
-    debugPrint(FieldView(*field));
+    prettyPrint(FieldView(*field), level);
 }
 
 } // extern "C"

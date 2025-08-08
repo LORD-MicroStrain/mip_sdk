@@ -267,6 +267,9 @@ void PacketPrinter::formatParameter(const ParameterInfo& param, const StructInfo
         if(auto* info = static_cast<const UnionInfo*>(param.type.infoPtr))
         formatUnion(info, parent, offset_index);
         break;
+
+    case Type::FIELD:  // Will never happen
+        break;
     }
 }
 
