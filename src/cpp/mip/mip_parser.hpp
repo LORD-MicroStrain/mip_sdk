@@ -105,7 +105,7 @@ void Parser::setCallback(void* user)
         (*Callback)(user, PacketView(pkt), timestamp);
     };
 
-    C::mip_parser_set_callback(this, callback, nullptr);
+    C::mip_parser_set_callback(this, callback, user);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
