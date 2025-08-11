@@ -281,19 +281,18 @@ static std::optional<Formatter::BasicValue> readBasicValue(Serializer& serialize
 
     switch(type)
     {
-    case Type::NONE:   valid = true; break;
-    case Type::CHAR:   valid = serializer.extract(value.c); break;
-    case Type::BOOL:   valid = serializer.extract(value.b); break;
-    case Type::U8:     valid = serializer.extract(value.u8); break;
-    case Type::S8:     valid = serializer.extract(value.s8); break;
-    case Type::U16:    valid = serializer.extract(value.u16); break;
-    case Type::S16:    valid = serializer.extract(value.s16); break;
-    case Type::U32:    valid = serializer.extract(value.u32); break;
-    case Type::S32:    valid = serializer.extract(value.s32); break;
-    case Type::U64:    valid = serializer.extract(value.u64); break;
-    case Type::S64:    valid = serializer.extract(value.s64); break;
-    case Type::FLOAT:  valid = serializer.extract(value.f); break;
-    case Type::DOUBLE: valid = serializer.extract(value.d); break;
+    case Type::CHAR:   value.c   = 0; valid = serializer.extract(value.c); break;
+    case Type::BOOL:   value.b   = 0; valid = serializer.extract(value.b); break;
+    case Type::U8:     value.u8  = 0; valid = serializer.extract(value.u8); break;
+    case Type::S8:     value.s8  = 0; valid = serializer.extract(value.s8); break;
+    case Type::U16:    value.u16 = 0; valid = serializer.extract(value.u16); break;
+    case Type::S16:    value.s16 = 0; valid = serializer.extract(value.s16); break;
+    case Type::U32:    value.u32 = 0; valid = serializer.extract(value.u32); break;
+    case Type::S32:    value.s32 = 0; valid = serializer.extract(value.s32); break;
+    case Type::U64:    value.u64 = 0; valid = serializer.extract(value.u64); break;
+    case Type::S64:    value.s64 = 0; valid = serializer.extract(value.s64); break;
+    case Type::FLOAT:  value.f   = 0; valid = serializer.extract(value.f); break;
+    case Type::DOUBLE: value.d   = 0; valid = serializer.extract(value.d); break;
     default:           valid = false; break;
     }
 
