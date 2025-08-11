@@ -10,11 +10,19 @@ namespace C {
 extern "C" {
 #endif
 
+
+// These functions are defined in cpp/mip/extras/pretty_print/debug_print.cpp.
+// To use them, you must at least link the mip_extras library.
+// If metadata support is enabled, you must also link the metadata library.
+void mip_log_pretty_print_packet(const mip_packet_view* packet, microstrain_log_level level);
+void mip_log_pretty_print_field(const mip_field_view* field, microstrain_log_level level);
+
+
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup mip_c
 ///@{
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_metadata_c  Mip Metadata
+///@defgroup mip_metadata_c  Mip Metadata [C]
 ///
 ///@brief %C functions which process information about the mip protocol.
 ///
@@ -32,29 +40,6 @@ extern "C" {
 /// @li src/cpp/mip/metadata/mip_all_definitions_runtime.cpp
 ///
 ///@{
-
-
-////////////////////////////////////////////////////////////////////////////////
-///@brief Prints a mip packet to the log.
-///
-///@param packet The packet to be printed.
-///
-/// If the MIP SDK has been compiled with metadata support, this will print out
-/// all of the fields and their parameters in human-readable format.
-///
-void mip_pretty_print_packet(const mip_packet_view* packet, microstrain_log_level level);
-
-////////////////////////////////////////////////////////////////////////////////
-///@brief Prints a mip field to the log.
-///
-///@param field The field to be printed.
-///
-/// If the MIP SDK has been compiled with metadata support, this will print out
-/// all of the fields and their parameters in human-readable format.
-///
-void mip_pretty_print_field(const mip_field_view* field, microstrain_log_level level);
-
-
 
 struct mip_meta_descriptor_set_info;
 struct mip_meta_field_info;

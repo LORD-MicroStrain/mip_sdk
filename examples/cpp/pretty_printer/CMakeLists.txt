@@ -8,7 +8,7 @@ project("pretty_printer"
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # TODO: Set MIP_SDK_ROOT_DIR if building as a standalone project

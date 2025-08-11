@@ -79,7 +79,7 @@ void packet_callback(void* p, const mip_packet_view* packet, mip_timestamp ts)
     (void)p;
     (void)ts;
 
-    mip_pretty_print_packet(packet, MICROSTRAIN_LOG_LEVEL_INFO);
+    mip_log_pretty_print_packet(packet, MICROSTRAIN_LOG_LEVEL_INFO);
 }
 
 int main(const int argc, const char* argv[])
@@ -155,13 +155,15 @@ void log_callback(void* _user, const microstrain_log_level _level, const char* _
 {
     // Unused parameter
     (void)_user;
+    static bool nextLine = true;
 
     switch (_level)
     {
         case MICROSTRAIN_LOG_LEVEL_FATAL:
         case MICROSTRAIN_LOG_LEVEL_ERROR:
         {
-            fprintf(stderr, "%s: ", microstrain_logging_level_name(_level));
+            if(nextLine)
+                fprintf(stderr, "%s: ", microstrain_logging_level_name(_level));
             vfprintf(stderr, _format, _args);
             break;
         }
@@ -170,7 +172,8 @@ void log_callback(void* _user, const microstrain_log_level _level, const char* _
         case MICROSTRAIN_LOG_LEVEL_DEBUG:
         case MICROSTRAIN_LOG_LEVEL_TRACE:
         {
-            fprintf(stdout, "%s: ", microstrain_logging_level_name(_level));
+            if(nextLine)
+                fprintf(stdout, "%s: ", microstrain_logging_level_name(_level));
             vfprintf(stdout, _format, _args);
             break;
         }
@@ -180,6 +183,8 @@ void log_callback(void* _user, const microstrain_log_level _level, const char* _
             break;
         }
     }
+
+    nextLine = (strchr(_format, '\n') != NULL);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

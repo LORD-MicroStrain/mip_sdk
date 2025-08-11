@@ -59,6 +59,12 @@ endif()
 
 if(MIP_ENABLE_METADATA)
     add_subdirectory(metadata)
+else()
+    # Add stub functions so programs can still be compiled without metadata.
+    target_source(${MIP_LIBRARY} PRIVATE
+        "${CMAKE_CURRENT_LIST_DIR}/metadata/mip_all_definitions_runtime.hpp"
+        "${CMAKE_CURRENT_LIST_DIR}/metadata/mip_all_definitions_runtime.cpp"
+    )
 endif()
 
 set(MIP_LIBRARIES_TMP ${MIP_LIBRARIES_TMP} PARENT_SCOPE)

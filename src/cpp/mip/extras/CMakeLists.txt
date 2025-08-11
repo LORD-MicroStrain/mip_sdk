@@ -13,12 +13,21 @@ set(MIP_EXTRAS_SOURCES
 
 if(MIP_ENABLE_METADATA)
     add_subdirectory("pretty_print")
+else()
+    # Must include debug printing even if metadata isn't enabled.
+    list(APPEND MIP_EXTRAS_SOURCES
+        "${CMAKE_CURRENT_LIST_DIR}/pretty_print/debug_print.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/pretty_print/debug_print.hpp"
+    )
 endif()
 
 add_library(${MIP_EXTRAS_LIBRARY}
     "${MIP_EXTRAS_SOURCES}"
 )
 
+if(MIP_ENABLE_METADATA)
+    target_link_libraries(${MIP_EXTRAS_LIBRARY} PUBLIC ${MIP_METADATA_LIBRARY})
+endif()
 
 # Configure the project in a sub-folder for IDEs that support it
 file(RELATIVE_PATH PROJECT_RELATIVE_PATH "${MICROSTRAIN_SRC_DIR}" "${CMAKE_CURRENT_LIST_DIR}")

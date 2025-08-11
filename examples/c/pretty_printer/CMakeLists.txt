@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.16)
 project("pretty_printer_example_c"
     VERSION "1.0.0"
     DESCRIPTION "Simple example to get device information using C"
-    LANGUAGES C CXX
+    LANGUAGES C
 )
 
 set(CMAKE_C_STANDARD 11)
