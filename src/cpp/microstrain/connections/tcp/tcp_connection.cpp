@@ -1,83 +1,91 @@
-#include "tcp_connection.hpp"
-
-#include <chrono>
-#include <cstdio>
-#include <stdexcept>
+#include "microstrain/connections/tcp/tcp_connection.hpp"
 
 namespace microstrain
 {
     namespace connections
     {
-        ////////////////////////////////////////////////////////////////////////////////
-        ///@brief Creates a TcpConnection that will communicate with a device over TCP
-        ///
-        ///@param hostname Host name or IP address to connect to
-        ///
-        ///@param port     Port on hostName to connect to
-        ///
-        TcpConnection::TcpConnection(const std::string& hostname, uint16_t port)
+        TcpClientConnection::~TcpClientConnection()
         {
-            mHostname = std::move(hostname);
-            mPort     = port;
-            mType     = TYPE;
-
-            tcp_socket_init(&mSocket);
+            TcpClientConnection::disconnect();
         }
 
-        ////////////////////////////////////////////////////////////////////////////////
-        ///@brief Closes the underlying TCP socket
-        ///
-        TcpConnection::~TcpConnection()
+        TcpClientConnection::TcpClientConnection(const char* _hostname, const uint16_t _port,
+            const uint32_t _timeoutMs /* = 3000 */) :
+            Connection(TYPE)
         {
-            if (isConnected())
-              TcpConnection::disconnect();
+            tcp_client_init(this, _hostname, _port, recordingConnection());
+
+            timeout = _timeoutMs;
         }
 
-        ////////////////////////////////////////////////////////////////////////////////
-        ///@brief Check if the socket is connected
-        ///
-        bool TcpConnection::isConnected() const
+        TcpClientConnection::TcpClientConnection(const char* _hostname, const uint16_t _port,
+            const char* _receiveRecordingFileName, const char* _sendRecordingFileName,
+            const uint32_t _timeoutMs /* = 3000 */) :
+            Connection(TYPE, _receiveRecordingFileName, _sendRecordingFileName)
         {
-          return tcp_socket_is_open(&mSocket);
+            tcp_client_init(this, _hostname, _port, recordingConnection());
+
+            timeout = _timeoutMs;
         }
 
-        ////////////////////////////////////////////////////////////////////////////////
-        ///@brief Connect to the socket
-        ///
-        bool TcpConnection::connect()
+        TcpClientConnection::TcpClientConnection(const char* _hostname, const uint16_t _port,
+            FILE* _receiveRecordingStream, FILE* _sendRecordingStream, const uint32_t _timeoutMs /* = 3000 */) :
+            Connection(TYPE, _receiveRecordingStream, _sendRecordingStream)
         {
-          if (isConnected())
-            return true;
+            tcp_client_init(this, _hostname, _port, recordingConnection());
 
-          return tcp_socket_open(&mSocket, mHostname.c_str(), mPort, 3000);
+            timeout = _timeoutMs;
         }
 
-        ////////////////////////////////////////////////////////////////////////////////
-        ///@brief Disconnect from the socket
-        ///
-        bool TcpConnection::disconnect()
+        bool TcpClientConnection::connect()
         {
-           if (!isConnected())
-             return true;
-
-           return tcp_socket_close(&mSocket);
+           return tcp_client_open(this, timeout);
         }
 
-        ///@copydoc microstrain::Connection::recvFromDevice
-        bool TcpConnection::recvFromDevice(uint8_t* buffer, size_t max_length, unsigned int wait_time_ms, size_t* length_out, EmbeddedTimestamp* timestamp_out)
+        bool TcpClientConnection::disconnect()
         {
-            (void)wait_time_ms;  // Not used, timeout is always fixed
-
-            *timestamp_out = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
-
-            return tcp_socket_recv(&mSocket, buffer, max_length, length_out);
+            return tcp_client_close(this);
         }
 
-        ///@copydoc microstrain::Connection::sendToDevice
-        bool TcpConnection::sendToDevice(const uint8_t* data, size_t length)
+        bool TcpClientConnection::isConnected() const
         {
-            size_t length_out;
-            return tcp_socket_send(&mSocket, data, length, &length_out);
+            return tcp_client_is_open(this);
+        }
+
+        bool TcpClientConnection::read(uint8_t* _buffer, const size_t _byte_count, const uint32_t _wait_time_ms,
+            size_t& _bytes_read_out, EmbeddedTimestamp& _timestamp_out)
+        {
+            return tcp_client_read(this, _buffer, _byte_count, _wait_time_ms, &_bytes_read_out, &_timestamp_out);
+        }
+
+        bool TcpClientConnection::write(const uint8_t* _data, const size_t _byte_count, size_t& _bytes_written_out)
+        {
+            return tcp_client_write(this, _data, _byte_count, &_bytes_written_out);
+        }
+
+        const char* TcpClientConnection::interfaceName() const
+        {
+            return hostname();
+        }
+
+        uint32_t TcpClientConnection::parameter() const
+        {
+            return port();
+        }
+
+        const char* TcpClientConnection::hostname() const
+        {
+            return tcp_client::hostname;
+        }
+
+        uint16_t TcpClientConnection::port() const
+        {
+            return tcp_client::port;
+        }
+
+        bool TcpClientConnection::updatePort(const uint16_t _port)
+        {
+            return tcp_client_update_port(this, _port);
         }
     } // namespace connections
 } // namespace microstrain

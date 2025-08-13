@@ -1,11 +1,10 @@
-
-#include "mip_descriptors.h"
-
-#include "microstrain/serialization.h"
+#include "mip/mip_descriptors.h"
 
 #ifdef __cplusplus
+using microstrain::C::microstrain_serializer;
+
 namespace mip {
-extern "C" {
+namespace C {
 #endif // __cplusplus
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -153,7 +152,6 @@ bool mip_is_shared_data_field_descriptor(uint8_t field_descriptor)
     return field_descriptor >= MIP_SHARED_DATA_FIELD_DESCRIPTOR_START;
 }
 
-
 void insert_mip_function_selector(microstrain_serializer* serializer, enum mip_function_selector self)
 {
     microstrain_insert_u8(serializer, self);
@@ -170,6 +168,6 @@ void extract_mip_function_selector(microstrain_serializer* serializer, enum mip_
 ////////////////////////////////////////////////////////////////////////////////
 
 #ifdef __cplusplus
-} // extern "C"
+} // namespace C
 } // namespace mip
 #endif // __cplusplus

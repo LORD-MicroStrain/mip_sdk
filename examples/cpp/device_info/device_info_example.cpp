@@ -57,7 +57,7 @@ void logCallback(void* _user, const microstrain_log_level _level, const char* _f
 void initializeDevice(mip::Interface& _device);
 
 // Utility functions the handle application closing and printing error messages
-void terminate(microstrain::Connection* _connection, const char* _message, const bool _successful = false);
+void terminate(microstrain::connections::Connection* _connection, const char* _message, const bool _successful = false);
 void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const char* _format, ...);
 
 int main(const int argc, const char* argv[])
@@ -83,9 +83,9 @@ int main(const int argc, const char* argv[])
 
     MICROSTRAIN_LOG_INFO("Initializing the device interface.\n");
     mip::Interface device(
-        &connection,                                 // Connection for the device
-        mip::C::mip_timeout_from_baudrate(BAUDRATE), // Set the base timeout for commands (milliseconds)
-        2000                                         // Set the base timeout for command replies (milliseconds)
+        connection,                         // Connection for the device
+        mip::timeoutFromBaudrate(BAUDRATE), // Set the base timeout for commands (milliseconds)
+        2000                                // Set the base timeout for command replies (milliseconds)
     );
     initializeDevice(device);
 

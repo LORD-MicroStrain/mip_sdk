@@ -78,6 +78,11 @@ void Parser::setCallback(T& object)
     C::mip_parser_set_callback(this, callback, &object);
 }
 
+static inline Timeout timeoutFromBaudrate(const uint32_t _baudrate)
+{
+    return C::mip_timeout_from_baudrate(_baudrate);
+}
+
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
 } // namespace mip

@@ -217,7 +217,7 @@ rebuilt properly. Normally CMake takes care of this for you).
 * Available Modules:
   * microstrain
   * microstrain_extras (CPP only)
-  * microstrain_recording_connection (CPP only)
+  * microstrain_recording
   * microstrain_serial
   * microstrain_socket
   * mip

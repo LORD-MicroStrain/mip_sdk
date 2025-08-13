@@ -1,4 +1,5 @@
 set(MICROSTRAIN_CONNECTION_SOURCES
+    "${CMAKE_CURRENT_LIST_DIR}/connection.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/connection.hpp"
 )
 
