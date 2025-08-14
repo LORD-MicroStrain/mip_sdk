@@ -1,5 +1,7 @@
 #include "microstrain/connections/connection.hpp"
 
+#include <cstring>
+
 namespace microstrain
 {
     namespace connections

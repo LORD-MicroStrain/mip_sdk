@@ -3,6 +3,7 @@
 #include <microstrain/logging.h>
 
 #include <assert.h>
+#include <string.h>
 
 #if defined MICROSTRAIN_PLATFORM_WINDOWS
 #include <ctype.h>
@@ -17,7 +18,6 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <poll.h>
-#include <string.h>
 #include <sys/ioctl.h>
 #include <termios.h>
 #include <unistd.h>
