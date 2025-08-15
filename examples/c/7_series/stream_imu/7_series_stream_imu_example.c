@@ -67,6 +67,11 @@ static const uint16_t SAMPLE_RATE_HZ = 1;
 // TODO: Update to change the example run time
 // Example run time
 static const uint32_t RUN_TIME_SECONDS = 30;
+
+// TODO: Update with desired recording file names
+// Note: Streams may also be used in place of files
+static const char* RECEIVE_BYTES_BINARY = "receive_bytes.bin";
+static const char* SEND_BYTES_BINARY    = "send_bytes.bin";
 ////////////////////////////////////////////////////////////////////////////////
 
 // Custom logging handler callback
@@ -110,10 +115,26 @@ int main(const int argc, const char* argv[])
     // Initialize the custom logger to print messages/errors as they occur
     MICROSTRAIN_LOG_INIT(&log_callback, MICROSTRAIN_LOG_LEVEL_INFO, NULL);
 
+    // Initialize the recording files for the connection
+    MICROSTRAIN_LOG_INFO("Initializing communication recording files. Receive: '%s'    Send: '%s'\n",
+        RECEIVE_BYTES_BINARY,
+        SEND_BYTES_BINARY
+    );
+    recording_connection recording_connection;
+    // Note: Initialization is handled when using both receive and send files/streams otherwise, this needs to be called
+    recording_connection_init(&recording_connection);
+
+    // Note: 'recording_connection_open_files' can be used instead of the functions within the connection interfaces
+    // which is used below with 'serial_port_init_recording_files'. It should be done before the connection init call
+
     // Initialize the connection
     MICROSTRAIN_LOG_INFO("Initializing the connection on port %s with %d baudrate.\n", PORT_NAME, BAUDRATE);
     serial_port device_port;
-    serial_port_init(&device_port, PORT_NAME, BAUDRATE, NULL);
+    serial_port_init(&device_port, PORT_NAME, BAUDRATE, &recording_connection);
+
+    // Note: The connection interfaces offer recording function wrappers for convenience purposes demonstrated here
+    // The recording connection needs to be initialized and passed to the connection 'init' call before using them
+    serial_port_init_recording_files(&device_port, RECEIVE_BYTES_BINARY, SEND_BYTES_BINARY);
 
     MICROSTRAIN_LOG_INFO("Connecting to the device.\n");
 
@@ -784,6 +805,13 @@ void terminate(serial_port* _device_port, const char* _message, const bool _succ
             {
                 MICROSTRAIN_LOG_ERROR("Failed to close the connection!\n");
             }
+        }
+
+        if (serial_port_recording_enabled(_device_port))
+        {
+            MICROSTRAIN_LOG_INFO("Closing the recording streams.\n");
+
+            serial_port_close_recording_streams(_device_port);
         }
     }
 

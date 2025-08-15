@@ -63,6 +63,11 @@ static constexpr uint16_t SAMPLE_RATE_HZ = 1;
 // TODO: Update to change the example run time
 // Example run time
 static constexpr uint32_t RUN_TIME_SECONDS = 30;
+
+// TODO: Update with desired recording file names
+// Note: Streams may also be used in place of files
+static constexpr const char* RECEIVE_BYTES_BINARY = "receive_bytes.bin";
+static constexpr const char* SEND_BYTES_BINARY    = "send_bytes.bin";
 ////////////////////////////////////////////////////////////////////////////////
 
 // Custom logging handler callback
@@ -101,6 +106,16 @@ int main(const int argc, const char* argv[])
     // Initialize the connection
     MICROSTRAIN_LOG_INFO("Initializing the connection on port %s with %d baudrate.\n", PORT_NAME, BAUDRATE);
     microstrain::connections::SerialConnection connection(PORT_NAME, BAUDRATE);
+
+    // Initialize the recording files for the connection
+    MICROSTRAIN_LOG_INFO("Initializing communication recording files. Receive: '%s'    Send: '%s'\n",
+        RECEIVE_BYTES_BINARY,
+        SEND_BYTES_BINARY
+    );
+    // Note: Recording can be initialized using the connection constructor instead
+    // Note: FILE streams can be used in place of file names. Use 'initializeRecordingStreams' instead
+    // Note: Individual files/streams can be initialized as well using the 'receive' and 'send' variants
+    connection.initializeRecordingFiles(RECEIVE_BYTES_BINARY, SEND_BYTES_BINARY);
 
     MICROSTRAIN_LOG_INFO("Connecting to the device.\n");
 
