@@ -69,7 +69,7 @@ void thrd_yield(void);
 #ifdef _WIN32
 static const char* PORT_NAME = "COM1";
 #else // Unix
-static const char* PORT_NAME = "/dev/ttyUSB0";
+static const char* PORT_NAME = "/dev/ttyACM0";
 #endif // _WIN32
 
 // Set the baudrate for the connection (Serial/USB)
