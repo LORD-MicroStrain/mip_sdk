@@ -489,7 +489,7 @@ namespace microstrain
             const char* mType = TYPE;
 
         private:
-            /// @brief Recording connection interface, set curing construction
+            /// @brief Recording connection interface, set during construction
             Recording mRecordingConnection = {};
         };
         ///
