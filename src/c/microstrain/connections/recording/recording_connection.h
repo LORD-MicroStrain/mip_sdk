@@ -90,15 +90,15 @@ void recording_connection_open_receive_file(recording_connection* _recording_con
     const char* _receive_file_name);
 
 ////////////////////////////////////////////////////////////////////////////////
-/// @brief Closes the file used for recording received data bytes
+/// @brief Closes the stream used for recording received data bytes
 ///
-/// @details Safely closes the file stream for received data if it exists and
-///          sets the file pointer to NULL. Logs warnings if attempting to close
-///          a non-existent file.
+/// @details Safely closes the stream for received data if it exists and sets
+///          the stream pointer to NULL. Logs warnings if attempting to close a
+///          non-existent stream.
 ///
 /// @param _recording_connection Pointer to the recording connection structure
 ///
-void recording_connection_close_receive_file(recording_connection* _recording_connection);
+void recording_connection_close_receive_stream(recording_connection* _recording_connection);
 
 ////////////////////////////////////////////////////////////////////////////////
 /// @brief Writes received data bytes to the recording file
@@ -149,15 +149,15 @@ void recording_connection_init_send_stream(recording_connection* _recording_conn
 void recording_connection_open_send_file(recording_connection* _recording_connection, const char* _send_file_name);
 
 ////////////////////////////////////////////////////////////////////////////////
-/// @brief Closes the file used for recording sent data bytes
+/// @brief Closes the stream used for recording sent data bytes
 ///
-/// @details Safely closes the file stream for sent data if it exists and sets
-///          the file pointer to NULL. Logs warnings if attempting to close a
-///          non-existent file.
+/// @details Safely closes the stream for sent data if it exists and sets the
+///          stream pointer to NULL. Logs warnings if attempting to close a
+///          non-existent stream.
 ///
 /// @param _recording_connection Pointer to the recording connection structure
 ///
-void recording_connection_close_send_file(recording_connection* _recording_connection);
+void recording_connection_close_send_stream(recording_connection* _recording_connection);
 
 ////////////////////////////////////////////////////////////////////////////////
 /// @brief Writes sent data bytes to the recording file
@@ -213,15 +213,15 @@ void recording_connection_open_files(recording_connection* _recording_connection
     const char* _send_file_name);
 
 ////////////////////////////////////////////////////////////////////////////////
-/// @brief Closes both receive and send recording files
+/// @brief Closes both receive and send recording streams
 ///
-/// @details Convenience function that closes any open recording files.
-///          Safely handles cases where only one file type is open.
-///          Logs warnings if no files are open to close.
+/// @details Convenience function that closes any open recording streams.
+///          Safely handles cases where only one stream type is open.
+///          Logs warnings if no streams are open to close.
 ///
 /// @param _recording_connection Pointer to the recording connection structure
 ///
-void recording_connection_close_files(recording_connection* _recording_connection);
+void recording_connection_close_streams(recording_connection* _recording_connection);
 
 ////////////////////////////////////////////////////////////////////////////////
 /// @brief Checks if recording of received data is enabled

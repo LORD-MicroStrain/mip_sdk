@@ -398,7 +398,7 @@ void tcp_client_init_receive_recording_stream(const tcp_client* _tcp_client, FIL
     }
 }
 
-void tcp_client_init_receive_recording_file(const tcp_client* _tcp_client, const char* _receive_file_name)
+void tcp_client_open_receive_recording_file(const tcp_client* _tcp_client, const char* _receive_file_name)
 {
     if (_tcp_client)
     {
@@ -416,7 +416,7 @@ void tcp_client_close_receive_recording_stream(const tcp_client* _tcp_client)
 {
     if (_tcp_client)
     {
-        recording_connection_close_receive_file(_tcp_client->recording_connection);
+        recording_connection_close_receive_stream(_tcp_client->recording_connection);
     }
     else
     {
@@ -454,7 +454,7 @@ void tcp_client_init_send_recording_stream(const tcp_client* _tcp_client, FILE* 
     }
 }
 
-void tcp_client_init_send_recording_file(const tcp_client* _tcp_client, const char* _send_file_name)
+void tcp_client_open_send_recording_file(const tcp_client* _tcp_client, const char* _send_file_name)
 {
     if (_tcp_client)
     {
@@ -472,7 +472,7 @@ void tcp_client_close_send_recording_stream(const tcp_client* _tcp_client)
 {
     if (_tcp_client)
     {
-        recording_connection_close_send_file(_tcp_client->recording_connection);
+        recording_connection_close_send_stream(_tcp_client->recording_connection);
     }
     else
     {
@@ -511,13 +511,13 @@ void tcp_client_init_recording_streams(const tcp_client* _tcp_client, FILE* _rec
     }
 }
 
-void tcp_client_init_recording_files(const tcp_client* _tcp_client, const char* _receive_file_name,
+void tcp_client_open_recording_files(const tcp_client* _tcp_client, const char* _receive_file_name,
     const char* _send_file_name)
 {
     if (_tcp_client)
     {
-        tcp_client_init_receive_recording_file(_tcp_client, _receive_file_name);
-        tcp_client_init_send_recording_file(_tcp_client, _send_file_name);
+        tcp_client_open_receive_recording_file(_tcp_client, _receive_file_name);
+        tcp_client_open_send_recording_file(_tcp_client, _send_file_name);
     }
     else
     {

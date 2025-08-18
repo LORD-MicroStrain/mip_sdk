@@ -700,7 +700,7 @@ void serial_port_init_receive_recording_stream(const serial_port* _serial_port, 
     }
 }
 
-void serial_port_init_receive_recording_file(const serial_port* _serial_port, const char* _receive_file_name)
+void serial_port_open_receive_recording_file(const serial_port* _serial_port, const char* _receive_file_name)
 {
     if (_serial_port)
     {
@@ -718,7 +718,7 @@ void serial_port_close_receive_recording_stream(const serial_port* _serial_port)
 {
     if (_serial_port)
     {
-        recording_connection_close_receive_file(_serial_port->recording_connection);
+        recording_connection_close_receive_stream(_serial_port->recording_connection);
     }
     else
     {
@@ -756,7 +756,7 @@ void serial_port_init_send_recording_stream(const serial_port* _serial_port, FIL
     }
 }
 
-void serial_port_init_send_recording_file(const serial_port* _serial_port, const char* _send_file_name)
+void serial_port_open_send_recording_file(const serial_port* _serial_port, const char* _send_file_name)
 {
     if (_serial_port)
     {
@@ -774,7 +774,7 @@ void serial_port_close_send_recording_stream(const serial_port* _serial_port)
 {
     if (_serial_port)
     {
-        recording_connection_close_send_file(_serial_port->recording_connection);
+        recording_connection_close_send_stream(_serial_port->recording_connection);
     }
     else
     {
@@ -813,13 +813,13 @@ void serial_port_init_recording_streams(const serial_port* _serial_port, FILE* _
     }
 }
 
-void serial_port_init_recording_files(const serial_port* _serial_port, const char* _receive_file_name,
+void serial_port_open_recording_files(const serial_port* _serial_port, const char* _receive_file_name,
     const char* _send_file_name)
 {
     if (_serial_port)
     {
-        serial_port_init_receive_recording_file(_serial_port, _receive_file_name);
-        serial_port_init_send_recording_file(_serial_port, _send_file_name);
+        serial_port_open_receive_recording_file(_serial_port, _receive_file_name);
+        serial_port_open_send_recording_file(_serial_port, _send_file_name);
     }
     else
     {

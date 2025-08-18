@@ -134,7 +134,7 @@ int main(const int argc, const char* argv[])
 
     // Note: The connection interfaces offer recording function wrappers for convenience purposes demonstrated here
     // The recording connection needs to be initialized and passed to the connection 'init' call before using them
-    serial_port_init_recording_files(&device_port, RECEIVE_BYTES_BINARY, SEND_BYTES_BINARY);
+    serial_port_open_recording_files(&device_port, RECEIVE_BYTES_BINARY, SEND_BYTES_BINARY);
 
     MICROSTRAIN_LOG_INFO("Connecting to the device.\n");
 

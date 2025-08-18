@@ -8,12 +8,12 @@ namespace microstrain
         {
             if (mManageReceiveStream)
             {
-                recording_connection_close_receive_file(this);
+                recording_connection_close_receive_stream(this);
             }
 
             if (mManageSendStream)
             {
-                recording_connection_close_send_file(this);
+                recording_connection_close_send_stream(this);
             }
         }
 
@@ -43,7 +43,7 @@ namespace microstrain
 
         void Recording::closeReceiveFile()
         {
-            recording_connection_close_receive_file(this);
+            recording_connection_close_receive_stream(this);
         }
 
         void Recording::writeReceivedBytes(const uint8_t* _receiveBuffer, const size_t _bufferSize,
@@ -73,7 +73,7 @@ namespace microstrain
 
         void Recording::closeSendFile()
         {
-            recording_connection_close_send_file(this);
+            recording_connection_close_send_stream(this);
         }
 
         void Recording::writeSentBytes(const uint8_t* _sendBuffer, const size_t _bufferSize, size_t* _bytesWrittenOut)
@@ -100,7 +100,7 @@ namespace microstrain
 
         void Recording::closeStreams()
         {
-            recording_connection_close_files(this);
+            recording_connection_close_streams(this);
         }
 
         void Recording::bytesWritten(uint64_t& _receiveBytesWrittenOut, uint64_t& _sendBytesWrittenOut) const

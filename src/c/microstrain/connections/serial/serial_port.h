@@ -287,7 +287,7 @@ void serial_port_init_receive_recording_stream(const serial_port* _serial_port, 
 /// @warning Ensure sufficient disk space is available as continuous logging can
 ///          generate large files over time
 ///
-void serial_port_init_receive_recording_file(const serial_port* _serial_port, const char* _receive_file_name);
+void serial_port_open_receive_recording_file(const serial_port* _serial_port, const char* _receive_file_name);
 
 ////////////////////////////////////////////////////////////////////////////////
 /// @brief Closes receive recording stream on a serial port
@@ -343,7 +343,7 @@ void serial_port_init_send_recording_stream(const serial_port* _serial_port, FIL
 /// @warning Continuous transmission recording can consume significant disk
 ///          space depending on data volume and transmission frequency
 ///
-void serial_port_init_send_recording_file(const serial_port* _serial_port, const char* _send_file_name);
+void serial_port_open_send_recording_file(const serial_port* _serial_port, const char* _send_file_name);
 
 ////////////////////////////////////////////////////////////////////////////////
 /// @brief Closes send recording stream on a serial port
@@ -406,7 +406,7 @@ void serial_port_init_recording_streams(const serial_port* _serial_port, FILE* _
 /// @warning Bidirectional recording doubles the disk space requirements
 ///          compared to single-direction recording
 ///
-void serial_port_init_recording_files(const serial_port* _serial_port, const char* _receive_file_name,
+void serial_port_open_recording_files(const serial_port* _serial_port, const char* _receive_file_name,
     const char* _send_file_name);
 
 ////////////////////////////////////////////////////////////////////////////////

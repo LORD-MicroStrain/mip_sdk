@@ -229,7 +229,7 @@ void tcp_client_init_receive_recording_stream(const tcp_client* _tcp_client, FIL
 /// @warning Ensure sufficient disk space is available as continuous logging can
 ///          generate large files over time
 ///
-void tcp_client_init_receive_recording_file(const tcp_client* _tcp_client, const char* _receive_file_name);
+void tcp_client_open_receive_recording_file(const tcp_client* _tcp_client, const char* _receive_file_name);
 
 ////////////////////////////////////////////////////////////////////////////////
 /// @brief Closes the receive recording stream for a TCP client
@@ -287,7 +287,7 @@ void tcp_client_init_send_recording_stream(const tcp_client* _tcp_client, FILE* 
 /// @warning Continuous transmission recording can consume significant disk
 ///          space depending on data volume and transmission frequency
 ///
-void tcp_client_init_send_recording_file(const tcp_client* _tcp_client, const char* _send_file_name);
+void tcp_client_open_send_recording_file(const tcp_client* _tcp_client, const char* _send_file_name);
 
 ////////////////////////////////////////////////////////////////////////////////
 /// @brief Closes the send recording stream for a TCP client
@@ -350,7 +350,7 @@ void tcp_client_init_recording_streams(const tcp_client* _tcp_client, FILE* _rec
 /// @warning Bidirectional recording doubles the disk space requirements
 ///          compared to single-direction recording
 ///
-void tcp_client_init_recording_files(const tcp_client* _tcp_client, const char* _receive_file_name,
+void tcp_client_open_recording_files(const tcp_client* _tcp_client, const char* _receive_file_name,
     const char* _send_file_name);
 
 ////////////////////////////////////////////////////////////////////////////////

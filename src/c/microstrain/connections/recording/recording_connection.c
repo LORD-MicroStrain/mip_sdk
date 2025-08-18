@@ -28,7 +28,7 @@ void recording_connection_init_receive_stream(recording_connection* _recording_c
     if (_recording_connection && _receive_stream)
     {
         // Make sure the stream is closed before initializing a new one
-        recording_connection_close_receive_file(_recording_connection);
+        recording_connection_close_receive_stream(_recording_connection);
 
         MICROSTRAIN_LOG_DEBUG("Initializing the recording stream for receive bytes\n");
 
@@ -78,7 +78,7 @@ void recording_connection_open_receive_file(recording_connection* _recording_con
     }
 }
 
-void recording_connection_close_receive_file(recording_connection* _recording_connection)
+void recording_connection_close_receive_stream(recording_connection* _recording_connection)
 {
     if (_recording_connection)
     {
@@ -137,7 +137,7 @@ void recording_connection_init_send_stream(recording_connection* _recording_conn
     if (_recording_connection && _send_stream)
     {
         // Make sure the stream is closed before initializing a new one
-        recording_connection_close_send_file(_recording_connection);
+        recording_connection_close_send_stream(_recording_connection);
 
         MICROSTRAIN_LOG_DEBUG("Initializing the recording stream for send bytes\n");
 
@@ -187,7 +187,7 @@ void recording_connection_open_send_file(recording_connection* _recording_connec
     }
 }
 
-void recording_connection_close_send_file(recording_connection* _recording_connection)
+void recording_connection_close_send_stream(recording_connection* _recording_connection)
 {
     if (_recording_connection)
     {
@@ -305,25 +305,25 @@ void recording_connection_open_files(recording_connection* _recording_connection
     }
 }
 
-void recording_connection_close_files(recording_connection* _recording_connection)
+void recording_connection_close_streams(recording_connection* _recording_connection)
 {
     if (_recording_connection)
     {
-        if (_recording_connection->receive_file)
-        {
-            recording_connection_close_receive_file(_recording_connection);
-        }
-
-        if (_recording_connection->send_file)
-        {
-            recording_connection_close_send_file(_recording_connection);
-        }
-
         if (!_recording_connection->receive_file && !_recording_connection->send_file)
         {
             MICROSTRAIN_LOG_ERROR("Cannot close nonexistent recording files\n");
 
             assert(false);
+        }
+
+        if (_recording_connection->receive_file)
+        {
+            recording_connection_close_receive_stream(_recording_connection);
+        }
+
+        if (_recording_connection->send_file)
+        {
+            recording_connection_close_send_stream(_recording_connection);
         }
     }
     else
