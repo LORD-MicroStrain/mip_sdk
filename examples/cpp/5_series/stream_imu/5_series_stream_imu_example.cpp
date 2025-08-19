@@ -1,11 +1,12 @@
 ////////////////////////////////////////////////////////////////////////////////
 /// 5_series_stream_imu_example.cpp
 ///
-/// Example setup program for streaming IMU data on 5-series devices using C++
+/// Example setup program for streaming and recording IMU data on 5-series
+/// devices using C++
 ///
-/// This example shows a basic setup for streaming IMU data on 5-series devices
-/// using C++.
-/// It is not an exhaustive example of all streaming options.
+/// This example shows a basic setup for streaming and recording IMU data on
+/// 5-series devices using C++.
+/// It is not an exhaustive example of all streaming and recording options.
 /// If this example does not meet your specific setup needs, please consult the
 /// MIP SDK API documentation for the proper commands.
 ///
@@ -105,17 +106,15 @@ int main(const int argc, const char* argv[])
 
     // Initialize the connection
     MICROSTRAIN_LOG_INFO("Initializing the connection on port %s with %d baudrate.\n", PORT_NAME, BAUDRATE);
-    microstrain::connections::SerialConnection connection(PORT_NAME, BAUDRATE);
 
-    // Initialize the recording files for the connection
-    MICROSTRAIN_LOG_INFO("Initializing communication recording files. Receive: '%s'    Send: '%s'\n",
+    // Open the recording files for the connection
+    MICROSTRAIN_LOG_INFO("Opening connection recording files. Receive: '%s'    Send: '%s'\n",
         RECEIVE_BYTES_BINARY,
         SEND_BYTES_BINARY
     );
-    // Note: Recording can be initialized using the connection constructor instead
-    // Note: FILE streams can be used in place of file names. Use 'initializeRecordingStreams' instead
-    // Note: Individual files/streams can be initialized as well using the 'receive' and 'send' variants
-    connection.initializeRecordingFiles(RECEIVE_BYTES_BINARY, SEND_BYTES_BINARY);
+    // Create the connection, and it opens and manages the recording streams
+    // Note: Connection managed streams are closed in the connection destructor
+    microstrain::connections::SerialConnection connection(PORT_NAME, BAUDRATE, RECEIVE_BYTES_BINARY, SEND_BYTES_BINARY);
 
     MICROSTRAIN_LOG_INFO("Connecting to the device.\n");
 

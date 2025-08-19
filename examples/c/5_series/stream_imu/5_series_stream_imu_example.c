@@ -1,11 +1,12 @@
 ////////////////////////////////////////////////////////////////////////////////
 /// 5_series_stream_imu_example.c
 ///
-/// Example setup program for streaming IMU data on 5-series devices using C
+/// Example setup program for streaming and recording IMU data on 5-series
+/// devices using C
 ///
-/// This example shows a basic setup for streaming IMU data on 5-series devices
-/// using C.
-/// It is not an exhaustive example of all streaming options.
+/// This example shows a basic setup for streaming and recording IMU data on
+/// 5-series devices using C.
+/// It is not an exhaustive example of all streaming and recording options.
 /// If this example does not meet your specific setup needs, please consult the
 /// MIP SDK API documentation for the proper commands.
 ///
@@ -115,25 +116,21 @@ int main(const int argc, const char* argv[])
     // Initialize the custom logger to print messages/errors as they occur
     MICROSTRAIN_LOG_INIT(&log_callback, MICROSTRAIN_LOG_LEVEL_INFO, NULL);
 
-    // Initialize the recording files for the connection
-    MICROSTRAIN_LOG_INFO("Initializing communication recording files. Receive: '%s'    Send: '%s'\n",
-        RECEIVE_BYTES_BINARY,
-        SEND_BYTES_BINARY
-    );
+    // Initialize the recording interface
+    MICROSTRAIN_LOG_INFO("Initializing the recording interface.\n");
     recording_connection recording_connection;
-    // Note: Initialization is handled when using both receive and send files/streams otherwise, this needs to be called
     recording_connection_init(&recording_connection);
-
-    // Note: 'recording_connection_open_files' can be used instead of the functions within the connection interfaces
-    // which is used below with 'serial_port_init_recording_files'. It should be done before the connection init call
 
     // Initialize the connection
     MICROSTRAIN_LOG_INFO("Initializing the connection on port %s with %d baudrate.\n", PORT_NAME, BAUDRATE);
     serial_port device_port;
     serial_port_init(&device_port, PORT_NAME, BAUDRATE, &recording_connection);
 
-    // Note: The connection interfaces offer recording function wrappers for convenience purposes demonstrated here
-    // The recording connection needs to be initialized and passed to the connection 'init' call before using them
+    // Open the recording files for the connection
+    MICROSTRAIN_LOG_INFO("Opening connection recording files. Receive: '%s'    Send: '%s'\n",
+        RECEIVE_BYTES_BINARY,
+        SEND_BYTES_BINARY
+    );
     serial_port_open_recording_files(&device_port, RECEIVE_BYTES_BINARY, SEND_BYTES_BINARY);
 
     MICROSTRAIN_LOG_INFO("Connecting to the device.\n");
