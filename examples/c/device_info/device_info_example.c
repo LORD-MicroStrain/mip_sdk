@@ -87,7 +87,6 @@ int main(const int argc, const char* argv[])
     serial_port_init(&device_port, PORT_NAME, BAUDRATE, NULL);
 
     MICROSTRAIN_LOG_INFO("Connecting to the device.\n");
-
     // Open the connection to the device
     if (!serial_port_open(&device_port))
     {

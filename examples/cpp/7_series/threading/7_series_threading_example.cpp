@@ -104,7 +104,6 @@ int main(const int argc, const char* argv[])
     microstrain::connections::SerialConnection connection(PORT_NAME, BAUDRATE);
 
     MICROSTRAIN_LOG_INFO("Connecting to the device.\n");
-
     // Open the connection to the device
     if (!connection.connect())
     {

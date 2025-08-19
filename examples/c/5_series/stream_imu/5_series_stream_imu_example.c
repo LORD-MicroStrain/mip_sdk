@@ -134,7 +134,6 @@ int main(const int argc, const char* argv[])
     serial_port_open_recording_files(&device_port, RECEIVE_BYTES_BINARY, SEND_BYTES_BINARY);
 
     MICROSTRAIN_LOG_INFO("Connecting to the device.\n");
-
     // Open the connection to the device
     if (!serial_port_open(&device_port))
     {
@@ -244,7 +243,7 @@ int main(const int argc, const char* argv[])
     MICROSTRAIN_LOG_INFO("Sensor is configured... waiting for data.\n");
 
     // Get the start time of the device update loop to handle exiting the application
-    const mip_timestamp loop_start_time = microstrain_get_current_timestamp();
+    const microstrain_embedded_timestamp loop_start_time = microstrain_get_current_timestamp();
 
     // Device loop
     // Exit after predetermined time in seconds

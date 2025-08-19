@@ -123,7 +123,6 @@ int main(const int argc, const char* argv[])
     serial_port_init(&device_port, PORT_NAME, BAUDRATE, NULL);
 
     MICROSTRAIN_LOG_INFO("Connecting to the device.\n");
-
     // Open the connection to the device
     if (!serial_port_open(&device_port))
     {
@@ -243,7 +242,7 @@ int main(const int argc, const char* argv[])
     }
 
     // Get the start time of the device update loop to handle exiting the application
-    const mip_timestamp loop_start_time = microstrain_get_current_timestamp();
+    const microstrain_embedded_timestamp loop_start_time = microstrain_get_current_timestamp();
 
     mip_timestamp previous_print_timestamp = 0;
 
