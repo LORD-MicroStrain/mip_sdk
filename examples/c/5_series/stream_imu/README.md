@@ -1,6 +1,7 @@
 # 5 Series IMU Streaming Example (C)
 
-This example demonstrates how to stream basic IMU sensor data from a MicroStrain 5-series device using the MIP SDK C API.
+This example demonstrates how to stream basic IMU sensor data from a MicroStrain 5-series device using the MIP SDK C 
+API.
 
 ## Overview
 
@@ -27,10 +28,10 @@ The example uses the following default settings:
 
 The example includes communication recording for debugging and analysis:
 
-| Setting                | Value                 | Description                      |
-|------------------------|-----------------------|----------------------------------|
-| `RECEIVE_BYTES_BINARY` | `"receive_bytes.bin"` | File to record incoming data     |
-| `SEND_BYTES_BINARY`    | `"send_bytes.bin"`    | File to record outgoing commands |
+| Setting                 | Value                  | Description                      |
+|-------------------------|------------------------|----------------------------------|
+| `RECEIVED_BYTES_BINARY` | `"received_bytes.bin"` | File to record incoming data     |
+| `SENT_BYTES_BINARY`     | `"sent_bytes.bin"`     | File to record outgoing commands |
 
 ## Key Functions
 
@@ -42,13 +43,13 @@ The example includes communication recording for debugging and analysis:
 ### Message Configuration
 - Configures sensor message format with:
   - Scaled accelerometer data
-  - Scaled gyroscope data  
+  - Scaled gyroscope data
   - Scaled magnetometer data (if supported)
 
 ### Data Processing
 - `packet_callback()` - Processes complete MIP packets and displays field information
 - `accel_field_callback()` - Handles accelerometer data fields
-- `gyro_field_callback()` - Handles gyroscope data fields  
+- `gyro_field_callback()` - Handles gyroscope data fields
 - `mag_field_callback()` - Handles magnetometer data fields (optional)
 
 ### Communication Interface
@@ -83,7 +84,7 @@ The example streams the following sensor data:
 - **Range**: Device-dependent (typically ±2g, ±4g, ±8g, ±16g)
 - **Format**: [X, Y, Z] scaled acceleration vector
 
-### Gyroscope Data  
+### Gyroscope Data
 - **Units**: rad/s (radians per second)
 - **Range**: Device-dependent (typically ±250°/s to ±2000°/s)
 - **Format**: [X, Y, Z] scaled angular rate vector
@@ -153,5 +154,6 @@ This example demonstrates:
 ## See Also
 
 - C++ version: `5_series_stream_imu_example.cpp`
+- Comprehensive recording example: `recording_example.c`
 - Other examples in the `examples/` directory
 - MIP SDK documentation for sensor data commands

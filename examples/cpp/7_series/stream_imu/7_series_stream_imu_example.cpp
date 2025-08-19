@@ -67,8 +67,8 @@ static constexpr uint32_t RUN_TIME_SECONDS = 30;
 
 // TODO: Update with desired recording file names
 // Note: Streams may also be used in place of files
-static constexpr const char* RECEIVE_BYTES_BINARY = "receive_bytes.bin";
-static constexpr const char* SEND_BYTES_BINARY    = "send_bytes.bin";
+static constexpr const char* RECEIVED_BYTES_BINARY = "received_bytes.bin";
+static constexpr const char* SENT_BYTES_BINARY     = "sent_bytes.bin";
 ////////////////////////////////////////////////////////////////////////////////
 
 // Custom logging handler callback
@@ -109,12 +109,12 @@ int main(const int argc, const char* argv[])
 
     // Open the recording files for the connection
     MICROSTRAIN_LOG_INFO("Opening connection recording files. Receive: '%s'    Send: '%s'\n",
-        RECEIVE_BYTES_BINARY,
-        SEND_BYTES_BINARY
+        RECEIVED_BYTES_BINARY,
+        SENT_BYTES_BINARY
     );
     // Create the connection, and it opens and manages the recording streams
     // Note: Connection managed streams are closed in the connection destructor
-    microstrain::connections::SerialConnection connection(PORT_NAME, BAUDRATE, RECEIVE_BYTES_BINARY, SEND_BYTES_BINARY);
+    microstrain::connections::SerialConnection connection(PORT_NAME, BAUDRATE, RECEIVED_BYTES_BINARY, SENT_BYTES_BINARY);
 
     MICROSTRAIN_LOG_INFO("Connecting to the device.\n");
     // Open the connection to the device
