@@ -1,10 +1,11 @@
 # 7 Series GNSS/INS Example (C++)
 
-This example demonstrates how to configure and use a MicroStrain 7-series GNSS/INS device with the MIP SDK using the C++ API.
+This example demonstrates how to configure and use a MicroStrain 7-series GNSS/INS device with the MIP SDK using the 
+C++ API.
 
 ## Overview
 
-The example showcases basic setup and operation of a 7-series device, including:
+The example showcases the basic setup and operation of a 7-series device, including:
 - Device initialization and communication
 - GNSS and filter message configuration
 - Gyro bias capture
@@ -16,12 +17,12 @@ The example showcases basic setup and operation of a 7-series device, including:
 
 The example uses the following default settings:
 
-| Setting | Value                                         | Description |
-|---------|-----------------------------------------------|-------------|
-| `PORT_NAME` | `"COM1"` (Windows)<br>`"/dev/ttyACM0"` (Unix) | Serial port for device communication |
-| `BAUDRATE` | `115200`                                      | Communication baud rate |
-| `SAMPLE_RATE_HZ` | `1`                                           | Data output rate in Hz |
-| `RUN_TIME_SECONDS` | `30`                                          | Example runtime duration |
+| Setting            | Value                                         | Description                          |
+|--------------------|-----------------------------------------------|--------------------------------------|
+| `PORT_NAME`        | `"COM1"` (Windows)<br>`"/dev/ttyACM0"` (Unix) | Serial port for device communication |
+| `BAUDRATE`         | `115200`                                      | Communication baud rate              |
+| `SAMPLE_RATE_HZ`   | `1`                                           | Data output rate in Hz               |
+| `RUN_TIME_SECONDS` | `30`                                          | Example runtime duration             |
 
 ## Key Functions
 
