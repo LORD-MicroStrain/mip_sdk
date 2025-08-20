@@ -17,22 +17,22 @@ The example showcases basic INS setup and operation for 7-series devices, includ
 
 The example uses the following default settings:
 
-| Setting | Value                                         | Description |
-|---------|-----------------------------------------------|-------------|
-| `PORT_NAME` | `"COM1"` (Windows)<br>`"/dev/ttyACM0"` (Unix) | Serial port for device communication |
-| `BAUDRATE` | `115200`                                      | Communication baud rate |
-| `SAMPLE_RATE_HZ` | `1`                                           | Data output rate in Hz |
-| `RUN_TIME_SECONDS` | `30`                                          | Example runtime duration |
+| Setting            | Value                                         | Description                          |
+|--------------------|-----------------------------------------------|--------------------------------------|
+| `PORT_NAME`        | `"COM1"` (Windows)<br>`"/dev/ttyACM0"` (Unix) | Serial port for device communication |
+| `BAUDRATE`         | `115200`                                      | Communication baud rate              |
+| `SAMPLE_RATE_HZ`   | `1`                                           | Data output rate in Hz               |
+| `RUN_TIME_SECONDS` | `30`                                          | Example runtime duration             |
 
 ## External Aiding Configuration
 
 The example configures three reference frames for external measurements:
 
-| Frame ID | Purpose | Translation | Rotation |
-|----------|---------|-------------|----------|
-| `1` | External Heading | [0, 0, 0] m | [0, 0, 0] deg |
-| `2` | GNSS Antenna | [0, 1, 0] m | [0, 0, 0] deg |
-| `3` | Body Velocity | [1, 0, 0] m | [0, 0, 90] deg |
+| Frame ID | Purpose          | Translation | Rotation       |
+|----------|------------------|-------------|----------------|
+| `1`      | External Heading | [0, 0, 0] m | [0, 0, 0] deg  |
+| `2`      | GNSS Antenna     | [0, 1, 0] m | [0, 0, 0] deg  |
+| `3`      | Body Velocity    | [1, 0, 0] m | [0, 0, 90] deg |
 
 ## Key Functions
 
@@ -79,7 +79,7 @@ This example showcases:
 
 ## 7-Series INS Specific Features
 
-This example demonstrates 7-series INS specific capabilities:
+This example demonstrates 7-series INS-specific capabilities:
 - **External Aiding Support**: Integration of external position, velocity, and heading measurements
 - **Advanced Filter Configuration**: Enhanced navigation filter with external measurement sources
 - **Reference Frame Management**: Configurable coordinate transformations for external sensors
@@ -96,7 +96,7 @@ The example provides simulated external data for demonstration:
 
 The C++ version uses modern connection handling:
 - **SerialConnection**: RAII-based serial connection management
-- **Automatic Cleanup**: Connection automatically closed when object goes out of scope
+- **Automatic Cleanup**: Connection automatically closed when the object goes out of scope
 - **Exception Safety**: Proper resource cleanup even when errors occur
 
 ## Usage
@@ -104,7 +104,7 @@ The C++ version uses modern connection handling:
 1. Connect your 7-series INS device to the specified serial port
 2. Update the `PORT_NAME` constant if using a different port
 3. Compile and run the example
-4. Follow the gyro bias capture prompt (keep device stationary)
+4. Follow the gyro bias capture prompt (keep the device stationary)
 5. The program will:
     - Initialize the device and configure external aiding
     - Configure INS data output
