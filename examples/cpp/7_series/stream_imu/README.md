@@ -96,7 +96,7 @@ The example streams the following sensor data:
 
 The C++ version uses modern connection handling:
 - **SerialConnection**: RAII-based serial connection management
-- **Automatic Cleanup**: Connection automatically closed when object goes out of scope
+- **Automatic Cleanup**: Connection automatically closed when the object goes out of scope
 - **Exception Safety**: Proper resource cleanup even when errors occur
 - **Recording Integration**: Built-in recording support with file management
 

@@ -71,7 +71,7 @@ This example showcases:
 - **MIP Interface**: Core C interface for device communication (`mip_interface`)
 - **Serial Port Management**: Low-level serial port operations with recording
 - **Parser Integration**: Direct use of the MIP packet parser for sensor data
-- **Memory Safety**: Careful buffer management and bounds checking
+- **Memory Safety**: Careful buffer management and bound checking
 - **Recording Support**: Built-in communication recording for debugging
 - **Portability**: Cross-platform compatibility (Windows/Unix)
 
