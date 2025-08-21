@@ -349,10 +349,13 @@ size_t mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t 
 
                 // Stop parsing if there's no callback or if the callback returns false.
                 // If there's no callback, it's assumed that the user just wants one packet at a time.
-                const bool continue_parsing = parser->_callback != NULL && parser->_callback(
-                    parser->_callback_object,
-                    &packet,
-                    parser->_start_time
+                const bool continue_parsing = (
+                    (parser->_callback != NULL) &&
+                    parser->_callback(
+                        parser->_callback_object,
+                        &packet,
+                        parser->_start_time
+                    )
                 );
 
                 if(!continue_parsing)
