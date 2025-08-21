@@ -167,7 +167,7 @@ static size_t mip_parser_discard(mip_parser* parser, size_t offset)
 ///       timestamp and to time out incomplete packets.
 ///
 ///@returns The number of bytes processed from input_buffer. This will always
-///         be equal to input_length, unless the packet callback is NULL or
+///         be equal to input_length except when the packet callback is NULL or
 ///         it returns false to stop parsing early.
 ///
 ///@note The timestamp of a packet is based on the time the packet was parsed.
@@ -260,7 +260,7 @@ size_t mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t 
         //
         switch(expected_packet_length)
         {
-            // Nothing parsed yet (expecting 1 sync byte)
+        // Nothing parsed yet (expecting 1 sync byte)
         case MIP_INDEX_SYNC1+1:
             assert(!reparsing);
             assert(parser->_buffered_length == 0);
@@ -274,7 +274,7 @@ size_t mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t 
 
             break;
 
-            // Got single byte of 0x75 in the parse buffer.
+        // Got single byte of 0x75 in the parse buffer.
         case MIP_INDEX_SYNC2+1:
             // mip_find_sop() always tries to find both 0x75 and 0x65, so this
             // case only happens when 0x75 is left at the end of the parse buffer.
@@ -294,13 +294,13 @@ size_t mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t 
             }
             break;
 
-            // Nothing special to do for the descriptor set.
-            // This case can only happen when leftover_length == 2.
+        // Nothing special to do for the descriptor set.
+        // This case can only happen when leftover_length == 2.
         case MIP_INDEX_DESCSET+1:
             expected_packet_length = 4;
             break;
 
-            // Got the expected 4 bytes for the header - read packet's length field.
+        // Got the expected 4 bytes for the header - read packet's length field.
         case MIP_HEADER_LENGTH:
             if(reparsing)
             {
@@ -316,7 +316,8 @@ size_t mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t 
             expected_packet_length += MIP_HEADER_LENGTH + MIP_CHECKSUM_LENGTH;
             break;
 
-        default:  // All packet data is available, check checksum
+        // All packet data is available, check checksum
+        default:
         {
             if(!reparsing)
             {
@@ -346,15 +347,17 @@ size_t mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t 
                 MIP_DIAG_INC(parser->_diag_valid_packets, 1);
                 MIP_DIAG_INC(parser->_diag_packet_bytes, expected_packet_length);
 
-                bool stop = true;
+                // Stop parsing if there's no callback or if the callback returns false.
+                // If there's no callback, it's assumed that the user just wants one packet at a time.
+                const bool continue_parsing = parser->_callback != NULL && parser->_callback(
+                    parser->_callback_object,
+                    &packet,
+                    parser->_start_time
+                );
 
-                // If there's no callback, assume the user just wants one packet at a time.
-                if(parser->_callback)
-                    stop = !parser->_callback(parser->_callback_object, &packet, parser->_start_time);
-
-                if(stop)
+                if(!continue_parsing)
                 {
-                    // The packet data must be discarded so it won't be reparsed next time.
+                    // The packet data must be discarded so it won't be re-parsed again next time.
                     mip_parser_discard(parser, expected_packet_length);
                     parser->_start_time = timestamp;
 
