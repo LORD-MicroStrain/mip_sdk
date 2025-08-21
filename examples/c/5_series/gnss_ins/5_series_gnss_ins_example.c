@@ -1012,7 +1012,7 @@ void initialize_device(mip_interface* _device, serial_port* _device_port, const 
     if (!mip_cmd_result_is_ack(cmd_result))
     {
         // Note: Default settings will reset the baudrate to 115200 and may cause connection issues
-        if (cmd_result == MIP_STATUS_TIMEDOUT && _baudrate != 115200)
+        if (cmd_result == MIP_STATUS_TIMEDOUT && BAUDRATE != 115200)
         {
             MICROSTRAIN_LOG_WARN(
                 "On a native serial connections the baudrate needs to be 115200 for this example to run.\n"

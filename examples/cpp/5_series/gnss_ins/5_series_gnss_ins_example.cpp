@@ -897,7 +897,7 @@ void initializeDevice(mip::Interface& _device)
     if (!cmdResult.isAck())
     {
         // Note: Default settings will reset the baudrate to 115200 and may cause connection issues
-        if (cmd_result == MIP_STATUS_TIMEDOUT && _baudrate != 115200)
+        if (cmdResult == mip::CmdResult::STATUS_TIMEDOUT && BAUDRATE != 115200)
         {
             MICROSTRAIN_LOG_WARN(
                 "On a native serial connections the baudrate needs to be 115200 for this example to run.\n"
