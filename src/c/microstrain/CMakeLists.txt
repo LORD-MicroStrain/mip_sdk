@@ -12,7 +12,15 @@ set(MICROSTRAIN_SOURCES
     "${CMAKE_CURRENT_LIST_DIR}/serialization.h"
 )
 
-add_library(${MICROSTRAIN_LIBRARY} ${MICROSTRAIN_SOURCES})
+add_library(${MICROSTRAIN_LIBRARY}
+    ${MICROSTRAIN_SOURCES}
+)
+
+# Configure the project in an examples sub-folder for IDEs that support it
+file(RELATIVE_PATH PROJECT_RELATIVE_PATH "${MICROSTRAIN_SRC_DIR}" "${CMAKE_CURRENT_LIST_DIR}")
+set_target_properties(${MICROSTRAIN_LIBRARY} PROPERTIES
+    FOLDER "${PROJECT_RELATIVE_PATH}"
+)
 
 if(MSVC)
     source_group(TREE ${MICROSTRAIN_SRC_DIR} FILES ${MICROSTRAIN_SOURCES})

@@ -1,11 +1,9 @@
 #pragma once
 
-#include <mip/metadata/definitions/common.hpp>
+#include "mip/metadata/common.hpp"
+#include "mip/metadata/mip_metadata.hpp"
 
 #include <mip/definitions/commands_gnss.hpp>
-
-
-#include <mip/metadata/mip_metadata.hpp>
 
 namespace mip::metadata
 {
@@ -81,13 +79,15 @@ struct MetadataFor<commands_gnss::ReceiverInfo::Response>
     };
 
     static constexpr inline FieldInfo value = {
-        /* .name        = */ "commands_gnss::ReceiverInfo::Response",
-        /* .title       = */ "response",
-        /* .docs        = */ "",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+        {
+            /* .name        = */ "commands_gnss::ReceiverInfo::Response",
+            /* .title       = */ "response",
+            /* .docs        = */ "",
+            /* .parameters  = */ parameters,
+        },
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ NO_FUNCTIONS,
+            /* .response    = */ nullptr,
     };
 };
 
@@ -97,13 +97,15 @@ struct MetadataFor<commands_gnss::ReceiverInfo>
     using type = commands_gnss::ReceiverInfo;
 
     static constexpr inline FieldInfo value = {
-        /* .name        = */ "commands_gnss::ReceiverInfo",
-        /* .title       = */ "receiver_info",
-        /* .docs        = */ "Return information about the GNSS receivers in the device.\n",
-        /* .parameters  = */ {},
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ &MetadataFor<type::Response>::value,
+        {
+            /* .name        = */ "commands_gnss::ReceiverInfo",
+            /* .title       = */ "receiver_info",
+            /* .docs        = */ "Return information about the GNSS receivers in the device.\n",
+            /* .parameters  = */ {},
+        },
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ NO_FUNCTIONS,
+            /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
 
@@ -161,13 +163,15 @@ struct MetadataFor<commands_gnss::SignalConfiguration::Response>
     };
 
     static constexpr inline FieldInfo value = {
-        /* .name        = */ "commands_gnss::SignalConfiguration::Response",
-        /* .title       = */ "response",
-        /* .docs        = */ "",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+        {
+            /* .name        = */ "commands_gnss::SignalConfiguration::Response",
+            /* .title       = */ "response",
+            /* .docs        = */ "",
+            /* .parameters  = */ parameters,
+        },
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ NO_FUNCTIONS,
+            /* .response    = */ nullptr,
     };
 };
 
@@ -226,13 +230,15 @@ struct MetadataFor<commands_gnss::SignalConfiguration>
     };
 
     static constexpr inline FieldInfo value = {
-        /* .name        = */ "commands_gnss::SignalConfiguration",
-        /* .title       = */ "signal_configuration",
-        /* .docs        = */ "Configure the GNSS signals used by the device.\n",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ {true, true, true, true, true},
-        /* .response    = */ &MetadataFor<type::Response>::value,
+        {
+            /* .name        = */ "commands_gnss::SignalConfiguration",
+            /* .title       = */ "signal_configuration",
+            /* .docs        = */ "Configure the GNSS signals used by the device.\n",
+            /* .parameters  = */ parameters,
+        },
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ {true, true, true, true, true},
+            /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
 
@@ -317,13 +323,15 @@ struct MetadataFor<commands_gnss::SpartnConfiguration::Response>
     };
 
     static constexpr inline FieldInfo value = {
-        /* .name        = */ "commands_gnss::SpartnConfiguration::Response",
-        /* .title       = */ "response",
-        /* .docs        = */ "",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+        {
+            /* .name        = */ "commands_gnss::SpartnConfiguration::Response",
+            /* .title       = */ "response",
+            /* .docs        = */ "",
+            /* .parameters  = */ parameters,
+        },
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ NO_FUNCTIONS,
+            /* .response    = */ nullptr,
     };
 };
 
@@ -409,13 +417,15 @@ struct MetadataFor<commands_gnss::SpartnConfiguration>
     };
 
     static constexpr inline FieldInfo value = {
-        /* .name        = */ "commands_gnss::SpartnConfiguration",
-        /* .title       = */ "spartn_configuration",
-        /* .docs        = */ "Configure the SPARTN corrections service parameters.\nNotes:<br/>\n- Enable and type settings will only update after a power cycle <br/>\n- Type settings will only take effect after a power cycle <br/>\n- Key information can be updated while running",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ {true, true, true, true, true},
-        /* .response    = */ &MetadataFor<type::Response>::value,
+        {
+            /* .name        = */ "commands_gnss::SpartnConfiguration",
+            /* .title       = */ "spartn_configuration",
+            /* .docs        = */ "Configure the SPARTN corrections service parameters.\nNotes:<br/>\n- Enable and type settings will only update after a power cycle <br/>\n- Type settings will only take effect after a power cycle <br/>\n- Key information can be updated while running",
+            /* .parameters  = */ parameters,
+        },
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ {true, true, true, true, true},
+            /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
 
@@ -446,13 +456,15 @@ struct MetadataFor<commands_gnss::RtkDongleConfiguration::Response>
     };
 
     static constexpr inline FieldInfo value = {
-        /* .name        = */ "commands_gnss::RtkDongleConfiguration::Response",
-        /* .title       = */ "response",
-        /* .docs        = */ "",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ NO_FUNCTIONS,
-        /* .response    = */ nullptr,
+        {
+            /* .name        = */ "commands_gnss::RtkDongleConfiguration::Response",
+            /* .title       = */ "response",
+            /* .docs        = */ "",
+            /* .parameters  = */ parameters,
+        },
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ NO_FUNCTIONS,
+            /* .response    = */ nullptr,
     };
 };
 
@@ -484,13 +496,15 @@ struct MetadataFor<commands_gnss::RtkDongleConfiguration>
     };
 
     static constexpr inline FieldInfo value = {
-        /* .name        = */ "commands_gnss::RtkDongleConfiguration",
-        /* .title       = */ "rtk_dongle_configuration",
-        /* .docs        = */ "Configure the communications with the RTK Dongle connected to the device.\n",
-        /* .parameters  = */ parameters,
-        /* .descriptor  = */ type::DESCRIPTOR,
-        /* .functions   = */ {true, true, true, true, true},
-        /* .response    = */ &MetadataFor<type::Response>::value,
+        {
+            /* .name        = */ "commands_gnss::RtkDongleConfiguration",
+            /* .title       = */ "rtk_dongle_configuration",
+            /* .docs        = */ "Configure the communications with the RTK Dongle connected to the device.\n",
+            /* .parameters  = */ parameters,
+        },
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ {true, true, true, true, true},
+            /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
 
@@ -507,9 +521,9 @@ static constexpr inline const FieldInfo* COMMANDS_GNSS_FIELDS[] = {
 };
 
 static constexpr DescriptorSetInfo COMMANDS_GNSS = {
-    /*.descriptor =*/ mip::commands_gnss::DESCRIPTOR_SET,
-    /*.name       =*/ "Gnss Commands",
-    /*.fields     =*/ COMMANDS_GNSS_FIELDS,
+    /* .descriptor = */ mip::commands_gnss::DESCRIPTOR_SET,
+    /* .name       = */ "Gnss Commands",
+    /* .fields     = */ COMMANDS_GNSS_FIELDS,
 };
 
 } // namespace mip::metadata

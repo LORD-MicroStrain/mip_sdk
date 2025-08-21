@@ -10,6 +10,10 @@ project(
     LANGUAGES C CXX
 )
 
+set_property(GLOBAL PROPERTY
+    USE_FOLDERS ON
+)
+
 set(MICROSTRAIN_SRC_DIR "${CMAKE_CURRENT_LIST_DIR}/src")
 
 # Add our cmake directory to the available cmake modules path

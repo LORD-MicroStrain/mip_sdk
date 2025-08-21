@@ -213,7 +213,7 @@ bool serial_port_open(serial_port* port, const char* port_str, int baudrate)
     }
 #endif // MICROSTRAIN_PLATFORM_LINUX
 
-    // Other serial settings to match MSCL
+    // Other serial settings
     serial_port_settings.c_cflag |= (tcflag_t)(CLOCAL | CREAD);
     serial_port_settings.c_lflag &= (tcflag_t)~(ICANON | ECHO | ECHOE | ECHOK | ECHONL | ISIG | IEXTEN);
     serial_port_settings.c_oflag &= (tcflag_t)~(OPOST);
