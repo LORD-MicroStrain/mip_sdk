@@ -1,0 +1,29 @@
+name: Changelog Check
+
+on:
+    pull_request:
+        branches:
+            - develop  # Run this workflow when a pull request targets the develop branch
+
+jobs:
+    check_changelog:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Check for CHANGELOG.md modification
+              id: check_file
+              run: |
+                  # Get the list of changed files in the pull request
+                  changed_files=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})
+
+                  # Check if CHANGELOG.md is in the list of changed files
+                  if echo "$changed_files" | grep -q "CHANGELOG.md"; then
+                      echo "CHANGELOG.md was modified.  All good!"
+                      echo "::set-output name=status::success"
+                  else
+                      echo "ERROR: CHANGELOG.md was NOT modified.  Please update it before merging."
+                      echo "::set-output name=status::failure"
+                      exit 1 # Fail the job if the changelog was not updated
+                  fi
