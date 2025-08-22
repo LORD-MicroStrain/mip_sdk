@@ -71,6 +71,14 @@ uint8_t mip_field_payload_length(const mip_field_view* field)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+///@brief Returns the total length of the field including the header.
+///
+uint8_t mip_field_total_length(const mip_field_view* field)
+{
+    return MIP_FIELD_HEADER_LENGTH + mip_field_payload_length(field);
+}
+
+////////////////////////////////////////////////////////////////////////////////
 ///@brief Returns the payload pointer for the field data.
 ///
 const uint8_t* mip_field_payload(const mip_field_view* field)
