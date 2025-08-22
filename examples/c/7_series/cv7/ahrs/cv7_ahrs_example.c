@@ -227,9 +227,10 @@ int main(const int argc, const char* argv[])
     {
         // Update the device state
         // Note: This will update the device callbacks to trigger the filter state change
+        // Note: The recommended default wait time is 10 ms, but could be 0 for non-blocking read operations
         mip_interface_update(
             &device,
-            0,    // Time to wait
+            10,   // Time to wait
             false // From command
         );
 
@@ -252,9 +253,10 @@ int main(const int argc, const char* argv[])
     {
         // Update the device state
         // Note: This will update the device callbacks to trigger the filter state change
+        // Note: The recommended default wait time is 10 ms, but could be 0 for non-blocking read operations
         mip_interface_update(
             &device,
-            0,    // Time to wait
+            10,   // Time to wait
             false // From command
         );
 
