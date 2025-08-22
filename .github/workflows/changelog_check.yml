@@ -19,15 +19,13 @@ jobs:
               run: |
                   # Get the list of changed files in the pull request
                   changed_files=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})
-                  echo "Checking changed files..."
-                  echo "$changed_files"
 
                   # Check if CHANGELOG.md is in the list of changed files
                   if echo "$changed_files" | grep -q "CHANGELOG.md"; then
                       echo "CHANGELOG.md was modified.  All good!"
-                      echo "::set-output name=status::success"
+                      echo "status=success" >> $GITHUB_OUTPUT
                   else
                       echo "ERROR: CHANGELOG.md was NOT modified.  Please update it before merging."
-                      echo "::set-output name=status::failure"
+                      echo "status=failure" >> $GITHUB_OUTPUT
                       exit 1 # Fail the job if the changelog was not updated
                   fi
