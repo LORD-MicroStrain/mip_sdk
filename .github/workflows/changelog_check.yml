@@ -19,6 +19,8 @@ jobs:
               run: |
                   # Get the list of changed files in the pull request
                   changed_files=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})
+                  echo "Checking changed files..."
+                  echo "$changed_files"
 
                   # Check if CHANGELOG.md is in the list of changed files
                   if echo "$changed_files" | grep -q "CHANGELOG.md"; then
