@@ -537,9 +537,12 @@ void mip_interface_update_time(mip_interface* device, mip_timestamp timestamp)
 ///@param packet    MIP Packet from the parser.
 ///@param timestamp Timestamp of the packet.
 ///
-void mip_interface_parse_callback(void* device, const mip_packet_view* packet, mip_timestamp timestamp)
+///@returns true
+///
+bool mip_interface_parse_callback(void* device, const mip_packet_view* packet, mip_timestamp timestamp)
 {
     mip_interface_input_packet_from_device(device, packet, timestamp);
+    return true;
 }
 
 

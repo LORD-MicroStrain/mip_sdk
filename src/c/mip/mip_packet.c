@@ -45,7 +45,7 @@ void mip_packet_from_buffer(mip_packet_view* packet, const uint8_t* buffer, size
 {
     assert(buffer != NULL);
 
-    // Limit the length in case it's longer than a mip packer (or worse, longer than the buffer size field can hold)
+    // Limit the length in case it's longer than a mip packet (or worse, longer than the buffer size field can hold)
     if( length > MIP_PACKET_LENGTH_MAX )
         length = MIP_PACKET_LENGTH_MAX;
 
