@@ -236,7 +236,10 @@ int main(const int argc, const char* argv[])
     {
         // Update the device state
         // Note: This will update the device callbacks to trigger the filter state change
-        device.update();
+        // Note: The recommended default wait time is 10 ms, but could be 0 for non-blocking read operations
+        device.update(
+            10 // Time to wait
+        );
 
         // Fix type state change
         if (currentFixType != gnssFixInfo.fix_type)
@@ -264,7 +267,10 @@ int main(const int argc, const char* argv[])
     {
         // Update the device state
         // Note: This will update the device callbacks to trigger the filter state change
-        device.update();
+        // Note: The recommended default wait time is 10 ms, but could be 0 for non-blocking read operations
+        device.update(
+            10 // Time to wait
+        );
 
         // Fix type state change
         if (currentFixType != gnssFixInfo.fix_type)
@@ -344,6 +350,7 @@ void logCallback(void* _user, const microstrain_log_level _level, const char* _f
         {
             fprintf(stderr, "%s: ", microstrain_logging_level_name(_level));
             vfprintf(stderr, _format, _args);
+            fflush(stderr);
             break;
         }
         case MICROSTRAIN_LOG_LEVEL_WARN:
@@ -353,6 +360,7 @@ void logCallback(void* _user, const microstrain_log_level _level, const char* _f
         {
             fprintf(stdout, "%s: ", microstrain_logging_level_name(_level));
             vfprintf(stdout, _format, _args);
+            fflush(stdout);
             break;
         }
         case MICROSTRAIN_LOG_LEVEL_OFF:
@@ -955,8 +963,8 @@ void terminate(microstrain::Connection* _connection, const char* _message, const
     MICROSTRAIN_LOG_INFO("Press 'Enter' to exit the program.\n");
 
     // Make sure the console remains open
-    const int confirm_exit = getc(stdin);
-    (void)confirm_exit; // Unused
+    const int confirmExit = getc(stdin);
+    (void)confirmExit; // Unused
 
     if (!_successful)
     {

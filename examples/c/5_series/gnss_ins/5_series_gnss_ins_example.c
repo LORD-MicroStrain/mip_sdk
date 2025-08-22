@@ -261,9 +261,10 @@ int main(const int argc, const char* argv[])
     {
         // Update the device state
         // Note: This will update the device callbacks to trigger the filter state change
+        // Note: The recommended default wait time is 10 ms, but could be 0 for non-blocking read operations
         mip_interface_update(
             &device,
-            0,    // Time to wait
+            10,   // Time to wait
             false // From command
         );
 
@@ -293,9 +294,10 @@ int main(const int argc, const char* argv[])
     {
         // Update the device state
         // Note: This will update the device callbacks to trigger the filter state change
+        // Note: The recommended default wait time is 10 ms, but could be 0 for non-blocking read operations
         mip_interface_update(
             &device,
-            0,    // Time to wait
+            10,   // Time to wait
             false // From command
         );
 
@@ -377,6 +379,7 @@ void log_callback(void* _user, const microstrain_log_level _level, const char* _
         {
             fprintf(stderr, "%s: ", microstrain_logging_level_name(_level));
             vfprintf(stderr, _format, _args);
+            fflush(stderr);
             break;
         }
         case MICROSTRAIN_LOG_LEVEL_WARN:
@@ -386,6 +389,7 @@ void log_callback(void* _user, const microstrain_log_level _level, const char* _
         {
             fprintf(stdout, "%s: ", microstrain_logging_level_name(_level));
             vfprintf(stdout, _format, _args);
+            fflush(stdout);
             break;
         }
         case MICROSTRAIN_LOG_LEVEL_OFF:
