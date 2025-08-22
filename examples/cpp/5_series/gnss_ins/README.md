@@ -58,11 +58,11 @@ The C++ version uses modern features including:
 2. Update the `PORT_NAME` constant if using a different port
 3. Compile and run the example
 4. The program will:
-   - Initialize the device
-   - Configure data output
-   - Stream data for the specified runtime
-   - Display GNSS fix status and filter state
-   - Clean up and exit
+    - Initialize the device
+    - Configure data output
+    - Stream data for the specified runtime
+    - Display GNSS fix status and filter state
+    - Clean up and exit
 
 ## Error Handling
 

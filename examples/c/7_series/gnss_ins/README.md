@@ -62,13 +62,6 @@ This example showcases:
 - **Memory Safety**: Careful buffer management and bound checking
 - **Portability**: Cross-platform compatibility (Windows/Unix)
 
-## 7-Series Specific Features
-
-This example demonstrates 7-series specific capabilities:
-- **Multi-Antenna Support**: Configuration and monitoring of multiple GNSS antennas
-- **Advanced Filter Options**: Enhanced navigation filter configurations
-- **Improved GNSS Processing**: Advanced GNSS signal processing capabilities
-
 ## Custom Communication Functions
 
 The example implements custom communication handlers:

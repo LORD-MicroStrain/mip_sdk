@@ -52,13 +52,6 @@ The C++ version uses modern features including:
 - **Callbacks**: Automatic data callbacks for registered message types
 - **RAII**: Automatic resource management for connections
 
-## 7-Series Specific Features
-
-This example demonstrates 7-series specific capabilities:
-- **Multi-Antenna Support**: Configuration and monitoring of multiple GNSS antennas
-- **Advanced Filter Options**: Enhanced navigation filter configurations
-- **Improved GNSS Processing**: Advanced GNSS signal processing capabilities
-
 ## Usage
 
 1. Connect your 7-series device to the specified serial port

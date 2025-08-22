@@ -4,7 +4,7 @@
 /// Example setup program for the 3DM-GQ7-GNSS/INS, and 3DM-CV7-GNSS/INS using
 /// C++
 ///
-/// This example shows a typical setup for the 3DM-GQ7-GNSS/INS and
+/// This example shows a typical setup for the 3DM-GQ7-GNSS/INS, and
 /// 3DM-CV7-GNSS/INS sensors in a wheeled-vehicle application using C++.
 /// It is not an exhaustive example of all settings for those devices.
 /// If this example does not meet your specific setup needs, please consult the
@@ -56,6 +56,8 @@ static constexpr const char* PORT_NAME = "/dev/ttyACM0";
 #endif // _WIN32
 
 // Set the baudrate for the connection (Serial/USB)
+// Note: For native serial connections this needs to be 115200 due to the device default settings command
+// Use mip_3dm_*_uart_baudrate() to write and save the baudrate on the device
 static constexpr uint32_t BAUDRATE = 115200;
 
 // TODO: Update to the desired streaming rate. Setting low for readability purposes
@@ -161,10 +163,7 @@ int main(const int argc, const char* argv[])
 
     if (!cmdResult.isAck())
     {
-        terminate(
-            device,
-            cmdResult,
-            "Could not enable the %s!\n",
+        terminate(device, cmdResult, "Could not enable the %s!\n",
             mip::commands_filter::WheeledVehicleConstraintControl::DOC_NAME
         );
     }
@@ -243,6 +242,7 @@ int main(const int argc, const char* argv[])
     // Note: Since the device was idled for configuration, it needs to be resumed to output the data streams
     MICROSTRAIN_LOG_INFO("Resuming the device.\n");
     cmdResult = mip::commands_base::resume(device);
+
     if (!cmdResult.isAck())
     {
         terminate(device, cmdResult, "Could not resume the device!\n");
@@ -261,7 +261,10 @@ int main(const int argc, const char* argv[])
     {
         // Update the device state
         // Note: This will update the device callbacks to trigger the filter state change
-        device.update();
+        // Note: The recommended default wait time is 10 ms, but could be 0 for non-blocking read operations
+        device.update(
+            10 // Time to wait
+        );
 
         // Check for fix type state changes for each antenna
         for (uint8_t gnssIndex = 0; gnssIndex < 2; ++gnssIndex)
@@ -293,7 +296,10 @@ int main(const int argc, const char* argv[])
     {
         // Update the device state
         // Note: This will update the device callbacks to trigger the filter state change
-        device.update();
+        // Note: The recommended default wait time is 10 ms, but could be 0 for non-blocking read operations
+        device.update(
+            10 // Time to wait
+        );
 
         // Check for fix type state changes for each antenna
         for (uint8_t gnssIndex = 0; gnssIndex < 2; ++gnssIndex)
@@ -377,6 +383,7 @@ void logCallback(void* _user, const microstrain_log_level _level, const char* _f
         {
             fprintf(stderr, "%s: ", microstrain_logging_level_name(_level));
             vfprintf(stderr, _format, _args);
+            fflush(stderr);
             break;
         }
         case MICROSTRAIN_LOG_LEVEL_WARN:
@@ -386,6 +393,7 @@ void logCallback(void* _user, const microstrain_log_level _level, const char* _f
         {
             fprintf(stdout, "%s: ", microstrain_logging_level_name(_level));
             vfprintf(stdout, _format, _args);
+            fflush(stdout);
             break;
         }
         case MICROSTRAIN_LOG_LEVEL_OFF:
@@ -834,6 +842,7 @@ void initializeFilter(mip::Interface& _device)
     // Note: This is good to do after filter setup is complete
     MICROSTRAIN_LOG_INFO("Attempting to %s.\n", mip::commands_filter::Reset::DOC_NAME);
     cmdResult = mip::commands_filter::reset(_device);
+
     if (!cmdResult.isAck())
     {
         terminate(_device, cmdResult, "Could not %s!\n", mip::commands_filter::Reset::DOC_NAME);
@@ -1033,6 +1042,7 @@ void initializeDevice(mip::Interface& _device)
     // Note: This is a good first step to make sure the device is present
     MICROSTRAIN_LOG_INFO("Pinging the device.\n");
     mip::CmdResult cmdResult = mip::commands_base::ping(_device);
+
     if (!cmdResult.isAck())
     {
         terminate(_device, cmdResult, "Could not ping the device!\n");
@@ -1042,6 +1052,7 @@ void initializeDevice(mip::Interface& _device)
     // Note: This is good to do during setup as high data traffic can cause commands to fail
     MICROSTRAIN_LOG_INFO("Setting the device to idle.\n");
     cmdResult = mip::commands_base::setIdle(_device);
+
     if (!cmdResult.isAck())
     {
         terminate(_device, cmdResult, "Could not set the device to idle!\n");
@@ -1051,6 +1062,7 @@ void initializeDevice(mip::Interface& _device)
     MICROSTRAIN_LOG_INFO("Getting the device information.\n");
     mip::commands_base::BaseDeviceInfo deviceInfo;
     cmdResult = mip::commands_base::getDeviceInfo(_device, &deviceInfo);
+
     if (!cmdResult.isAck())
     {
         terminate(_device, cmdResult, "Could not get the device information!\n");
@@ -1082,8 +1094,17 @@ void initializeDevice(mip::Interface& _device)
     // Note: This guarantees the device is in a known state
     MICROSTRAIN_LOG_INFO("Loading default settings.\n");
     cmdResult = mip::commands_3dm::defaultDeviceSettings(_device);
+
     if (!cmdResult.isAck())
     {
+        // Note: Default settings will reset the baudrate to 115200 and may cause connection issues
+        if (cmdResult == mip::CmdResult::STATUS_TIMEDOUT && BAUDRATE != 115200)
+        {
+            MICROSTRAIN_LOG_WARN(
+                "On a native serial connections the baudrate needs to be 115200 for this example to run.\n"
+            );
+        }
+
         terminate(_device, cmdResult, "Could not load %s!\n", mip::commands_3dm::DeviceSettings::DOC_NAME);
     }
 }
@@ -1132,12 +1153,11 @@ void terminate(microstrain::Connection* _connection, const char* _message, const
         }
     }
 
-    MICROSTRAIN_LOG_INFO("Exiting the program.\n");
+    MICROSTRAIN_LOG_INFO("Press 'Enter' to exit the program.\n");
 
-#ifdef _WIN32
-    // Keep the console open on Windows
-    system("pause");
-#endif // _WIN32
+    // Make sure the console remains open
+    const int confirmExit = getc(stdin);
+    (void)confirmExit; // Unused
 
     if (!_successful)
     {
