@@ -94,7 +94,7 @@ void assert_buffer_not_overrun(const char* buffer, size_t size, size_t offset, c
         char value = buffer[i];
         if( value != '_' )
         {
-            fprintf(stderr, "FAIL: %s (%s)\n      Buffer corrupted to %c at offset %zu (%zu past end))\n", func, note, value, i, i-offset);
+            fprintf(stderr, "FAIL: %s (%s)\n      Buffer corrupted to '%c' (0x%02X) at offset %zu (%zu past end))\n", func, note, value, value, i, i-offset);
             print_buffer_context(buffer, size, offset, 10);
             g_fail_count++;
             break;

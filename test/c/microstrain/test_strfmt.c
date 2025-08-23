@@ -85,7 +85,7 @@ void multiple_formats_work()
 
     TEST_ASSERT(ok, "Should be successful");
     TEST_ASSERT_BUFFER_COMPARE(buffer, "Values: [A=54321, B=0xABCD, C=abcdefg]", 39, "Buffer should match expected result");
-    TEST_ASSERT_BUFFER_NOT_OVERRUN(buffer, sizeof(buffer), 50, "Buffer should not be overrun");
+    TEST_ASSERT_BUFFER_NOT_OVERRUN(buffer, sizeof(buffer), 39, "Buffer should not be overrun");
 }
 
 void multiple_formats_fail_gracefully_when_buffer_too_small()

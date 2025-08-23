@@ -22,4 +22,12 @@ if(MICROSTRAIN_ENABLE_LOGGING)
         COMMAND test_microstrain_strfmt
     )
 
+    add_microstrain_test(
+        NAME test_microstrain_strfmt_bytes
+        SOURCES
+        ${TEST_STRING_SOURCES}
+        "${CMAKE_CURRENT_LIST_DIR}/test_strfmt_bytes.c"
+        COMMAND test_microstrain_strfmt_bytes
+    )
+
 endif()

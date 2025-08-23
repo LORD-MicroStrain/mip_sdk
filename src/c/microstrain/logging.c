@@ -287,7 +287,7 @@ static char nibble_to_hex_char(uint8_t value)
 
 bool microstrain_strfmt_bytes(char* buffer, size_t buffer_size, size_t* index, const uint8_t* data, size_t data_size, unsigned int byte_grouping)
 {
-    assert(*index);
+    assert(index != NULL);
     assert(buffer != NULL || buffer_size == 0);
     assert(data != NULL || data_size == 0);
 
@@ -310,19 +310,20 @@ bool microstrain_strfmt_bytes(char* buffer, size_t buffer_size, size_t* index, c
 
     for(size_t i=0; i<data_size; i++)
     {
+        if((i != 0) && (byte_grouping > 0) && (i % byte_grouping == 0))
+            *(ptr++) = ' ';
+
         const uint8_t byte = data[i];
         const uint8_t upper_nibble = (byte & 0xF0) >> 4;
         const uint8_t lower_nibble = (byte & 0x0F) >> 0;
         *(ptr++) = nibble_to_hex_char(upper_nibble);
         *(ptr++) = nibble_to_hex_char(lower_nibble);
-
-        if((i != 0) && (i % byte_grouping == 0))
-            *(ptr++) = ' ';
     }
-    *ptr++ = '\0';
 
     // Sanity check that num_chars math was correct.
     assert(ptr == &buffer[*index]);
+
+    *ptr++ = '\0';
 
     return true;
 }
