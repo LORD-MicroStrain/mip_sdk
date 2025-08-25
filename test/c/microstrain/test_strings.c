@@ -11,23 +11,23 @@ unsigned int g_fail_count = 0;
 
 void print_buffer(const char* buffer, size_t buffer_size)
 {
-    fputs("      [", stderr);
+    fputs("      \"", stderr);
     for(size_t i=0; i<buffer_size; i++)
     {
         char c = buffer[i];
-        if( isprint(c) )  // Printable characters only
+        if( isprint((unsigned char)c) )  // Printable characters only
             fputc(c, stderr);
         else if( c == '\0' )
             fputs("\\0", stderr);
         else
             fputc('?', stderr);
     }
-    fputs("]\n", stderr);
+    fputs("\"\n", stderr);
 }
 
 void print_buffer_context(const char* buffer, size_t buffer_size, size_t where, size_t context)
 {
-    fputs("      [", stderr);
+    fputs("      \"", stderr);
 
     const size_t start = (where > context) ? (where - context) : 0;
     const size_t stop  = (where+context < buffer_size) ? (where+context) : buffer_size;
@@ -41,7 +41,7 @@ void print_buffer_context(const char* buffer, size_t buffer_size, size_t where, 
         // else
         // {
         char c = buffer[i];
-        if( isprint(c) )  // Printable characters only
+        if( isprint((unsigned char)c) )  // Printable characters only
             fputc(c, stderr);
         else if( c == '\0' )
             fputs("\\0", stderr);
@@ -49,7 +49,7 @@ void print_buffer_context(const char* buffer, size_t buffer_size, size_t where, 
             fputc('?', stderr);
         // }
     }
-    fputs("]\n", stderr);
+    fputs("\"\n", stderr);
 }
 
 
@@ -80,8 +80,8 @@ void assert_buffer_matches(const char* buffer, const char* compare, size_t count
         {
             g_fail_count++;
             fprintf(stderr, "FAIL: %s (%s)\n      Buffer does not match expected result at index %zu\n", func, note, i);
-            print_buffer_context(compare, count, i, 10);
-            print_buffer_context(buffer,  count, i, 10);
+            print_buffer_context(compare, count, i, 20);
+            print_buffer_context(buffer,  count, i, 20);
             return;
         }
     }
@@ -95,7 +95,7 @@ void assert_buffer_not_overrun(const char* buffer, size_t size, size_t offset, c
         if( value != '_' )
         {
             fprintf(stderr, "FAIL: %s (%s)\n      Buffer corrupted to '%c' (0x%02X) at offset %zu (%zu past end))\n", func, note, value, value, i, i-offset);
-            print_buffer_context(buffer, size, offset, 10);
+            print_buffer_context(buffer, size, offset, 20);
             g_fail_count++;
             break;
         }
@@ -111,7 +111,7 @@ void assert_buffer_terminated(const char* buffer, size_t buffer_size, size_t whe
             return;
 
         fprintf(stderr, "FAIL: %s (%s)\n      Buffer is not terminated at offset %zu\n", func, note, where);
-        print_buffer_context(buffer, buffer_size, where, 10);
+        print_buffer_context(buffer, buffer_size, where, 20);
     }
     else
     {
@@ -122,7 +122,7 @@ void assert_buffer_terminated(const char* buffer, size_t buffer_size, size_t whe
         }
 
         fprintf(stderr, "FAIL: %s (%s)\n      Buffer is never terminated\n", func, note);
-        print_buffer_context(buffer, buffer_size, buffer_size, 10);
+        print_buffer_context(buffer, buffer_size, buffer_size, 20);
     }
 
     g_fail_count++;
