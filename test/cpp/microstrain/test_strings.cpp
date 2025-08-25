@@ -3,9 +3,8 @@ extern "C" {
 #include "../../c/microstrain/test_strings.h"
 }
 
-#include <microstrain/logging.hpp>
-
-#include <string.h>
+#define MICROSTRAIN_HAS_STD_STRING 1
+#include <microstrain/strings.hpp>
 
 
 static const char TEST_STRING[] = "Testing!";

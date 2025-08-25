@@ -1,7 +1,7 @@
 
 #include "test_strings.h"
 
-#include <microstrain/logging.h>
+#include <microstrain/strings.h>
 
 #include <string.h>
 

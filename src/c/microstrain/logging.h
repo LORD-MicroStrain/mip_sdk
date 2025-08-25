@@ -218,17 +218,6 @@ const char* microstrain_logging_level_name(const microstrain_log_level level);
   MICROSTRAIN_LOG_LOG(level, "\n");                         \
 }
 
-
-bool microstrain_strcat_n(char* buffer, size_t buffer_size, size_t* index, const char* str, size_t str_len);
-
-bool microstrain_strfmt_v(char* buffer, size_t buffer_size, size_t* index, const char* fmt, va_list args);
-
-bool microstrain_strfmt(char* buffer, size_t buffer_size, size_t* index, const char* fmt, ...);
-
-bool microstrain_strfmt_bytes(char* buffer, size_t buffer_size, size_t* index, const uint8_t* data, size_t data_size, unsigned int byte_grouping);
-
-#define microstrain_strcat_l(buffer, buffer_size, index, str_lit) microstrain_strcat_n(buffer, buffer_size, index, str_lit, sizeof(str_lit)-1)
-
 ///@}
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
