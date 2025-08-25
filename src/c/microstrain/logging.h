@@ -5,7 +5,16 @@
 #include <stdbool.h>
 
 #ifdef __cplusplus
+namespace microstrain {
+namespace C {
 extern "C" {
+
+#define MICROSTRAIN_C_NAMEPSACE ::microstrain::C::
+
+#else // __cplusplus
+
+#define MICROSTRAIN_C_NAMEPSACE
+
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -42,16 +51,19 @@ typedef uint8_t microstrain_log_level;
 ///@param fmt   printf style format string
 ///@param args  Variadic args used to populate the fmt string
 ///
-typedef void (*microstrain_log_callback)(void* user, const microstrain_log_level level, const char* fmt, va_list args);
+typedef void (* microstrain_log_callback)(void* user, const microstrain_log_level level, const char* fmt, va_list args);
 
 void microstrain_logging_init(const microstrain_log_callback callback, const microstrain_log_level level, void* user);
 
 microstrain_log_callback microstrain_logging_callback(void);
+
 microstrain_log_level microstrain_logging_level(void);
+
 void* microstrain_logging_user_data(void);
 
 void microstrain_logging_log_v(const microstrain_log_level level, const char* fmt, va_list args);
-void microstrain_logging_log  (const microstrain_log_level level, const char* fmt, ...);
+
+void microstrain_logging_log(const microstrain_log_level level, const char* fmt, ...);
 
 const char* microstrain_logging_level_name(const microstrain_log_level level);
 
@@ -66,7 +78,7 @@ const char* microstrain_logging_level_name(const microstrain_log_level level);
 ///                is executed
 ///
 #ifdef MICROSTRAIN_ENABLE_LOGGING
-#define MICROSTRAIN_LOG_INIT(callback, level, user) microstrain_logging_init(callback, level, user)
+#define MICROSTRAIN_LOG_INIT(callback, level, user) MICROSTRAIN_C_NAMEPSACE microstrain_logging_init(callback, level, user)
 #else
 #define MICROSTRAIN_LOG_INIT(callback, level, user) (void)0
 #endif
@@ -78,8 +90,8 @@ const char* microstrain_logging_level_name(const microstrain_log_level level);
 ///@copydetails microstrain_log_callback
 ///
 #ifdef MICROSTRAIN_ENABLE_LOGGING
-#define MICROSTRAIN_LOG_LOG(level, ...) microstrain_logging_log(level, __VA_ARGS__)
-#define MICROSTRAIN_LOG_LOG_V(level, fmt, args) microstrain_logging_log_v(level, fmt, args)
+#define MICROSTRAIN_LOG_LOG(level, ...) MICROSTRAIN_C_NAMEPSACE microstrain_logging_log(level, __VA_ARGS__)
+#define MICROSTRAIN_LOG_LOG_V(level, fmt, args) MICROSTRAIN_C_NAMEPSACE microstrain_logging_log_v(level, fmt, args)
 #else
 #define MICROSTRAIN_LOG_LOG(level, ...) (void)0
 #define MICROSTRAIN_LOG_LOG_V(level, fmt, args) (void)0
@@ -206,18 +218,12 @@ const char* microstrain_logging_level_name(const microstrain_log_level level);
   MICROSTRAIN_LOG_LOG(level, "\n");                         \
 }
 
-
-bool microstrain_strcat_n(char* buffer, size_t buffer_size, size_t* index, const char* str, size_t str_len);
-bool microstrain_strfmt_v(char* buffer, size_t buffer_size, size_t* index, const char* fmt, va_list args);
-bool microstrain_strfmt(char* buffer, size_t buffer_size, size_t* index, const char* fmt, ...);
-bool microstrain_strfmt_bytes(char* buffer, size_t buffer_size, size_t* index, const uint8_t* data, size_t data_size, unsigned int byte_grouping);
-
-#define microstrain_strcat_l(buffer, buffer_size, index, str_lit) microstrain_strcat_n(buffer, buffer_size, index, str_lit, sizeof(str_lit)-1)
-
 ///@}
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
 
 #ifdef __cplusplus
 } // extern "C"
+} // namespace C
+} // namespace microstrain
 #endif
