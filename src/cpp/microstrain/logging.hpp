@@ -9,10 +9,10 @@
 
 namespace microstrain
 {
-
 namespace logging
 {
-    enum class LogLevel : C::microstrain_log_level
+
+    enum class LogLevel : ::microstrain::C::microstrain_log_level
     {
         OFF   = MICROSTRAIN_LOG_LEVEL_OFF,
         FATAL = MICROSTRAIN_LOG_LEVEL_FATAL,
@@ -23,7 +23,7 @@ namespace logging
         TRACE = MICROSTRAIN_LOG_LEVEL_TRACE,
     };
 
-    using Callback = C::microstrain_log_callback;
+    using Callback = ::microstrain::C::microstrain_log_callback;
 
     inline void init(Callback callback, LogLevel max_level, void* user=nullptr)
     {
@@ -42,6 +42,7 @@ namespace logging
         return nullptr;
 #endif
     }
+
     inline LogLevel max_level()
     {
     #if MICROSTRAIN_ENABLE_LOGGING
@@ -53,7 +54,7 @@ namespace logging
     #endif
     }
 
-    void* user_pointer()
+    inline void* user_pointer()
     {
 #if MICROSTRAIN_ENABLE_LOGGING
         return ::microstrain::C::microstrain_logging_user_data();
@@ -62,7 +63,7 @@ namespace logging
 #endif
     }
 
-    void log(LogLevel level, const char* fmt, ...)
+    inline void log(LogLevel level, const char* fmt, ...)
     {
 #if MICROSTRAIN_ENABLE_LOGGING
         va_list args;
@@ -74,7 +75,6 @@ namespace logging
         va_end(args);
 #endif
     }
-}
 
-
+} // namespace logging
 } // namespace microstrain
