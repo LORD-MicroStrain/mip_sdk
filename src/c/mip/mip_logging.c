@@ -1,10 +1,15 @@
 
 #include "mip_logging.h"
 
+#include <microstrain/strings.h>
 #include <mip/mip_offsets.h>
+
 
 #ifdef MICROSTRAIN_ENABLE_LOGGING
 
+//
+// Formatting
+//
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Format MIP packet bytes to a string.
@@ -169,6 +174,9 @@ bool mip_format_field(char* buffer, size_t buffer_size, size_t* index, const mip
     return ok;
 }
 
+//
+// Logging
+//
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Print a MIP packet to the microstrain logging system.

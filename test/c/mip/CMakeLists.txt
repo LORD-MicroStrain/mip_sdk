@@ -24,10 +24,10 @@ add_mip_test(
 )
 
 add_mip_test(
-    NAME TestMipFormat
+    NAME test_mip_format
     SOURCES
         "${CMAKE_CURRENT_LIST_DIR}/../microstrain/test_strings.c"
         "${CMAKE_CURRENT_LIST_DIR}/../microstrain/test_strings.h"
         "${CMAKE_CURRENT_LIST_DIR}/test_mip_format.c"
-    COMMAND TestMipFormat
+    COMMAND test_mip_format
 )

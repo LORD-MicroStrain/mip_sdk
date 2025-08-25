@@ -5,12 +5,17 @@
 #include <mip/mip_packet.h>
 #include <mip/mip_field.h>
 
-#ifdef MICROSTRAIN_ENABLE_LOGGING
+
+#if MICROSTRAIN_ENABLE_LOGGING
+
+// Format functions
 
 bool mip_format_packet_bytes(char* buffer, size_t buffer_size, size_t* index, const mip_packet_view* packet);
 
 bool mip_format_packet(char* buffer, size_t buffer_size, size_t* index, const mip_packet_view* packet);
 bool mip_format_field (char* buffer, size_t buffer_size, size_t* index, const mip_field_view*  field );
+
+// Logging functions
 
 void mip_log_packet(const mip_packet_view* packet, microstrain_log_level level);
 void mip_log_field (const mip_field_view* field, microstrain_log_level level);

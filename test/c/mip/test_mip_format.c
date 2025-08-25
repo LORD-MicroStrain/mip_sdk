@@ -1,21 +1,15 @@
 
 #include "../microstrain/test_strings.h"
 
+#include <microstrain/strings.h>
 #include <mip/mip_logging.h>
 
 #include <stdio.h>
 #include <string.h>
 
+
 // 75650102 0201 E0C6
 const uint8_t PING_PACKET[] = { 0x75, 0x65, 0x01, 0x02, 0x02, 0x01, 0xE0, 0xC6 };
-
-// 75650120 2001 0102030405060708090A0B0C0D0E0F101112131415161718191A1B1C1D1E1F 0BD5
-const uint8_t LONG_PING_PACKET[] = {
-    0x75, 0x65, 0x01, 0x20,
-    0x20, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
-    0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f,
-    0x0b, 0xd5
-};
 
 //7565010C 080901010001c200 04090301 CE80
 const uint8_t SET_SAVE_COMM_SPEED[] = {
@@ -203,6 +197,7 @@ void fmt_invalid_packet_views_match_expected_results()
 
     TEST_ASSERT_BUFFER_COMPARE(g_buffer, compare, strlen(compare), "");
 }
+
 void fmt_invalid_packet_matches_expected_result()
 {
     microstrain_logging_init(&log_callback, MICROSTRAIN_LOG_LEVEL_INFO, NULL);
