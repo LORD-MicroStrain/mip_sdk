@@ -18,18 +18,30 @@ extern "C" {
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup microstrain_c
+///@addtogroup microstrain
 ///@{
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup microstrain_logging  MicroStrain Logging [C]
+///@defgroup microstrain_logging  MicroStrain Logging
 ///
-///@brief High-level C functions for logging information from within the
+///@brief High-level functions for logging information from within the
 ///       MicroStrain SDK
 ///
 /// This module contains functions that allow the MicroStrain SDK to log
 /// information and allows users to override the logging functions
 ///
 ///@{
+///@defgroup microstrain_logging_c   MicroStrain Logging [C]
+///@defgroup microstrain_logging_cpp MicroStrain Logging [CPP]
+///@}
+///
+
+////////////////////////////////////////////////////////////////////////////////
+///@addtogroup microstrain_logging_c
+///
+///@brief Logging functions in C.
+///
+///@{
+
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Logging level enum
