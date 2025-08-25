@@ -206,17 +206,40 @@ bool microstrain_strcat_c(char* buffer, size_t buffer_size, size_t* index, const
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Wrapper for std::snprintf with a better interface.
 ///
-/// Example:
-///@code{.cpp}
-/// size_t format_dec_hex(char* buffer, size_t buffer_size, int value, bool dec, bool hex)
-/// {
-///   size_t index = 0;
-///   bool ok = true;
-///   if(dec) ok &= microstrain_strfmt(buffer, sizeof(buffer), &index, " dec=%d", value);
-///   if(hex) ok &= microstrain_strfmt(buffer, sizeof(buffer), &index, " hex=%x", value);
-///   return ok ? index : SIZE_MAX;
-/// }
-///@endcode
+///@param buffer
+///       Pointer to character buffer where string data will be stored.
+///       If this is NULL, this function will only compute the required buffer
+///       size (set buffer_size = 0 in this case).
+///@param buffer_size
+///       Size of the buffer. Up to buffer_size-1 chars will be written, plus
+///       a NULL terminator. Must be 0 if buffer is NULL.
+///@param[in,out] index
+///       Position in buffer where string data will be written. It will be
+///       updated with the new index and will point to the new NULL terminator
+///       position. If insufficient space is available in buffer, index will
+///       still be updated even if it exceeds buffer_size.
+///@param fmt
+///       Format string similar to printf.
+///
+///@returns True if successful
+///@returns False if an encoding error occurs (see snprintf). The index is
+///         unchanged in this case.
+///@returns False if insufficient space is available, unless buffer is NULL.
+///
+bool microstrain_strfmt(char* buffer, size_t buffer_size, size_t* index, const char* fmt, ...)
+{
+    va_list args;
+    va_start(args, fmt);
+
+    bool ok = microstrain_strfmt_v(buffer, buffer_size, index, fmt, args);
+
+    va_end(args);
+
+    return ok;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Wrapper for std::vsnprintf with a better interface.
 ///
 ///@param buffer
 ///       Pointer to character buffer where string data will be stored.
@@ -230,13 +253,17 @@ bool microstrain_strcat_c(char* buffer, size_t buffer_size, size_t* index, const
 ///       updated with the new index and will point to the new NULL terminator
 ///       position. If insufficient space is available in buffer, index will
 ///       still be updated even if it exceeds buffer_size.
+///@param fmt
+///       Format string similar to printf.
+///@param args
+///       List of formatting arguments similar to vprintf.
 ///
 ///@returns True if successful
 ///@returns False if an encoding error occurs (see snprintf). The index is
 ///         unchanged in this case.
 ///@returns False if insufficient space is available, unless buffer is NULL.
 ///
-bool microstrain_strfmt(char* buffer, size_t buffer_size, size_t* index, const char* fmt, ...)
+bool microstrain_strfmt_v(char* buffer, size_t buffer_size, size_t* index, const char* fmt, va_list args)
 {
     assert(buffer != NULL || buffer_size == 0);
     assert(index != NULL);
@@ -260,10 +287,7 @@ bool microstrain_strfmt(char* buffer, size_t buffer_size, size_t* index, const c
         }
     }
 
-    va_list args;
-    va_start(args, fmt);
     int result = vsnprintf(buffer, fmt_size, fmt, args);
-    va_end(args);
 
     // snprintf can fail with encoding errors, which result in a negative return code.
     if(result < 0)
@@ -285,6 +309,38 @@ static char nibble_to_hex_char(uint8_t value)
     return NIBBLE_HEX_TABLE[value & 0xF];
 }
 
+////////////////////////////////////////////////////////////////////////////////
+///@brief Formats a byte array to a text buffer in hexadecimal.
+///
+/// No additional characters are printed other than the hex values and spaces
+/// (if byte_grouping is positive). No leading or trailing space is printed.
+///
+///@param buffer
+///       Pointer to character buffer where string data will be stored.
+///       If this is NULL, this function will only compute the required buffer
+///       size (set buffer_size = 0 in this case).
+///@param buffer_size
+///       Size of the buffer. Up to buffer_size-1 chars will be written, plus
+///       a NULL terminator. Must be 0 if buffer is NULL.
+///@param[in,out] index
+///       Position in buffer where string data will be written. It will be
+///       updated with the new index and will point to the new NULL terminator
+///       position. If insufficient space is available in buffer, index will
+///       still be updated even if it exceeds buffer_size.
+///@param data
+///       Data to be formatted. Can be NULL if data_size is 0.
+///@param data_size
+///       Number of bytes from data to print. Must be 0 if data is NULL.
+///@param byte_grouping
+///       If greater than zero, a space will be printed every byte_grouping
+///       bytes. E.g. a group of 2 will print pairs of bytes separated by
+///       spaces.
+///
+///@returns True if successful
+///@returns False if an encoding error occurs (see snprintf). The index is
+///         unchanged in this case.
+///@returns False if insufficient space is available, unless buffer is NULL.
+///
 bool microstrain_strfmt_bytes(char* buffer, size_t buffer_size, size_t* index, const uint8_t* data, size_t data_size, unsigned int byte_grouping)
 {
     assert(index != NULL);
