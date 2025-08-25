@@ -7,10 +7,12 @@
 #include <string>
 
 
-namespace microstrain
-{
-namespace logging
-{
+namespace microstrain {
+namespace logging {
+
+////////////////////////////////////////////////////////////////////////////////
+///@addtogroup microstrain_logging_cpp
+///@{
 
     enum class LogLevel : ::microstrain::C::microstrain_log_level
     {
@@ -75,6 +77,9 @@ namespace logging
         va_end(args);
 #endif
     }
+
+///@}
+////////////////////////////////////////////////////////////////////////////////
 
 } // namespace logging
 } // namespace microstrain

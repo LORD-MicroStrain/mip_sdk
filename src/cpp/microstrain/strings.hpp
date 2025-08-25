@@ -12,6 +12,13 @@
 
 namespace microstrain {
 
+////////////////////////////////////////////////////////////////////////////////
+///@addtogroup microstrain_strings_cpp
+///
+///@brief String manipulation in C++.
+///
+///@{
+
 
 ///@copydoc microstrain::C::microstrain_strcat_n
 ///
@@ -64,7 +71,7 @@ bool strcat_l(Span<char> buffer, size_t* index, const char(&str)[N])
     return strcat_n(buffer, index, str, N-1);
 }
 
-
+#if MICROSTRAIN_ENABLE_LOGGING
 
 ///@copydoc microstrain::C::microstrain_strfmt_v
 ///
@@ -102,6 +109,8 @@ inline bool strfmt(Span<char> buffer, size_t* index, const char* fmt, ...)
     return ok;
 }
 
+#endif // MICROSTRAIN_ENABLE_LOGGING
+
 
 ///@copydoc microstrain::C::microstrain_strfmt_bytes
 ///
@@ -124,5 +133,8 @@ inline bool strfmt_bytes(Span<char> buffer, size_t* index, Span<const uint8_t> d
     return strfmt_bytes(buffer.data(), buffer.size(), index, data.data(), data.size(), byte_grouping);
 }
 
+
+///@}
+////////////////////////////////////////////////////////////////////////////////
 
 } // namespace microstrain
