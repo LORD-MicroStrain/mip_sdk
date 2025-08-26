@@ -24,8 +24,13 @@ Forthcoming
 * CMake find_package config files
   * Added CMake find_package config files for each module
   * Each module supports the components feature of find_package
+* MIP Parser can be stopped early by returning false in the callback.
+  * This can be used for things like searching for packets in a file,
+    or to limit the number of packets processed in one parse call.
 ### Interface Changes
+* MIP parser callbacks must now return bool (return true to preserve existing behavior).
 ### Bug Fixes
+* Fixed possible infinite loop in MIP parser with timed-out packets.
 
 V3.1.0
 -----------

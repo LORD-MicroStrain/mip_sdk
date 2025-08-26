@@ -262,7 +262,7 @@ int main(int argc, const char* argv[])
         mip::Timestamp current_timestamp = getCurrentTimestamp();
 
         // Spin MIP device
-        device->update();
+        device->update(10);
 
         // Get ublox data
         std::pair<bool, mip::ublox::UbloxPVTMessage> ubox_parser_result = ublox_device.update();

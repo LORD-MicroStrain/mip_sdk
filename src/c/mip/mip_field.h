@@ -71,6 +71,7 @@ void mip_field_init(mip_field_view* field, uint8_t descriptor_set, uint8_t field
 uint8_t mip_field_descriptor_set(const mip_field_view* field);
 uint8_t mip_field_field_descriptor(const mip_field_view* field);
 uint8_t mip_field_payload_length(const mip_field_view* field);
+uint8_t mip_field_total_length(const mip_field_view* field);
 const uint8_t* mip_field_payload(const mip_field_view* field);
 
 bool mip_field_is_valid(const mip_field_view* field);

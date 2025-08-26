@@ -225,7 +225,7 @@ int main(int argc, const char* argv[])
     std::string current_state = std::string{""};
     while(running)
     {
-        device->update();
+        device->update(10);
         displayFilterState(filter_status.filter_state, current_state);
 
         //Check for full nav filter state transition
