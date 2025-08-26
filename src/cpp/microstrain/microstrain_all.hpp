@@ -15,12 +15,4 @@
 ///@defgroup microstrain MicroStrain API
 ///@{
 ///
-///@defgroup microstrain_c MicroStrain C API
-///@{
-///@}
-///
-///@defgroup microstrain_cpp MicroStrain C++ API
-///@{
-///@}
-///
 ///@}
