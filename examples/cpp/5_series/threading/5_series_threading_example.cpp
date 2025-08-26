@@ -504,8 +504,9 @@ void dataCollectionThread(mip::Interface& _device, const volatile bool& _running
     while (_running)
     {
         // Update the device for data collection
+        // Note: The recommended default wait time is 10 ms, but could be 0 for non-blocking read operations
         if (!_device.update(
-            0,      // Wait time for the update (Typically only used from commands)
+            10, // Time to wait
             false)) // From a command (Note: This update is for data handling, not from a command)
         {
             // Avoid deadlocks if the connection is closed

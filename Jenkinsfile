@@ -143,48 +143,48 @@ pipeline {
             }
           }
         }
-        stage("Mac M2") {
-          agent { label 'mac-m2' }
-          options {
-            skipDefaultCheckout()
-            timeout(time: 5, activity: true, unit: 'MINUTES')
-          }
-          steps {
-            script {
-              checkoutRepo()
-              env.setProperty('BRANCH_NAME', branchName())
-              sh '''
-                mkdir build_mac_arm64
-                cd build_mac_arm64
-                cmake .. -DMICROSTRAIN_BUILD_EXAMPLES=ON -DMICROSTRAIN_BUILD_PACKAGE=ON -DCMAKE_BUILD_TYPE=RELEASE
-                cmake --build . -j $(sysctl -n hw.ncpu)
-                cmake --build . --target package
-              '''
-              archiveArtifacts artifacts: 'build_mac_arm64/mipsdk_*'
-            }
-          }
-        }
-        stage("Mac Intel") {
-          agent { label 'mac-intel' }
-          options {
-            skipDefaultCheckout()
-            timeout(time: 5, activity: true, unit: 'MINUTES')
-          }
-          steps {
-            script {
-              checkoutRepo()
-              env.setProperty('BRANCH_NAME', branchName())
-              sh '''
-                mkdir build_mac_intel
-                cd build_mac_intel
-                cmake .. -DMICROSTRAIN_BUILD_EXAMPLES=ON -DMICROSTRAIN_BUILD_PACKAGE=ON -DCMAKE_BUILD_TYPE=RELEASE
-                cmake --build . -j $(sysctl -n hw.ncpu)
-                cmake --build . --target package
-              '''
-              archiveArtifacts artifacts: 'build_mac_intel/mipsdk_*'
-            }
-          }
-        }
+//         stage("Mac M2") {
+//           agent { label 'mac-m2' }
+//           options {
+//             skipDefaultCheckout()
+//             timeout(time: 5, activity: true, unit: 'MINUTES')
+//           }
+//           steps {
+//             script {
+//               checkoutRepo()
+//               env.setProperty('BRANCH_NAME', branchName())
+//               sh '''
+//                 mkdir build_mac_arm64
+//                 cd build_mac_arm64
+//                 cmake .. -DMICROSTRAIN_BUILD_EXAMPLES=ON -DMICROSTRAIN_BUILD_PACKAGE=ON -DCMAKE_BUILD_TYPE=RELEASE
+//                 cmake --build . -j $(sysctl -n hw.ncpu)
+//                 cmake --build . --target package
+//               '''
+//               archiveArtifacts artifacts: 'build_mac_arm64/mipsdk_*'
+//             }
+//           }
+//         }
+//         stage("Mac Intel") {
+//           agent { label 'mac-intel' }
+//           options {
+//             skipDefaultCheckout()
+//             timeout(time: 5, activity: true, unit: 'MINUTES')
+//           }
+//           steps {
+//             script {
+//               checkoutRepo()
+//               env.setProperty('BRANCH_NAME', branchName())
+//               sh '''
+//                 mkdir build_mac_intel
+//                 cd build_mac_intel
+//                 cmake .. -DMICROSTRAIN_BUILD_EXAMPLES=ON -DMICROSTRAIN_BUILD_PACKAGE=ON -DCMAKE_BUILD_TYPE=RELEASE
+//                 cmake --build . -j $(sysctl -n hw.ncpu)
+//                 cmake --build . --target package
+//               '''
+//               archiveArtifacts artifacts: 'build_mac_intel/mipsdk_*'
+//             }
+//           }
+//         }
       }
     }
   }

@@ -36,11 +36,16 @@ extern "C" {
 ///
 
 
+////////////////////////////////////////////////////////////////////////////////
 ///@brief Callback function which receives parsed MIP packets.
+///
 ///@param user A user-specified pointer which will be given the callback_object parameter which was previously passed to mip_parser_init.
 ///@param packet A pointer to the MIP packet. Do not store this pointer as it will be invalidated after the callback returns.
 ///@param timestamp The approximate time the packet was parsed.
-typedef void (*mip_packet_callback)(void* user, const mip_packet_view* packet, mip_timestamp timestamp);
+///
+///@return True if more packets should be parsed, or false to stop parsing.
+///
+typedef bool (*mip_packet_callback)(void* user, const mip_packet_view* packet, mip_timestamp timestamp);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -78,7 +83,7 @@ typedef struct mip_parser
 
 
 void mip_parser_init(mip_parser* parser, mip_packet_callback callback, void* callback_object, mip_timeout timeout);
-void mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t input_length, mip_timestamp timestamp);
+size_t mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t input_length, mip_timestamp timestamp);
 void mip_parser_flush(mip_parser* parser);
 
 void mip_parser_reset(mip_parser* parser);
