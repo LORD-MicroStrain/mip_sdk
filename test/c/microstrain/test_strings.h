@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdbool.h>
+#include <stddef.h>
 
 #define STRINGIFY(x) #x
 #define TEST_ASSERT(cond, note) assert_condition(cond, #cond, __func__, note)
