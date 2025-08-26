@@ -5,16 +5,7 @@
 #include <stdbool.h>
 
 #ifdef __cplusplus
-namespace microstrain {
-namespace C {
 extern "C" {
-
-#define MICROSTRAIN_C_NAMEPSACE ::microstrain::C::
-
-#else // __cplusplus
-
-#define MICROSTRAIN_C_NAMEPSACE
-
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -46,14 +37,16 @@ extern "C" {
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Logging level enum
 ///
-typedef uint8_t microstrain_log_level;
-#define MICROSTRAIN_LOG_LEVEL_OFF   0  ///< Signifies that the log is turned off
-#define MICROSTRAIN_LOG_LEVEL_FATAL 1  ///< Fatal logs are logged when an unrecoverable error occurs
-#define MICROSTRAIN_LOG_LEVEL_ERROR 2  ///< Error logs are logged when an error occurs
-#define MICROSTRAIN_LOG_LEVEL_WARN  3  ///< Warning logs are logged when something concerning happens that may or not be a mistake
-#define MICROSTRAIN_LOG_LEVEL_INFO  4  ///< Info logs are logged when some general info needs to be conveyed to the user
-#define MICROSTRAIN_LOG_LEVEL_DEBUG 5  ///< Debug logs are logged for debug purposes.
-#define MICROSTRAIN_LOG_LEVEL_TRACE 6  ///< Trace logs are logged in similar cases to debug logs but can be logged in tight loops
+typedef enum microstrain_log_level
+{
+    MICROSTRAIN_LOG_LEVEL_OFF   = 0,  ///< Signifies that the log is turned off
+    MICROSTRAIN_LOG_LEVEL_FATAL = 1,  ///< Fatal logs are logged when an unrecoverable error occurs
+    MICROSTRAIN_LOG_LEVEL_ERROR = 2,  ///< Error logs are logged when an error occurs
+    MICROSTRAIN_LOG_LEVEL_WARN  = 3,  ///< Warning logs are logged when something concerning happens that may or not be a mistake
+    MICROSTRAIN_LOG_LEVEL_INFO  = 4,  ///< Info logs are logged when some general info needs to be conveyed to the user
+    MICROSTRAIN_LOG_LEVEL_DEBUG = 5,  ///< Debug logs are logged for debug purposes.
+    MICROSTRAIN_LOG_LEVEL_TRACE = 6,  ///< Trace logs are logged in similar cases to debug logs but can be logged in tight loops
+} microstrain_log_level;
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Callback function typedef for custom logging behavior.
@@ -90,7 +83,7 @@ const char* microstrain_logging_level_name(const microstrain_log_level level);
 ///                is executed
 ///
 #ifdef MICROSTRAIN_ENABLE_LOGGING
-#define MICROSTRAIN_LOG_INIT(callback, level, user) MICROSTRAIN_C_NAMEPSACE microstrain_logging_init(callback, level, user)
+#define MICROSTRAIN_LOG_INIT(callback, level, user) microstrain_logging_init(callback, level, user)
 #else
 #define MICROSTRAIN_LOG_INIT(callback, level, user) (void)0
 #endif
@@ -102,8 +95,8 @@ const char* microstrain_logging_level_name(const microstrain_log_level level);
 ///@copydetails microstrain_log_callback
 ///
 #ifdef MICROSTRAIN_ENABLE_LOGGING
-#define MICROSTRAIN_LOG_LOG(level, ...) MICROSTRAIN_C_NAMEPSACE microstrain_logging_log(level, __VA_ARGS__)
-#define MICROSTRAIN_LOG_LOG_V(level, fmt, args) MICROSTRAIN_C_NAMEPSACE microstrain_logging_log_v(level, fmt, args)
+#define MICROSTRAIN_LOG_LOG(level, ...) microstrain_logging_log(level, __VA_ARGS__)
+#define MICROSTRAIN_LOG_LOG_V(level, fmt, args) microstrain_logging_log_v(level, fmt, args)
 #else
 #define MICROSTRAIN_LOG_LOG(level, ...) (void)0
 #define MICROSTRAIN_LOG_LOG_V(level, fmt, args) (void)0
@@ -212,30 +205,10 @@ const char* microstrain_logging_level_name(const microstrain_log_level level);
 ///
 #define MICROSTRAIN_LOG_ERROR_WITH_ERRNO_EX(msg, ...) MICROSTRAIN_LOG_ERROR(msg ": %d %s\n", __VA_ARGS__, errno, strerror(errno))
 
-////////////////////////////////////////////////////////////////////////////////
-///@brief Log an array of bytes.
-///@param level Log level for this message.
-///@param buffer Pointer to a byte array of type (const char*)/
-///@param length Length of buffer.
-///@param ...   Arguments corresponding to a printf-style message with optional
-///             formatting.
-/// The resulting message will be "<message here> XX XX XX XX ...\n" where XX
-/// is a pair of hex digits.
-///
-#define MICROSTRAIN_LOG_BYTES(level, buffer, length, ...) { \
-  MICROSTRAIN_LOG_LOG(level, __VA_ARGS__);                  \
-  for(size_t i=0; i<length; i++) {                          \
-    MICROSTRAIN_LOG_LOG(level, " %02X", buffer[i]);         \
-  }                                                         \
-  MICROSTRAIN_LOG_LOG(level, "\n");                         \
-}
-
 ///@}
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
 
 #ifdef __cplusplus
 } // extern "C"
-} // namespace C
-} // namespace microstrain
 #endif
