@@ -97,41 +97,6 @@ bool microstrain_strcat_c(char* buffer, size_t buffer_size, size_t* index, const
 #if MICROSTRAIN_ENABLE_LOGGING
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Wrapper for std::snprintf with a better interface.
-///
-///@param buffer
-///       Pointer to character buffer where string data will be stored.
-///       If this is NULL, this function will only compute the required buffer
-///       size (set buffer_size = 0 in this case).
-///@param buffer_size
-///       Size of the buffer. Up to buffer_size-1 chars will be written, plus
-///       a NULL terminator. Must be 0 if buffer is NULL.
-///@param[in,out] index
-///       Position in buffer where string data will be written. It will be
-///       updated with the new index and will point to the new NULL terminator
-///       position. If insufficient space is available in buffer, index will
-///       still be updated even if it exceeds buffer_size.
-///@param fmt
-///       Format string similar to printf.
-///
-///@returns True if successful
-///@returns False if an encoding error occurs (see snprintf). The index is
-///         unchanged in this case.
-///@returns False if insufficient space is available, unless buffer is NULL.
-///
-bool microstrain_strfmt(char* buffer, size_t buffer_size, size_t* index, const char* fmt, ...)
-{
-    va_list args;
-    va_start(args, fmt);
-
-    bool ok = microstrain_strfmt_v(buffer, buffer_size, index, fmt, args);
-
-    va_end(args);
-
-    return ok;
-}
-
-////////////////////////////////////////////////////////////////////////////////
 ///@brief Wrapper for std::vsnprintf with a better interface.
 ///
 ///@param buffer
@@ -191,6 +156,41 @@ bool microstrain_strfmt_v(char* buffer, size_t buffer_size, size_t* index, const
 
     // Return whether the buffer was large enough.
     return (buffer == NULL) || (*index < buffer_size);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Wrapper for std::snprintf with a better interface.
+///
+///@param buffer
+///       Pointer to character buffer where string data will be stored.
+///       If this is NULL, this function will only compute the required buffer
+///       size (set buffer_size = 0 in this case).
+///@param buffer_size
+///       Size of the buffer. Up to buffer_size-1 chars will be written, plus
+///       a NULL terminator. Must be 0 if buffer is NULL.
+///@param[in,out] index
+///       Position in buffer where string data will be written. It will be
+///       updated with the new index and will point to the new NULL terminator
+///       position. If insufficient space is available in buffer, index will
+///       still be updated even if it exceeds buffer_size.
+///@param fmt
+///       Format string similar to printf.
+///
+///@returns True if successful
+///@returns False if an encoding error occurs (see snprintf). The index is
+///         unchanged in this case.
+///@returns False if insufficient space is available, unless buffer is NULL.
+///
+bool microstrain_strfmt(char* buffer, size_t buffer_size, size_t* index, const char* fmt, ...)
+{
+    va_list args;
+        va_start(args, fmt);
+
+    bool ok = microstrain_strfmt_v(buffer, buffer_size, index, fmt, args);
+
+        va_end(args);
+
+    return ok;
 }
 
 #endif // MICROSTRAIN_ENABLE_LOGGING
