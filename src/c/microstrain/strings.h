@@ -46,6 +46,7 @@ extern "C" {
 ///@{
 
 bool microstrain_strcat_n(char* buffer, size_t buffer_size, size_t* index, const char* str, size_t str_len);
+bool microstrain_strcat_c(char* buffer, size_t buffer_size, size_t* index, const char* str);
 
 #if MICROSTRAIN_ENABLE_LOGGING
 // sprintf is too bloated for some embedded systems.
