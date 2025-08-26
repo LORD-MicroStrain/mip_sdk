@@ -154,5 +154,5 @@ void microstrain_log_bytes(const microstrain_log_level level, const char* msg, c
         buffer[sizeof(buffer)-1] = '\0';
     }
 
-    microstrain_logging_log(level, "%s%s", msg, buffer);
+    microstrain_logging_log(level, "%s%s\n", msg, buffer);
 }
