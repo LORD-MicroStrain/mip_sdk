@@ -72,6 +72,8 @@ void microstrain_logging_log(const microstrain_log_level level, const char* fmt,
 
 const char* microstrain_logging_level_name(const microstrain_log_level level);
 
+void microstrain_log_bytes(const microstrain_log_level level, const char* msg, const uint8_t* data, size_t length);
+
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to initialize the MicroStrain logger.
 ///       This function does not need to be called unless the user wants
@@ -184,6 +186,12 @@ const char* microstrain_logging_level_name(const microstrain_log_level level);
 #else
 #define MICROSTRAIN_LOG_TRACE(...) (void)0
 #define MICROSTRAIN_LOG_TRACE_V(fmt, args) (void)0
+#endif
+
+#if MICROSTRAIN_ENABLE_LOGGING
+#define MICROSTRAIN_LOG_BYTES(level, msg, data, length) microstrain_log_bytes
+#else
+#define MICROSTRAIN_LOG_BYTES(level, msg, data, length) (void)0
 #endif
 
 

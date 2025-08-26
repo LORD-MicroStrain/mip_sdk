@@ -1,6 +1,8 @@
 
 #include "logging.h"
+#include "strings.h"
 
+#include <assert.h>
 #include <stdarg.h>
 
 
@@ -112,4 +114,45 @@ const char* microstrain_logging_level_name(const microstrain_log_level level)
     case MICROSTRAIN_LOG_LEVEL_TRACE: return "TRACE";
     default: return "INVALID";
     }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Print bytes in hex to the log.
+///
+///@note Currently this function is limited to 1024 output characters, or about
+///      400 bytes (5 chars per 2-byte group including a space).
+///
+///@param level
+///       Logging level. This function does nothing unless the current log level
+///       is at least this value.
+///@param msg
+///       Message to print immediately before the data. No space is appended.
+///       Use an empty string to print just the data.
+///@param data
+///       Data to be printed in hex.
+///@param length
+///       Length of the data to print.
+///
+void microstrain_log_bytes(const microstrain_log_level level, const char* msg, const uint8_t* data, size_t length)
+{
+    if(level < microstrain_log_level_)
+        return;
+
+    const unsigned int grouping = 2;
+    char buffer[1024];
+    size_t index = 0;
+
+    bool ok = microstrain_strfmt_bytes(buffer, sizeof(buffer), &index, data, length, grouping);
+    if(!ok)
+    {
+        assert(index > sizeof(buffer));  // Overrun is the only possible error
+
+        // Print ellipsis at the end to indicate truncation
+        buffer[sizeof(buffer)-4] = '.';
+        buffer[sizeof(buffer)-3] = '.';
+        buffer[sizeof(buffer)-2] = '.';
+        buffer[sizeof(buffer)-1] = '\0';
+    }
+
+    microstrain_logging_log(level, "%s%s", msg, buffer);
 }
