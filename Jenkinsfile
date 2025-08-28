@@ -48,7 +48,6 @@ pipeline {
     }
 
     stages {
-        /* ================================================================== */
         stage('Checkout') {
             agent {
                 label '!windows10'
@@ -63,22 +62,48 @@ pipeline {
                 }
             }
         }
-        /* ================================================================== */
+
+        stage('Multi-platform staging') {
+            parallel {
+                /* ========================================================== */
+                stage('Platform: Windows x64') {
+                    agent {
+                        label 'windows10'
+                    }
+                    environment {
+                        BUILD_DIRECTORY = "build_x64"
+                    }
+                    options {
+                        skipDefaultCheckout()
+                        // timeout(time: 5, activity: true, unit: 'MINUTES')
+                    }
+                    stages {
+                        stage('Windows x64 [Build]') {
+                            steps {
+                                script {
+                                    setUpWorkspace()
+                                }
+                                dir("${BUILD_DIRECTORY}") {
+                                    powershell """
+                                        cmake .. -DMICROSTRAIN_BUILD_EXAMPLES=ON -DMICROSTRAIN_BUILD_PACKAGE=ON -DMICROSTRAIN_BUILD_TESTS=ON
+                                        cmake --build . --config Release
+                                        cmake --build . --config Release --target package
+                                    """
+                                    archiveArtifacts artifacts: 'mipsdk_*'
+                                }
+                            }
+                        }
+                    }
+                }
+                /* ========================================================== */
+            }
+        }
     }
 }
 
 /* ============================================================= */
 
 /*
-pipeline {
-  agent none
-  options {
-    // Set a timeout for the whole pipeline. The timer starts when the project is queued
-    timeout(time: 1, unit: 'HOURS')
-    // Only keep this number of builds for the job
-    buildDiscarder(logRotator(numToKeepStr: "10"))
-    copyArtifactPermission('*')
-  }
   stages {
     stage('Build') {
       // Run all the builds in parallel
