@@ -1,5 +1,5 @@
 
-#include "../microstrain/test_strings.h"
+#include "../microstrain/testutil_strings.h"
 
 #include <microstrain/strings.h>
 #include <mip/mip_logging.h>

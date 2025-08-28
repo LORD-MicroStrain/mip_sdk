@@ -23,8 +23,8 @@
 ///       If this is NULL, this function will only compute the required buffer
 ///       size (set buffer_size = 0 in this case).
 ///@param buffer_size
-///       Size of the buffer. Up to buffer_size-1 chars will be written, plus
-///       a NULL terminator. Must be 0 if buffer is NULL.
+///       Number of characters the buffer can hold, including the NULL
+///       terminator. Must be 0 if buffer is NULL.
 ///@param[in,out] index
 ///       Position in buffer where string data will be written. It will be
 ///       updated with the new index and will point to the new NULL terminator
@@ -81,8 +81,8 @@ bool mip_format_packet_bytes(char* buffer, size_t buffer_size, size_t* index, co
 ///       If this is NULL, this function will only compute the required buffer
 ///       size (set buffer_size = 0 in this case).
 ///@param buffer_size
-///       Size of the buffer. Up to buffer_size-1 chars will be written, plus
-///       a NULL terminator. Must be 0 if buffer is NULL.
+///       Number of characters the buffer can hold, including the NULL
+///       terminator. Must be 0 if buffer is NULL.
 ///@param[in,out] index
 ///       Position in buffer where string data will be written. It will be
 ///       updated with the new index and will point to the new NULL terminator
@@ -141,8 +141,8 @@ bool mip_format_packet(char* buffer, size_t buffer_size, size_t* index, const mi
 ///       If this is NULL, this function will only compute the required buffer
 ///       size (set buffer_size = 0 in this case).
 ///@param buffer_size
-///       Size of the buffer. Up to buffer_size-1 chars will be written, plus
-///       a NULL terminator. Must be 0 if buffer is NULL.
+///       Number of characters the buffer can hold, including the NULL
+///       terminator. Must be 0 if buffer is NULL.
 ///@param[in,out] index
 ///       Position in buffer where string data will be written. It will be
 ///       updated with the new index and will point to the new NULL terminator
