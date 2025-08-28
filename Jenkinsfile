@@ -66,7 +66,7 @@ pipeline {
         stage('Multi-platform staging') {
             parallel {
                 /* ========================================================== */
-                stage('Platform: Windows x64') {
+                stage('Windows x64') {
                     agent {
                         label 'windows10'
                     }
