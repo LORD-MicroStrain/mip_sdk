@@ -1,31 +1,39 @@
+
 // Utility function for getting the real branch name even in a pull request
 def branchName() {
-  if (env.CHANGE_BRANCH) {
-    return env.CHANGE_BRANCH
-  } else {
-    return env.BRANCH_NAME
-  }
+    if (env.CHANGE_BRANCH) {
+        return env.CHANGE_BRANCH
+    } else {
+        return env.BRANCH_NAME
+    }
 }
 
 // Utility function for checking out the repo since we want all the branches and tags
 def checkoutRepo() {
-  // Clean the workspace
-  cleanWs()
+    // Clean the workspace
+    cleanWs()
 
-  // Handles both PRs and branches
-  script {
-    BRANCH_NAME_REAL = branchName();
-  }
+    // Handles both PRs and branches
+    script {
+        BRANCH_NAME_REAL = branchName();
+    }
 
-  // Checkout the code from github
-  checkout([  $class: 'GitSCM',
-    branches: [
-        [name: 'refs/heads/' + BRANCH_NAME_REAL]
-    ],
-    userRemoteConfigs: [[credentialsId: 'Github_User_And_Token', url: 'https://github.com/LORD-MicroStrain/mip_sdk.git']],
-    extensions: [
-    ]
-  ])
+    // Checkout the code from github
+    checkout([  $class: 'GitSCM',
+        branches: [
+            [name: 'refs/heads/' + BRANCH_NAME_REAL]
+        ],
+        userRemoteConfigs: [[credentialsId: 'Github_User_And_Token', url: 'https://github.com/LORD-MicroStrain/mip_sdk.git']],
+        extensions: [],
+    ])
+
+    env.setProperty('BRANCH_NAME', branchName())
+}
+
+def setUpWorkspace()
+{
+    cleanWs()
+    unstash 'source-code'
 }
 
 pipeline {
