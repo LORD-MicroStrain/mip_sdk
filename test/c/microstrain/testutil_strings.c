@@ -8,6 +8,9 @@
 
 unsigned int g_fail_count = 0;
 
+//
+// Printing functions
+//
 
 void print_buffer(const char* buffer, size_t buffer_size)
 {
@@ -34,12 +37,6 @@ void print_buffer_context(const char* buffer, size_t buffer_size, size_t where, 
 
     for(size_t i=start; i<stop; i++)
     {
-        // if(where + i < context)  // Negative index
-        //     fputc(' ', stderr);
-        // else if(where + i >= buffer_size)  // Exceeds buffer_size
-        //     fputc(' ', stderr);
-        // else
-        // {
         char c = buffer[i];
         if( isprint((unsigned char)c) )  // Printable characters only
             fputc(c, stderr);
@@ -47,12 +44,13 @@ void print_buffer_context(const char* buffer, size_t buffer_size, size_t where, 
             fputs("\\0", stderr);
         else
             fputc('?', stderr);
-        // }
     }
     fputs("\"\n", stderr);
 }
 
-
+//
+// Assertion functions
+//
 
 void assert_condition(bool cond, const char* cond_str, const char* func, const char* note)
 {

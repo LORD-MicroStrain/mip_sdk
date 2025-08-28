@@ -2,8 +2,8 @@
 if(MICROSTRAIN_ENABLE_LOGGING)
 
     set(TEST_STRING_SOURCES
-        "${CMAKE_CURRENT_LIST_DIR}/test_strings.h"
-        "${CMAKE_CURRENT_LIST_DIR}/test_strings.c"
+        "${CMAKE_CURRENT_LIST_DIR}/testutil_strings.h"
+        "${CMAKE_CURRENT_LIST_DIR}/testutil_strings.c"
     )
 
     add_microstrain_test(
@@ -11,7 +11,7 @@ if(MICROSTRAIN_ENABLE_LOGGING)
         SOURCES
             ${TEST_STRING_SOURCES}
             "${CMAKE_CURRENT_LIST_DIR}/test_strcat.c"
-        COMMAND test_microstrain_strcat
+        COMMAND test_microstrain_string_concat
     )
 
     add_microstrain_test(
@@ -19,7 +19,7 @@ if(MICROSTRAIN_ENABLE_LOGGING)
         SOURCES
         ${TEST_STRING_SOURCES}
         "${CMAKE_CURRENT_LIST_DIR}/test_strfmt.c"
-        COMMAND test_microstrain_strfmt
+        COMMAND test_microstrain_string_formatting
     )
 
     add_microstrain_test(
@@ -27,7 +27,7 @@ if(MICROSTRAIN_ENABLE_LOGGING)
         SOURCES
         ${TEST_STRING_SOURCES}
         "${CMAKE_CURRENT_LIST_DIR}/test_strfmt_bytes.c"
-        COMMAND test_microstrain_strfmt_bytes
+        COMMAND test_microstrain_string_format_bytes
     )
 
 endif()

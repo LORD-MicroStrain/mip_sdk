@@ -1,5 +1,5 @@
 
-#include "test_strings.h"
+#include "testutil_strings.h"
 
 #include <microstrain/strings.h>
 

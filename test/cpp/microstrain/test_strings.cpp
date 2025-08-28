@@ -1,6 +1,6 @@
 
 extern "C" {
-#include "../../c/microstrain/test_strings.h"
+#include "../../c/microstrain/testutil_strings.h"
 }
 
 #define MICROSTRAIN_HAS_STD_STRING 1
