@@ -102,7 +102,7 @@ pipeline {
                                     // Temporarily disabling a couple of old public MIP SDK tests as they run for
                                     // a long time. If these tests are to remain, they should be moved to an
                                     // integration test suite.
-                                    powershell """ctest -C Release -E "TestMipRandom|TestMipPerf" --verbose --output-on-failure --output-junit unit_test_results.xml --parallel"""
+                                    powershell """ctest -C Release --verbose --output-on-failure --output-junit unit_test_results.xml --parallel"""
                                 }
                             }
                             post {
