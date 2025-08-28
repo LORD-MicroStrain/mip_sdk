@@ -7,7 +7,7 @@ if(MICROSTRAIN_ENABLE_LOGGING)
     )
 
     add_microstrain_test(
-        NAME test_microstrain_strcat
+        NAME test_microstrain_string_concat
         SOURCES
             ${TEST_STRING_SOURCES}
             "${CMAKE_CURRENT_LIST_DIR}/test_strcat.c"
@@ -15,7 +15,7 @@ if(MICROSTRAIN_ENABLE_LOGGING)
     )
 
     add_microstrain_test(
-        NAME test_microstrain_strfmt
+        NAME test_microstrain_string_formatting
         SOURCES
         ${TEST_STRING_SOURCES}
         "${CMAKE_CURRENT_LIST_DIR}/test_strfmt.c"
@@ -23,7 +23,7 @@ if(MICROSTRAIN_ENABLE_LOGGING)
     )
 
     add_microstrain_test(
-        NAME test_microstrain_strfmt_bytes
+        NAME test_microstrain_string_format_bytes
         SOURCES
         ${TEST_STRING_SOURCES}
         "${CMAKE_CURRENT_LIST_DIR}/test_strfmt_bytes.c"
