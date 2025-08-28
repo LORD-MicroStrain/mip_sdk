@@ -2,8 +2,8 @@
 if(MICROSTRAIN_ENABLE_LOGGING)
 
     set(TEST_STRING_SOURCES
-        "${CMAKE_CURRENT_LIST_DIR}/test_strings.h"
-        "${CMAKE_CURRENT_LIST_DIR}/test_strings.c"
+        "${CMAKE_CURRENT_LIST_DIR}/testutil_strings.h"
+        "${CMAKE_CURRENT_LIST_DIR}/testutil_strings.c"
     )
 
     add_microstrain_test(
