@@ -10,6 +10,9 @@
 #include <string>
 #endif
 
+#include <cstring>
+
+
 namespace microstrain {
 namespace strings {
 
@@ -48,30 +51,6 @@ inline bool concat(Span<char> buffer, size_t* index, const char* str, size_t len
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Concatenate a NULL-terminated C string into a buffer.
-///
-/// Equivalent to `concat(buffer, buffer_size, index, str, strlen(str));`.
-///
-///@param buffer
-///       Buffer of characters. The size should be the number of characters,
-///       including the NULL terminator, that will fit in the buffer. If the
-///       pointer is NULL and size is 0, this function will just compute the
-///       required buffer size and not write any characters.
-///@param[in,out] index
-///       Position in buffer where string data will be written. It will be
-///       updated with the new index in all cases.
-///@param str
-///       String to be appended. NULL-termination is required.
-///
-///@returns True if sufficient buffer space exists or if buffer is NULL.
-///@returns False if buffer is not NULL and insufficient space is available.
-///
-inline bool concat(Span<char> buffer, size_t* index, const char* str)
-{
-    return ::microstrain::C::microstrain_string_concat_z(buffer.data(), buffer.size(), index, str);
-}
-
-////////////////////////////////////////////////////////////////////////////////
 ///@brief Concatenate an array of characters into a buffer.
 ///
 /// Equivalent to `concat(buffer, buffer_size, index, str.data(), str.size());`.
@@ -86,7 +65,8 @@ inline bool concat(Span<char> buffer, size_t* index, const char* str)
 ///       Position in buffer where string data will be written. It will be
 ///       updated with the new index in all cases.
 ///@param str
-///       String to be appended. NULL-termination is required.
+///       String to be appended. Embedded NULL chars are allowed; Use
+///       concat_z for strings which are terminated before the end of the span.
 ///
 ///@returns True if sufficient buffer space exists or if buffer is NULL.
 ///@returns False if buffer is not NULL and insufficient space is available.
@@ -117,7 +97,7 @@ inline bool concat(Span<char> buffer, size_t* index, Span<const char> str)
 ///       Position in buffer where string data will be written. It will be
 ///       updated with the new index in all cases.
 ///@param str
-///       String to be appended. NULL-termination is required.
+///       String to be appended. Embedded NULL chars are allowed.
 ///
 ///@returns True if sufficient buffer space exists or if buffer is NULL.
 ///@returns False if buffer is not NULL and insufficient space is available.
@@ -145,7 +125,7 @@ inline bool concat(Span<char> buffer, size_t* index, std::string_view str)
 ///       Position in buffer where string data will be written. It will be
 ///       updated with the new index in all cases.
 ///@param str
-///       String to be appended. NULL-termination is required.
+///       String to be appended. Embedded NULL chars are allowed.
 ///
 ///@returns True if sufficient buffer space exists or if buffer is NULL.
 ///@returns False if buffer is not NULL and insufficient space is available.
@@ -158,15 +138,20 @@ inline bool concat(Span<char> buffer, size_t* index, const std::string& str)
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Concatenate a string literal or C array into a buffer.
+///@brief Concatenate a NULL-terminated C string into a buffer.
 ///
-/// Equivalent to `concat(buffer, buffer_size, index, str, sizeof(str)-1);`.
+/// Equivalent to `concat(buffer, buffer_size, index, str, strlen(str));`.
 ///
-/// Use this by passing a string literal directly so that the compiler
-/// is able to deduce the size of the string. This avoids the need to
-/// call std::strlen.
+/// Copies up to `maxLen` characters, or the first NULL character is reached,
+/// whichever comes first. maxLen can be used when it's uncertain if the source
+/// buffer is properly terminated.
 ///
-///Example: `concat(buffer, &index, "append this string");`
+///Examples:
+///@code{.cpp}
+///  const char* str = "To be appended";
+///  concat_z(buffer, &index, str);    // NULL-terminated, no maxlen
+///  concat_z(buffer, &index, str, 5); // Only copies "To be"
+///@endcode
 ///
 ///@param buffer
 ///       Buffer of characters. The size should be the number of characters,
@@ -177,13 +162,51 @@ inline bool concat(Span<char> buffer, size_t* index, const std::string& str)
 ///       Position in buffer where string data will be written. It will be
 ///       updated with the new index in all cases.
 ///@param str
-///       String to be appended. NULL-termination is required.
+///       String to be appended. NULL-termination is required unless maxLen
+///       is given.
+///@param maxLen
+///       If given, limit to this many characters. Defaults to unlimited.
+///
+///@returns True if sufficient buffer space exists or if buffer is NULL.
+///@returns False if buffer is not NULL and insufficient space is available.
+///
+inline bool concat_z(Span<char> buffer, size_t* index, const char* str, size_t maxLen=size_t(-1))
+{
+    const size_t len = std::min(maxLen, std::strlen(str));
+    return concat(buffer, index, Span<const char>{str, len});
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Concatenate a string literal into a buffer.
+///
+/// Equivalent to `concat(buffer, buffer_size, index, str, sizeof(str)-1);`.
+///
+/// Use this by passing a string literal directly so that the compiler
+/// is able to deduce the size of the string. This avoids the need to
+/// call std::strlen.
+///
+///Example: `concat_l(buffer, &index, "append this string");`
+///
+/// Note that this also works with C arrays, in which case the entire array is
+/// appended (NULLs and all).
+///
+///@param buffer
+///       Buffer of characters. The size should be the number of characters,
+///       including the NULL terminator, that will fit in the buffer. If the
+///       pointer is NULL and size is 0, this function will just compute the
+///       required buffer size and not write any characters.
+///@param[in,out] index
+///       Position in buffer where string data will be written. It will be
+///       updated with the new index in all cases.
+///@param str
+///       String to be appended. Embedded NULL chars are allowed. Use
+///       concat_z for strings which are terminated before N characters.
 ///
 ///@returns True if sufficient buffer space exists or if buffer is NULL.
 ///@returns False if buffer is not NULL and insufficient space is available.
 ///
 template<size_t N>
-bool concat(Span<char> buffer, size_t* index, const char(&str)[N])
+bool concat_l(Span<char> buffer, size_t* index, const char(&str)[N])
 {
     return concat(buffer, index, str, N-1);
 }
@@ -191,7 +214,7 @@ bool concat(Span<char> buffer, size_t* index, const char(&str)[N])
 #if MICROSTRAIN_ENABLE_LOGGING
 
 ////////////////////////////////////////////////////////////////////////////////
-///@copybrief microstrain::C::microstrain_string_fmt_v
+///@copybrief microstrain::C::microstrain_string_format_v
 ///
 ///@param buffer
 ///       Buffer of characters. The size should be the number of characters,
@@ -215,11 +238,11 @@ bool concat(Span<char> buffer, size_t* index, const char(&str)[N])
 ///
 inline bool format_v(Span<char> buffer, size_t* index, const char* fmt, va_list args)
 {
-    return ::microstrain::C::microstrain_string_fmt_v(buffer.data(), buffer.size(), index, fmt, args);
+    return ::microstrain::C::microstrain_string_format_v(buffer.data(), buffer.size(), index, fmt, args);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-///@copybrief microstrain::C::microstrain_string_fmt
+///@copybrief microstrain::C::microstrain_string_format
 ///
 ///@param buffer
 ///       Buffer of characters. The size should be the number of characters,

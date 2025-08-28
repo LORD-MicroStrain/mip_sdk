@@ -34,6 +34,7 @@ void concat_works()
 
     TEST_ASSERT(ok, "Success");
     TEST_ASSERT_BUFFER_COMPARE(test.array, TEST_STRING, sizeof(TEST_STRING), "");
+    TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(TEST_STRING)-1, "");
 }
 
 void concat_into_implicit_span_works()
@@ -45,6 +46,7 @@ void concat_into_implicit_span_works()
 
     TEST_ASSERT(ok, "Success");
     TEST_ASSERT_BUFFER_COMPARE(test.array, TEST_STRING, sizeof(TEST_STRING), "");
+    TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(TEST_STRING)-1, "");
 }
 
 void concat_explicit_span_works()
@@ -55,6 +57,7 @@ void concat_explicit_span_works()
 
     TEST_ASSERT(ok, "Success");
     TEST_ASSERT_BUFFER_COMPARE(test.array, TEST_STRING, sizeof(TEST_STRING), "");
+    TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(TEST_STRING)-1, "");
 }
 
 void concat_explicit_string_view_works()
@@ -65,6 +68,7 @@ void concat_explicit_string_view_works()
 
     TEST_ASSERT(ok, "Success");
     TEST_ASSERT_BUFFER_COMPARE(test.array, TEST_STRING, sizeof(TEST_STRING), "");
+    TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(TEST_STRING)-1, "");
 }
 
 void concat_explicit_string_works()
@@ -75,16 +79,41 @@ void concat_explicit_string_works()
 
     TEST_ASSERT(ok, "Success");
     TEST_ASSERT_BUFFER_COMPARE(test.array, TEST_STRING, sizeof(TEST_STRING), "");
+    TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(TEST_STRING)-1, "");
+}
+
+void concat_zero_terminated_works()
+{
+    StringTest test;
+
+    bool ok = microstrain::strings::concat_z(test.buffer(), &test.index, TEST_STRING);
+
+    TEST_ASSERT(ok, "Success");
+    TEST_ASSERT_BUFFER_COMPARE(test.array, TEST_STRING, sizeof(TEST_STRING), "");
+    TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(TEST_STRING)-1, "");
+}
+
+void concat_zero_terminated_maxlen_stops()
+{
+    StringTest test;
+    const size_t num_chars = 4;  // Just "Test"
+
+    bool ok = microstrain::strings::concat_z(test.buffer(), &test.index, TEST_STRING, num_chars);
+
+    TEST_ASSERT(ok, "Success");
+    TEST_ASSERT_BUFFER_COMPARE(test.array, "Test", num_chars, "");
+    TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), num_chars, "");
 }
 
 void concat_literal_works()
 {
     StringTest test;
 
-    bool ok = microstrain::strings::concat(test.buffer(), &test.index, "Testing!");
+    bool ok = microstrain::strings::concat_l(test.buffer(), &test.index, "Testing!");
 
     TEST_ASSERT(ok, "Success");
     TEST_ASSERT_BUFFER_COMPARE(test.array, TEST_STRING, sizeof(TEST_STRING), "");
+    TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(TEST_STRING)-1, "");
 }
 
 //
@@ -127,6 +156,8 @@ int main()
     concat_explicit_string_view_works();
     concat_explicit_string_works();
     // strcat_n_implicit_str_works();  // this would be ambiguous (span or string?)
+    concat_zero_terminated_works();
+    concat_zero_terminated_maxlen_stops();
     concat_literal_works();
 
     format_works();

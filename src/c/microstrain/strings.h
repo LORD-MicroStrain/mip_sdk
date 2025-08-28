@@ -53,8 +53,8 @@ bool microstrain_string_concat_z(char* buffer, size_t buffer_size, size_t* index
 #if MICROSTRAIN_ENABLE_LOGGING
 // sprintf is too big for some embedded systems.
 // Disable it when logging is disabled.
-bool microstrain_string_fmt_v(char* buffer, size_t buffer_size, size_t* index, const char* fmt, va_list args);
-bool microstrain_string_fmt(char* buffer, size_t buffer_size, size_t* index, const char* fmt, ...);
+bool microstrain_string_format_v(char* buffer, size_t buffer_size, size_t* index, const char* fmt, va_list args);
+bool microstrain_string_format(char* buffer, size_t buffer_size, size_t* index, const char* fmt, ...);
 
 #endif // MICROSTRAIN_ENABLE_LOGGING
 

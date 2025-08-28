@@ -123,7 +123,7 @@ bool microstrain_string_concat_z(char* buffer, size_t buffer_size, size_t* index
 ///         unchanged in this case.
 ///@returns False if insufficient space is available, unless buffer is NULL.
 ///
-bool microstrain_string_fmt_v(char* buffer, size_t buffer_size, size_t* index, const char* fmt, va_list args)
+bool microstrain_string_format_v(char* buffer, size_t buffer_size, size_t* index, const char* fmt, va_list args)
 {
     assert(buffer != NULL || buffer_size == 0);
     assert(index != NULL);
@@ -183,12 +183,12 @@ bool microstrain_string_fmt_v(char* buffer, size_t buffer_size, size_t* index, c
 ///         unchanged in this case.
 ///@returns False if insufficient space is available, unless buffer is NULL.
 ///
-bool microstrain_string_fmt(char* buffer, size_t buffer_size, size_t* index, const char* fmt, ...)
+bool microstrain_string_format(char* buffer, size_t buffer_size, size_t* index, const char* fmt, ...)
 {
     va_list args;
         va_start(args, fmt);
 
-    bool ok = microstrain_string_fmt_v(buffer, buffer_size, index, fmt, args);
+    bool ok = microstrain_string_format_v(buffer, buffer_size, index, fmt, args);
 
         va_end(args);
 
