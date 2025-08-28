@@ -37,6 +37,21 @@ def setUpWorkspace()
 }
 
 pipeline {
+    agent none
+
+    options {
+        // Set a timeout for the whole pipeline. The timer starts when the project is queued
+        timeout(time: 1, unit: 'HOURS')
+        // Only keep this number of builds for the job
+        buildDiscarder(logRotator(numToKeepStr: "10"))
+        copyArtifactPermission('*')
+    }
+}
+
+/* ============================================================= */
+
+/*
+pipeline {
   agent none
   options {
     // Set a timeout for the whole pipeline. The timer starts when the project is queued
@@ -242,3 +257,4 @@ pipeline {
     }
   }
 }
+ */
