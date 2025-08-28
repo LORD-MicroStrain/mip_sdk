@@ -52,21 +52,20 @@ bool microstrain_strcat_n(char* buffer, size_t buffer_size, size_t* index, const
     // 0          ofs  ofs+len  buffer_size
     //
 
-    // Not case 1: Do nothing if already overflowed.
-    if(offset < buffer_size)
-    {
-        // At least one byte exists for the NULL terminator.
-        assert(offset < buffer_size);
+    // Case 1: Do nothing if already overflowed.
+    if(offset >= buffer_size)
+        return (buffer == NULL);  // OK if just calculating size.
 
-        // Handle case 2, where appending would cause overflow.
-        // Convert to case 3 by limiting str_len to what will fit in the buffer.
-        if(offset + str_len >= buffer_size)
-            str_len = (buffer_size - 1) - offset;
+    // Handle case 2, where appending would cause overflow.
+    // Convert to case 3 by limiting str_len to what will fit in the buffer.
+    // Note that index is still updated for the full size.
+    if(offset + str_len >= buffer_size)
+        str_len = (buffer_size - 1) - offset;
 
-        memcpy(buffer + offset, str, str_len);
-        buffer[offset + str_len] = '\0';
-    }
+    memcpy(buffer + offset, str, str_len);
+    buffer[offset + str_len] = '\0';
 
+    // OK if calculating size or if index still in range.
     return (buffer == NULL) || (*index < buffer_size);
 }
 
