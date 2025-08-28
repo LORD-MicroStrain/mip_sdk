@@ -6,7 +6,7 @@
 #include <string.h>
 
 
-void string_format_on_empty_buffer_works()
+void string_format_on_blank_unterminated_buffer_works()
 {
     char buffer[20];
     memset(buffer, '_', sizeof(buffer));
@@ -46,7 +46,7 @@ void string_format_at_offset_works()
 {
     char buffer[20];
     memset(buffer, '_', sizeof(buffer));
-    memcpy(buffer, "Test: ", 7);
+    memcpy(buffer, "Test: ", 6+1);
     size_t index = 6;
 
     bool ok = microstrain_strfmt(buffer, sizeof(buffer), &index, "%d==0x%x", 4096, 0x1000);
@@ -60,7 +60,7 @@ void string_format_at_offset_fails_gracefully_if_buffer_too_small()
 {
     char buffer[20];
     memset(buffer, '_', sizeof(buffer));
-    memcpy(buffer, "Test: ", 7);
+    memcpy(buffer, "Test: ", 6+1);
     size_t index = 6;
 
     bool ok = microstrain_strfmt(buffer, 10, &index, "%d==0x%x", 4096, 0x1000);
@@ -108,7 +108,7 @@ void multiple_formats_fail_gracefully_when_buffer_too_small()
 
 int main()
 {
-    string_format_on_empty_buffer_works();
+    string_format_on_blank_unterminated_buffer_works();
     string_format_fails_gracefully_when_buffer_too_small();
     string_format_computes_size_if_buffer_null();
     string_format_at_offset_works();

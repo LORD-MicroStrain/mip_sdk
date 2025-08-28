@@ -112,7 +112,6 @@ void string_concat_at_offset_fails_gracefully_if_index_at_end()
     char buffer[20];
     memcpy(buffer, "012345678\0__________", 20);
     size_t index = 12;
-
     const size_t fake_buffer_size = 9;
     const char* msg = "ABCDEF";
     const size_t msg_size = strlen(msg);
