@@ -142,7 +142,7 @@ void microstrain_log_bytes(const microstrain_log_level level, const char* msg, c
     char buffer[1024];
     size_t index = 0;
 
-    bool ok = microstrain_strfmt_bytes(buffer, sizeof(buffer), &index, data, length, grouping);
+    bool ok = microstrain_string_bytes_to_hex_str(buffer, sizeof(buffer), &index, data, length, grouping);
     if(!ok)
     {
         assert(index > sizeof(buffer));  // Overrun is the only possible error

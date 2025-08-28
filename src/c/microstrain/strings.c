@@ -23,7 +23,8 @@
 ///       updated with the new index in all cases.
 ///@param str
 ///       String to be appended. Cannot be NULL unless str_len is 0. Does NOT
-///       require NULL termination, and any NULL characters are ignored.
+///       require NULL termination, and any such termination is ignored. NULL
+///       characters will be appended just like any other character.
 ///@param str_len
 ///       Length of string (number of characters to copy). Usually you would
 ///       set this to strlen(str). This overrides any NULL terminator in str.
@@ -31,7 +32,7 @@
 ///@returns True if sufficient buffer space exists or if buffer is NULL.
 ///@returns False if buffer is not NULL and insufficient space is available.
 ///
-bool microstrain_strcat_n(char* buffer, size_t buffer_size, size_t* index, const char* str, size_t str_len)
+bool microstrain_string_concat(char* buffer, size_t buffer_size, size_t* index, const char* str, size_t str_len)
 {
     const size_t offset = *index;
 
@@ -73,7 +74,7 @@ bool microstrain_strcat_n(char* buffer, size_t buffer_size, size_t* index, const
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Concatenate a string into a buffer.
 ///
-/// Equivalent to `microstrain_strcat_n(buffer, buffer_size, index, str, strlen(str));`.
+/// Equivalent to `microstrain_string_cat_n(buffer, buffer_size, index, str, strlen(str));`.
 ///
 ///@param buffer
 ///       Pointer to buffer where str will be appended. Use NULL to just compute
@@ -90,9 +91,9 @@ bool microstrain_strcat_n(char* buffer, size_t buffer_size, size_t* index, const
 ///@returns True if sufficient buffer space exists or if buffer is NULL.
 ///@returns False if buffer is not NULL and insufficient space is available.
 ///
-bool microstrain_strcat_c(char* buffer, size_t buffer_size, size_t* index, const char* str)
+bool microstrain_string_concat_z(char* buffer, size_t buffer_size, size_t* index, const char* str)
 {
-    return microstrain_strcat_n(buffer, buffer_size, index, str, strlen(str));
+    return microstrain_string_concat(buffer, buffer_size, index, str, strlen(str));
 }
 
 #if MICROSTRAIN_ENABLE_LOGGING
@@ -122,7 +123,7 @@ bool microstrain_strcat_c(char* buffer, size_t buffer_size, size_t* index, const
 ///         unchanged in this case.
 ///@returns False if insufficient space is available, unless buffer is NULL.
 ///
-bool microstrain_strfmt_v(char* buffer, size_t buffer_size, size_t* index, const char* fmt, va_list args)
+bool microstrain_string_fmt_v(char* buffer, size_t buffer_size, size_t* index, const char* fmt, va_list args)
 {
     assert(buffer != NULL || buffer_size == 0);
     assert(index != NULL);
@@ -182,12 +183,12 @@ bool microstrain_strfmt_v(char* buffer, size_t buffer_size, size_t* index, const
 ///         unchanged in this case.
 ///@returns False if insufficient space is available, unless buffer is NULL.
 ///
-bool microstrain_strfmt(char* buffer, size_t buffer_size, size_t* index, const char* fmt, ...)
+bool microstrain_string_fmt(char* buffer, size_t buffer_size, size_t* index, const char* fmt, ...)
 {
     va_list args;
         va_start(args, fmt);
 
-    bool ok = microstrain_strfmt_v(buffer, buffer_size, index, fmt, args);
+    bool ok = microstrain_string_fmt_v(buffer, buffer_size, index, fmt, args);
 
         va_end(args);
 
@@ -238,7 +239,7 @@ static char nibble_to_hex_char(uint8_t value)
 ///         unchanged in this case.
 ///@returns False if insufficient space is available, unless buffer is NULL.
 ///
-bool microstrain_strfmt_bytes(char* buffer, size_t buffer_size, size_t* index, const uint8_t* data, size_t data_size, unsigned int byte_grouping)
+bool microstrain_string_bytes_to_hex_str(char* buffer, size_t buffer_size, size_t* index, const uint8_t* data, size_t data_size, unsigned int byte_grouping)
 {
     assert(index != NULL);
     assert(buffer != NULL || buffer_size == 0);

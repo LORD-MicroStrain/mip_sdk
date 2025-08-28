@@ -45,19 +45,20 @@ extern "C" {
 ///
 ///@{
 
-bool microstrain_strcat_n(char* buffer, size_t buffer_size, size_t* index, const char* str, size_t str_len);
-bool microstrain_strcat_c(char* buffer, size_t buffer_size, size_t* index, const char* str);
+bool microstrain_string_concat(char* buffer, size_t buffer_size, size_t* index, const char* str, size_t str_len);
+bool microstrain_string_concat_z(char* buffer, size_t buffer_size, size_t* index, const char* str);
+
+#define microstrain_string_concat_l(buffer, buffer_size, index, str_lit) microstrain_string_concat(buffer, buffer_size, index, str_lit, sizeof(str_lit)-1)
 
 #if MICROSTRAIN_ENABLE_LOGGING
-// sprintf is too bloated for some embedded systems.
+// sprintf is too big for some embedded systems.
 // Disable it when logging is disabled.
-bool microstrain_strfmt_v(char* buffer, size_t buffer_size, size_t* index, const char* fmt, va_list args);
-bool microstrain_strfmt(char* buffer, size_t buffer_size, size_t* index, const char* fmt, ...);
+bool microstrain_string_fmt_v(char* buffer, size_t buffer_size, size_t* index, const char* fmt, va_list args);
+bool microstrain_string_fmt(char* buffer, size_t buffer_size, size_t* index, const char* fmt, ...);
+
 #endif // MICROSTRAIN_ENABLE_LOGGING
 
-bool microstrain_strfmt_bytes(char* buffer, size_t buffer_size, size_t* index, const uint8_t* data, size_t data_size, unsigned int byte_grouping);
-
-#define microstrain_strcat_l(buffer, buffer_size, index, str_lit) microstrain_strcat_n(buffer, buffer_size, index, str_lit, sizeof(str_lit)-1)
+bool microstrain_string_bytes_to_hex_str(char* buffer, size_t buffer_size, size_t* index, const uint8_t* data, size_t data_size, unsigned int byte_grouping);
 
 ///@}
 ///@}
