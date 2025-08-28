@@ -46,6 +46,25 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: "10"))
         copyArtifactPermission('*')
     }
+
+    stages {
+        /* ================================================================== */
+        stage('Checkout') {
+            agent {
+                label '!windows10'
+            }
+            options {
+                skipDefaultCheckout()
+            }
+            steps {
+                script {
+                    checkoutRepo()
+                    stash includes: '**', name: 'source-code'
+                }
+            }
+        }
+        /* ================================================================== */
+    }
 }
 
 /* ============================================================= */
