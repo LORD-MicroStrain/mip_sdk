@@ -16,7 +16,8 @@
 ///       Pointer to buffer where str will be appended. Use NULL to just compute
 ///       the required size (buffer_size must be 0 in that case).
 ///@param buffer_size
-///       Size of buffer. Must be 0 if buffer is NULL.
+///       Number of characters the buffer can hold, including the NULL
+///       terminator. Must be 0 if buffer is NULL.
 ///@param[in,out] index
 ///       Position in buffer where string data will be written. It will be
 ///       updated with the new index in all cases.
@@ -78,7 +79,8 @@ bool microstrain_strcat_n(char* buffer, size_t buffer_size, size_t* index, const
 ///       Pointer to buffer where str will be appended. Use NULL to just compute
 ///       the required size (buffer_size must be 0 in that case).
 ///@param buffer_size
-///       Size of buffer. Must be 0 if buffer is NULL.
+///       Number of characters the buffer can hold, including the NULL
+///       terminator. Must be 0 if buffer is NULL.
 ///@param[in,out] index
 ///       Position in buffer where string data will be written. It will be
 ///       updated with the new index in all cases.
@@ -103,8 +105,8 @@ bool microstrain_strcat_c(char* buffer, size_t buffer_size, size_t* index, const
 ///       If this is NULL, this function will only compute the required buffer
 ///       size (set buffer_size = 0 in this case).
 ///@param buffer_size
-///       Size of the buffer. Up to buffer_size-1 chars will be written, plus
-///       a NULL terminator. Must be 0 if buffer is NULL.
+///       Number of characters the buffer can hold, including the NULL
+///       terminator. Must be 0 if buffer is NULL.
 ///@param[in,out] index
 ///       Position in buffer where string data will be written. It will be
 ///       updated with the new index and will point to the new NULL terminator
@@ -165,8 +167,8 @@ bool microstrain_strfmt_v(char* buffer, size_t buffer_size, size_t* index, const
 ///       If this is NULL, this function will only compute the required buffer
 ///       size (set buffer_size = 0 in this case).
 ///@param buffer_size
-///       Size of the buffer. Up to buffer_size-1 chars will be written, plus
-///       a NULL terminator. Must be 0 if buffer is NULL.
+///       Number of characters the buffer can hold, including the NULL
+///       terminator. Must be 0 if buffer is NULL.
 ///@param[in,out] index
 ///       Position in buffer where string data will be written. It will be
 ///       updated with the new index and will point to the new NULL terminator
@@ -215,8 +217,8 @@ static char nibble_to_hex_char(uint8_t value)
 ///       If this is NULL, this function will only compute the required buffer
 ///       size (set buffer_size = 0 in this case).
 ///@param buffer_size
-///       Size of the buffer. Up to buffer_size-1 chars will be written, plus
-///       a NULL terminator. Must be 0 if buffer is NULL.
+///       Number of characters the buffer can hold, including the NULL
+///       terminator. Must be 0 if buffer is NULL.
 ///@param[in,out] index
 ///       Position in buffer where string data will be written. It will be
 ///       updated with the new index and will point to the new NULL terminator
