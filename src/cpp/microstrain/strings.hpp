@@ -45,6 +45,9 @@ inline bool strcat(Span<char> buffer, size_t* index, Span<const char> str)
 #if __cpp_lib_string_view >= 201606L
 ///@brief strcat overload taking a std::string_view.
 ///
+/// You must define MICROSTRAIN_HAS_STD_STRING to enable this overload.
+/// Your compiler must also support the string view feature test macro.
+///
 inline bool strcat(Span<char> buffer, size_t* index, std::string_view str)
 {
     return strcat_n(buffer, index, str.data(), str.size());
@@ -52,6 +55,8 @@ inline bool strcat(Span<char> buffer, size_t* index, std::string_view str)
 #endif // __cpp_lib_string_view
 
 ///@brief strcat overload taking a std::string.
+///
+/// You must define MICROSTRAIN_HAS_STD_STRING to enable this overload.
 ///
 inline bool strcat(Span<char> buffer, size_t* index, const std::string& str)
 {
