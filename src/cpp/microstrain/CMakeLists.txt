@@ -6,6 +6,7 @@ set(MICROSTRAIN_SOURCES
     "${CMAKE_CURRENT_LIST_DIR}/platform.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/serialization.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/span.hpp"
+    "${CMAKE_CURRENT_LIST_DIR}/strings.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/serialization/readwrite.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/serialization/serializer.hpp"
 )
