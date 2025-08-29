@@ -89,6 +89,6 @@ docker run \
             -C Release \
             --verbose \
             --output-on-failure \
-            --output-junit ${build_dir_name}/unit_test_results.xml \
+            --output-junit unit_test_results.xml \
             --parallel
   "
