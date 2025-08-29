@@ -23,7 +23,8 @@ bool check_equal(int a, int b, const char* fmt, ...);
 
 inline void printT(FILE* file, int value) { fprintf(file, "%d", value); }
 inline void printT(FILE* file, unsigned int value) { fprintf(file, "%u", value); }
-inline void printT(FILE* file, std::enable_if<!std::is_same<size_t, unsigned int>::value, size_t>::type value) { fprintf(file, "%zu", value); }
+template<typename T = size_t, std::enable_if_t<!std::is_same_v<size_t, unsigned int>, int> = 0>
+inline void printT(FILE* file, T value) { fprintf(file, "%zu", value); }
 inline void printT(FILE* file, const void* value) { fprintf(file, "%p", value); }
 
 template<typename A, typename B>
