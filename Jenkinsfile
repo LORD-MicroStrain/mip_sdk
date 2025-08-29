@@ -65,7 +65,6 @@ pipeline {
 
         stage('Multi-platform staging') {
             parallel {
-                /* ========================================================== */
                 stage('Windows x64') {
                     agent {
                         label 'windows10'
@@ -78,7 +77,6 @@ pipeline {
                         // timeout(time: 5, activity: true, unit: 'MINUTES')
                     }
                     stages {
-                        /* -------------------------------------------------- */
                         stage('Windows x64 [Build]') {
                             steps {
                                 script {
@@ -94,7 +92,6 @@ pipeline {
                                 }
                             }
                         }
-                        /* -------------------------------------------------- */
 
                         stage('Windows x64 [Unit Test]') {
                             steps {
@@ -111,10 +108,8 @@ pipeline {
                                 }
                             }
                         }
-                        /* -------------------------------------------------- */
                     }
                 }
-                /* ========================================================== */
 
                 stage('Windows x86') {
                     agent {
@@ -128,7 +123,6 @@ pipeline {
                         // timeout(time: 5, activity: true, unit: 'MINUTES')
                     }
                     stages {
-                        /* -------------------------------------------------- */
                         stage('Windows x86 [Build]') {
                             steps {
                                 script {
@@ -144,7 +138,6 @@ pipeline {
                                 }
                             }
                         }
-                        /* -------------------------------------------------- */
 
                         stage('Windows x86 [Unit Test]') {
                             steps {
@@ -161,10 +154,8 @@ pipeline {
                                 }
                             }
                         }
-                        /* -------------------------------------------------- */
                     }
                 }
-                /* ========================================================== */
             }
         }
 
