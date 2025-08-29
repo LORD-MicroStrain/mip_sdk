@@ -59,6 +59,8 @@ static constexpr const char* PORT_NAME = "/dev/ttyACM0";
 #endif // _WIN32
 
 // Set the baudrate for the connection (Serial/USB)
+// Note: For native serial connections this needs to be 115200 due to the device default settings command
+// Use mip_3dm_*_uart_baudrate() to write and save the baudrate on the device
 static constexpr uint32_t BAUDRATE = 115200;
 
 // TODO: Update to the desired streaming rate. Setting low for readability purposes
@@ -219,7 +221,7 @@ int main(const int argc, const char* argv[])
 
     mip::Timestamp previousExternalDataTimestamp = 0;
 
-    mip::commands_aiding::Time externalMeasurementTime = {
+    constexpr mip::commands_aiding::Time externalMeasurementTime = {
         mip::commands_aiding::Time::Timebase::TIME_OF_ARRIVAL,
         1,                         // Reserved (needs to be 1)
         TIME_OF_ARRIVAL_LATENCY_NS // Nanoseconds
@@ -230,7 +232,10 @@ int main(const int argc, const char* argv[])
     {
         // Update the device state
         // Note: This will update the device callbacks to trigger the filter state change
-        device.update();
+        // Note: The recommended default wait time is 10 ms, but could be 0 for non-blocking read operations
+        device.update(
+            10 // Time to wait
+        );
 
         // Filter state change
         if (currentState != filterStatus.filter_state)
@@ -264,7 +269,10 @@ int main(const int argc, const char* argv[])
     {
         // Update the device state
         // Note: This will update the device callbacks to trigger the filter state change
-        device.update();
+        // Note: The recommended default wait time is 10 ms, but could be 0 for non-blocking read operations
+        device.update(
+            10 // Time to wait
+        );
 
         // Filter state change
         if (currentState != filterStatus.filter_state)
@@ -348,6 +356,7 @@ void logCallback(void* _user, const microstrain_log_level _level, const char* _f
         {
             fprintf(stderr, "%s: ", microstrain_logging_level_name(_level));
             vfprintf(stderr, _format, _args);
+            fflush(stderr);
             break;
         }
         case MICROSTRAIN_LOG_LEVEL_WARN:
@@ -357,6 +366,7 @@ void logCallback(void* _user, const microstrain_log_level _level, const char* _f
         {
             fprintf(stdout, "%s: ", microstrain_logging_level_name(_level));
             vfprintf(stdout, _format, _args);
+            fflush(stdout);
             break;
         }
         case MICROSTRAIN_LOG_LEVEL_OFF:
@@ -890,6 +900,14 @@ void initializeDevice(mip::Interface& _device)
 
     if (!cmdResult.isAck())
     {
+        // Note: Default settings will reset the baudrate to 115200 and may cause connection issues
+        if (cmdResult == mip::CmdResult::STATUS_TIMEDOUT && BAUDRATE != 115200)
+        {
+            MICROSTRAIN_LOG_WARN(
+                "On a native serial connections the baudrate needs to be 115200 for this example to run.\n"
+            );
+        }
+
         terminate(_device, cmdResult, "Could not load %s!\n", mip::commands_3dm::DeviceSettings::DOC_NAME);
     }
 }
@@ -1117,12 +1135,11 @@ void terminate(microstrain::Connection* _connection, const char* _message, const
         }
     }
 
-    MICROSTRAIN_LOG_INFO("Exiting the program.\n");
+    MICROSTRAIN_LOG_INFO("Press 'Enter' to exit the program.\n");
 
-#ifdef _WIN32
-    // Keep the console open on Windows
-    system("pause");
-#endif // _WIN32
+    // Make sure the console remains open
+    const int confirmExit = getc(stdin);
+    (void)confirmExit; // Unused
 
     if (!_successful)
     {
