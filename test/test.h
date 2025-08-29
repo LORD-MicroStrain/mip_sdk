@@ -21,10 +21,8 @@ bool check_equal(int a, int b, const char* fmt, ...);
 } // extern "C"
 
 inline void printT(FILE* file, int value) { fprintf(file, "%d", value); }
-#if defined(_WIN32) && !defined(_WIN64)
 inline void printT(FILE* file, unsigned int value) { fprintf(file, "%u", value); }
-#endif
-inline void printT(FILE* file, size_t value) { fprintf(file, "%zu", value); }
+inline void printT(FILE* file, std::enable_if<!std::is_same<size_t, unsigned int>::value, size_t>::type value) { fprintf(file, "%zu", value); }
 inline void printT(FILE* file, const void* value) { fprintf(file, "%p", value); }
 
 template<typename A, typename B>
