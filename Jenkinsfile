@@ -122,35 +122,35 @@ pipeline {
                         skipDefaultCheckout()
                         // timeout(time: 5, activity: true, unit: 'MINUTES')
                     }
-                    stages {
-                        stage('Windows x86 [Build]') {
-                            steps {
-                                script {
-                                    setUpWorkspace()
-                                }
-                                dir("${BUILD_DIRECTORY}") {
-                                    powershell """
-                                        cmake .. -A "Win32" -DMICROSTRAIN_BUILD_EXAMPLES=ON -DMICROSTRAIN_BUILD_PACKAGE=ON -DMICROSTRAIN_BUILD_TESTS=ON
-                                        cmake --build . --config Release
-                                        cmake --build . --config Release --target package
-                                    """
-                                    archiveArtifacts artifacts: 'mipsdk_*'
-                                }
-                            }
+                    steps {
+                        script {
+                            setUpWorkspace()
                         }
-
-                        stage('Windows x86 [Unit Test]') {
-                            steps {
+                        dir("${BUILD_DIRECTORY}") {
+                            powershell """
+                                cmake .. `
+                                    -A "Win32" `
+                                    -DMICROSTRAIN_BUILD_EXAMPLES=ON `
+                                    -DMICROSTRAIN_BUILD_PACKAGE=ON `
+                                    -DMICROSTRAIN_BUILD_TESTS=ON
+                                cmake --build . --config Release
+                                cmake --build . --config Release --target package
+                            """
+                            powershell """
+                                ctest `
+                                    -C Release `
+                                    --verbose `
+                                    --output-on-failure `
+                                    --output-junit unit_test_results.xml `
+                                    --parallel
+                            """
+                            archiveArtifacts artifacts: 'mipsdk_*'
+                        }
+                        post {
+                            always {
                                 dir("${BUILD_DIRECTORY}") {
-                                    powershell """ctest -C Release --verbose --output-on-failure --output-junit unit_test_results.xml --parallel"""
-                                }
-                            }
-                            post {
-                                always {
-                                    dir("${BUILD_DIRECTORY}") {
-                                        archiveArtifacts artifacts: 'unit_test_results.xml', allowEmptyArchive: false
-                                        junit testResults: "unit_test_results.xml", allowEmptyResults: false
-                                    }
+                                    archiveArtifacts artifacts: 'unit_test_results.xml', allowEmptyArchive: false
+                                    junit testResults: "unit_test_results.xml", allowEmptyResults: false
                                 }
                             }
                         }
