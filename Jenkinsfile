@@ -82,11 +82,21 @@ pipeline {
                         }
                         dir("${BUILD_DIRECTORY}") {
                             powershell """
-                                cmake .. -DMICROSTRAIN_BUILD_EXAMPLES=ON -DMICROSTRAIN_BUILD_PACKAGE=ON -DMICROSTRAIN_BUILD_TESTS=ON
+                                cmake .. `
+                                    -DMICROSTRAIN_BUILD_EXAMPLES=ON `
+                                    -DMICROSTRAIN_BUILD_PACKAGE=ON `
+                                    -DMICROSTRAIN_BUILD_TESTS=ON
                                 cmake --build . --config Release
                                 cmake --build . --config Release --target package
 
-                                ctest -C Release --verbose --output-on-failure --output-junit unit_test_results.xml --parallel
+                            """
+                            powershell """
+                                ctest `
+                                    -C Release `
+                                    --verbose `
+                                    --output-on-failure `
+                                    --output-junit unit_test_results.xml `
+                                    --parallel
                             """
                             archiveArtifacts artifacts: 'mipsdk_*'
                         }
