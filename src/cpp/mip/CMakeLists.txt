@@ -8,6 +8,7 @@ set(MIP_SOURCES
     "${CMAKE_CURRENT_LIST_DIR}/mip_field.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/mip_interface.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/mip_interface.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/mip_logging.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/mip_packet.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/mip_parser.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/mip_result.hpp"

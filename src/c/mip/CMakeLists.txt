@@ -29,6 +29,8 @@ set(MIP_SOURCES
     "${CMAKE_CURRENT_LIST_DIR}/mip_field.h"
     "${CMAKE_CURRENT_LIST_DIR}/mip_interface.c"
     "${CMAKE_CURRENT_LIST_DIR}/mip_interface.h"
+    "${CMAKE_CURRENT_LIST_DIR}/mip_logging.c"
+    "${CMAKE_CURRENT_LIST_DIR}/mip_logging.h"
     "${CMAKE_CURRENT_LIST_DIR}/mip_metadata.h"
     "${CMAKE_CURRENT_LIST_DIR}/mip_offsets.h"
     "${CMAKE_CURRENT_LIST_DIR}/mip_packet.c"

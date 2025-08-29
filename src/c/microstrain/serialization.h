@@ -5,6 +5,9 @@
 #include <stdbool.h>
 
 ////////////////////////////////////////////////////////////////////////////////
+///@addtogroup microstrain
+///@{
+////////////////////////////////////////////////////////////////////////////////
 ///@defgroup microstrain_serialization  MicroStrain Serialization
 ///
 ///@brief Serialization functions for reading and writing to byte buffers.
@@ -92,6 +95,7 @@ void microstrain_extract_double(microstrain_serializer* serializer, double* valu
 
 void microstrain_extract_count(microstrain_serializer* serializer, uint8_t* count_out, uint8_t max_count);
 
+///@}
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
 
