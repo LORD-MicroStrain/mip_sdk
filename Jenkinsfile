@@ -116,26 +116,24 @@ pipeline {
                 }
                 /* ========================================================== */
             }
+        }
 
-            // We only want to generate documentation when the build succeeds
-/*
-            stage('Documentation') {
-                agent {
-                    label 'linux-amd64'
-                }
-                options {
-                    skipDefaultCheckout()
-                    // timeout(time: 5, activity: true, unit: 'MINUTES')
-                }
-                steps {
-                    script {
-                        setUpWorkspace()
-                        sh "./.devcontainer/docker_build.sh --os ubuntu --arch amd64 --docs"
-                        archiveArtifacts artifacts: 'build_docs/mipsdk_*'
-                    }
+        // We only want to generate documentation when the build succeeds
+        stage('Documentation') {
+            agent {
+                label 'linux-amd64'
+            }
+            options {
+                skipDefaultCheckout()
+                // timeout(time: 5, activity: true, unit: 'MINUTES')
+            }
+            steps {
+                script {
+                    setUpWorkspace()
+                    sh "./.devcontainer/docker_build.sh --os ubuntu --arch amd64 --docs"
+                    archiveArtifacts artifacts: 'build_docs/mipsdk_*'
                 }
             }
- */
         }
     }
 }
