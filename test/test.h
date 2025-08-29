@@ -20,10 +20,10 @@ bool check_equal(int a, int b, const char* fmt, ...);
 #ifdef __cplusplus
 } // extern "C"
 
-void printT(FILE* file, int value) { fprintf(file, "%d", value); }
-void printT(FILE* file, unsigned int value) { fprintf(file, "%u", value); }
-void printT(FILE* file, size_t value) { fprintf(file, "%zu", value); }
-void printT(FILE* file, const void* value) { fprintf(file, "%p", value); }
+inline void printT(FILE* file, int value) { fprintf(file, "%d", value); }
+inline void printT(FILE* file, unsigned int value) { fprintf(file, "%u", value); }
+inline void printT(FILE* file, size_t value) { fprintf(file, "%zu", value); }
+inline void printT(FILE* file, const void* value) { fprintf(file, "%p", value); }
 
 template<typename A, typename B>
 bool check_equal(A a, B b, const char* fmt, ...)
