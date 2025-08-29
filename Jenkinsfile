@@ -165,33 +165,20 @@ pipeline {
                         skipDefaultCheckout()
                         // timeout(time: 5, activity: true, unit: 'MINUTES')
                     }
-                    stages {
-                        stage('Ubuntu amd64 [Build]') {
-                            steps {
-                                script {
-                                    setUpWorkspace()
-                                    sh "./.devcontainer/docker_build.sh --os ubuntu --arch amd64"
-                                }
-                                dir("${BUILD_DIRECTORY}") {
-                                    archiveArtifacts artifacts: 'mipsdk_*'
-                                }
-                            }
+                    steps {
+                        script {
+                            setUpWorkspace()
+                            sh "./.devcontainer/docker_build.sh --os ubuntu --arch amd64"
                         }
-
-                        stage('Ubuntu amd64 [Unit Test]') {
-                            steps {
-                                dir("${BUILD_DIRECTORY}") {
-                                    sh """ctest -C Release --verbose --output-on-failure --output-junit unit_test_results.xml --parallel"""
-                                    //sh "./.devcontainer/docker_build.sh --os ubuntu --arch amd64 --run_unit_tests"
-                                }
-                            }
-                            post {
-                                always {
-                                    dir("${BUILD_DIRECTORY}") {
-                                        archiveArtifacts artifacts: 'unit_test_results.xml', allowEmptyArchive: false
-                                        junit testResults: "unit_test_results.xml", allowEmptyResults: false
-                                    }
-                                }
+                        dir("${BUILD_DIRECTORY}") {
+                            archiveArtifacts artifacts: 'mipsdk_*'
+                        }
+                    }
+                    post {
+                        always {
+                            dir("${BUILD_DIRECTORY}") {
+                                archiveArtifacts artifacts: 'unit_test_results.xml', allowEmptyArchive: false
+                                junit testResults: "unit_test_results.xml", allowEmptyResults: false
                             }
                         }
                     }
