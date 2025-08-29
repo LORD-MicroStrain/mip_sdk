@@ -82,14 +82,16 @@ docker run \
         rm -rf ${docker_project_dir}/${build_dir_name}; \
         mkdir ${docker_project_dir}/${build_dir_name}; \
         cd ${docker_project_dir}/${build_dir_name}; \
-        "
-    #    cmake ${docker_project_dir} ${configure_flags}; \
-    #    cmake --build . -j$(nproc); \
-    #    cmake --build . --target ${build_target}; \
-    #    ctest \
-    #        -C Release \
-    #        --verbose \
-    #        --output-on-failure \
-    #        --output-junit unit_test_results.xml \
-    #        --parallel
-    #"
+        echo 'CURRENT_DIRECTORY: $(pwd)'; \
+        ls -a; \
+        cmake ${docker_project_dir} ${configure_flags}; \
+        cmake --build . -j$(nproc); \
+        cmake --build . --target ${build_target}; \
+        ctest \
+            -C Release \
+            --verbose \
+            --output-on-failure \
+            --output-junit unit_test_results.xml \
+            --parallel
+
+    "
