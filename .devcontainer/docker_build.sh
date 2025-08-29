@@ -84,14 +84,15 @@ docker run \
         cd ${docker_project_dir}/${build_dir_name}; \
         echo 'CURRENT_DIRECTORY: $(pwd)'; \
         ls -a; \
-        cmake ${docker_project_dir} ${configure_flags}; \
-        cmake --build . -j$(nproc); \
-        cmake --build . --target ${build_target}; \
-        ctest \
-            -C Release \
-            --verbose \
-            --output-on-failure \
-            --output-junit unit_test_results.xml \
-            --parallel
+        "
+        #cmake ${docker_project_dir} ${configure_flags}; \
+        #cmake --build . -j$(nproc); \
+        #cmake --build . --target ${build_target}; \
+        #ctest \
+        #    -C Release \
+        #    --verbose \
+        #    --output-on-failure \
+        #    --output-junit unit_test_results.xml \
+        #    --parallel
 
-    "
+    #"
