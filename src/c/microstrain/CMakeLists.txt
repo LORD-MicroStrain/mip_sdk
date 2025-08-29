@@ -10,6 +10,8 @@ set(MICROSTRAIN_SOURCES
     "${CMAKE_CURRENT_LIST_DIR}/platform.h"
     "${CMAKE_CURRENT_LIST_DIR}/serialization.c"
     "${CMAKE_CURRENT_LIST_DIR}/serialization.h"
+    "${CMAKE_CURRENT_LIST_DIR}/strings.c"
+    "${CMAKE_CURRENT_LIST_DIR}/strings.h"
 )
 
 add_library(${MICROSTRAIN_LIBRARY}
