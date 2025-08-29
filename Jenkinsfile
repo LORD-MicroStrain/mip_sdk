@@ -195,27 +195,6 @@ pipeline {
     stage('Build') {
       // Run all the builds in parallel
       parallel {
-        stage('Windows x86') {
-          agent { label 'windows10' }
-          options {
-            skipDefaultCheckout()
-            timeout(time: 5, activity: true, unit: 'MINUTES')
-          }
-          steps {
-            script {
-              checkoutRepo()
-              env.setProperty('BRANCH_NAME', branchName())
-              powershell """
-                mkdir build_Win32
-                cd build_Win32
-                cmake .. -A "Win32" -DMICROSTRAIN_BUILD_EXAMPLES=ON -DMICROSTRAIN_BUILD_PACKAGE=ON
-                cmake --build . --config Release
-                cmake --build . --config Release --target package
-              """
-              archiveArtifacts artifacts: 'build_Win32/mipsdk_*'
-            }
-          }
-        }
         stage('Ubuntu amd64') {
           agent { label 'linux-amd64' }
           options {
