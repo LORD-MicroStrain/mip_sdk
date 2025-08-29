@@ -65,6 +65,7 @@ else
   configure_flags="\
     -DMICROSTRAIN_BUILD_EXAMPLES=ON \
     -DMICROSTRAIN_BUILD_PACKAGE=ON \
+    -DMICROSTRAIN_BUILD_TESTS=ON \
     -DCMAKE_BUILD_TYPE=RELEASE"
   build_target="package"
 fi

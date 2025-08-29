@@ -156,6 +156,32 @@ pipeline {
                         }
                     }
                 }
+
+                stage('Ubuntu amd64') {
+                    agent {
+                        label 'linux-amd64'
+                    }
+                    environment {
+                        BUILD_DIRECTORY = "build_ubuntu_amd64"
+                    }
+                    options {
+                        skipDefaultCheckout()
+                        // timeout(time: 5, activity: true, unit: 'MINUTES')
+                    }
+                    stages {
+                        stage('Ubuntu amd64 [Build]') {
+                            steps {
+                                script {
+                                    setUpWorkspace()
+                                }
+                                dir("${BUILD_DIRECTORY}") {
+                                    sh "./.devcontainer/docker_build.sh --os ubuntu --arch amd64"
+                                    archiveArtifacts artifacts: 'mipsdk_*'
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -186,21 +212,6 @@ pipeline {
     stage('Build') {
       // Run all the builds in parallel
       parallel {
-        stage('Ubuntu amd64') {
-          agent { label 'linux-amd64' }
-          options {
-            skipDefaultCheckout()
-            timeout(time: 5, activity: true, unit: 'MINUTES')
-          }
-          steps {
-            script {
-              checkoutRepo()
-              env.setProperty('BRANCH_NAME', branchName())
-              sh "./.devcontainer/docker_build.sh --os ubuntu --arch amd64"
-              archiveArtifacts artifacts: 'build_ubuntu_amd64/mipsdk_*'
-            }
-          }
-        }
         stage('Ubuntu arm64') {
           agent { label 'linux-arm64' }
           options {
