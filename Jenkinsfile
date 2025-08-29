@@ -99,9 +99,6 @@ pipeline {
                         stage('Windows x64 [Unit Test]') {
                             steps {
                                 dir("${BUILD_DIRECTORY}") {
-                                    // Temporarily disabling a couple of old public MIP SDK tests as they run for
-                                    // a long time. If these tests are to remain, they should be moved to an
-                                    // integration test suite.
                                     powershell """ctest -C Release --verbose --output-on-failure --output-junit unit_test_results.xml --parallel"""
                                 }
                             }
@@ -119,6 +116,24 @@ pipeline {
                 }
                 /* ========================================================== */
             }
+
+            // We only want to generate documentation when the build succeeds
+            stage('Documentation') {
+                agent {
+                    label 'linux-amd64'
+                }
+                options {
+                    skipDefaultCheckout()
+                    // timeout(time: 5, activity: true, unit: 'MINUTES')
+                }
+                steps {
+                    script {
+                        setUpWorkspace()
+                        sh "./.devcontainer/docker_build.sh --os ubuntu --arch amd64 --docs"
+                        archiveArtifacts artifacts: 'build_docs/mipsdk_*'
+                    }
+                }
+            }
         }
     }
 }
@@ -130,21 +145,6 @@ pipeline {
     stage('Build') {
       // Run all the builds in parallel
       parallel {
-        stage('Documentation') {
-          agent { label 'linux-amd64' }
-          options {
-            skipDefaultCheckout()
-            timeout(time: 5, activity: true, unit: 'MINUTES')
-          }
-          steps {
-            script {
-              checkoutRepo()
-              env.setProperty('BRANCH_NAME', branchName())
-              sh "./.devcontainer/docker_build.sh --os ubuntu --arch amd64 --docs"
-              archiveArtifacts artifacts: 'build_docs/mipsdk_*'
-            }
-          }
-        }
         stage('Windows x86') {
           agent { label 'windows10' }
           options {
@@ -163,27 +163,6 @@ pipeline {
                 cmake --build . --config Release --target package
               """
               archiveArtifacts artifacts: 'build_Win32/mipsdk_*'
-            }
-          }
-        }
-        stage('Windows x64') {
-          agent { label 'windows10' }
-          options {
-            skipDefaultCheckout()
-            timeout(time: 5, activity: true, unit: 'MINUTES')
-          }
-          steps {
-            script {
-              checkoutRepo()
-              env.setProperty('BRANCH_NAME', branchName())
-              powershell """
-                mkdir build_x64
-                cd build_x64
-                cmake .. -DMICROSTRAIN_BUILD_EXAMPLES=ON -DMICROSTRAIN_BUILD_PACKAGE=ON
-                cmake --build . --config Release
-                cmake --build . --config Release --target package
-              """
-              archiveArtifacts artifacts: 'build_x64/mipsdk_*'
             }
           }
         }
