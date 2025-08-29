@@ -25,139 +25,120 @@ struct StringTest
 // strcat
 //
 
-void strcat_n_wrapper_works()
-{
-    StringTest test;
-    bool ok = microstrain::strcat_n(test.array, sizeof(test.array), &test.index, TEST_STRING, sizeof(TEST_STRING)-1);
-    TEST_ASSERT(ok, "Success");
-    TEST_ASSERT_BUFFER_COMPARE(test.array, TEST_STRING, sizeof(TEST_STRING), "");
-}
-
-void strcat_n_into_explicit_span_works()
+void concat_works()
 {
     StringTest test;
 
     // Explicitly create a span
-    bool ok = microstrain::strcat_n(test.buffer(), &test.index, TEST_STRING, sizeof(TEST_STRING)-1);
+    bool ok = microstrain::strings::concat(test.buffer(), &test.index, TEST_STRING, sizeof(TEST_STRING)-1);
 
     TEST_ASSERT(ok, "Success");
     TEST_ASSERT_BUFFER_COMPARE(test.array, TEST_STRING, sizeof(TEST_STRING), "");
+    TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(TEST_STRING)-1, "");
 }
 
-void strcat_n_into_implicit_span_works()
+void concat_into_implicit_span_works()
 {
     StringTest test;
 
     // Implicitly create a span
-    bool ok = microstrain::strcat_n({test.array, sizeof(test.array)}, &test.index, TEST_STRING, sizeof(TEST_STRING)-1);
+    bool ok = microstrain::strings::concat({test.array, sizeof(test.array)}, &test.index, TEST_STRING, sizeof(TEST_STRING)-1);
 
     TEST_ASSERT(ok, "Success");
     TEST_ASSERT_BUFFER_COMPARE(test.array, TEST_STRING, sizeof(TEST_STRING), "");
+    TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(TEST_STRING)-1, "");
 }
 
-void strcat_explicit_span_works()
+void concat_explicit_span_works()
 {
     StringTest test;
 
-    bool ok = microstrain::strcat(test.buffer(), &test.index, microstrain::Span<const char>{TEST_STRING});
+    bool ok = microstrain::strings::concat(test.buffer(), &test.index, microstrain::Span<const char>{TEST_STRING});
 
     TEST_ASSERT(ok, "Success");
     TEST_ASSERT_BUFFER_COMPARE(test.array, TEST_STRING, sizeof(TEST_STRING), "");
+    TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(TEST_STRING)-1, "");
 }
 
-void strcat_explicit_string_view_works()
+void concat_explicit_string_view_works()
 {
     StringTest test;
 
-    bool ok = microstrain::strcat(test.buffer(), &test.index, std::string_view{TEST_STRING});
+    bool ok = microstrain::strings::concat(test.buffer(), &test.index, std::string_view{TEST_STRING});
 
     TEST_ASSERT(ok, "Success");
     TEST_ASSERT_BUFFER_COMPARE(test.array, TEST_STRING, sizeof(TEST_STRING), "");
+    TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(TEST_STRING)-1, "");
 }
 
-void strcat_explicit_string_works()
+void concat_explicit_string_works()
 {
     StringTest test;
 
-    bool ok = microstrain::strcat(test.buffer(), &test.index, std::string{TEST_STRING});
+    bool ok = microstrain::strings::concat(test.buffer(), &test.index, std::string{TEST_STRING});
 
     TEST_ASSERT(ok, "Success");
     TEST_ASSERT_BUFFER_COMPARE(test.array, TEST_STRING, sizeof(TEST_STRING), "");
+    TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(TEST_STRING)-1, "");
 }
 
-void strcat_literal_works()
+void concat_zero_terminated_works()
 {
     StringTest test;
 
-    bool ok = microstrain::strcat_l(test.buffer(), &test.index, "Testing!");
+    bool ok = microstrain::strings::concat_z(test.buffer(), &test.index, TEST_STRING);
 
     TEST_ASSERT(ok, "Success");
     TEST_ASSERT_BUFFER_COMPARE(test.array, TEST_STRING, sizeof(TEST_STRING), "");
+    TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(TEST_STRING)-1, "");
+}
+
+void concat_zero_terminated_maxlen_stops()
+{
+    StringTest test;
+    const size_t num_chars = 4;  // Just "Test"
+
+    bool ok = microstrain::strings::concat_z(test.buffer(), &test.index, TEST_STRING, num_chars);
+
+    TEST_ASSERT(ok, "Success");
+    TEST_ASSERT_BUFFER_COMPARE(test.array, "Test", num_chars, "");
+    TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), num_chars, "");
+}
+
+void concat_literal_works()
+{
+    StringTest test;
+
+    bool ok = microstrain::strings::concat_l(test.buffer(), &test.index, "Testing!");
+
+    TEST_ASSERT(ok, "Success");
+    TEST_ASSERT_BUFFER_COMPARE(test.array, TEST_STRING, sizeof(TEST_STRING), "");
+    TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(TEST_STRING)-1, "");
 }
 
 //
-// strfmt
+// General formatting
 //
 
-void strfmt_wrapper_works()
+void format_works()
 {
     StringTest test;
 
-    bool ok = microstrain::strfmt(test.array, sizeof(test.array), &test.index, "%s %u %02X", "test", 100, 256);
+    bool ok = microstrain::strings::format({test.array, sizeof(test.array)}, &test.index, "%s %u %02X", "test", 100, 256);
 
     TEST_ASSERT(ok, "Success");
     TEST_ASSERT_BUFFER_COMPARE(test.array, "test 100 100", 13, "");
 }
 
-void strfmt_into_explicit_span_works()
-{
-    StringTest test;
-
-    bool ok = microstrain::strfmt(test.buffer(), &test.index, "%s %u %02X", "test", 100, 256);
-
-    TEST_ASSERT(ok, "Success");
-    TEST_ASSERT_BUFFER_COMPARE(test.array, "test 100 100", 13, "");
-}
-
-void strfmt_into_implicit_span_works()
-{
-    StringTest test;
-
-    bool ok = microstrain::strfmt({test.array, sizeof(test.array)}, &test.index, "%s %u %02X", "test", 100, 256);
-
-    TEST_ASSERT(ok, "Success");
-    TEST_ASSERT_BUFFER_COMPARE(test.array, "test 100 100", 13, "");
-}
-
 //
-// strfmt_bytes
+// Bytes
 //
 
-void strfmt_bytes_wrapper_works()
+void format_bytes_works()
 {
     StringTest test;
 
-    bool ok = microstrain::strfmt_bytes(test.array, sizeof(test.array), &test.index, TEST_DATA, sizeof(TEST_DATA), 2);
-
-    TEST_ASSERT(ok, "Success");
-    TEST_ASSERT_BUFFER_COMPARE(test.array, TEST_DATA_STR, sizeof(TEST_DATA_STR), "");
-}
-
-void strfmt_bytes_into_span_works()
-{
-    StringTest test;
-
-    bool ok = microstrain::strfmt_bytes(test.buffer(), &test.index, TEST_DATA, sizeof(TEST_DATA), 2);
-
-    TEST_ASSERT(ok, "Success");
-    TEST_ASSERT_BUFFER_COMPARE(test.array, TEST_DATA_STR, sizeof(TEST_DATA_STR), "");
-}
-
-void strfmt_bytes_from_implicit_span_works()
-{
-    StringTest test;
-
-    bool ok = microstrain::strfmt_bytes(test.buffer(), &test.index, {TEST_DATA}, 2);
+    bool ok = microstrain::strings::bytesToHexStr(test.buffer(), &test.index, {TEST_DATA}, 2);
 
     TEST_ASSERT(ok, "Success");
     TEST_ASSERT_BUFFER_COMPARE(test.array, TEST_DATA_STR, sizeof(TEST_DATA_STR), "");
@@ -169,22 +150,19 @@ void strfmt_bytes_from_implicit_span_works()
 
 int main()
 {
-    strcat_n_wrapper_works();
-    strcat_n_into_explicit_span_works();
-    strcat_n_into_implicit_span_works();
-    strcat_explicit_span_works();
-    strcat_explicit_string_view_works();
-    strcat_explicit_string_works();
+    concat_works();
+    concat_into_implicit_span_works();
+    concat_explicit_span_works();
+    concat_explicit_string_view_works();
+    concat_explicit_string_works();
     // strcat_n_implicit_str_works();  // this would be ambiguous (span or string?)
-    strcat_literal_works();
+    concat_zero_terminated_works();
+    concat_zero_terminated_maxlen_stops();
+    concat_literal_works();
 
-    strfmt_wrapper_works();
-    strfmt_into_explicit_span_works();
-    strfmt_into_implicit_span_works();
+    format_works();
 
-    strfmt_bytes_wrapper_works();
-    strfmt_bytes_into_span_works();
-    strfmt_bytes_from_implicit_span_works();
+    format_bytes_works();
 
     return (int)g_fail_count;
 }
