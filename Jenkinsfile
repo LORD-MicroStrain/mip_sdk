@@ -143,12 +143,12 @@ pipeline {
                             """
                             archiveArtifacts artifacts: 'mipsdk_*'
                         }
-                        post {
-                            always {
-                                dir("${BUILD_DIRECTORY}") {
-                                    archiveArtifacts artifacts: 'unit_test_results.xml', allowEmptyArchive: false
-                                    junit testResults: "unit_test_results.xml", allowEmptyResults: false
-                                }
+                    }
+                    post {
+                        always {
+                            dir("${BUILD_DIRECTORY}") {
+                                archiveArtifacts artifacts: 'unit_test_results.xml', allowEmptyArchive: false
+                                junit testResults: "unit_test_results.xml", allowEmptyResults: false
                             }
                         }
                     }
