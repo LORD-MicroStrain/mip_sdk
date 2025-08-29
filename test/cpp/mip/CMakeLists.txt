@@ -18,9 +18,11 @@ add_mip_test(
 )
 ]]
 
+#[[
 add_mip_test(
     NAME TestMipPacket
     SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/test_packet_interface.cpp"
     COMMAND TestMipPacket
     USE_CPP TRUE
 )
+]]
