@@ -46,7 +46,7 @@ add_executable(${PROJECT_NAME}
     "${CMAKE_CURRENT_LIST_DIR}/5_series_gnss_ins_example.c"
 )
 
-# Configure the project in an examples sub-folder for IDEs that support it
+# Configure the project in a sub-folder for IDEs that support it
 if(NOT ${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_LIST_DIR})
     file(RELATIVE_PATH PROJECT_RELATIVE_PATH "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_LIST_DIR}/..")
     set_target_properties(${PROJECT_NAME} PROPERTIES
