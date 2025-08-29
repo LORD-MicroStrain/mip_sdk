@@ -41,11 +41,11 @@
 bool mip_format_packet_bytes(char* buffer, size_t buffer_size, size_t* index, const mip_packet_view* packet)
 {
     if(!mip_packet_is_sane(packet))
-        return microstrain_strfmt_bytes(buffer, buffer_size, index, mip_packet_pointer(packet), mip_packet_buffer_size(packet), 0);
+        return microstrain_string_bytes_to_hex_str(buffer, buffer_size, index, mip_packet_pointer(packet), mip_packet_buffer_size(packet), 0);
 
     bool ok = true;
-    // ok &= microstrain_strcat_l(buffer, buffer_size, index, "[");
-    ok &= microstrain_strfmt(
+    // ok &= microstrain_string_concat_l(buffer, buffer_size, index, "[");
+    ok &= microstrain_string_format(
         buffer, buffer_size, index, "%02X%02X%02X%02X",
         mip_packet_pointer(packet)[MIP_INDEX_SYNC1],
         mip_packet_pointer(packet)[MIP_INDEX_SYNC2],
@@ -55,16 +55,16 @@ bool mip_format_packet_bytes(char* buffer, size_t buffer_size, size_t* index, co
 
     for(mip_field_view field = mip_field_first_from_packet(packet); mip_field_is_valid(&field); mip_field_next(&field))
     {
-        microstrain_strfmt(
+        microstrain_string_format(
             buffer, buffer_size, index, " %02X%02X",
             MIP_FIELD_HEADER_LENGTH+ mip_field_payload_length(&field),
             mip_field_field_descriptor(&field)
         );
 
-        microstrain_strfmt_bytes(buffer, buffer_size, index, mip_field_payload(&field), mip_field_payload_length(&field), 0);
+        microstrain_string_bytes_to_hex_str(buffer, buffer_size, index, mip_field_payload(&field), mip_field_payload_length(&field), 0);
     }
 
-    ok &= microstrain_strfmt(buffer, buffer_size, index, " %04X", mip_packet_checksum_value(packet));
+    ok &= microstrain_string_format(buffer, buffer_size, index, " %04X", mip_packet_checksum_value(packet));
 
     return ok;
 }
@@ -102,20 +102,20 @@ bool mip_format_packet(char* buffer, size_t buffer_size, size_t* index, const mi
 
     if(!mip_packet_is_sane(packet))
     {
-        ok &= microstrain_strfmt(buffer, buffer_size, index, "Invalid Packet: [");
+        ok &= microstrain_string_format(buffer, buffer_size, index, "Invalid Packet: [");
         ok &= mip_format_packet_bytes(buffer, buffer_size, index, packet);
-        ok &= microstrain_strcat_l(buffer, buffer_size, index, "]");
+        ok &= microstrain_string_concat_l(buffer, buffer_size, index, "]");
         return ok;
     }
 
-    ok &= microstrain_strfmt(
+    ok &= microstrain_string_format(
         buffer, buffer_size, index, "Packet(DS=0x%02X){",
         mip_packet_descriptor_set(packet)
     );
 
     for(mip_field_view field = mip_field_first_from_packet(packet); mip_field_is_valid(&field); mip_field_next(&field))
     {
-        ok &= microstrain_strcat_l(buffer, buffer_size, index, " ");
+        ok &= microstrain_string_concat_l(buffer, buffer_size, index, " ");
         ok &= mip_format_field(buffer, buffer_size, index, &field);
     }
 
@@ -123,9 +123,9 @@ bool mip_format_packet(char* buffer, size_t buffer_size, size_t* index, const mi
     const uint16_t checksum_check = mip_packet_compute_checksum(packet);
 
     if(checksum_value == checksum_check)
-        ok &= microstrain_strfmt(buffer, buffer_size, index, " }", checksum_value);
+        ok &= microstrain_string_format(buffer, buffer_size, index, " }", checksum_value);
     else
-        ok &= microstrain_strfmt(buffer, buffer_size, index, " BAD_CHECKSUM(%04X!=%04X) }", checksum_value, checksum_check);
+        ok &= microstrain_string_format(buffer, buffer_size, index, " BAD_CHECKSUM(%04X!=%04X) }", checksum_value, checksum_check);
 
     return ok;
 }
@@ -162,13 +162,13 @@ bool mip_format_field(char* buffer, size_t buffer_size, size_t* index, const mip
 
     if(!mip_field_is_valid(field))
     {
-        ok &= microstrain_strcat_l(buffer, buffer_size, index, "Field(INVALID)");
+        ok &= microstrain_string_concat_l(buffer, buffer_size, index, "Field(INVALID)");
     }
     else
     {
-        ok &= microstrain_strfmt(buffer, buffer_size, index, "Field(FD=0x%02X)[", mip_field_field_descriptor(field));
-        ok &= microstrain_strfmt_bytes(buffer, buffer_size, index, mip_field_payload(field), mip_field_payload_length(field), 0);
-        ok &= microstrain_strcat_l(buffer, buffer_size, index, "]");
+        ok &= microstrain_string_format(buffer, buffer_size, index, "Field(FD=0x%02X)[", mip_field_field_descriptor(field));
+        ok &= microstrain_string_bytes_to_hex_str(buffer, buffer_size, index, mip_field_payload(field), mip_field_payload_length(field), 0);
+        ok &= microstrain_string_concat_l(buffer, buffer_size, index, "]");
     }
 
     return ok;
@@ -292,7 +292,7 @@ void mip_log_packet_verbose(const mip_packet_view* packet, microstrain_log_level
         const uint16_t field_length = MIP_FIELD_HEADER_LENGTH+mip_field_payload_length(&field);
 
         index = 0;
-        microstrain_strfmt_bytes(byte_buffer, sizeof(byte_buffer), &index, mip_field_payload(&field), mip_field_payload_length(&field), 0);
+        microstrain_string_bytes_to_hex_str(byte_buffer, sizeof(byte_buffer), &index, mip_field_payload(&field), mip_field_payload_length(&field), 0);
 
         microstrain_logging_log(
             level, "%4sField %u: [%02X%02X %s]\n", " ",

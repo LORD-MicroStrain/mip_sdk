@@ -67,7 +67,7 @@ void log_callback(void* user, const microstrain_log_level level, const char* fmt
         g_fail_count++;
     }
 
-    bool ok = microstrain_strfmt_v(g_buffer, sizeof(g_buffer), &g_length, fmt, args);
+    bool ok = microstrain_string_format_v(g_buffer, sizeof(g_buffer), &g_length, fmt, args);
     if(!ok)
     {
         fprintf(stderr, "FAIL: strfmt failure in test log callback! Needed %zu bytes, size is %zu bytes.\n", g_length, sizeof(g_buffer));
