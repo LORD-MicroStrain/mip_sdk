@@ -6,6 +6,7 @@
 #include <stddef.h>
 
 #ifdef __cplusplus
+#include <type_traits>
 extern "C" {
 #endif
 
