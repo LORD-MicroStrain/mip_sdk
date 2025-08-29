@@ -118,6 +118,7 @@ pipeline {
             }
 
             // We only want to generate documentation when the build succeeds
+/*
             stage('Documentation') {
                 agent {
                     label 'linux-amd64'
@@ -134,6 +135,7 @@ pipeline {
                     }
                 }
             }
+ */
         }
     }
 }
