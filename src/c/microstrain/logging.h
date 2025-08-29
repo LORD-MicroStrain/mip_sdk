@@ -189,10 +189,25 @@ void microstrain_log_bytes(const microstrain_log_level level, const char* msg, c
 #define MICROSTRAIN_LOG_TRACE_V(fmt, args) (void)0
 #endif
 
+////////////////////////////////////////////////////////////////////////////////
+///@brief Helper macro used to log bytes as a hex sting
+///
 #if MICROSTRAIN_ENABLE_LOGGING
-#define MICROSTRAIN_LOG_BYTES(level, msg, data, length) microstrain_log_bytes
+#define MICROSTRAIN_LOG_BYTES(level, msg, data, length) microstrain_log_bytes(level, msg, data, length)
 #else
 #define MICROSTRAIN_LOG_BYTES(level, msg, data, length) (void)0
+#endif
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Helper macro used to log bytes as a hex sting at trace level
+///
+/// This optimizes out to a NO-OP when MICROSTRAIN_LOGGING_MAX_LEVEL is less
+/// than MICROSTRAIN_LOG_LEVEL_TRACE.
+///
+#if MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOG_LEVEL_TRACE
+#define MICROSTRAIN_LOG_BYTES_TRACE(msg, data, length) microstrain_log_bytes(MICROSTRAIN_LOG_LEVEL_TRACE, msg, data, length)
+#else
+#define MICROSTRAIN_LOG_BYTES_TRACE(msg, data, length) (void)0
 #endif
 
 
