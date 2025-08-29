@@ -22,3 +22,12 @@ add_mip_test(
     SOURCES "${CMAKE_CURRENT_LIST_DIR}/test_mip_random.c"
     COMMAND test_mip_random
 )
+
+add_mip_test(
+    NAME test_mip_packet_formatting
+    SOURCES
+        "${CMAKE_CURRENT_LIST_DIR}/../microstrain/testutil_strings.c"
+        "${CMAKE_CURRENT_LIST_DIR}/../microstrain/testutil_strings.h"
+        "${CMAKE_CURRENT_LIST_DIR}/test_mip_format.c"
+    COMMAND test_mip_packet_formatting
+)
