@@ -173,9 +173,9 @@ pipeline {
                             steps {
                                 script {
                                     setUpWorkspace()
+                                    sh "./.devcontainer/docker_build.sh --os ubuntu --arch amd64"
                                 }
                                 dir("${BUILD_DIRECTORY}") {
-                                    sh "./.devcontainer/docker_build.sh --os ubuntu --arch amd64"
                                     archiveArtifacts artifacts: 'mipsdk_*'
                                 }
                             }
