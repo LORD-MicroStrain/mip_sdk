@@ -91,5 +91,7 @@ docker run \
             --output-on-failure \
             --output-junit unit_test_results.xml \
             --parallel \
-            ls
+        echo 'CURRENT DIRECTORY:'
+        pwd \
+        ls -a
   "
