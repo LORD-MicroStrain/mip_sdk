@@ -90,5 +90,6 @@ docker run \
             --verbose \
             --output-on-failure \
             --output-junit unit_test_results.xml \
-            --parallel
+            --parallel \
+            ls
   "
