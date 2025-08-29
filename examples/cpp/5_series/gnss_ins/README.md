@@ -1,15 +1,15 @@
-# 7 Series GNSS/INS Example (C++)
+# 5 Series GNSS/INS Example (C++)
 
-This example demonstrates how to configure and use a MicroStrain 7-series GNSS/INS device with the MIP SDK using the 
+This example demonstrates how to configure and use a MicroStrain 5-series GNSS/INS device with the MIP SDK using the 
 C++ API.
 
 ## Overview
 
-The example showcases the basic setup and operation of a 7-series device, including:
+The example showcases the basic setup and operation of a 5-series device, including:
 - Device initialization and communication
 - GNSS and filter message configuration
 - Gyro bias capture
-- Multi-antenna configuration
+- Antenna offset configuration
 - Filter initialization
 - Real-time data streaming and display
 
@@ -29,7 +29,7 @@ The example uses the following default settings:
 ### Device Setup
 - `initializeDevice()` - Establishes serial communication and validates device connection
 - `captureGyroBias()` - Captures and applies gyroscope bias compensation
-- `configureAntennas()` - Sets up multi-antenna GNSS configuration
+- `configureAntennaOffset()` - Sets GNSS antenna position relative to device
 - `initializeFilter()` - Initializes the navigation filter
 
 ### Message Configuration
@@ -37,7 +37,7 @@ The example uses the following default settings:
 - `configureFilterMessageFormat()` - Configures filter/navigation data output
 
 ### Data Display
-- `displayGnssFixState()` - Shows current GNSS fix status and quality for multiple antennas
+- `displayGnssFixState()` - Shows current GNSS fix status and quality
 - `displayFilterState()` - Displays navigation filter operating mode
 
 ### Communication Interface
@@ -54,7 +54,7 @@ The C++ version uses modern features including:
 
 ## Usage
 
-1. Connect your 7-series device to the specified serial port
+1. Connect your 5-series device to the specified serial port
 2. Update the `PORT_NAME` constant if using a different port
 3. Compile and run the example
 4. The program will:
@@ -82,13 +82,13 @@ This example demonstrates:
 
 ## Requirements
 
-- MicroStrain 7-series GNSS/INS device
+- MicroStrain 5-series GNSS/INS device
 - Serial connection (USB or RS-232)
 - MIP SDK library with C++ support
 - C++11 or later compiler
 
 ## See Also
 
-- C version: `7_series_gnss_ins_example.c`
+- C version: `5_series_gnss_ins_example.c`
 - Other examples in the `examples/` directory
 - MIP SDK documentation

@@ -3,7 +3,7 @@
 ///
 /// Example setup program for the 3DM-GQ7-GNSS/INS, and 3DM-CV7-GNSS/INS using C
 ///
-/// This example shows a typical setup for the 3DM-GQ7-GNSS/INS and
+/// This example shows a typical setup for the 3DM-GQ7-GNSS/INS, and
 /// 3DM-CV7-GNSS/INS sensors in a wheeled-vehicle application using C.
 /// It is not an exhaustive example of all settings for those devices.
 /// If this example does not meet your specific setup needs, please consult the
@@ -56,6 +56,8 @@ static const char* PORT_NAME = "/dev/ttyACM0";
 #endif // _WIN32
 
 // Set the baudrate for the connection (Serial/USB)
+// Note: For native serial connections this needs to be 115200 due to the device default settings command
+// Use mip_3dm_*_uart_baudrate() to write and save the baudrate on the device
 static const uint32_t BAUDRATE = 115200;
 
 // TODO: Update to the desired streaming rate. Setting low for readability purposes
@@ -284,9 +286,10 @@ int main(const int argc, const char* argv[])
     {
         // Update the device state
         // Note: This will update the device callbacks to trigger the filter state change
+        // Note: The recommended default wait time is 10 ms, but could be 0 for non-blocking read operations
         mip_interface_update(
             &device,
-            0,    // Time to wait
+            10,   // Time to wait
             false // From command
         );
 
@@ -320,9 +323,10 @@ int main(const int argc, const char* argv[])
     {
         // Update the device state
         // Note: This will update the device callbacks to trigger the filter state change
+        // Note: The recommended default wait time is 10 ms, but could be 0 for non-blocking read operations
         mip_interface_update(
             &device,
-            0,    // Time to wait
+            10,   // Time to wait
             false // From command
         );
 
@@ -408,6 +412,7 @@ void log_callback(void* _user, const microstrain_log_level _level, const char* _
         {
             fprintf(stderr, "%s: ", microstrain_logging_level_name(_level));
             vfprintf(stderr, _format, _args);
+            fflush(stderr);
             break;
         }
         case MICROSTRAIN_LOG_LEVEL_WARN:
@@ -417,6 +422,7 @@ void log_callback(void* _user, const microstrain_log_level _level, const char* _
         {
             fprintf(stdout, "%s: ", microstrain_logging_level_name(_level));
             vfprintf(stdout, _format, _args);
+            fflush(stdout);
             break;
         }
         case MICROSTRAIN_LOG_LEVEL_OFF:
@@ -1231,6 +1237,14 @@ void initialize_device(mip_interface* _device, serial_port* _device_port, const 
 
     if (!mip_cmd_result_is_ack(cmd_result))
     {
+        // Note: Default settings will reset the baudrate to 115200 and may cause connection issues
+        if (cmd_result == MIP_STATUS_TIMEDOUT && BAUDRATE != 115200)
+        {
+            MICROSTRAIN_LOG_WARN(
+                "On a native serial connections the baudrate needs to be 115200 for this example to run.\n"
+            );
+        }
+
         command_failure_terminate(_device, cmd_result, "Could not load device default settings!\n");
     }
 }
@@ -1279,12 +1293,11 @@ void terminate(serial_port* _device_port, const char* _message, const bool _succ
         }
     }
 
-    MICROSTRAIN_LOG_INFO("Exiting the program.\n");
+    MICROSTRAIN_LOG_INFO("Press 'Enter' to exit the program.\n");
 
-#ifdef _WIN32
-    // Keep the console open on Windows
-    system("pause");
-#endif // _WIN32
+    // Make sure the console remains open
+    const int confirm_exit = getc(stdin);
+    (void)confirm_exit; // Unused
 
     if (!_successful)
     {
