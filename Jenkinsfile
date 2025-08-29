@@ -168,6 +168,7 @@ pipeline {
                     steps {
                         script {
                             setUpWorkspace()
+                            sh "rm -rf ${BUILD_DIRECTORY} && cd ${BUILD_DIRECTORY}"
                             sh "./.devcontainer/docker_build.sh --os ubuntu --arch amd64"
                         }
                         dir("${BUILD_DIRECTORY}") {
