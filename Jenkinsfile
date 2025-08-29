@@ -89,8 +89,6 @@ pipeline {
                                 cmake --build . --config Release
                                 cmake --build . --config Release --target package
 
-                            """
-                            powershell """
                                 ctest `
                                     -C Release `
                                     --verbose `
@@ -135,8 +133,7 @@ pipeline {
                                     -DMICROSTRAIN_BUILD_TESTS=ON
                                 cmake --build . --config Release
                                 cmake --build . --config Release --target package
-                            """
-                            powershell """
+
                                 ctest `
                                     -C Release `
                                     --verbose `
