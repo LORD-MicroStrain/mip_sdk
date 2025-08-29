@@ -180,6 +180,23 @@ pipeline {
                                 }
                             }
                         }
+
+                        stage('Ubuntu amd64 [Unit Test]') {
+                            steps {
+                                dir("${BUILD_DIRECTORY}") {
+                                    sh """ctest -C Release --verbose --output-on-failure --output-junit unit_test_results.xml --parallel"""
+                                    //sh "./.devcontainer/docker_build.sh --os ubuntu --arch amd64 --run_unit_tests"
+                                }
+                            }
+                            post {
+                                always {
+                                    dir("${BUILD_DIRECTORY}") {
+                                        archiveArtifacts artifacts: 'unit_test_results.xml', allowEmptyArchive: false
+                                        junit testResults: "unit_test_results.xml", allowEmptyResults: false
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
