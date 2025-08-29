@@ -75,6 +75,16 @@ void log_callback(void* user, const microstrain_log_level level, const char* fmt
     }
 }
 
+void microstrain_log_bytes_works()
+{
+    microstrain_logging_init(&log_callback, MICROSTRAIN_LOG_LEVEL_INFO, NULL);
+
+    MICROSTRAIN_LOG_BYTES(MICROSTRAIN_LOG_LEVEL_INFO, "Test: ", PING_PACKET, sizeof(PING_PACKET));
+
+    microstrain_logging_init(NULL, MICROSTRAIN_LOG_LEVEL_OFF, NULL);
+    TEST_ASSERT_BUFFER_COMPARE(g_buffer, "Test: 7565 0102 0201 E0C6\n", 6+19+1+1, "");
+}
+
 void fmt_ping_packet_matches_expected_result()
 {
     mip_packet_view packet;
@@ -312,6 +322,8 @@ void verbose_log_packet_with_bad_checksum_matches_expected_result()
 
 int main()
 {
+    microstrain_log_bytes_works();
+
     fmt_ping_packet_matches_expected_result();
     fmt_packet_with_multiple_fields_works();
     fmt_max_length_packet_with_single_field_works();
