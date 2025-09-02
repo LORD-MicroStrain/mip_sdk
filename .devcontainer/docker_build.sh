@@ -78,22 +78,17 @@ docker run \
     -v "${project_dir}:${docker_project_dir}" \
     -w "${docker_project_dir}" \
     --user="microstrain" \
-    "${image_name}" -c " \
+    """${image_name}" -c " \
         rm -rf ${docker_project_dir}/${build_dir_name}; \
         mkdir ${docker_project_dir}/${build_dir_name}; \
         cd ${docker_project_dir}/${build_dir_name}; \
-        echo 'CURRENT_DIRECTORY: \$(pwd)'; \
-        echo 'DESIRED_DIRECTORY: ${docker_project_dir}/${build_dir_name}'; \
-        ls -a; \
-        "
-        #cmake ${docker_project_dir} ${configure_flags}; \
-        #cmake --build . -j$(nproc); \
-        #cmake --build . --target ${build_target}; \
-        #ctest \
-        #    -C Release \
-        #    --verbose \
-        #    --output-on-failure \
-        #    --output-junit unit_test_results.xml \
-        #    --parallel
-
-    #"
+        cmake ${docker_project_dir} ${configure_flags}; \
+        cmake --build . -j$(nproc); \
+        cmake --build . --target ${build_target}; \
+        ctest \
+            -C Release \
+            --verbose \
+            --output-on-failure \
+            --output-junit unit_test_results.xml \
+            --parallel
+    """

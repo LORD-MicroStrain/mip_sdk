@@ -165,8 +165,6 @@ pipeline {
                         skipDefaultCheckout()
                         // timeout(time: 5, activity: true, unit: 'MINUTES')
                     }
-                    // TODO: Figure out pipeline issue, likely something to do with
-                    //       volume mounting
                     steps {
                         script {
                             setUpWorkspace()
@@ -176,6 +174,7 @@ pipeline {
                             archiveArtifacts artifacts: 'mipsdk_*'
                         }
                     }
+/*
                     post {
                         always {
                             dir("${BUILD_DIRECTORY}") {
@@ -184,6 +183,7 @@ pipeline {
                             }
                         }
                     }
+ */
                 }
             }
         }
