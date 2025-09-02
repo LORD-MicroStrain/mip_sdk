@@ -36,6 +36,12 @@ def setUpWorkspace()
     unstash 'source-code'
 }
 
+def buildLinux(String os, String arch)
+{
+    setUpWorkspace()
+    sh "./.devcontainer/docker_build.sh --os ${os} --arch ${arch}"
+}
+
 def postBuild()
 {
     dir("${BUILD_DIRECTORY}") {
@@ -168,11 +174,7 @@ pipeline {
                     }
                     steps {
                         script {
-                            setUpWorkspace()
-                            sh "./.devcontainer/docker_build.sh --os ubuntu --arch amd64"
-                        }
-                        dir("${BUILD_DIRECTORY}") {
-                            archiveArtifacts artifacts: 'mipsdk_*'
+                            buildLinux('ubuntu', 'amd64')
                         }
                     }
                     post {
