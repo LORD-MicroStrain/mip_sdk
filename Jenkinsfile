@@ -186,7 +186,7 @@ pipeline {
 
                 stage('Ubuntu arm64') {
                     agent {
-                        label 'linux-amd64'
+                        label 'linux-arm64'
                     }
                     environment {
                         BUILD_DIRECTORY = "build_ubuntu_arm64v8"
@@ -209,7 +209,7 @@ pipeline {
 
                 stage('Ubuntu arm32') {
                     agent {
-                        label 'linux-amd64'
+                        label 'linux-arm64'
                     }
                     environment {
                         BUILD_DIRECTORY = "build_ubuntu_arm32v7"
