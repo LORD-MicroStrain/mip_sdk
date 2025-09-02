@@ -160,8 +160,6 @@ pipeline {
                     }
                 }
  */
-                platformStage()
-
                 stage('Windows x86') {
                     agent {
                         label 'windows10'
