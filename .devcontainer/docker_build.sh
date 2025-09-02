@@ -83,6 +83,7 @@ docker run \
         mkdir ${docker_project_dir}/${build_dir_name}; \
         cd ${docker_project_dir}/${build_dir_name}; \
         echo 'CURRENT_DIRECTORY: $(pwd)'; \
+        echo 'DESIRED_DIRECTORY: ${docker_project_dir}/${build_dir_name}'; \
         ls -a; \
         "
         #cmake ${docker_project_dir} ${configure_flags}; \

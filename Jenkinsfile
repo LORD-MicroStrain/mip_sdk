@@ -165,10 +165,11 @@ pipeline {
                         skipDefaultCheckout()
                         // timeout(time: 5, activity: true, unit: 'MINUTES')
                     }
+                    // TODO: Figure out pipeline issue, likely something to do with
+                    //       volume mounting
                     steps {
                         script {
                             setUpWorkspace()
-                            sh "rm -rf ${BUILD_DIRECTORY} && cd ${BUILD_DIRECTORY}"
                             sh "./.devcontainer/docker_build.sh --os ubuntu --arch amd64"
                         }
                         dir("${BUILD_DIRECTORY}") {
