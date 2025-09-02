@@ -18,13 +18,14 @@ on:
 env:
     CHANGELOG_FILENAME: "CHANGELOG.md"
     SKIP_KEYWORD: "skip-changelog"
-    CHECK_FAIL_HEADER: "**${{ env.CHANGELOG_FILENAME }} Check Failed**"
-    UPDATE_CHANGELOG_MESSAGE: "Please update ${{ env.CHANGELOG_FILENAME }} with your changes"
-    BYPASS_OPTION_MESSAGE: "Alternatively, include ${{ env.SKIP_KEYWORD }} in ANY commit message to bypass this check"
 
 jobs:
     check-changelog:
         runs-on: ubuntu-latest
+        env:
+            CHECK_FAIL_HEADER: "**${{ env.CHANGELOG_FILENAME }} Check Failed**"
+            UPDATE_CHANGELOG_MESSAGE: "Please update ${{ env.CHANGELOG_FILENAME }} with your changes"
+            BYPASS_OPTION_MESSAGE: "Alternatively, include ${{ env.SKIP_KEYWORD }} in ANY commit message to bypass this check"
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
@@ -66,8 +67,8 @@ jobs:
                   else
                       echo "❌ ${{ env.CHANGELOG_FILENAME }} has not been modified"
                       echo ""
-                      echo "${{ env.UPDATE_CHANGELOG_MESSAGE }}."
-                      echo "${{ env.BYPASS_OPTION_MESSAGE }}."
+                      echo "$UPDATE_CHANGELOG_MESSAGE."
+                      echo "$BYPASS_OPTION_MESSAGE."
                       echo ""
                       echo "Commit messages checked:"
                       echo "$COMMIT_MESSAGES" | sed 's/^/  /'
@@ -90,7 +91,7 @@ jobs:
                     // Filter for comments that contain our specific message pattern
                     const botComments = comments.data.filter(comment =>
                         comment.user.login === 'github-actions[bot]' &&
-                        comment.body.includes(${{ env.CHECK_FAIL_HEADER }})
+                        comment.body.includes($CHECK_FAIL_HEADER)
                     );
 
                     // Delete existing bot comments
@@ -113,9 +114,9 @@ jobs:
                           owner: context.repo.owner,
                           repo: context.repo.repo,
                           body: |
-                            🚨 ${{ env.CHECK_FAIL_HEADER }}
+                            🚨 $CHECK_FAIL_HEADER
 
-                            ${{ env.UPDATE_CHANGELOG_MESSAGE }} before merging.
+                            $UPDATE_CHANGELOG_MESSAGE before merging.
 
-                            ${{ env.BYPASS_OPTION_MESSAGE }} for this PR.
+                            $BYPASS_OPTION_MESSAGE for this PR.
                       })
