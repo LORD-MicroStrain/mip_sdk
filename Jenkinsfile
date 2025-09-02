@@ -36,10 +36,10 @@ def setUpWorkspace()
     unstash 'source-code'
 }
 
-def buildLinux(String os, String arch)
+def buildLinux(String os, String arch, String options = "")
 {
     setUpWorkspace()
-    sh "./.devcontainer/docker_build.sh --os ${os} --arch ${arch}"
+    sh "./.devcontainer/docker_build.sh --os ${os} --arch ${arch} ${options}"
 }
 
 def postBuild(boolean archiveTestResults = true)
@@ -250,7 +250,7 @@ pipeline {
             }
             steps {
                 script {
-                    buildLinux('ubuntu', 'docs')
+                    buildLinux('ubuntu', 'amd64', '--docs')
                 }
             }
             post {
