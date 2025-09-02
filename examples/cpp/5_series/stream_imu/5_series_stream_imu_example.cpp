@@ -220,7 +220,10 @@ int main(const int argc, const char* argv[])
     {
         // Update the device state
         // Note: This will update the device callbacks
-        device.update();
+        // Note: The recommended default wait time is 10 ms, but could be 0 for non-blocking read operations
+        device.update(
+            10 // Time to wait
+        );
     }
 
     terminate(&connection, "Example Completed Successfully.\n", true);
