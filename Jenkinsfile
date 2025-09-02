@@ -105,7 +105,6 @@ pipeline {
                                     --output-junit unit_test_results.xml `
                                     --parallel
                             """
-                            archiveArtifacts artifacts: 'mipsdk_*'
                         }
                     }
                     post {
@@ -147,15 +146,11 @@ pipeline {
                                     --output-junit unit_test_results.xml `
                                     --parallel
                             """
-                            archiveArtifacts artifacts: 'mipsdk_*'
                         }
                     }
                     post {
                         always {
-                            dir("${BUILD_DIRECTORY}") {
-                                archiveArtifacts artifacts: 'unit_test_results.xml', allowEmptyArchive: false
-                                junit testResults: "unit_test_results.xml", allowEmptyResults: false
-                            }
+                            postBuild()
                         }
                     }
                 }
@@ -182,10 +177,7 @@ pipeline {
                     }
                     post {
                         always {
-                            dir("${BUILD_DIRECTORY}") {
-                                archiveArtifacts artifacts: 'unit_test_results.xml', allowEmptyArchive: false
-                                junit testResults: "unit_test_results.xml", allowEmptyResults: false
-                            }
+                            postBuild()
                         }
                     }
                 }
