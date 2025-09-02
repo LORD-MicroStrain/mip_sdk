@@ -36,50 +36,12 @@ def setUpWorkspace()
     unstash 'source-code'
 }
 
-def platformStage()
+def postBuild()
 {
-    stage('Windows x64') {
-        agent {
-            label 'windows10'
-        }
-        environment {
-            BUILD_DIRECTORY = "build_x64"
-        }
-        options {
-            skipDefaultCheckout()
-            // timeout(time: 5, activity: true, unit: 'MINUTES')
-        }
-        steps {
-            script {
-                setUpWorkspace()
-            }
-            dir("${BUILD_DIRECTORY}") {
-                powershell """
-                    cmake .. `
-                        -DMICROSTRAIN_BUILD_EXAMPLES=ON `
-                        -DMICROSTRAIN_BUILD_PACKAGE=ON `
-                        -DMICROSTRAIN_BUILD_TESTS=ON
-                    cmake --build . --config Release
-                    cmake --build . --config Release --target package
-
-                    ctest `
-                        -C Release `
-                        --verbose `
-                        --output-on-failure `
-                        --output-junit unit_test_results.xml `
-                        --parallel
-                """
-                archiveArtifacts artifacts: 'mipsdk_*'
-            }
-        }
-        post {
-            always {
-                dir("${BUILD_DIRECTORY}") {
-                    archiveArtifacts artifacts: 'unit_test_results.xml', allowEmptyArchive: false
-                    junit testResults: "unit_test_results.xml", allowEmptyResults: false
-                }
-            }
-        }
+    dir("${BUILD_DIRECTORY}") {
+        archiveArtifacts artifacts: 'mipsdk_*'
+        archiveArtifacts artifacts: 'unit_test_results.xml', allowEmptyArchive: false
+        junit testResults: "unit_test_results.xml", allowEmptyResults: false
     }
 }
 
@@ -148,10 +110,7 @@ pipeline {
                     }
                     post {
                         always {
-                            dir("${BUILD_DIRECTORY}") {
-                                archiveArtifacts artifacts: 'unit_test_results.xml', allowEmptyArchive: false
-                                junit testResults: "unit_test_results.xml", allowEmptyResults: false
-                            }
+                            postBuild()
                         }
                     }
                 }
