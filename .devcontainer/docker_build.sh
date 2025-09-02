@@ -78,7 +78,7 @@ docker run \
     -v "${project_dir}:${docker_project_dir}" \
     -w "${docker_project_dir}" \
     --user="microstrain" \
-    """${image_name}" -c " \
+   "${image_name}" -c " \
         rm -rf ${docker_project_dir}/${build_dir_name}; \
         mkdir ${docker_project_dir}/${build_dir_name}; \
         cd ${docker_project_dir}/${build_dir_name}; \
@@ -90,5 +90,5 @@ docker run \
             --verbose \
             --output-on-failure \
             --output-junit unit_test_results.xml \
-            --parallel
-    """
+            --parallel; \
+    "

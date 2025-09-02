@@ -25,6 +25,34 @@ RUN set -ex \
         bash-completion \
         doxygen
 
+# Use the minimum required CMake version for the project (Allows us to check if we're using new options without updating the version in CMakeLists.txt)
+ARG CMAKE_MIN_MAJOR_VERSION="3"
+ARG CMAKE_MIN_MINOR_VERSION="30"
+ARG CMAKE_MIN_PATCH_VERSION="6"
+RUN set -ex \
+    && export cmake_min_version="${CMAKE_MIN_MAJOR_VERSION}.${CMAKE_MIN_MINOR_VERSION}.${CMAKE_MIN_PATCH_VERSION}" \
+    && export cmake_version=$(cmake --version | head -1 | cut -d" " -f3) \
+    && if [ "${cmake_version}" != "${cmake_min_version}" -a "${cmake_version}" = "$(printf "${cmake_version}\n${cmake_min_version}" | sort --version-sort | head -n1)" ]; then \
+        /bin/bash -c ' \
+            set -ex && \
+            cmake_min_major_minor_version="${CMAKE_MIN_MAJOR_VERSION}.${CMAKE_MIN_MINOR_VERSION}" && \
+            curl -fsSLo /tmp/cmake-${cmake_min_version}.tar.gz https://cmake.org/files/v${cmake_min_major_minor_version}/cmake-${cmake_min_version}.tar.gz && \
+            tar -C /tmp/ -xzf /tmp/cmake-${cmake_min_version}.tar.gz && \
+            cd /tmp/cmake-${cmake_min_version} && \
+            ./bootstrap \
+                --prefix="/usr" \
+                --parallel=$(nproc) \
+                -- \
+                -DCMAKE_INSTALL_PREFIX="/usr" \
+                -DCMAKE_BUILD_TYPE="RELEASE" \
+                -DCMAKE_USE_OPENSSL=OFF && \
+            make -j$(nproc) && \
+            make install \
+        '; \
+        else \
+            echo "No need to rebuild cmake"; \
+        fi
+
 # Add a user that will be used when shelling into this container and allow them to use devices
 ARG USER_ID=1000
 ARG GROUP_ID=1000
