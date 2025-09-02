@@ -5,8 +5,12 @@ on:
     # Run on a pull request to merge into develop
     pull_request:
         branches: [develop]
-    # Run on a push to any branch
+    # Pushes to develop and main/master require the changelog to be updated
     push:
+        branches:
+            - develop
+            - main
+            - master
 
 jobs:
     check-changelog:
