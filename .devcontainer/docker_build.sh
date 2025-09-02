@@ -82,7 +82,7 @@ docker run \
         rm -rf ${docker_project_dir}/${build_dir_name}; \
         mkdir ${docker_project_dir}/${build_dir_name}; \
         cd ${docker_project_dir}/${build_dir_name}; \
-        echo 'CURRENT_DIRECTORY: $(pwd)'; \
+        echo 'CURRENT_DIRECTORY: \$(pwd)'; \
         echo 'DESIRED_DIRECTORY: ${docker_project_dir}/${build_dir_name}'; \
         ls -a; \
         "
