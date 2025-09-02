@@ -174,7 +174,6 @@ pipeline {
                             archiveArtifacts artifacts: 'mipsdk_*'
                         }
                     }
-/*
                     post {
                         always {
                             dir("${BUILD_DIRECTORY}") {
@@ -183,7 +182,6 @@ pipeline {
                             }
                         }
                     }
- */
                 }
             }
         }
