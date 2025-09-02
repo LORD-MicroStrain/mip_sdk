@@ -22,7 +22,7 @@ env:
     SKIP_KEYWORD: "skip-changelog"
     CHECK_FAIL_HEADER: "**Changelog Check Failed**"
     UPDATE_CHANGELOG_MESSAGE: "Please update CHANGELOG.md with your changes"
-    BYPASS_OPTION_MESSAGE: "Alternatively, include ***skip-changelog*** in ANY commit message to bypass this check"
+    BYPASS_OPTION_MESSAGE: "Alternatively, include skip-changelog in ANY commit message to bypass this check"
 
 jobs:
     check-changelog:
@@ -92,7 +92,7 @@ jobs:
                     // Filter for comments that contain our specific message pattern
                     const botComments = comments.data.filter(comment =>
                         comment.user.login === 'github-actions[bot]' &&
-                        comment.body.includes(${{ env.CHECK_FAIL_HEADER }})
+                        comment.body.includes("${{ env.CHECK_FAIL_HEADER }}")
                     );
 
                     // Delete existing bot comments
@@ -114,10 +114,5 @@ jobs:
                           issue_number: context.issue.number,
                           owner: context.repo.owner,
                           repo: context.repo.repo,
-                          body: |
-                            🚨 ${{ env.CHECK_FAIL_HEADER }}
-
-                            ${{ env.UPDATE_CHANGELOG_MESSAGE }} before merging.
-
-                            ${{ env.BYPASS_OPTION_MESSAGE }} for this PR.
+                          body: "🚨 ${{ env.CHECK_FAIL_HEADER }}\n\n${{ env.UPDATE_CHANGELOG_MESSAGE }} before merging.\n\n${{ env.BYPASS_OPTION_MESSAGE }} for this PR."
                       })
