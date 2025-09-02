@@ -183,6 +183,52 @@ pipeline {
                         }
                     }
                 }
+
+                stage('Ubuntu arm64') {
+                    agent {
+                        label 'linux-amd64'
+                    }
+                    environment {
+                        BUILD_DIRECTORY = "build_ubuntu_arm64v8"
+                    }
+                    options {
+                        skipDefaultCheckout()
+                        // timeout(time: 5, activity: true, unit: 'MINUTES')
+                    }
+                    steps {
+                        script {
+                            buildLinux('ubuntu', 'arm64v8')
+                        }
+                    }
+                    post {
+                        always {
+                            postBuild()
+                        }
+                    }
+                }
+
+                stage('Ubuntu arm32') {
+                    agent {
+                        label 'linux-amd64'
+                    }
+                    environment {
+                        BUILD_DIRECTORY = "build_ubuntu_arm32v7"
+                    }
+                    options {
+                        skipDefaultCheckout()
+                        // timeout(time: 5, activity: true, unit: 'MINUTES')
+                    }
+                    steps {
+                        script {
+                            buildLinux('ubuntu', 'arm32v7')
+                        }
+                    }
+                    post {
+                        always {
+                            postBuild()
+                        }
+                    }
+                }
             }
         }
 
@@ -213,36 +259,6 @@ pipeline {
     stage('Build') {
       // Run all the builds in parallel
       parallel {
-        stage('Ubuntu arm64') {
-          agent { label 'linux-arm64' }
-          options {
-            skipDefaultCheckout()
-            timeout(time: 5, activity: true, unit: 'MINUTES')
-          }
-          steps {
-            script {
-              checkoutRepo()
-              env.setProperty('BRANCH_NAME', branchName())
-              sh "./.devcontainer/docker_build.sh --os ubuntu --arch arm64v8"
-              archiveArtifacts artifacts: 'build_ubuntu_arm64v8/mipsdk_*'
-            }
-          }
-        }
-        stage('Ubuntu arm32') {
-          agent { label 'linux-arm64' }
-          options {
-            skipDefaultCheckout()
-            timeout(time: 5, activity: true, unit: 'MINUTES')
-          }
-          steps {
-            script {
-              checkoutRepo()
-              env.setProperty('BRANCH_NAME', branchName())
-              sh "./.devcontainer/docker_build.sh --os ubuntu --arch arm32v7"
-              archiveArtifacts artifacts: 'build_ubuntu_arm32v7/mipsdk_*'
-            }
-          }
-        }
 //         stage("Mac M2") {
 //           agent { label 'mac-m2' }
 //           options {
