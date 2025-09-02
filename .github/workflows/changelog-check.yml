@@ -2,15 +2,25 @@
 name: Changelog Check
 
 on:
-    # Run on a pull request to merge into develop
+    # Run on a pull request to merge into the specified branches
     pull_request:
-        branches: [develop]
+        branches:
+            - develop
+            - main
+            - master
     # Pushes to develop and main/master require the changelog to be updated
     push:
         branches:
             - develop
             - main
             - master
+
+env:
+    CHANGELOG_FILENAME: "CHANGELOG.md"
+    SKIP_KEYWORD: "skip-changelog"
+    CHECK_FAIL_HEADER: "**${{ env.CHANGELOG_FILENAME }} Check Failed**"
+    UPDATE_CHANGELOG_MESSAGE: "Please update ${{ env.CHANGELOG_FILENAME }} with your changes"
+    BYPASS_OPTION_MESSAGE: "Alternatively, include ${{ env.SKIP_KEYWORD }} in ANY commit message to bypass this check"
 
 jobs:
     check-changelog:
@@ -21,11 +31,11 @@ jobs:
               with:
                   fetch-depth: 0  # Fetch full history
 
-            - name: Check if CHANGELOG.md was modified or bypassed
+            - name: Check if ${{ env.CHANGELOG_FILENAME }} was modified or bypassed
               id: changelog-check
               run: |
-                  # For PR events, compare against the target branch
                   if [ "${{ github.event_name }}" == "pull_request" ]; then
+                       # For PR events, compare against the target branch
                       BASE_SHA="${{ github.event.pull_request.base.sha }}"
                       HEAD_SHA="${{ github.event.pull_request.head.sha }}"
                       echo "Checking PR commits from $BASE_SHA to $HEAD_SHA"
@@ -45,20 +55,19 @@ jobs:
                       COMMIT_MESSAGES=$(git log --pretty=format:"%B" "$BASE_SHA".."$HEAD_SHA")
                   fi
 
-                  # Check if CHANGELOG.md was modified
-                  if git diff --name-only "$BASE_SHA" "$HEAD_SHA" | grep -q "^CHANGELOG.md$"; then
-                      echo "✅ CHANGELOG.md has been modified - check passed"
+                  # Check if ${{ env.CHANGELOG_FILENAME }} was modified
+                  if git diff --name-only "$BASE_SHA" "$HEAD_SHA" | grep -q "^${{ env.CHANGELOG_FILENAME }}$"; then
+                      echo "✅ ${{ env.CHANGELOG_FILENAME }} has been modified - check passed"
                       echo "bypassed=false" >> $GITHUB_OUTPUT
                   # Check for bypass flag in ANY commit message
-                  elif echo "$COMMIT_MESSAGES" | grep -q "\[skip-changelog\]"; then
-                      echo "✅ Changelog check bypassed via commit message"
-                      echo "Found bypass flag in one of the commit messages"
+                  elif echo "$COMMIT_MESSAGES" | grep -q "${{ env.SKIP_KEYWORD }}"; then
+                      echo "✅ Bypass flag found in a commit message - check passed"
                       echo "bypassed=true" >> $GITHUB_OUTPUT
                   else
-                      echo "❌ CHANGELOG.md has not been modified"
+                      echo "❌ ${{ env.CHANGELOG_FILENAME }} has not been modified"
                       echo ""
-                      echo "Please update CHANGELOG.md with your changes."
-                      echo "Alternatively, include [skip-changelog] in ANY commit message to bypass this check."
+                      echo "${{ env.UPDATE_CHANGELOG_MESSAGE }}."
+                      echo "${{ env.BYPASS_OPTION_MESSAGE }}."
                       echo ""
                       echo "Commit messages checked:"
                       echo "$COMMIT_MESSAGES" | sed 's/^/  /'
@@ -81,7 +90,7 @@ jobs:
                     // Filter for comments that contain our specific message pattern
                     const botComments = comments.data.filter(comment =>
                         comment.user.login === 'github-actions[bot]' &&
-                        comment.body.includes('**CHANGELOG.md Check Failed**')
+                        comment.body.includes(${{ env.CHECK_FAIL_HEADER }})
                     );
 
                     // Delete existing bot comments
@@ -103,5 +112,10 @@ jobs:
                           issue_number: context.issue.number,
                           owner: context.repo.owner,
                           repo: context.repo.repo,
-                          body: '🚨 **CHANGELOG.md Check Failed**\n\nPlease update `CHANGELOG.md` with your changes before merging.\n\nTo bypass this requirement, include `[skip-changelog]` in **any** commit message in this PR.'
+                          body: |
+                            🚨 ${{ env.CHECK_FAIL_HEADER }}
+
+                            ${{ env.UPDATE_CHANGELOG_MESSAGE }} before merging.
+
+                            ${{ env.BYPASS_OPTION_MESSAGE }} for this PR.
                       })
