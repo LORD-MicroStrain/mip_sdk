@@ -42,12 +42,16 @@ def buildLinux(String os, String arch)
     sh "./.devcontainer/docker_build.sh --os ${os} --arch ${arch}"
 }
 
-def postBuild()
+def postBuild(boolean archiveTestResults = true)
 {
     dir("${BUILD_DIRECTORY}") {
         archiveArtifacts artifacts: 'mipsdk_*'
-        archiveArtifacts artifacts: 'unit_test_results.xml', allowEmptyArchive: false
-        junit testResults: "unit_test_results.xml", allowEmptyResults: false
+
+        if (archiveTestResults)
+        {
+            archiveArtifacts artifacts: 'unit_test_results.xml', allowEmptyArchive: false
+            junit testResults: "unit_test_results.xml", allowEmptyResults: false
+        }
     }
 }
 
@@ -237,15 +241,21 @@ pipeline {
             agent {
                 label 'linux-amd64'
             }
+            environment {
+                BUILD_DIRECTORY = "build_docs"
+            }
             options {
                 skipDefaultCheckout()
                 // timeout(time: 5, activity: true, unit: 'MINUTES')
             }
             steps {
                 script {
-                    setUpWorkspace()
-                    sh "./.devcontainer/docker_build.sh --os ubuntu --arch amd64 --docs"
-                    archiveArtifacts artifacts: 'build_docs/mipsdk_*'
+                    buildLinux('ubuntu', 'docs')
+                }
+            }
+            post {
+                always {
+                    postBuild(false)
                 }
             }
         }
