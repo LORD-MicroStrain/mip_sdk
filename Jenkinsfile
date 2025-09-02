@@ -250,6 +250,30 @@ pipeline {
             }
         }
     }
+    post {
+        success {
+            script {
+                if (BRANCH_NAME && BRANCH_NAME == 'develop') {
+                    node("linux-amd64") {
+                        dir("/tmp/mip_sdk_${env.BRANCH_NAME}_${currentBuild.number}") {
+                            copyArtifacts(projectName: "${env.JOB_NAME}", selector: specific("${currentBuild.number}"));
+                            withCredentials([string(credentialsId: 'Github_Token', variable: 'GH_TOKEN')]) {
+                                sh '''
+                                    # Release to github
+                                    "${WORKSPACE}/scripts/release.sh" \
+                                        --artifacts "$(find "$(pwd)" -type f)" \
+                                        --target "${BRANCH_NAME}" \
+                                        --release "latest" \
+                                        --docs-zip "$(find "$(pwd)" -type f -name "mipsdk_*_Documentation.zip" | sort | uniq)" \
+                                        --generate-notes
+                                '''
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 /* ============================================================= */
