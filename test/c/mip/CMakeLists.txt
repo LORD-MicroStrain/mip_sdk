@@ -10,7 +10,7 @@ add_mip_test(
     COMMAND test_mip_packet_builder
 )
 
-# TODO: Disabled test is old and breaking in Jenkins. Should we keep it?
+# TODO: Disabled test compiles, but is failing. This looks like it might be a false positive.
 #[[
 add_mip_test(
     NAME test_mip_parsing
@@ -20,8 +20,8 @@ add_mip_test(
 )
 ]]
 
-# TODO: Disabled test is old and takes a long time to run. Should we keep it?
-#     ---> If we keep it, it should be moved to an integration test suite
+# TODO: Disabled tests compile but take a long time to run.
+#     ---> Move to an integration test suite
 #[[
 add_mip_test(
     NAME test_mip_random

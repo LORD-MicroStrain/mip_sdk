@@ -1,4 +1,4 @@
-# TODO: Disabled tests are old and broken. Should we keep these?
+# TODO: Disabled tests currently don't compile.
 
 #[[
 add_mip_test(

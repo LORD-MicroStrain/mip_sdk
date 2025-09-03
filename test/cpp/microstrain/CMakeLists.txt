@@ -1,4 +1,4 @@
-# TODO: The commented out tests are broken
+# TODO: This test doesn't compile
 
 #[[
 add_microstrain_test(
