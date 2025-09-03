@@ -6,7 +6,7 @@ add_executable(CppUnitTestRunner
     # test_packet_interface.cpp
     # test_serial.cpp
     # TODO: Convert to new format
-    #"test_mip_formatting.cpp"
+    "test_mip_formatting.cpp"
     #"test_strings.cpp"
 )
 

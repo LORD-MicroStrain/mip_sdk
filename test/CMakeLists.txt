@@ -1,17 +1,18 @@
 include(FetchContent)
+
 FetchContent_Declare(
     doctest
     URL https://github.com/doctest/doctest/archive/refs/tags/v2.4.12.zip
 )
+
 FetchContent_MakeAvailable(doctest)
 
 add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/c")
-if(${USE_CPP})
+if(MICROSTRAIN_ENABLE_CPP)
     add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/cpp")
 endif()
 
 # TODO: Can we get rid of these?
-#set(OPTIONS USE_CPP)
 #set(SINGLE_VALUES NAME COMMAND)
 #set(MULTI_VALUES SOURCES ADDL_LINK_LIBRARIES ARGS)
 #set(MIP_TEST_DATA_BIN "${CMAKE_CURRENT_LIST_DIR}/data/mip_data.bin")

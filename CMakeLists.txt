@@ -7,8 +7,10 @@ project(
     LANGUAGES C CXX
 )
 
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(CMAKE_CXX_STANDARD 20)
+# TODO: Should we enforce this? I think we may be having a bug with the C++ 20
+#       stuff on systems that don't have C++ 20.
+# set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_C_STANDARD 11)
 
 set_property(GLOBAL PROPERTY

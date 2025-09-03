@@ -1,4 +1,11 @@
+#include <doctest/doctest.h>
 
+TEST_CASE("REMOVE ME")
+{
+	REQUIRE(true);
+}
+
+/*
 extern "C" {
 #include "../../c/microstrain/testutil_strings.h"
 }
@@ -59,3 +66,4 @@ int main()
 
     return (int)g_fail_count;
 }
+*/
