@@ -1,7 +1,4 @@
-cmake_minimum_required(VERSION 3.12)
-
-set(CMAKE_CXX_STANDARD 20) # CMake decays this to the highest supported by the compiler
-set(CMAKE_C_STANDARD 11)
+cmake_minimum_required(VERSION 3.14)
 
 project(
     "MIP_SDK"
@@ -9,6 +6,10 @@ project(
     DESCRIPTION "MicroStrain Communications Library for embedded systems"
     LANGUAGES C CXX
 )
+
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(CMAKE_C_STANDARD 11)
 
 set_property(GLOBAL PROPERTY
     USE_FOLDERS ON

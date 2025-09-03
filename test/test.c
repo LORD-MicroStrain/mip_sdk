@@ -1,4 +1,5 @@
 
+/*
 #include "test.h"
 
 #include <stdarg.h>
@@ -54,3 +55,4 @@ bool check_equal(int a, int b, const char* fmt, ...)
     num_errors++;
     return false;
 }
+*/

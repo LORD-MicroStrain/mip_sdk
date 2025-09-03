@@ -1,4 +1,6 @@
+#pragma once
 
+/*
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdbool.h>
@@ -55,3 +57,4 @@ bool check_equal(A a, B b, const char* fmt, ...)
 }
 
 #endif
+*/

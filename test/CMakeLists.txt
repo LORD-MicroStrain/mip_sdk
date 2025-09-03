@@ -1,14 +1,13 @@
-set(MICROSTRAIN_TEST_LIBRARY "MicrostrainTest")
-
-set(MICROSTRAIN_TEST_SOURCES
-    "${CMAKE_CURRENT_LIST_DIR}/test.c"
-    "${CMAKE_CURRENT_LIST_DIR}/test.h"
+include(FetchContent)
+FetchContent_Declare(
+    doctest
+    URL https://github.com/doctest/doctest/archive/refs/tags/v2.4.12.zip
 )
+FetchContent_MakeAvailable(doctest)
 
-add_library(${MICROSTRAIN_TEST_LIBRARY}
-    "${MICROSTRAIN_TEST_SOURCES}"
-)
+# TODO: Can possibly remove all of this?
 
+#[[
 # Configure the project in a sub-folder for IDEs that support it
 file(RELATIVE_PATH PROJECT_RELATIVE_PATH "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_LIST_DIR}/..")
 set_target_properties(${MICROSTRAIN_TEST_LIBRARY} PROPERTIES
@@ -112,3 +111,4 @@ add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/cpp")
 #        COMMAND diff -u "${CMAKE_CURRENT_LIST_DIR}/data/packet_example_cpp_check.txt" <(examples/MipPacketExample)
 #    )
 #endif()
+]]
