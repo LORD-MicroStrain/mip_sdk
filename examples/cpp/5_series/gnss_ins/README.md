@@ -1,16 +1,16 @@
 # 5 Series GNSS/INS Example (C++)
 
-This example demonstrates how to configure and use a MicroStrain 5-series GNSS/INS device with the MIP SDK using the 
+This example demonstrates how to configure and use a MicroStrain 5-series GNSS/INS device with the MIP SDK using the
 C++ API.
 
 ## Overview
 
-The example showcases the basic setup and operation of a 5-series device, including:
+The example showcases the basic setup and operation of a 5-series GNSS/INS device, including:
 - Device initialization and communication
 - GNSS and filter message configuration
 - Gyro bias capture
 - Antenna offset configuration
-- Filter initialization
+- Filter initialization and heading source configuration
 - Real-time data streaming and display
 
 ## Configuration
@@ -29,16 +29,22 @@ The example uses the following default settings:
 ### Device Setup
 - `initializeDevice()` - Establishes serial communication and validates device connection
 - `captureGyroBias()` - Captures and applies gyroscope bias compensation
-- `configureAntennaOffset()` - Sets GNSS antenna position relative to device
-- `initializeFilter()` - Initializes the navigation filter
+- `configureAntennaOffset()` - Sets GNSS antenna position relative to the device
+- `initializeFilter()` - Initializes the navigation filter with GNSS velocity and magnetometer as the heading sources
 
 ### Message Configuration
-- `configureGnssMessageFormat()` - Sets up GNSS data output messages
-- `configureFilterMessageFormat()` - Configures filter/navigation data output
+- `configureGnssMessageFormat()` - Configures GNSS data output including:
+    - Fix info
+- `configureFilterMessageFormat()` - Configures filter/navigation data output including:
+    - Filter timestamps
+    - Filter status
+    - LLH position coordinates
+    - NED velocity vectors
+    - Euler angles (roll, pitch, yaw)
 
 ### Data Display
 - `displayGnssFixState()` - Shows current GNSS fix status and quality
-- `displayFilterState()` - Displays navigation filter operating mode
+- `displayFilterState()` - Displays navigation filter operating mode changes
 
 ### Communication Interface
 - Uses the `mip::Interface` class for device communication
@@ -52,22 +58,38 @@ The C++ version uses modern features including:
 - **Callbacks**: Automatic data callbacks for registered message types
 - **RAII**: Automatic resource management for connections
 
+## C++ Implementation Features
+
+This example demonstrates:
+- **Modern C++ Connection Management**: RAII-based resource handling
+- **Type-Safe MIP Command Interfaces**: Compile-time type checking
+- **Exception Safety**: Proper error handling and resource cleanup
+- **STL Integration**: Use of standard library containers and algorithms
+
+## Data Registration
+
+The C++ version showcases automatic data handling:
+- **Data Stores**: Automatic storage of incoming data fields
+- **Extractor Registration**: Type-safe registration of data extractors
+- **Callback Management**: Automatic callback invocation for new data
+
 ## Usage
 
-1. Connect your 5-series device to the specified serial port
+1. Connect your 5-series GNSS/INS device to the specified serial port
 2. Update the `PORT_NAME` constant if using a different port
 3. Compile and run the example
 4. The program will:
     - Initialize the device
     - Configure data output
     - Stream data for the specified runtime
-    - Display GNSS fix status and filter state
+    - Display GNSS fix and filter status changes
     - Clean up and exit
 
 ## Error Handling
 
 The example includes comprehensive error handling with:
 - Command result checking using `mip::CmdResult`
+- Connection failure detection and recovery
 - Graceful termination functions for different error types
 - Detailed error messages with context
 
@@ -78,11 +100,11 @@ This example demonstrates:
 - Type-safe MIP command interfaces
 - Automatic data field extraction
 - RAII resource management
-- Template-based type safety
+- Standard library integration
 
 ## Requirements
 
-- MicroStrain 5-series GNSS/INS device
+- MicroStrain 5-series GNSS/INS device (3DM-CX5-GNSS/INS, or 3DM-GX5-GNSS/INS)
 - Serial connection (USB or RS-232)
 - MIP SDK library with C++ support
 - C++11 or later compiler

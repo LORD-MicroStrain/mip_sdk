@@ -1,16 +1,14 @@
-# 5 Series GNSS/INS Example (C)
+# 7 Series AR Example (C)
 
-This example demonstrates how to configure and use a MicroStrain 5-series GNSS/INS device with the MIP SDK using the
-C API.
+This example demonstrates how to configure and use a MicroStrain 7-series AR device with the MIP SDK using the C API.
 
 ## Overview
 
-The example showcases the basic setup and operation of a 5-series GNSS/INS device, including:
+The example showcases the basic setup and operation of a 7-series AR device, including:
 - Device initialization and communication
-- GNSS and filter message configuration
+- Filter message configuration
 - Gyro bias capture
-- Antenna offset configuration
-- Filter initialization and heading source configuration
+- Filter initialization
 - Real-time data streaming and display
 
 ## Configuration
@@ -29,22 +27,18 @@ The example uses the following default settings:
 ### Device Setup
 - `initialize_device()` - Establishes serial communication and validates device connection
 - `capture_gyro_bias()` - Captures and applies gyroscope bias compensation
-- `configure_antenna_offset()` - Sets GNSS antenna position relative to the device
-- `initialize_filter()` - Initializes the navigation filter with GNSS velocity and magnetometer as the heading sources
+- `initialize_filter()` - Initializes the attitude filter with magnetometer reference
 
 ### Message Configuration
-- `configure_gnss_message_format()` - Configures GNSS data output including:
-    - Fix info
-- `configure_filter_message_format()` - Configures filter/navigation data output including:
-    - Filter timestamps
+- `configure_filter_message_format()` - Configures filter/attitude data output including:
+    - GPS time
     - Filter status
     - LLH position coordinates
     - NED velocity vectors
     - Euler angles (roll, pitch, yaw)
 
 ### Data Display
-- `display_gnss_fix_state()` - Shows current GNSS fix status and quality
-- `display_filter_state()` - Displays navigation filter operating mode changes
+- `display_filter_state()` - Displays attitude filter operating mode changes
 
 ### Communication Interface
 - `mip_interface_user_send_to_device()` - Sends commands to the device
@@ -77,14 +71,14 @@ The example implements custom communication handlers:
 
 ## Usage
 
-1. Connect your 5-series GNSS/INS device to the specified serial port
+1. Connect your 7-series AR device to the specified serial port
 2. Update the `PORT_NAME` constant if using a different port
 3. Compile and run the example
 4. The program will:
     - Initialize the device
     - Configure data output
     - Stream data for the specified runtime
-    - Display GNSS fix and filter status changes
+    - Display filter status changes
     - Clean up and exit
 
 ## Error Handling
@@ -106,13 +100,13 @@ This example demonstrates:
 
 ## Requirements
 
-- MicroStrain 5-series GNSS/INS device (3DM-CX5-GNSS/INS, or 3DM-GX5-GNSS/INS)
+- MicroStrain 7-series AR device
 - Serial connection (USB or RS-232)
 - MIP SDK library with C support
 - C11 or later compiler
 
 ## See Also
 
-- C++ version: `5_series_gnss_ins_example.cpp`
+- C++ version: `7_series_ar_example.cpp`
 - Other examples in the `examples/` directory
 - MIP SDK documentation

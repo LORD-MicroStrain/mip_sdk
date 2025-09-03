@@ -1,15 +1,14 @@
-# 7 Series GNSS/INS Example (C++)
+# 7 Series AHRS Example (C++)
 
-This example demonstrates how to configure and use a MicroStrain 7-series GNSS/INS device with the MIP SDK using the
-C++ API.
+This example demonstrates how to configure and use a MicroStrain 7-series AHRS device with the MIP SDK using the C++
+API.
 
 ## Overview
 
-The example showcases the basic setup and operation of a 7-series GNSS/INS device, including:
+The example showcases the basic setup and operation of a 7-series AHRS device, including:
 - Device initialization and communication
-- GNSS and filter message configuration
+- Filter message configuration
 - Gyro bias capture
-- Multi-antenna configuration
 - Filter initialization and heading source configuration
 - Real-time data streaming and display
 
@@ -29,13 +28,9 @@ The example uses the following default settings:
 ### Device Setup
 - `initializeDevice()` - Establishes serial communication and validates device connection
 - `captureGyroBias()` - Captures and applies gyroscope bias compensation
-- `configureAntennas()` - Sets up multi-antenna GNSS configuration
-- `initializeFilter()` - Initializes the navigation filter with GNSS position and velocity, and GNSS heading as the
-  heading sources
+- `initializeFilter()` - Initializes the navigation filter with magnetometer as the heading source
 
 ### Message Configuration
-- `configureGnssMessageFormat()` - Configures GNSS data output including:
-    - Fix info
 - `configureFilterMessageFormat()` - Configures filter/navigation data output including:
     - GPS time
     - Filter status
@@ -44,7 +39,6 @@ The example uses the following default settings:
     - Euler angles (roll, pitch, yaw)
 
 ### Data Display
-- `displayGnssFixState()` - Shows current GNSS fix status and quality for multiple antennas
 - `displayFilterState()` - Displays navigation filter operating mode changes
 
 ### Communication Interface
@@ -59,23 +53,37 @@ The C++ version uses modern features including:
 - **Callbacks**: Automatic data callbacks for registered message types
 - **RAII**: Automatic resource management for connections
 
+## C++ Implementation Features
+
+This example demonstrates:
+- **Modern C++ Connection Management**: RAII-based resource handling
+- **Type-Safe MIP Command Interfaces**: Compile-time type checking
+- **Exception Safety**: Proper error handling and resource cleanup
+- **STL Integration**: Use of standard library containers and algorithms
+
+## Data Registration
+
+The C++ version showcases automatic data handling:
+- **Data Stores**: Automatic storage of incoming data fields
+- **Extractor Registration**: Type-safe registration of data extractors
+- **Callback Management**: Automatic callback invocation for new data
+
 ## Usage
 
-1. Connect your 7-series GNSS/INS device to the specified serial port
+1. Connect your 7-series AHRS device to the specified serial port
 2. Update the `PORT_NAME` constant if using a different port
 3. Compile and run the example
 4. The program will:
     - Initialize the device
     - Configure data output
     - Stream data for the specified runtime
-    - Display GNSS fix and filter status changes
+    - Display filter status changes
     - Clean up and exit
 
 ## Error Handling
 
 The example includes comprehensive error handling with:
 - Command result checking using `mip::CmdResult`
-- Connection failure detection and recovery
 - Graceful termination functions for different error types
 - Detailed error messages with context
 
@@ -86,16 +94,17 @@ This example demonstrates:
 - Type-safe MIP command interfaces
 - Automatic data field extraction
 - RAII resource management
+- STL math utilities integration
 
 ## Requirements
 
-- MicroStrain 7-series GNSS/INS device (3DM-GQ7-GNSS/INS, or 3DM-CV7-GNSS/INS)
+- MicroStrain 7-series AHRS device (3DM-CV7-AHRS or 3DM-GV7-AHRS)
 - Serial connection (USB or RS-232)
 - MIP SDK library with C++ support
 - C++11 or later compiler
 
 ## See Also
 
-- C version: `7_series_gnss_ins_example.c`
+- C version: `7_series_ahrs_example.c`
 - Other examples in the `examples/` directory
 - MIP SDK documentation
