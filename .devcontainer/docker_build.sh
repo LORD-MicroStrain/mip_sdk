@@ -85,10 +85,12 @@ docker run \
         cmake ${docker_project_dir} ${configure_flags}; \
         cmake --build . -j$(nproc); \
         cmake --build . --target ${build_target}; \
-        ctest \
-            -C Release \
-            --verbose \
-            --output-on-failure \
-            --output-junit unit_test_results.xml \
-            --parallel; \
+        if [ ${build_docs} != true ]; then \
+            ctest \
+                -C Release \
+                --verbose \
+                --output-on-failure \
+                --output-junit unit_test_results.xml \
+                --parallel; \
+        fi; \
     "
