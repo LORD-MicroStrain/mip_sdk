@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
 
-project("gq7_example_c"
+project("7_series_gnss_ins_example_c"
     VERSION "1.0.0"
-    DESCRIPTION "Simple example for the 3DM-GQ7-GNSS/INS using C"
+    DESCRIPTION "Simple example for the 3DM-GQ7-GNSS/INS, and 3DM-CV7-GNSS/INS using C"
     LANGUAGES C
 )
 
@@ -43,7 +43,7 @@ endif()
 
 # Create the example
 add_executable(${PROJECT_NAME}
-    "${CMAKE_CURRENT_LIST_DIR}/gq7_example.c"
+    "${CMAKE_CURRENT_LIST_DIR}/7_series_gnss_ins_example.c"
 )
 
 # Configure the project in a sub-folder for IDEs that support it
