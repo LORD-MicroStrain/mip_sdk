@@ -23,6 +23,8 @@ bool check_equal(int a, int b, const char* fmt, ...);
 
 inline void printT(FILE* file, int value) { fprintf(file, "%d", value); }
 
+// TODO: This file will likely go away when we move towards a framework. If it stays, look
+//       into using inttypes.h to avoid the use of these templates.
 // Template workaround is currently needed due to size_t and unsigned int being
 // the same on Windows x86.
 template<typename T, std::enable_if<std::is_same<T, unsigned int>::value, void>::type>
