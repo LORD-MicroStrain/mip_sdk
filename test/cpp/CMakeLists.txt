@@ -11,7 +11,7 @@ add_executable(CppUnitTestRunner
 )
 
 target_link_libraries(CppUnitTestRunner
-    # TODO: Add necessary libraries
+    ${MIP_LIBRARY}
     doctest_with_main
 )
 

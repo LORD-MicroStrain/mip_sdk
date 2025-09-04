@@ -1,17 +1,14 @@
 #include <doctest/doctest.h>
 
-TEST_CASE("REMOVE ME")
-{
-	REQUIRE(true);
-}
-
-/*
-extern "C" {
-#include "../../c/microstrain/testutil_strings.h"
-}
-
 #include <mip/mip_logging.hpp>
 
+// TODO: Remove?
+//extern "C" {
+//#include "../../c/microstrain/testutil_strings.h"
+//}
+
+
+/*
 // 7565010C 080901010001c200 04090301 CE80
 const uint8_t SET_SAVE_COMM_SPEED[] = {
     0x75, 0x65, 0x01, 0x0c, 0x08, 0x09,
