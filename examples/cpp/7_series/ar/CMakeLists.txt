@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
 
-project("cv7_ins_example_cpp"
+project("7_series_ar_example_cpp"
     VERSION "1.0.0"
-    DESCRIPTION "Simple example for the 3DM-CV7-INS using C++"
+    DESCRIPTION "Simple example for the 3DM-CV7-AR, and 3DM-GV7-AR using C++"
     LANGUAGES C CXX
 )
 
@@ -45,10 +45,10 @@ endif()
 
 # Create the example
 add_executable(${PROJECT_NAME}
-    "${CMAKE_CURRENT_LIST_DIR}/cv7_ins_example.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/7_series_ar_example.cpp"
 )
 
-# Configure the project in a sub-folder for IDEs that support it
+# Configure the project in an examples sub-folder for IDEs that support it
 if(NOT ${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_LIST_DIR})
     file(RELATIVE_PATH PROJECT_RELATIVE_PATH "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_LIST_DIR}/..")
     set_target_properties(${PROJECT_NAME} PROPERTIES

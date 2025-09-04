@@ -47,7 +47,7 @@
 #ifdef _WIN32
 static constexpr const char* PORT_NAME = "COM1";
 #else // Unix
-static constexpr const char* PORT_NAME = "/dev/ttyUSB0";
+static constexpr const char* PORT_NAME = "/dev/ttyACM0";
 #endif // _WIN32
 
 // Set the baudrate for the connection (Serial/USB)
@@ -153,6 +153,7 @@ int main(const int argc, const char* argv[])
     // Note: Since the device was idled for configuration, it needs to be resumed to output the data streams
     MICROSTRAIN_LOG_INFO("Resuming the device.\n");
     const mip::CmdResult cmdResult = mip::commands_base::resume(device);
+
     if (!cmdResult.isAck())
     {
         terminate(device, cmdResult, "Could not resume the device!\n");
@@ -271,6 +272,7 @@ void initializeDevice(mip::Interface& _device)
     // Note: This is a good first step to make sure the device is present
     MICROSTRAIN_LOG_INFO("Pinging the device.\n");
     mip::CmdResult cmdResult = mip::commands_base::ping(_device);
+
     if (!cmdResult.isAck())
     {
         terminate(_device, cmdResult, "Could not ping the device!\n");
@@ -280,6 +282,7 @@ void initializeDevice(mip::Interface& _device)
     // Note: This is good to do during setup as high data traffic can cause commands to fail
     MICROSTRAIN_LOG_INFO("Setting the device to idle.\n");
     cmdResult = mip::commands_base::setIdle(_device);
+
     if (!cmdResult.isAck())
     {
         terminate(_device, cmdResult, "Could not set the device to idle!\n");
@@ -289,6 +292,7 @@ void initializeDevice(mip::Interface& _device)
     MICROSTRAIN_LOG_INFO("Getting the device information.\n");
     mip::commands_base::BaseDeviceInfo deviceInfo;
     cmdResult = mip::commands_base::getDeviceInfo(_device, &deviceInfo);
+
     if (!cmdResult.isAck())
     {
         terminate(_device, cmdResult, "Could not get the device information!\n");
@@ -320,6 +324,7 @@ void initializeDevice(mip::Interface& _device)
     // Note: This guarantees the device is in a known state
     MICROSTRAIN_LOG_INFO("Loading default settings.\n");
     cmdResult = mip::commands_3dm::defaultDeviceSettings(_device);
+
     if (!cmdResult.isAck())
     {
         terminate(_device, cmdResult, "Could not load %s!\n", mip::commands_3dm::DeviceSettings::DOC_NAME);

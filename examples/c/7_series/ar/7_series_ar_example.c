@@ -1,10 +1,11 @@
 ////////////////////////////////////////////////////////////////////////////////
-/// cv7_ahrs_example.c
+/// 7_series_ar_example.c
 ///
-/// Example setup program for the 3DM-CV7-AHRS using C
+/// Example setup program for the 3DM-CV7-AR, and 3DM-GV7-AR using C
 ///
-/// This example shows a typical setup for the 3DM-CV7-AHRS sensor using C.
-/// It is not an exhaustive example of all 3DM-CV7-AHRS settings.
+/// This example shows a typical setup for the 3DM-CV7-AR, and 3DM-GV7-AR using
+/// C.
+/// This is not an exhaustive example of all settings for those devices.
 /// If this example does not meet your specific setup needs, please consult the
 /// MIP SDK API documentation for the proper commands.
 ///
@@ -55,7 +56,7 @@
 #ifdef _WIN32
 static const char* PORT_NAME = "COM1";
 #else // Unix
-static const char* PORT_NAME = "/dev/ttyUSB0";
+static const char* PORT_NAME = "/dev/ttyACM0";
 #endif // _WIN32
 
 // Set the baudrate for the connection (Serial/USB)
@@ -213,6 +214,7 @@ int main(const int argc, const char* argv[])
     // Note: Since the device was idled for configuration, it needs to be resumed to output the data streams
     MICROSTRAIN_LOG_INFO("Resuming the device.\n");
     cmd_result = mip_base_resume(&device);
+
     if (!mip_cmd_result_is_ack(cmd_result))
     {
         command_failure_terminate(&device, cmd_result, "Could not resume the device!\n");
@@ -683,31 +685,17 @@ void handle_event_triggers(void* _user, const mip_field_view* _field, mip_timest
 ////////////////////////////////////////////////////////////////////////////////
 /// @brief Initializes and resets the navigation filter
 ///
-/// @details Configures the filter by:
-///          1. Enabling magnetometer aiding measurements
-///          2. Resetting the filter to apply new settings
+/// @details Configures the filter by resetting it.
 ///
 /// @param _device Pointer to the initialized MIP device interface
 ///
 void initialize_filter(mip_interface* _device)
 {
-    // Configure Filter Aiding Measurements (GNSS position/velocity and dual antenna [aka gnss heading])
-    MICROSTRAIN_LOG_INFO("Configuring filter aiding measurement enable.\n");
-    mip_cmd_result cmd_result = mip_filter_write_aiding_measurement_enable(
-        _device,
-        MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_MAGNETOMETER, // Aiding Source type
-        true                                                                     // Enabled
-    );
-
-    if (!mip_cmd_result_is_ack(cmd_result))
-    {
-        command_failure_terminate(_device, cmd_result, "Could not set filter aiding measurement enable!\n");
-    }
-
     // Reset the filter
     // Note: This is good to do after filter setup is complete
     MICROSTRAIN_LOG_INFO("Attempting to reset the navigation filter.\n");
-    cmd_result = mip_filter_reset(_device);
+    const mip_cmd_result cmd_result = mip_filter_reset(_device);
+
     if (!mip_cmd_result_is_ack(cmd_result))
     {
         command_failure_terminate(_device, cmd_result, "Could not reset the navigation filter!\n");
@@ -913,6 +901,7 @@ void initialize_device(mip_interface* _device, serial_port* _device_port, const 
     // Note: This is a good first step to make sure the device is present
     MICROSTRAIN_LOG_INFO("Pinging the device.\n");
     mip_cmd_result cmd_result = mip_base_ping(_device);
+
     if (!mip_cmd_result_is_ack(cmd_result))
     {
         command_failure_terminate(_device, cmd_result, "Could not ping the device!\n");
@@ -922,6 +911,7 @@ void initialize_device(mip_interface* _device, serial_port* _device_port, const 
     // Note: This is good to do during setup as high data traffic can cause commands to fail
     MICROSTRAIN_LOG_INFO("Setting the device to idle.\n");
     cmd_result = mip_base_set_idle(_device);
+
     if (!mip_cmd_result_is_ack(cmd_result))
     {
         command_failure_terminate(_device, cmd_result, "Could not set the device to idle!\n");
@@ -931,6 +921,7 @@ void initialize_device(mip_interface* _device, serial_port* _device_port, const 
     MICROSTRAIN_LOG_INFO("Getting the device information.\n");
     mip_base_device_info device_info;
     cmd_result = mip_base_get_device_info(_device, &device_info);
+
     if (!mip_cmd_result_is_ack(cmd_result))
     {
         command_failure_terminate(_device, cmd_result, "Could not get the device information!\n");
@@ -962,6 +953,7 @@ void initialize_device(mip_interface* _device, serial_port* _device_port, const 
     // Note: This guarantees the device is in a known state
     MICROSTRAIN_LOG_INFO("Loading default settings.\n");
     cmd_result = mip_3dm_default_device_settings(_device);
+
     if (!mip_cmd_result_is_ack(cmd_result))
     {
         command_failure_terminate(_device, cmd_result, "Could not load device default settings!\n");

@@ -1,25 +1,23 @@
-/////////////////////////////////////////////////////////////////////////////
-//
-// CV7_INS_simple_example.cpp
-//
-// C++ Example usage program for the CV7-INS
-//
-// This example shows the basic setup for a CV-INS sensor using external aiding measurements.
-// It is not an exhaustive example of all CV7 settings.
-// If your specific setup needs are not met by this example, please consult
-// the MIP SDK API documentation for the proper commands.
-//
-//
-//!@section LICENSE
-//!
-//! THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING
-//! CUSTOMERS WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER
-//! FOR THEM TO SAVE TIME. AS A RESULT, MICROSTRAIN BY HBK SHALL NOT BE HELD
-//! LIABLE FOR ANY DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY
-//! CLAIMS ARISING FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS
-//! OF THE CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
-//
-/////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+/// 7_series_ahrs_example.cpp
+///
+/// Example setup program for the 3DM-CV7-INS using C++
+///
+/// This example shows a typical setup for the 3DM-CV7-INS with external aiding
+/// measurements using C++.
+/// This is not an exhaustive example of all settings for the 3DM-CV7-INS.
+/// If this example does not meet your specific setup needs, please consult the
+/// MIP SDK API documentation for the proper commands.
+///
+/// @section LICENSE
+///
+/// THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+/// WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+/// TIME. AS A RESULT, MICROSTRAIN BY HBK SHALL NOT BE HELD LIABLE FOR ANY
+/// DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
+/// FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
+/// CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+///
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -27,7 +25,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "mip/mip_all.hpp"
-#include "../../../../example_utils.hpp"
+#include "../../../example_utils.hpp"
 #include <array>
 
 ////////////////////////////////////////////////////////////////////////////////

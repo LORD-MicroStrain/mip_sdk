@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
 
-project("cv7_ar_example_cpp"
+project("7_series_ahrs_example_cpp"
     VERSION "1.0.0"
-    DESCRIPTION "Simple example for the 3DM-CV7-AR using C++"
+    DESCRIPTION "Simple example for the 3DM-CV7-AHRS, and 3DM-GV7-AHRS using C++"
     LANGUAGES C CXX
 )
 
@@ -45,7 +45,7 @@ endif()
 
 # Create the example
 add_executable(${PROJECT_NAME}
-    "${CMAKE_CURRENT_LIST_DIR}/cv7_ar_example.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/7_series_ahrs_example.cpp"
 )
 
 # Configure the project in an examples sub-folder for IDEs that support it

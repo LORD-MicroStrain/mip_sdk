@@ -52,7 +52,7 @@
 #ifdef _WIN32
 static const char* PORT_NAME = "COM1";
 #else // Unix
-static const char* PORT_NAME = "/dev/ttyUSB0";
+static const char* PORT_NAME = "/dev/ttyACM0";
 #endif // _WIN32
 
 // Set the baudrate for the connection (Serial/USB)
@@ -217,6 +217,7 @@ int main(const int argc, const char* argv[])
     // Note: Since the device was idled for configuration, it needs to be resumed to output the data streams
     MICROSTRAIN_LOG_INFO("Resuming the device.\n");
     cmd_result = mip_base_resume(&device);
+
     if (!mip_cmd_result_is_ack(cmd_result))
     {
         command_failure_terminate(&device, cmd_result, "Could not resume the device!\n");
@@ -423,6 +424,7 @@ void initialize_device(mip_interface* _device, serial_port* _device_port, const 
     // Note: This is a good first step to make sure the device is present
     MICROSTRAIN_LOG_INFO("Pinging the device.\n");
     mip_cmd_result cmd_result = mip_base_ping(_device);
+
     if (!mip_cmd_result_is_ack(cmd_result))
     {
         command_failure_terminate(_device, cmd_result, "Could not ping the device!\n");
@@ -432,6 +434,7 @@ void initialize_device(mip_interface* _device, serial_port* _device_port, const 
     // Note: This is good to do during setup as high data traffic can cause commands to fail
     MICROSTRAIN_LOG_INFO("Setting the device to idle.\n");
     cmd_result = mip_base_set_idle(_device);
+
     if (!mip_cmd_result_is_ack(cmd_result))
     {
         command_failure_terminate(_device, cmd_result, "Could not set the device to idle!\n");
@@ -441,6 +444,7 @@ void initialize_device(mip_interface* _device, serial_port* _device_port, const 
     MICROSTRAIN_LOG_INFO("Getting the device information.\n");
     mip_base_device_info device_info;
     cmd_result = mip_base_get_device_info(_device, &device_info);
+
     if (!mip_cmd_result_is_ack(cmd_result))
     {
         command_failure_terminate(_device, cmd_result, "Could not get the device information!\n");
@@ -472,6 +476,7 @@ void initialize_device(mip_interface* _device, serial_port* _device_port, const 
     // Note: This guarantees the device is in a known state
     MICROSTRAIN_LOG_INFO("Loading default settings.\n");
     cmd_result = mip_3dm_default_device_settings(_device);
+
     if (!mip_cmd_result_is_ack(cmd_result))
     {
         command_failure_terminate(_device, cmd_result, "Could not load device default settings!\n");

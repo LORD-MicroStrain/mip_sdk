@@ -1,10 +1,11 @@
 ////////////////////////////////////////////////////////////////////////////////
-/// cv7_ahrs_example.cpp
+/// 7_series_ar_example.cpp
 ///
-/// Example setup program for the 3DM-CV7-AHRS using C++
+/// Example setup program for the 3DM-CV7-AR, and 3DM-GV7-AR using C++
 ///
-/// This example shows a typical setup for the 3DM-CV7-AHRS sensor using C++.
-/// It is not an exhaustive example of all 3DM-CV7-AHRS settings.
+/// This example shows a typical setup for the 3DM-CV7-AR, and 3DM-GV7-AR using
+/// C++.
+/// This is not an exhaustive example of all settings for those devices.
 /// If this example does not meet your specific setup needs, please consult the
 /// MIP SDK API documentation for the proper commands.
 ///
@@ -54,7 +55,7 @@
 #ifdef _WIN32
 static constexpr const char* PORT_NAME = "COM1";
 #else // Unix
-static constexpr const char* PORT_NAME = "/dev/ttyUSB0";
+static constexpr const char* PORT_NAME = "/dev/ttyACM0";
 #endif // _WIN32
 
 // Set the baudrate for the connection (Serial/USB)
@@ -196,6 +197,7 @@ int main(const int argc, const char* argv[])
     // Note: Since the device was idled for configuration, it needs to be resumed to output the data streams
     MICROSTRAIN_LOG_INFO("Resuming the device.\n");
     cmdResult = mip::commands_base::resume(device);
+
     if (!cmdResult.isAck())
     {
         terminate(device, cmdResult, "Could not resume the device!\n");
@@ -430,9 +432,9 @@ void configureFilterMessageFormat(mip::Interface& _device)
 
     // Descriptor rate is a pair of data descriptor set and decimation
     const mip::DescriptorRate filterDescriptors[3] = {
-        { mip::data_filter::Timestamp::FIELD_DESCRIPTOR,   filterDecimation },
-        { mip::data_filter::Status::FIELD_DESCRIPTOR,      filterDecimation },
-        { mip::data_filter::EulerAngles::FIELD_DESCRIPTOR, filterDecimation }
+        { mip::data_shared::GpsTimestamp::FIELD_DESCRIPTOR, filterDecimation },
+        { mip::data_filter::Status::FIELD_DESCRIPTOR,       filterDecimation },
+        { mip::data_filter::EulerAngles::FIELD_DESCRIPTOR,  filterDecimation }
     };
 
     MICROSTRAIN_LOG_INFO("Configuring %s for filter data.\n", mip::commands_3dm::MessageFormat::DOC_NAME);
@@ -666,31 +668,17 @@ void handleEventTriggers(void* _user, const mip::FieldView& _field, mip::Timesta
 ////////////////////////////////////////////////////////////////////////////////
 /// @brief Initializes and resets the navigation filter
 ///
-/// @details Configures the filter by:
-///          1. Enabling magnetometer aiding measurements
-///          2. Resetting the filter to apply new settings
+/// @details Configures the filter by resetting it.
 ///
 /// @param _device Reference to the initialized MIP device interface
 ///
 void initializeFilter(mip::Interface& _device)
 {
-    // Configure Filter Aiding Measurements (GNSS position/velocity and dual antenna [aka gnss heading])
-    MICROSTRAIN_LOG_INFO("Configuring %s.\n", mip::commands_filter::AidingMeasurementEnable::DOC_NAME);
-    mip::CmdResult cmdResult = mip::commands_filter::writeAidingMeasurementEnable(
-        _device,
-        mip::commands_filter::AidingMeasurementEnable::AidingSource::MAGNETOMETER, // Aiding Source type
-        true                                                                       // Enabled
-    );
-
-    if (!cmdResult.isAck())
-    {
-        terminate(_device, cmdResult, "Could not set %s!\n", mip::commands_filter::AidingMeasurementEnable::DOC_NAME);
-    }
-
     // Reset the filter
     // Note: This is good to do after filter setup is complete
     MICROSTRAIN_LOG_INFO("Attempting to %s.\n", mip::commands_filter::Reset::DOC_NAME);
-    cmdResult = mip::commands_filter::reset(_device);
+    const mip::CmdResult cmdResult = mip::commands_filter::reset(_device);
+
     if (!cmdResult.isAck())
     {
         terminate(_device, cmdResult, "Could not %s!\n", mip::commands_filter::Reset::DOC_NAME);
@@ -798,6 +786,7 @@ void initializeDevice(mip::Interface& _device)
     // Note: This is a good first step to make sure the device is present
     MICROSTRAIN_LOG_INFO("Pinging the device.\n");
     mip::CmdResult cmdResult = mip::commands_base::ping(_device);
+
     if (!cmdResult.isAck())
     {
         terminate(_device, cmdResult, "Could not ping the device!\n");
@@ -807,6 +796,7 @@ void initializeDevice(mip::Interface& _device)
     // Note: This is good to do during setup as high data traffic can cause commands to fail
     MICROSTRAIN_LOG_INFO("Setting the device to idle.\n");
     cmdResult = mip::commands_base::setIdle(_device);
+
     if (!cmdResult.isAck())
     {
         terminate(_device, cmdResult, "Could not set the device to idle!\n");
@@ -816,6 +806,7 @@ void initializeDevice(mip::Interface& _device)
     MICROSTRAIN_LOG_INFO("Getting the device information.\n");
     mip::commands_base::BaseDeviceInfo deviceInfo;
     cmdResult = mip::commands_base::getDeviceInfo(_device, &deviceInfo);
+
     if (!cmdResult.isAck())
     {
         terminate(_device, cmdResult, "Could not get the device information!\n");
@@ -847,6 +838,7 @@ void initializeDevice(mip::Interface& _device)
     // Note: This guarantees the device is in a known state
     MICROSTRAIN_LOG_INFO("Loading default settings.\n");
     cmdResult = mip::commands_3dm::defaultDeviceSettings(_device);
+
     if (!cmdResult.isAck())
     {
         terminate(_device, cmdResult, "Could not load %s!\n", mip::commands_3dm::DeviceSettings::DOC_NAME);
