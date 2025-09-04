@@ -2,34 +2,50 @@
 
 #include <mip/mip_logging.hpp>
 
-// TODO: Remove?
-//extern "C" {
-//#include "../../c/microstrain/testutil_strings.h"
-//}
 
+namespace fixture
+{
+    namespace detail
+    {
+        constexpr uint8_t SET_AND_SAVE_COMM_SPEED_PAYLOAD[] = {
+            0x75, 0x65, 0x01, 0x0c, 0x08, 0x09,
+            0x01, 0x01, 0x00, 0x01, 0xc2, 0x00,
+            0x04, 0x09, 0x03, 0x01,
+            0xCE, 0x80
+        };
+    };
 
-/*
-// 7565010C 080901010001c200 04090301 CE80
-const uint8_t SET_SAVE_COMM_SPEED[] = {
-    0x75, 0x65, 0x01, 0x0c, 0x08, 0x09,
-    0x01, 0x01, 0x00, 0x01, 0xc2, 0x00,
-    0x04, 0x09, 0x03, 0x01,
-    0xCE, 0x80
+    enum class Action
+    {
+        SET_AND_SAVE_COMM_SPEED,
+    };
+
+    mip::PacketView getPacketForAction(const Action action)
+    {
+        switch(action)
+        {
+            case Action::SET_AND_SAVE_COMM_SPEED:
+            default:
+                return {detail::SET_AND_SAVE_COMM_SPEED_PAYLOAD};
+        }
+    }
 };
 
 
-void packet_to_bytes_works()
+TEST_CASE("Packet to bytes works")
 {
     char buffer[128];
     size_t index = 0;
+    mip::PacketView packet = fixture::getPacketForAction(fixture::Action::SET_AND_SAVE_COMM_SPEED);
 
-    bool ok = mip::formatPacketBytes(buffer, &index, {SET_SAVE_COMM_SPEED});
+    bool ok = mip::formatPacketBytes(buffer, &index, packet);
 
-    TEST_ASSERT(ok, "Success");
-    TEST_ASSERT_EQ(index, 39, "Index is correct");
-    TEST_ASSERT_BUFFER_COMPARE(buffer, "7565010C 080901010001C200 04090301 CE80", 39+1, "");
+    CHECK(ok);
+    CHECK(index == 39);
+    CHECK(strcmp(buffer, "7565010C 080901010001C200 04090301 CE80") == 0);
 }
 
+/*
 void format_packet_works()
 {
     char buffer[128];
