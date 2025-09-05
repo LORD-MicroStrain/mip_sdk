@@ -1,11 +1,10 @@
 include(FetchContent)
-
-FetchContent_Declare(
-    doctest
-    URL https://github.com/doctest/doctest/archive/refs/tags/v2.4.12.zip
-)
-
+FetchContent_Declare(doctest URL https://github.com/doctest/doctest/archive/refs/tags/v2.4.12.zip)
 FetchContent_MakeAvailable(doctest)
+
+add_library(framework_wrappers INTERFACE)
+target_include_directories(framework_wrappers INTERFACE "${CMAKE_CURRENT_LIST_DIR}")
+target_compile_features(framework_wrappers INTERFACE cxx_std_17)
 
 add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/c")
 if(MICROSTRAIN_ENABLE_CPP)
