@@ -18,9 +18,9 @@ TEST_CASE("Formatting | A packet can be properly formatted to bytes")
 
     bool ok = mip::formatPacketBytes(buffer, &index, {SET_AND_SAVE_COMM_SPEED_PAYLOAD});
 
-    CHECK(ok);
-    CHECK(index == 39);
-    CHECK(strcmp(buffer, "7565010C 080901010001C200 04090301 CE80") == 0);
+    FAIL_AT_END_OF_TEST_IF_NOT_TRUE(ok);
+    FAIL_AT_END_OF_TEST_IF_NOT_TRUE(index == 39);
+    FAIL_AT_END_OF_TEST_IF_NOT_TRUE(strcmp(buffer, "7565010C 080901010001C200 04090301 CE80") == 0);
 }
 
 TEST_CASE("Formatting | A packet can be properly formatted to a human-readable string")
@@ -30,10 +30,10 @@ TEST_CASE("Formatting | A packet can be properly formatted to a human-readable s
 
     bool ok = mip::formatPacket(buffer, &index, {SET_AND_SAVE_COMM_SPEED_PAYLOAD});
 
-    CHECK(ok);
-    CHECK(index == 68);
+    FAIL_AT_END_OF_TEST_IF_NOT_TRUE(ok);
+    FAIL_AT_END_OF_TEST_IF_NOT_TRUE(index == 68);
     // TODO: Add assertion for strings that outputs the string values
-    CHECK(strcmp(buffer, "Packet(DS=0x01){ Field(FD=0x09)[01010001C200] Field(FD=0x09)[0301] }") == 0);
+    FAIL_AT_END_OF_TEST_IF_NOT_TRUE(strcmp(buffer, "Packet(DS=0x01){ Field(FD=0x09)[01010001C200] Field(FD=0x09)[0301] }") == 0);
 }
 
 TEST_CASE("Formatting | A field can be properly formatted to a human-readable string")
@@ -44,9 +44,9 @@ TEST_CASE("Formatting | A field can be properly formatted to a human-readable st
 
     bool ok = mip::formatField(buffer, &index, field);
 
-    CHECK(ok);
-    CHECK(index == 28);
-    CHECK(strcmp(buffer, "Field(FD=0x09)[01010001C200]") == 0);
+    FAIL_AT_END_OF_TEST_IF_NOT_TRUE(ok);
+    FAIL_AT_END_OF_TEST_IF_NOT_TRUE(index == 28);
+    FAIL_AT_END_OF_TEST_IF_NOT_TRUE(strcmp(buffer, "Field(FD=0x09)[01010001C200]") == 0);
 }
 
 TEST_SUITE_END();
