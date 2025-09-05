@@ -1,5 +1,3 @@
-#include <doctest/doctest.h>
-
 #include <framework_wrappers.hpp>
 #include <mip/mip_logging.hpp>
 
