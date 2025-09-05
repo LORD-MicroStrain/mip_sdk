@@ -6,14 +6,13 @@ add_executable(CppUnitTestRunner
     # test_packet_interface.cpp
     # test_serial.cpp
     # TODO: Convert to new format
-    "test_mip_formatting.cpp"
+    "mip_formatting.unit.cpp"
     #"test_strings.cpp"
 )
 
 target_link_libraries(CppUnitTestRunner
     ${MIP_LIBRARY}
     framework_wrappers
-    #doctest_with_main
 )
 
 include(${doctest_SOURCE_DIR}/scripts/cmake/doctest.cmake)
