@@ -8,7 +8,7 @@ constexpr uint8_t SET_AND_SAVE_COMM_SPEED_PAYLOAD[] = {
     0xCE, 0x80
 };
 
-FACT("Formatting", "A packet can be properly formatted to bytes")
+TEST("Formatting", "A packet can be properly formatted to bytes")
 {
     char buffer[128];
     size_t index = 0;
@@ -20,7 +20,7 @@ FACT("Formatting", "A packet can be properly formatted to bytes")
     EXPECT_C_STRINGS_EQUAL(buffer, "7565010C 080901010001C200 04090301 CE80");
 }
 
-FACT("Formatting", "A packet can be properly formatted to a human-readable string")
+TEST("Formatting", "A packet can be properly formatted to a human-readable string")
 {
     char buffer[128];
     size_t index = 0;
@@ -32,7 +32,7 @@ FACT("Formatting", "A packet can be properly formatted to a human-readable strin
     EXPECT_C_STRINGS_EQUAL(buffer, "Packet(DS=0x01){ Field(FD=0x09)[01010001C200] Field(FD=0x09)[0301] }");
 }
 
-FACT("Formatting", "A field can be properly formatted to a human-readable string")
+TEST("Formatting", "A field can be properly formatted to a human-readable string")
 {
     char buffer[128];
     size_t index = 0;

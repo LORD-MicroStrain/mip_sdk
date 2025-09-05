@@ -12,7 +12,7 @@
 
     // Using Doctest's tagging system here so we can run specific test suites without
     // having to use TEST_SUITE_BEGIN/TEST_SUITE_END.
-    #define FACT(suite_name, test_name) TEST_CASE("[" suite_name "] " test_name)
+    #define TEST(suite_name, test_name) TEST_CASE("[" suite_name "] " test_name)
 
     #define WARN_IF_NOT_TRUE(condition) WARN(condition)
     #define EXPECT_TRUE(condition) CHECK(condition)
