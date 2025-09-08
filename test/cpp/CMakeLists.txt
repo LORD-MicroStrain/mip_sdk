@@ -1,13 +1,12 @@
 
 add_executable(CppUnitTestRunner
-    # TODO: Commented tests are disable as they are either broken or integration tests
+    # TODO: Commented tests are disabled as they are either broken or integration tests
     # mip_parser_performance.cpp
     # test_mip.cpp
     # test_packet_interface.cpp
     # test_serial.cpp
-    # TODO: Convert to new format
-    "mip_formatting.unit.cpp"
-    #"test_strings.cpp"
+    "logging.unit.cpp"
+    "strings.unit.cpp"
 )
 
 target_link_libraries(CppUnitTestRunner
