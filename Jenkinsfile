@@ -1,4 +1,3 @@
-
 // Utility function for getting the real branch name even in a pull request
 def branchName() {
     if (env.CHANGE_BRANCH) {
@@ -35,11 +34,6 @@ def setUpWorkspace()
     cleanWs()
     env.setProperty('BRANCH_NAME', branchName())
     unstash 'source-code'
-
-    // Debug what was unstashed
-    sh 'ls -la'
-    sh 'ls -la .git || echo "No .git directory found after unstash"'
-    sh 'git status || echo "Not a git repository"'
 }
 
 def buildLinux(String os, String arch, String options = "")
@@ -48,20 +42,11 @@ def buildLinux(String os, String arch, String options = "")
     sh "./.devcontainer/docker_build.sh --os ${os} --arch ${arch} ${options}"
 }
 
-/*
-def archiveTests()
+def addTestsToDashboard()
 {
-    dir("${BUILD_DIRECTORY}") {
-        archiveArtifacts artifacts: 'mipsdk_*'
-
-        if (archiveTestResults)
-        {
-            archiveArtifacts artifacts: "unit_test_results.xml", allowEmptyArchive: false
-            junit testResults: "unit_test_results.xml", allowEmptyResults: false
-        }
-    }
+    archiveArtifacts artifacts: "${BUILD_DIRECTORY}/unit_test_results.xml", allowEmptyArchive: false
+    junit testResults: "${BUILD_DIRECTORY}/unit_test_results.xml", allowEmptyResults: false
 }
- */
 
 pipeline {
     agent none
@@ -92,7 +77,6 @@ pipeline {
 
         stage('Multi-platform staging') {
             parallel {
-/*
                 stage('Windows x64') {
                     agent {
                         label 'windows10'
@@ -129,6 +113,9 @@ pipeline {
                     post {
                         success {
                             archiveArtifacts artifacts: "${BUILD_DIRECTORY}/mipsdk_*"
+                        }
+                        always {
+                            addTestsToDashboard()
                         }
                     }
                 }
@@ -171,9 +158,11 @@ pipeline {
                         success {
                             archiveArtifacts artifacts: "${BUILD_DIRECTORY}/mipsdk_*"
                         }
+                        always {
+                            addTestsToDashboard()
+                        }
                     }
                 }
- */
 
                 stage('Ubuntu amd64') {
                     agent {
@@ -195,10 +184,12 @@ pipeline {
                         success {
                             archiveArtifacts artifacts: "${BUILD_DIRECTORY}/mipsdk_*"
                         }
+                        always {
+                            addTestsToDashboard()
+                        }
                     }
                 }
 
-/*
                 stage('Ubuntu arm64') {
                     agent {
                         label 'linux-arm64'
@@ -217,7 +208,10 @@ pipeline {
                     }
                     post {
                         success {
-                            postBuild()
+                            archiveArtifacts artifacts: "${BUILD_DIRECTORY}/mipsdk_*"
+                        }
+                        always {
+                            addTestsToDashboard()
                         }
                     }
                 }
@@ -240,11 +234,13 @@ pipeline {
                     }
                     post {
                         success {
-                            postBuild()
+                            archiveArtifacts artifacts: "${BUILD_DIRECTORY}/mipsdk_*"
+                        }
+                        always {
+                            addTestsToDashboard()
                         }
                     }
                 }
- */
             }
         }
 
