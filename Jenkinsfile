@@ -42,12 +42,6 @@ def buildLinux(String os, String arch, String options = "")
     sh "./.devcontainer/docker_build.sh --os ${os} --arch ${arch} ${options}"
 }
 
-def addTestsToDashboard()
-{
-    archiveArtifacts artifacts: "${BUILD_DIRECTORY}/unit_test_results.xml", allowEmptyArchive: false
-    junit testResults: "${BUILD_DIRECTORY}/unit_test_results.xml", allowEmptyResults: false
-}
-
 pipeline {
     agent none
 
@@ -111,11 +105,11 @@ pipeline {
                         }
                     }
                     post {
+                        always {
+                            junit testResults: "${BUILD_DIRECTORY}/unit_test_results.xml", allowEmptyResults: false
+                        }
                         success {
                             archiveArtifacts artifacts: "${BUILD_DIRECTORY}/mipsdk_*"
-                        }
-                        always {
-                            addTestsToDashboard()
                         }
                     }
                 }
@@ -155,11 +149,11 @@ pipeline {
                         }
                     }
                     post {
+                        always {
+                            junit testResults: "${BUILD_DIRECTORY}/unit_test_results.xml", allowEmptyResults: false
+                        }
                         success {
                             archiveArtifacts artifacts: "${BUILD_DIRECTORY}/mipsdk_*"
-                        }
-                        always {
-                            addTestsToDashboard()
                         }
                     }
                 }
@@ -181,11 +175,11 @@ pipeline {
                         }
                     }
                     post {
+                        always {
+                            junit testResults: "${BUILD_DIRECTORY}/unit_test_results.xml", allowEmptyResults: false
+                        }
                         success {
                             archiveArtifacts artifacts: "${BUILD_DIRECTORY}/mipsdk_*"
-                        }
-                        always {
-                            addTestsToDashboard()
                         }
                     }
                 }
@@ -207,11 +201,11 @@ pipeline {
                         }
                     }
                     post {
+                        always {
+                            junit testResults: "${BUILD_DIRECTORY}/unit_test_results.xml", allowEmptyResults: false
+                        }
                         success {
                             archiveArtifacts artifacts: "${BUILD_DIRECTORY}/mipsdk_*"
-                        }
-                        always {
-                            addTestsToDashboard()
                         }
                     }
                 }
@@ -233,11 +227,11 @@ pipeline {
                         }
                     }
                     post {
+                        always {
+                            junit testResults: "${BUILD_DIRECTORY}/unit_test_results.xml", allowEmptyResults: false
+                        }
                         success {
                             archiveArtifacts artifacts: "${BUILD_DIRECTORY}/mipsdk_*"
-                        }
-                        always {
-                            addTestsToDashboard()
                         }
                     }
                 }
@@ -275,7 +269,6 @@ pipeline {
                     node("linux-amd64") {
                         dir("/tmp/mip_sdk_${env.BRANCH_NAME}_${currentBuild.number}") {
                             copyArtifacts(projectName: "${env.JOB_NAME}", selector: specific("${currentBuild.number}"));
-                            sh "pwd; ls -a"
                             withCredentials([string(credentialsId: 'Github_Token', variable: 'GH_TOKEN')]) {
                                 sh '''
                                     # Release to github
