@@ -37,11 +37,6 @@ constexpr T bitmaskFirstN(unsigned int nbits)
     return T( T(1u) << nbits ) - 1;
 }
 
-int REMOVE_ME(int i)
-{
-    i;
-}
-
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Creates a bitmask with N '1' bits starting at bit I.
 ///

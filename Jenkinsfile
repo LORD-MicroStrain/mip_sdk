@@ -49,14 +49,14 @@ def buildLinux(String os, String arch, String options = "")
 }
 
 /*
-def postBuild(boolean archiveTestResults = true)
+def archiveTests()
 {
     dir("${BUILD_DIRECTORY}") {
         archiveArtifacts artifacts: 'mipsdk_*'
 
         if (archiveTestResults)
         {
-            archiveArtifacts artifacts: 'unit_test_results.xml', allowEmptyArchive: false
+            archiveArtifacts artifacts: "unit_test_results.xml", allowEmptyArchive: false
             junit testResults: "unit_test_results.xml", allowEmptyResults: false
         }
     }
@@ -275,7 +275,7 @@ pipeline {
     post {
         success {
             script {
-                if (BRANCH_NAME && BRANCH_NAME == 'bugfix/jenkins_release_step') {
+                if (BRANCH_NAME && BRANCH_NAME == 'develop') {
                     node("linux-amd64") {
                         dir("/tmp/mip_sdk_${env.BRANCH_NAME}_${currentBuild.number}") {
                             copyArtifacts(projectName: "${env.JOB_NAME}", selector: specific("${currentBuild.number}"));
