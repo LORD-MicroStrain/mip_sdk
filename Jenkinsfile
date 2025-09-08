@@ -118,7 +118,7 @@ pipeline {
                         }
                     }
                     post {
-                        always {
+                        success {
                             postBuild()
                         }
                     }
@@ -159,7 +159,7 @@ pipeline {
                         }
                     }
                     post {
-                        always {
+                        success {
                             postBuild()
                         }
                     }
@@ -182,7 +182,7 @@ pipeline {
                         }
                     }
                     post {
-                        always {
+                        success {
                             postBuild()
                         }
                     }
@@ -205,7 +205,7 @@ pipeline {
                         }
                     }
                     post {
-                        always {
+                        success {
                             postBuild()
                         }
                     }
@@ -228,7 +228,7 @@ pipeline {
                         }
                     }
                     post {
-                        always {
+                        success {
                             postBuild()
                         }
                     }
@@ -254,7 +254,7 @@ pipeline {
                 }
             }
             post {
-                always {
+                success {
                     postBuild(false)
                 }
             }
