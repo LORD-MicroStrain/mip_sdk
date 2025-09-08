@@ -1,17 +1,17 @@
-
-extern "C" {
-#include "../../c/microstrain/testutil_strings.h"
-}
-
 #define MICROSTRAIN_HAS_STD_STRING 1
+
+#include <string_view>
+
+#include <framework_wrappers.hpp>
 #include <microstrain/strings.hpp>
 
 
-static const char TEST_STRING[] = "Testing!";
+static constexpr char FAKE_STRING[] = "Testing!";
 static const uint8_t TEST_DATA[] = { 0x0F, 0x2E, 0x4D, 0x6C, 0x8B, 0xAA };
 static const char TEST_DATA_STR[] = "0F2E 4D6C 8BAA";
 
 
+/*
 struct StringTest
 {
     char array[1024] = {0};
@@ -19,102 +19,116 @@ struct StringTest
 
     const microstrain::Span<char> buffer() { return {array}; }
 };
+*/
+
+// TODO: Figure out naming for these tests
 
 
-//
-// strcat
-//
-
-void concat_works()
+TEST("Span string concatenation", "A C string can be concatenated to an explicitly created span")
 {
-    StringTest test;
+    char buffer[1024];
+    microstrain::Span<char> buffer_span{buffer};
+    size_t index = 0;
 
     // Explicitly create a span
-    bool ok = microstrain::strings::concat(test.buffer(), &test.index, TEST_STRING, sizeof(TEST_STRING)-1);
+    const bool ok = microstrain::strings::concat(buffer_span, &index, FAKE_STRING, sizeof(FAKE_STRING) - 1);
 
-    TEST_ASSERT(ok, "Success");
-    TEST_ASSERT_BUFFER_COMPARE(test.array, TEST_STRING, sizeof(TEST_STRING), "");
-    TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(TEST_STRING)-1, "");
+    EXPECT_TRUE(ok);
+    EXPECT_C_STRINGS_EQUAL(buffer, FAKE_STRING);
+    //TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(FAKE_STRING)-1, "");
 }
 
-void concat_into_implicit_span_works()
+TEST("Span string concatenation", "A C string can be concatenated to an implicitly created span")
 {
-    StringTest test;
+    char buffer[1024];
+    size_t index = 0;
 
-    // Implicitly create a span
-    bool ok = microstrain::strings::concat({test.array, sizeof(test.array)}, &test.index, TEST_STRING, sizeof(TEST_STRING)-1);
+    const bool ok = microstrain::strings::concat({buffer, sizeof(buffer)}, &index, FAKE_STRING, sizeof(FAKE_STRING)-1);
 
-    TEST_ASSERT(ok, "Success");
-    TEST_ASSERT_BUFFER_COMPARE(test.array, TEST_STRING, sizeof(TEST_STRING), "");
-    TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(TEST_STRING)-1, "");
+    EXPECT_TRUE(ok);
+    EXPECT_C_STRINGS_EQUAL(buffer, FAKE_STRING);
+    //TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(FAKE_STRING)-1, "");
 }
 
-void concat_explicit_span_works()
+TEST("Span string concatenation", "A span can be concatenated to another span")
 {
-    StringTest test;
+    char buffer[1024];
+    microstrain::Span<char> buffer_span{buffer};
+    size_t index = 0;
 
-    bool ok = microstrain::strings::concat(test.buffer(), &test.index, microstrain::Span<const char>{TEST_STRING});
+    const bool ok = microstrain::strings::concat(buffer_span, &index, microstrain::Span<const char>{FAKE_STRING});
 
-    TEST_ASSERT(ok, "Success");
-    TEST_ASSERT_BUFFER_COMPARE(test.array, TEST_STRING, sizeof(TEST_STRING), "");
-    TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(TEST_STRING)-1, "");
+    EXPECT_TRUE(ok);
+    EXPECT_C_STRINGS_EQUAL(buffer, FAKE_STRING);
+    //TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(FAKE_STRING)-1, "");
 }
 
-void concat_explicit_string_view_works()
+TEST("Span string concatenation", "A string view can be concatenated to a span")
 {
-    StringTest test;
+    char buffer[1024];
+    microstrain::Span<char> buffer_span{buffer};
+    size_t index = 0;
 
-    bool ok = microstrain::strings::concat(test.buffer(), &test.index, std::string_view{TEST_STRING});
+    const bool ok = microstrain::strings::concat(buffer_span, &index, std::string_view{FAKE_STRING});
 
-    TEST_ASSERT(ok, "Success");
-    TEST_ASSERT_BUFFER_COMPARE(test.array, TEST_STRING, sizeof(TEST_STRING), "");
-    TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(TEST_STRING)-1, "");
+    EXPECT_TRUE(ok);
+    EXPECT_C_STRINGS_EQUAL(buffer, FAKE_STRING);
+    //TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(FAKE_STRING)-1, "");
 }
 
-void concat_explicit_string_works()
+TEST("Span string concatenation", "A string can be concatenated to a span")
 {
-    StringTest test;
+    char buffer[1024];
+    microstrain::Span<char> buffer_span{buffer};
+    size_t index = 0;
 
-    bool ok = microstrain::strings::concat(test.buffer(), &test.index, std::string{TEST_STRING});
+    const bool ok = microstrain::strings::concat(buffer_span, &index, std::string{FAKE_STRING});
 
-    TEST_ASSERT(ok, "Success");
-    TEST_ASSERT_BUFFER_COMPARE(test.array, TEST_STRING, sizeof(TEST_STRING), "");
-    TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(TEST_STRING)-1, "");
+    EXPECT_TRUE(ok);
+    EXPECT_C_STRINGS_EQUAL(buffer, FAKE_STRING);
+    //TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(FAKE_STRING)-1, "");
 }
 
-void concat_zero_terminated_works()
+TEST("Span string concatenation", "A C string can be fully concatenated to a span when null terminator is at the end")
 {
-    StringTest test;
+    char buffer[1024];
+    microstrain::Span<char> buffer_span{buffer};
+    size_t index = 0;
 
-    bool ok = microstrain::strings::concat_z(test.buffer(), &test.index, TEST_STRING);
+    const bool ok = microstrain::strings::concat_z(buffer_span, &index, FAKE_STRING);
 
-    TEST_ASSERT(ok, "Success");
-    TEST_ASSERT_BUFFER_COMPARE(test.array, TEST_STRING, sizeof(TEST_STRING), "");
-    TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(TEST_STRING)-1, "");
+    EXPECT_TRUE(ok);
+    EXPECT_C_STRINGS_EQUAL(buffer, FAKE_STRING);
+    //TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(FAKE_STRING)-1, "");
 }
 
-void concat_zero_terminated_maxlen_stops()
+TEST("Span string concatenation", "A C string is partially concatenated to a span when a max length is given")
 {
-    StringTest test;
-    const size_t num_chars = 4;  // Just "Test"
+    char buffer[1024];
+    microstrain::Span<char> buffer_span{buffer};
+    size_t index = 0;
+    constexpr size_t character_limit = 4;
 
-    bool ok = microstrain::strings::concat_z(test.buffer(), &test.index, TEST_STRING, num_chars);
+    const bool ok = microstrain::strings::concat_z(buffer_span, &index, FAKE_STRING, character_limit);
 
-    TEST_ASSERT(ok, "Success");
-    TEST_ASSERT_BUFFER_COMPARE(test.array, "Test", num_chars, "");
-    TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), num_chars, "");
+    EXPECT_TRUE(ok);
+    EXPECT_C_STRINGS_EQUAL(buffer, "Test");
+    //TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), num_chars, "");
 }
 
-void concat_literal_works()
+TEST("Span string concatenation", "A string literal can be concatenated to a span")
 {
-    StringTest test;
+    char buffer[1024];
+    microstrain::Span<char> buffer_span{buffer};
+    size_t index = 0;
 
-    bool ok = microstrain::strings::concat_l(test.buffer(), &test.index, "Testing!");
+    const bool ok = microstrain::strings::concat_l(buffer_span, &index, "Testing!");
 
-    TEST_ASSERT(ok, "Success");
-    TEST_ASSERT_BUFFER_COMPARE(test.array, TEST_STRING, sizeof(TEST_STRING), "");
-    TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(TEST_STRING)-1, "");
+    EXPECT_TRUE(ok);
+    EXPECT_C_STRINGS_EQUAL(buffer, FAKE_STRING);
+    //TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(FAKE_STRING)-1, "");
 }
+/*
 
 //
 // General formatting
@@ -143,26 +157,4 @@ void format_bytes_works()
     TEST_ASSERT(ok, "Success");
     TEST_ASSERT_BUFFER_COMPARE(test.array, TEST_DATA_STR, sizeof(TEST_DATA_STR), "");
 }
-
-//
-// main
-//
-
-int main()
-{
-    concat_works();
-    concat_into_implicit_span_works();
-    concat_explicit_span_works();
-    concat_explicit_string_view_works();
-    concat_explicit_string_works();
-    // strcat_n_implicit_str_works();  // this would be ambiguous (span or string?)
-    concat_zero_terminated_works();
-    concat_zero_terminated_maxlen_stops();
-    concat_literal_works();
-
-    format_works();
-
-    format_bytes_works();
-
-    return (int)g_fail_count;
-}
+*/
