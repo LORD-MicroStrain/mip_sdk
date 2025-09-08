@@ -1,9 +1,11 @@
 ////////////////////////////////////////////////////////////////////////////////
 /// 7_series_threading_example.c
 ///
-/// Example program to demonstrate multithreading for data collection and
-/// command updates on 7-series devices using C
+/// Example multithreading program for 7-series devices using C
 ///
+/// This example shows a basic setup for 7-series devices to demonstrate
+/// multithreading for data collection and command updates using C.
+/// This is not an exhaustive example of all settings for those devices.
 /// If this example does not meet your specific setup needs, please consult the
 /// MIP SDK API documentation for the proper commands.
 ///
@@ -41,23 +43,20 @@
 #include <string.h>
 #include <time.h>
 
-#ifdef __APPLE__
-// Clang doesn't support threads.h
-// Adding basic functionality from threads.h for Clang support
-#include <pthread.h>
-
-typedef pthread_t thrd_t;
-typedef int (thrd_start_t)(void*);
-
-enum { thrd_success, thrd_busy, thrd_error, thrd_nomem, thrd_timedout };
-
-int thrd_create(thrd_t* __thr, void* __func, void* __arg);
-int thrd_join(thrd_t __thr, int* __res);
-int thrd_sleep(const struct timespec* __time_point, struct timespec* __remaining);
-void thrd_yield(void);
-#else
+#ifdef _MSC_VER
+// MSVC doesn't support pthread
+// Wrapping basic pthread functionality through threads.h
 #include <threads.h>
-#endif // __APPLE__
+typedef thrd_t                pthread_t;
+typedef struct pthread_attr_t pthread_attr_t;
+
+int  pthread_create(pthread_t* th, const pthread_attr_t* attr, void* (*func)(void*), void* arg);
+int  pthread_join(pthread_t t, void** res);
+int  nanosleep(const struct timespec* request, struct timespec* remain);
+void sched_yield();
+#else
+#include <pthread.h>
+#endif // _MSC_VER
 
 ////////////////////////////////////////////////////////////////////////////////
 // NOTE: Setting these globally for example purposes
@@ -66,11 +65,13 @@ void thrd_yield(void);
 // Set the port name for the connection (Serial/USB)
 #ifdef _WIN32
 static const char* PORT_NAME = "COM1";
-#else // Unix
+#else  // Unix
 static const char* PORT_NAME = "/dev/ttyACM0";
 #endif // _WIN32
 
 // Set the baudrate for the connection (Serial/USB)
+// Note: For native serial connections this needs to be 115200 due to the device default settings command
+// Use mip_3dm_*_uart_baudrate() to write and save the baudrate on the device
 static const uint32_t BAUDRATE = 115200;
 
 // TODO: Update to the desired streaming rate. Setting low for readability purposes
@@ -83,7 +84,7 @@ static const uint32_t RUN_TIME_SECONDS = 30;
 
 // TODO: Enable/disable data collection threading
 // Use this to test the behaviors of threading
-#define USE_THREADS 1
+#define USE_THREADS true
 ////////////////////////////////////////////////////////////////////////////////
 
 // Custom logging handler callback
@@ -95,8 +96,10 @@ mip_timestamp get_current_timestamp();
 
 // Device callbacks used for reading and writing packets
 bool mip_interface_user_send_to_device(mip_interface* _device, const uint8_t* _data, size_t _length);
-bool mip_interface_user_recv_from_device(mip_interface* _device, uint8_t* _buffer, size_t _max_length,
-    mip_timeout _wait_time, bool _from_cmd, size_t* _length_out, mip_timestamp* _timestamp_out);
+bool mip_interface_user_recv_from_device(
+    mip_interface* _device, uint8_t* _buffer, size_t _max_length, mip_timeout _wait_time, bool _from_cmd,
+    size_t* _length_out, mip_timestamp* _timestamp_out
+);
 
 // Common device initialization procedure
 void initialize_device(mip_interface* _device, serial_port* _device_port, const uint32_t _baudrate);
@@ -116,8 +119,8 @@ typedef struct thread_data
 } thread_data_t;
 
 // Threaded functions
-bool update_device(mip_interface* _device, mip_timeout _wait_time, bool _from_cmd);
-int data_collection_thread(void* _thread_data);
+bool  update_device(mip_interface* _device, mip_timeout _wait_time, bool _from_cmd);
+void* data_collection_thread(void* _thread_data);
 #endif // USE_THREADS
 
 // Utility functions the handle application closing and printing error messages
@@ -161,7 +164,7 @@ int main(const int argc, const char* argv[])
     mip_interface_register_packet_callback(
         &device,
         &packet_handler,
-        MIP_SENSOR_DATA_DESC_SET, // Data field descriptor set
+        MIP_SENSOR_DATA_DESC_SET, // Data descriptor set
         false,                    // Process after field callback
         &packet_callback,         // Callback
         NULL                      // User data
@@ -172,14 +175,11 @@ int main(const int argc, const char* argv[])
     // Note: This allows the update function to be split into command and data updates across multiple threads
     mip_interface_set_update_function(&device, &update_device);
 
-    thread_data_t data = {
-        .device  = &device,
-        .running = true
-    };
+    thread_data_t data = { .device = &device, .running = true };
 
     MICROSTRAIN_LOG_INFO("Creating the data collection thread.\n");
-    thrd_t data_thread;
-    thrd_create(&data_thread, data_collection_thread, (void*)&data);
+    pthread_t data_thread;
+    pthread_create(&data_thread, NULL, data_collection_thread, (void*)&data);
 #endif // USE_THREADS
 
     // Resume the device
@@ -192,7 +192,7 @@ int main(const int argc, const char* argv[])
         command_failure_terminate(&device, cmd_result, "Could not resume the device!\n");
     }
 
-    MICROSTRAIN_LOG_INFO("Sensor is configured... waiting for data.\n");
+    MICROSTRAIN_LOG_INFO("The device is configured... waiting for data.\n");
 
     // Get the start time of the device update loop to handle exiting the application
     const mip_timestamp loop_start_time = get_current_timestamp();
@@ -218,11 +218,14 @@ int main(const int argc, const char* argv[])
 
     // Join the thread back before exiting the program
     MICROSTRAIN_LOG_INFO("Waiting for the thread to join.\n");
-    int thread_return_code; // Return code from the thread function (Unused)
-    if (thrd_join(data_thread, &thread_return_code) != thrd_success)
+    void* thread_return_code = NULL; // Return code from the thread function (Unused)
+    if (pthread_join(data_thread, &thread_return_code) != 0)
     {
+        free(thread_return_code);
         terminate(&device_port, "Failed to join the thread!\n", false);
     }
+
+    free(thread_return_code);
 #endif // USE_THREADS
 
     terminate(&device_port, "Example Completed Successfully.\n", true);
@@ -255,6 +258,7 @@ void log_callback(void* _user, const microstrain_log_level _level, const char* _
         {
             fprintf(stderr, "%s: ", microstrain_logging_level_name(_level));
             vfprintf(stderr, _format, _args);
+            fflush(stderr);
             break;
         }
         case MICROSTRAIN_LOG_LEVEL_WARN:
@@ -264,6 +268,7 @@ void log_callback(void* _user, const microstrain_log_level _level, const char* _
         {
             fprintf(stdout, "%s: ", microstrain_logging_level_name(_level));
             vfprintf(stdout, _format, _args);
+            fflush(stdout);
             break;
         }
         case MICROSTRAIN_LOG_LEVEL_OFF:
@@ -352,8 +357,10 @@ bool mip_interface_user_send_to_device(mip_interface* _device, const uint8_t* _d
 ///
 /// @return True if receive was successful, false otherwise
 ///
-bool mip_interface_user_recv_from_device(mip_interface* _device, uint8_t* _buffer, size_t _max_length,
-    mip_timeout _wait_time, bool _from_cmd, size_t* _length_out, mip_timestamp* _timestamp_out)
+bool mip_interface_user_recv_from_device(
+    mip_interface* _device, uint8_t* _buffer, size_t _max_length, mip_timeout _wait_time, bool _from_cmd,
+    size_t* _length_out, mip_timestamp* _timestamp_out
+)
 {
     // Unused parameter
     (void)_from_cmd;
@@ -440,28 +447,32 @@ void initialize_device(mip_interface* _device, serial_port* _device_port, const 
 
     // Firmware version format is x.x.xx
     char firmwareVersion[16];
-    snprintf(firmwareVersion, sizeof(firmwareVersion) / sizeof(firmwareVersion[0]), "%d.%d.%02d",
-        major,
-        minor,
-        patch
-    );
+    snprintf(firmwareVersion, sizeof(firmwareVersion) / sizeof(firmwareVersion[0]), "%d.%d.%02d", major, minor, patch);
 
     MICROSTRAIN_LOG_INFO("-------- Device Information --------\n");
-    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Name",             device_info.model_name);
-    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Model Number",     device_info.model_number);
-    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Serial Number",    device_info.serial_number);
-    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Lot Number",       device_info.lot_number);
-    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Options",          device_info.device_options);
-    MICROSTRAIN_LOG_INFO("%-16s | %16s\n",  "Firmware Version", firmwareVersion);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Name", device_info.model_name);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Model Number", device_info.model_number);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Serial Number", device_info.serial_number);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Lot Number", device_info.lot_number);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Options", device_info.device_options);
+    MICROSTRAIN_LOG_INFO("%-16s | %16s\n", "Firmware Version", firmwareVersion);
     MICROSTRAIN_LOG_INFO("------------------------------------\n");
 
     // Load the default settings on the device
     // Note: This guarantees the device is in a known state
-    MICROSTRAIN_LOG_INFO("Loading default settings.\n");
+    MICROSTRAIN_LOG_INFO("Loading device default settings.\n");
     cmd_result = mip_3dm_default_device_settings(_device);
 
     if (!mip_cmd_result_is_ack(cmd_result))
     {
+        // Note: Default settings will reset the baudrate to 115200 and may cause connection issues
+        if (cmd_result == MIP_STATUS_TIMEDOUT && BAUDRATE != 115200)
+        {
+            MICROSTRAIN_LOG_WARN(
+                "On a native serial connections the baudrate needs to be 115200 for this example to run.\n"
+            );
+        }
+
         command_failure_terminate(_device, cmd_result, "Could not load device default settings!\n");
     }
 }
@@ -483,7 +494,7 @@ void configure_sensor_message_format(mip_interface* _device)
     // We could have also set it directly with information from the datasheet
 
     MICROSTRAIN_LOG_INFO("Getting the base rate for sensor data.\n");
-    uint16_t sensor_base_rate;
+    uint16_t       sensor_base_rate;
     mip_cmd_result cmd_result = mip_3dm_get_base_rate(
         _device,
         MIP_SENSOR_DATA_DESC_SET, // Data descriptor set
@@ -492,7 +503,7 @@ void configure_sensor_message_format(mip_interface* _device)
 
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        command_failure_terminate(_device, cmd_result, "Could not get sensor base rate!\n");
+        command_failure_terminate(_device, cmd_result, "Could not get the base rate for sensor data!\n");
     }
 
     // Supported sample rates can be any value from 1 up to the base rate
@@ -509,8 +520,9 @@ void configure_sensor_message_format(mip_interface* _device)
     }
 
     // Calculate the decimation (stream rate) for the device based on its base rate
-    const uint16_t sensor_decimation  = sensor_base_rate / SAMPLE_RATE_HZ;
-    MICROSTRAIN_LOG_INFO("Decimating sensor base rate %d by %d to stream data at %dHz.\n",
+    const uint16_t sensor_decimation = sensor_base_rate / SAMPLE_RATE_HZ;
+    MICROSTRAIN_LOG_INFO(
+        "Decimating sensor base rate %d by %d to stream data at %dHz.\n",
         sensor_base_rate,
         sensor_decimation,
         SAMPLE_RATE_HZ
@@ -531,7 +543,7 @@ void configure_sensor_message_format(mip_interface* _device)
 
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        command_failure_terminate(_device, cmd_result, "Could not set message format for sensor data!\n");
+        command_failure_terminate(_device, cmd_result, "Could not configure message format for sensor data!\n");
     }
 }
 
@@ -580,7 +592,8 @@ void packet_callback(void* _user, const mip_packet_view* _packet_view, mip_times
         field_descriptors_buffer[buffer_offset - 1] = '\0';
     }
 
-    MICROSTRAIN_LOG_INFO("Received a packet at %" PRIu64 " with descriptor set 0x%02X:%s\n",
+    MICROSTRAIN_LOG_INFO(
+        "Received a packet at %" PRIu64 " with descriptor set 0x%02X:%s\n",
         _timestamp,
         mip_packet_descriptor_set(_packet_view),
         field_descriptors_buffer
@@ -619,13 +632,13 @@ bool update_device(mip_interface* _device, mip_timeout _wait_time, bool _from_cm
 
     // Create a 5-millisecond timeout
     const struct timespec ts = {
-        .tv_sec  = 0,           // 0 Seconds
-        .tv_nsec = 5 * 1000000  // 5 Milliseconds
+        .tv_sec  = 0,          // 0 Seconds
+        .tv_nsec = 5 * 1000000 // 5 Milliseconds
     };
 
     // Sleep for a bit to save power
     // Note: Waiting too long in here will cause commands to timeout
-    thrd_sleep(&ts, NULL);
+    nanosleep(&ts, NULL);
 
     // Note: This needs to return true to avoid terminating the data collection thread
     // Note: Returning false may cause a race condition (see comments in mip_interface_wait_for_reply)
@@ -647,9 +660,9 @@ bool update_device(mip_interface* _device, mip_timeout _wait_time, bool _from_cm
 ///                     - device: MIP device interface
 ///                     - running: boolean controlling thread execution
 ///
-/// @returns 0 (return value unused)
+/// @returns NULL (return value unused)
 ///
-int data_collection_thread(void* _thread_data)
+void* data_collection_thread(void* _thread_data)
 {
     MICROSTRAIN_LOG_INFO("Data collection thread created!\n");
 
@@ -658,10 +671,15 @@ int data_collection_thread(void* _thread_data)
     while (thread_data->running)
     {
         // Update the device for data collection
-        if (!mip_interface_update(
+        // Note: The recommended default wait time is 10 ms, but could be 0 for non-blocking read operations
+        const bool updated = mip_interface_update(
             thread_data->device,
-            0,      // Wait time for the update (Typically only used from commands)
-            false)) // From a command (Note: This update is for data handling, not from a command)
+            10,   // Time to wait
+            false // From command
+        );
+
+        // Clean up and exit the thread on failed device updates
+        if (!updated)
         {
             // Avoid deadlocks if the connection is closed
             mip_cmd_queue* cmd_queue = mip_interface_cmd_queue(thread_data->device);
@@ -671,11 +689,11 @@ int data_collection_thread(void* _thread_data)
             break;
         }
 
-        thrd_yield();
+        sched_yield();
     }
 
     // Return value unused
-    return 0;
+    return NULL;
 }
 #endif // USE_THREADS
 
@@ -693,7 +711,7 @@ int data_collection_thread(void* _thread_data)
 ///
 void terminate(serial_port* _device_port, const char* _message, const bool _successful)
 {
-    if (strlen(_message) != 0)
+    if (_message != NULL && strlen(_message) != 0)
     {
         if (_successful)
         {
@@ -723,12 +741,11 @@ void terminate(serial_port* _device_port, const char* _message, const bool _succ
         }
     }
 
-    MICROSTRAIN_LOG_INFO("Exiting the program.\n");
+    MICROSTRAIN_LOG_INFO("Press 'Enter' to exit the program.\n");
 
-#ifdef _WIN32
-    // Keep the console open on Windows
-    system("pause");
-#endif // _WIN32
+    // Make sure the console remains open
+    const int confirm_exit = getc(stdin);
+    (void)confirm_exit; // Unused
 
     if (!_successful)
     {
@@ -751,10 +768,13 @@ void terminate(serial_port* _device_port, const char* _message, const bool _succ
 ///
 void command_failure_terminate(const mip_interface* _device, const mip_cmd_result _cmd_result, const char* _format, ...)
 {
-    va_list args;
-    va_start(args, _format);
-    MICROSTRAIN_LOG_ERROR_V(_format, args);
-    va_end(args);
+    if (_format != NULL && strlen(_format) != 0)
+    {
+        va_list args;
+        va_start(args, _format);
+        MICROSTRAIN_LOG_ERROR_V(_format, args);
+        va_end(args);
+    }
 
     MICROSTRAIN_LOG_ERROR("Command Result: (%d) %s.\n", _cmd_result, mip_cmd_result_to_string(_cmd_result));
 
@@ -771,31 +791,35 @@ void command_failure_terminate(const mip_interface* _device, const mip_cmd_resul
     }
 }
 
-#ifdef __APPLE__
-// pthread wrappers for unsupported threads.h functionality used in this example
+#ifdef _MSC_VER
+// threads.h wrappers for unsupported pthread functionality used in this example
 
-// pthread wrapper for threads.h thrd_create
-int thrd_create(thrd_t* __thr, void* __func, void* __arg)
+// threads.h wrapper for pthread pthread_create
+int pthread_create(pthread_t* th, const pthread_attr_t* attr, void* (*func)(void*), void* arg)
 {
-    return pthread_create(__thr, NULL, __func, __arg);
+    // Unused parameter
+    (void)attr;
+
+    return thrd_create(th, (thrd_start_t)func, arg);
 }
 
-// pthread wrapper for threads.h thrd_join
-int thrd_join(thrd_t __thr, int* __res)
+// threads.h wrapper for pthread pthread_join
+int pthread_join(pthread_t t, void** res)
 {
-    return pthread_join(__thr, (void**)__res);
+    *res = malloc(sizeof(int));
+    return thrd_join(t, *res);
 }
 
-// sleep wrapper for threads.h thrd_sleep
-int thrd_sleep(const struct timespec* __time_point, struct timespec* __remaining)
+// sleep wrapper for pthread nanosleep
+int nanosleep(const struct timespec* request, struct timespec* remain)
 {
     // Sleep for some duration
-    return nanosleep(__time_point, __remaining);
+    return thrd_sleep(request, remain);
 }
 
-// pthread wrapper for threads.h thrd_yield
-void thrd_yield()
+// threads.h wrapper for pthread sched_yield
+void sched_yield()
 {
-    sched_yield();
+    thrd_yield();
 }
-#endif // __APPLE__
+#endif // _MSC_VER

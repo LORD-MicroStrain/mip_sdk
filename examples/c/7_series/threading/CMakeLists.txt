@@ -54,7 +54,7 @@ if(NOT ${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_LIST_DIR})
     )
 endif()
 
-if(UNIX AND NOT APPLE)
+if(NOT MSVC)
     find_package(Threads REQUIRED)
 
     target_link_libraries(${PROJECT_NAME} PRIVATE
