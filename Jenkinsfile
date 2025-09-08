@@ -33,7 +33,13 @@ def checkoutRepo() {
 def setUpWorkspace()
 {
     cleanWs()
+    env.setProperty('BRANCH_NAME', branchName())
     unstash 'source-code'
+
+    // Debug what was unstashed
+    sh 'ls -la'
+    sh 'ls -la .git || echo "No .git directory found after unstash"'
+    sh 'git status || echo "Not a git repository"'
 }
 
 def buildLinux(String os, String arch, String options = "")
@@ -42,6 +48,7 @@ def buildLinux(String os, String arch, String options = "")
     sh "./.devcontainer/docker_build.sh --os ${os} --arch ${arch} ${options}"
 }
 
+/*
 def postBuild(boolean archiveTestResults = true)
 {
     dir("${BUILD_DIRECTORY}") {
@@ -54,6 +61,7 @@ def postBuild(boolean archiveTestResults = true)
         }
     }
 }
+ */
 
 pipeline {
     agent none
@@ -77,13 +85,14 @@ pipeline {
             steps {
                 script {
                     checkoutRepo()
-                    stash includes: '**', name: 'source-code'
+                    stash includes: '**', name: 'source-code', useDefaultExcludes: false
                 }
             }
         }
 
         stage('Multi-platform staging') {
             parallel {
+/*
                 stage('Windows x64') {
                     agent {
                         label 'windows10'
@@ -119,7 +128,7 @@ pipeline {
                     }
                     post {
                         success {
-                            postBuild()
+                            archiveArtifacts artifacts: "${BUILD_DIRECTORY}/mipsdk_*"
                         }
                     }
                 }
@@ -160,10 +169,11 @@ pipeline {
                     }
                     post {
                         success {
-                            postBuild()
+                            archiveArtifacts artifacts: "${BUILD_DIRECTORY}/mipsdk_*"
                         }
                     }
                 }
+ */
 
                 stage('Ubuntu amd64') {
                     agent {
@@ -183,11 +193,12 @@ pipeline {
                     }
                     post {
                         success {
-                            postBuild()
+                            archiveArtifacts artifacts: "${BUILD_DIRECTORY}/mipsdk_*"
                         }
                     }
                 }
 
+/*
                 stage('Ubuntu arm64') {
                     agent {
                         label 'linux-arm64'
@@ -233,6 +244,7 @@ pipeline {
                         }
                     }
                 }
+ */
             }
         }
 
@@ -255,7 +267,7 @@ pipeline {
             }
             post {
                 success {
-                    postBuild(false)
+                    archiveArtifacts artifacts: "${BUILD_DIRECTORY}/mipsdk_*"
                 }
             }
         }
@@ -267,6 +279,7 @@ pipeline {
                     node("linux-amd64") {
                         dir("/tmp/mip_sdk_${env.BRANCH_NAME}_${currentBuild.number}") {
                             copyArtifacts(projectName: "${env.JOB_NAME}", selector: specific("${currentBuild.number}"));
+                            sh "pwd; ls -a"
                             withCredentials([string(credentialsId: 'Github_Token', variable: 'GH_TOKEN')]) {
                                 sh '''
                                     # Release to github
