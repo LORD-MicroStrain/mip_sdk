@@ -1,4 +1,3 @@
-
 // Utility function for getting the real branch name even in a pull request
 def branchName() {
     if (env.CHANGE_BRANCH) {
@@ -33,6 +32,7 @@ def checkoutRepo() {
 def setUpWorkspace()
 {
     cleanWs()
+    env.setProperty('BRANCH_NAME', branchName())
     unstash 'source-code'
 }
 
@@ -40,19 +40,6 @@ def buildLinux(String os, String arch, String options = "")
 {
     setUpWorkspace()
     sh "./.devcontainer/docker_build.sh --os ${os} --arch ${arch} ${options}"
-}
-
-def postBuild(boolean archiveTestResults = true)
-{
-    dir("${BUILD_DIRECTORY}") {
-        archiveArtifacts artifacts: 'mipsdk_*'
-
-        if (archiveTestResults)
-        {
-            archiveArtifacts artifacts: 'unit_test_results.xml', allowEmptyArchive: false
-            junit testResults: "unit_test_results.xml", allowEmptyResults: false
-        }
-    }
 }
 
 pipeline {
@@ -77,7 +64,7 @@ pipeline {
             steps {
                 script {
                     checkoutRepo()
-                    stash includes: '**', name: 'source-code'
+                    stash includes: '**', name: 'source-code', useDefaultExcludes: false
                 }
             }
         }
@@ -119,7 +106,10 @@ pipeline {
                     }
                     post {
                         always {
-                            postBuild()
+                            junit testResults: "${BUILD_DIRECTORY}/unit_test_results.xml", allowEmptyResults: false
+                        }
+                        success {
+                            archiveArtifacts artifacts: "${BUILD_DIRECTORY}/mipsdk_*"
                         }
                     }
                 }
@@ -160,7 +150,10 @@ pipeline {
                     }
                     post {
                         always {
-                            postBuild()
+                            junit testResults: "${BUILD_DIRECTORY}/unit_test_results.xml", allowEmptyResults: false
+                        }
+                        success {
+                            archiveArtifacts artifacts: "${BUILD_DIRECTORY}/mipsdk_*"
                         }
                     }
                 }
@@ -183,7 +176,10 @@ pipeline {
                     }
                     post {
                         always {
-                            postBuild()
+                            junit testResults: "${BUILD_DIRECTORY}/unit_test_results.xml", allowEmptyResults: false
+                        }
+                        success {
+                            archiveArtifacts artifacts: "${BUILD_DIRECTORY}/mipsdk_*"
                         }
                     }
                 }
@@ -206,7 +202,10 @@ pipeline {
                     }
                     post {
                         always {
-                            postBuild()
+                            junit testResults: "${BUILD_DIRECTORY}/unit_test_results.xml", allowEmptyResults: false
+                        }
+                        success {
+                            archiveArtifacts artifacts: "${BUILD_DIRECTORY}/mipsdk_*"
                         }
                     }
                 }
@@ -229,7 +228,10 @@ pipeline {
                     }
                     post {
                         always {
-                            postBuild()
+                            junit testResults: "${BUILD_DIRECTORY}/unit_test_results.xml", allowEmptyResults: false
+                        }
+                        success {
+                            archiveArtifacts artifacts: "${BUILD_DIRECTORY}/mipsdk_*"
                         }
                     }
                 }
@@ -254,8 +256,8 @@ pipeline {
                 }
             }
             post {
-                always {
-                    postBuild(false)
+                success {
+                    archiveArtifacts artifacts: "${BUILD_DIRECTORY}/mipsdk_*"
                 }
             }
         }

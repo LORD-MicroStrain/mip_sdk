@@ -113,3 +113,7 @@ fi
 popd
 
 rm "${git_askpass_file}"
+
+# There was an issue before when the script was exiting as a "failure" when
+# there were no changes to the documentation.
+exit 0
