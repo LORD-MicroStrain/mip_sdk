@@ -275,7 +275,7 @@ pipeline {
     post {
         success {
             script {
-                if (BRANCH_NAME && BRANCH_NAME == 'develop') {
+                if (BRANCH_NAME && BRANCH_NAME == 'bugfix/jenkins_release_step') {
                     node("linux-amd64") {
                         dir("/tmp/mip_sdk_${env.BRANCH_NAME}_${currentBuild.number}") {
                             copyArtifacts(projectName: "${env.JOB_NAME}", selector: specific("${currentBuild.number}"));
