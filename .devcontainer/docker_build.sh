@@ -65,23 +65,32 @@ else
   configure_flags="\
     -DMICROSTRAIN_BUILD_EXAMPLES=ON \
     -DMICROSTRAIN_BUILD_PACKAGE=ON \
+    -DMICROSTRAIN_BUILD_TESTS=ON \
     -DCMAKE_BUILD_TYPE=RELEASE"
   build_target="package"
 fi
 
 # Run the build in the docker image
 docker run \
-  --rm \
-  ${docker_it_flags} \
-  --entrypoint="/bin/bash" \
-  -v "${project_dir}:${docker_project_dir}" \
-  -w "${docker_project_dir}" \
-  --user="microstrain" \
-  "${image_name}" -c " \
-    rm -rf ${docker_project_dir}/${build_dir_name}; \
-    mkdir ${docker_project_dir}/${build_dir_name}; \
-    cd ${docker_project_dir}/${build_dir_name}; \
-    cmake ${docker_project_dir} ${configure_flags}; \
-    cmake --build . -j$(nproc); \
-    cmake --build . --target ${build_target}; \
-  "
+    --rm \
+    ${docker_it_flags} \
+    --entrypoint="/bin/bash" \
+    -v "${project_dir}:${docker_project_dir}" \
+    -w "${docker_project_dir}" \
+    --user="microstrain" \
+   "${image_name}" -c " \
+        rm -rf ${docker_project_dir}/${build_dir_name}; \
+        mkdir ${docker_project_dir}/${build_dir_name}; \
+        cd ${docker_project_dir}/${build_dir_name}; \
+        cmake ${docker_project_dir} ${configure_flags}; \
+        cmake --build . -j$(nproc); \
+        cmake --build . --target ${build_target}; \
+        if [ ${build_docs} != true ]; then \
+            ctest \
+                -C Release \
+                --verbose \
+                --output-on-failure \
+                --output-junit unit_test_results.xml \
+                --parallel; \
+        fi; \
+    "
