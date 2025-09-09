@@ -5,7 +5,8 @@
 #include <framework_wrappers.hpp>
 #include <microstrain/strings.hpp>
 
-static constexpr char CHECK_STRING[] = "Edge cases: \"double quotes\" 'single quotes' & ampersand < > angle brackets {curly} [square] (parens) $100 €50 @user #hashtag email@test.com https://example.com newline:\nnext line\ttab here\\ backslash 100% café résumé naïve Москва 北京 🌍🚀👍";
+static constexpr char CHECK_STRING[] = "Test: \"quotes\" 'single' & <xml/> {json} [array] $100 €50 ¥200 @user #tag 🚀 \n\t\\ 100% café naïve";
+size_t CHECK_STRING_LENGTH = 102; // Length without null terminator
 
 struct BufferWrapper
 {
@@ -16,26 +17,26 @@ struct BufferWrapper
 
 // TODO: Figure out naming for these tests
 
-
 TEST("Span string concatenation", "A C string can be concatenated to an explicitly created span")
 {
     BufferWrapper buffer{};
 
-    const bool ok = microstrain::strings::concat(buffer.span, &buffer.index, CHECK_STRING, sizeof(CHECK_STRING) - 1);
+    const bool ok = microstrain::strings::concat(buffer.span, &buffer.index, CHECK_STRING, CHECK_STRING_LENGTH);
+
     EXPECT_TRUE(ok);
-    EXPECT_C_STRINGS_EQUAL(buffer.array, CHECK_STRING);
-    //TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(FAKE_STRING)-1, "");
+    EXPECT_C_STRINGS_EQUAL(CHECK_STRING, buffer.array);
+    EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(CHECK_STRING_LENGTH, buffer.array);
 }
 
 TEST("Span string concatenation", "A C string can be concatenated to an implicitly created span")
 {
     BufferWrapper buffer{};
 
-    const bool ok = microstrain::strings::concat({buffer.array, sizeof(buffer.array)}, &buffer.index, CHECK_STRING, sizeof(CHECK_STRING)-1);
+    const bool ok = microstrain::strings::concat({buffer.array, sizeof(buffer.array)}, &buffer.index, CHECK_STRING, CHECK_STRING_LENGTH);
 
     EXPECT_TRUE(ok);
     EXPECT_C_STRINGS_EQUAL(buffer.array, CHECK_STRING);
-    //TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(FAKE_STRING)-1, "");
+    EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(CHECK_STRING_LENGTH, buffer.array);
 }
 
 TEST("Span string concatenation", "A span can be concatenated to another span")
@@ -46,7 +47,7 @@ TEST("Span string concatenation", "A span can be concatenated to another span")
 
     EXPECT_TRUE(ok);
     EXPECT_C_STRINGS_EQUAL(buffer.array, CHECK_STRING);
-    //TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(FAKE_STRING)-1, "");
+    EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(CHECK_STRING_LENGTH, buffer.array);
 }
 
 TEST("Span string concatenation", "A string view can be concatenated to a span")
@@ -57,7 +58,7 @@ TEST("Span string concatenation", "A string view can be concatenated to a span")
 
     EXPECT_TRUE(ok);
     EXPECT_C_STRINGS_EQUAL(buffer.array, CHECK_STRING);
-    //TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(FAKE_STRING)-1, "");
+    EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(CHECK_STRING_LENGTH, buffer.array);
 }
 
 TEST("Span string concatenation", "A string can be concatenated to a span")
@@ -68,7 +69,7 @@ TEST("Span string concatenation", "A string can be concatenated to a span")
 
     EXPECT_TRUE(ok);
     EXPECT_C_STRINGS_EQUAL(buffer.array, CHECK_STRING);
-    //TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(FAKE_STRING)-1, "");
+    EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(CHECK_STRING_LENGTH, buffer.array);
 }
 
 TEST("Span string concatenation", "A C string can be fully concatenated to a span when null terminator is at the end")
@@ -79,7 +80,7 @@ TEST("Span string concatenation", "A C string can be fully concatenated to a spa
 
     EXPECT_TRUE(ok);
     EXPECT_C_STRINGS_EQUAL(buffer.array, CHECK_STRING);
-    //TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(FAKE_STRING)-1, "");
+    EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(CHECK_STRING_LENGTH, buffer.array);
 }
 
 TEST("Span string concatenation", "A C string is partially concatenated to a span when a max length is given")
@@ -91,7 +92,7 @@ TEST("Span string concatenation", "A C string is partially concatenated to a spa
 
     EXPECT_TRUE(ok);
     EXPECT_C_STRINGS_EQUAL(buffer.array, "1234");
-    //TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), num_chars, "");
+    EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(character_limit, buffer.array);
 }
 
 TEST("Span string concatenation", "A string literal can be concatenated to a span")
@@ -102,7 +103,7 @@ TEST("Span string concatenation", "A string literal can be concatenated to a spa
 
     EXPECT_TRUE(ok);
     EXPECT_C_STRINGS_EQUAL(buffer.array, "123456789");
-    //TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(FAKE_STRING)-1, "");
+    EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(9, buffer.array);
 }
 
 TEST("Span string formatting", "A span string can be formatted properly")
