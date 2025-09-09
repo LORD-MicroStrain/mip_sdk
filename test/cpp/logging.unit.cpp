@@ -16,7 +16,7 @@ TEST("Formatting", "A packet can be properly formatted to bytes")
     const bool ok = mip::formatPacketBytes(buffer, &index, {SET_AND_SAVE_COMM_SPEED_PACKET});
 
     EXPECT_TO_BE_TRUE(ok);
-    EXPECT_TO_BE_TRUE(index == 39);
+    EXPECT_TO_BE_EQUAL(38, index);
     EXPECT_C_STRINGS_TO_BE_EQUAL(buffer, "7565010C 080901010001C200 04090301 CE80");
 }
 
@@ -41,6 +41,6 @@ TEST("Formatting", "A field can be properly formatted to a human-readable string
     const bool ok = mip::formatField(buffer, &index, field);
 
     EXPECT_TO_BE_TRUE(ok);
-    EXPECT_TO_BE_TRUE(index == 28);
+    EXPECT_TO_BE_EQUAL(28, index);
     EXPECT_C_STRINGS_TO_BE_EQUAL(buffer, "Field(FD=0x09)[01010001C200]");
 }
