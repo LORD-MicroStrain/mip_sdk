@@ -7,8 +7,6 @@
 
 
 static constexpr char FAKE_STRING[] = "Testing!";
-static const uint8_t TEST_DATA[] = { 0x0F, 0x2E, 0x4D, 0x6C, 0x8B, 0xAA };
-static const char TEST_DATA_STR[] = "0F2E 4D6C 8BAA";
 
 
 /*
@@ -141,18 +139,15 @@ TEST("Span string formatting", "An span string can be formatted properly")
     EXPECT_C_STRINGS_EQUAL(buffer, "test 100 100");
 }
 
-/*
-//
-// Bytes
-//
-
-void format_bytes_works()
+TEST("Byte formatting", "A byte array can be formatted to a text buffer in hexadecimal")
 {
-    StringTest test;
+    char buffer[1024];
+    microstrain::Span<char> buffer_span{buffer};
+    size_t index = 0;
+    const uint8_t DATA[] = { 0x0F, 0x2E, 0x4D, 0x6C, 0x8B, 0xAA };
 
-    bool ok = microstrain::strings::bytesToHexStr(test.buffer(), &test.index, {TEST_DATA}, 2);
+    const bool ok = microstrain::strings::bytesToHexStr(buffer_span, &index, DATA, 2);
 
-    TEST_ASSERT(ok, "Success");
-    TEST_ASSERT_BUFFER_COMPARE(test.array, TEST_DATA_STR, sizeof(TEST_DATA_STR), "");
+    EXPECT_TRUE(ok);
+    EXPECT_C_STRINGS_EQUAL(buffer, "0F2E 4D6C 8BAA");
 }
-*/
