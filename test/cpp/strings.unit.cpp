@@ -5,7 +5,7 @@
 #include <framework_wrappers.hpp>
 #include <microstrain/strings.hpp>
 
-static constexpr char TEST_STRING[] = "Testing!";
+static constexpr char CHECK_STRING[] = "Edge cases: \"double quotes\" 'single quotes' & ampersand < > angle brackets {curly} [square] (parens) $100 €50 @user #hashtag email@test.com https://example.com newline:\nnext line\ttab here\\ backslash 100% café résumé naïve Москва 北京 🌍🚀👍";
 
 struct BufferWrapper
 {
@@ -21,10 +21,9 @@ TEST("Span string concatenation", "A C string can be concatenated to an explicit
 {
     BufferWrapper buffer{};
 
-    const bool ok = microstrain::strings::concat(buffer.span, &buffer.index, TEST_STRING, sizeof(TEST_STRING) - 1);
-
+    const bool ok = microstrain::strings::concat(buffer.span, &buffer.index, CHECK_STRING, sizeof(CHECK_STRING) - 1);
     EXPECT_TRUE(ok);
-    EXPECT_C_STRINGS_EQUAL(buffer.array, TEST_STRING);
+    EXPECT_C_STRINGS_EQUAL(buffer.array, CHECK_STRING);
     //TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(FAKE_STRING)-1, "");
 }
 
@@ -32,10 +31,10 @@ TEST("Span string concatenation", "A C string can be concatenated to an implicit
 {
     BufferWrapper buffer{};
 
-    const bool ok = microstrain::strings::concat({buffer.array, sizeof(buffer.array)}, &buffer.index, TEST_STRING, sizeof(TEST_STRING)-1);
+    const bool ok = microstrain::strings::concat({buffer.array, sizeof(buffer.array)}, &buffer.index, CHECK_STRING, sizeof(CHECK_STRING)-1);
 
     EXPECT_TRUE(ok);
-    EXPECT_C_STRINGS_EQUAL(buffer.array, TEST_STRING);
+    EXPECT_C_STRINGS_EQUAL(buffer.array, CHECK_STRING);
     //TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(FAKE_STRING)-1, "");
 }
 
@@ -43,10 +42,10 @@ TEST("Span string concatenation", "A span can be concatenated to another span")
 {
     BufferWrapper buffer{};
 
-    const bool ok = microstrain::strings::concat(buffer.span, &buffer.index, microstrain::Span<const char>{TEST_STRING});
+    const bool ok = microstrain::strings::concat(buffer.span, &buffer.index, microstrain::Span<const char>{CHECK_STRING});
 
     EXPECT_TRUE(ok);
-    EXPECT_C_STRINGS_EQUAL(buffer.array, TEST_STRING);
+    EXPECT_C_STRINGS_EQUAL(buffer.array, CHECK_STRING);
     //TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(FAKE_STRING)-1, "");
 }
 
@@ -54,10 +53,10 @@ TEST("Span string concatenation", "A string view can be concatenated to a span")
 {
     BufferWrapper buffer{};
 
-    const bool ok = microstrain::strings::concat(buffer.span, &buffer.index, std::string_view{TEST_STRING});
+    const bool ok = microstrain::strings::concat(buffer.span, &buffer.index, std::string_view{CHECK_STRING});
 
     EXPECT_TRUE(ok);
-    EXPECT_C_STRINGS_EQUAL(buffer.array, TEST_STRING);
+    EXPECT_C_STRINGS_EQUAL(buffer.array, CHECK_STRING);
     //TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(FAKE_STRING)-1, "");
 }
 
@@ -65,10 +64,10 @@ TEST("Span string concatenation", "A string can be concatenated to a span")
 {
     BufferWrapper buffer{};
 
-    const bool ok = microstrain::strings::concat(buffer.span, &buffer.index, std::string{TEST_STRING});
+    const bool ok = microstrain::strings::concat(buffer.span, &buffer.index, std::string{CHECK_STRING});
 
     EXPECT_TRUE(ok);
-    EXPECT_C_STRINGS_EQUAL(buffer.array, TEST_STRING);
+    EXPECT_C_STRINGS_EQUAL(buffer.array, CHECK_STRING);
     //TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(FAKE_STRING)-1, "");
 }
 
@@ -76,10 +75,10 @@ TEST("Span string concatenation", "A C string can be fully concatenated to a spa
 {
     BufferWrapper buffer{};
 
-    const bool ok = microstrain::strings::concat_z(buffer.span, &buffer.index, TEST_STRING);
+    const bool ok = microstrain::strings::concat_z(buffer.span, &buffer.index, CHECK_STRING);
 
     EXPECT_TRUE(ok);
-    EXPECT_C_STRINGS_EQUAL(buffer.array, TEST_STRING);
+    EXPECT_C_STRINGS_EQUAL(buffer.array, CHECK_STRING);
     //TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(FAKE_STRING)-1, "");
 }
 
@@ -88,10 +87,10 @@ TEST("Span string concatenation", "A C string is partially concatenated to a spa
     BufferWrapper buffer{};
     constexpr size_t character_limit = 4;
 
-    const bool ok = microstrain::strings::concat_z(buffer.span, &buffer.index, TEST_STRING, character_limit);
+    const bool ok = microstrain::strings::concat_z(buffer.span, &buffer.index, "123456789", character_limit);
 
     EXPECT_TRUE(ok);
-    EXPECT_C_STRINGS_EQUAL(buffer.array, "Test");
+    EXPECT_C_STRINGS_EQUAL(buffer.array, "1234");
     //TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), num_chars, "");
 }
 
@@ -99,14 +98,14 @@ TEST("Span string concatenation", "A string literal can be concatenated to a spa
 {
     BufferWrapper buffer{};
 
-    const bool ok = microstrain::strings::concat_l(buffer.span, &buffer.index, "Testing!");
+    const bool ok = microstrain::strings::concat_l(buffer.span, &buffer.index, "123456789");
 
     EXPECT_TRUE(ok);
-    EXPECT_C_STRINGS_EQUAL(buffer.array, TEST_STRING);
+    EXPECT_C_STRINGS_EQUAL(buffer.array, "123456789");
     //TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(FAKE_STRING)-1, "");
 }
 
-TEST("Span string formatting", "An span string can be formatted properly")
+TEST("Span string formatting", "A span string can be formatted properly")
 {
     BufferWrapper buffer{};
 
