@@ -23,8 +23,8 @@ TEST("Span string concatenation", "A C string can be concatenated to an explicit
 
     const bool ok = microstrain::strings::concat(buffer.span, &buffer.index, CHECK_STRING, CHECK_STRING_LENGTH);
 
-    EXPECT_TRUE(ok);
-    EXPECT_C_STRINGS_EQUAL(CHECK_STRING, buffer.array);
+    EXPECT_TO_BE_TRUE(ok);
+    EXPECT_C_STRINGS_TO_BE_EQUAL(CHECK_STRING, buffer.array);
     EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(CHECK_STRING_LENGTH, buffer.array);
 }
 
@@ -34,8 +34,8 @@ TEST("Span string concatenation", "A C string can be concatenated to an implicit
 
     const bool ok = microstrain::strings::concat({buffer.array, sizeof(buffer.array)}, &buffer.index, CHECK_STRING, CHECK_STRING_LENGTH);
 
-    EXPECT_TRUE(ok);
-    EXPECT_C_STRINGS_EQUAL(buffer.array, CHECK_STRING);
+    EXPECT_TO_BE_TRUE(ok);
+    EXPECT_C_STRINGS_TO_BE_EQUAL(buffer.array, CHECK_STRING);
     EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(CHECK_STRING_LENGTH, buffer.array);
 }
 
@@ -45,8 +45,8 @@ TEST("Span string concatenation", "A span can be concatenated to another span")
 
     const bool ok = microstrain::strings::concat(buffer.span, &buffer.index, microstrain::Span<const char>{CHECK_STRING});
 
-    EXPECT_TRUE(ok);
-    EXPECT_C_STRINGS_EQUAL(buffer.array, CHECK_STRING);
+    EXPECT_TO_BE_TRUE(ok);
+    EXPECT_C_STRINGS_TO_BE_EQUAL(buffer.array, CHECK_STRING);
     EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(CHECK_STRING_LENGTH, buffer.array);
 }
 
@@ -56,8 +56,8 @@ TEST("Span string concatenation", "A string view can be concatenated to a span")
 
     const bool ok = microstrain::strings::concat(buffer.span, &buffer.index, std::string_view{CHECK_STRING});
 
-    EXPECT_TRUE(ok);
-    EXPECT_C_STRINGS_EQUAL(buffer.array, CHECK_STRING);
+    EXPECT_TO_BE_TRUE(ok);
+    EXPECT_C_STRINGS_TO_BE_EQUAL(buffer.array, CHECK_STRING);
     EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(CHECK_STRING_LENGTH, buffer.array);
 }
 
@@ -67,8 +67,8 @@ TEST("Span string concatenation", "A string can be concatenated to a span")
 
     const bool ok = microstrain::strings::concat(buffer.span, &buffer.index, std::string{CHECK_STRING});
 
-    EXPECT_TRUE(ok);
-    EXPECT_C_STRINGS_EQUAL(buffer.array, CHECK_STRING);
+    EXPECT_TO_BE_TRUE(ok);
+    EXPECT_C_STRINGS_TO_BE_EQUAL(buffer.array, CHECK_STRING);
     EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(CHECK_STRING_LENGTH, buffer.array);
 }
 
@@ -78,8 +78,8 @@ TEST("Span string concatenation", "A C string can be fully concatenated to a spa
 
     const bool ok = microstrain::strings::concat_z(buffer.span, &buffer.index, CHECK_STRING);
 
-    EXPECT_TRUE(ok);
-    EXPECT_C_STRINGS_EQUAL(buffer.array, CHECK_STRING);
+    EXPECT_TO_BE_TRUE(ok);
+    EXPECT_C_STRINGS_TO_BE_EQUAL(buffer.array, CHECK_STRING);
     EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(CHECK_STRING_LENGTH, buffer.array);
 }
 
@@ -90,8 +90,8 @@ TEST("Span string concatenation", "A C string is partially concatenated to a spa
 
     const bool ok = microstrain::strings::concat_z(buffer.span, &buffer.index, "123456789", character_limit);
 
-    EXPECT_TRUE(ok);
-    EXPECT_C_STRINGS_EQUAL(buffer.array, "1234");
+    EXPECT_TO_BE_TRUE(ok);
+    EXPECT_C_STRINGS_TO_BE_EQUAL(buffer.array, "1234");
     EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(character_limit, buffer.array);
 }
 
@@ -101,8 +101,8 @@ TEST("Span string concatenation", "A string literal can be concatenated to a spa
 
     const bool ok = microstrain::strings::concat_l(buffer.span, &buffer.index, "123456789");
 
-    EXPECT_TRUE(ok);
-    EXPECT_C_STRINGS_EQUAL(buffer.array, "123456789");
+    EXPECT_TO_BE_TRUE(ok);
+    EXPECT_C_STRINGS_TO_BE_EQUAL(buffer.array, "123456789");
     EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(9, buffer.array);
 }
 
@@ -112,8 +112,8 @@ TEST("Span string formatting", "A span string can be formatted properly")
 
     const bool ok = microstrain::strings::format(buffer.span, &buffer.index, "%s %u %02X", "test", 100, 256);
 
-    EXPECT_TRUE(ok);
-    EXPECT_C_STRINGS_EQUAL(buffer.array, "test 100 100");
+    EXPECT_TO_BE_TRUE(ok);
+    EXPECT_C_STRINGS_TO_BE_EQUAL(buffer.array, "test 100 100");
 }
 
 TEST("Byte formatting", "A byte array can be formatted to a text buffer in hexadecimal")
@@ -123,6 +123,6 @@ TEST("Byte formatting", "A byte array can be formatted to a text buffer in hexad
 
     const bool ok = microstrain::strings::bytesToHexStr(buffer.span, &buffer.index, DATA, 2);
 
-    EXPECT_TRUE(ok);
-    EXPECT_C_STRINGS_EQUAL(buffer.array, "0F2E 4D6C 8BAA");
+    EXPECT_TO_BE_TRUE(ok);
+    EXPECT_C_STRINGS_TO_BE_EQUAL(buffer.array, "0F2E 4D6C 8BAA");
 }
