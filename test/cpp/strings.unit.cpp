@@ -128,22 +128,20 @@ TEST("Span string concatenation", "A string literal can be concatenated to a spa
     EXPECT_C_STRINGS_EQUAL(buffer, FAKE_STRING);
     //TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(FAKE_STRING)-1, "");
 }
-/*
 
-//
-// General formatting
-//
-
-void format_works()
+TEST("Span string formatting", "An span string can be formatted properly")
 {
-    StringTest test;
+    char buffer[1024];
+    microstrain::Span<char> buffer_span{buffer};
+    size_t index = 0;
 
-    bool ok = microstrain::strings::format({test.array, sizeof(test.array)}, &test.index, "%s %u %02X", "test", 100, 256);
+    const bool ok = microstrain::strings::format(buffer_span, &index, "%s %u %02X", "test", 100, 256);
 
-    TEST_ASSERT(ok, "Success");
-    TEST_ASSERT_BUFFER_COMPARE(test.array, "test 100 100", 13, "");
+    EXPECT_TRUE(ok);
+    EXPECT_C_STRINGS_EQUAL(buffer, "test 100 100");
 }
 
+/*
 //
 // Bytes
 //
