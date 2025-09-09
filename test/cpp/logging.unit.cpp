@@ -1,7 +1,7 @@
 #include <microstrain_test.hpp>
 #include <mip/mip_logging.hpp>
 
-constexpr uint8_t SET_AND_SAVE_COMM_SPEED_PAYLOAD[] = {
+constexpr uint8_t SET_AND_SAVE_COMM_SPEED_PACKET[] = {
     0x75, 0x65, 0x01, 0x0c, 0x08, 0x09,
     0x01, 0x01, 0x00, 0x01, 0xc2, 0x00,
     0x04, 0x09, 0x03, 0x01,
@@ -13,7 +13,7 @@ TEST("Formatting", "A packet can be properly formatted to bytes")
     char buffer[128];
     size_t index = 0;
 
-    const bool ok = mip::formatPacketBytes(buffer, &index, {SET_AND_SAVE_COMM_SPEED_PAYLOAD});
+    const bool ok = mip::formatPacketBytes(buffer, &index, {SET_AND_SAVE_COMM_SPEED_PACKET});
 
     EXPECT_TO_BE_TRUE(ok);
     EXPECT_TO_BE_TRUE(index == 39);
@@ -25,7 +25,7 @@ TEST("Formatting", "A packet can be properly formatted to a human-readable strin
     char buffer[128];
     size_t index = 0;
 
-    const bool ok = mip::formatPacket(buffer, &index, {SET_AND_SAVE_COMM_SPEED_PAYLOAD});
+    const bool ok = mip::formatPacket(buffer, &index, {SET_AND_SAVE_COMM_SPEED_PACKET});
 
     EXPECT_TO_BE_TRUE(ok);
     EXPECT_TO_BE_EQUAL(68, index);
@@ -36,7 +36,7 @@ TEST("Formatting", "A field can be properly formatted to a human-readable string
 {
     char buffer[128];
     size_t index = 0;
-    const mip::FieldView field = mip::PacketView(SET_AND_SAVE_COMM_SPEED_PAYLOAD).firstField();
+    const mip::FieldView field = mip::PacketView(SET_AND_SAVE_COMM_SPEED_PACKET).firstField();
 
     const bool ok = mip::formatField(buffer, &index, field);
 
