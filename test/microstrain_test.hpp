@@ -1,3 +1,12 @@
+/**
+	Wrapper library for C/C++ automated testing frameworks
+
+	The goal is to provide a standardized interface for testing, regardless of the
+	backend framework being used.
+
+	TODO: This should be moved to its own repository so it can be used by multiple
+          projects
+*/
 #pragma once
 
 #ifdef USE_DOCTEST

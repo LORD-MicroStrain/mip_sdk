@@ -2,7 +2,7 @@
 
 #include <string_view>
 
-#include <framework_wrappers.hpp>
+#include <microstrain_test.hpp>
 #include <microstrain/strings.hpp>
 
 static constexpr char CHECK_STRING[] = "Test: \"quotes\" 'single' & <xml/> {json} [array] $100 €50 ¥200 @user #tag 🚀 \n\t\\ 100% café naïve";

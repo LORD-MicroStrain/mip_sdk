@@ -11,7 +11,7 @@ add_executable(CppUnitTestRunner
 
 target_link_libraries(CppUnitTestRunner
     ${MIP_LIBRARY}
-    framework_wrappers
+    microstrain_test
 )
 
 include(${doctest_SOURCE_DIR}/scripts/cmake/doctest.cmake)

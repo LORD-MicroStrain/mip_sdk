@@ -1,4 +1,4 @@
-#include <framework_wrappers.hpp>
+#include <microstrain_test.hpp>
 #include <mip/mip_logging.hpp>
 
 constexpr uint8_t SET_AND_SAVE_COMM_SPEED_PAYLOAD[] = {

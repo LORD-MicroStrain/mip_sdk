@@ -6,17 +6,17 @@ FetchContent_Declare(doctest
 FetchContent_MakeAvailable(doctest)
 
 # Framework wrapper library - Should probably be moved to its own repository at some point.
-add_library(framework_wrappers
-    "framework_wrappers.hpp"
-    "framework_wrappers.cpp"
+add_library(microstrain_test
+    "microstrain_test.hpp"
+    "microstrain_test.cpp"
 )
-target_include_directories(framework_wrappers
+target_include_directories(microstrain_test
     PUBLIC "${CMAKE_CURRENT_LIST_DIR}"
 )
-target_link_libraries(framework_wrappers
+target_link_libraries(microstrain_test
     PUBLIC doctest_with_main
 )
-target_compile_definitions(framework_wrappers
+target_compile_definitions(microstrain_test
     PUBLIC USE_DOCTEST # Swap for other framework if needed.
 )
 
