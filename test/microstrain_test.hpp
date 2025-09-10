@@ -4,8 +4,13 @@
 	The goal is to provide a standardized interface for testing, regardless of the
 	backend framework being used.
 
+	Currently, only EXPECT interfaces are implemented for custom assertions. They
+    will be added as needed and when they can be fully tested.
+
 	TODO: This should be moved to its own repository so it can be used by multiple
           projects
+
+	TODO: Find a way to reuse custom logic between WARN, EXPECT, and ASSERT interfaces
 */
 #pragma once
 
@@ -16,13 +21,9 @@ namespace detail
 {
     static constexpr size_t MAX_CHECK_STRING_LENGTH = 1024;
 
-    void warn_c_strings_equal(const char* string1, const char* string2);
     void check_c_strings_equal(const char* string1, const char* string2);
-    void require_c_strings_equal(const char* string1, const char* string2);
 
-	void warn_buffer_terminated(const char *buffer, size_t position);
 	void check_buffer_terminated(const char *buffer, size_t position);
-	void require_buffer_terminated(const char *buffer, size_t position);
 }
 
 // Using Doctest's tagging system here so we can run specific test suites without
@@ -37,9 +38,7 @@ namespace detail
 #define EXPECT_TO_BE_EQUAL(value1, value2) CHECK_EQ(value1, value2)
 #define ASSERT_TO_BE_EQUAL(value1, value2) REQUIRE_EQ(value1, value2)
 
-#define WARN_IF_C_STRINGS_NOT_EQUAL(value1, value2) detail::warn_c_strings_equal(value1, value2)
 #define EXPECT_C_STRINGS_TO_BE_EQUAL(value1, value2) detail::check_c_strings_equal(value1, value2)
-#define ASSERT_C_STRINGS_TO_BE_EQUAL(value1, value2) detail::require_c_strings_equal(value1, value2)
 
 #define EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(buffer, position) detail::check_buffer_terminated(buffer, position);
 #endif
