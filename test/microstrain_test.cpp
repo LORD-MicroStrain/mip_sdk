@@ -5,7 +5,7 @@
 
 namespace detail
 {
-#ifdef USE_DOCTEST
+#ifdef MICROSTRAIN_TEST_USE_DOCTEST
     void check_c_strings_equal(const char* actual, const char* expected)
     {
         INFO(std::string(actual));

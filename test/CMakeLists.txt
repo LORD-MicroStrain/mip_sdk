@@ -18,7 +18,7 @@ target_link_libraries(microstrain_test
     PUBLIC doctest_with_main
 )
 target_compile_definitions(microstrain_test
-    PUBLIC USE_DOCTEST # Swap for other framework if needed.
+    PUBLIC MICROSTRAIN_TEST_USE_DOCTEST # Swap for other framework if needed.
 )
 
 add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/c")

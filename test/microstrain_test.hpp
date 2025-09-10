@@ -14,7 +14,7 @@
 */
 #pragma once
 
-#ifdef USE_DOCTEST
+#ifdef MICROSTRAIN_TEST_USE_DOCTEST
 #include <doctest/doctest.h>
 
 namespace detail
