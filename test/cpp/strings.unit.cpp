@@ -24,7 +24,7 @@ TEST("Span string concatenation", "A C string can be concatenated to an explicit
     const bool ok = microstrain::strings::concat(buffer.span, &buffer.index, CHECK_STRING, CHECK_STRING_LENGTH);
 
     EXPECT_TO_BE_TRUE(ok);
-    EXPECT_C_STRINGS_TO_BE_EQUAL(CHECK_STRING, buffer.array);
+    EXPECT_C_STRINGS_TO_BE_EQUAL(buffer.array, CHECK_STRING);
     EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(buffer.array, CHECK_STRING_LENGTH);
 }
 
