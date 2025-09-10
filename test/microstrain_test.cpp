@@ -6,11 +6,11 @@
 namespace detail
 {
 #ifdef USE_DOCTEST
-    void check_c_strings_equal(const char* string1, const char* string2)
+    void check_c_strings_equal(const char* actual, const char* expected)
     {
-        INFO(std::string(string1));
-        INFO(std::string(string2));
-        CHECK_EQ(strcmp(string1, string2), 0);
+        INFO(std::string(actual));
+        INFO(std::string(expected));
+        CHECK_EQ(strcmp(actual, expected), 0);
     }
 
     void fail_if_position_out_of_bounds(const char *buffer, const size_t position)

@@ -21,7 +21,7 @@ namespace detail
 {
     static constexpr size_t MAX_CHECK_STRING_LENGTH = 1024;
 
-    void check_c_strings_equal(const char* string1, const char* string2);
+    void check_c_strings_equal(const char* actual, const char* expected);
 
 	void check_buffer_terminated(const char *buffer, size_t position);
 }
@@ -34,11 +34,11 @@ namespace detail
 #define EXPECT_TO_BE_TRUE(condition) CHECK(condition)
 #define ASSERT_TO_BE_TRUE(condition) REQUIRE(condition)
 
-#define WARN_IF_NOT_EQUAL(value1, value2) WARN_EQ(value1, value2)
-#define EXPECT_TO_BE_EQUAL(value1, value2) CHECK_EQ(value1, value2)
-#define ASSERT_TO_BE_EQUAL(value1, value2) REQUIRE_EQ(value1, value2)
+#define WARN_IF_NOT_EQUAL(actual, expected) WARN_EQ(actual, expected)
+#define EXPECT_TO_BE_EQUAL(actual, expected) CHECK_EQ(actual, expected)
+#define ASSERT_TO_BE_EQUAL(actual, expected) REQUIRE_EQ(actual, expected)
 
-#define EXPECT_C_STRINGS_TO_BE_EQUAL(value1, value2) detail::check_c_strings_equal(value1, value2)
+#define EXPECT_C_STRINGS_TO_BE_EQUAL(actual, expected) detail::check_c_strings_equal(actual, expected)
 
 #define EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(buffer, position) detail::check_buffer_terminated(buffer, position);
 #endif
