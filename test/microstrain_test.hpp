@@ -21,7 +21,7 @@
 
 namespace detail
 {
-    static constexpr size_t MAX_CHECK_STRING_LENGTH = 1024;
+    static constexpr size_t MAX_STRING_LENGTH = 1024;
 
     void check_c_strings_equal(const char* actual, const char* expected);
 

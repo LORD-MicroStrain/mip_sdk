@@ -8,14 +8,17 @@ namespace detail
 #ifdef MICROSTRAIN_TEST_USE_DOCTEST
     void check_c_strings_equal(const char* actual, const char* expected)
     {
-        INFO(std::string(actual));
-        INFO(std::string(expected));
-        CHECK_EQ(strcmp(actual, expected), 0);
+        const size_t safe_actual_size = strnlen(actual, MAX_STRING_LENGTH);
+        const size_t safe_expected_size = strnlen(expected, MAX_STRING_LENGTH);
+
+        INFO("Actual:   " << std::string(&actual[0], safe_actual_size));
+        INFO("Expected: " << std::string(&expected[0], safe_expected_size));
+        CHECK_EQ(strncmp(actual, expected, MAX_STRING_LENGTH), 0);
     }
 
     void fail_if_position_out_of_bounds(const char *buffer, const size_t position)
     {
-        const size_t buffer_size = strnlen(buffer, MAX_CHECK_STRING_LENGTH);
+        const size_t buffer_size = strnlen(buffer, MAX_STRING_LENGTH);
 
         if (position > buffer_size)
         {
