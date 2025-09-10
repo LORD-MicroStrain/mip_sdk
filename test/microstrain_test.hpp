@@ -15,6 +15,8 @@
 #pragma once
 
 #ifdef MICROSTRAIN_TEST_USE_DOCTEST
+#include <cstddef>
+
 #include <doctest/doctest.h>
 
 namespace detail
