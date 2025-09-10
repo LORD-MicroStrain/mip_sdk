@@ -25,7 +25,7 @@ TEST("Span string concatenation", "A C string can be concatenated to an explicit
 
     EXPECT_TO_BE_TRUE(ok);
     EXPECT_C_STRINGS_TO_BE_EQUAL(CHECK_STRING, buffer.array);
-    EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(CHECK_STRING_LENGTH, buffer.array);
+    EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(buffer.array, CHECK_STRING_LENGTH);
 }
 
 TEST("Span string concatenation", "A C string can be concatenated to an implicitly created span")
@@ -36,7 +36,7 @@ TEST("Span string concatenation", "A C string can be concatenated to an implicit
 
     EXPECT_TO_BE_TRUE(ok);
     EXPECT_C_STRINGS_TO_BE_EQUAL(buffer.array, CHECK_STRING);
-    EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(CHECK_STRING_LENGTH, buffer.array);
+    EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(buffer.array, CHECK_STRING_LENGTH);
 }
 
 TEST("Span string concatenation", "A span can be concatenated to another span")
@@ -47,7 +47,7 @@ TEST("Span string concatenation", "A span can be concatenated to another span")
 
     EXPECT_TO_BE_TRUE(ok);
     EXPECT_C_STRINGS_TO_BE_EQUAL(buffer.array, CHECK_STRING);
-    EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(CHECK_STRING_LENGTH, buffer.array);
+    EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(buffer.array, CHECK_STRING_LENGTH);
 }
 
 TEST("Span string concatenation", "A string view can be concatenated to a span")
@@ -58,7 +58,7 @@ TEST("Span string concatenation", "A string view can be concatenated to a span")
 
     EXPECT_TO_BE_TRUE(ok);
     EXPECT_C_STRINGS_TO_BE_EQUAL(buffer.array, CHECK_STRING);
-    EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(CHECK_STRING_LENGTH, buffer.array);
+    EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(buffer.array, CHECK_STRING_LENGTH);
 }
 
 TEST("Span string concatenation", "A string can be concatenated to a span")
@@ -69,7 +69,7 @@ TEST("Span string concatenation", "A string can be concatenated to a span")
 
     EXPECT_TO_BE_TRUE(ok);
     EXPECT_C_STRINGS_TO_BE_EQUAL(buffer.array, CHECK_STRING);
-    EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(CHECK_STRING_LENGTH, buffer.array);
+    EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(buffer.array, CHECK_STRING_LENGTH);
 }
 
 TEST("Span string concatenation", "A C string can be fully concatenated to a span when null terminator is at the end")
@@ -80,7 +80,7 @@ TEST("Span string concatenation", "A C string can be fully concatenated to a spa
 
     EXPECT_TO_BE_TRUE(ok);
     EXPECT_C_STRINGS_TO_BE_EQUAL(buffer.array, CHECK_STRING);
-    EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(CHECK_STRING_LENGTH, buffer.array);
+    EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(buffer.array, CHECK_STRING_LENGTH);
 }
 
 TEST("Span string concatenation", "A C string is partially concatenated to a span when a max length is given")
@@ -92,7 +92,7 @@ TEST("Span string concatenation", "A C string is partially concatenated to a spa
 
     EXPECT_TO_BE_TRUE(ok);
     EXPECT_C_STRINGS_TO_BE_EQUAL(buffer.array, "1234");
-    EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(character_limit, buffer.array);
+    EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(buffer.array, character_limit);
 }
 
 TEST("Span string concatenation", "A string literal can be concatenated to a span")
@@ -103,7 +103,7 @@ TEST("Span string concatenation", "A string literal can be concatenated to a spa
 
     EXPECT_TO_BE_TRUE(ok);
     EXPECT_C_STRINGS_TO_BE_EQUAL(buffer.array, "123456789");
-    EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(9, buffer.array);
+    EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(buffer.array, 9);
 }
 
 TEST("Span string formatting", "A span string can be formatted properly")
