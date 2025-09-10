@@ -31,6 +31,8 @@ namespace detail
 
 	void check_buffer_terminated(const char *buffer, const size_t position)
     {
+        // TODO: Maybe we could add the functionality to pass -1 for the position to automatically
+        //       check the back of the buffer?
         fail_if_position_out_of_bounds(buffer, position);
 
         INFO("The buffer is not terminated");
