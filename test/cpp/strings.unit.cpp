@@ -15,7 +15,7 @@ TEST("Span string concatenation", "A C string can be concatenated to a span")
     char buffer[1024] = {};
     size_t index = 0;
 
-    const bool ok = microstrain::strings::concat(buffer, &index, CHECK_STRING, CHECK_STRING_LENGTH);
+    const bool ok = microstrain::strings::concat(buffer, &index, CHECK_STRING, std::strlen(CHECK_STRING));
 
     EXPECT_TO_BE_TRUE(ok);
     EXPECT_C_STRINGS_TO_BE_EQUAL(buffer, CHECK_STRING);
