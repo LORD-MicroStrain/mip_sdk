@@ -1,11 +1,11 @@
 ////////////////////////////////////////////////////////////////////////////////
-/// mip_packet_example.c
+/// mip_packet_example.cpp
 ///
-/// Example program to create raw and buffered MIP packets using C
+/// Example program to create raw and buffered MIP packets using C++
 ///
 /// For this example, we have broken down each piece into separate functions
 /// for easier documentation and is not necessary in practice.
-///
+/// This is not an exhaustive example of all MIP packet features.
 /// If this example does not meet your specific setup needs, please consult the
 /// MIP SDK API documentation for the proper commands.
 ///
@@ -45,7 +45,7 @@ void printPacket(const mip::PacketView& _packetView);
 // Initialize an empty packet for a given descriptor set
 // Note: This is a similar approach to the C API of the MIP SDK
 mip::PacketView initializeEmptyPacket(uint8_t* _buffer, const size_t _bufferSize, const uint8_t _descriptorSet);
-#else // !USE_MANUAL_BUFFERS
+#else  // !USE_MANUAL_BUFFERS
 // Initialize an empty packet for a given descriptor set
 mip::PacketBuf initializeEmptyPacket(const uint8_t _descriptorSet);
 #endif // USE_MANUAL_BUFFERS
@@ -95,10 +95,11 @@ int main(const int argc, const char* argv[])
 
     printf("Example Completed Successfully.\n");
 
-#ifdef _WIN32
-    // Keep the console open on Windows
-    system("pause");
-#endif // _WIN32
+    printf("Press 'Enter' to exit the program.\n");
+
+    // Make sure the console remains open
+    const int confirm_exit = getc(stdin);
+    (void)confirm_exit; // Unused
 
     return 0;
 }
@@ -138,7 +139,7 @@ void printPacket(const mip::PacketView& _packetView)
 
     // Create a buffer for printing purposes
     char packetByteBuffer[mip::PacketView::PAYLOAD_LENGTH_MAX] = { 0 };
-    int  bufferOffset                                           = 0;
+    int  bufferOffset                                          = 0;
 
     // Get each byte in the packet, including header and checksum
     for (size_t i = 0; i < _packetView.totalLength(); i++)
@@ -191,7 +192,7 @@ void printPacket(const mip::PacketView& _packetView)
     const uint16_t checksumValue = _packetView.checksumValue();
     printf("%4sChecksum (%s):\n", " ", _packetView.isValid() ? "Valid" : "Invalid");
     printf("%8s%-16s = 0x%02X\n", " ", "MSB", checksumValue >> 0x08);
-    printf("%8s%-16s = 0x%02X\n\n", " ", "LSB", checksumValue &  0xFF);
+    printf("%8s%-16s = 0x%02X\n\n", " ", "LSB", checksumValue & 0xFF);
 }
 
 #if USE_MANUAL_BUFFERS
@@ -226,7 +227,7 @@ mip::PacketView initializeEmptyPacket(uint8_t* _buffer, const size_t _bufferSize
 
     return packetView;
 }
-#else // !USE_MANUAL_BUFFERS
+#else  // !USE_MANUAL_BUFFERS
 ////////////////////////////////////////////////////////////////////////////////
 /// @brief Creates an empty MIP packet using automatic buffer management
 ///
@@ -477,9 +478,9 @@ void addPollDataFieldToPacket(mip::PacketView& _packetView)
 
     // Create the field data
     constexpr uint8_t descriptors[3] = {
-        mip::data_shared::ReferenceTimestamp::FIELD_DESCRIPTOR,
-        mip::data_sensor::ScaledAccel::FIELD_DESCRIPTOR,
-        mip::data_sensor::ScaledGyro::FIELD_DESCRIPTOR
+        mip::data_shared::ReferenceTimestamp::FIELD_DESCRIPTOR, // Data field descriptor set
+        mip::data_sensor::ScaledAccel::FIELD_DESCRIPTOR,        // Data field descriptor set
+        mip::data_sensor::ScaledGyro::FIELD_DESCRIPTOR          // Data field descriptor set
     };
 
     pollData.insert(
@@ -521,10 +522,7 @@ void extractSharedReferenceTimeField(mip::Serializer& _serializer)
     // Extract each value of the data field
     if (_serializer.extract(nanoseconds))
     {
-        printf("    %-20s = %" PRIu64 "\n",
-            "Reference Time",
-            nanoseconds
-        );
+        printf("    %-20s = %" PRIu64 "\n", "Reference Time", nanoseconds);
     }
 }
 
@@ -544,10 +542,7 @@ void extractSharedReferenceTimeDeltaField(mip::Serializer& _serializer)
     // Extract each value of the data field
     if (_serializer.extract(dtNanoseconds))
     {
-        printf("    %-20s = %" PRIu64 "\n",
-            "Reference Time Delta",
-            dtNanoseconds
-        );
+        printf("    %-20s = %" PRIu64 "\n", "Reference Time Delta", dtNanoseconds);
     }
 }
 
@@ -568,7 +563,8 @@ void extractSensorAccelScaledField(mip::Serializer& _serializer)
     // Extract each value of the data field
     if (_serializer.extract(scaledAccelData))
     {
-        printf("    %-20s = [%9.6f, %9.6f, %9.6f]\n",
+        printf(
+            "    %-20s = [%9.6f, %9.6f, %9.6f]\n",
             "Scaled Accel",
             scaledAccelData[0],
             scaledAccelData[1],
@@ -595,7 +591,8 @@ void extractSensorGyroScaledField(mip::Serializer& _serializer)
     // Extract each value of the data field
     if (_serializer.extract(scaledGyroData))
     {
-        printf("    %-20s = [%9.6f, %9.6f, %9.6f]\n",
+        printf(
+            "    %-20s = [%9.6f, %9.6f, %9.6f]\n",
             "Scaled Gyro",
             scaledGyroData.scaled_gyro[0],
             scaledGyroData.scaled_gyro[1],
@@ -622,7 +619,8 @@ void extractSensorDeltaThetaField(mip::Serializer& _serializer)
     // Extract each value of the data field
     if (_serializer.extract(deltaThetaData))
     {
-        printf("    %-20s = [%9.6f, %9.6f, %9.6f]\n",
+        printf(
+            "    %-20s = [%9.6f, %9.6f, %9.6f]\n",
             "Delta Theta",
             deltaThetaData.delta_theta[0],
             deltaThetaData.delta_theta[1],
@@ -649,7 +647,8 @@ void extractSensorDeltaVelocityField(const mip::FieldView& _fieldView)
     // Extract the entire data field and check that it was deserialized (validity check)
     if (_fieldView.extract(deltaVelocityData))
     {
-        printf("    %-20s = [%9.6f, %9.6f, %9.6f]\n",
+        printf(
+            "    %-20s = [%9.6f, %9.6f, %9.6f]\n",
             "Delta Velocity",
             deltaVelocityData.delta_velocity[0],
             deltaVelocityData.delta_velocity[1],
@@ -697,13 +696,9 @@ void createFromScratchPacket1()
 #if USE_MANUAL_BUFFERS
     // Create a packet and an empty storage buffer for the packet
     // Note: This approach is similar to the C API
-    uint8_t buffer[mip::PacketView::PACKET_SIZE_MAX] = { 0 };
-    mip::PacketView packet = initializeEmptyPacket(
-        buffer,
-        sizeof(buffer) / sizeof(buffer[0]),
-        packetDescriptorSet
-    );
-#else // !USE_MANUAL_BUFFERS
+    uint8_t         buffer[mip::PacketView::PACKET_SIZE_MAX] = { 0 };
+    mip::PacketView packet = initializeEmptyPacket(buffer, sizeof(buffer) / sizeof(buffer[0]), packetDescriptorSet);
+#else  // !USE_MANUAL_BUFFERS
     // Create a packet using a packet buffer object
     mip::PacketBuf packet = initializeEmptyPacket(packetDescriptorSet);
 #endif // USE_MANUAL_BUFFERS
@@ -764,13 +759,9 @@ void createFromScratchPacket2And3()
     // Create a packet and an empty storage buffer for the packet
     // Note: Declared here to demonstrate resetting packets for reuse
     // Note: This approach is similar to the C API
-    uint8_t buffer[mip::PacketView::PACKET_SIZE_MAX] = { 0 };
-    mip::PacketView packet = initializeEmptyPacket(
-        buffer,
-        sizeof(buffer) / sizeof(buffer[0]),
-        packetDescriptorSet
-    );
-#else // !USE_MANUAL_BUFFERS
+    uint8_t         buffer[mip::PacketView::PACKET_SIZE_MAX] = { 0 };
+    mip::PacketView packet = initializeEmptyPacket(buffer, sizeof(buffer) / sizeof(buffer[0]), packetDescriptorSet);
+#else  // !USE_MANUAL_BUFFERS
     // Create a packet using a packet buffer object
     // Note: Declared here to demonstrate resetting packets for reuse
     mip::PacketBuf packet = initializeEmptyPacket(packetDescriptorSet);
@@ -843,35 +834,29 @@ void createFromRawBufferPacket4()
         0x80, // Packet descriptor set
         0x4C, // Packet payload length
 
-        // Field 1
-        0x0A,                                           // Field length
-        0xD5,                                           // Field descriptor set
-        0x00, 0x00, 0x00, 0x05, 0x5E, 0xE6, 0x7C, 0xC0, // Field raw payload
+        0x0A,                                           // Field 1 length
+        0xD5,                                           // Field 1 descriptor set
+        0x00, 0x00, 0x00, 0x05, 0x5E, 0xE6, 0x7C, 0xC0, // Field 1 raw payload
 
-        // Field 2
-        0x0A,                                           // Field length
-        0xD6,                                           // Field descriptor set
-        0x00, 0x00, 0x00, 0x01, 0x4E, 0x43, 0x4A, 0x00, // Field raw payload
+        0x0A,                                           // Field 2 length
+        0xD6,                                           // Field 2 descriptor set
+        0x00, 0x00, 0x00, 0x01, 0x4E, 0x43, 0x4A, 0x00, // Field 2 raw payload
 
-        // Field 3
-        0x0E,                                                                   // Field length
-        0x04,                                                                   // Field descriptor set
-        0x3D, 0x9E, 0xE8, 0x8D, 0x38, 0x7F, 0xDB, 0x00, 0xBF, 0x7A, 0xAF, 0x03, // Field raw payload
+        0x0E,                                                                   // Field 3 length
+        0x04,                                                                   // Field 3 descriptor set
+        0x3D, 0x9E, 0xE8, 0x8D, 0x38, 0x7F, 0xDB, 0x00, 0xBF, 0x7A, 0xAF, 0x03, // Field 3 raw payload
 
-        // Field 4
-        0x0E,                                                                   // Field length
-        0x05,                                                                   // Field descriptor set
-        0xBB, 0x0C, 0x1E, 0x30, 0xBB, 0x57, 0x2E, 0x68, 0xBB, 0xAA, 0x24, 0xAE, // Field raw payload
+        0x0E,                                                                   // Field 4 length
+        0x05,                                                                   // Field 4 descriptor set
+        0xBB, 0x0C, 0x1E, 0x30, 0xBB, 0x57, 0x2E, 0x68, 0xBB, 0xAA, 0x24, 0xAE, // Field 4 raw payload
 
-        // Field 5
-        0x0E,                                                                   // Field length
-        0x07,                                                                   // Field descriptor set
-        0xBC, 0x8A, 0xAC, 0x80, 0xBC, 0x72, 0xC5, 0x0E, 0xBC, 0xC4, 0xE2, 0xC1, // Field raw payload
+        0x0E,                                                                   // Field 5 length
+        0x07,                                                                   // Field 5 descriptor set
+        0xBC, 0x8A, 0xAC, 0x80, 0xBC, 0x72, 0xC5, 0x0E, 0xBC, 0xC4, 0xE2, 0xC1, // Field 5 raw payload
 
-        // Field 6
-        0x0E,                                                                   // Field length
-        0x08,                                                                   // Field descriptor set
-        0x3E, 0xEE, 0x3D, 0x9F, 0xBD, 0x66, 0xDA, 0xDD, 0xC0, 0xAF, 0xDE, 0xF5, // Field raw payload
+        0x0E,                                                                   // Field 6 length
+        0x08,                                                                   // Field 6 descriptor set
+        0x3E, 0xEE, 0x3D, 0x9F, 0xBD, 0x66, 0xDA, 0xDD, 0xC0, 0xAF, 0xDE, 0xF5, // Field 6 raw payload
 
         0x91, 0x96 // Packet checksum
     };

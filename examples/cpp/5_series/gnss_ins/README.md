@@ -36,7 +36,7 @@ The example uses the following default settings:
 - `configureGnssMessageFormat()` - Configures GNSS data output including:
     - Fix info
 - `configureFilterMessageFormat()` - Configures filter/navigation data output including:
-    - Filter timestamps
+    - Filter timestamp
     - Filter status
     - LLH position coordinates
     - NED velocity vectors

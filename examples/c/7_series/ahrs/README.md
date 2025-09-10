@@ -31,10 +31,8 @@ The example uses the following default settings:
 
 ### Message Configuration
 - `configure_filter_message_format()` - Configures filter/navigation data output including:
-    - GPS time
+    - GPS timestamp
     - Filter status
-    - LLH position coordinates
-    - NED velocity vectors
     - Euler angles (roll, pitch, yaw)
 
 ### Data Display

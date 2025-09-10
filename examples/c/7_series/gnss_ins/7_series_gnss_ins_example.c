@@ -87,7 +87,7 @@ void configure_antenna_offset(mip_interface* _device, const mip_vector3f _antenn
 // Filter initialization
 void initialize_filter(mip_interface* _device);
 
-// Utilities to display state changes
+// Utilities to display filter and GNSS state changes
 void display_gnss_fix_state(const mip_gnss_fix_info_data* _fix_info_array, const uint8_t _array_index);
 void display_filter_state(const mip_filter_mode _filter_state);
 
@@ -172,7 +172,7 @@ int main(const int argc, const char* argv[])
 
     // Configure the GNSS antenna offsets
     // Note: Antenna offsets are limited to a magnitude of [0.25, 10] (meters)
-    MICROSTRAIN_LOG_INFO("Configuring GNSS antenna offsets for dual-antenna.\n");
+    MICROSTRAIN_LOG_INFO("Configuring the GNSS antenna offsets for dual-antenna.\n");
 
     // GNSS 1 antenna offset (in meters)
     const mip_vector3f antenna_offset_1 = {
@@ -293,13 +293,13 @@ int main(const int argc, const char* argv[])
         command_failure_terminate(&device, cmd_result, "Could not resume the device!\n");
     }
 
-    MICROSTRAIN_LOG_INFO("The device is configured... waiting for the filter to initialize.\n");
+    MICROSTRAIN_LOG_INFO("The device is configured... waiting for the filter to enter full navigation mode.\n");
 
     mip_gnss_fix_info_data_fix_type current_fix_type[2] = { gnss_fix_info[0].fix_type, gnss_fix_info[1].fix_type };
     mip_filter_mode                 current_state       = filter_status.filter_state;
 
     // Wait for the device to initialize
-    while (filter_status.filter_state < MIP_FILTER_MODE_VERT_GYRO)
+    while (filter_status.filter_state < MIP_FILTER_MODE_FULL_NAV)
     {
         // Update the device state
         // Note: This will update the device callbacks to trigger the filter state change
@@ -370,7 +370,7 @@ int main(const int argc, const char* argv[])
         // Print out data based on the sample rate (1000 ms / SAMPLE_RATE_HZ)
         if (current_timestamp - previous_print_timestamp >= 1000 / SAMPLE_RATE_HZ)
         {
-            if (filter_status.filter_state >= MIP_FILTER_MODE_VERT_GYRO)
+            if (filter_status.filter_state >= MIP_FILTER_MODE_FULL_NAV)
             {
                 MICROSTRAIN_LOG_INFO(
                     "%s = %10.3f%16s = [%9.6f, %9.6f, %9.6f]%16s = [%9.6f, %9.6f, %9.6f]%16s = [%9.6f, %9.6f, %9.6f]\n",
@@ -609,7 +609,7 @@ void configure_gnss_message_format(mip_interface* _device, const uint8_t _gnss_d
 ///          2. Validating desired sample rate against base rate
 ///          3. Calculating proper decimation
 ///          4. Configuring message format with:
-///             - GPS time
+///             - GPS timestamp
 ///             - Filter status
 ///             - LLH position
 ///             - NED velocity

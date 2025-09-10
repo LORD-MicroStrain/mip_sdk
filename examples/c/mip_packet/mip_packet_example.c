@@ -67,9 +67,9 @@ void extract_sensor_delta_theta_field(microstrain_serializer* _serializer);
 void extract_sensor_delta_velocity_field(const mip_field_view* _field_view);
 
 // Packet creation
-void create_packet_1_from_scratch();
-void create_packet_2_and_3_from_scratch();
-void create_packet_4_from_raw_buffer();
+void create_from_scratch_packet_1();
+void create_from_scratch_packet_2_and_3();
+void create_from_raw_buffer_packet_4();
 
 int main(const int argc, const char* argv[])
 {
@@ -78,13 +78,13 @@ int main(const int argc, const char* argv[])
     (void)argv;
 
     // Create packet 1 with multiple fields
-    create_packet_1_from_scratch();
+    create_from_scratch_packet_1();
 
     // Create packet 2 with a single field, then reset the packet and create packet 3 with a single field
-    create_packet_2_and_3_from_scratch();
+    create_from_scratch_packet_2_and_3();
 
     // Create packet 4 with a raw buffer and extract each field from the packet
-    create_packet_4_from_raw_buffer();
+    create_from_raw_buffer_packet_4();
 
     printf("Example Completed Successfully.\n");
 
@@ -341,8 +341,7 @@ void add_comm_speed_field_to_packet(mip_packet_view* _packet_view)
 ///
 /// @remark Field 4
 ///
-/// @note This is exactly the same as field 3 but without the
-///       mip_serializer_*_field helper functions.
+/// @note This is exactly the same as field 3 but without the helper functions.
 ///       This is intended to show what happens "behind the scenes".
 ///
 /// @param _packet_view Pointer to the packet to add the field to
@@ -535,7 +534,7 @@ void add_poll_data_field_to_packet(mip_packet_view* _packet_view)
 ///          and displays it if successfully extracted. This represents the
 ///          device's reference time.
 ///
-/// @param _serializer Pointer to serializer containing field data
+/// @param _serializer Pointer to the serializer containing the field data
 ///
 void extract_shared_reference_time_field(microstrain_serializer* _serializer)
 {
@@ -555,7 +554,7 @@ void extract_shared_reference_time_field(microstrain_serializer* _serializer)
 ///          payload and displays it if successfully extracted. This represents
 ///          the time elapsed since the last reference time.
 ///
-/// @param _serializer Pointer to serializer containing field data
+/// @param _serializer Pointer to the serializer containing the field data
 ///
 void extract_shared_reference_time_delta_field(microstrain_serializer* _serializer)
 {
@@ -578,7 +577,7 @@ void extract_shared_reference_time_delta_field(microstrain_serializer* _serializ
 ///          accelerometer measurements in m/s^2 and displays them if
 ///          successfully extracted.
 ///
-/// @param _serializer Pointer to serializer containing field data
+/// @param _serializer Pointer to the serializer containing the field data
 ///
 void extract_sensor_accel_scaled_field(microstrain_serializer* _serializer)
 {
@@ -610,7 +609,7 @@ void extract_sensor_accel_scaled_field(microstrain_serializer* _serializer)
 ///          gyroscope measurements in rad/s using the field structure. Displays
 ///          the values if successfully extracted.
 ///
-/// @param _serializer Pointer to serializer containing field data
+/// @param _serializer Pointer to the serializer containing the field data
 ///
 void extract_sensor_gyro_scaled_field(microstrain_serializer* _serializer)
 {
@@ -641,7 +640,7 @@ void extract_sensor_gyro_scaled_field(microstrain_serializer* _serializer)
 ///          displacement measurements in radians using the field structure.
 ///          Displays the values if successfully extracted.
 ///
-/// @param _serializer Pointer to serializer containing field data
+/// @param _serializer Pointer to the serializer containing the field data
 ///
 void extract_sensor_delta_theta_field(microstrain_serializer* _serializer)
 {
@@ -852,49 +851,40 @@ void create_packet_4_from_raw_buffer()
 {
     printf("\nCreating packet 4 from a raw byte buffer.\n\n");
 
-    // clang-format off
-
-    mip_packet_view packet_view;
     const uint8_t raw_buffer[] = {
         0x75, 0x65, // MIP SYNC bytes
 
         0x80, // Packet descriptor set
         0x4C, // Packet payload length
 
-        // Field 1
-        0x0A,                                           // Field length
-        0xD5,                                           // Field descriptor set
-        0x00, 0x00, 0x00, 0x05, 0x5E, 0xE6, 0x7C, 0xC0, // Field raw payload
+        0x0A,                                           // Field 1 length
+        0xD5,                                           // Field 1 descriptor set
+        0x00, 0x00, 0x00, 0x05, 0x5E, 0xE6, 0x7C, 0xC0, // Field 1 raw payload
 
-        // Field 2
-        0x0A,                                           // Field length
-        0xD6,                                           // Field descriptor set
-        0x00, 0x00, 0x00, 0x01, 0x4E, 0x43, 0x4A, 0x00, // Field raw payload
+        0x0A,                                           // Field 2 length
+        0xD6,                                           // Field 2 descriptor set
+        0x00, 0x00, 0x00, 0x01, 0x4E, 0x43, 0x4A, 0x00, // Field 2 raw payload
 
-        // Field 3
-        0x0E,                                                                   // Field length
-        0x04,                                                                   // Field descriptor set
-        0x3D, 0x9E, 0xE8, 0x8D, 0x38, 0x7F, 0xDB, 0x00, 0xBF, 0x7A, 0xAF, 0x03, // Field raw payload
+        0x0E,                                                                   // Field 3 length
+        0x04,                                                                   // Field 3 descriptor set
+        0x3D, 0x9E, 0xE8, 0x8D, 0x38, 0x7F, 0xDB, 0x00, 0xBF, 0x7A, 0xAF, 0x03, // Field 3 raw payload
 
-        // Field 4
-        0x0E,                                                                   // Field length
-        0x05,                                                                   // Field descriptor set
-        0xBB, 0x0C, 0x1E, 0x30, 0xBB, 0x57, 0x2E, 0x68, 0xBB, 0xAA, 0x24, 0xAE, // Field raw payload
+        0x0E,                                                                   // Field 4 length
+        0x05,                                                                   // Field 4 descriptor set
+        0xBB, 0x0C, 0x1E, 0x30, 0xBB, 0x57, 0x2E, 0x68, 0xBB, 0xAA, 0x24, 0xAE, // Field 4 raw payload
 
-        // Field 5
-        0x0E,                                                                   // Field length
-        0x07,                                                                   // Field descriptor set
-        0xBC, 0x8A, 0xAC, 0x80, 0xBC, 0x72, 0xC5, 0x0E, 0xBC, 0xC4, 0xE2, 0xC1, // Field raw payload
+        0x0E,                                                                   // Field 5 length
+        0x07,                                                                   // Field 5 descriptor set
+        0xBC, 0x8A, 0xAC, 0x80, 0xBC, 0x72, 0xC5, 0x0E, 0xBC, 0xC4, 0xE2, 0xC1, // Field 5 raw payload
 
-        // Field 6
-        0x0E,                                                                   // Field length
-        0x08,                                                                   // Field descriptor set
-        0x3E, 0xEE, 0x3D, 0x9F, 0xBD, 0x66, 0xDA, 0xDD, 0xC0, 0xAF, 0xDE, 0xF5, // Field raw payload
+        0x0E,                                                                   // Field 6 length
+        0x08,                                                                   // Field 6 descriptor set
+        0x3E, 0xEE, 0x3D, 0x9F, 0xBD, 0x66, 0xDA, 0xDD, 0xC0, 0xAF, 0xDE, 0xF5, // Field 6 raw payload
 
         0x91, 0x96 // Packet checksum
     };
 
-    // clang-format on
+    mip_packet_view packet_view;
 
     // Create a view of the packet in the buffer.
     // Note: The buffer must not be modified, so do not call functions that manipulate the packet.

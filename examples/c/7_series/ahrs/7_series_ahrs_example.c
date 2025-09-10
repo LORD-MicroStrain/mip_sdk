@@ -224,12 +224,12 @@ int main(const int argc, const char* argv[])
         command_failure_terminate(&device, cmd_result, "Could not resume the device!\n");
     }
 
-    MICROSTRAIN_LOG_INFO("The device is configured... waiting for the filter to initialize.\n");
+    MICROSTRAIN_LOG_INFO("The device is configured... waiting for the filter to enter AHRS mode.\n");
 
     mip_filter_mode current_state = filter_status.filter_state;
 
     // Wait for the device to initialize
-    while (filter_status.filter_state < MIP_FILTER_MODE_VERT_GYRO)
+    while (filter_status.filter_state < MIP_FILTER_MODE_AHRS)
     {
         // Update the device state
         // Note: This will update the device callbacks to trigger the filter state change
@@ -278,7 +278,7 @@ int main(const int argc, const char* argv[])
         // Print out data based on the sample rate (1000 ms / SAMPLE_RATE_HZ)
         if (current_timestamp - previous_print_timestamp >= 1000 / SAMPLE_RATE_HZ)
         {
-            if (filter_status.filter_state >= MIP_FILTER_MODE_VERT_GYRO)
+            if (filter_status.filter_state >= MIP_FILTER_MODE_AHRS)
             {
                 MICROSTRAIN_LOG_INFO(
                     "%s = %10.3f%16s = [%9.6f, %9.6f, %9.6f]\n",
@@ -415,7 +415,7 @@ void capture_gyro_bias(mip_interface* _device)
 ///          2. Validating desired sample rate against base rate
 ///          3. Calculating proper decimation
 ///          4. Configuring message format with:
-///             - GPS time
+///             - GPS timestamp
 ///             - Filter status
 ///             - Euler angles
 ///

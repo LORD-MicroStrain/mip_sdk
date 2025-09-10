@@ -1,9 +1,12 @@
 ////////////////////////////////////////////////////////////////////////////////
 /// device_info_example.cpp
 ///
-/// Example program to print device information from any MIP-enabled MicroStrain
+/// Example program to print device information for any MIP-enabled MicroStrain
 /// device using C++
 ///
+/// This example shows a basic setup for any MIP-enabled MicroStrain device to
+/// demonstrate how to get and print device information using C++.
+/// This is not an exhaustive example of all settings for those devices.
 /// If this example does not meet your specific setup needs, please consult the
 /// MIP SDK API documentation for the proper commands.
 ///
@@ -42,7 +45,7 @@
 // Set the port name for the connection (Serial/USB)
 #ifdef _WIN32
 static constexpr const char* PORT_NAME = "COM1";
-#else // Unix
+#else  // Unix
 static constexpr const char* PORT_NAME = "/dev/ttyACM0";
 #endif // _WIN32
 
@@ -119,6 +122,7 @@ void logCallback(void* _user, const microstrain_log_level _level, const char* _f
         {
             fprintf(stderr, "%s: ", microstrain_logging_level_name(_level));
             vfprintf(stderr, _format, _args);
+            fflush(stderr);
             break;
         }
         case MICROSTRAIN_LOG_LEVEL_WARN:
@@ -128,6 +132,7 @@ void logCallback(void* _user, const microstrain_log_level _level, const char* _f
         {
             fprintf(stdout, "%s: ", microstrain_logging_level_name(_level));
             vfprintf(stdout, _format, _args);
+            fflush(stdout);
             break;
         }
         case MICROSTRAIN_LOG_LEVEL_OFF:
@@ -187,19 +192,15 @@ void initializeDevice(mip::Interface& _device)
 
     // Firmware version format is x.x.xx
     char firmwareVersion[16];
-    snprintf(firmwareVersion, sizeof(firmwareVersion) / sizeof(firmwareVersion[0]), "%d.%d.%02d",
-        major,
-        minor,
-        patch
-    );
+    snprintf(firmwareVersion, sizeof(firmwareVersion) / sizeof(firmwareVersion[0]), "%d.%d.%02d", major, minor, patch);
 
     MICROSTRAIN_LOG_INFO("-------- Device Information --------\n");
-    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Name",             deviceInfo.model_name);
-    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Model Number",     deviceInfo.model_number);
-    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Serial Number",    deviceInfo.serial_number);
-    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Lot Number",       deviceInfo.lot_number);
-    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Options",          deviceInfo.device_options);
-    MICROSTRAIN_LOG_INFO("%-16s | %16s\n",  "Firmware Version", firmwareVersion);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Name", deviceInfo.model_name);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Model Number", deviceInfo.model_number);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Serial Number", deviceInfo.serial_number);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Lot Number", deviceInfo.lot_number);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Options", deviceInfo.device_options);
+    MICROSTRAIN_LOG_INFO("%-16s | %16s\n", "Firmware Version", firmwareVersion);
     MICROSTRAIN_LOG_INFO("------------------------------------\n");
 }
 
@@ -217,7 +218,7 @@ void initializeDevice(mip::Interface& _device)
 ///
 void terminate(microstrain::Connection* _connection, const char* _message, const bool _successful /* = false */)
 {
-    if (strlen(_message) != 0)
+    if (_message && strlen(_message) != 0)
     {
         if (_successful)
         {
@@ -247,12 +248,11 @@ void terminate(microstrain::Connection* _connection, const char* _message, const
         }
     }
 
-    MICROSTRAIN_LOG_INFO("Exiting the program.\n");
+    MICROSTRAIN_LOG_INFO("Press 'Enter' to exit the program.\n");
 
-#ifdef _WIN32
-    // Keep the console open on Windows
-    system("pause");
-#endif // _WIN32
+    // Make sure the console remains open
+    const int confirmExit = getc(stdin);
+    (void)confirmExit; // Unused
 
     if (!_successful)
     {
@@ -275,10 +275,13 @@ void terminate(microstrain::Connection* _connection, const char* _message, const
 ///
 void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const char* _format, ...)
 {
-    va_list args;
-    va_start(args, _format);
-    MICROSTRAIN_LOG_ERROR_V(_format, args);
-    va_end(args);
+    if (_format && strlen(_format) != 0)
+    {
+        va_list args;
+        va_start(args, _format);
+        MICROSTRAIN_LOG_ERROR_V(_format, args);
+        va_end(args);
+    }
 
     MICROSTRAIN_LOG_ERROR("Command Result: (%d) %s.\n", _cmdResult.value, _cmdResult.name());
 

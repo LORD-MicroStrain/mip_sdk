@@ -252,13 +252,13 @@ int main(const int argc, const char* argv[])
         command_failure_terminate(&device, cmd_result, "Could not resume the device!\n");
     }
 
-    MICROSTRAIN_LOG_INFO("The device is configured... waiting for a valid filter solution.\n");
+    MICROSTRAIN_LOG_INFO("The device is configured... waiting for the filter to initialize.\n");
 
     mip_gnss_fix_info_data_fix_type current_fix_type = gnss_fix_info.fix_type;
     mip_filter_mode                 current_state    = filter_status.filter_state;
 
     // Wait for the device to initialize
-    while (filter_status.filter_state < MIP_FILTER_MODE_GX5_RUN_SOLUTION_VALID)
+    while (filter_status.filter_state <= MIP_FILTER_MODE_GX5_INIT)
     {
         // Update the device state
         // Note: This will update the device callbacks to trigger the filter state change
@@ -321,7 +321,7 @@ int main(const int argc, const char* argv[])
         // Print out data based on the sample rate (1000 ms / SAMPLE_RATE_HZ)
         if (current_timestamp - previous_print_timestamp >= 1000 / SAMPLE_RATE_HZ)
         {
-            if (filter_status.filter_state == MIP_FILTER_MODE_GX5_RUN_SOLUTION_VALID)
+            if (filter_status.filter_state >= MIP_FILTER_MODE_GX5_RUN_SOLUTION_VALID)
             {
                 MICROSTRAIN_LOG_INFO(
                     "%s = %10.3f%16s = [%9.6f, %9.6f, %9.6f]%16s = [%9.6f, %9.6f, %9.6f]%16s = [%9.6f, %9.6f, %9.6f]\n",

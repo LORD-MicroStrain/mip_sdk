@@ -415,7 +415,7 @@ void capture_gyro_bias(mip_interface* _device)
 ///          2. Validating desired sample rate against base rate
 ///          3. Calculating proper decimation
 ///          4. Configuring message format with:
-///             - GPS time
+///             - GPS timestamp
 ///             - Filter status
 ///             - Euler angles
 ///

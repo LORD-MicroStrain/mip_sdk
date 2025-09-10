@@ -5,8 +5,8 @@
 /// C++
 ///
 /// This example shows a typical setup for the 3DM-CX5-GNSS/INS, and
-/// 3DM-GX5-GNSS/INS sensors in a wheeled-vehicle application using C++.
-/// It is not an exhaustive example of all settings for those devices.
+/// 3DM-GX5-GNSS/INS devices in a wheeled-vehicle application using C++.
+/// This is not an exhaustive example of all settings for those devices.
 /// If this example does not meet your specific setup needs, please consult the
 /// MIP SDK API documentation for the proper commands.
 ///
@@ -49,7 +49,7 @@
 // Set the port name for the connection (Serial/USB)
 #ifdef _WIN32
 static constexpr const char* PORT_NAME = "COM1";
-#else // Unix
+#else  // Unix
 static constexpr const char* PORT_NAME = "/dev/ttyACM0";
 #endif // _WIN32
 
@@ -149,7 +149,10 @@ int main(const int argc, const char* argv[])
 
     if (!cmdResult.isAck())
     {
-        terminate(device, cmdResult, "Could not set %s!\n",
+        terminate(
+            device,
+            cmdResult,
+            "Could not configure %s!\n",
             mip::commands_filter::SensorToVehicleRotationEuler::DOC_NAME
         );
     }
@@ -226,7 +229,7 @@ int main(const int argc, const char* argv[])
         terminate(device, cmdResult, "Could not resume the device!\n");
     }
 
-    MICROSTRAIN_LOG_INFO("Sensor is configured... waiting for a valid filter solution.\n");
+    MICROSTRAIN_LOG_INFO("The device is configured... waiting for the filter to initialize.\n");
 
     mip::data_gnss::FixInfo::FixType currentFixType = gnssFixInfo.fix_type;
     mip::data_filter::FilterMode     currentState   = filterStatus.filter_state;
@@ -261,8 +264,8 @@ int main(const int argc, const char* argv[])
 
     mip::Timestamp previousPrintTimestamp = 0;
 
-    // Device loop
-    // Exit after predetermined time in seconds
+    // Running loop
+    // Exit after a predetermined time in seconds
     while (getCurrentTimestamp() - loopStartTime <= RUN_TIME_SECONDS * 1000)
     {
         // Update the device state
@@ -295,20 +298,16 @@ int main(const int argc, const char* argv[])
             {
                 MICROSTRAIN_LOG_INFO(
                     "%s = %10.3f%16s = [%9.6f, %9.6f, %9.6f]%16s = [%9.6f, %9.6f, %9.6f]%16s = [%9.6f, %9.6f, %9.6f]\n",
-
                     "TOW",
                     filterTimestamp.tow,
-
                     mip::data_filter::PositionLlh::DOC_NAME, // Built-in metadata for easy printing
                     filterPositionLlh.latitude,
                     filterPositionLlh.longitude,
                     filterPositionLlh.ellipsoid_height,
-
                     mip::data_filter::VelocityNed::DOC_NAME, // Built-in metadata for easy printing
                     filterVelocityNed.north,
                     filterVelocityNed.east,
                     filterVelocityNed.down,
-
                     mip::data_filter::EulerAngles::DOC_NAME, // Built-in metadata for easy printing
                     filterEulerAngles.roll,
                     filterEulerAngles.pitch,
@@ -393,13 +392,14 @@ void captureGyroBias(mip::Interface& _device)
     cmdQueue.setBaseReplyTimeout(increasedCmdReplyTimeout);
 
     mip::Vector3f gyroBias = {
-        0.0f,
-        0.0f,
-        0.0f
+        0.0f, // X
+        0.0f, // Y
+        0.0f  // Z
     };
 
     // Note: When capturing gyro bias, the device needs to remain still on a flat surface
-    MICROSTRAIN_LOG_WARN("About to capture gyro bias for %.2g seconds!\n",
+    MICROSTRAIN_LOG_WARN(
+        "About to capture gyro bias for %.2g seconds!\n",
         static_cast<float>(captureDuration) / 1000.0f
     );
     MICROSTRAIN_LOG_WARN("Please do not move the device during this time!\n");
@@ -421,7 +421,8 @@ void captureGyroBias(mip::Interface& _device)
         terminate(_device, cmdResult, "Failed to capture gyro bias!\n");
     }
 
-    MICROSTRAIN_LOG_INFO("Capture gyro bias completed with result: [%f, %f, %f]\n",
+    MICROSTRAIN_LOG_INFO(
+        "Capture gyro bias completed with result: [%f, %f, %f]\n",
         gyroBias[0],
         gyroBias[1],
         gyroBias[2]
@@ -457,7 +458,7 @@ void configureGnssMessageFormat(mip::Interface& _device)
 
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not get GNSS base rate!\n");
+        terminate(_device, cmdResult, "Could not get the base rate for GNSS data!\n");
     }
 
     // Supported sample rates can be any value from 1 up to the base rate
@@ -475,7 +476,8 @@ void configureGnssMessageFormat(mip::Interface& _device)
 
     // Calculate the decimation (stream rate) for the device based on its base rate
     const uint16_t gnssDecimation = gnssBaseRate / SAMPLE_RATE_HZ;
-    MICROSTRAIN_LOG_INFO("Decimating GNSS base rate %d by %d to stream data at %dHz.\n",
+    MICROSTRAIN_LOG_INFO(
+        "Decimating GNSS base rate %d by %d to stream data at %dHz.\n",
         gnssBaseRate,
         gnssDecimation,
         SAMPLE_RATE_HZ
@@ -498,7 +500,7 @@ void configureGnssMessageFormat(mip::Interface& _device)
         terminate(
             _device,
             cmdResult,
-            "Could not set %s for GNSS data!\n",
+            "Could not configure %s for GNSS data!\n",
             mip::commands_3dm::GnssMessageFormat::DOC_NAME
         );
     }
@@ -512,7 +514,7 @@ void configureGnssMessageFormat(mip::Interface& _device)
 ///          2. Validating desired sample rate against base rate
 ///          3. Calculating proper decimation
 ///          4. Configuring message format with:
-///             - GPS time
+///             - Filter timestamp
 ///             - Filter status
 ///             - LLH position
 ///             - NED velocity
@@ -534,7 +536,7 @@ void configureFilterMessageFormat(mip::Interface& _device)
 
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not get filter base rate!\n");
+        terminate(_device, cmdResult, "Could not get the base rate for filter data!\n");
     }
 
     // Supported sample rates can be any value from 1 up to the base rate
@@ -552,7 +554,8 @@ void configureFilterMessageFormat(mip::Interface& _device)
 
     // Calculate the decimation (stream rate) for the device based on its base rate
     const uint16_t filterDecimation = filterBaseRate / SAMPLE_RATE_HZ;
-    MICROSTRAIN_LOG_INFO("Decimating filter base rate %d by %d to stream data at %dHz.\n",
+    MICROSTRAIN_LOG_INFO(
+        "Decimating filter base rate %d by %d to stream data at %dHz.\n",
         filterBaseRate,
         filterDecimation,
         SAMPLE_RATE_HZ
@@ -560,8 +563,8 @@ void configureFilterMessageFormat(mip::Interface& _device)
 
     // Descriptor rate is a pair of data descriptor set and decimation
     const mip::DescriptorRate filterDescriptors[5] = {
-        { mip::data_filter::Timestamp::FIELD_DESCRIPTOR, filterDecimation },
-        { mip::data_filter::Status::FIELD_DESCRIPTOR, filterDecimation },
+        { mip::data_filter::Timestamp::FIELD_DESCRIPTOR,   filterDecimation },
+        { mip::data_filter::Status::FIELD_DESCRIPTOR,      filterDecimation },
         { mip::data_filter::PositionLlh::FIELD_DESCRIPTOR, filterDecimation },
         { mip::data_filter::VelocityNed::FIELD_DESCRIPTOR, filterDecimation },
         { mip::data_filter::EulerAngles::FIELD_DESCRIPTOR, filterDecimation }
@@ -576,7 +579,10 @@ void configureFilterMessageFormat(mip::Interface& _device)
 
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not set %s for filter data!\n",
+        terminate(
+            _device,
+            cmdResult,
+            "Could not configure %s for filter data!\n",
             mip::commands_3dm::FilterMessageFormat::DOC_NAME
         );
     }
@@ -601,25 +607,23 @@ void configureAntennaOffset(mip::Interface& _device)
 {
     // Configure the GNSS antenna offset X, Y, Z (in meters)
     const mip::Vector3f antennaOffset = {
-        -0.25f,
-        0.0f,
-        0.0f
+        -0.25f, // X
+        0.0f,   // Y
+        0.0f    // Z
     };
 
-    MICROSTRAIN_LOG_INFO("Configuring the %s for [%gm, &gm, %gm].\n",
+    MICROSTRAIN_LOG_INFO(
+        "Configuring the %s for [%gm, &gm, %gm].\n",
         mip::commands_filter::AntennaOffset::DOC_NAME,
         antennaOffset[0],
         antennaOffset[1],
         antennaOffset[2]
     );
-    const mip::CmdResult cmdResult = mip::commands_filter::writeAntennaOffset(
-        _device,
-        antennaOffset
-    );
+    const mip::CmdResult cmdResult = mip::commands_filter::writeAntennaOffset(_device, antennaOffset);
 
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not set the %s!\n", mip::commands_filter::AntennaOffset::DOC_NAME);
+        terminate(_device, cmdResult, "Could not configure the %s!\n", mip::commands_filter::AntennaOffset::DOC_NAME);
     }
 }
 
@@ -636,7 +640,8 @@ void configureAntennaOffset(mip::Interface& _device)
 void initializeFilter(mip::Interface& _device)
 {
     // Configure filter heading source
-    MICROSTRAIN_LOG_INFO("Configuring filter %s to GNSS velocity and magnetometer.\n",
+    MICROSTRAIN_LOG_INFO(
+        "Configuring filter %s to GNSS velocity and magnetometer.\n",
         mip::commands_filter::HeadingSource::DOC_NAME
     );
     mip::CmdResult cmdResult = mip::commands_filter::writeHeadingSource(
@@ -663,9 +668,7 @@ void initializeFilter(mip::Interface& _device)
 
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not enable filter %s!\n",
-            mip::commands_filter::AutoInitControl::DOC_NAME
-        );
+        terminate(_device, cmdResult, "Could not enable filter %s!\n", mip::commands_filter::AutoInitControl::DOC_NAME);
     }
 
     // Reset the filter
@@ -696,62 +699,52 @@ void initializeFilter(mip::Interface& _device)
 ///
 void displayGnssFixState(const mip::data_gnss::FixInfo& _fixInfo)
 {
-    const char*   headerMessage = "GNSS acquired";
-    const uint8_t fixTypeValue  = static_cast<uint8_t>(_fixInfo.fix_type);
+    const uint8_t fixTypeValue   = static_cast<uint8_t>(_fixInfo.fix_type);
+    const char*   fixDescription = "";
+    const char*   fixType        = "";
 
     switch (_fixInfo.fix_type)
     {
         case mip::data_gnss::FixInfo::FixType::FIX_3D:
         {
-            MICROSTRAIN_LOG_INFO("%s a 3D fix. (%d) FIX_3D\n",
-                headerMessage,
-                fixTypeValue
-            );
-
+            fixDescription = "3D";
+            fixType        = "FIX_3D";
             break;
         }
         case mip::data_gnss::FixInfo::FixType::FIX_2D:
         {
-            MICROSTRAIN_LOG_INFO("%s a 2D fix. (%d) FIX_2D\n",
-                headerMessage,
-                fixTypeValue
-            );
-
+            fixDescription = "2D";
+            fixType        = "FIX_2D";
             break;
         }
         case mip::data_gnss::FixInfo::FixType::FIX_TIME_ONLY:
         {
-            MICROSTRAIN_LOG_INFO("%s a time only fix. (%d) FIX_TIME_ONLY\n",
-                headerMessage,
-                fixTypeValue
-            );
-
+            fixDescription = "time only";
+            fixType        = "FIX_TIME_ONLY";
             break;
         }
         case mip::data_gnss::FixInfo::FixType::FIX_NONE:
         {
-            MICROSTRAIN_LOG_INFO("GNSS has no fix. (%d) FIX_NONE\n",
-                fixTypeValue
-            );
+            MICROSTRAIN_LOG_INFO("GNSS has no fix. (%d) FIX_NONE\n", fixTypeValue);
 
             // No fix, exit early
             return;
         }
         case mip::data_gnss::FixInfo::FixType::FIX_INVALID:
         {
-            MICROSTRAIN_LOG_INFO("%s an invalid fix. (%d) FIX_INVALID\n",
-                headerMessage,
-                fixTypeValue
-            );
+            MICROSTRAIN_LOG_INFO("GNSS acquired an invalid fix. (%d) FIX_INVALID\n", fixTypeValue);
 
             // The fix is already invalid, exit early
             return;
         }
         default:
         {
-            break;
+            // Any other value is invalid
+            return;
         }
     }
+
+    MICROSTRAIN_LOG_INFO("GNSS acquired a %s fix. (%d) %s\n", fixDescription, fixTypeValue, fixType);
 
     // Confirm a valid fix was acquired
     MICROSTRAIN_LOG_INFO("The current GNSS fix is %s.\n", _fixInfo.valid_flags.fixType() ? "valid" : "invalid");
@@ -769,48 +762,41 @@ void displayGnssFixState(const mip::data_gnss::FixInfo& _fixInfo)
 ///
 void displayFilterState(const mip::data_filter::FilterMode _filterState)
 {
-    const char*   headerMessage    = "The filter has entered";
-    const uint8_t filterStateValue = static_cast<uint8_t>(_filterState);
+    const char* modeDescription = "startup";
+    const char* modeType        = "GX5_STARTUP";
 
     switch (_filterState)
     {
         case mip::data_filter::FilterMode::GX5_INIT:
         {
-            MICROSTRAIN_LOG_INFO("%s initialization mode. (%d) GX5_INIT\n",
-                headerMessage,
-                filterStateValue
-            );
-
+            modeDescription = "initialization";
+            modeType        = "GX5_INIT";
             break;
         }
         case mip::data_filter::FilterMode::GX5_RUN_SOLUTION_VALID:
         {
-            MICROSTRAIN_LOG_INFO("%s run solution valid mode. (%d) GX5_RUN_SOLUTION_VALID\n",
-                headerMessage,
-                filterStateValue
-            );
-
+            modeDescription = "run solution valid";
+            modeType        = "GX5_RUN_SOLUTION_VALID";
             break;
         }
         case mip::data_filter::FilterMode::GX5_RUN_SOLUTION_ERROR:
         {
-            MICROSTRAIN_LOG_INFO("%s run solution error mode. (%d) GX5_RUN_SOLUTION_ERROR\n",
-                headerMessage,
-                filterStateValue
-            );
-
+            modeDescription = "run solution error";
+            modeType        = "GX5_RUN_SOLUTION_ERROR";
             break;
         }
         default:
         {
-            MICROSTRAIN_LOG_INFO("%s startup mode. (%d) GX5_STARTUP\n",
-                headerMessage,
-                filterStateValue
-            );
-
             break;
         }
     }
+
+    MICROSTRAIN_LOG_INFO(
+        "The filter has entered %s mode. (%d) %s\n",
+        modeDescription,
+        static_cast<uint8_t>(_filterState),
+        modeType
+    );
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -882,11 +868,7 @@ void initializeDevice(mip::Interface& _device)
 
     // Firmware version format is x.x.xx
     char firmwareVersion[16];
-    snprintf(firmwareVersion, sizeof(firmwareVersion) / sizeof(firmwareVersion[0]), "%d.%d.%02d",
-        major,
-        minor,
-        patch
-    );
+    snprintf(firmwareVersion, sizeof(firmwareVersion) / sizeof(firmwareVersion[0]), "%d.%d.%02d", major, minor, patch);
 
     MICROSTRAIN_LOG_INFO("-------- Device Information --------\n");
     MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Name", deviceInfo.model_name);
@@ -899,7 +881,7 @@ void initializeDevice(mip::Interface& _device)
 
     // Load the default settings on the device
     // Note: This guarantees the device is in a known state
-    MICROSTRAIN_LOG_INFO("Loading default settings.\n");
+    MICROSTRAIN_LOG_INFO("Loading %s.\n", mip::commands_3dm::DeviceSettings::DOC_NAME);
     cmdResult = mip::commands_3dm::defaultDeviceSettings(_device);
 
     if (!cmdResult.isAck())
@@ -930,7 +912,7 @@ void initializeDevice(mip::Interface& _device)
 ///
 void terminate(microstrain::Connection* _connection, const char* _message, const bool _successful /* = false */)
 {
-    if (strlen(_message) != 0)
+    if (_message && strlen(_message) != 0)
     {
         if (_successful)
         {
@@ -987,10 +969,13 @@ void terminate(microstrain::Connection* _connection, const char* _message, const
 ///
 void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const char* _format, ...)
 {
-    va_list args;
-    va_start(args, _format);
-    MICROSTRAIN_LOG_ERROR_V(_format, args);
-    va_end(args);
+    if (_format && strlen(_format) != 0)
+    {
+        va_list args;
+        va_start(args, _format);
+        MICROSTRAIN_LOG_ERROR_V(_format, args);
+        va_end(args);
+    }
 
     MICROSTRAIN_LOG_ERROR("Command Result: (%d) %s.\n", _cmdResult.value, _cmdResult.name());
 
