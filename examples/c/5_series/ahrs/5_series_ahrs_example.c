@@ -220,7 +220,7 @@ int main(const int argc, const char* argv[])
     // Get the start time of the device update loop to handle exiting the application
     const microstrain_embedded_timestamp loop_start_time = microstrain_get_current_timestamp();
 
-    mip_timestamp previous_print_timestamp = 0;
+    microstrain_embedded_timestamp previous_print_timestamp = 0;
 
     // Device loop
     // Exit after predetermined time in seconds
@@ -242,7 +242,7 @@ int main(const int argc, const char* argv[])
             current_state = filter_status.filter_state;
         }
 
-        const mip_timestamp current_timestamp = microstrain_get_current_timestamp();
+        const microstrain_embedded_timestamp current_timestamp = microstrain_get_current_timestamp();
 
         // Print out data based on the sample rate (1000 ms / SAMPLE_RATE_HZ)
         if (current_timestamp - previous_print_timestamp >= 1000 / SAMPLE_RATE_HZ)

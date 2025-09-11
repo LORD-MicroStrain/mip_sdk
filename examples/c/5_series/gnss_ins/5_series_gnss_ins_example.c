@@ -25,6 +25,9 @@
 // Include the MicroStrain logging header for custom logging
 #include <microstrain/logging.h>
 
+// Include the MicroStrain timestamping header
+#include <microstrain/embedded_time.h>
+
 // Include all necessary MIP headers
 // Note: The MIP SDK has headers for each module to include all headers associated with the module
 // I.E., #include <mip/mip_all.h>
@@ -89,10 +92,6 @@ void initialize_filter(mip_interface* _device);
 // Utilities to display state changes
 void display_gnss_fix_state(const mip_gnss_fix_info_data* _fix_info);
 void display_filter_state(const mip_filter_mode _filter_state);
-
-// Used for basic timestamping (since epoch in milliseconds)
-// TODO: Update this to whatever timestamping method is desired
-mip_timestamp get_current_timestamp();
 
 // Device callbacks used for reading and writing packets
 bool mip_interface_user_send_to_device(const mip_interface* _device, const uint8_t* _data, const size_t _byte_count,
@@ -285,13 +284,13 @@ int main(const int argc, const char* argv[])
     }
 
     // Get the start time of the device update loop to handle exiting the application
-    const mip_timestamp loop_start_time = get_current_timestamp();
+    const microstrain_embedded_timestamp loop_start_time = microstrain_get_current_timestamp();
 
-    mip_timestamp previous_print_timestamp = 0;
+    microstrain_embedded_timestamp previous_print_timestamp = 0;
 
     // Device loop
     // Exit after predetermined time in seconds
-    while (get_current_timestamp() - loop_start_time <= RUN_TIME_SECONDS * 1000)
+    while (microstrain_get_current_timestamp() - loop_start_time <= RUN_TIME_SECONDS * 1000)
     {
         // Update the device state
         // Note: This will update the device callbacks to trigger the filter state change
@@ -316,7 +315,7 @@ int main(const int argc, const char* argv[])
             current_state = filter_status.filter_state;
         }
 
-        const mip_timestamp current_timestamp = get_current_timestamp();
+        microstrain_embedded_timestamp current_timestamp = microstrain_get_current_timestamp();
 
         // Print out data based on the sample rate (1000 ms / SAMPLE_RATE_HZ)
         if (current_timestamp - previous_print_timestamp >= 1000 / SAMPLE_RATE_HZ)
@@ -826,33 +825,6 @@ void display_filter_state(const mip_filter_mode _filter_state)
             break;
         }
     }
-}
-
-////////////////////////////////////////////////////////////////////////////////
-/// @brief Gets the current system timestamp in milliseconds
-///
-/// @details Provides basic timestamping using system time:
-///          - Returns milliseconds since Unix epoch
-///          - Uses timespec_get() with UTC time base
-///          - Returns 0 if time cannot be obtained
-///
-/// @note Update this function to use a different time source if needed for
-///       your specific application requirements
-///
-/// @return Current system time in milliseconds since epoch
-///
-mip_timestamp get_current_timestamp()
-{
-    struct timespec ts;
-
-    // Get system UTC time since epoch
-    if (timespec_get(&ts, TIME_UTC) != TIME_UTC)
-    {
-        return 0;
-    }
-
-    // Get the time in milliseconds
-    return (mip_timestamp)ts.tv_sec * 1000 + (mip_timestamp)ts.tv_nsec / 1000000;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
