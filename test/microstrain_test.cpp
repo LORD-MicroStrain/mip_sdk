@@ -1,11 +1,12 @@
 #include "microstrain_test.hpp"
 
 #include <cstring>
+#include <sstream>
 #include <string>
 
+#ifdef MICROSTRAIN_TEST_USE_DOCTEST
 namespace detail
 {
-#ifdef MICROSTRAIN_TEST_USE_DOCTEST
     void check_c_strings_equal(const char* actual, const char* expected)
     {
         // Expected should be set by test and zero-terminated
@@ -22,33 +23,27 @@ namespace detail
         CHECK_EQ(strncmp(actual, expected, expected_size), 0);
     }
 
-    static constexpr size_t MAX_STRING_LENGTH = 1024;
-
-
-    void fail_if_position_out_of_bounds(const char *buffer, const size_t position)
+    void fail_if_position_out_of_bounds(const size_t buffer_size, const size_t position)
     {
-        const size_t buffer_size = strnlen(buffer, MAX_STRING_LENGTH);
-
         if (position > buffer_size)
         {
-            //INFO("Position can't be greater than the buffer size");
+            INFO("Position can't be greater than the buffer size");
             INFO("Buffer size: " << buffer_size);
             INFO("Position:    " << position);
-            FAIL("Position can't be greater than the buffer size");
+            FAIL("Position out of bounds");
         }
     }
 
-	void check_buffer_terminated(const char *buffer, const size_t position)
+	void check_buffer_terminated(const char *buffer, const size_t buffer_size, const size_t position)
     {
-        fail_if_position_out_of_bounds(buffer, position);
+        fail_if_position_out_of_bounds(buffer_size, position);
 
-        INFO("The buffer is not terminated");
-
-        std::string last_five_characters = "Last five characters: ";
-        last_five_characters += std::string(&buffer[position - 5], 6);
-        INFO(last_five_characters);
+        INFO("The buffer is not terminated at position: " << position);
+        const size_t start = std::max(static_cast<size_t>(0), position - 4);
+        const size_t length = position - start + 1;
+        INFO("Last max(5, N) characters: " << std::string(&buffer[start], length));
 
         CHECK_EQ(buffer[position], '\0');
     }
-#endif
 }
+#endif

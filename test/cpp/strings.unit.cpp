@@ -18,7 +18,7 @@ TEST("C++ string concatenation", "A span of chars can be concatenated to a buffe
 
     EXPECT_TO_BE_TRUE(ok);
     EXPECT_C_STRINGS_TO_BE_EQUAL(buffer, CHECK_STRING);
-    EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(buffer, CHECK_STRING_LENGTH);
+    EXPECT_BUFFER_TO_BE_TERMINATED(buffer, CHECK_STRING_LENGTH);
 }
 
 TEST("C++ string concatenation", "A std::string_view can be concatenated to a buffer")
@@ -30,7 +30,7 @@ TEST("C++ string concatenation", "A std::string_view can be concatenated to a bu
 
     EXPECT_TO_BE_TRUE(ok);
     EXPECT_C_STRINGS_TO_BE_EQUAL(buffer, CHECK_STRING);
-    EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(buffer, CHECK_STRING_LENGTH);
+    EXPECT_BUFFER_TO_BE_TERMINATED(buffer, CHECK_STRING_LENGTH);
 }
 
 TEST("C++ string concatenation", "A std::string can be concatenated to a buffer")
@@ -42,7 +42,7 @@ TEST("C++ string concatenation", "A std::string can be concatenated to a buffer"
 
     EXPECT_TO_BE_TRUE(ok);
     EXPECT_C_STRINGS_TO_BE_EQUAL(buffer, CHECK_STRING);
-    EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(buffer, CHECK_STRING_LENGTH);
+    EXPECT_BUFFER_TO_BE_TERMINATED(buffer, CHECK_STRING_LENGTH);
 }
 
 TEST("C++ string concatenation", "A zero-terminated C string can be concatenated to a buffer")
@@ -54,7 +54,7 @@ TEST("C++ string concatenation", "A zero-terminated C string can be concatenated
 
     EXPECT_TO_BE_TRUE(ok);
     EXPECT_C_STRINGS_TO_BE_EQUAL(buffer, CHECK_STRING);
-    EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(buffer, CHECK_STRING_LENGTH);
+    EXPECT_BUFFER_TO_BE_TERMINATED(buffer, CHECK_STRING_LENGTH);
 }
 
 TEST("C++ string concatenation", "Up to N characters of a zero-terminated string can be concatenated to a buffer")
@@ -67,7 +67,7 @@ TEST("C++ string concatenation", "Up to N characters of a zero-terminated string
 
     EXPECT_TO_BE_TRUE(ok);
     EXPECT_C_STRINGS_TO_BE_EQUAL(buffer, "1234");
-    EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(buffer, character_limit);
+    EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(buffer, CHECK_STRING_LENGTH, character_limit);
 }
 
 TEST("C++ string concatenation", "A string literal can be concatenated to a buffer")
@@ -79,5 +79,5 @@ TEST("C++ string concatenation", "A string literal can be concatenated to a buff
 
     EXPECT_TO_BE_TRUE(ok);
     EXPECT_C_STRINGS_TO_BE_EQUAL(buffer, "123456789");
-    EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(buffer, 9);
+    EXPECT_BUFFER_TO_BE_TERMINATED(buffer, 9);
 }

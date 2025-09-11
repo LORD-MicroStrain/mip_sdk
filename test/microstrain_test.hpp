@@ -11,11 +11,18 @@
           projects
 
 	TODO: Find a way to reuse custom logic between WARN, EXPECT, and ASSERT interfaces
+	    ---> Maybe we can set up an enum to pass to a single function that then calls the
+	         correct level of assertion?
+
+    TODO: Split macro definitions into top-level header and implement functions in framework
+          files
 */
 #pragma once
 
 #ifdef MICROSTRAIN_TEST_USE_DOCTEST
 #include <cstddef>
+
+#include <string_view>
 
 #include <doctest/doctest.h>
 
@@ -23,7 +30,7 @@ namespace detail
 {
     void check_c_strings_equal(const char* actual, const char* expected);
 
-	void check_buffer_terminated(const char *buffer, size_t position);
+	void check_buffer_terminated(const char *buffer, size_t buffer_size, size_t position);
 }
 
 // Using Doctest's tagging system here so we can run specific test suites without
@@ -40,5 +47,6 @@ namespace detail
 
 #define EXPECT_C_STRINGS_TO_BE_EQUAL(actual, expected) detail::check_c_strings_equal(actual, expected)
 
-#define EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(buffer, position) detail::check_buffer_terminated(buffer, position);
+#define EXPECT_BUFFER_TO_BE_TERMINATED(buffer, buffer_size) detail::check_buffer_terminated(buffer, buffer_size, buffer_size);
+#define EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(buffer, buffer_size, position) detail::check_buffer_terminated(buffer, buffer_size, position);
 #endif
