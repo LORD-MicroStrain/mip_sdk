@@ -391,7 +391,9 @@ void mip_interface_update_time(mip_interface* _device, mip_timestamp _timestamp)
 /// @param _packet MIP Packet from the parser
 /// @param _timestamp Timestamp of the packet
 ///
-void mip_interface_parse_callback(void* _device, const mip_packet_view* _packet, mip_timestamp _timestamp);
+/// @return True
+///
+bool mip_interface_parse_callback(void* _device, const mip_packet_view* _packet, mip_timestamp _timestamp);
 
 ////////////////////////////////////////////////////////////////////////////////
 /// @brief Blocks until the pending command completes or times out

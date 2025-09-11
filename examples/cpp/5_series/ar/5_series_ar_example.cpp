@@ -185,7 +185,10 @@ int main(const int argc, const char* argv[])
     {
         // Update the device state
         // Note: This will update the device callbacks to trigger the filter state change
-        device.update();
+        // Note: The recommended default wait time is 10 ms, but could be 0 for non-blocking read operations
+        device.update(
+            10 // Time to wait
+        );
 
         // Filter state change
         if (currentState != filterStatus.filter_state)
@@ -206,7 +209,10 @@ int main(const int argc, const char* argv[])
     {
         // Update the device state
         // Note: This will update the device callbacks to trigger the filter state change
-        device.update();
+        // Note: The recommended default wait time is 10 ms, but could be 0 for non-blocking read operations
+        device.update(
+            10 // Time to wait
+        );
 
         // Filter state change
         if (currentState != filterStatus.filter_state)

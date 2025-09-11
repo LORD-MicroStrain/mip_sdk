@@ -110,9 +110,11 @@ void mip_interface_update_time(mip_interface* _device, const mip_timestamp _time
     mip_cmd_queue_update(mip_interface_cmd_queue(_device), _timestamp);
 }
 
-void mip_interface_parse_callback(void* _device, const mip_packet_view* _packet, const mip_timestamp _timestamp)
+bool mip_interface_parse_callback(void* _device, const mip_packet_view* _packet, const mip_timestamp _timestamp)
 {
     mip_interface_input_packet_from_device(_device, _packet, _timestamp);
+
+    return true;
 }
 
 mip_cmd_result mip_interface_wait_for_reply(mip_interface* _device, mip_pending_cmd* _pending_command)

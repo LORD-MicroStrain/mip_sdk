@@ -138,7 +138,7 @@ The following options may be specified when configuring the build with CMake (e.
 | MICROSTRAIN_ENABLE_TCP                | ON                         | Builds the included socket library (default enabled).                                                                                                                                                                                                       |
 | MICROSTRAIN_BUILD_PACKAGE             | OFF                        | Adds a `package` target to the project that will build a `.deb`, `.rpm`, or `.zip` file containing the library                                                                                                                                              |
 | MICROSTRAIN_BUILD_EXAMPLES            | OFF                        | If enabled, the example projects will be built.                                                                                                                                                                                                             |
-| MICROSTRAIN_BUILD_TESTS               | OFF                        | If enabled, the test programs in the /test directory will be compiled and linked. Run the tests with `ctest`.                                                                                                                                               |
+| MICROSTRAIN_BUILD_TESTS               | OFF                        | If enabled, the test suite will be compiled and linked.                                                                                                                                               |
 | MICROSTRAIN_BUILD_DOCUMENTATION       | OFF                        | If enabled, the documentation will be built with doxygen. You must have doxygen installed.                                                                                                                                                                  |
 | MICROSTRAIN_BUILD_DOCUMENTATION_FULL  | OFF                        | Builds internal documentation.                                                                                                                                                                                                                              |
 | MICROSTRAIN_BUILD_DOCUMENTATION_QUIET | ON                         | Suppress standard doxygen output.                                                                                                                                                                                                                           |
@@ -155,6 +155,17 @@ The following options may be specified when configuring the build with CMake (e.
    * An alternative generator may be used, such as ninja, code blocks, etc. by specifying `-G <generator>`
 3. Invoke `cmake --build .` in the build directory
 4. (Optional, if MICROSTRAIN_BUILD_PACKAGE was enabled) Run `cmake --build . --target package` to build the packages.
+
+### Running the test suite
+#### Automatically (preferred)
+The test suite uses CTest, which has good support for various development environments. How to run it depends on what you are using, but most IDEs provide a target such as "All CTest".
+
+#### Manually
+Navigate to the build directory and execute the following commands:
+```
+ctest -C CONFIG --verbose --output-on-failure --parallel
+```
+`CONFIG` should be replaced with the configuration that was built, such as Debug or Release.
 
 ### Building without CMake
 

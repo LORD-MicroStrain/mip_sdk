@@ -32,7 +32,7 @@
 
 struct ExampleUtils
 {
-    std::unique_ptr<microstrain::Connection> connection;
+    std::unique_ptr<microstrain::connections::Connection> connection;
     std::unique_ptr<mip::Interface> device;
     std::unique_ptr<std::ofstream> recordedFile;
 };
