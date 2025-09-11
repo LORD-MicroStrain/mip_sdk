@@ -27,6 +27,10 @@ Forthcoming
 * MIP Parser can be stopped early by returning false in the callback.
   * This can be used for things like searching for packets in a file,
     or to limit the number of packets processed in one parse call.
+* Unit test suite
+  * Disabled old broken tests
+  * Set CI/CD pipeline to run test suite on all platforms
+  * Setup test suite to be easily run locally
 ### Interface Changes
 * MIP parser callbacks must now return bool (return true to preserve existing behavior).
 ### Bug Fixes

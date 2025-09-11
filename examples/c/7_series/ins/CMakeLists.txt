@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 
 project("7_series_ins_example_c"
     VERSION "1.0.0"
-    DESCRIPTION "Simple example for the 3DM-CV7-INS using C"
+    DESCRIPTION "Simple example for the 3DM-CV7-INS, and 3DM-GV7-INS using C"
     LANGUAGES C
 )
 
