@@ -9,7 +9,7 @@ namespace detail
 {
     void check_c_strings_equal(const char* actual, const char* expected)
     {
-        // Expected should be set by test and zero-terminated
+        // It is reasonable to assume expected is zero-terminated as it is set by the test
         const size_t expected_size = strlen(expected);
 
         if (actual[expected_size] != '\0')
