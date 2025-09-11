@@ -1,13 +1,15 @@
 cmake_minimum_required(VERSION 3.16)
 
-project("cv7_ins_example_c"
+project("7_series_ins_example_cpp"
     VERSION "1.0.0"
-    DESCRIPTION "Simple example for the 3DM-CV7-INS using C"
-    LANGUAGES C
+    DESCRIPTION "Simple example for the 3DM-CV7-INS, and 3DM-GV7-INS using C++"
+    LANGUAGES C CXX
 )
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # TODO: Set MIP_SDK_ROOT_DIR if building as a standalone project
 if(DEFINED MIP_SDK_ROOT_DIR OR DEFINED CACHE{MIP_SDK_ROOT_DIR})
@@ -43,7 +45,7 @@ endif()
 
 # Create the example
 add_executable(${PROJECT_NAME}
-    "${CMAKE_CURRENT_LIST_DIR}/cv7_ins_example.c"
+    "${CMAKE_CURRENT_LIST_DIR}/7_series_ins_example.cpp"
 )
 
 # Configure the project in a sub-folder for IDEs that support it
@@ -66,9 +68,10 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 
 if(MSVC)
     set(COMPILE_OPTIONS
-        "/W4" # Enable warnings
-        "/WX" # Warnings as errors
-        "/MP" # Multi-process compilation
+        "/W4"             # Enable warnings
+        "/WX"             # Warnings as errors
+        "/Zc:__cplusplus" # Enable updated __cplusplus value
+        "/MP"             # Multi-process compilation
     )
 else()
     set(COMPILE_OPTIONS
