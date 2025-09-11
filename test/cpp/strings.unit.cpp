@@ -50,7 +50,7 @@ TEST("C++ string concatenation", "A zero-terminated C string can be concatenated
     char buffer[1024] = {};
     size_t index = 0;
 
-    const bool ok = microstrain::strings::concat_z(buffer, &index, CHECK_STRING);
+    const bool ok = microstrain::strings::concat_cstr(buffer, &index, CHECK_STRING);
 
     EXPECT_TO_BE_TRUE(ok);
     EXPECT_C_STRINGS_TO_BE_EQUAL(buffer, CHECK_STRING);
@@ -63,7 +63,7 @@ TEST("C++ string concatenation", "Up to N characters of a zero-terminated string
     size_t index = 0;
     constexpr size_t character_limit = 4;
 
-    const bool ok = microstrain::strings::concat_z(buffer, &index, "123456789", character_limit);
+    const bool ok = microstrain::strings::concat_cstr(buffer, &index, "123456789", character_limit);
 
     EXPECT_TO_BE_TRUE(ok);
     EXPECT_C_STRINGS_TO_BE_EQUAL(buffer, "1234");
