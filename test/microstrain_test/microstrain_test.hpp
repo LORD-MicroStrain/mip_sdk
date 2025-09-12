@@ -17,7 +17,7 @@
 #pragma once
 
 #ifdef MICROSTRAIN_TEST_USE_DOCTEST
-#include "../src/doctest_wrappers.hpp"
+#include "doctest/doctest_wrappers.hpp"
 #endif
 
 

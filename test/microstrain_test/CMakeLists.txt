@@ -1,8 +1,7 @@
 option(MICROSTRAIN_TEST_USE_DOCTEST "Use doctest as the backend framework" ON)
 
-include(FetchContent)
-
 if(MICROSTRAIN_TEST_USE_DOCTEST)
+    include(FetchContent)
     FetchContent_Declare(doctest
         GIT_REPOSITORY "https://github.com/doctest/doctest.git"
         GIT_TAG "v2.4.12"
@@ -10,28 +9,22 @@ if(MICROSTRAIN_TEST_USE_DOCTEST)
     FetchContent_MakeAvailable(doctest)
 endif()
 
-# Framework wrapper library - Should probably be moved to its own repository at some point.
 add_library(microstrain_test STATIC)
-#[[
-    "include/microstrain_test.hpp"
-    "src/doctest_wrappers.hpp"
-    "src/doctest_wrappers.cpp"
-]]
-#)
+
 target_include_directories(microstrain_test
-    PUBLIC "${CMAKE_CURRENT_LIST_DIR}/include"
+    PUBLIC "${CMAKE_CURRENT_LIST_DIR}"
     PRIVATE "${CMAKE_CURRENT_LIST_DIR}/src"
 )
 
 target_sources(microstrain_test
-    PUBLIC "include/microstrain_test.hpp"
+    PUBLIC "microstrain_test.hpp"
 )
 
 if(MICROSTRAIN_TEST_USE_DOCTEST)
     target_sources(microstrain_test
         PRIVATE
-            "src/doctest_wrappers.hpp"
-            "src/doctest_wrappers.cpp"
+            "doctest/doctest_wrappers.hpp"
+            "doctest/doctest_wrappers.cpp"
     )
     target_compile_definitions(microstrain_test
         PUBLIC MICROSTRAIN_TEST_USE_DOCTEST
