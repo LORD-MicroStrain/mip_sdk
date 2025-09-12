@@ -1,10 +1,11 @@
 # MIP Packet Example (C++)
 
-This example demonstrates how to create, manipulate, and work with raw and buffered MIP packets using the C++ API.
+This example demonstrates how to create, manipulate, and work with raw and buffered MIP packets with the MIP SDK 
+using the C++ API.
 
 ## Overview
 
-The example showcases fundamental MIP packet operations, including:
+The example showcases basic MIP packet operations, including:
 - Creating empty MIP packets
 - Adding data fields to packets
 - Computing and adding checksums
@@ -35,18 +36,18 @@ This example does not require device connection and works entirely with in-memor
 
 ## Data Handling
 
-The C++ version uses modern features including:
-- **RAII Buffer Management**: Automatic memory management for packet buffers
-- **Exception Safety**: Proper error handling and resource cleanup
-- **STL Integration**: Use of standard library containers
+This example uses modern C++ features including:
+- **Type Safety**: Strongly typed data structures for each message type
+- **String Handling**: Safe C++ string operations
 
 ## C++ Implementation Features
 
-This example showcases:
+This example demonstrates:
 - **Modern C++ Packet API**: RAII-based packet management
 - **Type-Safe MIP Command Interfaces**: Compile-time type checking
 - **Exception Safety**: Proper error handling and resource cleanup
-- **STL Integration**: Standard library containers for packet data
+- **STL Integration**: Use of standard library containers and algorithms
+- **Portability**: Cross-platform compatibility (Windows/Unix)
 
 ## Packet Operations Demonstrated
 
@@ -65,13 +66,6 @@ The example works with various MIP descriptor sets:
 - **3DM Commands**: Device management commands
 - **Sensor Data**: IMU and sensor data fields
 - **Shared Data**: Common data structures across devices
-
-## Modern C++ Features
-
-This example showcases:
-- **RAII Resource Management**: Automatic buffer and memory management
-- **STL Algorithms**: Standard library integration for packet processing
-- **Exception Safety**: Guaranteed cleanup and error handling
 
 ## Usage
 
@@ -94,11 +88,16 @@ The example includes comprehensive error handling with:
 ## C++ Features
 
 This example demonstrates:
-- Modern C++ (C++11 and later) practices
 - Type-safe MIP command interfaces
 - RAII resource management
-- Exception-safe programming
 - Standard library integration
+
+## Type Safety and Documentation
+
+This example provides additional C++ benefits:
+- **Built-in Documentation**: Data structures include `DOC_NAME` constants for easy reference
+- **Strongly Typed Enums**: C++ enum classes prevent accidental misuse
+- **Automatic Descriptors**: `DESCRIPTOR` constants eliminate magic numbers
 
 ## Use Cases
 
@@ -119,5 +118,5 @@ This example is useful for:
 
 - C version: `mip_packet_example.c`
 - Other examples in the `examples/` directory
-- MIP SDK documentation
+- [MIP SDK documentation](https://lord-microstrain.github.io/mip_sdk_documentation/)
 - MIP Protocol specification

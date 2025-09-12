@@ -1,10 +1,11 @@
 # MIP Packet Example (C)
 
-This example demonstrates how to create, manipulate, and work with raw and buffered MIP packets using the C API.
+This example demonstrates how to create, manipulate, and work with raw and buffered MIP packets with the MIP SDK 
+using the C API.
 
 ## Overview
 
-The example showcases fundamental MIP packet operations, including:
+The example showcases basic MIP packet operations, including:
 - Creating empty MIP packets
 - Adding data fields to packets
 - Computing and adding checksums
@@ -35,7 +36,7 @@ This example does not require device connection and works entirely with in-memor
 
 ## Data Handling
 
-The C version demonstrates traditional C programming patterns:
+This example demonstrates traditional C programming patterns:
 - **Raw Memory Operations**: Direct manipulation of packet buffers
 - **Serialization**: Manual serialization of data structures into MIP format
 - **Buffer Management**: Careful management of packet buffers and sizes
@@ -116,5 +117,5 @@ This example is useful for:
 
 - C++ version: `mip_packet_example.cpp`
 - Other examples in the `examples/` directory
-- MIP SDK documentation
+- [MIP SDK documentation](https://lord-microstrain.github.io/mip_sdk_documentation/)
 - MIP Protocol specification

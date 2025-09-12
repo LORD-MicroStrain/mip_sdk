@@ -33,12 +33,12 @@ The example uses the following default settings:
     - Firmware version information
 
 ### Communication Interface
-- `mip_interface_user_send_to_device()` - Sends commands to the device
-- `mip_interface_user_recv_from_device()` - Receives data from the device
+- Uses the `mip_interface` struct for device communication
+- Serial connection handled by `serial_port`
 
 ## Data Handling
 
-The C version demonstrates traditional C programming patterns:
+This example demonstrates traditional C programming patterns:
 - **Manual Parsing**: Direct parsing of incoming MIP packets using the MIP parser
 - **String Handling**: Safe C string operations for device information
 - **Explicit Memory Management**: Manual buffer and resource management
@@ -110,4 +110,4 @@ This example demonstrates:
 
 - C++ version: `device_info_example.cpp`
 - Other examples in the `examples/` directory
-- MIP SDK documentation
+- [MIP SDK documentation](https://lord-microstrain.github.io/mip_sdk_documentation/)

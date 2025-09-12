@@ -1,15 +1,16 @@
-# 5 Series AR Example (C++)
+# 7 Series IMU Streaming Example (C++)
 
-This example demonstrates how to configure and use a MicroStrain 5-series AR device with the MIP SDK using the C++ API.
+This example demonstrates how to stream basic IMU sensor data from a MicroStrain 7-series device with the MIP SDK 
+using the C++ API.
 
 ## Overview
 
-The example showcases the basic setup and operation of a 5-series AR device, including:
+The example showcases basic IMU sensor data streaming setup and operation of a 7-series device, including:
 - Device initialization and communication
-- Filter message format configuration
-- Gyro bias capture
-- Filter initialization
+- Sensor message format configuration
 - Real-time data streaming and display
+- Dynamic magnetometer support detection
+- Basic packet and field-level callbacks
 
 ## Configuration
 
@@ -26,17 +27,19 @@ The example uses the following default settings:
 
 ### Device Setup
 - `initializeDevice()` - Establishes communication, validates device connection, and loads defaults
-- `captureGyroBias()` - Captures and applies gyroscope bias compensation
-- `initializeFilter()` - Initializes the attitude filter
+- `isDescriptorSupported()` - Checks device capabilities for sensor data types
 
 ### Message Configuration
-- `configureFilterMessageFormat()` - Configures filter/attitude data output including:
-    - Filter timestamp
-    - Filter status
-    - Euler angles (roll, pitch, yaw)
+- `configureSensorMessageFormat()` - Configures IMU sensor data output including:
+    - Scaled accelerometer
+    - Scaled gyroscope
+    - Scaled magnetometer (if supported)
 
-### Data Display
-- `displayFilterState()` - Displays navigation filter operating mode changes
+### Data Processing
+- `packetCallback()` - Processes complete MIP packets and displays field information
+- `accelFieldCallback()` - Handles accelerometer data fields
+- `gyroFieldCallback()` - Handles gyroscope data fields
+- `magFieldCallback()` - Handles magnetometer data fields (if supported)
 
 ### Communication Interface
 - Uses the `mip::Interface` class for device communication
@@ -66,49 +69,47 @@ This example uses modern C++ connection handling:
 - **SerialConnection**: RAII-based serial connection management
 - **Automatic Cleanup**: Connection automatically closed when the object goes out of scope
 
-## Filter Data Output
+## IMU Sensor Data Output
 
-The example streams the following filter data:
+The example streams the following IMU sensor data:
 
-### TOW Data
-- **Units**: seconds
-- **Description**: Time of Week - GPS time reference
-- **Format**: Floating-point timestamp value
+### Accelerometer Data
+- **Units**: g (gravitational acceleration)
+- **Range**: Device-dependent (typically ?2g, ?4g, ?8g, ?16g)
+- **Format**: [X, Y, Z] scaled acceleration vector
 
-### Euler Angles Data
-- **Units**: radians
-- **Description**: Orientation expressed as Euler angles
-- **Format**: [Roll, Pitch, Yaw] angle vector
+### Gyroscope Data
+- **Units**: rad/s (radians per second)
+- **Range**: Device-dependent (typically ?250?/s to ?2000?/s)
+- **Format**: [X, Y, Z] scaled angular rate vector
+
+### Magnetometer Data (if supported)
+- **Units**: Gauss
+- **Range**: Device-dependent
+- **Format**: [X, Y, Z] scaled magnetic field vector
+- **Note**: Automatically detected and configured if available
 
 ## Streaming Output Format
 
-The example displays filter data in the following format:
+The example displays sensor data in the following format:
 ```
-TOW = 123456.789     Euler Angles = [ 0.012345, -0.067890,  1.234567]
+Scaled Accel Data (0x80, 0x04): [ 0.012345, -0.098765,  0.987654]
+Scaled Gyro Data  (0x80, 0x05): [-0.001234,  0.005678, -0.002345]
+Scaled Mag Data   (0x80, 0x06): [ 0.123456, -0.234567,  0.345678]
 ```
 
 ## Usage
 
-1. Connect your 5-series AR device to the specified serial port
+1. Connect your 7-series device to the specified serial port
 2. Update the `PORT_NAME` constant if using a different port
 3. Compile and run the example
-4. Follow the gyro bias capture prompt (keep the device stationary)
-5. The program will:
-    - Initialize the device
+4. The program will:
+    - Initialize the device and query supported descriptors
     - Configure data streaming
-    - Wait for the filter to initialize
+    - Register callbacks for data processing
     - Stream data for the specified runtime
-    - Display filter state transitions
-    - Display real-time filter data
+    - Display real-time sensor data
     - Clean up and exit
-
-## Filter State Progression
-
-The example monitors and displays filter state transitions:
-1. **Startup** - Filter startup
-2. **Initialization** - Filter initialization
-3. **Run Solution Valid** - Valid filter solution
-4. **Run Solution Invalid** - Invalid filter solution
 
 ## Error Handling
 
@@ -136,13 +137,13 @@ This example provides additional C++ benefits:
 
 ## Requirements
 
-- MicroStrain 5-series AR device (3DM-CX5-AR, 3DM-CV5-AR, or 3DM-GX5-AR)
+- MicroStrain 7-series device
 - Serial connection (USB or RS-232)
 - MIP SDK library with C++ support
 - C++11 or later compiler
 
 ## See Also
 
-- C version: `5_series_ar_example.c`
+- C version: `7_series_stream_imu_example.c`
 - Other examples in the `examples/` directory
 - [MIP SDK documentation](https://lord-microstrain.github.io/mip_sdk_documentation/)

@@ -6,7 +6,7 @@ This example demonstrates how to configure and use a MicroStrain 7-series AR dev
 
 The example showcases the basic setup and operation of a 7-series AR device, including:
 - Device initialization and communication
-- Filter message configuration
+- Filter message format configuration
 - Gyro bias capture
 - Filter initialization
 - Real-time data streaming and display
@@ -25,9 +25,9 @@ The example uses the following default settings:
 ## Key Functions
 
 ### Device Setup
-- `initializeDevice()` - Establishes serial communication and validates device connection
+- `initializeDevice()` - Establishes communication, validates device connection, and loads defaults
 - `captureGyroBias()` - Captures and applies gyroscope bias compensation
-- `initializeFilter()` - Initializes the attitude filter with magnetometer reference
+- `initializeFilter()` - Initializes the attitude filter
 
 ### Message Configuration
 - `configureFilterMessageFormat()` - Configures filter/attitude data output including:
@@ -36,7 +36,7 @@ The example uses the following default settings:
     - Euler angles (roll, pitch, yaw)
 
 ### Data Display
-- `displayFilterState()` - Displays attitude filter operating mode changes
+- `displayFilterState()` - Displays navigation filter operating mode changes
 
 ### Communication Interface
 - Uses the `mip::Interface` class for device communication
@@ -44,37 +44,72 @@ The example uses the following default settings:
 
 ## Data Handling
 
-The C++ version uses modern features including:
+This example uses modern C++ features including:
 - **Data Extractors**: Automatic parsing of incoming data fields
 - **Type Safety**: Strongly typed data structures for each message type
 - **Callbacks**: Automatic data callbacks for registered message types
-- **RAII**: Automatic resource management for connections
+- **String Handling**: Safe C++ string operations
 
 ## C++ Implementation Features
 
 This example demonstrates:
+- **MIP Interface**: Modern C++ interface for device communication (`mip::Interface`)
 - **Modern C++ Connection Management**: RAII-based resource handling
 - **Type-Safe MIP Command Interfaces**: Compile-time type checking
 - **Exception Safety**: Proper error handling and resource cleanup
+- **STL Integration**: Use of standard library containers and algorithms
+- **Portability**: Cross-platform compatibility (Windows/Unix)
 
-## Data Registration
+## Connection Management
 
-The C++ version showcases automatic data handling:
-- **Data Stores**: Automatic storage of incoming data fields
-- **Extractor Registration**: Type-safe registration of data extractors
-- **Callback Management**: Automatic callback invocation for new data
+This example uses modern C++ connection handling:
+- **SerialConnection**: RAII-based serial connection management
+- **Automatic Cleanup**: Connection automatically closed when the object goes out of scope
+
+## Filter Data Output
+
+The example streams the following filter data:
+
+### TOW Data
+- **Units**: seconds
+- **Description**: Time of Week - GPS time reference
+- **Format**: Floating-point timestamp value
+
+### Euler Angles Data
+- **Units**: radians
+- **Description**: Orientation expressed as Euler angles
+- **Format**: [Roll, Pitch, Yaw] angle vector
+
+## Streaming Output Format
+
+The example displays filter data in the following format:
+```
+TOW = 123456.789     Euler Angles = [ 0.012345, -0.067890,  1.234567]
+```
 
 ## Usage
 
 1. Connect your 7-series AR device to the specified serial port
 2. Update the `PORT_NAME` constant if using a different port
 3. Compile and run the example
-4. The program will:
+4. Follow the gyro bias capture prompt (keep the device stationary)
+5. The program will:
     - Initialize the device
-    - Configure data output
+    - Configure data streaming
+    - Wait for the filter to reach vertical gyro mode
     - Stream data for the specified runtime
-    - Display filter status changes
+    - Display filter state transitions
+    - Display real-time filter data
     - Clean up and exit
+
+## Filter State Progression
+
+The example monitors and displays filter state transitions:
+1. **Startup** - Filter startup
+2. **Initialization** - Filter initialization
+3. **Vertical Gyro** - Basic attitude estimation
+4. **AHRS** - Full attitude and heading reference
+5. **Full Navigation** - Complete navigation solution with position/velocity
 
 ## Error Handling
 
@@ -82,7 +117,7 @@ The example includes comprehensive error handling with:
 - Command result checking using `mip::CmdResult`
 - Connection failure detection and recovery
 - Graceful termination functions for different error types
-- Detailed error messages with context
+- Detailed error messages with context using built-in documentation strings
 
 ## C++ Features
 
@@ -91,11 +126,18 @@ This example demonstrates:
 - Type-safe MIP command interfaces
 - Automatic data field extraction
 - RAII resource management
-- STL math utilities integration
+- Standard library integration
+
+## Type Safety and Documentation
+
+This example provides additional C++ benefits:
+- **Built-in Documentation**: Data structures include `DOC_NAME` constants for easy reference
+- **Strongly Typed Enums**: C++ enum classes prevent accidental misuse
+- **Automatic Descriptors**: `DESCRIPTOR` constants eliminate magic numbers
 
 ## Requirements
 
-- MicroStrain 7-series AR device
+- MicroStrain 7-series AR device (3DM-CV7-AR or 3DM-GV7-AR)
 - Serial connection (USB or RS-232)
 - MIP SDK library with C++ support
 - C++11 or later compiler
@@ -104,4 +146,4 @@ This example demonstrates:
 
 - C version: `7_series_ar_example.c`
 - Other examples in the `examples/` directory
-- MIP SDK documentation
+- [MIP SDK documentation](https://lord-microstrain.github.io/mip_sdk_documentation/)

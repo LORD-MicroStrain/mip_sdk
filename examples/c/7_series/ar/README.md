@@ -6,7 +6,7 @@ This example demonstrates how to configure and use a MicroStrain 7-series AR dev
 
 The example showcases the basic setup and operation of a 7-series AR device, including:
 - Device initialization and communication
-- Filter message configuration
+- Filter message format configuration
 - Gyro bias capture
 - Filter initialization
 - Real-time data streaming and display
@@ -25,9 +25,9 @@ The example uses the following default settings:
 ## Key Functions
 
 ### Device Setup
-- `initialize_device()` - Establishes serial communication and validates device connection
+- `initialize_device()` - Establishes communication, validates device connection, and loads defaults
 - `capture_gyro_bias()` - Captures and applies gyroscope bias compensation
-- `initialize_filter()` - Initializes the attitude filter with magnetometer reference
+- `initialize_filter()` - Initializes the attitude filter
 
 ### Message Configuration
 - `configure_filter_message_format()` - Configures filter/attitude data output including:
@@ -36,15 +36,15 @@ The example uses the following default settings:
     - Euler angles (roll, pitch, yaw)
 
 ### Data Display
-- `display_filter_state()` - Displays attitude filter operating mode changes
+- `display_filter_state()` - Displays navigation filter operating mode changes
 
 ### Communication Interface
-- `mip_interface_user_send_to_device()` - Sends commands to the device
-- `mip_interface_user_recv_from_device()` - Receives data from the device
+- Uses the `mip_interface` struct for device communication
+- Serial connection handled by `serial_port`
 
 ## Data Handling
 
-The C version demonstrates traditional C programming patterns:
+This example demonstrates traditional C programming patterns:
 - **Manual Parsing**: Direct parsing of incoming MIP packets using the MIP parser
 - **Callback Functions**: Function pointer-based callbacks for data processing
 - **Explicit Memory Management**: Manual buffer and resource management
@@ -67,17 +67,50 @@ The example implements custom communication handlers:
 - **Receive Function**: `mip_interface_user_recv_from_device()` manages incoming data
 - **Timeout Handling**: Configurable timeouts for reliable communication
 
+## Filter Data Output
+
+The example streams the following filter data:
+
+### TOW Data
+- **Units**: seconds
+- **Description**: Time of Week - GPS time reference
+- **Format**: Floating-point timestamp value
+
+### Euler Angles Data
+- **Units**: radians
+- **Description**: Orientation expressed as Euler angles
+- **Format**: [Roll, Pitch, Yaw] angle vector
+
+## Streaming Output Format
+
+The example displays filter data in the following format:
+```
+TOW = 123456.789     Euler Angles = [ 0.012345, -0.067890,  1.234567]
+```
+
 ## Usage
 
 1. Connect your 7-series AR device to the specified serial port
 2. Update the `PORT_NAME` constant if using a different port
 3. Compile and run the example
-4. The program will:
+4. Follow the gyro bias capture prompt (keep the device stationary)
+5. The program will:
     - Initialize the device
-    - Configure data output
+    - Configure data streaming
+    - Wait for the filter to reach vertical gyro mode
     - Stream data for the specified runtime
-    - Display filter status changes
+    - Display filter state transitions
+    - Display real-time filter data
     - Clean up and exit
+
+## Filter State Progression
+
+The example monitors and displays filter state transitions:
+1. **Startup** - Filter startup
+2. **Initialization** - Filter initialization
+3. **Vertical Gyro** - Basic attitude estimation
+4. **AHRS** - Full attitude and heading reference
+5. **Full Navigation** - Complete navigation solution with position/velocity
 
 ## Error Handling
 
@@ -98,7 +131,7 @@ This example demonstrates:
 
 ## Requirements
 
-- MicroStrain 7-series AR device
+- MicroStrain 7-series AR device (3DM-CV7-AR or 3DM-GV7-AR)
 - Serial connection (USB or RS-232)
 - MIP SDK library with C support
 - C11 or later compiler
@@ -107,4 +140,4 @@ This example demonstrates:
 
 - C++ version: `7_series_ar_example.cpp`
 - Other examples in the `examples/` directory
-- MIP SDK documentation
+- [MIP SDK documentation](https://lord-microstrain.github.io/mip_sdk_documentation/)

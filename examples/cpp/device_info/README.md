@@ -1,7 +1,7 @@
 # Device Info Example (C++)
 
-This example demonstrates how to retrieve and display device information from any MIP-enabled MicroStrain device using
-the C++ API.
+This example demonstrates how to retrieve and display device information from any MIP-enabled MicroStrain device with 
+the MIP SDK using the C++ API.
 
 ## Overview
 
@@ -22,7 +22,7 @@ The example uses the following default settings:
 ## Key Functions
 
 ### Device Setup
-- `initializeDevice()` - Establishes serial communication and validates device connection
+- `initializeDevice()` - Establishes communication, and validates device connection
 - `getDeviceInformation()` - Queries and retrieves comprehensive device information
 
 ### Device Information Display
@@ -38,20 +38,25 @@ The example uses the following default settings:
 
 ## Data Handling
 
-The C++ version uses modern features including:
-- **Type Safety**: Strongly typed data structures for device information
-- **RAII**: Automatic resource management for connections
-- **Exception Safety**: Proper error handling and resource cleanup
+This example uses modern C++ features including:
+- **Type Safety**: Strongly typed data structures for each message type
 - **String Handling**: Safe C++ string operations
 
 ## C++ Implementation Features
 
-This example showcases:
+This example demonstrates:
+- **MIP Interface**: Modern C++ interface for device communication (`mip::Interface`)
 - **Modern C++ Connection Management**: RAII-based resource handling
 - **Type-Safe MIP Command Interfaces**: Compile-time type checking
-- **Automatic Resource Cleanup**: RAII for connection management
-- **Exception Safety**: Proper error handling
-- **STL Integration**: Use of standard library string operations
+- **Exception Safety**: Proper error handling and resource cleanup
+- **STL Integration**: Use of standard library containers and algorithms
+- **Portability**: Cross-platform compatibility (Windows/Unix)
+
+## Connection Management
+
+This example uses modern C++ connection handling:
+- **SerialConnection**: RAII-based serial connection management
+- **Automatic Cleanup**: Connection automatically closed when the object goes out of scope
 
 ## Device Information Retrieved
 
@@ -62,14 +67,6 @@ The example displays the following device information:
 - **Lot Number**: Manufacturing lot information
 - **Device Options**: Available device features and capabilities
 - **Firmware Version**: Current firmware version (formatted as x.x.xx)
-
-## Modern C++ Features
-
-This example showcases:
-- **RAII Resource Management**: Automatic connection cleanup
-- **Type-Safe Commands**: Compile-time verified command interfaces
-- **STL Containers**: Standard library integration for data handling
-- **Exception Safety**: Guaranteed cleanup and error handling
 
 ## Usage
 
@@ -88,7 +85,7 @@ The example includes comprehensive error handling with:
 - Command result checking using `mip::CmdResult`
 - Connection failure detection and recovery
 - Graceful termination functions for different error types
-- Detailed error messages with context
+- Detailed error messages with context using built-in documentation strings
 
 ## C++ Features
 
@@ -96,9 +93,14 @@ This example demonstrates:
 - Modern C++ connection management
 - Type-safe MIP command interfaces
 - RAII resource management
-- Exception-safe programming
 - Standard library integration
-- Safe string handling
+
+## Type Safety and Documentation
+
+This example provides additional C++ benefits:
+- **Built-in Documentation**: Data structures include `DOC_NAME` constants for easy reference
+- **Strongly Typed Enums**: C++ enum classes prevent accidental misuse
+- **Automatic Descriptors**: `DESCRIPTOR` constants eliminate magic numbers
 
 ## Requirements
 
@@ -111,4 +113,4 @@ This example demonstrates:
 
 - C version: `device_info_example.c`
 - Other examples in the `examples/` directory
-- MIP SDK documentation
+- [MIP SDK documentation](https://lord-microstrain.github.io/mip_sdk_documentation/)

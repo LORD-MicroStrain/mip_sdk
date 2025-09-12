@@ -7,7 +7,7 @@ C API.
 
 The example showcases the basic setup and operation of a 5-series GNSS/INS device, including:
 - Device initialization and communication
-- GNSS and filter message configuration
+- GNSS and filter message format configuration
 - Gyro bias capture
 - Antenna offset configuration
 - Filter initialization and heading source configuration
@@ -27,14 +27,12 @@ The example uses the following default settings:
 ## Key Functions
 
 ### Device Setup
-- `initialize_device()` - Establishes serial communication and validates device connection
+- `initialize_device()` - Establishes communication, validates device connection, and loads defaults
 - `capture_gyro_bias()` - Captures and applies gyroscope bias compensation
 - `configure_antenna_offset()` - Sets GNSS antenna position relative to the device
-- `initialize_filter()` - Initializes the navigation filter with GNSS velocity and magnetometer as the heading sources
+- `initialize_filter()` - Initializes the navigation filter with GNSS velocity and magnetometer as the heading source
 
 ### Message Configuration
-- `configure_gnss_message_format()` - Configures GNSS data output including:
-    - Fix info
 - `configure_filter_message_format()` - Configures filter/navigation data output including:
     - Filter timestamp
     - Filter status
@@ -43,16 +41,16 @@ The example uses the following default settings:
     - Euler angles (roll, pitch, yaw)
 
 ### Data Display
-- `display_gnss_fix_state()` - Shows current GNSS fix status and quality
 - `display_filter_state()` - Displays navigation filter operating mode changes
+- `display_gnss_fix_state()` - Shows current GNSS fix status and quality
 
 ### Communication Interface
-- `mip_interface_user_send_to_device()` - Sends commands to the device
-- `mip_interface_user_recv_from_device()` - Receives data from the device
+- Uses the `mip_interface` struct for device communication
+- Serial connection handled by `serial_port`
 
 ## Data Handling
 
-The C version demonstrates traditional C programming patterns:
+This example demonstrates traditional C programming patterns:
 - **Manual Parsing**: Direct parsing of incoming MIP packets using the MIP parser
 - **Callback Functions**: Function pointer-based callbacks for data processing
 - **Explicit Memory Management**: Manual buffer and resource management
@@ -75,17 +73,72 @@ The example implements custom communication handlers:
 - **Receive Function**: `mip_interface_user_recv_from_device()` manages incoming data
 - **Timeout Handling**: Configurable timeouts for reliable communication
 
+## Filter Data Output
+
+The example streams the following filter data:
+
+### TOW Data
+- **Units**: seconds
+- **Description**: Time of Week - GPS time reference
+- **Format**: Floating-point timestamp value
+
+### Position LLH Data
+- **Units**:
+    - Latitude: degrees
+    - Longitude: degrees
+    - Ellipsoid Height: meters
+- **Description**: Position in Latitude, Longitude, Height coordinate system
+- **Format**: [Latitude, Longitude, Height] vector
+
+### Velocity NED Data
+- **Units**: m/s (meters per second)
+- **Description**: Velocity in North, East, Down coordinate frame
+- **Format**: [North, East, Down] velocity vector
+
+### Euler Angles Data
+- **Units**: radians
+- **Description**: Orientation expressed as Euler angles
+- **Format**: [Roll, Pitch, Yaw] angle vector
+
+## Streaming Output Format
+
+The example displays filter data in the following format:
+```
+TOW = 123456.789    Position LLH = [ 4.123456, -83.54321,  123.4567]    Velocity NED = [ 1.234567, -0.987654,  0.123456]     Euler Angles = [ 0.012345, -0.067890,  1.234567]
+```
+
 ## Usage
 
 1. Connect your 5-series GNSS/INS device to the specified serial port
 2. Update the `PORT_NAME` constant if using a different port
-3. Compile and run the example
-4. The program will:
+3. Update the `WHEELED_VEHICLE_APPLICATION` constant if using a wheeled-vehicle application
+4. Compile and run the example
+5. Follow the gyro bias capture prompt (keep the device stationary)
+6. The program will:
     - Initialize the device
-    - Configure data output
+    - Configure data streaming
+    - Wait for the filter to initialize
     - Stream data for the specified runtime
-    - Display GNSS fix and filter status changes
+    - Display filter state and GNSS fix transitions
+    - Display real-time filter data
     - Clean up and exit
+
+## Filter State Progression
+
+The example monitors and displays filter state transitions:
+1. **Startup** - Filter startup
+2. **Initialization** - Filter initialization
+3. **Run Solution Valid** - Valid filter solution
+4. **Run Solution Invalid** - Invalid filter solution
+
+## GNSS Fix State Progression
+
+The example monitors and displays GNSS fix state transitions:
+1. **No Fix** - Initial state with no satellite positioning
+2. **Invalid** - Fix data is present but flagged as unreliable or corrupted
+3. **Time Only** - Time synchronization established but no positioning
+4. **2D Fix** - Horizontal positioning available (latitude/longitude)
+5. **3D Fix** - Full positioning with altitude information
 
 ## Error Handling
 
@@ -115,4 +168,4 @@ This example demonstrates:
 
 - C++ version: `5_series_gnss_ins_example.cpp`
 - Other examples in the `examples/` directory
-- MIP SDK documentation
+- [MIP SDK documentation](https://lord-microstrain.github.io/mip_sdk_documentation/)

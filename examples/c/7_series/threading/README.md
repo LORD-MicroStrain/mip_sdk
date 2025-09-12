@@ -5,7 +5,9 @@ MicroStrain 7-series devices using the C API.
 
 ## Overview
 
-The example showcases advanced threading concepts for 7-series devices, including:
+The example showcases basic threading concepts for 7-series devices, including:
+- Device initialization and communication
+- Sensor message format configuration
 - Concurrent data collection and command execution
 - Thread-safe device communication
 - Race condition prevention and stress testing
@@ -27,29 +29,28 @@ The example uses the following default settings:
 ## Key Functions
 
 ### Device Setup
-- `initialize_device()` - Establishes serial communication and validates device connection
+- `initialize_device()` - Establishes communication and validates device connection
 
 ### Message Configuration
-- `configure_sensor_message_format()` - Configures sensor data output including:
+- `configure_sensor_message_format()` - Configures IMU sensor data output including:
     - Scaled accelerometer
 
 ### Threading Infrastructure
 - `update_device()` - Custom update function that handles thread context switching
 - `data_collection_thread()` - Dedicated thread function for continuous data collection
-- `packet_callback()` - Processes received MIP packets and displays field information
+- `packet_callback()` - Processes complete MIP packets and displays field information
 
 ### Communication Interface
-- `mip_interface_user_send_to_device()` - Sends commands to the device
-- `mip_interface_user_recv_from_device()` - Receives data from the device
+- Uses the `mip_interface` struct for device communication
+- Serial connection handled by `serial_port`
 
 ## Threading Architecture
 
-The C version demonstrates advanced threading patterns:
+This example demonstrates advanced threading patterns:
 - **Dual-Context Updates**: Different behavior for command vs. data collection contexts
 - **Race Condition Testing**: Stress testing with rapid ping commands
 - **Thread Synchronization**: Proper thread creation, joining, and cleanup
 - **Cross-Platform Threading**: Portable pthread implementation with MSVC compatibility
-- **Resource Management**: Safe cleanup on connection failures
 
 ## Threading Implementation
 
@@ -68,6 +69,14 @@ The example includes comprehensive thread safety:
 - **Connection State Management**: Safe handling of connection failures across threads
 - **Graceful Shutdown**: Proper thread termination and resource cleanup
 
+## Data Handling
+
+This example demonstrates traditional C programming patterns:
+- **Callback Functions**: Function pointer-based callbacks for data processing
+- **Explicit Memory Management**: Manual buffer and resource management
+- **Type Safety**: Uses C structs and enums for data type safety
+- **Error Codes**: Command results handled through return codes and error checking
+
 ## C Implementation Features
 
 This example showcases:
@@ -79,8 +88,9 @@ This example showcases:
 ## Custom Communication Functions
 
 The example implements thread-aware communication handlers:
-- **Send Function**: Thread-safe packet transmission to the device
-- **Receive Function**: Thread-safe packet reception with timestamping
+- **Send Function**: `mip_interface_user_send_to_device()` handles outgoing data
+- **Receive Function**: `mip_interface_user_recv_from_device()` manages incoming data
+- **Timeout Handling**: Configurable timeouts for reliable communication
 - **Update Function**: Context-aware device state updates
 - **Stress Testing**: Rapid command execution to test thread safety
 
@@ -134,5 +144,5 @@ The example includes platform-specific threading support:
 
 - C++ version: `7_series_threading_example.cpp`
 - Other examples in the `examples/` directory
-- MIP SDK documentation
+- [MIP SDK documentation](https://lord-microstrain.github.io/mip_sdk_documentation/)
 - POSIX Threads programming guide

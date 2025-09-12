@@ -7,9 +7,9 @@ C++ API.
 
 The example showcases the basic setup and operation of a 7-series GNSS/INS device, including:
 - Device initialization and communication
-- GNSS and filter message configuration
+- Filter and GNSS message format configuration
 - Gyro bias capture
-- Multi-antenna configuration
+- Antenna offset configuration
 - Filter initialization and heading source configuration
 - Real-time data streaming and display
 
@@ -17,35 +17,45 @@ The example showcases the basic setup and operation of a 7-series GNSS/INS devic
 
 The example uses the following default settings:
 
-| Setting            | Value                                         | Description                          |
-|--------------------|-----------------------------------------------|--------------------------------------|
-| `PORT_NAME`        | `"COM1"` (Windows)<br>`"/dev/ttyACM0"` (Unix) | Serial port for device communication |
-| `BAUDRATE`         | `115200`                                      | Communication baud rate              |
-| `SAMPLE_RATE_HZ`   | `1`                                           | Data output rate in Hz               |
-| `RUN_TIME_SECONDS` | `30`                                          | Example runtime duration             |
+| Setting                       | Value                                         | Description                                                    |
+|-------------------------------|-----------------------------------------------|----------------------------------------------------------------|
+| `PORT_NAME`                   | `"COM1"` (Windows)<br>`"/dev/ttyACM0"` (Unix) | Serial port for device communication                           |
+| `BAUDRATE`                    | `115200`                                      | Communication baud rate                                        |
+| `SAMPLE_RATE_HZ`              | `1`                                           | Data output rate in Hz                                         |
+| `RUN_TIME_SECONDS`            | `30`                                          | Example runtime duration                                       |
+| `WHEELED_VEHICLE_APPLICATION` | `false`                                       | Enable/disable for wheeled-vehicle applications (compile-time) |
+
+## GNSS Antenna Configuration
+
+The example configures dual-antenna GNSS setup for enhanced navigation accuracy and heading determination:
+
+| Antenna ID | Purpose                | Translation     | Description                                                           |
+|------------|------------------------|-----------------|-----------------------------------------------------------------------|
+| `1`        | Primary GNSS Antenna   | [-0.25, 0, 0] m | Main GNSS receiver positioned 0.25m behind the device center          |
+| `2`        | Secondary GNSS Antenna | [ 0.25, 0, 0] m | Secondary GNSS receiver positioned 0.25m forward of the device center |
 
 ## Key Functions
 
 ### Device Setup
-- `initializeDevice()` - Establishes serial communication and validates device connection
+- `initializeDevice()` - Establishes communication, validates device connection, and loads defaults
 - `captureGyroBias()` - Captures and applies gyroscope bias compensation
-- `configureAntennas()` - Sets up multi-antenna GNSS configuration
+- `configureAntennaOffset()` - Sets GNSS antenna position relative to the device
 - `initializeFilter()` - Initializes the navigation filter with GNSS position and velocity, and GNSS heading as the
   heading sources
 
 ### Message Configuration
-- `configureGnssMessageFormat()` - Configures GNSS data output including:
-    - Fix info
 - `configureFilterMessageFormat()` - Configures filter/navigation data output including:
     - GPS timestamp
     - Filter status
     - LLH position coordinates
     - NED velocity vectors
     - Euler angles (roll, pitch, yaw)
+- `configureGnssMessageFormat()` - Configures GNSS data output including:
+    - Fix info
 
 ### Data Display
-- `displayGnssFixState()` - Shows current GNSS fix status and quality for multiple antennas
 - `displayFilterState()` - Displays navigation filter operating mode changes
+- `displayGnssFixState()` - Shows current GNSS fix status and quality
 
 ### Communication Interface
 - Uses the `mip::Interface` class for device communication
@@ -53,23 +63,98 @@ The example uses the following default settings:
 
 ## Data Handling
 
-The C++ version uses modern features including:
+This example uses modern C++ features including:
 - **Data Extractors**: Automatic parsing of incoming data fields
 - **Type Safety**: Strongly typed data structures for each message type
 - **Callbacks**: Automatic data callbacks for registered message types
-- **RAII**: Automatic resource management for connections
+- **String Handling**: Safe C++ string operations
+
+## C++ Implementation Features
+
+This example demonstrates:
+- **MIP Interface**: Modern C++ interface for device communication (`mip::Interface`)
+- **Modern C++ Connection Management**: RAII-based resource handling
+- **Type-Safe MIP Command Interfaces**: Compile-time type checking
+- **Exception Safety**: Proper error handling and resource cleanup
+- **STL Integration**: Use of standard library containers and algorithms
+- **Portability**: Cross-platform compatibility (Windows/Unix)
+
+## Connection Management
+
+This example uses modern C++ connection handling:
+- **SerialConnection**: RAII-based serial connection management
+- **Automatic Cleanup**: Connection automatically closed when the object goes out of scope
+
+## Filter Data Output
+
+The example streams the following filter data:
+
+### TOW Data
+- **Units**: seconds
+- **Description**: Time of Week - GPS time reference
+- **Format**: Floating-point timestamp value
+
+### Position LLH Data
+- **Units**:
+    - Latitude: degrees
+    - Longitude: degrees
+    - Ellipsoid Height: meters
+- **Description**: Position in Latitude, Longitude, Height coordinate system
+- **Format**: [Latitude, Longitude, Height] vector
+
+### Velocity NED Data
+- **Units**: m/s (meters per second)
+- **Description**: Velocity in North, East, Down coordinate frame
+- **Format**: [North, East, Down] velocity vector
+
+### Euler Angles Data
+- **Units**: radians
+- **Description**: Orientation expressed as Euler angles
+- **Format**: [Roll, Pitch, Yaw] angle vector
+
+## Streaming Output Format
+
+The example displays filter data in the following format:
+```
+TOW = 123456.789    Position LLH = [ 4.123456, -83.54321,  123.4567]    Velocity NED = [ 1.234567, -0.987654,  0.123456]     Euler Angles = [ 0.012345, -0.067890,  1.234567]
+```
 
 ## Usage
 
 1. Connect your 7-series GNSS/INS device to the specified serial port
 2. Update the `PORT_NAME` constant if using a different port
-3. Compile and run the example
-4. The program will:
+3. Update the `WHEELED_VEHICLE_APPLICATION` constant if using a wheeled-vehicle application
+4. Compile and run the example
+5. Follow the gyro bias capture prompt (keep the device stationary)
+6. The program will:
     - Initialize the device
-    - Configure data output
+    - Configure data streaming
+    - Wait for the filter to reach full navigation mode
     - Stream data for the specified runtime
-    - Display GNSS fix and filter status changes
+    - Display filter state and GNSS fix transitions
+    - Display real-time filter data
     - Clean up and exit
+
+## Filter State Progression
+
+The example monitors and displays filter state transitions:
+1. **Startup** - Filter startup
+2. **Initialization** - Filter initialization
+3. **Vertical Gyro** - Basic attitude estimation
+4. **AHRS** - Full attitude and heading reference
+5. **Full Navigation** - Complete navigation solution with position/velocity
+
+## GNSS Fix State Progression
+
+The example monitors and displays GNSS fix state transitions:
+1. **No Fix** - Initial state with no satellite positioning
+2. **Invalid** - Fix data is present but flagged as unreliable or corrupted
+3. **Time Only** - Time synchronization established but no positioning
+4. **2D Fix** - Horizontal positioning available (latitude/longitude)
+5. **3D Fix** - Full positioning with altitude information
+6. **Differential** - Enhanced accuracy with correction data
+7. **RTK Float** - High-precision mode with ambiguity resolution in progress
+8. **RTK Fixed** - Centimeter-level accuracy with resolved ambiguities
 
 ## Error Handling
 
@@ -77,7 +162,7 @@ The example includes comprehensive error handling with:
 - Command result checking using `mip::CmdResult`
 - Connection failure detection and recovery
 - Graceful termination functions for different error types
-- Detailed error messages with context
+- Detailed error messages with context using built-in documentation strings
 
 ## C++ Features
 
@@ -86,6 +171,41 @@ This example demonstrates:
 - Type-safe MIP command interfaces
 - Automatic data field extraction
 - RAII resource management
+- Standard library integration
+
+## Type Safety and Documentation
+
+This example provides additional C++ benefits:
+- **Built-in Documentation**: Data structures include `DOC_NAME` constants for easy reference
+- **Strongly Typed Enums**: C++ enum classes prevent accidental misuse
+- **Automatic Descriptors**: `DESCRIPTOR` constants eliminate magic numbers
+
+### Configuration Details
+
+The dual-antenna configuration provides:
+- **Enhanced Heading Accuracy**: Two spatially separated antennas enable precise heading calculations without relying
+  solely on vehicle motion
+- **Baseline Vector**: 0.5m separation along the X-axis provides optimal heading determination
+- **RTK Support**: Both antennas can receive differential corrections for centimeter-level positioning accuracy
+- **Redundancy**: Backup positioning capability if one antenna experiences signal obstruction
+
+### Antenna Offset Constraints
+
+- **Minimum Separation**: 0.25m magnitude per antenna offset
+- **Maximum Separation**: 10m magnitude per antenna offset
+- **Coordinate System**: Device body frame
+    - X: Forward
+    - Y: Right
+    - Z: Down
+- **Precision Requirements**: Accurate physical measurements critical for proper heading calculations
+
+### Multi-Antenna Benefits
+
+This configuration enables:
+- **GNSS Heading**: Direct heading measurements independent of vehicle dynamics
+- **Improved Initialization**: Faster filter convergence with dual-antenna alignment
+- **Signal Diversity**: Better performance in challenging GNSS environments
+- **RTK Float/Fixed**: Support for high-precision positioning modes
 
 ## Requirements
 
@@ -98,4 +218,4 @@ This example demonstrates:
 
 - C version: `7_series_gnss_ins_example.c`
 - Other examples in the `examples/` directory
-- MIP SDK documentation
+- [MIP SDK documentation](https://lord-microstrain.github.io/mip_sdk_documentation/)

@@ -1,18 +1,17 @@
 # 7 Series INS Example (C)
 
-This example demonstrates how to configure and use a MicroStrain 7-series INS device with external aiding 
-measurements using the MIP SDK C API.
+This example demonstrates how to configure and use a MicroStrain 7-series INS device with the MIP SDK using the C API.
 
 ## Overview
 
-The example showcases basic INS setup and operation for 7-series devices, including:
+The example showcases the basic setup and operation of a 7-series INS device, including:
 - Device initialization and communication
-- Filter message configuration with INS-specific data
-- Gyro bias capture for improved accuracy
+- Filter message format configuration
+- Gyro bias capture
 - External aiding measurements configuration
 - Reference frame setup for external sensors
-- Filter initialization with external aiding
-- Real-time data streaming with external measurement injection
+- Filter initialization and heading source configuration
+- Real-time data streaming and display
 
 ## Configuration
 
@@ -38,18 +37,28 @@ The example configures three reference frames for external measurements:
 ## Key Functions
 
 ### Device Setup
-- `initialize_device()` - Establishes communication, validates connection, and loads defaults
-- `capture_gyro_bias()` - Captures gyroscope bias for improved INS performance
-- `configure_external_aiding()` - Sets up reference frames for external sensor data
-- `initialize_filter()` - Configures and initializes the navigation filter with external aiding
+- `initialize_device()` - Establishes communication, validates device connection, and loads defaults
+- `capture_gyro_bias()` - Captures and applies gyroscope bias compensation
+- `configure_external_aiding_heading()` - Sets up a reference frame for external heading sensor data
+- `configure_external_aiding_gnss_antenna()` - Sets up a reference frame for external GNSS antenna sensor data
+- `configure_external_aiding_ned_velocity()` - Sets up a reference frame for external NED velocity sensor data
+- `initialize_filter()` - Initializes the navigation filter with GNSS position and velocity, and external heading as the
+  heading sources
 
 ### Message Configuration
-- `configure_filter_message_format()` - Sets up INS filter data output messages including:
-  - GPS timestamp
-  - Filter status
-  - LLH position
-  - NED velocity
-  - Euler angles
+- `configure_filter_message_format()` - Configures filter/navigation data output including:
+    - GPS timestamp
+    - Filter status
+    - LLH position coordinates
+    - NED velocity vectors
+    - Euler angles (roll, pitch, yaw)
+
+### Data Display
+- `display_filter_state()` - Displays navigation filter operating mode changes
+
+### Communication Interface
+- Uses the `mip_interface` struct for device communication
+- Serial connection handled by `serial_port`
 
 ### External Data Simulation
 - `send_simulated_external_measurements_heading()` - Simulates external heading measurements
@@ -57,13 +66,9 @@ The example configures three reference frames for external measurements:
 - `send_simulated_external_measurements_ned_velocity()` - Sends NED velocity measurements
 - `send_simulated_external_measurements_vehicle_frame_velocity()` - Provides body-frame velocity data
 
-### Communication Interface
-- `mip_interface_user_send_to_device()` - Sends commands to the device
-- `mip_interface_user_recv_from_device()` - Receives data from the device
-
 ## Data Handling
 
-The C version demonstrates traditional C programming patterns:
+This example demonstrates traditional C programming patterns:
 - **Manual Parsing**: Direct parsing of incoming MIP packets using the MIP parser
 - **Callback Functions**: Function pointer-based callbacks for data processing
 - **Explicit Memory Management**: Manual buffer and resource management
@@ -73,20 +78,11 @@ The C version demonstrates traditional C programming patterns:
 ## C Implementation Features
 
 This example showcases:
-- **MIP Interface**: Core C interface for INS device communication (`mip_interface`)
+- **MIP Interface**: Core C interface for device communication (`mip_interface`)
 - **Serial Port Management**: Low-level serial port operations
 - **Parser Integration**: Direct use of the MIP packet parser
 - **Memory Safety**: Careful buffer management and bound checking
-- **External Aiding**: Integration of external sensor measurements into the INS filter
 - **Portability**: Cross-platform compatibility (Windows/Unix)
-
-## 7-Series INS Specific Features
-
-This example demonstrates 7-series INS-specific capabilities:
-- **External Aiding Support**: Integration of external position, velocity, and heading measurements
-- **Advanced Filter Configuration**: Enhanced navigation filter with external measurement sources
-- **Reference Frame Management**: Configurable coordinate transformations for external sensors
-- **Kinematic Alignment**: Filter initialization with external aiding support
 
 ## External Measurement Simulation
 
@@ -102,6 +98,40 @@ The example implements custom communication handlers:
 - **Receive Function**: `mip_interface_user_recv_from_device()` manages incoming data
 - **Timeout Handling**: Configurable timeouts for reliable communication
 
+## Filter Data Output
+
+The example streams the following filter data:
+
+### TOW Data
+- **Units**: seconds
+- **Description**: Time of Week - GPS time reference
+- **Format**: Floating-point timestamp value
+
+### Position LLH Data
+- **Units**:
+    - Latitude: degrees
+    - Longitude: degrees
+    - Ellipsoid Height: meters
+- **Description**: Position in Latitude, Longitude, Height coordinate system
+- **Format**: [Latitude, Longitude, Height] vector
+
+### Velocity NED Data
+- **Units**: m/s (meters per second)
+- **Description**: Velocity in North, East, Down coordinate frame
+- **Format**: [North, East, Down] velocity vector
+
+### Euler Angles Data
+- **Units**: radians
+- **Description**: Orientation expressed as Euler angles
+- **Format**: [Roll, Pitch, Yaw] angle vector
+
+## Streaming Output Format
+
+The example displays filter data in the following format:
+```
+TOW = 123456.789    Position LLH = [ 4.123456, -83.54321,  123.4567]    Velocity NED = [ 1.234567, -0.987654,  0.123456]     Euler Angles = [ 0.012345, -0.067890,  1.234567]
+```
+
 ## Usage
 
 1. Connect your 7-series INS device to the specified serial port
@@ -109,28 +139,30 @@ The example implements custom communication handlers:
 3. Compile and run the example
 4. Follow the gyro bias capture prompt (keep the device stationary)
 5. The program will:
-    - Initialize the device and configure external aiding
-    - Configure INS data output
+    - Initialize the device
+    - Configure data streaming
     - Wait for the filter to reach full navigation mode
-    - Stream data while simulating external measurements
-    - Display filter state transitions and navigation data
+    - Stream data for the specified runtime
+    - Display filter state transitions
+    - Display real-time filter data
     - Clean up and exit
 
 ## Filter State Progression
 
 The example monitors and displays filter state transitions:
-1. **Initialization** - Filter startup
-2. **Vertical Gyro** - Basic attitude estimation
-3. **AHRS** - Full attitude and heading reference
-4. **Full Navigation** - Complete INS solution with position/velocity
+1. **Startup** - Filter startup
+2. **Initialization** - Filter initialization
+3. **Vertical Gyro** - Basic attitude estimation
+4. **AHRS** - Full attitude and heading reference
+5. **Full Navigation** - Complete navigation solution with position/velocity
 
 ## Error Handling
 
 The example includes comprehensive error handling with:
 - Command result checking using `mip_cmd_result`
+- Connection failure detection and recovery
 - Graceful termination functions for different error types
 - Detailed error messages with context
-- External measurement failure warnings (non-fatal)
 
 ## C Features
 
@@ -140,11 +172,10 @@ This example demonstrates:
 - Direct hardware interface programming
 - Efficient memory usage patterns
 - Cross-platform serial communication
-- Real-time external data integration
 
 ## Requirements
 
-- MicroStrain 7-series INS device
+- MicroStrain 7-series INS device (3DM-CV7-INS, or 3DM-GV7-INS)
 - Serial connection (USB or RS-232)
 - MIP SDK library with C support
 - C11 or later compiler
@@ -154,4 +185,4 @@ This example demonstrates:
 
 - C++ version: `7_series_ins_example.cpp`
 - Other examples in the `examples/` directory
-- MIP SDK documentation
+- [MIP SDK documentation](https://lord-microstrain.github.io/mip_sdk_documentation/)

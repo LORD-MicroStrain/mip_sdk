@@ -5,7 +5,9 @@ MicroStrain 7-series devices using the C++ API.
 
 ## Overview
 
-The example showcases advanced threading concepts for 7-series devices, including:
+The example showcases basic threading concepts for 7-series devices, including:
+- Device initialization and communication
+- Sensor message format configuration
 - Concurrent data collection and command execution
 - Thread-safe device communication
 - Race condition prevention and stress testing
@@ -27,16 +29,16 @@ The example uses the following default settings:
 ## Key Functions
 
 ### Device Setup
-- `initializeDevice()` - Establishes serial communication and validates device connection
+- `initializeDevice()` - Establishes communication and validates device connection
 
 ### Message Configuration
-- `configureSensorMessageFormat()` - Configures sensor data output including:
+- `configureSensorMessageFormat()` - Configures IMU sensor data output including:
     - Scaled accelerometer
 
 ### Threading Infrastructure
 - `updateDevice()` - Custom update function that handles thread context switching
 - `dataCollectionThread()` - Dedicated thread function for continuous data collection
-- `packetCallback()` - Processes received MIP packets and displays field information
+- `packetCallback()` - Processes complete MIP packets and displays field information
 
 ### Communication Interface
 - Uses the `mip::Interface` class for device communication
@@ -44,7 +46,7 @@ The example uses the following default settings:
 
 ## Threading Architecture
 
-The C++ version uses modern threading features:
+This example uses modern C++ threading features:
 - **std::thread**: Standard C++ threading library
 - **Thread References**: Safe reference passing to thread functions
 - **Volatile Flags**: Thread-safe communication using volatile references
@@ -69,18 +71,26 @@ The example includes comprehensive thread safety:
 
 ## Data Handling
 
-The C++ version uses modern features including:
+This example uses modern C++ features including:
 - **Type-Safe Callbacks**: Compile-time verified callback functions
 - **Range-Based Loops**: Modern iteration over packet fields
-- **RAII**: Automatic resource management for connections and threads
+- **String Handling**: Safe C++ string operations
 
 ## C++ Implementation Features
 
 This example demonstrates:
+- **MIP Interface**: Modern C++ interface for device communication (`mip::Interface`)
 - **Modern C++ Connection Management**: RAII-based resource handling
 - **Type-Safe MIP Command Interfaces**: Compile-time type checking
 - **Exception Safety**: Proper error handling and resource cleanup
 - **STL Integration**: Use of standard library containers and algorithms
+- **Portability**: Cross-platform compatibility (Windows/Unix)
+
+## Connection Management
+
+This example uses modern C++ connection handling:
+- **SerialConnection**: RAII-based serial connection management
+- **Automatic Cleanup**: Connection automatically closed when the object goes out of scope
 
 ## Usage
 
@@ -102,7 +112,7 @@ The example includes comprehensive error handling with:
 - Command result checking using `mip::CmdResult`
 - Connection failure detection and recovery
 - Graceful termination functions for different error types
-- Detailed error messages with context
+- Detailed error messages with context using built-in documentation strings
 
 ## C++ Features
 
@@ -113,12 +123,12 @@ This example demonstrates:
 - RAII resource management
 - Standard library integration
 
-## Platform Compatibility
+## Type Safety and Documentation
 
-The example uses standard C++ threading:
-- **Cross-Platform**: std::thread works on all supported platforms
-- **Standard Library**: No external threading library dependencies
-- **Modern C++**: Requires C++11 or later compiler support
+This example provides additional C++ benefits:
+- **Built-in Documentation**: Data structures include `DOC_NAME` constants for easy reference
+- **Strongly Typed Enums**: C++ enum classes prevent accidental misuse
+- **Automatic Descriptors**: `DESCRIPTOR` constants eliminate magic numbers
 
 ## Requirements
 
@@ -132,5 +142,5 @@ The example uses standard C++ threading:
 
 - C version: `7_series_threading_example.c`
 - Other examples in the `examples/` directory
-- MIP SDK documentation
+- [MIP SDK documentation](https://lord-microstrain.github.io/mip_sdk_documentation/)
 - C++ threading and concurrency documentation
