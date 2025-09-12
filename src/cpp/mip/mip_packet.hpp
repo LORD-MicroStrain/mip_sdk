@@ -107,7 +107,7 @@ public:
 
     ///@brief Copies the given mip field to the packet.
     ///
-    bool addField(const FieldView& field) { return addField(field.fieldDescriptor(), field.payload(), field.payloadLength()); }
+    bool addField(const FieldView& field) { return addField(field.fieldDescriptor(), field.payloadBytes()); }
 
     ///@brief Creates a mip field with the given descriptor and copies the given payload.
     ///
@@ -258,7 +258,11 @@ public:
             // Required to make invalid fields equivalent for range-based for loop
             if( !mField.isValid() && !other.mField.isValid() )
                 return true;
-            return mField.descriptorSet() == other.mField.descriptorSet() && mField.fieldDescriptor() == other.mField.fieldDescriptor() && mField.payload() == other.mField.payload();
+            return (
+                mField.descriptorSet()   == other.mField.descriptorSet()   &&
+                mField.fieldDescriptor() == other.mField.fieldDescriptor() &&
+                mField.payloadPointer()  == other.mField.payloadPointer()
+            );
         }
         bool operator!=(const FieldIterator& other) const { return !(*this == other); }
 

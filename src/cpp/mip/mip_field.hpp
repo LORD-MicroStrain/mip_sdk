@@ -54,16 +54,16 @@ public:
     ///@copydoc mip::C::mip_field_total_length
     uint8_t totalLength() const { return C::mip_field_total_length(this); }
     ///@copydoc mip::C::mip_field_payload
-    const uint8_t* payload() const { return C::mip_field_payload(this); }
+    const uint8_t* payloadPointer() const { return C::mip_field_payload(this); }
 
     ///@brief Index the payload at the given location.
     ///@param index
     ///@returns payload byte
-    uint8_t payload(unsigned int index) const { return payload()[index]; }
+    uint8_t payload(unsigned int index) const { return payloadPointer()[index]; }
 
     uint8_t operator[](unsigned int index) const { return payload(index); }
 
-    microstrain::ConstBufferView payloadSpan() const { return {payload(), payloadLength()}; }
+    microstrain::ConstBufferView payloadBytes() const { return {payloadPointer(), payloadLength()}; }
 
     ///@copydoc mip::C::mip_field_is_valid
     bool isValid() const { return C::mip_field_is_valid(this); }
@@ -89,7 +89,7 @@ public:
     ///         too few bytes (or to many if exact_size is specified). The field data is not
     ///         valid unless this function returns true.
     template<class FieldType>
-    bool extract(FieldType& field, bool exact_size=true) const { return microstrain::extract<microstrain::serialization::Endian::big>(field, payload(), payloadLength(), 0, exact_size); }
+    bool extract(FieldType& field, bool exact_size=true) const { return microstrain::extract<microstrain::serialization::Endian::big>(field, payloadBytes(), 0, exact_size); }
 
 
     ///@brief Determines if the field holds data (and not a command, reply, or response).
