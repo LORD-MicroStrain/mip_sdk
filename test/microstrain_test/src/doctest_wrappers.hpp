@@ -19,33 +19,33 @@ namespace detail
 
 // Using Doctest's tagging system here so we can run specific test suites without
 // having to use TEST_SUITE_BEGIN/TEST_SUITE_END.
-#define FRAMEWORK_ADD_TEST(suite_name, test_name) TEST_CASE("[" suite_name "] " test_name)
+#define DETAIL_ADD_TEST(suite_name, test_name) TEST_CASE("[" suite_name "] " test_name)
 
-#define FRAMEWORK_WARN_TRUE(condition) WARN(condition)
-#define FRAMEWORK_FAIL_TRUE(condition) CHECK(condition)
-#define FRAMEWORK_EXIT_TRUE(condition) REQUIRE(condition)
+#define DETAIL_WARN_TRUE(condition) WARN(condition)
+#define DETAIL_FAIL_TRUE(condition) CHECK(condition)
+#define DETAIL_EXIT_TRUE(condition) REQUIRE(condition)
 
-#define FRAMEWORK_WARN_EQUAL(actual, expected) WARN_EQ(actual, expected)
-#define FRAMEWORK_FAIL_EQUAL(actual, expected) CHECK_EQ(actual, expected)
-#define FRAMEWORK_EXIT_EQUAL(actual, expected) REQUIRE_EQ(actual, expected)
+#define DETAIL_WARN_EQUAL(actual, expected) WARN_EQ(actual, expected)
+#define DETAIL_FAIL_EQUAL(actual, expected) CHECK_EQ(actual, expected)
+#define DETAIL_EXIT_EQUAL(actual, expected) REQUIRE_EQ(actual, expected)
 
-#define FRAMEWORK_WARN_C_STRINGS_EQUAL(actual, expected) \
+#define DETAIL_WARN_C_STRINGS_EQUAL(actual, expected) \
     detail::verifyCStringsAreEqual(actual, expected, detail::FAILURE_LEVEL::WARN)
-#define FRAMEWORK_FAIL_C_STRINGS_EQUAL(actual, expected) \
+#define DETAIL_FAIL_C_STRINGS_EQUAL(actual, expected) \
     detail::verifyCStringsAreEqual(actual, expected, detail::FAILURE_LEVEL::FAIL)
-#define FRAMEWORK_EXIT_C_STRINGS_EQUAL(actual, expected) \
+#define DETAIL_EXIT_C_STRINGS_EQUAL(actual, expected) \
     detail::verifyCStringsAreEqual(actual, expected, detail::FAILURE_LEVEL::EXIT)
 
-#define FRAMEWORK_WARN_BUFFER_TERMINATED(buffer, contents_size) \
+#define DETAIL_WARN_BUFFER_TERMINATED(buffer, contents_size) \
     detail::verifyBufferTerminated(buffer, contents_size, contents_size, detail::FAILURE_LEVEL::WARN)
-#define FRAMEWORK_FAIL_BUFFER_TERMINATED(buffer, contents_size) \
+#define DETAIL_FAIL_BUFFER_TERMINATED(buffer, contents_size) \
     detail::verifyBufferTerminated(buffer, contents_size, contents_size, detail::FAILURE_LEVEL::FAIL)
-#define FRAMEWORK_EXIT_BUFFER_TERMINATED(buffer, contents_size) \
+#define DETAIL_EXIT_BUFFER_TERMINATED(buffer, contents_size) \
     detail::verifyBufferTerminated(buffer, contents_size, contents_size, detail::FAILURE_LEVEL::EXIT)
 
-#define FRAMEWORK_WARN_BUFFER_TERMINATED_AT_POSITION(buffer, contents_size, position) \
+#define DETAIL_WARN_BUFFER_TERMINATED_AT_POSITION(buffer, contents_size, position) \
     detail::verifyBufferTerminated(buffer, contents_size, position, detail::FAILURE_LEVEL::WARN)
-#define FRAMEWORK_FAIL_BUFFER_TERMINATED_AT_POSITION(buffer, contents_size, position) \
+#define DETAIL_FAIL_BUFFER_TERMINATED_AT_POSITION(buffer, contents_size, position) \
     detail::verifyBufferTerminated(buffer, contents_size, position, detail::FAILURE_LEVEL::FAIL)
-#define FRAMEWORK_EXIT_BUFFER_TERMINATED_AT_POSITION(buffer, contents_size, position) \
+#define DETAIL_EXIT_BUFFER_TERMINATED_AT_POSITION(buffer, contents_size, position) \
     detail::verifyBufferTerminated(buffer, contents_size, position, detail::FAILURE_LEVEL::EXIT)
