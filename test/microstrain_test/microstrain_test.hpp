@@ -22,8 +22,6 @@
 #ifdef MICROSTRAIN_TEST_USE_DOCTEST
 #include <cstddef>
 
-#include <string_view>
-
 #include <doctest/doctest.h>
 
 namespace detail
