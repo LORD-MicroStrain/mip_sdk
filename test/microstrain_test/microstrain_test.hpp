@@ -32,17 +32,15 @@ namespace detail
 	void check_buffer_terminated(const char *buffer, size_t buffer_size, size_t position);
 }
 
-// Using Doctest's tagging system here so we can run specific test suites without
-// having to use TEST_SUITE_BEGIN/TEST_SUITE_END.
-#define TEST(suite_name, test_name) TEST_CASE("[" suite_name "] " test_name)
+#define TEST(suite_name, test_name) FRAMEWORK_ADD_TEST(suite_name, test_name)
 
-#define WARN_IF_NOT_TRUE(condition) FRAMEWORK_WARN_TRUE(condition)//WARN(condition)
-#define EXPECT_TO_BE_TRUE(condition) FRAMEWORK_FAIL_TRUE(condition) //CHECK(condition)
-#define ASSERT_TO_BE_TRUE(condition) FRAMEWORK_EXIT_TRUE(condition) //REQUIRE(condition)
+#define WARN_IF_NOT_TRUE(condition) FRAMEWORK_WARN_TRUE(condition)
+#define FAIL_IF_NOT_TRUE(condition) FRAMEWORK_FAIL_TRUE(condition)
+#define EXIT_IF_NOT_TRUE(condition) FRAMEWORK_EXIT_TRUE(condition)
 
-#define WARN_IF_NOT_EQUAL(actual, expected) WARN_EQ(actual, expected)
-#define EXPECT_TO_BE_EQUAL(actual, expected) CHECK_EQ(actual, expected)
-#define ASSERT_TO_BE_EQUAL(actual, expected) REQUIRE_EQ(actual, expected)
+#define WARN_IF_NOT_EQUAL(actual, expected) FRAMEWORK_WARN_EQUAL(actual, expected)
+#define FAIL_IF_NOT_EQUAL(actual, expected) FRAMEWORK_FAIL_EQUAL(actual, expected)
+#define EXIT_IF_NOT_EQUAL(actual, expected) FRAMEWORK_EXIT_EQUAL(actual, expected)
 
 #define EXPECT_C_STRINGS_TO_BE_EQUAL(actual, expected) detail::check_c_strings_equal(actual, expected)
 
