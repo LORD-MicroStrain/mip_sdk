@@ -38,10 +38,11 @@ namespace detail
     {
         if (position > buffer_size)
         {
-            INFO("Position can't be greater than the buffer size");
-            INFO("Buffer size: " << buffer_size);
-            INFO("Position:    " << position);
-            FAIL("Position out of bounds");
+            FAIL(
+                "Position out of bounds (can't be greater than the buffer size):\n"
+                "Buffer size: " << buffer_size << "\n"
+                "Position:    " << position << "\n";
+            );
         }
     }
 
