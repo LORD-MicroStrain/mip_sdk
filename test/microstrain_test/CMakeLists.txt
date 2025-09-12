@@ -10,6 +10,7 @@ FetchContent_MakeAvailable(doctest)
 add_library(microstrain_test
     "microstrain_test.hpp"
     "microstrain_test.cpp"
+    "doctest_wrappers.hpp"
 )
 target_include_directories(microstrain_test
     PUBLIC "${CMAKE_CURRENT_LIST_DIR}"

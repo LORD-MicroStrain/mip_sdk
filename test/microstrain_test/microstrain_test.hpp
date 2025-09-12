@@ -19,10 +19,11 @@
 */
 #pragma once
 
+// Allow the use of framework features that haven't been wrapped yet
 #ifdef MICROSTRAIN_TEST_USE_DOCTEST
-#include <cstddef>
+#include "doctest_wrappers.hpp"
+#endif
 
-#include <doctest/doctest.h>
 
 namespace detail
 {
@@ -35,9 +36,9 @@ namespace detail
 // having to use TEST_SUITE_BEGIN/TEST_SUITE_END.
 #define TEST(suite_name, test_name) TEST_CASE("[" suite_name "] " test_name)
 
-#define WARN_IF_NOT_TRUE(condition) WARN(condition)
-#define EXPECT_TO_BE_TRUE(condition) CHECK(condition)
-#define ASSERT_TO_BE_TRUE(condition) REQUIRE(condition)
+#define WARN_IF_NOT_TRUE(condition) FRAMEWORK_WARN_TRUE(condition)//WARN(condition)
+#define EXPECT_TO_BE_TRUE(condition) FRAMEWORK_FAIL_TRUE(condition) //CHECK(condition)
+#define ASSERT_TO_BE_TRUE(condition) FRAMEWORK_EXIT_TRUE(condition) //REQUIRE(condition)
 
 #define WARN_IF_NOT_EQUAL(actual, expected) WARN_EQ(actual, expected)
 #define EXPECT_TO_BE_EQUAL(actual, expected) CHECK_EQ(actual, expected)
@@ -47,4 +48,3 @@ namespace detail
 
 #define EXPECT_BUFFER_TO_BE_TERMINATED(buffer, buffer_size) detail::check_buffer_terminated(buffer, buffer_size, buffer_size);
 #define EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(buffer, buffer_size, position) detail::check_buffer_terminated(buffer, buffer_size, position);
-#endif
