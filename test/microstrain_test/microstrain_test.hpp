@@ -4,18 +4,8 @@
 	The goal is to provide a standardized interface for testing, regardless of the
 	backend framework being used.
 
-	Currently, only EXPECT interfaces are implemented for custom assertions. They
-    will be added as needed and when they can be fully tested.
-
 	TODO: This should be moved to its own repository so it can be used by multiple
           projects
-
-	TODO: Find a way to reuse custom logic between WARN, EXPECT, and ASSERT interfaces
-	    ---> Maybe we can set up an enum to pass to a single function that then calls the
-	         correct level of assertion?
-
-    TODO: Split macro definitions into top-level header and implement functions in framework
-          files
 */
 #pragma once
 
