@@ -101,7 +101,7 @@ inline bool formatPacket(microstrain::CharView buffer, size_t* index, const Pack
 ///@returns True if successful.
 ///@returns False in case of insufficient buffer space.
 ///
-inline bool formatField(microstrain::Span<char> buffer, size_t* index, const FieldView& field)
+inline bool formatField(microstrain::CharView buffer, size_t* index, const FieldView& field)
 {
     return mip::C::mip_format_field(buffer.data(), buffer.size(), index, &field);
 }

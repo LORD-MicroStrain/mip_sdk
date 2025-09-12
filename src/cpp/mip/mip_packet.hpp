@@ -385,11 +385,17 @@ public:
     ///
     void copyFrom(const uint8_t* data, size_t length) { assert(length <= sizeof(mData)); std::memcpy(mData, data, length); }
 
+    ///@brief Copies the data from a BufferView to this buffer. The data is not inspected.
+    ///
+    ///@param data   Packet data to copy.
+    ///
+    void copyFrom(microstrain::ConstBufferView data) { assert(data.size() <= sizeof(mData)); std::memcpy(mData, data.data(), data.size()); }
+
     ///@brief Copies an existing packet. The packet is assumed to be valid (undefined behavior otherwise).
     ///
     ///@param packet A "sane" (isSane()) mip packet.
     ///
-    void copyFrom(const PacketView& packet) { assert(packet.isSane()); copyFrom(packet.pointer(), packet.()); }
+    void copyFrom(const PacketView& packet) { assert(packet.isSane()); copyFrom(packet.bytes()); }
 
 private:
     uint8_t mData[BufferSize];
