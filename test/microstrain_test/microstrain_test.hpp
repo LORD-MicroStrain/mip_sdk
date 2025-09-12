@@ -19,18 +19,9 @@
 */
 #pragma once
 
-// Allow the use of framework features that haven't been wrapped yet
 #ifdef MICROSTRAIN_TEST_USE_DOCTEST
 #include "doctest_wrappers.hpp"
 #endif
-
-
-namespace detail
-{
-    void check_c_strings_equal(const char* actual, const char* expected);
-
-	void check_buffer_terminated(const char *buffer, size_t buffer_size, size_t position);
-}
 
 #define TEST(suite_name, test_name) FRAMEWORK_ADD_TEST(suite_name, test_name)
 
@@ -42,7 +33,12 @@ namespace detail
 #define FAIL_IF_NOT_EQUAL(actual, expected) FRAMEWORK_FAIL_EQUAL(actual, expected)
 #define EXIT_IF_NOT_EQUAL(actual, expected) FRAMEWORK_EXIT_EQUAL(actual, expected)
 
-#define EXPECT_C_STRINGS_TO_BE_EQUAL(actual, expected) detail::check_c_strings_equal(actual, expected)
+#define WARN_IF_C_STRINGS_ARE_NOT_EQUAL(actual, expected) FRAMEWORK_WARN_C_STRINGS_EQUAL(actual, expected)
+#define FAIL_IF_C_STRINGS_ARE_NOT_EQUAL(actual, expected) FRAMEWORK_FAIL_C_STRINGS_EQUAL(actual, expected)
+#define EXIT_IF_C_STRINGS_ARE_NOT_EQUAL(actual, expected) FRAMEWORK_EXIT_C_STRINGS_EQUAL(actual, expected)
 
-#define EXPECT_BUFFER_TO_BE_TERMINATED(buffer, buffer_size) detail::check_buffer_terminated(buffer, buffer_size, buffer_size);
-#define EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(buffer, buffer_size, position) detail::check_buffer_terminated(buffer, buffer_size, position);
+#define WARN_IF_BUFFER_IS_NOT_TERMINATED_AT_THE_END(buffer, buffer_size) FRAMEWORK_WARN_BUFFER_TERMINATED(buffer, buffer_size)
+#define FAIL_IF_BUFFER_IS_NOT_TERMINATED_AT_THE_END(buffer, buffer_size) FRAMEWORK_FAIL_BUFFER_TERMINATED(buffer, buffer_size)
+#define EXIT_IF_BUFFER_IS_NOT_TERMINATED_AT_THE_END(buffer, buffer_size) FRAMEWORK_EXIT_BUFFER_TERMINATED(buffer, buffer_size)
+
+#define EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(buffer, buffer_size, position) detail::verifyBufferTerminated(buffer, buffer_size, position);

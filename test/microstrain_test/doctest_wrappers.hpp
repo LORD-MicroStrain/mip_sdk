@@ -4,6 +4,19 @@
 
 #include <doctest/doctest.h>
 
+namespace detail
+{
+    enum class FAILURE_LEVEL
+    {
+        WARN,
+        FAIL,
+        EXIT
+    };
+
+    void verifyCStringsAreEqual(const char* actual, const char* expected, FAILURE_LEVEL level);
+    void verifyBufferTerminated(const char *buffer, size_t buffer_size, size_t position, FAILURE_LEVEL level);
+}
+
 // Using Doctest's tagging system here so we can run specific test suites without
 // having to use TEST_SUITE_BEGIN/TEST_SUITE_END.
 #define FRAMEWORK_ADD_TEST(suite_name, test_name) TEST_CASE("[" suite_name "] " test_name)
@@ -16,6 +29,10 @@
 #define FRAMEWORK_FAIL_EQUAL(actual, expected) CHECK_EQ(actual, expected)
 #define FRAMEWORK_EXIT_EQUAL(actual, expected) REQUIRE_EQ(actual, expected)
 
-namespace detail
-{
-}
+#define FRAMEWORK_WARN_C_STRINGS_EQUAL(actual, expected) detail::verifyCStringsAreEqual(actual, expected, detail::FAILURE_LEVEL::WARN)
+#define FRAMEWORK_FAIL_C_STRINGS_EQUAL(actual, expected) detail::verifyCStringsAreEqual(actual, expected, detail::FAILURE_LEVEL::FAIL)
+#define FRAMEWORK_EXIT_C_STRINGS_EQUAL(actual, expected) detail::verifyCStringsAreEqual(actual, expected, detail::FAILURE_LEVEL::EXIT)
+
+#define FRAMEWORK_WARN_BUFFER_TERMINATED(buffer, buffer_size) detail::verifyBufferTerminated(buffer, buffer_size, buffer_size, detail::FAILURE_LEVEL::WARN)
+#define FRAMEWORK_FAIL_BUFFER_TERMINATED(buffer, buffer_size) detail::verifyBufferTerminated(buffer, buffer_size, buffer_size, detail::FAILURE_LEVEL::FAIL)
+#define FRAMEWORK_EXIT_BUFFER_TERMINATED(buffer, buffer_size) detail::verifyBufferTerminated(buffer, buffer_size, buffer_size, detail::FAILURE_LEVEL::EXIT)
