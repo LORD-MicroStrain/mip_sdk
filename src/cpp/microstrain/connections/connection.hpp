@@ -26,13 +26,13 @@ namespace microstrain
         Connection() { mType = TYPE; }
         virtual ~Connection() {}
 
-        virtual bool sendToDeviceRaw(const uint8_t* data, size_t length) = 0;
-        virtual bool recvFromDeviceRaw(uint8_t* buffer, size_t max_length, unsigned int wait_time_ms, size_t* length_out, EmbeddedTimestamp* timestamp_out) = 0;
+        virtual bool sendToDevice(const uint8_t* data, size_t length) = 0;
+        virtual bool recvFromDevice(uint8_t* buffer, size_t max_length, unsigned int wait_time_ms, size_t* length_out, EmbeddedTimestamp* timestamp_out) = 0;
 
-        bool sendToDevice(microstrain::ConstBufferView data) { return sendToDeviceRaw(data.data(), data.size()); }
-        bool recvFromDevice(microstrain::BufferView buffer, unsigned int wait_time_ms, size_t* length_out, EmbeddedTimestamp* timestamp_out)
+        bool sendBufferToDevice(microstrain::ConstBufferView data) { return sendToDevice(data.data(), data.size()); }
+        bool recvBufferFromDevice(microstrain::BufferView buffer, unsigned int wait_time_ms, size_t* length_out, EmbeddedTimestamp* timestamp_out)
         {
-            if (!recvFromDeviceRaw(buffer.data(), buffer.size(), wait_time_ms, length_out, timestamp_out))
+            if (!recvFromDevice(buffer.data(), buffer.size(), wait_time_ms, length_out, timestamp_out))
                 return false;
 
             return true;
@@ -40,7 +40,7 @@ namespace microstrain
         bool recvFromDeviceAndUpdateBufferView(microstrain::BufferView& buffer, unsigned int wait_time_ms, EmbeddedTimestamp* timestamp_out)
         {
             size_t length = 0;
-            if (!recvFromDeviceRaw(buffer.data(), buffer.size(), wait_time_ms, &length, timestamp_out))
+            if (!recvFromDevice(buffer.data(), buffer.size(), wait_time_ms, &length, timestamp_out))
                 return false;
 
             buffer = buffer.first(length);
