@@ -29,14 +29,23 @@ namespace detail
 #define FRAMEWORK_FAIL_EQUAL(actual, expected) CHECK_EQ(actual, expected)
 #define FRAMEWORK_EXIT_EQUAL(actual, expected) REQUIRE_EQ(actual, expected)
 
-#define FRAMEWORK_WARN_C_STRINGS_EQUAL(actual, expected) detail::verifyCStringsAreEqual(actual, expected, detail::FAILURE_LEVEL::WARN)
-#define FRAMEWORK_FAIL_C_STRINGS_EQUAL(actual, expected) detail::verifyCStringsAreEqual(actual, expected, detail::FAILURE_LEVEL::FAIL)
-#define FRAMEWORK_EXIT_C_STRINGS_EQUAL(actual, expected) detail::verifyCStringsAreEqual(actual, expected, detail::FAILURE_LEVEL::EXIT)
+#define FRAMEWORK_WARN_C_STRINGS_EQUAL(actual, expected) \
+    detail::verifyCStringsAreEqual(actual, expected, detail::FAILURE_LEVEL::WARN)
+#define FRAMEWORK_FAIL_C_STRINGS_EQUAL(actual, expected) \
+    detail::verifyCStringsAreEqual(actual, expected, detail::FAILURE_LEVEL::FAIL)
+#define FRAMEWORK_EXIT_C_STRINGS_EQUAL(actual, expected) \
+    detail::verifyCStringsAreEqual(actual, expected, detail::FAILURE_LEVEL::EXIT)
 
-#define FRAMEWORK_WARN_BUFFER_TERMINATED(buffer, buffer_size) detail::verifyBufferTerminated(buffer, buffer_size, buffer_size, detail::FAILURE_LEVEL::WARN)
-#define FRAMEWORK_FAIL_BUFFER_TERMINATED(buffer, buffer_size) detail::verifyBufferTerminated(buffer, buffer_size, buffer_size, detail::FAILURE_LEVEL::FAIL)
-#define FRAMEWORK_EXIT_BUFFER_TERMINATED(buffer, buffer_size) detail::verifyBufferTerminated(buffer, buffer_size, buffer_size, detail::FAILURE_LEVEL::EXIT)
+#define FRAMEWORK_WARN_BUFFER_TERMINATED(buffer, contents_size) \
+    detail::verifyBufferTerminated(buffer, contents_size, contents_size, detail::FAILURE_LEVEL::WARN)
+#define FRAMEWORK_FAIL_BUFFER_TERMINATED(buffer, contents_size) \
+    detail::verifyBufferTerminated(buffer, contents_size, contents_size, detail::FAILURE_LEVEL::FAIL)
+#define FRAMEWORK_EXIT_BUFFER_TERMINATED(buffer, contents_size) \
+    detail::verifyBufferTerminated(buffer, contents_size, contents_size, detail::FAILURE_LEVEL::EXIT)
 
-#define FRAMEWORK_WARN_BUFFER_TERMINATED_AT_POSITION(buffer, buffer_size, position) detail::verifyBufferTerminated(buffer, buffer_size, position, detail::FAILURE_LEVEL::WARN)
-#define FRAMEWORK_FAIL_BUFFER_TERMINATED_AT_POSITION(buffer, buffer_size, position) detail::verifyBufferTerminated(buffer, buffer_size, position, detail::FAILURE_LEVEL::FAIL)
-#define FRAMEWORK_EXIT_BUFFER_TERMINATED_AT_POSITION(buffer, buffer_size, position) detail::verifyBufferTerminated(buffer, buffer_size, position, detail::FAILURE_LEVEL::EXIT)
+#define FRAMEWORK_WARN_BUFFER_TERMINATED_AT_POSITION(buffer, contents_size, position) \
+    detail::verifyBufferTerminated(buffer, contents_size, position, detail::FAILURE_LEVEL::WARN)
+#define FRAMEWORK_FAIL_BUFFER_TERMINATED_AT_POSITION(buffer, contents_size, position) \
+    detail::verifyBufferTerminated(buffer, contents_size, position, detail::FAILURE_LEVEL::FAIL)
+#define FRAMEWORK_EXIT_BUFFER_TERMINATED_AT_POSITION(buffer, contents_size, position) \
+    detail::verifyBufferTerminated(buffer, contents_size, position, detail::FAILURE_LEVEL::EXIT)
