@@ -14,7 +14,7 @@ namespace detail
         if (actual[expected_size] != '\0')
         {
             INFO("Got at position instead: " << std::string(1, actual[expected_size]));
-            FAIL("The actual string is not terminated at the same position as the expected string");
+            FAIL_CHECK("The actual string is not terminated at the same position as the expected string");
         }
 
         INFO("Actual:   " << std::string(&actual[0], expected_size));
