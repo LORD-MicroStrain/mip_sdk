@@ -1,7 +1,7 @@
 #pragma once
 
 #include <microstrain/embedded_time.hpp>
-#include <microstrain/span.hpp>
+#include <microstrain/array_view.hpp>
 
 #include <stddef.h>
 #include <stdint.h>
@@ -26,21 +26,21 @@ namespace microstrain
         Connection() { mType = TYPE; }
         virtual ~Connection() {}
 
-        virtual bool sendToDevice(const uint8_t* data, size_t length) = 0;
-        virtual bool recvFromDevice(uint8_t* buffer, size_t max_length, unsigned int wait_time_ms, size_t* length_out, EmbeddedTimestamp* timestamp_out) = 0;
+        virtual bool sendToDeviceRaw(const uint8_t* data, size_t length) = 0;
+        virtual bool recvFromDeviceRaw(uint8_t* buffer, size_t max_length, unsigned int wait_time_ms, size_t* length_out, EmbeddedTimestamp* timestamp_out) = 0;
 
-        bool sendToDeviceSpan(microstrain::Span<const uint8_t> data) { return sendToDevice(data.data(), data.size()); }
-        bool recvFromDeviceSpan(microstrain::Span<uint8_t> buffer, unsigned int wait_time_ms, size_t* length_out, EmbeddedTimestamp* timestamp_out)
+        bool sendToDevice(microstrain::ConstBufferView data) { return sendToDeviceRaw(data.data(), data.size()); }
+        bool recvFromDevice(microstrain::BufferView buffer, unsigned int wait_time_ms, size_t* length_out, EmbeddedTimestamp* timestamp_out)
         {
-            if (!recvFromDevice(buffer.data(), buffer.size(), wait_time_ms, length_out, timestamp_out))
+            if (!recvFromDeviceRaw(buffer.data(), buffer.size(), wait_time_ms, length_out, timestamp_out))
                 return false;
 
             return true;
         }
-        bool recvFromDeviceSpanUpdate(microstrain::Span<uint8_t>& buffer, unsigned int wait_time_ms, EmbeddedTimestamp* timestamp_out)
+        bool recvFromDeviceAndUpdateBufferView(microstrain::BufferView& buffer, unsigned int wait_time_ms, EmbeddedTimestamp* timestamp_out)
         {
             size_t length = 0;
-            if (!recvFromDevice(buffer.data(), buffer.size(), wait_time_ms, &length, timestamp_out))
+            if (!recvFromDeviceRaw(buffer.data(), buffer.size(), wait_time_ms, &length, timestamp_out))
                 return false;
 
             buffer = buffer.first(length);

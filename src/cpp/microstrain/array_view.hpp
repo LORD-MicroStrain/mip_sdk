@@ -1,21 +1,5 @@
 #pragma once
 
-#ifdef MICROSTRAIN_USE_STD_SPAN
-
-#include <span>
-
-namespace microstrain
-{
-
-    static inline constexpr size_t DYNAMIC_EXTENT = std::dynamic_extent;
-
-    template<class T, size_t Size=DYNAMIC_EXTENT>
-    using Span = std::span<T, Size>;
-
-} // namespace microstrain
-
-#else // MICROSTRAIN_USE_STD_SPAN
-
 #include <type_traits>
 #include <stdint.h>
 #include <stddef.h>
@@ -28,18 +12,17 @@ namespace microstrain
 static constexpr size_t DYNAMIC_EXTENT = SIZE_MAX;
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Implementation of std::span from C++20.
+///@brief This class represents a view over a contiguous array of objects,
+///       similar to std::span.
 ///
-/// This class represents a pointer and length. It provides the minimum
-/// functionality required by this SDK while trying to be interchangeable
-/// with std::span.
+/// This class is intended to be mostly compatible and interchangeable with
+/// std::span, but certain features from span may be missing and additional ones
+/// may be added.
 ///
 /// https://en.cppreference.com/w/cpp/container/span
 ///
-/// See @ref cpp_standards
-///
 template<class T, size_t Extent=DYNAMIC_EXTENT>
-struct Span
+struct ArrayView
 {
     static constexpr size_t extent = Extent;
 
@@ -53,7 +36,7 @@ struct Span
     using const_reference = const T&;
     using const_iterator = const T*;
 
-    constexpr Span(pointer ptr, size_t count) : m_ptr(ptr) { assert(count==extent); }
+    constexpr ArrayView(pointer ptr, size_t count) : m_ptr(ptr) { assert(count==extent); }
 
     constexpr pointer begin() const noexcept { return m_ptr; }
     constexpr pointer end() const noexcept { return m_ptr+extent; }
@@ -69,18 +52,18 @@ struct Span
     [[nodiscard]] constexpr size_t size() const noexcept { return extent; }
     [[nodiscard]] constexpr bool empty() const noexcept { return extent == 0; }
 
-    [[nodiscard]] constexpr Span<T, DYNAMIC_EXTENT> subspan(size_t index, size_t length) const { return {m_ptr+index, length}; }
-    [[nodiscard]] constexpr Span<T, DYNAMIC_EXTENT> subspan(size_t index) const { return {m_ptr+index, extent-index}; }
+    [[nodiscard]] constexpr ArrayView<T, DYNAMIC_EXTENT> subspan(size_t index, size_t length) const { return {m_ptr+index, length}; }
+    [[nodiscard]] constexpr ArrayView<T, DYNAMIC_EXTENT> subspan(size_t index) const { return {m_ptr+index, extent-index}; }
     template<size_t Offset, size_t Count = DYNAMIC_EXTENT>
-    [[nodiscard]] constexpr Span<T, Count == DYNAMIC_EXTENT ? DYNAMIC_EXTENT : Extent-Count> subspan() const { return {m_ptr+Offset}; }
+    [[nodiscard]] constexpr ArrayView<T, Count == DYNAMIC_EXTENT ? DYNAMIC_EXTENT : Extent-Count> subspan() const { return {m_ptr+Offset}; }
 
-    [[nodiscard]] constexpr Span<T, DYNAMIC_EXTENT> first(size_t count) const { return {m_ptr, count};}
+    [[nodiscard]] constexpr ArrayView<T, DYNAMIC_EXTENT> first(size_t count) const { return {m_ptr, count};}
     template<size_t Count>
-    [[nodiscard]] constexpr Span<T, Count> first() const { static_assert(Count<=Extent, "Count out of range"); return {m_ptr}; }
+    [[nodiscard]] constexpr ArrayView<T, Count> first() const { static_assert(Count<=Extent, "Count out of range"); return {m_ptr}; }
 
-    [[nodiscard]] constexpr Span<T, DYNAMIC_EXTENT> last(size_t count) const { return {m_ptr+(size()-count), count};}
+    [[nodiscard]] constexpr ArrayView<T, DYNAMIC_EXTENT> last(size_t count) const { return {m_ptr+(size()-count), count};}
     template<size_t Count>
-    [[nodiscard]] constexpr Span<T, Count> last() const { static_assert(Count<=Extent, "Count out of range"); return {m_ptr+(Extent-Count)}; }
+    [[nodiscard]] constexpr ArrayView<T, Count> last() const { static_assert(Count<=Extent, "Count out of range"); return {m_ptr+(Extent-Count)}; }
 
 private:
     pointer m_ptr = nullptr;
@@ -88,7 +71,7 @@ private:
 
 
 template<class T>
-struct Span<T, DYNAMIC_EXTENT>
+struct ArrayView<T, DYNAMIC_EXTENT>
 {
     using element_type = T;
     using value_type = typename std::remove_cv<T>::type;
@@ -100,10 +83,10 @@ struct Span<T, DYNAMIC_EXTENT>
     using const_reference = const T&;
     using const_iterator = const T*;
 
-    constexpr Span() = default;
-    constexpr Span(pointer ptr, size_t cnt) : m_ptr(ptr), m_cnt(cnt) {}
+    constexpr ArrayView() = default;
+    constexpr ArrayView(pointer ptr, size_t cnt) : m_ptr(ptr), m_cnt(cnt) {}
     template<size_t N>
-    constexpr Span(T (&arr)[N]) : m_ptr(arr), m_cnt(N) {}
+    constexpr ArrayView(T (&arr)[N]) : m_ptr(arr), m_cnt(N) {}
 
     constexpr pointer begin() const noexcept { return m_ptr; }
     constexpr pointer end() const noexcept { return m_ptr+m_cnt; }
@@ -119,18 +102,18 @@ struct Span<T, DYNAMIC_EXTENT>
     [[nodiscard]] constexpr size_t size() const noexcept { return m_cnt; }
     [[nodiscard]] constexpr bool empty() const noexcept { return m_cnt == 0; }
 
-    [[nodiscard]] constexpr Span<T, DYNAMIC_EXTENT> subspan(size_t index, size_t length) const { return {m_ptr+index, length}; }
-    [[nodiscard]] constexpr Span<T, DYNAMIC_EXTENT> subspan(size_t index) const { return {m_ptr+index, m_cnt-index}; }
+    [[nodiscard]] constexpr ArrayView<T, DYNAMIC_EXTENT> subspan(size_t index, size_t length) const { return {m_ptr+index, length}; }
+    [[nodiscard]] constexpr ArrayView<T, DYNAMIC_EXTENT> subspan(size_t index) const { return {m_ptr+index, m_cnt-index}; }
     template<size_t Offset, size_t Count = DYNAMIC_EXTENT>
-    [[nodiscard]] constexpr Span<T, Count> subspan() const { return {m_ptr+Offset, Count}; }
+    [[nodiscard]] constexpr ArrayView<T, Count> subspan() const { return {m_ptr+Offset, Count}; }
 
-    [[nodiscard]] constexpr Span<T, DYNAMIC_EXTENT> first(size_t count) const { return {m_ptr, count};}
+    [[nodiscard]] constexpr ArrayView<T, DYNAMIC_EXTENT> first(size_t count) const { return {m_ptr, count};}
     template<size_t Count>
-    [[nodiscard]] constexpr Span<T, Count> first() const { return {m_ptr}; }
+    [[nodiscard]] constexpr ArrayView<T, Count> first() const { return {m_ptr}; }
 
-    [[nodiscard]] constexpr Span<T, DYNAMIC_EXTENT> last(size_t count) const { return {m_ptr+(size()-count), count};}
+    [[nodiscard]] constexpr ArrayView<T, DYNAMIC_EXTENT> last(size_t count) const { return {m_ptr+(size()-count), count};}
     template<size_t Count>
-    [[nodiscard]] constexpr Span<T, Count> last() const { return {m_ptr+(size()-Count)}; }
+    [[nodiscard]] constexpr ArrayView<T, Count> last() const { return {m_ptr+(size()-Count)}; }
 
 private:
     pointer m_ptr   = nullptr;
@@ -138,6 +121,14 @@ private:
 };
 
 
-} // namespace microstrain
+template<class T>
+using ConstArrayView = ArrayView<const T>;
 
-#endif // MICROSTRAIN_USE_STD_SPAN
+using BufferView      = ArrayView<uint8_t>;
+using ConstBufferView = ConstArrayView<uint8_t>;
+
+using CharView        = ArrayView<char>;
+using ConstCharView   = ConstArrayView<char>;
+
+
+} // namespace microstrain

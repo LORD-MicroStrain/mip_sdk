@@ -1,7 +1,7 @@
 #pragma once
 
 #include <microstrain/strings.h>
-#include <microstrain/span.hpp>
+#include <microstrain/array_view.hpp>
 
 #if MICROSTRAIN_HAS_STD_STRING
 #if __cpp_lib_string_view >= 201606L
@@ -45,7 +45,7 @@ namespace strings {
 ///@returns True if sufficient buffer space exists or if buffer is NULL.
 ///@returns False if buffer is not NULL and insufficient space is available.
 ///
-inline bool concat(Span<char> buffer, size_t* index, const char* str, size_t len)
+inline bool concat(CharView buffer, size_t* index, const char* str, size_t len)
 {
     return ::microstrain::C::microstrain_string_concat(buffer.data(), buffer.size(), index, str, len);
 }
@@ -71,7 +71,7 @@ inline bool concat(Span<char> buffer, size_t* index, const char* str, size_t len
 ///@returns True if sufficient buffer space exists or if buffer is NULL.
 ///@returns False if buffer is not NULL and insufficient space is available.
 ///
-inline bool concat(Span<char> buffer, size_t* index, Span<const char> str)
+inline bool concat(CharView buffer, size_t* index, ArrayView<const char> str)
 {
     return concat(buffer, index, str.data(), str.size());
 }
@@ -102,7 +102,7 @@ inline bool concat(Span<char> buffer, size_t* index, Span<const char> str)
 ///@returns True if sufficient buffer space exists or if buffer is NULL.
 ///@returns False if buffer is not NULL and insufficient space is available.
 ///
-inline bool concat(Span<char> buffer, size_t* index, std::string_view str)
+inline bool concat(CharView buffer, size_t* index, std::string_view str)
 {
     return concat(buffer, index, str.data(), str.size());
 }
@@ -130,7 +130,7 @@ inline bool concat(Span<char> buffer, size_t* index, std::string_view str)
 ///@returns True if sufficient buffer space exists or if buffer is NULL.
 ///@returns False if buffer is not NULL and insufficient space is available.
 ///
-inline bool concat(Span<char> buffer, size_t* index, const std::string& str)
+inline bool concat(CharView buffer, size_t* index, const std::string& str)
 {
     return concat(buffer, index, str.data(), str.size());
 }
@@ -170,10 +170,10 @@ inline bool concat(Span<char> buffer, size_t* index, const std::string& str)
 ///@returns True if sufficient buffer space exists or if buffer is NULL.
 ///@returns False if buffer is not NULL and insufficient space is available.
 ///
-inline bool concat_z(Span<char> buffer, size_t* index, const char* str, size_t maxLen=size_t(-1))
+inline bool concat_z(CharView buffer, size_t* index, const char* str, size_t maxLen=size_t(-1))
 {
     const size_t len = std::min(maxLen, std::strlen(str));
-    return concat(buffer, index, Span<const char>{str, len});
+    return concat(buffer, index, ArrayView<const char>{str, len});
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -206,7 +206,7 @@ inline bool concat_z(Span<char> buffer, size_t* index, const char* str, size_t m
 ///@returns False if buffer is not NULL and insufficient space is available.
 ///
 template<size_t N>
-bool concat_l(Span<char> buffer, size_t* index, const char(&str)[N])
+bool concat_l(CharView buffer, size_t* index, const char(&str)[N])
 {
     return concat(buffer, index, str, N-1);
 }
@@ -236,7 +236,7 @@ bool concat_l(Span<char> buffer, size_t* index, const char(&str)[N])
 ///         unchanged in this case.
 ///@returns False if insufficient space is available, unless buffer is NULL.
 ///
-inline bool format_v(Span<char> buffer, size_t* index, const char* fmt, va_list args)
+inline bool format_v(CharView buffer, size_t* index, const char* fmt, va_list args)
 {
     return ::microstrain::C::microstrain_string_format_v(buffer.data(), buffer.size(), index, fmt, args);
 }
@@ -262,7 +262,7 @@ inline bool format_v(Span<char> buffer, size_t* index, const char* fmt, va_list 
 ///         unchanged in this case.
 ///@returns False if insufficient space is available, unless buffer is NULL.
 ///
-inline bool format(Span<char> buffer, size_t* index, const char* fmt, ...)
+inline bool format(CharView buffer, size_t* index, const char* fmt, ...)
 {
     va_list args;
     va_start(args, fmt);
@@ -310,7 +310,7 @@ inline bool format(Span<char> buffer, size_t* index, const char* fmt, ...)
 ///         unchanged in this case.
 ///@returns False if insufficient space is available, unless buffer is NULL.
 ///
-inline bool bytesToHexStr(Span<char> buffer, size_t* index, Span<const uint8_t> data, unsigned int byte_grouping)
+inline bool bytesToHexStr(CharView buffer, size_t* index, ConstBufferView data, unsigned int byte_grouping)
 {
     return ::microstrain::C::microstrain_string_bytes_to_hex_str(buffer.data(), buffer.size(), index, data.data(), data.size(), byte_grouping);
 }

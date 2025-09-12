@@ -35,9 +35,7 @@ option(MICROSTRAIN_ENABLE_CPP "Enables the C++ API. Turn off to avoid compiling 
 #option(MICROSTRAIN_ENABLE_CPP_C_NAMESPACE "Wraps the C api in a C++ namespace to avoid global namespace pollution (e.g. microstrain::C::microstrain_serial_port)" ${MICROSTRAIN_ENABLE_CPP})
 message(DEBUG "MICROSTRAIN_ENABLE_CPP=${MICROSTRAIN_ENABLE_CPP}")
 if(MICROSTRAIN_ENABLE_CPP)
-    option(MICROSTRAIN_USE_STD_SPAN   "Use std::span from C++20 for microstrain::Span." ${MICROSTRAIN_COMPILER_SUPPORTS_SPAN})
     option(MICROSTRAIN_USE_STD_ENDIAN "Use std::endian from C++20 for microstrain::Endian." ${MICROSTRAIN_COMPILER_SUPPORTS_BIT})
-    message(DEBUG "MICROSTRAIN_USE_STD_SPAN=${MICROSTRAIN_USE_STD_SPAN}")
     message(DEBUG "MICROSTRAIN_USE_STD_ENDIAN=${MICROSTRAIN_USE_STD_ENDIAN}")
 endif()
 

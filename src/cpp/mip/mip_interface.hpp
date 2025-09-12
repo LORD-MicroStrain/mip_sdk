@@ -23,7 +23,7 @@ namespace mip
     class Interface;
 
     void connect_interface(Interface& dev, microstrain::Connection& conn);
-    bool recv_from_connection(microstrain::Connection* conn, microstrain::Span<uint8_t> buffer, Timeout timeout, bool from_cmd, size_t* length_out, Timestamp* timestamp_out);
+    bool recv_from_connection(microstrain::Connection* conn, microstrain::BufferView buffer, Timeout timeout, bool from_cmd, size_t* length_out, Timestamp* timestamp_out);
 
     using DispatchHandler = C::mip_dispatch_handler;
 
@@ -102,12 +102,12 @@ namespace mip
 
         template<bool (*Send)(Interface&, const uint8_t*, size_t)>
         void setSendFunctionFree();
-        template<bool (*Send)(Interface&, microstrain::Span<const uint8_t>)>
+        template<bool (*Send)(Interface&, microstrain::ConstBufferView)>
         void setSendFunctionFree();
 
         template<bool (*Recv)(Interface&, uint8_t*, size_t, Timeout, bool, size_t*, Timestamp*)>
         void setRecvFunctionFree();
-        template<bool (*Recv)(Interface&, microstrain::Span<uint8_t>, Timeout, bool, size_t*, Timestamp*)>
+        template<bool (*Recv)(Interface&, microstrain::BufferView, Timeout, bool, size_t*, Timestamp*)>
         void setRecvFunctionFree();
 
         template<bool (*Update)(Interface&, Timeout, bool)>
@@ -117,16 +117,16 @@ namespace mip
 
         template<class UserClass, bool (UserClass::*Send)(const uint8_t*, size_t)>
         void setSendFunctionUserPointer();
-        template<class UserClass, bool (UserClass::*Send)(microstrain::Span<const uint8_t>)>
+        template<class UserClass, bool (UserClass::*Send)(microstrain::ConstBufferView)>
         void setSendFunctionUserPointer();
-        template<class UserClass, bool (*Send)(UserClass*, microstrain::Span<const uint8_t>)>
+        template<class UserClass, bool (*Send)(UserClass*, microstrain::ConstBufferView)>
         void setSendFunctionUserPointer();
 
         template<class UserClass, bool (UserClass::*Recv)(uint8_t*, size_t, Timeout, bool, size_t*, Timestamp*)>
         void setRecvFunctionUserPointer();
-        template<class UserClass, bool (UserClass::*Recv)(microstrain::Span<uint8_t>, Timeout, bool, size_t*, Timestamp*)>
+        template<class UserClass, bool (UserClass::*Recv)(microstrain::BufferView, Timeout, bool, size_t*, Timestamp*)>
         void setRecvFunctionUserPointer();
-        template<class UserClass, bool (*Recv)(UserClass*, microstrain::Span<uint8_t>, Timeout, bool, size_t*, Timestamp*)>
+        template<class UserClass, bool (*Recv)(UserClass*, microstrain::BufferView, Timeout, bool, size_t*, Timestamp*)>
         void setRecvFunctionUserPointer();
 
         template<class UserClass, bool (UserClass::*Update)(Timeout, bool)>
@@ -137,18 +137,18 @@ namespace mip
         // All-in-one function
         template<
             class T,
-            bool (T::*Send)(microstrain::Span<const uint8_t>),
-            bool (T::*Recv)(microstrain::Span<uint8_t>, Timeout, bool, size_t*, Timestamp*),
+            bool (T::*Send)(microstrain::ConstBufferView),
+            bool (T::*Recv)(microstrain::BufferView, Timeout, bool, size_t*, Timestamp*),
             bool (T::*Update)(Timeout, bool) = nullptr
         >
         void setCallbacksUserPointer(T* object);
 
         // Derived class member function callbacks
 
-        template<class Derived, bool (Derived::*Send)(microstrain::Span<const uint8_t>)>
+        template<class Derived, bool (Derived::*Send)(microstrain::ConstBufferView)>
         void setSendFunctionDerived();
 
-        template<class Derived, bool (Derived::*Recv)(microstrain::Span<uint8_t>, Timeout, bool, size_t*, Timestamp*)>
+        template<class Derived, bool (Derived::*Recv)(microstrain::BufferView, Timeout, bool, size_t*, Timestamp*)>
         void setRecvFunctionDerived();
 
         template<class Derived, bool (Derived::*Update)(Timeout, bool)>
@@ -157,8 +157,8 @@ namespace mip
         // All-in-one function
         template<
             class Derived,
-            bool (Derived::*Send)(microstrain::Span<const uint8_t>),
-            bool (Derived::*Recv)(microstrain::Span<uint8_t>, Timeout, bool, size_t*, Timestamp*),
+            bool (Derived::*Send)(microstrain::ConstBufferView),
+            bool (Derived::*Recv)(microstrain::BufferView, Timeout, bool, size_t*, Timestamp*),
             bool (Derived::*Update)(Timeout, bool) = nullptr
         >
         void setCallbacksDerived();
@@ -190,15 +190,15 @@ namespace mip
 
         bool sendToDevice(const uint8_t* data, size_t length) { return C::mip_interface_send_to_device(this, data, length); }
         bool sendToDevice(const C::mip_packet_view& packet) { return sendToDevice(C::mip_packet_pointer(&packet), C::mip_packet_total_length(&packet)); }
-        bool recvFromDevice(microstrain::Span<uint8_t> buffer, Timeout wait_time, bool from_cmd, size_t* length_out, Timestamp* timestamp_out) { return C::mip_interface_recv_from_device(this, buffer.data(), buffer.size(), wait_time, from_cmd, length_out, timestamp_out); }
+        bool recvFromDevice(microstrain::BufferView buffer, Timeout wait_time, bool from_cmd, size_t* length_out, Timestamp* timestamp_out) { return C::mip_interface_recv_from_device(this, buffer.data(), buffer.size(), wait_time, from_cmd, length_out, timestamp_out); }
         bool update(Timeout wait_time, bool from_cmd = false) { return C::mip_interface_update(this, wait_time, from_cmd); }
 
         bool defaultUpdate(Timeout wait_time, bool from_cmd = false) { return C::mip_interface_default_update(this, wait_time, from_cmd); }
-        bool defaultUpdateExtBuffer(Timeout wait_time, bool from_cmd, microstrain::Span<uint8_t> buffer) { return C::mip_interface_default_update_ext_buffer(this, wait_time, from_cmd, buffer.data(), buffer.size()); }
+        bool defaultUpdateExtBuffer(Timeout wait_time, bool from_cmd, microstrain::BufferView buffer) { return C::mip_interface_default_update_ext_buffer(this, wait_time, from_cmd, buffer.data(), buffer.size()); }
         void inputBytes(const uint8_t* data, size_t length, Timestamp timestamp) { C::mip_interface_input_bytes_from_device(this, data, length, timestamp); }
         void inputPacket(const C::mip_packet_view& packet, Timestamp timestamp) { C::mip_interface_input_packet_from_device(this, &packet, timestamp); }
         void updateTime(Timestamp timestamp) { C::mip_interface_update_time(this, timestamp); }
-        void inputBytesAndOrTime(microstrain::Span<const uint8_t> data, Timestamp timestamp) { C::mip_interface_input_bytes_andor_time(this, data.data(), data.size(), timestamp); }
+        void inputBytesAndOrTime(microstrain::ConstBufferView data, Timestamp timestamp) { C::mip_interface_input_bytes_andor_time(this, data.data(), data.size(), timestamp); }
 
         CmdResult waitForReply(C::mip_pending_cmd& cmd) { return C::mip_interface_wait_for_reply(this, &cmd); }
 
@@ -290,7 +290,7 @@ namespace mip
     ///
     ///@tparam Send A compile-time pointer to the callback function.
     ///
-    template<bool (*Send)(Interface&, microstrain::Span<const uint8_t>)>
+    template<bool (*Send)(Interface&, microstrain::ConstBufferView)>
     void Interface::setSendFunctionFree()
     {
         setSendFunction([](C::mip_interface* device, const uint8_t* data, size_t length)->bool
@@ -318,7 +318,7 @@ namespace mip
     ///
     ///@tparam Recv A compile-time pointer to the callback function.
     ///
-    template<bool (*Recv)(Interface&, microstrain::Span<uint8_t>, Timeout, bool, size_t*, Timestamp*)>
+    template<bool (*Recv)(Interface&, microstrain::BufferView, Timeout, bool, size_t*, Timestamp*)>
     void Interface::setRecvFunctionFree()
     {
         setRecvFunction([](C::mip_interface* device, uint8_t* buffer, size_t max_length, C::mip_timeout wait_time, bool from_cmd, size_t* length_out, C::mip_timestamp* timestamp_out)->bool
@@ -391,7 +391,7 @@ namespace mip
     /// class MyClass
     /// {
     ///     bool sendToDevice(const uint8_t* data, size_t size);
-    ///     bool recvFromDevice(microstrain::Span<uint8_t>, Timeout wait_time, size_t* length_out, Timestamp* timestamp_out);
+    ///     bool recvFromDevice(microstrain::BufferView, Timeout wait_time, size_t* length_out, Timestamp* timestamp_out);
     /// };
     ///
     /// MyClass instance;
@@ -402,7 +402,7 @@ namespace mip
     ///
     ///@endcode
     ///
-    template<class UserClass, bool (UserClass::*Send)(microstrain::Span<const uint8_t>)>
+    template<class UserClass, bool (UserClass::*Send)(microstrain::ConstBufferView)>
     void Interface::setSendFunctionUserPointer()
     {
         setSendFunction([](C::mip_interface* device, const uint8_t* data, size_t length)
@@ -424,7 +424,7 @@ namespace mip
     /// {
     /// };
     /// bool sendToDevice(MyClass* mc, const uint8_t* data, size_t size);
-    /// bool recvFromDevice(MyClass* mc, microstrain::Span<uint8_t>, Timeout wait_time, size_t* length_out, Timestamp* timestamp_out);
+    /// bool recvFromDevice(MyClass* mc, microstrain::BufferView, Timeout wait_time, size_t* length_out, Timestamp* timestamp_out);
     ///
     /// MyClass instance;
     ///
@@ -434,7 +434,7 @@ namespace mip
     ///
     ///@endcode
     ///
-    template<class UserClass, bool (*Send)(UserClass*, microstrain::Span<const uint8_t>)>
+    template<class UserClass, bool (*Send)(UserClass*, microstrain::ConstBufferView)>
     void Interface::setSendFunctionUserPointer()
     {
         setSendFunction([](C::mip_interface* device, const uint8_t* data, size_t length)
@@ -473,7 +473,7 @@ namespace mip
     ///
     ///@see Interface::setSendFunctionUserPointer()
     ///
-    template<class UserClass, bool (UserClass::*Recv)(microstrain::Span<uint8_t>, Timeout, bool, size_t*, Timestamp*)>
+    template<class UserClass, bool (UserClass::*Recv)(microstrain::BufferView, Timeout, bool, size_t*, Timestamp*)>
     void Interface::setRecvFunctionUserPointer()
     {
         setRecvFunction([](C::mip_interface* device, uint8_t* buffer, size_t max_length, Timeout wait_time, bool from_cmd, size_t* length_out, Timestamp* timestamp_out)
@@ -492,7 +492,7 @@ namespace mip
     ///
     ///@see Interface::setSendFunctionUserPointer()
     ///
-    template<class UserClass, bool (*Recv)(UserClass*, microstrain::Span<uint8_t>, Timeout, bool, size_t*, Timestamp*)>
+    template<class UserClass, bool (*Recv)(UserClass*, microstrain::BufferView, Timeout, bool, size_t*, Timestamp*)>
     void Interface::setRecvFunctionUserPointer()
     {
         setRecvFunction([](C::mip_interface* device, uint8_t* buffer, size_t max_length, Timeout wait_time, bool from_cmd, size_t* length_out, Timestamp* timestamp_out)
@@ -579,8 +579,8 @@ namespace mip
     ///
     template<
         class UserClass,
-        bool (UserClass::*Send)(microstrain::Span<const uint8_t>),
-        bool (UserClass::*Recv)(microstrain::Span<uint8_t>, Timeout, bool, size_t*, Timestamp*),
+        bool (UserClass::*Send)(microstrain::ConstBufferView),
+        bool (UserClass::*Recv)(microstrain::BufferView, Timeout, bool, size_t*, Timestamp*),
         bool (UserClass::*Update)(Timeout, bool)
     >
     void Interface::setCallbacksUserPointer(UserClass* object)
@@ -624,7 +624,7 @@ namespace mip
     /// instance.setRecvFunction<MyClass, &MyClass::recvFromDevice>();
     ///@endcode
     ///
-    template<class Derived, bool (Derived::*Send)(microstrain::Span<const uint8_t>)>
+    template<class Derived, bool (Derived::*Send)(microstrain::ConstBufferView)>
     void Interface::setSendFunctionDerived()
     {
         static_assert(std::is_base_of<C::mip_interface, Derived>::value, "Derived must inherit C::mip_interface.");
@@ -644,7 +644,7 @@ namespace mip
     ///
     ///@see Interface::setSendFunctionDerived()
     ///
-    template<class Derived, bool (Derived::*Recv)(microstrain::Span<uint8_t>, Timeout, bool, size_t*, Timestamp*)>
+    template<class Derived, bool (Derived::*Recv)(microstrain::BufferView, Timeout, bool, size_t*, Timestamp*)>
     void Interface::setRecvFunctionDerived()
     {
         static_assert(std::is_base_of<C::mip_interface, Derived>::value, "Derived must inherit C::mip_interface.");
@@ -698,8 +698,8 @@ namespace mip
     ///@code{.cpp}
     /// class Device : public mip::Interface
     /// {
-    ///     bool send(microstrain::Span<const uint8_t>);
-    ///     bool recv(microstrain::Span<uint8_t>, Timeout wait_time, size_t* length_out, Timestamp* timestamp_out);
+    ///     bool send(microstrain::ConstBufferView);
+    ///     bool recv(microstrain::BufferView, Timeout wait_time, size_t* length_out, Timestamp* timestamp_out);
     /// };
     ///
     /// DeviceConnection connection;
@@ -710,8 +710,8 @@ namespace mip
     ///
     template<
         class Derived,
-        bool (Derived::*Send)(microstrain::Span<const uint8_t>),
-        bool (Derived::*Recv)(microstrain::Span<uint8_t>, Timeout, bool, size_t*, Timestamp*),
+        bool (Derived::*Send)(microstrain::ConstBufferView),
+        bool (Derived::*Recv)(microstrain::BufferView, Timeout, bool, size_t*, Timestamp*),
         bool (Derived::*Update)(Timeout, bool)
     >
     void Interface::setCallbacksDerived()

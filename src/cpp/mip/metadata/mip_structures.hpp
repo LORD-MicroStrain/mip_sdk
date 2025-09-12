@@ -1,7 +1,7 @@
 #pragma once
 
 #include <microstrain/index.hpp>
-#include <microstrain/span.hpp>
+#include <microstrain/array_view.hpp>
 #include <mip/mip_descriptors.hpp>
 
 #include <cstdint>
@@ -9,7 +9,7 @@
 namespace mip::metadata
 {
     template<class T>
-    using Span = microstrain::Span<T>;
+    using Span = microstrain::ArrayView<T>;
 
     struct EnumInfo;
     struct BitfieldInfo;

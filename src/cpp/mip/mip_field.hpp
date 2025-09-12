@@ -3,7 +3,7 @@
 #include "mip_descriptors.hpp"
 #include "mip_serialization.hpp"
 
-#include <microstrain/span.hpp>
+#include <microstrain/array_view.hpp>
 
 #include <mip/mip_field.h>
 #include <mip/mip_offsets.h>
@@ -36,8 +36,8 @@ public:
     /// Creates a %Field class from the mip_field C struct.
     FieldView(const C::mip_field_view& other) { std::memcpy(static_cast<C::mip_field_view*>(this), &other, sizeof(C::mip_field_view)); }
 
-    /// Construct from descriptor and payload (composite span version)
-    FieldView(CompositeDescriptor descriptor, microstrain::Span<const uint8_t> payload) : FieldView(descriptor.descriptorSet, descriptor.fieldDescriptor, payload.data(), uint8_t(payload.size())) {}
+    /// Construct from descriptor and payload bytes
+    FieldView(CompositeDescriptor descriptor, microstrain::ConstBufferView payload) : FieldView(descriptor.descriptorSet, descriptor.fieldDescriptor, payload.data(), uint8_t(payload.size())) {}
 
     //
     // C function wrappers
@@ -63,7 +63,7 @@ public:
 
     uint8_t operator[](unsigned int index) const { return payload(index); }
 
-    microstrain::Span<const uint8_t> payloadSpan() const { return {payload(), payloadLength()}; }
+    microstrain::ConstBufferView payloadSpan() const { return {payload(), payloadLength()}; }
 
     ///@copydoc mip::C::mip_field_is_valid
     bool isValid() const { return C::mip_field_is_valid(this); }

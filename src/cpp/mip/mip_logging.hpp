@@ -41,7 +41,7 @@ namespace mip
 ///@returns True if successful.
 ///@returns False in case of insufficient buffer space.
 ///
-inline bool formatPacketBytes(microstrain::Span<char> buffer, size_t* index, const PacketView& packet)
+inline bool formatPacketBytes(microstrain::CharView buffer, size_t* index, const PacketView& packet)
 {
     return mip::C::mip_format_packet_bytes(buffer.data(), buffer.size(), index, &packet);
 }
@@ -70,7 +70,7 @@ inline bool formatPacketBytes(microstrain::Span<char> buffer, size_t* index, con
 ///@returns True if successful.
 ///@returns False in case of insufficient buffer space.
 ///
-inline bool formatPacket(microstrain::Span<char> buffer, size_t* index, const PacketView& packet)
+inline bool formatPacket(microstrain::CharView buffer, size_t* index, const PacketView& packet)
 {
     return mip::C::mip_format_packet(buffer.data(), buffer.size(), index, &packet);
 }

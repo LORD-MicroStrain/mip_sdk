@@ -3,7 +3,7 @@
 #include <microstrain/connections/connection.hpp>
 
 using microstrain::Connection;
-using microstrain::Span;
+using microstrain::BufferView;
 
 
 namespace mip
@@ -54,12 +54,12 @@ namespace mip
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    ///@brief Adapts microstrain::Connection::recvFromDeviceSpan to a signature
+    ///@brief Adapts microstrain::Connection::recvFromDevice to a signature
     ///       compatible with mip interface receive callbacks.
     ///
-    bool recv_from_connection(Connection* conn, Span<uint8_t> buffer, Timeout timeout, bool /*from_cmd*/, size_t* length_out, Timestamp* timestamp_out)
+    bool recv_from_connection(Connection* conn, BufferView buffer, Timeout timeout, bool /*from_cmd*/, size_t* length_out, Timestamp* timestamp_out)
     {
-        return conn->recvFromDeviceSpan(buffer, (unsigned int)timeout, length_out, timestamp_out);
+        return conn->recvFromDevice(buffer, (unsigned int)timeout, length_out, timestamp_out);
     }
 
 } // namespace mip
