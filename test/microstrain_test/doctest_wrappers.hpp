@@ -36,3 +36,7 @@ namespace detail
 #define FRAMEWORK_WARN_BUFFER_TERMINATED(buffer, buffer_size) detail::verifyBufferTerminated(buffer, buffer_size, buffer_size, detail::FAILURE_LEVEL::WARN)
 #define FRAMEWORK_FAIL_BUFFER_TERMINATED(buffer, buffer_size) detail::verifyBufferTerminated(buffer, buffer_size, buffer_size, detail::FAILURE_LEVEL::FAIL)
 #define FRAMEWORK_EXIT_BUFFER_TERMINATED(buffer, buffer_size) detail::verifyBufferTerminated(buffer, buffer_size, buffer_size, detail::FAILURE_LEVEL::EXIT)
+
+#define FRAMEWORK_WARN_BUFFER_TERMINATED_AT_POSITION(buffer, buffer_size, position) detail::verifyBufferTerminated(buffer, buffer_size, position, detail::FAILURE_LEVEL::WARN)
+#define FRAMEWORK_FAIL_BUFFER_TERMINATED_AT_POSITION(buffer, buffer_size, position) detail::verifyBufferTerminated(buffer, buffer_size, position, detail::FAILURE_LEVEL::FAIL)
+#define FRAMEWORK_EXIT_BUFFER_TERMINATED_AT_POSITION(buffer, buffer_size, position) detail::verifyBufferTerminated(buffer, buffer_size, position, detail::FAILURE_LEVEL::EXIT)

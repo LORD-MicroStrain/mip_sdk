@@ -67,7 +67,7 @@ TEST("C++ string concatenation", "Up to N characters of a zero-terminated string
 
     FAIL_IF_NOT_TRUE(ok);
     FAIL_IF_C_STRINGS_ARE_NOT_EQUAL(buffer, "1234");
-    EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(buffer, CHECK_STRING_LENGTH, character_limit);
+    FAIL_IF_BUFFER_IS_NOT_TERMINATED_AT_POSITION(buffer, CHECK_STRING_LENGTH, character_limit);
 }
 
 TEST("C++ string concatenation", "A string literal can be concatenated to a buffer")

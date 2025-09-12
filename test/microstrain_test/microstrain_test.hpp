@@ -41,4 +41,6 @@
 #define FAIL_IF_BUFFER_IS_NOT_TERMINATED_AT_THE_END(buffer, buffer_size) FRAMEWORK_FAIL_BUFFER_TERMINATED(buffer, buffer_size)
 #define EXIT_IF_BUFFER_IS_NOT_TERMINATED_AT_THE_END(buffer, buffer_size) FRAMEWORK_EXIT_BUFFER_TERMINATED(buffer, buffer_size)
 
-#define EXPECT_BUFFER_TO_BE_TERMINATED_AT_POSITION(buffer, buffer_size, position) detail::verifyBufferTerminated(buffer, buffer_size, position);
+#define WARN_IF_BUFFER_IS_NOT_TERMINATED_AT_POSITION(buffer, buffer_size, position) FRAMEWORK_WARN_BUFFER_TERMINATED_AT_POSITION(buffer, buffer_size, position)
+#define FAIL_IF_BUFFER_IS_NOT_TERMINATED_AT_POSITION(buffer, buffer_size, position) FRAMEWORK_FAIL_BUFFER_TERMINATED_AT_POSITION(buffer, buffer_size, position)
+#define EXIT_IF_BUFFER_IS_NOT_TERMINATED_AT_POSITION(buffer, buffer_size, position) FRAMEWORK_EXIT_BUFFER_TERMINATED_AT_POSITION(buffer, buffer_size, position)
