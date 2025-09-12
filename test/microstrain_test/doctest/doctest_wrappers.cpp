@@ -13,12 +13,15 @@ namespace detail
 
         if (actual[expected_size] != '\0')
         {
-            INFO("Got at position instead: " << std::string(1, actual[expected_size]));
-            FAIL_CHECK("The actual string is not terminated at the same position as the expected string");
+            FAIL(
+                "The actual string is not terminated when the expected string is:\n"
+                "Actual (up to expected + 1): " << std::string(actual, expected_size + 1) << "\n"
+                "Expected                   : " << std::string(expected) << "\n"
+            );
         }
 
-        INFO("Actual:   " << std::string(&actual[0], expected_size));
-        INFO("Expected: " << std::string(&expected[0], expected_size));
+        INFO("Actual:   " << std::string(actual, expected_size));
+        INFO("Expected: " << std::string(expected));
 
         if (level == FAILURE_LEVEL::WARN)
         {
@@ -51,7 +54,7 @@ namespace detail
         fail_if_position_out_of_bounds(buffer_size, position);
 
         INFO("The buffer is not terminated at position: " << position);
-        const size_t start = std::max(static_cast<size_t>(0), position - 4);
+        const size_t start = std::max<size_t>(0, position - 4);
         const size_t length = position - start + 1;
         INFO("Last max(5, N) characters: " << std::string(&buffer[start], length));
 
