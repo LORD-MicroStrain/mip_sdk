@@ -141,7 +141,7 @@ void printPacket(const mip::PacketView& _packetView)
     int  bufferOffset                                           = 0;
 
     // Get each byte in the packet, including header and checksum
-    for (size_t i = 0; i < _packetView.totalLength(); i++)
+    for (size_t i = 0; i < _packetView.packetLength(); i++)
     {
         bufferOffset += snprintf(
             &packetByteBuffer[bufferOffset],
@@ -154,7 +154,7 @@ void printPacket(const mip::PacketView& _packetView)
     const uint8_t payloadLength = _packetView.payloadLength();
 
     // Print the packet details before the fields
-    printf("%4s%-20s = %u\n", " ", "Total Length", _packetView.totalLength());
+    printf("%4s%-20s = %u\n", " ", "Packet Length", _packetView.packetLength());
     printf("%4s%-20s = %s\n", " ", "Raw Packet", packetByteBuffer);
     printf("%4s%-20s = 0x%02X\n", " ", "MIP SYNC1", packetPointer[0]);
     printf("%4s%-20s = 0x%02X\n", " ", "MIP SYNC2", packetPointer[1]);
@@ -174,14 +174,14 @@ void printPacket(const mip::PacketView& _packetView)
 
         // Print descriptors (the descriptor set always matches the packet)
         // Include the size of the length byte
-        printf("%8s%-16s = 0x%02X\n", " ", "Field Length", fieldView.payloadLength() + 2);
+        printf("%8s%-16s = 0x%02X\n", " ", "Field Length", fieldView.totalLength());
         printf("%8s%-16s = 0x%02X\n", " ", "Field Descriptor", fieldView.fieldDescriptor());
         printf("%8s%-16s = ", " ", "Raw Payload");
 
         // Print field payload bytes.
         for (size_t i = 0; i < fieldView.payloadLength(); i++)
         {
-            printf("%02X", fieldView.payload()[i]);
+            printf("%02X", fieldView.payload(i));
         }
 
         printf("\n");
@@ -911,7 +911,7 @@ void createFromRawBufferPacket4()
     for (const mip::FieldView& fieldView : packetView)
     {
         // Create a deserializer for the field.
-        mip::Serializer serializer(fieldView.payload(), fieldView.payloadLength());
+        mip::Serializer serializer(fieldView.payloadBytes());
 
         // Check what data the field contains
         switch (fieldView.fieldDescriptor())
