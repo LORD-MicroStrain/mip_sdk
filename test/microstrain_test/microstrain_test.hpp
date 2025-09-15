@@ -1,60 +1,41 @@
 /**
-	Wrapper library for C/C++ automated testing frameworks
+    TODO: This should be moved to its own repository so it can be used by multiple projects
 
-	The goal is to provide a standardized interface for testing, regardless of the
-	backend framework being used.
+    TODO: Maybe move the documentation to a markdown file?
 
-	Assertions are invoked like this: FAILURE_LEVEL_ASSERTION.
+    Wrapper library for C/C++ automated testing frameworks
 
-	There are three levels of failure:
-	    * WARN: Doesn't fail the test but outputs a warning message
-	    * FAIL: Fails the test but allows it to finish.
-	    * EXIT: Fails the test and exits immediately
+	The goal is to provide a standardized interface for automated testing, regardless of the backend framework being
+	used.
 
-	TODO: This should be moved to its own repository so it can be used by multiple
-          projects
+	Test registration:
+
+    - TEST(suite_name, test_name) - Registers a test in the given test suite. The test suite will be created
+                                    automatically if it doesn't exist.
+
+    Assertions:
+
+    There are three levels of failure:
+        - WARN_*: Doesn't fail the test but outputs a warning message
+        - FAIL_*: Fails the test but allows it to finish.
+        - EXIT_*: Fails the test and exits immediately
+
+    The arguments for each call are of the order (actual, expected). The order of arguments matters,
+    as some assertions make assumptions on the size or bounds of the actual argument based on the
+    expected argument.
+
+    Ex: ASSERTION(actual, expected)
+
+    - *_IF_NOT_TRUE - Useful if you only care about whether a condition is true. Might not have full debugging info.
+    - *_IF_NOT_EQUAL
+    - *_IF_C_STRINGS_NOT_EQUAL - Same as equality check, but with additional safety and debugging output for C strings
+
+ * TODO: Add docs for buffer terminated if keeping
+    /// Pass the size of the string contents, not the maximum size of the buffer.
+
 */
 #pragma once
 
 #ifdef MICROSTRAIN_TEST_USE_DOCTEST
 #include "doctest/doctest_wrappers.hpp"
 #endif
-
-
-// ------ Test registration --------------------------------------------------------------------- //
-
-/// Registers a standard test in the given test suite.
-///
-/// Test suites are useful for grouping related behaviors. The test specified test suite will be
-/// created automatically if it doesn't exist. Tests can then be run altogether, by test suite,
-/// individually by test name, etc.
-#define TEST(suite_name, test_name) DETAIL_ADD_TEST(suite_name, test_name)
-
-
-// ------ Assertions ---------------------------------------------------------------------------- //
-
-/// The specific checks may provide more debugging information, but these can be helpful if you only
-/// care about whether a condition is true.
-#define WARN_IF_NOT_TRUE(condition) DETAIL_WARN_TRUE(condition)
-#define FAIL_IF_NOT_TRUE(condition) DETAIL_FAIL_TRUE(condition)
-#define EXIT_IF_NOT_TRUE(condition) DETAIL_EXIT_TRUE(condition)
-
-#define WARN_IF_NOT_EQUAL(actual, expected) DETAIL_WARN_EQUAL(actual, expected)
-#define FAIL_IF_NOT_EQUAL(actual, expected) DETAIL_FAIL_EQUAL(actual, expected)
-#define EXIT_IF_NOT_EQUAL(actual, expected) DETAIL_EXIT_EQUAL(actual, expected)
-
-/// Safe C string checks providing full debugging output, including the values of the strings.
-/// The order of arguments matters, as the expected string is the only one that can be safely assumed
-/// to be zero terminated (since it's defined by the test).
-#define WARN_IF_C_STRINGS_ARE_NOT_EQUAL(actual, expected) DETAIL_WARN_C_STRINGS_EQUAL(actual, expected)
-#define FAIL_IF_C_STRINGS_ARE_NOT_EQUAL(actual, expected) DETAIL_FAIL_C_STRINGS_EQUAL(actual, expected)
-#define EXIT_IF_C_STRINGS_ARE_NOT_EQUAL(actual, expected) DETAIL_EXIT_C_STRINGS_EQUAL(actual, expected)
-
-/// Pass the size of the string contents, not the maximum size of the buffer.
-#define WARN_IF_BUFFER_IS_NOT_TERMINATED_AT_THE_END(buffer, contents_size) DETAIL_WARN_BUFFER_TERMINATED(buffer, contents_size)
-#define FAIL_IF_BUFFER_IS_NOT_TERMINATED_AT_THE_END(buffer, contents_size) DETAIL_FAIL_BUFFER_TERMINATED(buffer, contents_size)
-#define EXIT_IF_BUFFER_IS_NOT_TERMINATED_AT_THE_END(buffer, contents_size) DETAIL_EXIT_BUFFER_TERMINATED(buffer, contents_size)
-
-#define WARN_IF_BUFFER_IS_NOT_TERMINATED_AT_POSITION(buffer, contents_size, position) DETAIL_WARN_BUFFER_TERMINATED_AT_POSITION(buffer, contents_size, position)
-#define FAIL_IF_BUFFER_IS_NOT_TERMINATED_AT_POSITION(buffer, contents_size, position) DETAIL_FAIL_BUFFER_TERMINATED_AT_POSITION(buffer, contents_size, position)
-#define EXIT_IF_BUFFER_IS_NOT_TERMINATED_AT_POSITION(buffer, contents_size, position) DETAIL_EXIT_BUFFER_TERMINATED_AT_POSITION(buffer, contents_size, position)
