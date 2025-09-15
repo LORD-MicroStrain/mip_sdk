@@ -22,6 +22,14 @@
 // Include the MicroStrain Serial connection header
 #include <microstrain/connections/serial/serial_port.h>
 
+#ifndef MICROSTRAIN_ENABLE_LOGGING
+#error This example requires logging to be enabled
+#endif // !MICROSTRAIN_ENABLE_LOGGING
+
+#if !defined MICROSTRAIN_LOGGING_MAX_LEVEL || MICROSTRAIN_LOGGING_MAX_LEVEL < MICROSTRAIN_LOG_LEVEL_INFO
+#error This example requires a logging level of at least MICROSTRAIN_LOG_LEVEL_INFO
+#endif // MICROSTRAIN_LOGGING_MAX_LEVEL < MICROSTRAIN_LOG_LEVEL_INFO
+
 // Include the MicroStrain logging header for custom logging
 #include <microstrain/logging.h>
 

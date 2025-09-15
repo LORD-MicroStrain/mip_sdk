@@ -108,6 +108,46 @@ This example is useful for:
 - Learning MIP protocol internals
 - Building custom MIP applications
 
+## Building
+
+### With CMake
+
+The project can be configured on its own using the supplied [CMakeLists.txt](CMakeLists.txt).
+The file is configured to work directly in the MIP SDK project or as a standalone project.
+If building outside the MIP SDK project, all that's needed is to define `MIP_SDK_ROOT_DIR`.
+When building within the MIP SDK project, make sure to enable the examples using the `MICROSTRAIN_BUILD_EXAMPLES`
+CMake option.
+
+#### Standalone Command Line
+```shell
+mkdir build
+cd build
+cmake .. -DMIP_SDK_ROOT_DIR:PATH=<path_to_mip_sdk>
+```
+
+### Without CMake
+
+When building manually, you need to configure the following:
+
+#### Required Libraries
+
+Link against these libraries:
+- `mip` - Core MIP SDK library
+
+Make sure to include those library paths as additional link directories if needed
+
+#### Include Directories
+
+Add these include directories:
+- `<path_to_mip_sdk_include>/c`
+- `<path_to_mip_sdk_include>/cpp`
+- `<path_to_project_root>`
+
+<path_to_mip_sdk_include> can be installed paths or source paths:
+- Unix - `/usr/include/microstrain`
+- Windows - `C:/Program Files/MIP_SDK/include/microstrain`
+- Source: `<mip_sdk_project_root>/src`
+
 ## Requirements
 
 - MIP SDK library with C++ support
