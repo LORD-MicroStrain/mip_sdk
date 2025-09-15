@@ -26,6 +26,9 @@
 // Include the MicroStrain logging header for custom logging
 #include <microstrain/logging.hpp>
 
+// Include the MicroStrain timestamping header
+#include <microstrain/embedded_time.hpp>
+
 // Include all necessary MIP headers
 // Note: The MIP SDK has headers for each module to include all headers associated with the module
 // I.E., #include <mip/mip_all.hpp>
@@ -91,16 +94,12 @@ void initializeFilter(mip::Interface& _device);
 void displayGnssFixState(const mip::data_gnss::FixInfo* _fixInfoArray, const uint8_t _arrayIndex);
 void displayFilterState(const mip::data_filter::FilterMode _filterState);
 
-// Used for basic timestamping (since epoch in milliseconds)
-// TODO: Update this to whatever timestamping method is desired
-mip::Timestamp getCurrentTimestamp();
-
 // Common device initialization procedure
 void initializeDevice(mip::Interface& _device);
 
 // Utility functions the handle application closing and printing error messages
-void terminate(microstrain::Connection* _connection, const char* _message, const bool _successful = false);
-void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const char* _format, ...);
+void terminate(microstrain::connections::Connection* _connection, const char* _message, const bool _successful = false);
+void terminate(const mip::CmdResult _cmdResult, const char* _format, ...);
 
 int main(const int argc, const char* argv[])
 {
@@ -125,9 +124,9 @@ int main(const int argc, const char* argv[])
 
     MICROSTRAIN_LOG_INFO("Initializing the device interface.\n");
     mip::Interface device(
-        &connection,                                 // Connection for the device
-        mip::C::mip_timeout_from_baudrate(BAUDRATE), // Set the base timeout for commands (milliseconds)
-        2000                                         // Set the base timeout for command replies (milliseconds)
+        connection,                         // Connection for the device
+        mip::timeoutFromBaudrate(BAUDRATE), // Set the base timeout for commands (milliseconds)
+        2000                                // Set the base timeout for command replies (milliseconds)
     );
     initializeDevice(device);
 
@@ -151,7 +150,7 @@ int main(const int argc, const char* argv[])
 
     if (!cmdResult.isAck())
     {
-        terminate(device, cmdResult, "Could not set %s!\n", mip::commands_3dm::Sensor2VehicleTransformEuler::DOC_NAME);
+        terminate(cmdResult, "Could not set %s!\n", mip::commands_3dm::Sensor2VehicleTransformEuler::DOC_NAME);
     }
 
     // Configure the wheeled-vehicle constraint
@@ -163,7 +162,7 @@ int main(const int argc, const char* argv[])
 
     if (!cmdResult.isAck())
     {
-        terminate(device, cmdResult, "Could not enable the %s!\n",
+        terminate(cmdResult, "Could not enable the %s!\n",
             mip::commands_filter::WheeledVehicleConstraintControl::DOC_NAME
         );
     }
@@ -245,7 +244,7 @@ int main(const int argc, const char* argv[])
 
     if (!cmdResult.isAck())
     {
-        terminate(device, cmdResult, "Could not resume the device!\n");
+        terminate(cmdResult, "Could not resume the device!\n");
     }
 
     MICROSTRAIN_LOG_INFO("Sensor is configured... waiting for filter to enter full navigation mode.\n");
@@ -286,13 +285,13 @@ int main(const int argc, const char* argv[])
     }
 
     // Get the start time of the device update loop to handle exiting the application
-    const mip::Timestamp loopStartTime = getCurrentTimestamp();
+    const microstrain::EmbeddedTimestamp loopStartTime = microstrain::getCurrentTimestamp();
 
-    mip::Timestamp previousPrintTimestamp = 0;
+    microstrain::EmbeddedTimestamp previousPrintTimestamp = 0;
 
     // Device loop
     // Exit after predetermined time in seconds
-    while (getCurrentTimestamp() - loopStartTime <= RUN_TIME_SECONDS * 1000)
+    while (microstrain::getCurrentTimestamp() - loopStartTime <= RUN_TIME_SECONDS * 1000)
     {
         // Update the device state
         // Note: This will update the device callbacks to trigger the filter state change
@@ -319,7 +318,7 @@ int main(const int argc, const char* argv[])
             currentState = filterStatus.filter_state;
         }
 
-        const mip::Timestamp currentTimestamp = getCurrentTimestamp();
+        const microstrain::EmbeddedTimestamp currentTimestamp = microstrain::getCurrentTimestamp();
 
         // Print out data based on the sample rate (1000 ms / SAMPLE_RATE_HZ)
         if (currentTimestamp - previousPrintTimestamp >= 1000 / SAMPLE_RATE_HZ)
@@ -451,7 +450,7 @@ void captureGyroBias(mip::Interface& _device)
 
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Failed to capture gyro bias!\n");
+        terminate(cmdResult, "Failed to capture gyro bias!\n");
     }
 
     MICROSTRAIN_LOG_INFO("Capture gyro bias completed with result: [%f, %f, %f]\n",
@@ -491,7 +490,7 @@ void configureGnssMessageFormat(mip::Interface& _device)
 
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not get GNSS 1 base rate!\n");
+        terminate(cmdResult, "Could not get GNSS 1 base rate!\n");
     }
 
     // Supported sample rates can be any value from 1 up to the base rate
@@ -499,7 +498,6 @@ void configureGnssMessageFormat(mip::Interface& _device)
     if (SAMPLE_RATE_HZ == 0 || SAMPLE_RATE_HZ > gnssBaseRate1)
     {
         terminate(
-            _device,
             mip::CmdResult::NACK_INVALID_PARAM,
             "Invalid sample rate of %dHz! Supported rates are [1, %d].\n",
             SAMPLE_RATE_HZ,
@@ -530,7 +528,7 @@ void configureGnssMessageFormat(mip::Interface& _device)
 
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not set message format for GNSS 1 data!\n");
+        terminate(cmdResult, "Could not set message format for GNSS 1 data!\n");
     }
 
     // Note: Typically, the base rates for all GNSS descriptors will be the same, but adding this for completeness
@@ -544,7 +542,7 @@ void configureGnssMessageFormat(mip::Interface& _device)
 
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not get GNSS 2 base rate!\n");
+        terminate(cmdResult, "Could not get GNSS 2 base rate!\n");
     }
 
     // Supported sample rates can be any value from 1 up to the base rate
@@ -552,7 +550,6 @@ void configureGnssMessageFormat(mip::Interface& _device)
     if (SAMPLE_RATE_HZ == 0 || SAMPLE_RATE_HZ > gnssBaseRate2)
     {
         terminate(
-            _device,
             mip::CmdResult::NACK_INVALID_PARAM,
             "Invalid sample rate of %dHz! Supported rates are [1, %d].\n",
             SAMPLE_RATE_HZ,
@@ -583,7 +580,7 @@ void configureGnssMessageFormat(mip::Interface& _device)
 
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not set message format for GNSS 2 data!\n");
+        terminate(cmdResult, "Could not set message format for GNSS 2 data!\n");
     }
 }
 
@@ -618,7 +615,7 @@ void configureFilterMessageFormat(mip::Interface& _device)
 
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not get filter base rate!\n");
+        terminate(cmdResult, "Could not get filter base rate!\n");
     }
 
     // Supported sample rates can be any value from 1 up to the base rate
@@ -626,7 +623,6 @@ void configureFilterMessageFormat(mip::Interface& _device)
     if (SAMPLE_RATE_HZ == 0 || SAMPLE_RATE_HZ > filterBaseRate)
     {
         terminate(
-            _device,
             mip::CmdResult::NACK_INVALID_PARAM,
             "Invalid sample rate of %dHz! Supported rates are [1, %d].\n",
             SAMPLE_RATE_HZ,
@@ -661,9 +657,7 @@ void configureFilterMessageFormat(mip::Interface& _device)
 
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not set %s for filter data!\n",
-            mip::commands_3dm::MessageFormat::DOC_NAME
-        );
+        terminate(cmdResult, "Could not set %s for filter data!\n", mip::commands_3dm::MessageFormat::DOC_NAME);
     }
 }
 
@@ -707,7 +701,7 @@ void configureAntennas(mip::Interface& _device)
 
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not set GNSS 1 antenna offset!\n");
+        terminate(cmdResult, "Could not set GNSS 1 antenna offset!\n");
     }
 
     // Configure GNSS 2 antenna offset (in meters)
@@ -730,7 +724,7 @@ void configureAntennas(mip::Interface& _device)
 
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not set GNSS 2 antenna offset!\n");
+        terminate(cmdResult, "Could not set GNSS 2 antenna offset!\n");
     }
 }
 
@@ -764,7 +758,6 @@ void initializeFilter(mip::Interface& _device)
     if (!cmdResult.isAck())
     {
         terminate(
-            _device,
             cmdResult,
             "Could not set %s for GNSS position and velocity!\n",
             mip::commands_filter::AidingMeasurementEnable::DOC_NAME
@@ -781,7 +774,6 @@ void initializeFilter(mip::Interface& _device)
     if (!cmdResult.isAck())
     {
         terminate(
-            _device,
             cmdResult,
             "Could not set %s for GNSS heading!\n",
             mip::commands_filter::AidingMeasurementEnable::DOC_NAME
@@ -831,7 +823,6 @@ void initializeFilter(mip::Interface& _device)
     if (!cmdResult.isAck())
     {
         terminate(
-            _device,
             cmdResult,
             "Could not set the %s configuration!\n",
             mip::commands_filter::InitializationConfiguration::DOC_NAME
@@ -845,7 +836,7 @@ void initializeFilter(mip::Interface& _device)
 
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not %s!\n", mip::commands_filter::Reset::DOC_NAME);
+        terminate(cmdResult, "Could not %s!\n", mip::commands_filter::Reset::DOC_NAME);
     }
 }
 
@@ -1007,25 +998,6 @@ void displayFilterState(const mip::data_filter::FilterMode _filterState)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-/// @brief Gets the current system timestamp in milliseconds
-///
-/// @details Provides system time measurement using std::chrono for milliseconds
-///          since epoch. Uses system_clock to get wall-clock time that
-///          corresponds to calendar time and can be synchronized with external
-///          time sources.
-///
-/// @note Update this function to use a different time source if needed for
-///       your specific application requirements
-///
-/// @return Current timestamp in milliseconds since epoch
-///
-mip::Timestamp getCurrentTimestamp()
-{
-    const std::chrono::nanoseconds timeSinceEpoch = std::chrono::system_clock::now().time_since_epoch();
-    return static_cast<mip::Timestamp>(std::chrono::duration_cast<std::chrono::milliseconds>(timeSinceEpoch).count());
-}
-
-////////////////////////////////////////////////////////////////////////////////
 /// @brief Initializes and configures a MIP device interface
 ///
 /// @details Performs a complete device initialization sequence:
@@ -1045,7 +1017,7 @@ void initializeDevice(mip::Interface& _device)
 
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not ping the device!\n");
+        terminate(cmdResult, "Could not ping the device!\n");
     }
 
     // Set the device to Idle
@@ -1055,7 +1027,7 @@ void initializeDevice(mip::Interface& _device)
 
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not set the device to idle!\n");
+        terminate(cmdResult, "Could not set the device to idle!\n");
     }
 
     // Print device info to make sure the correct device is being used
@@ -1065,7 +1037,7 @@ void initializeDevice(mip::Interface& _device)
 
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not get the device information!\n");
+        terminate(cmdResult, "Could not get the device information!\n");
     }
 
     // Extract the major minor and patch values
@@ -1105,7 +1077,7 @@ void initializeDevice(mip::Interface& _device)
             );
         }
 
-        terminate(_device, cmdResult, "Could not load %s!\n", mip::commands_3dm::DeviceSettings::DOC_NAME);
+        terminate(cmdResult, "Could not load %s!\n", mip::commands_3dm::DeviceSettings::DOC_NAME);
     }
 }
 
@@ -1121,7 +1093,7 @@ void initializeDevice(mip::Interface& _device)
 /// @param _message Error message to display
 /// @param _successful Whether termination is due to success or failure
 ///
-void terminate(microstrain::Connection* _connection, const char* _message, const bool _successful /* = false */)
+void terminate(microstrain::connections::Connection* _connection, const char* _message, const bool _successful /* = false */)
 {
     if (strlen(_message) != 0)
     {
@@ -1170,15 +1142,13 @@ void terminate(microstrain::Connection* _connection, const char* _message, const
 ///
 /// @details Handles command failure scenarios:
 ///          - Formats and displays an error message with command result
-///          - Closes device connection
 ///          - Exits with failure status
 ///
-/// @param _device MIP device interface for the command that failed
 /// @param _cmdResult Result code from a failed command
 /// @param _format Printf-style format string for error message
 /// @param ... Variable arguments for format string
 ///
-void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const char* _format, ...)
+void terminate(const mip::CmdResult _cmdResult, const char* _format, ...)
 {
     va_list args;
     va_start(args, _format);
@@ -1187,8 +1157,5 @@ void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const c
 
     MICROSTRAIN_LOG_ERROR("Command Result: (%d) %s.\n", _cmdResult.value, _cmdResult.name());
 
-    // Get the connection pointer that was set during device initialization
-    microstrain::Connection* connection = static_cast<microstrain::Connection*>(_device.userPointer());
-
-    terminate(connection, "");
+    terminate(nullptr, "");
 }

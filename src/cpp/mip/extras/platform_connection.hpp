@@ -9,7 +9,7 @@ namespace mip
 {
     namespace platform
     {
-        std::unique_ptr<microstrain::Connection> createConnectionFromInterfaceName(std::string interface_name, uint32_t parameter);
+        std::unique_ptr<microstrain::connections::Connection> createConnectionFromInterfaceName(std::string interfaceName, uint32_t parameter);
 
         bool isNetworkInterfaceName(std::string_view interface_name);
         bool isSerialInterfaceName(std::string_view interface_name);

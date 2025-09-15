@@ -31,21 +31,25 @@ namespace mip
         ///       For serial ports, this is the baud rate.
         ///       For TCP sockets, this is the port number.
         ///
-        std::unique_ptr<microstrain::Connection> createConnectionFromInterfaceName(std::string interface_name, uint32_t parameter)
+        std::unique_ptr<microstrain::connections::Connection> createConnectionFromInterfaceName(std::string interfaceName, uint32_t parameter)
         {
 #if defined MIP_USE_SERIAL
-            // Todo: Detect USB connections (interface_name.find("ttyACM0") or similar)
-            if(isSerialInterfaceName(interface_name))
-                return std::make_unique<microstrain::connections::SerialConnection>(std::move(interface_name), parameter);
+            // Todo: Detect USB connections (interfaceName.find("ttyACM0") or similar)
+            if (isSerialInterfaceName(interfaceName))
+            {
+                return std::make_unique<microstrain::connections::SerialConnection>(std::move(interfaceName), parameter);
+            }
 #endif // MIP_USE_SERIAL
 
 #if defined MIP_USE_TCP
-            if(isNetworkInterfaceName(interface_name))
-                return std::make_unique<microstrain::connections::TcpConnection>(std::move(interface_name), parameter);
+            if (isNetworkInterfaceName(interfaceName))
+            {
+                return std::make_unique<microstrain::connections::TcpConnection>(std::move(interfaceName), parameter);
+            }
 #endif // MIP_USE_TCP
 
 #if !defined MIP_USE_TCP && !defined MIP_USE_SERIAL
-            (void)interface_name;
+            (void)interfaceName;
             (void)parameter;
 #endif // !MIP_USE_TCP && !MIP_USE_SERIAL
 

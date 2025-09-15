@@ -28,7 +28,6 @@
 namespace mip {
 namespace C {
 extern "C" {
-using microstrain::C::microstrain_serializer;
 #endif // __cplusplus
 
 typedef struct mip_descriptor_rate
@@ -37,14 +36,27 @@ typedef struct mip_descriptor_rate
     uint16_t decimation;
 } mip_descriptor_rate;
 
+#ifdef __cplusplus
+void insert_mip_descriptor_rate(microstrain::C::microstrain_serializer *serializer, const mip_descriptor_rate *self);
+void extract_mip_descriptor_rate(microstrain::C::microstrain_serializer *serializer, mip_descriptor_rate *self);
+#else
 void insert_mip_descriptor_rate(microstrain_serializer *serializer, const mip_descriptor_rate *self);
 void extract_mip_descriptor_rate(microstrain_serializer *serializer, mip_descriptor_rate *self);
+#endif // __cplusplus
 
+#ifdef __cplusplus
+#define DECLARE_MIP_VECTOR_TYPE(n, type, name) \
+typedef type name[n]; \
+\
+void insert_##name(microstrain::C::microstrain_serializer* serializer, const name self); \
+void extract_##name(microstrain::C::microstrain_serializer* serializer, name self);
+#else
 #define DECLARE_MIP_VECTOR_TYPE(n, type, name) \
 typedef type name[n]; \
 \
 void insert_##name(microstrain_serializer* serializer, const name self); \
 void extract_##name(microstrain_serializer* serializer, name self);
+#endif // __cplusplus
 
 DECLARE_MIP_VECTOR_TYPE(3, float, mip_vector3f)
 DECLARE_MIP_VECTOR_TYPE(4, float, mip_vector4f)

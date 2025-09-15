@@ -1,15 +1,13 @@
 #pragma once
 
-#include <stddef.h>
-#include <stdint.h>
+#include <microstrain/serialization.h>
+
 #include <stdbool.h>
-#include "microstrain/serialization.h"
-#include "mip_result.h"
+#include <stdint.h>
 
 #ifdef __cplusplus
 namespace mip {
 namespace C {
-using ::microstrain::C::microstrain_serializer;
 extern "C" {
 #endif // __cplusplus
 
@@ -47,10 +45,17 @@ enum mip_function_selector
     MIP_FUNCTION_LOAD  = 0x04,
     MIP_FUNCTION_RESET = 0x05,
 };
+
 typedef enum mip_function_selector mip_function_selector;
+
+#ifdef __cplusplus
+void insert_mip_function_selector(microstrain::C::microstrain_serializer* serializer, enum mip_function_selector self);
+void extract_mip_function_selector(microstrain::C::microstrain_serializer* serializer,
+    enum mip_function_selector* self);
+#else
 void insert_mip_function_selector(microstrain_serializer* serializer, enum mip_function_selector self);
 void extract_mip_function_selector(microstrain_serializer* serializer, enum mip_function_selector* self);
-
+#endif // __cplusplus
 
 #ifdef __cplusplus
 } // extern "C"

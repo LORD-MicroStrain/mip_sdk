@@ -43,7 +43,7 @@
 #ifdef _WIN32
 static constexpr const char* PORT_NAME = "COM1";
 #else // Unix
-static constexpr const char* PORT_NAME = "/dev/ttyUSB0";
+static constexpr const char* PORT_NAME = "/dev/ttyACM0";
 #endif // _WIN32
 
 // Set the baudrate for the connection (Serial/USB)
@@ -57,8 +57,8 @@ void logCallback(void* _user, const microstrain_log_level _level, const char* _f
 void initializeDevice(mip::Interface& _device);
 
 // Utility functions the handle application closing and printing error messages
-void terminate(microstrain::Connection* _connection, const char* _message, const bool _successful = false);
-void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const char* _format, ...);
+void terminate(microstrain::connections::Connection* _connection, const char* _message, const bool _successful = false);
+void terminate(const mip::CmdResult _cmdResult, const char* _format, ...);
 
 int main(const int argc, const char* argv[])
 {
@@ -70,11 +70,10 @@ int main(const int argc, const char* argv[])
     MICROSTRAIN_LOG_INIT(&logCallback, MICROSTRAIN_LOG_LEVEL_INFO, nullptr);
 
     // Initialize the connection
-    MICROSTRAIN_LOG_INFO("Initializing the connection.\n");
+    MICROSTRAIN_LOG_INFO("Initializing the connection on port %s with %d baudrate.\n", PORT_NAME, BAUDRATE);
     microstrain::connections::SerialConnection connection(PORT_NAME, BAUDRATE);
 
-    MICROSTRAIN_LOG_INFO("Connecting to the device on port %s with %d baudrate.\n", PORT_NAME, BAUDRATE);
-
+    MICROSTRAIN_LOG_INFO("Connecting to the device.\n");
     // Open the connection to the device
     if (!connection.connect())
     {
@@ -83,13 +82,14 @@ int main(const int argc, const char* argv[])
 
     MICROSTRAIN_LOG_INFO("Initializing the device interface.\n");
     mip::Interface device(
-        &connection,                                 // Connection for the device
-        mip::C::mip_timeout_from_baudrate(BAUDRATE), // Set the base timeout for commands (milliseconds)
-        2000                                         // Set the base timeout for command replies (milliseconds)
+        connection,                         // Connection for the device
+        mip::timeoutFromBaudrate(BAUDRATE), // Set the base timeout for commands (milliseconds)
+        2000                                // Set the base timeout for command replies (milliseconds)
     );
     initializeDevice(device);
 
-    terminate(&connection, "Example Completed Successfully.\n", true);
+    // Note: The connection is cleaned up in the device destructor
+    terminate(nullptr, "Example Completed Successfully.\n", true);
 
     return 0;
 }
@@ -156,7 +156,7 @@ void initializeDevice(mip::Interface& _device)
     mip::CmdResult cmdResult = mip::commands_base::ping(_device);
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not ping the device!\n");
+        terminate(cmdResult, "Could not ping the device!\n");
     }
 
     // Set the device to Idle
@@ -165,7 +165,7 @@ void initializeDevice(mip::Interface& _device)
     cmdResult = mip::commands_base::setIdle(_device);
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not set the device to idle!\n");
+        terminate(cmdResult, "Could not set the device to idle!\n");
     }
 
     // Print device info to make sure the correct device is being used
@@ -174,7 +174,7 @@ void initializeDevice(mip::Interface& _device)
     cmdResult = mip::commands_base::getDeviceInfo(_device, &deviceInfo);
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not get the device information!\n");
+        terminate(cmdResult, "Could not get the device information!\n");
     }
 
     // Extract the major minor and patch values
@@ -205,14 +205,15 @@ void initializeDevice(mip::Interface& _device)
 ///
 /// @details Handles graceful shutdown when errors occur:
 ///          - Outputs provided error message
-///          - Closes device connection if open
+///          - Closes the connection if open
 ///          - Exits with appropriate status code
 ///
-/// @param _connection Pointer to the device connection to close
+/// @param _connection Pointer to the connection to close
 /// @param _message Error message to display
 /// @param _successful Whether termination is due to success or failure
 ///
-void terminate(microstrain::Connection* _connection, const char* _message, const bool _successful /* = false */)
+void terminate(microstrain::connections::Connection* _connection, const char* _message,
+    const bool _successful /* = false */)
 {
     if (strlen(_message) != 0)
     {
@@ -226,21 +227,13 @@ void terminate(microstrain::Connection* _connection, const char* _message, const
         }
     }
 
-    if (!_connection)
+    if (_connection && _connection->isConnected())
     {
-        // Create the device interface with a connection or set it after creation
-        MICROSTRAIN_LOG_ERROR("Connection not set for the device interface. Cannot close the connection.\n");
-    }
-    else
-    {
-        if (_connection->isConnected())
-        {
-            MICROSTRAIN_LOG_INFO("Closing the connection.\n");
+        MICROSTRAIN_LOG_INFO("Closing the connection.\n");
 
-            if (!_connection->disconnect())
-            {
-                MICROSTRAIN_LOG_ERROR("Failed to close the connection!\n");
-            }
+        if (!_connection->disconnect())
+        {
+            MICROSTRAIN_LOG_ERROR("Failed to close the connection!\n");
         }
     }
 
@@ -262,15 +255,13 @@ void terminate(microstrain::Connection* _connection, const char* _message, const
 ///
 /// @details Handles command failure scenarios:
 ///          - Formats and displays an error message with command result
-///          - Closes device connection
 ///          - Exits with failure status
 ///
-/// @param _device MIP device interface for the command that failed
 /// @param _cmdResult Result code from a failed command
 /// @param _format Printf-style format string for error message
 /// @param ... Variable arguments for format string
 ///
-void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const char* _format, ...)
+void terminate(const mip::CmdResult _cmdResult, const char* _format, ...)
 {
     va_list args;
     va_start(args, _format);
@@ -279,8 +270,5 @@ void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const c
 
     MICROSTRAIN_LOG_ERROR("Command Result: (%d) %s.\n", _cmdResult.value, _cmdResult.name());
 
-    // Get the connection pointer that was set during device initialization
-    microstrain::Connection* connection = static_cast<microstrain::Connection*>(_device.userPointer());
-
-    terminate(connection, "");
+    terminate(nullptr, "");
 }

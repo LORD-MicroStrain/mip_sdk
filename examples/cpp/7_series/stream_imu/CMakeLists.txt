@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 
 project("7_series_stream_imu_example_cpp"
     VERSION "1.0.0"
-    DESCRIPTION "Simple example for streaming IMU data on 7-Series devices using C++"
+    DESCRIPTION "Simple example for streaming and recording IMU data on 7-Series devices using C++"
     LANGUAGES C CXX
 )
 

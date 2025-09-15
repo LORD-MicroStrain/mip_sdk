@@ -1,96 +1,98 @@
-#include "serial_connection.hpp"
-
-#include <chrono>
-#include <cstdio>
-#include <stdexcept>
+#include "microstrain/connections/serial/serial_connection.hpp"
 
 namespace microstrain
 {
     namespace connections
     {
-        ////////////////////////////////////////////////////////////////////////////////
-        ///@brief Creates a Serial Connection that will communicate with a device over
-        ///       serial
-        ///
-        ///@param portName Path to the port to connect to. On Windows, this usually
-        ///                looks like "COM<N>", on linux, "/dev/tty<N>"
-        ///
-        ///@param baudrate Baud rate to open the device at. Note that the device needs
-        ///                to be configured to
-        ///
-        SerialConnection::SerialConnection(std::string portName, uint32_t baudrate)
-        {
-            mPortName = std::move(portName);
-            mBaudrate = baudrate;
-            mType     = TYPE;
-
-            serial_port_init(&mPort);
-        }
-
-        ////////////////////////////////////////////////////////////////////////////////
-        ///@brief Closes the underlying serial port
-        ///
         SerialConnection::~SerialConnection()
         {
             SerialConnection::disconnect();
         }
 
-        ////////////////////////////////////////////////////////////////////////////////
-        ///@brief Check if the port is connected
-        ///
-        bool SerialConnection::isConnected() const
+        SerialConnection::SerialConnection(const char* _portName, const uint32_t _baudrate) :
+            Connection(TYPE)
         {
-            return serial_port_is_open(&mPort);
+            serial_port_init(this, _portName, _baudrate, recordingConnection());
         }
 
-        ////////////////////////////////////////////////////////////////////////////////
-        ///@brief Connect to the port
-        ///
+        SerialConnection::SerialConnection(const char* _portName, const uint32_t _baudrate,
+            const char* _receiveRecordingFileName, const char* _sendRecordingFileName) :
+            Connection(TYPE, _receiveRecordingFileName, _sendRecordingFileName)
+        {
+            serial_port_init(this, _portName, _baudrate, recordingConnection());
+        }
+
+        SerialConnection::SerialConnection(const char* _portName, const uint32_t _baudrate,
+            FILE* _receiveRecordingStream, FILE* _sendRecordingStream) :
+            Connection(TYPE, _receiveRecordingStream, _sendRecordingStream)
+        {
+            serial_port_init(this, _portName, _baudrate, recordingConnection());
+        }
+
         bool SerialConnection::connect()
         {
-            if (serial_port_is_open(&mPort))
-                return true;
-
-           return serial_port_open(&mPort, mPortName.c_str(), mBaudrate);
+           return serial_port_open(this);
         }
 
-        ////////////////////////////////////////////////////////////////////////////////
-        ///@brief Disconnect from the port
-        ///
         bool SerialConnection::disconnect()
         {
-           if (!serial_port_is_open(&mPort))
-                return true;
-
-           return serial_port_close(&mPort);
+           return serial_port_close(this);
         }
 
-        ////////////////////////////////////////////////////////////////////////////////
-        ///@brief Change the baudrate
-        ///
-        bool SerialConnection::setBaudrate(uint32_t baud)
+        bool SerialConnection::isConnected() const
         {
-            bool ok = serial_port_set_baudrate(&mPort, baud);
-
-            if (ok)
-                mBaudrate = baud;
-
-            return ok;
+            return serial_port_is_open(this);
         }
 
-        ///@copydoc microstrain::Connection::recvFromDevice
-        bool SerialConnection::recvFromDevice(uint8_t* buffer, size_t max_length, unsigned int wait_time_ms, size_t* length_out, EmbeddedTimestamp* timestamp_out)
+        bool SerialConnection::read(uint8_t* _buffer, const size_t _byte_count, const uint32_t _wait_time_ms,
+            size_t& _bytes_read_out, EmbeddedTimestamp& _timestamp_out)
         {
-            *timestamp_out = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
-
-            return serial_port_read(&mPort, buffer, max_length, wait_time_ms, length_out);
+            return serial_port_read(this, _buffer, _byte_count, _wait_time_ms, &_bytes_read_out, &_timestamp_out);
         }
 
-        ///@copydoc microstrain::Connection::sendToDevice
-        bool SerialConnection::sendToDevice(const uint8_t* data, size_t length)
+        bool SerialConnection::write(const uint8_t* _data, const size_t _byte_count, size_t& _bytes_written_out)
         {
-            size_t length_out;
-            return serial_port_write(&mPort, data, length, &length_out);
+            return serial_port_write(this, _data, _byte_count, &_bytes_written_out);
+        }
+
+        const char* SerialConnection::interfaceName() const
+        {
+            return port_name;
+        }
+
+        uint32_t SerialConnection::parameter() const
+        {
+            return baudrate();
+        }
+
+        uint32_t SerialConnection::baudrate() const
+        {
+            return serial_port::baudrate;
+        }
+
+        bool SerialConnection::updateBaudrate(const uint32_t _baudrate)
+        {
+            return serial_port_update_baudrate(this, _baudrate);
+        }
+
+        UsbSerialConnection::UsbSerialConnection(const char* _portName, const uint32_t _baudrate) :
+            SerialConnection(_portName, _baudrate)
+        {
+            mType = TYPE;
+        }
+
+        UsbSerialConnection::UsbSerialConnection(const char* _portName, const uint32_t _baudrate,
+            const char* _receiveRecordingFileName, const char* _sendRecordingFileName) :
+            SerialConnection(_portName, _baudrate, _receiveRecordingFileName, _sendRecordingFileName)
+        {
+            mType = TYPE;
+        }
+
+        UsbSerialConnection::UsbSerialConnection(const char* _portName, const uint32_t _baudrate,
+            FILE* _receiveRecordingStream, FILE* _sendRecordingStream) :
+            SerialConnection(_portName, _baudrate, _receiveRecordingStream, _sendRecordingStream)
+        {
+            mType = TYPE;
         }
     } // namespace connections
 } // namespace microstrain

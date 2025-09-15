@@ -3,19 +3,10 @@
 #include "mip_types.h"
 
 #ifdef __cplusplus
-
-namespace microstrain {
-namespace C {
-struct microstrain_serializer;
-}
-}
-
 namespace mip {
 namespace C {
 extern "C" {
-#else
-struct microstrain_serializer;
-#endif
+#endif // __cplusplus
 
 
 ////////////////////////////////////////////////////////////////////////////////

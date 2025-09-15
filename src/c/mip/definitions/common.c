@@ -1,8 +1,13 @@
+#include "mip/definitions/common.h"
 
-#include "common.h"
+#include <microstrain/serialization.h>
 
-#include "microstrain/serialization.h"
+#ifdef __cplusplus
+using microstrain::C::microstrain_serializer;
 
+namespace mip {
+namespace C {
+#endif // __cplusplus
 
 void insert_mip_descriptor_rate(microstrain_serializer* serializer, const mip_descriptor_rate* self)
 {
@@ -19,13 +24,18 @@ void extract_mip_descriptor_rate(microstrain_serializer* serializer, mip_descrip
 #define IMPLEMENT_MIP_VECTOR_FUNCTIONS(n,type,name) \
 void insert_##name(microstrain_serializer* serializer, const name self) \
 { \
-    for(unsigned int i=0; i<n; i++) \
+    for (unsigned int i = 0; i < n; i++) \
+    { \
         microstrain_insert_##type(serializer, self[i]); \
+    } \
 } \
+\
 void extract_##name(microstrain_serializer* serializer, name self) \
 { \
-    for(unsigned int i=0; i<n; i++) \
+    for (unsigned int i = 0; i < n; i++) \
+    { \
         microstrain_extract_##type(serializer, &self[i]); \
+    } \
 }
 
 IMPLEMENT_MIP_VECTOR_FUNCTIONS(3, float,  mip_vector3f)
@@ -35,5 +45,10 @@ IMPLEMENT_MIP_VECTOR_FUNCTIONS(3, double, mip_vector3d)
 IMPLEMENT_MIP_VECTOR_FUNCTIONS(4, double, mip_vector4d)
 IMPLEMENT_MIP_VECTOR_FUNCTIONS(9, double, mip_matrix3d)
 IMPLEMENT_MIP_VECTOR_FUNCTIONS(4, float,  mip_quatf)
+
+#ifdef __cplusplus
+} // namespace C
+} // namespace mip
+#endif // __cplusplus
 
 #undef IMPLEMENT_MIP_VECTOR_FUNCTIONS

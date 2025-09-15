@@ -24,6 +24,9 @@
 // Include the MicroStrain logging header for custom logging
 #include <microstrain/logging.hpp>
 
+// Include the MicroStrain timestamping header
+#include <microstrain/embedded_time.hpp>
+
 // Include all necessary MIP headers
 // Note: The MIP SDK has headers for each module to include all headers associated with the module
 // I.E., #include <mip/mip_all.hpp>
@@ -38,7 +41,6 @@
 #define _USE_MATH_DEFINES
 #endif // _MSC_VER
 
-#include <chrono>
 #include <cinttypes>
 #include <cstdarg>
 #include <cstdio>
@@ -54,7 +56,7 @@
 #ifdef _WIN32
 static constexpr const char* PORT_NAME = "COM1";
 #else // Unix
-static constexpr const char* PORT_NAME = "/dev/ttyUSB0";
+static constexpr const char* PORT_NAME = "/dev/ttyACM0";
 #endif // _WIN32
 
 // Set the baudrate for the connection (Serial/USB)
@@ -82,7 +84,7 @@ void configureFilterMessageFormat(mip::Interface& _device);
 void configureEventTriggers(mip::Interface& _device);
 void configureEventActions(mip::Interface& _device);
 void enableEvents(mip::Interface& _device);
-void handleEventTriggers(void* _user, const mip::FieldView& _field, mip::Timestamp _timestamp);
+void handleEventTriggers(void* _user, const mip::FieldView& _field, const mip::Timestamp _timestamp);
 
 // Filter initialization
 void initializeFilter(mip::Interface& _device);
@@ -90,16 +92,12 @@ void initializeFilter(mip::Interface& _device);
 // Utility to display filter state changes
 void displayFilterState(const mip::data_filter::FilterMode _filterState);
 
-// Used for basic timestamping (since epoch in milliseconds)
-// TODO: Update this to whatever timestamping method is desired
-mip::Timestamp getCurrentTimestamp();
-
 // Common device initialization procedure
 void initializeDevice(mip::Interface& _device);
 
 // Utility functions the handle application closing and printing error messages
-void terminate(microstrain::Connection* _connection, const char* _message, const bool _successful = false);
-void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const char* _format, ...);
+void terminate(microstrain::connections::Connection* _connection, const char* _message, const bool _successful = false);
+void terminate(const mip::CmdResult _cmdResult, const char* _format, ...);
 
 int main(const int argc, const char* argv[])
 {
@@ -111,11 +109,10 @@ int main(const int argc, const char* argv[])
     MICROSTRAIN_LOG_INIT(&logCallback, MICROSTRAIN_LOG_LEVEL_INFO, nullptr);
 
     // Initialize the connection
-    MICROSTRAIN_LOG_INFO("Initializing the connection.\n");
+    MICROSTRAIN_LOG_INFO("Initializing the connection on port %s with %d baudrate.\n", PORT_NAME, BAUDRATE);
     microstrain::connections::SerialConnection connection(PORT_NAME, BAUDRATE);
 
-    MICROSTRAIN_LOG_INFO("Connecting to the device on port %s with %d baudrate.\n", PORT_NAME, BAUDRATE);
-
+    MICROSTRAIN_LOG_INFO("Connecting to the device.\n");
     // Open the connection to the device
     if (!connection.connect())
     {
@@ -124,9 +121,9 @@ int main(const int argc, const char* argv[])
 
     MICROSTRAIN_LOG_INFO("Initializing the device interface.\n");
     mip::Interface device(
-        &connection,                                 // Connection for the device
-        mip::C::mip_timeout_from_baudrate(BAUDRATE), // Set the base timeout for commands (milliseconds)
-        2000                                         // Set the base timeout for command replies (milliseconds)
+        connection,                         // Connection for the device
+        mip::timeoutFromBaudrate(BAUDRATE), // Set the base timeout for commands (milliseconds)
+        2000                                // Set the base timeout for command replies (milliseconds)
     );
     initializeDevice(device);
 
@@ -152,7 +149,7 @@ int main(const int argc, const char* argv[])
 
     if (!cmdResult.isAck())
     {
-        terminate(device, cmdResult, "Could not set %s!\n", mip::commands_3dm::Sensor2VehicleTransformEuler::DOC_NAME);
+        terminate(cmdResult, "Could not set %s!\n", mip::commands_3dm::Sensor2VehicleTransformEuler::DOC_NAME);
     }
 
     // Initialize the navigation filter
@@ -172,7 +169,8 @@ int main(const int argc, const char* argv[])
 
     device.registerExtractor(
         filterDataHandlers[0],
-        &filterGpsTimestamp // Data field out
+        &filterGpsTimestamp,             // Data field out
+        mip::data_filter::DESCRIPTOR_SET // Data descriptor needed for shared data
     );
 
     device.registerExtractor(
@@ -198,7 +196,7 @@ int main(const int argc, const char* argv[])
     cmdResult = mip::commands_base::resume(device);
     if (!cmdResult.isAck())
     {
-        terminate(device, cmdResult, "Could not resume the device!\n");
+        terminate(cmdResult, "Could not resume the device!\n");
     }
 
     MICROSTRAIN_LOG_INFO("Sensor is configured... waiting for filter to initialize.\n");
@@ -224,13 +222,13 @@ int main(const int argc, const char* argv[])
     }
 
     // Get the start time of the device update loop to handle exiting the application
-    const mip::Timestamp loopStartTime = getCurrentTimestamp();
+    const microstrain::EmbeddedTimestamp loopStartTime = microstrain::getCurrentTimestamp();
 
-    mip::Timestamp previousPrintTimestamp = 0;
+    microstrain::EmbeddedTimestamp previousPrintTimestamp = 0;
 
     // Device loop
     // Exit after predetermined time in seconds
-    while (getCurrentTimestamp() - loopStartTime <= RUN_TIME_SECONDS * 1000)
+    while (microstrain::getCurrentTimestamp() - loopStartTime <= RUN_TIME_SECONDS * 1000)
     {
         // Update the device state
         // Note: This will update the device callbacks to trigger the filter state change
@@ -246,7 +244,7 @@ int main(const int argc, const char* argv[])
             currentState = filterStatus.filter_state;
         }
 
-        const mip::Timestamp currentTimestamp = getCurrentTimestamp();
+        const microstrain::EmbeddedTimestamp currentTimestamp = microstrain::getCurrentTimestamp();
 
         // Print out data based on the sample rate (1000 ms / SAMPLE_RATE_HZ)
         if (currentTimestamp - previousPrintTimestamp >= 1000 / SAMPLE_RATE_HZ)
@@ -266,7 +264,8 @@ int main(const int argc, const char* argv[])
         }
     }
 
-    terminate(&connection, "Example Completed Successfully.\n", true);
+    // Note: The connection is cleaned up in the device destructor
+    terminate(nullptr, "Example Completed Successfully.\n", true);
 
     return 0;
 }
@@ -362,7 +361,7 @@ void captureGyroBias(mip::Interface& _device)
 
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Failed to capture gyro bias!\n");
+        terminate(cmdResult, "Failed to capture gyro bias!\n");
     }
 
     MICROSTRAIN_LOG_INFO("Capture gyro bias completed with result: [%f, %f, %f]\n",
@@ -404,7 +403,7 @@ void configureFilterMessageFormat(mip::Interface& _device)
 
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not get filter base rate!\n");
+        terminate(cmdResult, "Could not get filter base rate!\n");
     }
 
     // Supported sample rates can be any value from 1 up to the base rate
@@ -412,7 +411,6 @@ void configureFilterMessageFormat(mip::Interface& _device)
     if (SAMPLE_RATE_HZ == 0 || SAMPLE_RATE_HZ > filterBaseRate)
     {
         terminate(
-            _device,
             mip::CmdResult::NACK_INVALID_PARAM,
             "Invalid sample rate of %dHz! Supported rates are [1, %d].\n",
             SAMPLE_RATE_HZ,
@@ -445,9 +443,7 @@ void configureFilterMessageFormat(mip::Interface& _device)
 
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not set %s for filter data!\n",
-            mip::commands_3dm::MessageFormat::DOC_NAME
-        );
+        terminate(cmdResult, "Could not set %s for filter data!\n", mip::commands_3dm::MessageFormat::DOC_NAME);
     }
 }
 
@@ -494,7 +490,7 @@ void configureEventTriggers(mip::Interface& _device)
 
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not set pitch event parameters!\n");
+        terminate(cmdResult, "Could not set pitch event parameters!\n");
     }
 
     // Use the same trigger configuration, but set it to the y-axis (pitch)
@@ -515,7 +511,7 @@ void configureEventTriggers(mip::Interface& _device)
 
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not set roll event parameters!\n");
+        terminate(cmdResult, "Could not set roll event parameters!\n");
     }
 }
 
@@ -557,7 +553,7 @@ void configureEventActions(mip::Interface& _device)
 
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not set roll action parameters!\n");
+        terminate(cmdResult, "Could not set roll action parameters!\n");
     }
 
     // Note: These are independent of each other and do not need to be the same
@@ -580,7 +576,7 @@ void configureEventActions(mip::Interface& _device)
 
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not set pitch action parameters!\n");
+        terminate(cmdResult, "Could not set pitch action parameters!\n");
     }
 }
 
@@ -607,7 +603,7 @@ void enableEvents(mip::Interface& _device)
 
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not enable roll event!\n");
+        terminate(cmdResult, "Could not enable roll event!\n");
     }
 
     eventTriggerInstanceId = 2;
@@ -622,7 +618,7 @@ void enableEvents(mip::Interface& _device)
 
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not enable pitch event!\n");
+        terminate(cmdResult, "Could not enable pitch event!\n");
     }
 }
 
@@ -638,7 +634,7 @@ void enableEvents(mip::Interface& _device)
 /// @param _field Reference to the MIP field containing event data
 /// @param _timestamp Timestamp of when the event occurred (unused)
 ///
-void handleEventTriggers(void* _user, const mip::FieldView& _field, mip::Timestamp _timestamp)
+void handleEventTriggers(void* _user, const mip::FieldView& _field, const mip::Timestamp _timestamp)
 {
     // Unused parameters
     (void)_user;
@@ -678,7 +674,7 @@ void initializeFilter(mip::Interface& _device)
     const mip::CmdResult cmdResult = mip::commands_filter::reset(_device);
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not %s!\n", mip::commands_filter::Reset::DOC_NAME);
+        terminate(cmdResult, "Could not %s!\n", mip::commands_filter::Reset::DOC_NAME);
     }
 }
 
@@ -749,24 +745,6 @@ void displayFilterState(const mip::data_filter::FilterMode _filterState)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-/// @brief Gets the current system timestamp in milliseconds
-///
-/// @details Provides system time measurement using std::chrono for milliseconds
-///          since steady clock epoch. Uses steady_clock to ensure monotonic
-///          time that won't be affected by system time changes.
-///
-/// @note Update this function to use a different time source if needed for
-///       your specific application requirements
-///
-/// @return Current timestamp in milliseconds since epoch
-///
-mip::Timestamp getCurrentTimestamp()
-{
-    const std::chrono::nanoseconds timeSinceEpoch = std::chrono::steady_clock::now().time_since_epoch();
-    return static_cast<mip::Timestamp>(std::chrono::duration_cast<std::chrono::milliseconds>(timeSinceEpoch).count());
-}
-
-////////////////////////////////////////////////////////////////////////////////
 /// @brief Initializes and configures a MIP device interface
 ///
 /// @details Performs a complete device initialization sequence:
@@ -785,7 +763,7 @@ void initializeDevice(mip::Interface& _device)
     mip::CmdResult cmdResult = mip::commands_base::ping(_device);
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not ping the device!\n");
+        terminate(cmdResult, "Could not ping the device!\n");
     }
 
     // Set the device to Idle
@@ -794,7 +772,7 @@ void initializeDevice(mip::Interface& _device)
     cmdResult = mip::commands_base::setIdle(_device);
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not set the device to idle!\n");
+        terminate(cmdResult, "Could not set the device to idle!\n");
     }
 
     // Print device info to make sure the correct device is being used
@@ -803,7 +781,7 @@ void initializeDevice(mip::Interface& _device)
     cmdResult = mip::commands_base::getDeviceInfo(_device, &deviceInfo);
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not get the device information!\n");
+        terminate(cmdResult, "Could not get the device information!\n");
     }
 
     // Extract the major minor and patch values
@@ -834,7 +812,7 @@ void initializeDevice(mip::Interface& _device)
     cmdResult = mip::commands_3dm::defaultDeviceSettings(_device);
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not load %s!\n", mip::commands_3dm::DeviceSettings::DOC_NAME);
+        terminate(cmdResult, "Could not load %s!\n", mip::commands_3dm::DeviceSettings::DOC_NAME);
     }
 }
 
@@ -843,14 +821,15 @@ void initializeDevice(mip::Interface& _device)
 ///
 /// @details Handles graceful shutdown when errors occur:
 ///          - Outputs provided error message
-///          - Closes device connection if open
+///          - Closes the connection if open
 ///          - Exits with appropriate status code
 ///
-/// @param _connection Pointer to the device connection to close
+/// @param _connection Pointer to the connection to close
 /// @param _message Error message to display
 /// @param _successful Whether termination is due to success or failure
 ///
-void terminate(microstrain::Connection* _connection, const char* _message, const bool _successful /* = false */)
+void terminate(microstrain::connections::Connection* _connection, const char* _message,
+    const bool _successful /* = false */)
 {
     if (strlen(_message) != 0)
     {
@@ -864,21 +843,13 @@ void terminate(microstrain::Connection* _connection, const char* _message, const
         }
     }
 
-    if (!_connection)
+    if (_connection && _connection->isConnected())
     {
-        // Create the device interface with a connection or set it after creation
-        MICROSTRAIN_LOG_ERROR("Connection not set for the device interface. Cannot close the connection.\n");
-    }
-    else
-    {
-        if (_connection->isConnected())
-        {
-            MICROSTRAIN_LOG_INFO("Closing the connection.\n");
+        MICROSTRAIN_LOG_INFO("Closing the connection.\n");
 
-            if (!_connection->disconnect())
-            {
-                MICROSTRAIN_LOG_ERROR("Failed to close the connection!\n");
-            }
+        if (!_connection->disconnect())
+        {
+            MICROSTRAIN_LOG_ERROR("Failed to close the connection!\n");
         }
     }
 
@@ -900,15 +871,13 @@ void terminate(microstrain::Connection* _connection, const char* _message, const
 ///
 /// @details Handles command failure scenarios:
 ///          - Formats and displays an error message with command result
-///          - Closes device connection
 ///          - Exits with failure status
 ///
-/// @param _device MIP device interface for the command that failed
 /// @param _cmdResult Result code from a failed command
 /// @param _format Printf-style format string for error message
 /// @param ... Variable arguments for format string
 ///
-void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const char* _format, ...)
+void terminate(const mip::CmdResult _cmdResult, const char* _format, ...)
 {
     va_list args;
     va_start(args, _format);
@@ -917,8 +886,5 @@ void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const c
 
     MICROSTRAIN_LOG_ERROR("Command Result: (%d) %s.\n", _cmdResult.value, _cmdResult.name());
 
-    // Get the connection pointer that was set during device initialization
-    microstrain::Connection* connection = static_cast<microstrain::Connection*>(_device.userPointer());
-
-    terminate(connection, "");
+    terminate(nullptr, "");
 }

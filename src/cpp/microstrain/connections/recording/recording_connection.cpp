@@ -1,54 +1,112 @@
-#include "recording_connection.hpp"
+#include "microstrain/connections/recording/recording_connection.hpp"
 
 namespace microstrain
 {
     namespace connections
     {
-        ////////////////////////////////////////////////////////////////////////////////
-        ///@brief Creates a RecordingConnection that will write received bytes to
-        ///       recvStream, and sent bytes to sendStream
-        ///
-        ///@param connection Connection object that will actually communicate with the
-        ///                  device
-        ///
-        ///@param recvStream The stream to write to when bytes are received. Null if
-        ///                  received bytes should not be written to a stream
-        ///
-        ///@param sendStream The stream to write to when bytes are sent. Null if sent
-        ///                  bytes should not be written to a stream
-        ///
-        RecordingConnection::RecordingConnection(Connection* connection, std::ostream* recvStream, std::ostream* sendStream) :
-            mConnection(connection), mRecvFile(recvStream), mSendFile(sendStream)
+        Recording::~Recording()
         {
-            mType = TYPE;
-        }
-
-        ///@copydoc microstrain::Connection::sendToDevice
-        bool RecordingConnection::sendToDevice(const uint8_t* data, size_t length)
-        {
-            const bool ok = mConnection->sendToDevice(data, length);
-
-            if (ok && mSendFile != nullptr)
+            if (mManageReceiveStream)
             {
-                mSendFile->write(reinterpret_cast<const char*>(data), static_cast<std::streamsize>(length));
-                mSendFileWritten += length;
+                recording_connection_close_receive_stream(this);
             }
 
-            return ok;
+            if (mManageSendStream)
+            {
+                recording_connection_close_send_stream(this);
+            }
         }
 
-        ///@copydoc microstrain::Connection::recvFromDevice
-        bool RecordingConnection::recvFromDevice(uint8_t* buffer, size_t max_length, unsigned int wait_time_ms, size_t* length_out, EmbeddedTimestamp* timestamp_out)
+        Recording::Recording(FILE* _receiveStream, FILE* _sendStream)
         {
-            const bool ok = mConnection->recvFromDevice(buffer, max_length, wait_time_ms, length_out, timestamp_out);
+            initializeStreams(_receiveStream, _sendStream);
+        }
 
-            if (ok && mRecvFile != nullptr)
-            {
-                mRecvFile->write(reinterpret_cast<char*>(buffer), static_cast<std::streamsize>(*length_out));
-                mRecvFileWritten += *length_out;
-            }
+        Recording::Recording(const char* _receiveFileName, const char* _sendFileName)
+        {
+            openFiles(_receiveFileName, _sendFileName);
+        }
 
-            return ok;
+        void Recording::initializeReceiveStream(FILE* _receiveStream)
+        {
+            recording_connection_init_receive_stream(this, _receiveStream);
+
+            mManageReceiveStream = false;
+        }
+
+        void Recording::openReceiveFile(const char* _receiveFileName)
+        {
+            recording_connection_open_receive_file(this, _receiveFileName);
+
+            mManageReceiveStream = recording_connection_receive_recording_enabled(this);
+        }
+
+        void Recording::closeReceiveFile()
+        {
+            recording_connection_close_receive_stream(this);
+        }
+
+        void Recording::writeReceivedBytes(const uint8_t* _receiveBuffer, const size_t _bufferSize,
+            size_t* _bytesWrittenOut)
+        {
+            recording_connection_write_received_bytes(this, _receiveBuffer, _bufferSize, _bytesWrittenOut);
+        }
+
+        uint64_t Recording::receivedBytesWritten() const
+        {
+            return receive_bytes_written;
+        }
+
+        void Recording::initializeSendStream(FILE* _sendStream)
+        {
+            recording_connection_init_send_stream(this, _sendStream);
+
+            mManageSendStream = false;
+        }
+
+        void Recording::openSendFile(const char* _sendFileName)
+        {
+            recording_connection_open_send_file(this, _sendFileName);
+
+            mManageSendStream = recording_connection_send_recording_enabled(this);
+        }
+
+        void Recording::closeSendFile()
+        {
+            recording_connection_close_send_stream(this);
+        }
+
+        void Recording::writeSentBytes(const uint8_t* _sendBuffer, const size_t _bufferSize, size_t* _bytesWrittenOut)
+        {
+            recording_connection_write_sent_bytes(this, _sendBuffer, _bufferSize, _bytesWrittenOut);
+        }
+
+        uint64_t Recording::sentBytesWritten() const
+        {
+            return send_bytes_written;
+        }
+
+        void Recording::initializeStreams(FILE* _receiveStream, FILE* _sendStream)
+        {
+            initializeReceiveStream(_receiveStream);
+            initializeSendStream(_sendStream);
+        }
+
+        void Recording::openFiles(const char* _receiveFileName, const char* _sendFileName)
+        {
+            openReceiveFile(_receiveFileName);
+            openSendFile(_sendFileName);
+        }
+
+        void Recording::closeStreams()
+        {
+            recording_connection_close_streams(this);
+        }
+
+        void Recording::bytesWritten(uint64_t& _receiveBytesWrittenOut, uint64_t& _sendBytesWrittenOut) const
+        {
+            _receiveBytesWrittenOut = receivedBytesWritten();
+            _sendBytesWrittenOut    = sentBytesWritten();
         }
     } // namespace connections
 } // namespace microstrain

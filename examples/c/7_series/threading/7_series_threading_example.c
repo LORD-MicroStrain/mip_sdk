@@ -23,6 +23,9 @@
 // Include the MicroStrain logging header for custom logging
 #include <microstrain/logging.h>
 
+// Include the MicroStrain timestamping header
+#include <microstrain/embedded_time.h>
+
 // Include all necessary MIP headers
 // Note: The MIP SDK has headers for each module to include all headers associated with the module
 // I.E., #include <mip/mip_all.h>
@@ -39,7 +42,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
 
 #ifdef __APPLE__
 // Clang doesn't support threads.h
@@ -67,7 +69,7 @@ void thrd_yield(void);
 #ifdef _WIN32
 static const char* PORT_NAME = "COM1";
 #else // Unix
-static const char* PORT_NAME = "/dev/ttyUSB0";
+static const char* PORT_NAME = "/dev/ttyACM0";
 #endif // _WIN32
 
 // Set the baudrate for the connection (Serial/USB)
@@ -89,14 +91,12 @@ static const uint32_t RUN_TIME_SECONDS = 30;
 // Custom logging handler callback
 void log_callback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args);
 
-// Used for basic timestamping (since epoch in milliseconds)
-// TODO: Update this to whatever timestamping method is desired
-mip_timestamp get_current_timestamp();
-
 // Device callbacks used for reading and writing packets
-bool mip_interface_user_send_to_device(mip_interface* _device, const uint8_t* _data, size_t _length);
-bool mip_interface_user_recv_from_device(mip_interface* _device, uint8_t* _buffer, size_t _max_length,
-    mip_timeout _wait_time, bool _from_cmd, size_t* _length_out, mip_timestamp* _timestamp_out);
+bool mip_interface_user_send_to_device(const mip_interface* _device, const uint8_t* _data, const size_t _byte_count,
+    size_t* _bytes_written_out);
+bool mip_interface_user_recv_from_device(const mip_interface* _device, uint8_t* _buffer, const size_t _buffer_size,
+    const uint32_t _wait_time, size_t* _bytes_read_out, microstrain_embedded_timestamp* _timestamp_out,
+    const bool _from_command);
 
 // Common device initialization procedure
 void initialize_device(mip_interface* _device, serial_port* _device_port, const uint32_t _baudrate);
@@ -105,7 +105,7 @@ void initialize_device(mip_interface* _device, serial_port* _device_port, const 
 void configure_sensor_message_format(mip_interface* _device);
 
 // Packet callback handler
-void packet_callback(void* _user, const mip_packet_view* _packet_view, mip_timestamp _timestamp);
+void packet_callback(void* _user, const mip_packet_view* _packet_view, const mip_timestamp _timestamp);
 
 #if USE_THREADS
 // Basic structure for thread data
@@ -116,13 +116,14 @@ typedef struct thread_data
 } thread_data_t;
 
 // Threaded functions
-bool update_device(mip_interface* _device, mip_timeout _wait_time, bool _from_cmd);
+bool update_device(mip_interface* _device, const mip_timeout _wait_time, const bool _from_command);
 int data_collection_thread(void* _thread_data);
 #endif // USE_THREADS
 
 // Utility functions the handle application closing and printing error messages
 void terminate(serial_port* _device_port, const char* _message, const bool _successful);
-void command_failure_terminate(const mip_interface* _device, const mip_cmd_result _cmd_result, const char* _format, ...);
+void command_failure_terminate(const mip_interface* _device, const mip_cmd_result _cmd_result, const char* _format,
+    ...);
 
 int main(const int argc, const char* argv[])
 {
@@ -134,14 +135,13 @@ int main(const int argc, const char* argv[])
     MICROSTRAIN_LOG_INIT(&log_callback, MICROSTRAIN_LOG_LEVEL_INFO, NULL);
 
     // Initialize the connection
-    MICROSTRAIN_LOG_INFO("Initializing the connection.\n");
+    MICROSTRAIN_LOG_INFO("Initializing the connection on port %s with %d baudrate.\n", PORT_NAME, BAUDRATE);
     serial_port device_port;
-    serial_port_init(&device_port);
+    serial_port_init(&device_port, PORT_NAME, BAUDRATE, NULL);
 
-    MICROSTRAIN_LOG_INFO("Connecting to the device on port %s with %d baudrate.\n", PORT_NAME, BAUDRATE);
-
+    MICROSTRAIN_LOG_INFO("Connecting to the device.\n");
     // Open the connection to the device
-    if (!serial_port_open(&device_port, PORT_NAME, BAUDRATE))
+    if (!serial_port_open(&device_port))
     {
         terminate(&device_port, "Could not open the connection!\n", false);
     }
@@ -194,11 +194,11 @@ int main(const int argc, const char* argv[])
     MICROSTRAIN_LOG_INFO("Sensor is configured... waiting for data.\n");
 
     // Get the start time of the device update loop to handle exiting the application
-    const mip_timestamp loop_start_time = get_current_timestamp();
+    const microstrain_embedded_timestamp loop_start_time = microstrain_get_current_timestamp();
 
     // Running loop
     // Exit after a predetermined time in seconds
-    while (get_current_timestamp() - loop_start_time <= RUN_TIME_SECONDS * 1000)
+    while (microstrain_get_current_timestamp() - loop_start_time <= RUN_TIME_SECONDS * 1000)
     {
         // Stress testing the device with ping
         // This attempts to trigger race conditions across threads
@@ -274,33 +274,6 @@ void log_callback(void* _user, const microstrain_log_level _level, const char* _
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-/// @brief Gets the current system timestamp in milliseconds
-///
-/// @details Provides basic timestamping using system time:
-///          - Returns milliseconds since Unix epoch
-///          - Uses timespec_get() with UTC time base
-///          - Returns 0 if time cannot be obtained
-///
-/// @note Update this function to use a different time source if needed for
-///       your specific application requirements
-///
-/// @return Current system time in milliseconds since epoch
-///
-mip_timestamp get_current_timestamp()
-{
-    struct timespec ts;
-
-    // Get system UTC time since epoch
-    if (timespec_get(&ts, TIME_UTC) != TIME_UTC)
-    {
-        return 0;
-    }
-
-    // Get the time in milliseconds
-    return (mip_timestamp)ts.tv_sec * 1000 + (mip_timestamp)ts.tv_nsec / 1000000;
-}
-
-////////////////////////////////////////////////////////////////////////////////
 /// @brief Handles sending packets to the device
 ///
 /// @details Implements the MIP device interface send callback:
@@ -310,14 +283,16 @@ mip_timestamp get_current_timestamp()
 ///
 /// @param _device MIP device interface containing the connection
 /// @param _data Buffer containing packet data to send
-/// @param _length Number of bytes to send
+/// @param _byte_count Number of bytes to send
+/// @param _bytes_written_out Number of actual bytes written
 ///
 /// @return True if send was successful, false otherwise
 ///
-bool mip_interface_user_send_to_device(mip_interface* _device, const uint8_t* _data, size_t _length)
+bool mip_interface_user_send_to_device(const mip_interface* _device, const uint8_t* _data, const size_t _byte_count,
+    size_t* _bytes_written_out)
 {
     // Extract the serial port pointer that was used in the callback initialization
-    serial_port* device_port = (serial_port*)mip_interface_user_pointer(_device);
+    serial_port* device_port = (serial_port*)mip_interface_connection_pointer(_device);
 
     if (device_port == NULL)
     {
@@ -329,7 +304,17 @@ bool mip_interface_user_send_to_device(mip_interface* _device, const uint8_t* _d
     size_t bytes_written;
 
     // Send the packet to the device
-    return serial_port_write(device_port, _data, _length, &bytes_written);
+    if (!serial_port_write(device_port, _data, _byte_count, &bytes_written))
+    {
+        return false;
+    }
+
+    if (_bytes_written_out != NULL)
+    {
+        *_bytes_written_out = bytes_written;
+    }
+
+    return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -343,22 +328,23 @@ bool mip_interface_user_send_to_device(mip_interface* _device, const uint8_t* _d
 ///
 /// @param _device MIP device interface containing the connection
 /// @param _buffer Buffer to store received data
-/// @param _max_length Maximum number of bytes to read
+/// @param _buffer_size Maximum number of bytes to read
 /// @param _wait_time How long to wait for data in milliseconds
-/// @param _from_cmd Whether this read is from a command response (unused)
-/// @param _length_out Number of bytes actually read
+/// @param _bytes_read_out Number of bytes actually read
 /// @param _timestamp_out Timestamp when data was received
+/// @param _from_command Whether this read is from a command response (unused)
 ///
 /// @return True if receive was successful, false otherwise
 ///
-bool mip_interface_user_recv_from_device(mip_interface* _device, uint8_t* _buffer, size_t _max_length,
-    mip_timeout _wait_time, bool _from_cmd, size_t* _length_out, mip_timestamp* _timestamp_out)
+bool mip_interface_user_recv_from_device(const mip_interface* _device, uint8_t* _buffer, const size_t _buffer_size,
+    const uint32_t _wait_time, size_t* _bytes_read_out, microstrain_embedded_timestamp* _timestamp_out,
+    const bool _from_command)
 {
     // Unused parameter
-    (void)_from_cmd;
+    (void)_from_command;
 
     // Extract the serial port pointer that was used in the callback initialization
-    serial_port* device_port = (serial_port*)mip_interface_user_pointer(_device);
+    serial_port* device_port = (serial_port*)mip_interface_connection_pointer(_device);
 
     if (device_port == NULL)
     {
@@ -367,10 +353,10 @@ bool mip_interface_user_recv_from_device(mip_interface* _device, uint8_t* _buffe
     }
 
     // Get the time that the packet was received (system epoch UTC time in milliseconds)
-    *_timestamp_out = get_current_timestamp();
+    *_timestamp_out = microstrain_get_current_timestamp();
 
     // Read the packet from the device
-    return serial_port_read(device_port, _buffer, _max_length, (int)_wait_time, _length_out);
+    return serial_port_read(device_port, _buffer, _buffer_size, _wait_time, _bytes_read_out, _timestamp_out);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -399,7 +385,8 @@ void initialize_device(mip_interface* _device, serial_port* _device_port, const 
         &mip_interface_user_send_to_device,   // User-defined send packet callback
         &mip_interface_user_recv_from_device, // User-defined receive packet callback
         &mip_interface_default_update,        // Default update callback
-        (void*)_device_port                   // Cast the device port for use in the callbacks
+        (void*)_device_port,                  // Connection pointer
+        NULL                                  // Optional user data
     );
 
     // Ping the device
@@ -545,7 +532,7 @@ void configure_sensor_message_format(mip_interface* _device)
 /// @param _packet_view Pointer to the received MIP packet
 /// @param _timestamp Timestamp when the packet was received
 ///
-void packet_callback(void* _user, const mip_packet_view* _packet_view, mip_timestamp _timestamp)
+void packet_callback(void* _user, const mip_packet_view* _packet_view, const mip_timestamp _timestamp)
 {
     // Unused parameter
     (void)_user;
@@ -596,20 +583,20 @@ void packet_callback(void* _user, const mip_packet_view* _packet_view, mip_times
 /// @param _device Pointer to the MIP device interface
 /// @param _wait_time Time to wait for updates (typically used only from
 ///                   commands)
-/// @param _from_cmd True if called from command handling, false for data
-///                  collection
+/// @param _from_command True if called from command handling, false for data
+///                      collection
 ///
 /// @returns true if the update was successful, false on error.
 ///          Always returns true when called from commands to avoid race
 ///          conditions.
 ///
-bool update_device(mip_interface* _device, mip_timeout _wait_time, bool _from_cmd)
+bool update_device(mip_interface* _device, const mip_timeout _wait_time, const bool _from_command)
 {
     // Do normal updates only if not called from a command handler
     // Note: This is the separation between the main/other thread and the data collection thread
-    if (!_from_cmd)
+    if (!_from_command)
     {
-        return mip_interface_default_update(_device, _wait_time, _from_cmd);
+        return mip_interface_default_update(_device, _wait_time, _from_command);
     }
 
     // Create a 5-millisecond timeout
@@ -760,7 +747,7 @@ void command_failure_terminate(const mip_interface* _device, const mip_cmd_resul
     else
     {
         // Get the connection pointer that was set during device initialization
-        serial_port* device_port = (serial_port*)mip_interface_user_pointer(_device);
+        serial_port* device_port = (serial_port*)mip_interface_connection_pointer(_device);
 
         terminate(device_port, "", false);
     }
