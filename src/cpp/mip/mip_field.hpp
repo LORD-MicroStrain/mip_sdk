@@ -57,11 +57,11 @@ public:
     const uint8_t* payloadPointer() const { return C::mip_field_payload(this); }
 
     ///@brief Index the payload at the given location.
-    ///@param index
+    ///@param index Byte index into payload. 0 <= index < payloadLength().
     ///@returns payload byte
-    uint8_t payload(unsigned int index) const { return payloadPointer()[index]; }
+    uint8_t payload(size_t index) const { assert(index < payloadLength()); return payloadPointer()[index]; }
 
-    uint8_t operator[](unsigned int index) const { return payload(index); }
+    uint8_t operator[](size_t index) const { return payload(index); }
 
     microstrain::ConstBufferView payloadBytes() const { return {payloadPointer(), payloadLength()}; }
 

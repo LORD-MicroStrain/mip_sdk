@@ -73,7 +73,7 @@ public:
 
     const uint8_t* pointer() const { return C::mip_packet_pointer(this); }         ///@brief Get a pointer to the entire packet data.
     const uint8_t* payloadPointer() const { return C::mip_packet_payload(this); }  ///@brief Get a pointer to the payloadBytes data.
-    uint8_t payload(uint8_t i) const { return payloadPointer()[i]; }               ///@brief Get payloadBytes byte at index i.
+    uint8_t payload(size_t i) const { assert(i < payloadLength()); return payloadPointer()[i]; }               ///@brief Get payloadBytes byte at index i.
 
     uint16_t checksumValue() const { return C::mip_packet_checksum_value(this); }     ///<@copydoc mip::C::mip_packet_checksum_value
     uint16_t computeChecksum() const { return C::mip_packet_compute_checksum(this); } ///<@copydoc mip::C::mip_packet_compute_checksum
