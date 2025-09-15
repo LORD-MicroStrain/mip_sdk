@@ -295,7 +295,7 @@ void addPingCommandToPacket(mip::PacketView& _packetView)
         0                                           // Payload buffer length
     );
 
-    printf("Added a Ping command field to the packet.\n");
+    printf("Added a %s command field to the packet.\n", mip::commands_base::Ping::DOC_NAME);
 
     // Print the current state of the packet
     printPacket(_packetView);
@@ -327,7 +327,7 @@ void addCommSpeedBytesToPacket(mip::PacketView& _packetView)
         sizeof(commSpeedPayload) / sizeof(commSpeedPayload[0]) // Payload buffer length
     );
 
-    printf("Added a Comm Speed command field to the packet using raw bytes.\n");
+    printf("Added a %s command field to the packet using raw bytes.\n", mip::commands_base::CommSpeed::DOC_NAME);
 
     // Print the current state of the packet
     printPacket(_packetView);
@@ -353,7 +353,7 @@ void addCommSpeedFieldToPacket(mip::PacketView& _packetView)
 
     _packetView.addField(commSpeed);
 
-    printf("Added a Comm Speed command field to the packet using a field.\n");
+    printf("Added a %s command field to the packet using a field.\n", mip::commands_base::CommSpeed::DOC_NAME);
 
     // Print the current state of the packet
     printPacket(_packetView);
@@ -384,7 +384,7 @@ void addCommSpeedSerializerBytesToPacket(mip::PacketView& _packetView)
         6 // Payload length
     );
 
-    printf("Reserved space in the packet for a Comm Speed command field.\n");
+    printf("Reserved space in the packet for a %s command field.\n", mip::commands_base::CommSpeed::DOC_NAME);
 
     // Show what the packet looks like after allocating a field
     // The header will exist, but the payload will not be valid yet
@@ -399,7 +399,7 @@ void addCommSpeedSerializerBytesToPacket(mip::PacketView& _packetView)
     // Make sure the serializer is not out of space
     assert(serializer.isOk());
 
-    printf("Added a Comm Speed command field to the packet using a serializer.\n");
+    printf("Added a %s command field to the packet using a serializer.\n", mip::commands_base::CommSpeed::DOC_NAME);
 
     // Print the current state of the packet
     printPacket(_packetView);
@@ -451,7 +451,7 @@ void addMessageFormatFieldToPacket(mip::PacketView& _packetView)
 
     _packetView.addField(messageFormat);
 
-    printf("Added a Message Format command field to the packet using a field.\n");
+    printf("Added a %s command field to the packet using a field.\n", mip::commands_3dm::MessageFormat::DOC_NAME);
 
     // Print the current state of the packet
     printPacket(_packetView);
@@ -500,7 +500,7 @@ void addPollDataFieldToPacket(mip::PacketView& _packetView)
     // An assertion shouldn't happen in this example but is a good check to have
     assert(ok);
 
-    printf("Added a Poll Data command field to the packet using AllocatedField.\n");
+    printf("Added a %s command field to the packet using AllocatedField.\n", mip::commands_3dm::PollData::DOC_NAME);
 
     // Print the current state of the packet
     printPacket(_packetView);
@@ -522,7 +522,7 @@ void extractSharedReferenceTimeField(mip::Serializer& _serializer)
     // Extract each value of the data field
     if (_serializer.extract(nanoseconds))
     {
-        printf("    %-20s = %" PRIu64 "\n", "Reference Time", nanoseconds);
+        printf("    %-20s = %" PRIu64 "\n", mip::data_shared::ReferenceTimestamp::DOC_NAME, nanoseconds);
     }
 }
 
@@ -542,7 +542,7 @@ void extractSharedReferenceTimeDeltaField(mip::Serializer& _serializer)
     // Extract each value of the data field
     if (_serializer.extract(dtNanoseconds))
     {
-        printf("    %-20s = %" PRIu64 "\n", "Reference Time Delta", dtNanoseconds);
+        printf("    %-20s = %" PRIu64 "\n", mip::data_shared::ReferenceTimeDelta::DOC_NAME, dtNanoseconds);
     }
 }
 
@@ -565,7 +565,7 @@ void extractSensorAccelScaledField(mip::Serializer& _serializer)
     {
         printf(
             "    %-20s = [%9.6f, %9.6f, %9.6f]\n",
-            "Scaled Accel",
+            mip::data_sensor::ScaledAccel::DOC_NAME,
             scaledAccelData[0],
             scaledAccelData[1],
             scaledAccelData[2]
@@ -593,7 +593,7 @@ void extractSensorGyroScaledField(mip::Serializer& _serializer)
     {
         printf(
             "    %-20s = [%9.6f, %9.6f, %9.6f]\n",
-            "Scaled Gyro",
+            mip::data_sensor::ScaledGyro::DOC_NAME,
             scaledGyroData.scaled_gyro[0],
             scaledGyroData.scaled_gyro[1],
             scaledGyroData.scaled_gyro[2]
@@ -621,7 +621,7 @@ void extractSensorDeltaThetaField(mip::Serializer& _serializer)
     {
         printf(
             "    %-20s = [%9.6f, %9.6f, %9.6f]\n",
-            "Delta Theta",
+            mip::data_sensor::DeltaTheta::DOC_NAME,
             deltaThetaData.delta_theta[0],
             deltaThetaData.delta_theta[1],
             deltaThetaData.delta_theta[2]
@@ -649,7 +649,7 @@ void extractSensorDeltaVelocityField(const mip::FieldView& _fieldView)
     {
         printf(
             "    %-20s = [%9.6f, %9.6f, %9.6f]\n",
-            "Delta Velocity",
+            mip::data_sensor::DeltaVelocity::DOC_NAME,
             deltaVelocityData.delta_velocity[0],
             deltaVelocityData.delta_velocity[1],
             deltaVelocityData.delta_velocity[2]
@@ -753,7 +753,7 @@ void createFromScratchPacket2And3()
 {
     printf("\nCreating packet 2 (3DM Message Format command) from scratch.\n\n");
 
-    uint8_t packetDescriptorSet = mip::commands_base::DESCRIPTOR_SET;
+    uint8_t packetDescriptorSet = mip::commands_3dm::DESCRIPTOR_SET;
 
 #if USE_MANUAL_BUFFERS
     // Create a packet and an empty storage buffer for the packet
@@ -775,7 +775,7 @@ void createFromScratchPacket2And3()
     addChecksumToPacket(packet);
 
     // Note: This would be the time to send the packet to the device
-    printf("Packet 2 (3DM Message Format command) is complete.\n\n");
+    printf("Packet 2 (%s command) is complete.\n\n", mip::commands_3dm::MessageFormat::DOC_NAME);
 
     packetDescriptorSet = mip::commands_3dm::DESCRIPTOR_SET;
 
@@ -787,7 +787,7 @@ void createFromScratchPacket2And3()
     // Packet is now empty and invalid again
     printPacket(packet);
 
-    printf("\nCreating packet 3 (3DM Poll Data command) from scratch.\n\n");
+    printf("\nCreating packet 3 (%s command) from scratch.\n\n", mip::commands_3dm::PollData::DOC_NAME);
 
     // Field 6
     addPollDataFieldToPacket(packet);
@@ -797,7 +797,7 @@ void createFromScratchPacket2And3()
     addChecksumToPacket(packet);
 
     // Note: This would be the time to send the packet to the device
-    printf("Packet 3 (3DM Poll Data command) is complete.\n\n");
+    printf("Packet 3 (%s command) is complete.\n\n", mip::commands_3dm::PollData::DOC_NAME);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

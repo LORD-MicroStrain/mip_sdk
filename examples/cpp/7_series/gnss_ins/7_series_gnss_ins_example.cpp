@@ -4,8 +4,8 @@
 /// Example setup program for the 3DM-GQ7-GNSS/INS, and 3DM-CV7-GNSS/INS using
 /// C++
 ///
-/// This example shows a typical setup for the 3DM-GQ7-GNSS/INS, and
-/// 3DM-CV7-GNSS/INS devices in a wheeled-vehicle application using C++.
+/// This example shows a basic setup for the 3DM-GQ7-GNSS/INS, and
+/// 3DM-CV7-GNSS/INS devices using C++.
 /// This is not an exhaustive example of all settings for those devices.
 /// If this example does not meet your specific setup needs, please consult the
 /// MIP SDK API documentation for the proper commands.
@@ -67,6 +67,10 @@ static constexpr uint16_t SAMPLE_RATE_HZ = 1;
 // TODO: Update to change the example run time
 // Example run time
 static constexpr uint32_t RUN_TIME_SECONDS = 30;
+
+// TODO: Turn on for wheeled-vehicle applications
+// Enable configuration for wheeled-vehicle constraints
+#define WHEELED_VEHICLE_APPLICATION false
 ////////////////////////////////////////////////////////////////////////////////
 
 // Custom logging handler callback
@@ -160,6 +164,7 @@ int main(const int argc, const char* argv[])
         );
     }
 
+#if WHEELED_VEHICLE_APPLICATION
     // Configure the wheeled-vehicle constraint
     MICROSTRAIN_LOG_INFO("Enabling the %s.\n", mip::commands_filter::WheeledVehicleConstraintControl::DOC_NAME);
     cmdResult = mip::commands_filter::writeWheeledVehicleConstraintControl(
@@ -176,6 +181,7 @@ int main(const int argc, const char* argv[])
             mip::commands_filter::WheeledVehicleConstraintControl::DOC_NAME
         );
     }
+#endif // WHEELED_VEHICLE_APPLICATION
 
     // Configure the GNSS antenna offsets
     // Note: Antenna offsets are limited to a magnitude of [0.25, 10] (meters)
@@ -707,7 +713,7 @@ void configureAntennaOffset(mip::Interface& _device, const mip::Vector3f _antenn
 ///
 /// @details Configures the navigation filter by:
 ///          1. Enabling GNSS position and velocity aiding measurements
-///          2. Enabling dual-antenna GNSS heading aiding
+///          2. Enabling dual-antenna GNSS heading aiding measurements
 ///          3. Configuring filter initialization settings:
 ///             - Setting initial position and velocity to zero
 ///             - Enabling automatic position/velocity/attitude determination
@@ -777,8 +783,8 @@ void initializeFilter(mip::Interface& _device)
         mip::commands_filter::InitializationConfiguration::InitialConditionSource::AUTO_POS_VEL_ATT;
 
     constexpr mip::commands_filter::InitializationConfiguration::AlignmentSelector initialAlignmentSelector =
-        mip::commands_filter::InitializationConfiguration::AlignmentSelector::DUAL_ANTENNA |
-        mip::commands_filter::InitializationConfiguration::AlignmentSelector::KINEMATIC;
+        mip::commands_filter::InitializationConfiguration::AlignmentSelector::KINEMATIC |
+        mip::commands_filter::InitializationConfiguration::AlignmentSelector::DUAL_ANTENNA;
 
     MICROSTRAIN_LOG_INFO("Setting the %s configuration.\n", mip::commands_filter::InitializationConfiguration::DOC_NAME);
     cmdResult = mip::commands_filter::writeInitializationConfiguration(

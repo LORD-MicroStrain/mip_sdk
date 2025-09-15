@@ -3,8 +3,7 @@
 ///
 /// Example setup program for the 3DM-CV7-AR, and 3DM-GV7-AR using C
 ///
-/// This example shows a typical setup for the 3DM-CV7-AR, and 3DM-GV7-AR using
-/// C.
+/// This example shows a basic setup for the 3DM-CV7-AR, and 3DM-GV7-AR using C.
 /// This is not an exhaustive example of all settings for those devices.
 /// If this example does not meet your specific setup needs, please consult the
 /// MIP SDK API documentation for the proper commands.

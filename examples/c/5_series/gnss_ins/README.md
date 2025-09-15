@@ -111,10 +111,9 @@ TOW = 123456.789    Position LLH = [ 4.123456, -83.54321,  123.4567]    Velocity
 
 1. Connect your 5-series GNSS/INS device to the specified serial port
 2. Update the `PORT_NAME` constant if using a different port
-3. Update the `WHEELED_VEHICLE_APPLICATION` constant if using a wheeled-vehicle application
-4. Compile and run the example
-5. Follow the gyro bias capture prompt (keep the device stationary)
-6. The program will:
+3. Compile and run the example
+4. Follow the gyro bias capture prompt (keep the device stationary)
+5. The program will:
     - Initialize the device
     - Configure data streaming
     - Wait for the filter to initialize

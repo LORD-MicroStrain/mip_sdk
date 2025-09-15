@@ -3,9 +3,9 @@
 ///
 /// Example setup program for the 3DM-CV7-INS, and 3DM-GV7-INS using C
 ///
-/// This example shows a typical setup for the 3DM-CV7-INS, and 3DM-GV7-INS with
+/// This example shows a basic setup for the 3DM-CV7-INS, and 3DM-GV7-INS with
 /// external aiding measurements using C.
-/// It is not an exhaustive example of all settings for those devices.
+/// This is not an exhaustive example of all settings for those devices.
 /// If this example does not meet your specific setup needs, please consult the
 /// MIP SDK API documentation for the proper commands.
 ///
@@ -56,7 +56,7 @@
 // Set the port name for the connection (Serial/USB)
 #ifdef _WIN32
 static const char* PORT_NAME = "COM1";
-#else // Unix
+#else  // Unix
 static const char* PORT_NAME = "/dev/ttyACM0";
 #endif // _WIN32
 
@@ -93,7 +93,9 @@ void capture_gyro_bias(mip_interface* _device);
 void configure_filter_message_format(mip_interface* _device);
 
 // External aiding configuration
-void configure_external_aiding(mip_interface* _device);
+void configure_external_aiding_heading(mip_interface* _device);
+void configure_external_aiding_gnss_antenna(mip_interface* _device);
+void configure_external_aiding_ned_velocity(mip_interface* _device);
 
 // Filter initialization
 void initialize_filter(mip_interface* _device);
@@ -107,8 +109,10 @@ mip_timestamp get_current_timestamp();
 
 // Device callbacks used for reading and writing packets
 bool mip_interface_user_send_to_device(mip_interface* _device, const uint8_t* _data, size_t _length);
-bool mip_interface_user_recv_from_device(mip_interface* _device, uint8_t* _buffer, size_t _max_length,
-    mip_timeout _wait_time, bool _from_cmd, size_t* _length_out, mip_timestamp* _timestamp_out);
+bool mip_interface_user_recv_from_device(
+    mip_interface* _device, uint8_t* _buffer, size_t _max_length, mip_timeout _wait_time, bool _from_cmd,
+    size_t* _length_out, mip_timestamp* _timestamp_out
+);
 
 // Common device initialization procedure
 void initialize_device(mip_interface* _device, serial_port* _device_port, const uint32_t _baudrate);
@@ -119,16 +123,17 @@ void send_simulated_external_measurements_heading(mip_interface* _device, const 
 
 void send_simulated_external_measurements_position(mip_interface* _device, const mip_time* _external_measurement_time);
 
-void send_simulated_external_measurements_ned_velocity(mip_interface* _device,
-    const mip_time* _external_measurement_time);
+void send_simulated_external_measurements_ned_velocity(
+    mip_interface* _device, const mip_time* _external_measurement_time
+);
 
-void send_simulated_external_measurements_vehicle_frame_velocity(mip_interface* _device,
-    const mip_time* _external_measurement_time);
+void send_simulated_external_measurements_vehicle_frame_velocity(
+    mip_interface* _device, const mip_time* _external_measurement_time
+);
 
 // Utility functions the handle application closing and printing error messages
 void terminate(serial_port* _device_port, const char* _message, const bool _successful);
-void command_failure_terminate(const mip_interface* _device, const mip_cmd_result _cmd_result, const char* _format,
-    ...);
+void command_failure_terminate(const mip_interface* _device, const mip_cmd_result _cmd_result, const char* _format, ...);
 
 int main(const int argc, const char* argv[])
 {
@@ -162,7 +167,9 @@ int main(const int argc, const char* argv[])
     configure_filter_message_format(&device);
 
     // Configure the external aiding measurements
-    configure_external_aiding(&device);
+    configure_external_aiding_heading(&device);
+    configure_external_aiding_gnss_antenna(&device);
+    configure_external_aiding_ned_velocity(&device);
 
     // Initialize the navigation filter
     initialize_filter(&device);
@@ -236,7 +243,7 @@ int main(const int argc, const char* argv[])
         command_failure_terminate(&device, cmd_result, "Could not resume the device!\n");
     }
 
-    MICROSTRAIN_LOG_INFO("Sensor is configured... waiting for the filter to enter full navigation mode.\n");
+    MICROSTRAIN_LOG_INFO("The device is configured... waiting for the filter to enter full navigation mode.\n");
 
     mip_filter_mode current_state = filter_status.filter_state;
 
@@ -249,7 +256,7 @@ int main(const int argc, const char* argv[])
     };
 
     // Wait for the device to initialize
-    while (filter_status.filter_state != MIP_FILTER_MODE_FULL_NAV)
+    while (filter_status.filter_state < MIP_FILTER_MODE_FULL_NAV)
     {
         // Update the device state
         // Note: This will update the device callbacks to trigger the filter state change
@@ -286,8 +293,8 @@ int main(const int argc, const char* argv[])
 
     mip_timestamp previous_print_timestamp = 0;
 
-    // Device loop
-    // Exit after predetermined time in seconds
+    // Running loop
+    // Exit after a predetermined time in seconds
     while (get_current_timestamp() - loop_start_time <= RUN_TIME_SECONDS * 1000)
     {
         // Update the device state
@@ -322,24 +329,20 @@ int main(const int argc, const char* argv[])
         // Print out data based on the sample rate (1000 ms / SAMPLE_RATE_HZ)
         if (current_timestamp - previous_print_timestamp >= 1000 / SAMPLE_RATE_HZ)
         {
-            if (filter_status.filter_state >= MIP_FILTER_MODE_VERT_GYRO)
+            if (filter_status.filter_state >= MIP_FILTER_MODE_FULL_NAV)
             {
                 MICROSTRAIN_LOG_INFO(
-                    "%s = %10.3f%16s = [%10.6f, %10.6f, %11.6f]%16s = [%9.6f, %9.6f, %9.6f]%16s = [%9.6f, %9.6f, %9.6f]\n",
-
+                    "%s = %10.3f%16s = [%9.6f, %9.6f, %9.6f]%16s = [%9.6f, %9.6f, %9.6f]%16s = [%9.6f, %9.6f, %9.6f]\n",
                     "TOW",
                     filter_gps_timestamp.tow,
-
                     "LLH Position",
                     filter_position_llh.latitude,
                     filter_position_llh.longitude,
                     filter_position_llh.ellipsoid_height,
-
                     "NED Velocity",
                     filter_velocity_ned.north,
                     filter_velocity_ned.east,
                     filter_velocity_ned.down,
-
                     "Euler Angles",
                     filter_euler_angles.roll,
                     filter_euler_angles.pitch,
@@ -419,15 +422,16 @@ void capture_gyro_bias(mip_interface* _device)
     const uint16_t capture_duration            = 15000;
     const uint16_t increased_cmd_reply_timeout = capture_duration + 1000;
 
-    MICROSTRAIN_LOG_INFO("Increasing command reply timeout to %dms for capture gyro bias.\n",
+    MICROSTRAIN_LOG_INFO(
+        "Increasing command reply timeout to %dms for capture gyro bias.\n",
         increased_cmd_reply_timeout
     );
     mip_cmd_queue_set_base_reply_timeout(cmd_queue, increased_cmd_reply_timeout);
 
     mip_vector3f gyro_bias = {
-        0.0f,
-        0.0f,
-        0.0f
+        0.0f, // X
+        0.0f, // Y
+        0.0f  // Z
     };
 
     // Note: When capturing gyro bias, the device needs to remain still on a flat surface
@@ -451,7 +455,8 @@ void capture_gyro_bias(mip_interface* _device)
         command_failure_terminate(_device, cmd_result, "Failed to capture gyro bias!\n");
     }
 
-    MICROSTRAIN_LOG_INFO("Capture gyro bias completed with result: [%f, %f, %f]\n",
+    MICROSTRAIN_LOG_INFO(
+        "Capture gyro bias completed with result: [%f, %f, %f]\n",
         gyro_bias[0],
         gyro_bias[1],
         gyro_bias[2]
@@ -469,7 +474,7 @@ void capture_gyro_bias(mip_interface* _device)
 ///          2. Validating desired sample rate against base rate
 ///          3. Calculating proper decimation
 ///          4. Configuring message format with:
-///             - GPS time
+///             - GPS timestamp
 ///             - Filter status
 ///             - LLH position
 ///             - NED velocity
@@ -492,7 +497,7 @@ void configure_filter_message_format(mip_interface* _device)
 
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        command_failure_terminate(_device, cmd_result, "Could not get filter base rate!\n");
+        command_failure_terminate(_device, cmd_result, "Could not get the base rate for filter data!\n");
     }
 
     // Supported sample rates can be any value from 1 up to the base rate
@@ -510,7 +515,8 @@ void configure_filter_message_format(mip_interface* _device)
 
     // Calculate the decimation (stream rate) for the device based on its base rate
     const uint16_t filter_decimation = filter_base_rate / SAMPLE_RATE_HZ;
-    MICROSTRAIN_LOG_INFO("Decimating filter base rate %d by %d to stream data at %dHz.\n",
+    MICROSTRAIN_LOG_INFO(
+        "Decimating filter base rate %d by %d to stream data at %dHz.\n",
         filter_base_rate,
         filter_decimation,
         SAMPLE_RATE_HZ
@@ -518,10 +524,10 @@ void configure_filter_message_format(mip_interface* _device)
 
     // Descriptor rate is a pair of data descriptor set and decimation
     const mip_descriptor_rate filter_descriptors[5] = {
-        { MIP_DATA_DESC_SHARED_GPS_TIME, filter_decimation },
-        { MIP_DATA_DESC_FILTER_FILTER_STATUS, filter_decimation },
-        { MIP_DATA_DESC_FILTER_POS_LLH, filter_decimation },
-        { MIP_DATA_DESC_FILTER_VEL_NED, filter_decimation },
+        { MIP_DATA_DESC_SHARED_GPS_TIME,         filter_decimation },
+        { MIP_DATA_DESC_FILTER_FILTER_STATUS,    filter_decimation },
+        { MIP_DATA_DESC_FILTER_POS_LLH,          filter_decimation },
+        { MIP_DATA_DESC_FILTER_VEL_NED,          filter_decimation },
         { MIP_DATA_DESC_FILTER_ATT_EULER_ANGLES, filter_decimation }
     };
 
@@ -535,25 +541,18 @@ void configure_filter_message_format(mip_interface* _device)
 
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        command_failure_terminate(_device, cmd_result, "Could not set message format for filter data!\n");
+        command_failure_terminate(_device, cmd_result, "Could not configure message format for filter data!\n");
     }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-/// @brief Configures reference frames for external aiding measurements
+/// @brief Configures a heading reference frame for external aiding measurements
 ///
-/// @details Sets up three distinct reference frames for external sensor data:
-///          1. External heading reference
+/// @details Sets up a heading reference frame for external sensor data:
 ///             - Translation: [0, 0, 0] m
 ///             - Rotation: [0, 0, 0] deg (no rotation)
-///          2. External GNSS antenna reference
-///             - Translation: [0, 1, 0] m (1m offset in Y-axis)
-///             - Rotation: [0, 0, 0] deg (no rotation)
-///          3. External body frame velocity reference
-///             - Translation: [1, 0, 0] m (1m offset in X-axis)
-///             - Rotation: [0, 0, 90] deg (90 deg yaw rotation)
 ///
-///          All frames are configured with tracking enabled and use Euler
+///          The frame is configured with tracking enabled and uses an Euler
 ///          angle rotation format.
 ///
 /// @param _device Pointer to the initialized MIP device interface
@@ -563,7 +562,7 @@ void configure_filter_message_format(mip_interface* _device)
 ///       measurements. Frame IDs correspond to those used in external
 ///       measurement functions.
 ///
-void configure_external_aiding(mip_interface* _device)
+void configure_external_aiding_heading(mip_interface* _device)
 {
     MICROSTRAIN_LOG_INFO("Configuring the reference frame for external heading.\n");
     const mip_vector3f external_heading_translation = {
@@ -577,7 +576,7 @@ void configure_external_aiding(mip_interface* _device)
     external_heading_rotation.euler[1] = 0.0f; // Pitch
     external_heading_rotation.euler[2] = 0.0f; // Yaw
 
-    mip_cmd_result cmd_result = mip_aiding_write_frame_config(
+    const mip_cmd_result cmd_result = mip_aiding_write_frame_config(
         _device,
         HEADING_FRAME_CONFIG_ID,
         MIP_AIDING_FRAME_CONFIG_COMMAND_FORMAT_EULER,
@@ -594,7 +593,28 @@ void configure_external_aiding(mip_interface* _device)
             "Could not configure the reference frame for external heading!\n"
         );
     }
+}
 
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Configures a GNSS antenna reference frame for external aiding
+///        measurements
+///
+/// @details Sets up a GNSS antenna reference frame for external sensor data:
+///             - Translation: [0, 1, 0] m (1m offset in Y-axis)
+///             - Rotation: [0, 0, 0] deg (no rotation)
+///
+///          The frame is configured with tracking enabled and uses an Euler
+///          angle rotation format.
+///
+/// @param _device Pointer to the initialized MIP device interface
+///
+/// @note This function is typically called during device initialization to
+///       establish the coordinate system relationships for external
+///       measurements. Frame IDs correspond to those used in external
+///       measurement functions.
+///
+void configure_external_aiding_gnss_antenna(mip_interface* _device)
+{
     MICROSTRAIN_LOG_INFO("Configuring the reference frame for external GNSS antenna.\n");
     const mip_vector3f external_gnss_antenna_translation = {
         0.0f, // X
@@ -607,7 +627,7 @@ void configure_external_aiding(mip_interface* _device)
     external_gnss_antenna_rotation.euler[1] = 0.0f; // Pitch
     external_gnss_antenna_rotation.euler[2] = 0.0f; // Yaw
 
-    cmd_result = mip_aiding_write_frame_config(
+    const mip_cmd_result cmd_result = mip_aiding_write_frame_config(
         _device,
         GNSS_FRAME_CONFIG_ID,
         MIP_AIDING_FRAME_CONFIG_COMMAND_FORMAT_EULER,
@@ -624,7 +644,29 @@ void configure_external_aiding(mip_interface* _device)
             "Could not configure the reference frame for external GNSS antenna!\n"
         );
     }
+}
 
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Configures a body frame velocity reference frame for external aiding
+///        measurements
+///
+/// @details Sets up a body frame velocity reference frame for external sensor
+///          data:
+///             - Translation: [1, 0, 0] m (1m offset in X-axis)
+///             - Rotation: [0, 0, 90] deg (90 deg yaw rotation)
+///
+///          The frame is configured with tracking enabled and uses an Euler
+///          angle rotation format.
+///
+/// @param _device Reference to the initialized MIP device interface
+///
+/// @note This function is typically called during device initialization to
+///       establish the coordinate system relationships for external
+///       measurements. Frame IDs correspond to those used in external
+///       measurement functions.
+///
+void configure_external_aiding_ned_velocity(mip_interface* _device)
+{
     MICROSTRAIN_LOG_INFO("Configuring the reference frame for external body frame velocity.\n");
     const mip_vector3f external_body_frame_velocity_translation = {
         1.0f, // X
@@ -635,9 +677,9 @@ void configure_external_aiding(mip_interface* _device)
     mip_aiding_frame_config_command_rotation external_body_frame_velocity_rotation;
     external_body_frame_velocity_rotation.euler[0] = 0.0f;                           // Roll
     external_body_frame_velocity_rotation.euler[1] = 0.0f;                           // Pitch
-    external_body_frame_velocity_rotation.euler[2] = (float)(90.0f * M_PI / 180.0f); // Yaw rotated at 90 degrees (as radians)
+    external_body_frame_velocity_rotation.euler[2] = (float)(90.0f * M_PI / 180.0f); // Yaw at 90 degrees (as radians)
 
-    cmd_result = mip_aiding_write_frame_config(
+    const mip_cmd_result cmd_result = mip_aiding_write_frame_config(
         _device,
         BODY_VELOCITY_FRAME_CONFIG_ID,
         MIP_AIDING_FRAME_CONFIG_COMMAND_FORMAT_EULER,
@@ -672,9 +714,8 @@ void configure_external_aiding(mip_interface* _device)
 ///
 void initialize_filter(mip_interface* _device)
 {
-    // Configure Filter Aiding Measurements (GNSS position/velocity and external aiding)
-
-    MICROSTRAIN_LOG_INFO("Configuring filter aiding measurement enable for GNSS position and velocity.\n");
+    // Configure Filter Aiding Measurements
+    MICROSTRAIN_LOG_INFO("Enabling the aiding measurement source for GNSS position and velocity.\n");
     mip_cmd_result cmd_result = mip_filter_write_aiding_measurement_enable(
         _device,
         MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_GNSS_POS_VEL, // Aiding Source type
@@ -686,11 +727,11 @@ void initialize_filter(mip_interface* _device)
         command_failure_terminate(
             _device,
             cmd_result,
-            "Could not set filter aiding measurement enable for GNSS position and velocity!\n"
+            "Could not enable the aiding measurement source for GNSS position and velocity!\n"
         );
     }
 
-    MICROSTRAIN_LOG_INFO("Configuring filter aiding measurement enable for external heading.\n");
+    MICROSTRAIN_LOG_INFO("Enabling the aiding measurement source for external heading.\n");
     cmd_result = mip_filter_write_aiding_measurement_enable(
         _device,
         MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_EXTERNAL_HEADING, // Aiding Source type
@@ -702,22 +743,22 @@ void initialize_filter(mip_interface* _device)
         command_failure_terminate(
             _device,
             cmd_result,
-            "Could not set filter aiding measurement enable for external heading!\n"
+            "Could not enable the aiding measurement source for external heading!\n"
         );
     }
 
     // Configure the filter initialization
 
     const mip_vector3f initial_position = {
-        0.0f,
-        0.0f,
-        0.0f
+        0.0f, // X
+        0.0f, // Y
+        0.0f  // Z
     };
 
     const mip_vector3f initial_velocity = {
-        0.0f,
-        0.0f,
-        0.0f
+        0.0f, // X
+        0.0f, // Y
+        0.0f  // Z
     };
 
     // Note: This is the default setting on the device and will automatically configure
@@ -773,57 +814,47 @@ void initialize_filter(mip_interface* _device)
 ///
 void display_filter_state(const mip_filter_mode _filter_state)
 {
-    const char*   header_message     = "The filter has entered";
-    const uint8_t filter_state_value = (uint8_t)_filter_state;
+    const char* mode_description = "startup";
+    const char* mode_type        = "STARTUP";
 
     switch (_filter_state)
     {
         case MIP_FILTER_MODE_INIT:
         {
-            MICROSTRAIN_LOG_INFO("%s initialization mode. (%d) MIP_FILTER_MODE_INIT\n",
-                header_message,
-                filter_state_value
-            );
-
+            mode_description = "initialization";
+            mode_type        = "MIP_FILTER_MODE_INIT";
             break;
         }
         case MIP_FILTER_MODE_VERT_GYRO:
         {
-            MICROSTRAIN_LOG_INFO("%s vertical gyro mode. (%d) MIP_FILTER_MODE_VERT_GYRO\n",
-                header_message,
-                filter_state_value
-            );
-
+            mode_description = "vertical gyro";
+            mode_type        = "MIP_FILTER_MODE_VERT_GYRO";
             break;
         }
         case MIP_FILTER_MODE_AHRS:
         {
-            MICROSTRAIN_LOG_INFO("%s AHRS mode. (%d) MIP_FILTER_MODE_AHRS\n",
-                header_message,
-                filter_state_value
-            );
-
+            mode_description = "AHRS";
+            mode_type        = "MIP_FILTER_MODE_AHRS";
             break;
         }
         case MIP_FILTER_MODE_FULL_NAV:
         {
-            MICROSTRAIN_LOG_INFO("%s full navigation mode. (%d) MIP_FILTER_MODE_FULL_NAV\n",
-                header_message,
-                filter_state_value
-            );
-
+            mode_description = "full navigation";
+            mode_type        = "MIP_FILTER_MODE_FULL_NAV";
             break;
         }
         default:
         {
-            MICROSTRAIN_LOG_INFO("%s startup mode. (%d) STARTUP\n",
-                header_message,
-                filter_state_value
-            );
-
             break;
         }
     }
+
+    MICROSTRAIN_LOG_INFO(
+        "The filter has entered %s mode. (%d) %s\n",
+        mode_description,
+        (uint8_t)_filter_state,
+        mode_type
+    );
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -834,8 +865,8 @@ void display_filter_state(const mip_filter_mode _filter_state)
 ///          - Uses timespec_get() with UTC time base
 ///          - Returns 0 if time cannot be obtained
 ///
-/// @note Update this function to use a different time source if needed for your
-///       specific application requirements
+/// @note Update this function to use a different time source if needed for
+///       your specific application requirements
 ///
 /// @return Current system time in milliseconds since epoch
 ///
@@ -904,8 +935,10 @@ bool mip_interface_user_send_to_device(mip_interface* _device, const uint8_t* _d
 ///
 /// @return True if receive was successful, false otherwise
 ///
-bool mip_interface_user_recv_from_device(mip_interface* _device, uint8_t* _buffer, size_t _max_length,
-    mip_timeout _wait_time, bool _from_cmd, size_t* _length_out, mip_timestamp* _timestamp_out)
+bool mip_interface_user_recv_from_device(
+    mip_interface* _device, uint8_t* _buffer, size_t _max_length, mip_timeout _wait_time, bool _from_cmd,
+    size_t* _length_out, mip_timestamp* _timestamp_out
+)
 {
     // Unused parameter
     (void)_from_cmd;
@@ -992,11 +1025,7 @@ void initialize_device(mip_interface* _device, serial_port* _device_port, const 
 
     // Firmware version format is x.x.xx
     char firmwareVersion[16];
-    snprintf(firmwareVersion, sizeof(firmwareVersion) / sizeof(firmwareVersion[0]), "%d.%d.%02d",
-        major,
-        minor,
-        patch
-    );
+    snprintf(firmwareVersion, sizeof(firmwareVersion) / sizeof(firmwareVersion[0]), "%d.%d.%02d", major, minor, patch);
 
     MICROSTRAIN_LOG_INFO("-------- Device Information --------\n");
     MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Name", device_info.model_name);
@@ -1009,7 +1038,7 @@ void initialize_device(mip_interface* _device, serial_port* _device_port, const 
 
     // Load the default settings on the device
     // Note: This guarantees the device is in a known state
-    MICROSTRAIN_LOG_INFO("Loading default settings.\n");
+    MICROSTRAIN_LOG_INFO("Loading device default settings.\n");
     cmd_result = mip_3dm_default_device_settings(_device);
 
     if (!mip_cmd_result_is_ack(cmd_result))
@@ -1086,9 +1115,9 @@ void send_simulated_external_measurements_position(mip_interface* _device, const
     const double height    = 122.0;
 
     const mip_vector3f uncertainty = {
-        1.0f,
-        1.0f,
-        1.0f
+        1.0f, // X
+        1.0f, // Y
+        1.0f  // Z
     };
 
     const mip_cmd_result cmd_result = mip_aiding_pos_llh(
@@ -1123,19 +1152,20 @@ void send_simulated_external_measurements_position(mip_interface* _device, const
 /// @note Issues warning if the command fails but does not terminate execution.
 ///       Used for testing external aiding functionality with stationary data.
 ///
-void send_simulated_external_measurements_ned_velocity(mip_interface* _device,
-    const mip_time* _external_measurement_time)
+void send_simulated_external_measurements_ned_velocity(
+    mip_interface* _device, const mip_time* _external_measurement_time
+)
 {
     const mip_vector3f velocity = {
-        0.0f,
-        0.0f,
-        0.0f
+        0.0f, // X
+        0.0f, // Y
+        0.0f  // Z
     };
 
     const mip_vector3f uncertainty = {
-        0.1f,
-        0.1f,
-        0.1f
+        0.1f, // X
+        0.1f, // Y
+        0.1f  // Z
     };
 
     const mip_cmd_result cmd_result = mip_aiding_vel_ned(
@@ -1152,6 +1182,7 @@ void send_simulated_external_measurements_ned_velocity(mip_interface* _device,
         MICROSTRAIN_LOG_WARN("Failed to send external NED velocity to the device!\n");
     }
 }
+
 ////////////////////////////////////////////////////////////////////////////////
 /// @brief Sends simulated external vehicle frame velocity measurements to the
 ///        device
@@ -1168,19 +1199,20 @@ void send_simulated_external_measurements_ned_velocity(mip_interface* _device,
 /// @note Issues warning if the command fails but does not terminate execution.
 ///       Used for testing external aiding functionality with vehicle-relative data.
 ///
-void send_simulated_external_measurements_vehicle_frame_velocity(mip_interface* _device,
-    const mip_time* _external_measurement_time)
+void send_simulated_external_measurements_vehicle_frame_velocity(
+    mip_interface* _device, const mip_time* _external_measurement_time
+)
 {
     const mip_vector3f velocity = {
-        0.0f,
-        0.0f,
-        0.0f
+        0.0f, // X
+        0.0f, // Y
+        0.0f  // Z
     };
 
     const mip_vector3f uncertainty = {
-        0.1f,
-        0.1f,
-        0.1f
+        0.1f, // X
+        0.1f, // Y
+        0.1f  // Z
     };
 
     const mip_cmd_result cmd_result = mip_aiding_vel_body_frame(
@@ -1212,7 +1244,7 @@ void send_simulated_external_measurements_vehicle_frame_velocity(mip_interface* 
 ///
 void terminate(serial_port* _device_port, const char* _message, const bool _successful)
 {
-    if (strlen(_message) != 0)
+    if (_message != NULL && strlen(_message) != 0)
     {
         if (_successful)
         {
@@ -1269,10 +1301,13 @@ void terminate(serial_port* _device_port, const char* _message, const bool _succ
 ///
 void command_failure_terminate(const mip_interface* _device, const mip_cmd_result _cmd_result, const char* _format, ...)
 {
-    va_list args;
-    va_start(args, _format);
-    MICROSTRAIN_LOG_ERROR_V(_format, args);
-    va_end(args);
+    if (_format != NULL && strlen(_format) != 0)
+    {
+        va_list args;
+        va_start(args, _format);
+        MICROSTRAIN_LOG_ERROR_V(_format, args);
+        va_end(args);
+    }
 
     MICROSTRAIN_LOG_ERROR("Command Result: (%d) %s.\n", _cmd_result, mip_cmd_result_to_string(_cmd_result));
 

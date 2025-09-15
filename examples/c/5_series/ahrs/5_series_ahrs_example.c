@@ -4,7 +4,7 @@
 /// Example setup program for the 3DM-CX5-AHRS, 3DM-CV5-AHRS, and 3DM-GX5-AHRS
 /// using C
 ///
-/// This example shows a typical setup for the 3DM-CX5-AHRS, 3DM-CV5-AHRS, and
+/// This example shows a basic setup for the 3DM-CX5-AHRS, 3DM-CV5-AHRS, and
 /// 3DM-GX5-AHRS using C.
 /// This is not an exhaustive example of all settings for those devices.
 /// If this example does not meet your specific setup needs, please consult the

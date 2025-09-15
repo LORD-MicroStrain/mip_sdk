@@ -5,7 +5,8 @@
 ///
 /// This example shows a basic setup for streaming IMU data on 5-series devices
 /// using C++.
-/// It is not an exhaustive example of all streaming options.
+/// This is not an exhaustive example of all streaming options for those
+/// devices.
 /// If this example does not meet your specific setup needs, please consult the
 /// MIP SDK API documentation for the proper commands.
 ///
@@ -47,11 +48,13 @@
 // Set the port name for the connection (Serial/USB)
 #ifdef _WIN32
 static constexpr const char* PORT_NAME = "COM1";
-#else // Unix
+#else  // Unix
 static constexpr const char* PORT_NAME = "/dev/ttyACM0";
 #endif // _WIN32
 
 // Set the baudrate for the connection (Serial/USB)
+// Note: For native serial connections this needs to be 115200 due to the device default settings command
+// Use mip_3dm_*_uart_baudrate() to write and save the baudrate on the device
 static constexpr uint32_t BAUDRATE = 115200;
 
 // TODO: Update to the desired streaming rate. Setting low for readability purposes
@@ -74,12 +77,15 @@ mip::Timestamp getCurrentTimestamp();
 void initializeDevice(mip::Interface& _device);
 
 // Utility to help check if the device supports a descriptor
-bool isDescriptorSupported(const mip::CompositeDescriptor& _compositeDescriptor, const uint16_t* _supportedDescriptors,
-    const uint8_t _supportedDescriptorCount);
+bool isDescriptorSupported(
+    const mip::CompositeDescriptor& _compositeDescriptor, const uint16_t* _supportedDescriptors,
+    const uint8_t _supportedDescriptorCount
+);
 
 // Message format configuration
-void configureSensorMessageFormat(mip::Interface& _device, const uint16_t* _supportedDescriptors,
-    const uint8_t _supportedDescriptorCount);
+void configureSensorMessageFormat(
+    mip::Interface& _device, const uint16_t* _supportedDescriptors, const uint8_t _supportedDescriptorCount
+);
 
 // Callback handlers
 void packetCallback(void* _user, const mip::PacketView& _packetView, mip::Timestamp _timestamp);
@@ -124,6 +130,7 @@ int main(const int argc, const char* argv[])
     MICROSTRAIN_LOG_INFO("Getting supported descriptors for the device.\n");
     uint8_t  descriptorsCount          = 0;
     uint16_t supportedDescriptors[256] = { 0 };
+
     mip::CmdResult cmdResult = mip::commands_base::getDeviceDescriptors(
         device,
         supportedDescriptors,                                           // Descriptors array from the device
@@ -140,10 +147,11 @@ int main(const int argc, const char* argv[])
     // The extended descriptors command can get the remaining descriptors
     MICROSTRAIN_LOG_INFO("Getting extended supported descriptors for the device.\n");
     uint8_t extendedDescriptorsCount = 0;
+
     cmdResult = mip::commands_base::getExtendedDescriptors(
         device,
-        &supportedDescriptors[descriptorsCount],                                           // Append to the existing array
-        sizeof(supportedDescriptors) / sizeof(supportedDescriptors[0]) - descriptorsCount, // Remaining size of the array
+        &supportedDescriptors[descriptorsCount],                                           // Append to the array
+        sizeof(supportedDescriptors) / sizeof(supportedDescriptors[0]) - descriptorsCount, // Remaining array size
         &extendedDescriptorsCount
     );
 
@@ -165,7 +173,7 @@ int main(const int argc, const char* argv[])
     // Register the callback for packets
     device.registerPacketCallback<&packetCallback>(
         packetHandler,
-        mip::Dispatcher::ANY_DATA_SET, // Data field descriptor set
+        mip::Dispatcher::ANY_DATA_SET, // Data descriptor set
         false,                         // Process after field callback
         nullptr                        // User data
     );
@@ -210,13 +218,13 @@ int main(const int argc, const char* argv[])
         terminate(device, cmdResult, "Could not resume the device!\n");
     }
 
-    MICROSTRAIN_LOG_INFO("Sensor is configured... waiting for data.\n");
+    MICROSTRAIN_LOG_INFO("The device is configured... waiting for data.\n");
 
     // Get the start time of the device update loop to handle exiting the application
     const mip::Timestamp loopStartTime = getCurrentTimestamp();
 
-    // Device loop
-    // Exit after predetermined time in seconds
+    // Running loop
+    // Exit after a predetermined time in seconds
     while (getCurrentTimestamp() - loopStartTime <= RUN_TIME_SECONDS * 1000)
     {
         // Update the device state
@@ -257,6 +265,7 @@ void logCallback(void* _user, const microstrain_log_level _level, const char* _f
         {
             fprintf(stderr, "%s: ", microstrain_logging_level_name(_level));
             vfprintf(stderr, _format, _args);
+            fflush(stderr);
             break;
         }
         case MICROSTRAIN_LOG_LEVEL_WARN:
@@ -266,6 +275,7 @@ void logCallback(void* _user, const microstrain_log_level _level, const char* _f
         {
             fprintf(stdout, "%s: ", microstrain_logging_level_name(_level));
             vfprintf(stdout, _format, _args);
+            fflush(stdout);
             break;
         }
         case MICROSTRAIN_LOG_LEVEL_OFF:
@@ -280,8 +290,9 @@ void logCallback(void* _user, const microstrain_log_level _level, const char* _f
 /// @brief Gets the current system timestamp in milliseconds
 ///
 /// @details Provides system time measurement using std::chrono for milliseconds
-///          since steady clock epoch. Uses steady_clock to ensure monotonic
-///          time that won't be affected by system time changes.
+///          since epoch. Uses system_clock to get wall-clock time that
+///          corresponds to calendar time and can be synchronized with external
+///          time sources.
 ///
 /// @note Update this function to use a different time source if needed for
 ///       your specific application requirements
@@ -290,7 +301,7 @@ void logCallback(void* _user, const microstrain_log_level _level, const char* _f
 ///
 mip::Timestamp getCurrentTimestamp()
 {
-    const std::chrono::nanoseconds timeSinceEpoch = std::chrono::steady_clock::now().time_since_epoch();
+    const std::chrono::nanoseconds timeSinceEpoch = std::chrono::system_clock::now().time_since_epoch();
     return static_cast<mip::Timestamp>(std::chrono::duration_cast<std::chrono::milliseconds>(timeSinceEpoch).count());
 }
 
@@ -344,28 +355,32 @@ void initializeDevice(mip::Interface& _device)
 
     // Firmware version format is x.x.xx
     char firmwareVersion[16];
-    snprintf(firmwareVersion, sizeof(firmwareVersion) / sizeof(firmwareVersion[0]), "%d.%d.%02d",
-        major,
-        minor,
-        patch
-    );
+    snprintf(firmwareVersion, sizeof(firmwareVersion) / sizeof(firmwareVersion[0]), "%d.%d.%02d", major, minor, patch);
 
     MICROSTRAIN_LOG_INFO("-------- Device Information --------\n");
-    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Name",             deviceInfo.model_name);
-    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Model Number",     deviceInfo.model_number);
-    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Serial Number",    deviceInfo.serial_number);
-    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Lot Number",       deviceInfo.lot_number);
-    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Options",          deviceInfo.device_options);
-    MICROSTRAIN_LOG_INFO("%-16s | %16s\n",  "Firmware Version", firmwareVersion);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Name", deviceInfo.model_name);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Model Number", deviceInfo.model_number);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Serial Number", deviceInfo.serial_number);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Lot Number", deviceInfo.lot_number);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Options", deviceInfo.device_options);
+    MICROSTRAIN_LOG_INFO("%-16s | %16s\n", "Firmware Version", firmwareVersion);
     MICROSTRAIN_LOG_INFO("------------------------------------\n");
 
     // Load the default settings on the device
     // Note: This guarantees the device is in a known state
-    MICROSTRAIN_LOG_INFO("Loading default settings.\n");
+    MICROSTRAIN_LOG_INFO("Loading %s.\n", mip::commands_3dm::DeviceSettings::DOC_NAME);
     cmdResult = mip::commands_3dm::defaultDeviceSettings(_device);
 
     if (!cmdResult.isAck())
     {
+        // Note: Default settings will reset the baudrate to 115200 and may cause connection issues
+        if (cmdResult == mip::CmdResult::STATUS_TIMEDOUT && BAUDRATE != 115200)
+        {
+            MICROSTRAIN_LOG_WARN(
+                "On a native serial connections the baudrate needs to be 115200 for this example to run.\n"
+            );
+        }
+
         terminate(_device, cmdResult, "Could not load %s!\n", mip::commands_3dm::DeviceSettings::DOC_NAME);
     }
 }
@@ -383,8 +398,10 @@ void initializeDevice(mip::Interface& _device)
 ///
 /// @returns true if the descriptor is supported, false otherwise
 ///
-bool isDescriptorSupported(const mip::CompositeDescriptor& _compositeDescriptor, const uint16_t* _supportedDescriptors,
-    const uint8_t _supportedDescriptorCount)
+bool isDescriptorSupported(
+    const mip::CompositeDescriptor& _compositeDescriptor, const uint16_t* _supportedDescriptors,
+    const uint8_t _supportedDescriptorCount
+)
 {
     for (uint8_t index = 0; index < _supportedDescriptorCount; ++index)
     {
@@ -413,14 +430,15 @@ bool isDescriptorSupported(const mip::CompositeDescriptor& _compositeDescriptor,
 /// @param _supportedDescriptors Array of descriptors supported by the device
 /// @param _supportedDescriptorCount Number of descriptors in the array
 ///
-void configureSensorMessageFormat(mip::Interface& _device, const uint16_t* _supportedDescriptors,
-    const uint8_t _supportedDescriptorCount)
+void configureSensorMessageFormat(
+    mip::Interface& _device, const uint16_t* _supportedDescriptors, const uint8_t _supportedDescriptorCount
+)
 {
     // Note: Querying the device base rate is only one way to calculate the descriptor decimation
     // We could have also set it directly with information from the datasheet
 
     MICROSTRAIN_LOG_INFO("Getting the base rate for sensor data.\n");
-    uint16_t sensorBaseRate;
+    uint16_t       sensorBaseRate;
     mip::CmdResult cmdResult = mip::commands_3dm::imuGetBaseRate(
         _device,
         &sensorBaseRate // Base rate out
@@ -428,7 +446,7 @@ void configureSensorMessageFormat(mip::Interface& _device, const uint16_t* _supp
 
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not get sensor base rate!\n");
+        terminate(_device, cmdResult, "Could not get the base rate for sensor data!\n");
     }
 
     // Supported sample rates can be any value from 1 up to the base rate
@@ -445,8 +463,9 @@ void configureSensorMessageFormat(mip::Interface& _device, const uint16_t* _supp
     }
 
     // Calculate the decimation (stream rate) for the device based on its base rate
-    const uint16_t sensorDecimation  = sensorBaseRate / SAMPLE_RATE_HZ;
-    MICROSTRAIN_LOG_INFO("Decimating sensor base rate %d by %d to stream data at %dHz.\n",
+    const uint16_t sensorDecimation = sensorBaseRate / SAMPLE_RATE_HZ;
+    MICROSTRAIN_LOG_INFO(
+        "Decimating sensor base rate %d by %d to stream data at %dHz.\n",
         sensorBaseRate,
         sensorDecimation,
         SAMPLE_RATE_HZ
@@ -465,8 +484,7 @@ void configureSensorMessageFormat(mip::Interface& _device, const uint16_t* _supp
     MICROSTRAIN_LOG_INFO("Checking if the device supports magnetometer data.\n");
 
     // Not all devices have a magnetometer
-    if (isDescriptorSupported(mip::data_sensor::ScaledMag::DESCRIPTOR, _supportedDescriptors,
-        _supportedDescriptorCount))
+    if (isDescriptorSupported(mip::data_sensor::ScaledMag::DESCRIPTOR, _supportedDescriptors, _supportedDescriptorCount))
     {
         MICROSTRAIN_LOG_INFO("The device supports magnetometer data.\n");
     }
@@ -487,7 +505,10 @@ void configureSensorMessageFormat(mip::Interface& _device, const uint16_t* _supp
 
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not set %s for sensor data!\n",
+        terminate(
+            _device,
+            cmdResult,
+            "Could not configure %s for sensor data!\n",
             mip::commands_3dm::ImuMessageFormat::DOC_NAME
         );
     }
@@ -534,12 +555,14 @@ void packetCallback(void* _user, const mip::PacketView& _packetView, mip::Timest
         fieldDescriptorsBuffer[bufferOffset - 1] = '\0';
     }
 
-    MICROSTRAIN_LOG_INFO("Received a packet at %" PRIu64 " with descriptor set 0x%02X:%s\n",
+    MICROSTRAIN_LOG_INFO(
+        "Received a packet at %" PRIu64 " with descriptor set 0x%02X:%s\n",
         _timestamp,
         _packetView.descriptorSet(),
         fieldDescriptorsBuffer
     );
 }
+
 ////////////////////////////////////////////////////////////////////////////////
 /// @brief Callback handler for accelerometer data fields
 ///
@@ -562,13 +585,14 @@ void accelFieldCallback(void* _user, const mip::FieldView& _fieldView, mip::Time
 
     if (_fieldView.extract(scaledAccelData))
     {
-        MICROSTRAIN_LOG_INFO("%-17s (0x%02X, 0x%02X): [%9.6f, %9.6f, %9.6f]\n",
+        MICROSTRAIN_LOG_INFO(
+            "%-17s (0x%02X, 0x%02X): [%9.6f, %9.6f, %9.6f]\n",
             "Scaled Accel Data",
             mip::data_sensor::ScaledAccel::DESCRIPTOR_SET,   // Data descriptor set
             mip::data_sensor::ScaledAccel::FIELD_DESCRIPTOR, // Data field descriptor set
-            scaledAccelData.scaled_accel[0],              // X
-            scaledAccelData.scaled_accel[1],              // Y
-            scaledAccelData.scaled_accel[2]               // Z
+            scaledAccelData.scaled_accel[0],                 // X
+            scaledAccelData.scaled_accel[1],                 // Y
+            scaledAccelData.scaled_accel[2]                  // Z
         );
     }
 }
@@ -595,13 +619,14 @@ void gyroFieldCallback(void* _user, const mip::FieldView& _fieldView, mip::Times
 
     if (_fieldView.extract(scaledGyroData))
     {
-        MICROSTRAIN_LOG_INFO("%-17s (0x%02X, 0x%02X): [%9.6f, %9.6f, %9.6f]\n",
+        MICROSTRAIN_LOG_INFO(
+            "%-17s (0x%02X, 0x%02X): [%9.6f, %9.6f, %9.6f]\n",
             "Scaled Gyro Data",
             mip::data_sensor::ScaledGyro::DESCRIPTOR_SET,   // Data descriptor set
             mip::data_sensor::ScaledGyro::FIELD_DESCRIPTOR, // Data field descriptor set
-            scaledGyroData.scaled_gyro[0],               // X
-            scaledGyroData.scaled_gyro[1],               // Y
-            scaledGyroData.scaled_gyro[2]                // Z
+            scaledGyroData.scaled_gyro[0],                  // X
+            scaledGyroData.scaled_gyro[1],                  // Y
+            scaledGyroData.scaled_gyro[2]                   // Z
         );
     }
 }
@@ -628,13 +653,14 @@ void magFieldCallback(void* _user, const mip::FieldView& _fieldView, mip::Timest
 
     if (_fieldView.extract(scaledMagData))
     {
-        MICROSTRAIN_LOG_INFO("%-17s (0x%02X, 0x%02X): [%9.6f, %9.6f, %9.6f]\n",
+        MICROSTRAIN_LOG_INFO(
+            "%-17s (0x%02X, 0x%02X): [%9.6f, %9.6f, %9.6f]\n",
             "Scaled Mag Data",
             mip::data_sensor::ScaledMag::DESCRIPTOR_SET,   // Data descriptor set
             mip::data_sensor::ScaledMag::FIELD_DESCRIPTOR, // Data field descriptor set
-            scaledMagData.scaled_mag[0],                // X
-            scaledMagData.scaled_mag[1],                // Y
-            scaledMagData.scaled_mag[2]                 // Z
+            scaledMagData.scaled_mag[0],                   // X
+            scaledMagData.scaled_mag[1],                   // Y
+            scaledMagData.scaled_mag[2]                    // Z
         );
     }
 }
@@ -653,7 +679,7 @@ void magFieldCallback(void* _user, const mip::FieldView& _fieldView, mip::Timest
 ///
 void terminate(microstrain::Connection* _connection, const char* _message, const bool _successful /* = false */)
 {
-    if (strlen(_message) != 0)
+    if (_message && strlen(_message) != 0)
     {
         if (_successful)
         {
@@ -683,12 +709,11 @@ void terminate(microstrain::Connection* _connection, const char* _message, const
         }
     }
 
-    MICROSTRAIN_LOG_INFO("Exiting the program.\n");
+    MICROSTRAIN_LOG_INFO("Press 'Enter' to exit the program.\n");
 
-#ifdef _WIN32
-    // Keep the console open on Windows
-    system("pause");
-#endif // _WIN32
+    // Make sure the console remains open
+    const int confirmExit = getc(stdin);
+    (void)confirmExit; // Unused
 
     if (!_successful)
     {
@@ -711,10 +736,13 @@ void terminate(microstrain::Connection* _connection, const char* _message, const
 ///
 void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const char* _format, ...)
 {
-    va_list args;
-    va_start(args, _format);
-    MICROSTRAIN_LOG_ERROR_V(_format, args);
-    va_end(args);
+    if (_format && strlen(_format) != 0)
+    {
+        va_list args;
+        va_start(args, _format);
+        MICROSTRAIN_LOG_ERROR_V(_format, args);
+        va_end(args);
+    }
 
     MICROSTRAIN_LOG_ERROR("Command Result: (%d) %s.\n", _cmdResult.value, _cmdResult.name());
 

@@ -4,7 +4,7 @@
 /// Example setup program for the 3DM-CX5-AR, 3DM-CV5-AR, and 3DM-GX5-AR using
 /// C++
 ///
-/// This example shows a typical setup for the 3DM-CX5-AR, 3DM-CV5-AR, and
+/// This example shows a basic setup for the 3DM-CX5-AR, 3DM-CV5-AR, and
 /// 3DM-GX5-AR using C++.
 /// This is not an exhaustive example of all settings for those devices.
 /// If this example does not meet your specific setup needs, please consult the
@@ -319,7 +319,6 @@ void captureGyroBias(mip::Interface& _device)
     MICROSTRAIN_LOG_INFO("Initial command reply timeout is %dms.\n", previousTimeout);
 
     // Note: The default is 15 s (15,000 ms)
-    // Longer sample times are recommended but shortened here for convenience
     constexpr uint16_t captureDuration          = 15000;
     constexpr uint16_t increasedCmdReplyTimeout = captureDuration + 1000;
 

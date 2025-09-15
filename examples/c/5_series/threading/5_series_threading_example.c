@@ -488,6 +488,7 @@ void initialize_device(mip_interface* _device, serial_port* _device_port, const 
 ///             - Scaled accelerometer
 ///
 /// @param _device Pointer to the initialized MIP device interface
+///
 void configure_sensor_message_format(mip_interface* _device)
 {
     // Note: Querying the device base rate is only one way to calculate the descriptor decimation

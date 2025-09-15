@@ -3,8 +3,8 @@
 ///
 /// Example setup program for the 3DM-CX5-GNSS/INS, and 3DM-GX5-GNSS/INS using C
 ///
-/// This example shows a typical setup for the 3DM-CX5-GNSS/INS, and
-/// 3DM-GX5-GNSS/INS devices in a wheeled-vehicle application using C.
+/// This example shows a basic setup for the 3DM-CX5-GNSS/INS, and
+/// 3DM-GX5-GNSS/INS devices using C.
 /// This is not an exhaustive example of all settings for those devices.
 /// If this example does not meet your specific setup needs, please consult the
 /// MIP SDK API documentation for the proper commands.
@@ -86,7 +86,7 @@ void configure_antenna_offset(mip_interface* _device);
 // Filter initialization
 void initialize_filter(mip_interface* _device);
 
-// Utilities to display state changes
+// Utilities to display filter and GNSS state changes
 void display_gnss_fix_state(const mip_gnss_fix_info_data* _fix_info);
 void display_filter_state(const mip_filter_mode _filter_state);
 
@@ -258,7 +258,7 @@ int main(const int argc, const char* argv[])
     mip_filter_mode                 current_state    = filter_status.filter_state;
 
     // Wait for the device to initialize
-    while (filter_status.filter_state <= MIP_FILTER_MODE_GX5_INIT)
+    while (filter_status.filter_state < MIP_FILTER_MODE_GX5_RUN_SOLUTION_VALID)
     {
         // Update the device state
         // Note: This will update the device callbacks to trigger the filter state change

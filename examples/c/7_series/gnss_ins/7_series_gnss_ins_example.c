@@ -3,8 +3,8 @@
 ///
 /// Example setup program for the 3DM-GQ7-GNSS/INS, and 3DM-CV7-GNSS/INS using C
 ///
-/// This example shows a typical setup for the 3DM-GQ7-GNSS/INS, and
-/// 3DM-CV7-GNSS/INS devices in a wheeled-vehicle application using C.
+/// This example shows a basic setup for the 3DM-GQ7-GNSS/INS, and
+/// 3DM-CV7-GNSS/INS devices using C.
 /// This is not an exhaustive example of all settings for those devices.
 /// If this example does not meet your specific setup needs, please consult the
 /// MIP SDK API documentation for the proper commands.
@@ -67,6 +67,10 @@ static const uint16_t SAMPLE_RATE_HZ = 1;
 // TODO: Update to change the example run time
 // Example run time
 static const uint32_t RUN_TIME_SECONDS = 30;
+
+// TODO: Turn on for wheeled-vehicle applications
+// Enable configuration for wheeled-vehicle constraints
+#define WHEELED_VEHICLE_APPLICATION false
 ////////////////////////////////////////////////////////////////////////////////
 
 // Custom logging handler callback
@@ -158,6 +162,7 @@ int main(const int argc, const char* argv[])
         command_failure_terminate(&device, cmd_result, "Could not configure sensor-to-vehicle transformation!\n");
     }
 
+#if WHEELED_VEHICLE_APPLICATION
     // Configure the wheeled-vehicle constraint
     MICROSTRAIN_LOG_INFO("Enabling the wheeled-vehicle constraint.\n");
     cmd_result = mip_filter_write_wheeled_vehicle_constraint_control(
@@ -169,6 +174,7 @@ int main(const int argc, const char* argv[])
     {
         command_failure_terminate(&device, cmd_result, "Could not enable the wheeled-vehicle constraint!\n");
     }
+#endif // WHEELED_VEHICLE_APPLICATION
 
     // Configure the GNSS antenna offsets
     // Note: Antenna offsets are limited to a magnitude of [0.25, 10] (meters)
@@ -723,7 +729,7 @@ void configure_antenna_offset(mip_interface* _device, const mip_vector3f _antenn
 ///
 /// @details Configures the navigation filter by:
 ///          1. Enabling GNSS position and velocity aiding measurements
-///          2. Enabling dual-antenna GNSS heading aiding
+///          2. Enabling dual-antenna GNSS heading aiding measurements
 ///          3. Configuring filter initialization settings:
 ///             - Setting initial position and velocity to zero
 ///             - Enabling automatic position/velocity/attitude determination
@@ -788,8 +794,8 @@ void initialize_filter(mip_interface* _device)
         MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_INITIAL_CONDITION_SOURCE_AUTO_POS_VEL_ATT;
 
     const mip_filter_initialization_configuration_command_alignment_selector initial_alignment_selector =
-        MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_ALIGNMENT_SELECTOR_DUAL_ANTENNA |
-        MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_ALIGNMENT_SELECTOR_KINEMATIC;
+        MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_ALIGNMENT_SELECTOR_KINEMATIC |
+        MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_ALIGNMENT_SELECTOR_DUAL_ANTENNA;
 
     MICROSTRAIN_LOG_INFO("Setting the filter initialization configuration.\n");
     cmd_result = mip_filter_write_initialization_configuration(

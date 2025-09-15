@@ -722,7 +722,7 @@ void extract_sensor_delta_velocity_field(const mip_field_view* _field_view)
 /// @see add_comm_speed_field_to_packet
 /// @see add_comm_speed_serializer_bytes_to_packet
 ///
-void create_packet_1_from_scratch()
+void create_from_scratch_packet_1()
 {
     printf("Creating packet 1 from scratch.\n\n");
 
@@ -779,7 +779,7 @@ void create_packet_1_from_scratch()
 /// @see mip_packet_reset
 /// @see print_packet
 ///
-void create_packet_2_and_3_from_scratch()
+void create_from_scratch_packet_2_and_3()
 {
     printf("\nCreating packet 2 (3DM Message Format command) from scratch.\n\n");
 
@@ -788,7 +788,7 @@ void create_packet_2_and_3_from_scratch()
     mip_packet_view packet_view;
     uint8_t         buffer[MIP_PACKET_LENGTH_MAX] = { 0 };
 
-    initialize_empty_packet(&packet_view, buffer, sizeof(buffer) / sizeof(buffer[0]), MIP_BASE_CMD_DESC_SET);
+    initialize_empty_packet(&packet_view, buffer, sizeof(buffer) / sizeof(buffer[0]), MIP_3DM_CMD_DESC_SET);
 
     // Field 5
     add_message_format_field_to_packet(&packet_view);
@@ -798,7 +798,7 @@ void create_packet_2_and_3_from_scratch()
     add_checksum_to_packet(&packet_view);
 
     // Note: This would be the time to send the packet to the device
-    printf("Packet 2 (3DM Message Format command) is complete.\n\n");
+    printf("Packet 2 (Message Format command) is complete.\n\n");
 
     const uint8_t packet_descriptor_set = MIP_3DM_CMD_DESC_SET;
 
@@ -810,7 +810,7 @@ void create_packet_2_and_3_from_scratch()
     // Packet is now empty and invalid again
     print_packet(&packet_view);
 
-    printf("\nCreating packet 3 (3DM Poll Data command) from scratch.\n\n");
+    printf("\nCreating packet 3 (Poll Data command) from scratch.\n\n");
 
     // Field 6
     add_poll_data_field_to_packet(&packet_view);
@@ -820,7 +820,7 @@ void create_packet_2_and_3_from_scratch()
     add_checksum_to_packet(&packet_view);
 
     // Note: This would be the time to send the packet to the device
-    printf("Packet 3 (3DM Poll Data command) is complete.\n\n");
+    printf("Packet 3 (Poll Data command) is complete.\n\n");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -847,7 +847,7 @@ void create_packet_2_and_3_from_scratch()
 /// @see extract_sensor_delta_theta_field
 /// @see extract_sensor_delta_velocity_field
 ///
-void create_packet_4_from_raw_buffer()
+void create_from_raw_buffer_packet_4()
 {
     printf("\nCreating packet 4 from a raw byte buffer.\n\n");
 
