@@ -8,8 +8,8 @@
 
 namespace mip::metadata
 {
-    template<class T>
-    using Span = microstrain::ArrayView<T>;
+    using microstrain::ArrayView;
+    using microstrain::ConstArrayView;
 
     struct EnumInfo;
     struct BitfieldInfo;
@@ -73,7 +73,7 @@ namespace mip::metadata
         const char* docs = nullptr;
         Type        type = Type::NONE;
 
-        Span<const Entry> entries;
+        ConstArrayView<Entry> entries;
 
         const char* nameForValue(uint32_t value) const
         {
@@ -204,7 +204,7 @@ namespace mip::metadata
         const char* title = nullptr;
         const char* docs  = nullptr;
 
-        Span<const ParameterInfo> parameters;
+        ConstArrayView<ParameterInfo> parameters;
     };
 
     struct UnionInfo : public StructInfo {};
@@ -220,7 +220,7 @@ namespace mip::metadata
     {
         uint8_t                      descriptor = mip::INVALID_DESCRIPTOR_SET;
         const char*                  name       = nullptr;
-        Span<const FieldInfo* const> fields     = {};
+        ConstArrayView<const FieldInfo*> fields     = {};
 
         //const FieldInfo* findField(uint8_t field_desc) const
         //{

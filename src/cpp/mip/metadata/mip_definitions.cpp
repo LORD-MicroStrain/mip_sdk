@@ -86,7 +86,7 @@ namespace mip::metadata
         }
 
         // Binary search assumes fields are sorted by descriptor.
-        Span<const FieldInfo* const>::iterator it = std::lower_bound(
+        ConstArrayView<const FieldInfo*>::iterator it = std::lower_bound(
             ds_info.fields.begin(), ds_info.fields.end(), field_desc,
             [](const FieldInfo* a, uint8_t b) { return a->descriptor.fieldDescriptor < b; }
         );

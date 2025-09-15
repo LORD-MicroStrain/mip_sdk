@@ -2,7 +2,7 @@
 
 #include "readwrite.hpp"
 
-#include "../array_view.hpp"
+#include <microstrain/array_view.hpp>
 
 #include <array>
 
@@ -519,7 +519,7 @@ size_t insert(Serializer<E>& serializer, microstrain::ArrayView<const T> values)
 ///@returns The total number of bytes read.
 ///
 template<serialization::Endian E, class T>
-size_t extract(Serializer<E>& serializer, microstrain::ArrayView<const T> values)
+size_t extract(Serializer<E>& serializer, microstrain::ConstArrayView<T> values)
 {
     return extract(serializer, values.data(), values.size());
 }

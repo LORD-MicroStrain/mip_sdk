@@ -12,8 +12,8 @@ namespace microstrain
 static constexpr size_t DYNAMIC_EXTENT = SIZE_MAX;
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief This class represents a view over a contiguous array of objects,
-///       similar to std::span.
+///@brief Represents a view over a contiguous array of objects, similar to
+///       std::span.
 ///
 /// This class is intended to be mostly compatible and interchangeable with
 /// std::span, but certain features from span may be missing and additional ones
