@@ -14,6 +14,7 @@ namespace detail
     };
 
     void verifyCStringsAreEqual(const char* actual, const char* expected, FAILURE_LEVEL level);
+    void charsEqual(char actual, char expected);
     void verifyBufferTerminated(const char *buffer, size_t buffer_size, size_t position, FAILURE_LEVEL level);
 }
 
@@ -35,6 +36,8 @@ namespace detail
     detail::verifyCStringsAreEqual(actual, expected, detail::FAILURE_LEVEL::FAIL)
 #define EXIT_IF_C_STRINGS_ARE_NOT_EQUAL(actual, expected) \
     detail::verifyCStringsAreEqual(actual, expected, detail::FAILURE_LEVEL::EXIT)
+
+#define FAIL_IF_CHARS_NOT_EQUAL(actual, expected) detail::charsEqual(actual, expected)
 
 #define WARN_IF_BUFFER_IS_NOT_TERMINATED_AT_THE_END(buffer, contents_size) \
     detail::verifyBufferTerminated(buffer, contents_size, contents_size, detail::FAILURE_LEVEL::WARN)

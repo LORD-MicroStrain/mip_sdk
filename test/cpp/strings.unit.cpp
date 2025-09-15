@@ -17,7 +17,7 @@ TEST("C++ string concatenation", "A span of chars can be concatenated to a buffe
 
     FAIL_IF_NOT_TRUE(ok);
     FAIL_IF_C_STRINGS_ARE_NOT_EQUAL(buffer, CHECK_STRING);
-    FAIL_IF_BUFFER_IS_NOT_TERMINATED_AT_THE_END(buffer, CHECK_STRING_LENGTH);
+    FAIL_IF_CHARS_NOT_EQUAL(buffer[CHECK_STRING_LENGTH - 1], '\0');
 }
 
 TEST("C++ string concatenation", "A std::string_view can be concatenated to a buffer")
