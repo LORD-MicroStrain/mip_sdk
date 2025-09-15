@@ -54,7 +54,7 @@ namespace detail
         fail_if_position_out_of_bounds(buffer_size, position);
 
         INFO("The buffer is not terminated at position: " << position);
-        const size_t start = std::max<size_t>(0, position - 4);
+        const size_t start = (position < 4) ? 0 : position - 4;
         const size_t length = position - start + 1;
         INFO("Last max(5, N) characters: " << std::string(&buffer[start], length));
 
