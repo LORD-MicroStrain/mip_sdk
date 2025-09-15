@@ -31,7 +31,6 @@ Forthcoming
   * Disabled old broken tests
   * Set CI/CD pipeline to run test suite on all platforms
   * Setup test suite to be easily run locally
-  * Fixed the CI/CD release step not being run with new structure
 ### Interface Changes
 * MIP parser callbacks must now return bool (return true to preserve existing behavior).
 ### Bug Fixes
