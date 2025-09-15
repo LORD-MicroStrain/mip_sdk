@@ -31,7 +31,6 @@ Forthcoming
   * Disabled old broken tests
   * Set CI/CD pipeline to run test suite on all platforms
   * Setup test suite to be easily run locally
-  * Fixed the CI/CD release step not being run with new structure
   * Setup framework-independent wrapper assertions with doctest backend
   * Converted string and formatting tests to new structure and use the new assertion wrappers
 ### Interface Changes
