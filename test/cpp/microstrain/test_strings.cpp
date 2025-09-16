@@ -44,8 +44,7 @@ void concat_into_implicit_span_works()
     // Implicitly create a span
     bool ok = microstrain::strings::concat({test.array, sizeof(test.array)}, &test.index, TEST_STRING, sizeof(TEST_STRING)-1);
 
-    // TODO: Change back, intentionally failing
-    TEST_ASSERT(!ok, "Success");
+    TEST_ASSERT(ok, "Success");
     TEST_ASSERT_BUFFER_COMPARE(test.array, TEST_STRING, sizeof(TEST_STRING), "");
     TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(TEST_STRING)-1, "");
 }
