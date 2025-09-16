@@ -7,31 +7,90 @@
 
 	The goal is to provide a standardized interface for automated testing, regardless of the backend framework being
 	used.
-
-	Test registration:
-
-    - TEST(suite_name, test_name) - Registers a test in the given test suite. The test suite will be created
-                                    automatically if it doesn't exist.
-
-    Assertions:
-
-    There are three levels of failure:
-        - WARN_*: Doesn't fail the test but outputs a warning message
-        - FAIL_*: Fails the test but allows it to finish.
-        - EXIT_*: Fails the test and exits immediately
-
-    The arguments for each call are of the order (actual, expected). The order of arguments matters,
-    as some assertions make assumptions on the size or bounds of the actual argument based on the
-    expected argument.
-
-    Ex: ASSERTION(actual, expected)
-
-    - *_IF_NOT_TRUE - Useful if you only care about whether a condition is true. Might not have full debugging info.
-    - *_IF_NOT_EQUAL
-    - *_IF_C_STRINGS_NOT_EQUAL - Same as equality check, but with additional safety and debugging output for C strings
 */
 #pragma once
 
 #ifdef MICROSTRAIN_TEST_USE_DOCTEST
 #include "doctest/doctest_wrappers.hpp"
+#endif
+
+/** Test registration */
+
+/// Registers a test in the given test suite.
+///
+/// Test suites are useful for grouping related behaviors. The test suite will be created automatically if it doesn't
+/// exist.
+#ifndef TEST
+#error "TEST is not implemented for the current backend")
+#endif
+
+/** Assertions
+ *
+ * There are three levels of failure:
+ *   - WARN_*: Outputs a warning without failing the test.
+ *   - FAIL_*: Fails the test but allows it to continue running.
+ *   - EXIT_*: Fails and exits the test immediately.
+ *
+ *   The arguments for each call follow the order (actual, expected). The order of arguments matters, as some assertions
+ *   make assumptions on the size or bounds of the actual argument based on the expected argument.
+ *
+ *   Ex: LEVEL_ASSERTION(actual, expected)
+*/
+
+/// The following are useful if you only care about whether a condition is true.
+///
+/// They might not display any values used in the expression for debugging.
+
+#ifndef WARN_IF_NOT_TRUE
+#error "WARN_IF_NOT_TRUE is not implemented for the current backend.")
+#endif
+
+#ifndef FAIL_IF_NOT_TRUE
+#error "FAIL_IF_NOT_TRUE is not implemented for the current backend."
+#endif
+
+#ifndef EXIT_IF_NOT_TRUE
+#error "EXIT_IF_NOT_TRUE is not implemented for the current backend."
+#endif
+
+/// More specific checks for equality that print the values when debugging.
+
+#ifndef WARN_IF_NOT_EQUAL
+#error "WARN_IF_NOT_EQUAL is not implemented for the current backend."
+#endif
+
+#ifndef FAIL_IF_NOT_EQUAL
+#error "FAIL_IF_NOT_EQUAL is not implemented for the current backend."
+#endif
+
+#ifndef EXIT_IF_NOT_EQUAL
+#error "EXIT_IF_NOT_EQUAL is not implemented for the current backend."
+#endif
+
+/// Same as the equality checks, but with additional safety and debugging info for C strings.
+
+#ifndef WARN_IF_C_STRINGS_NOT_EQUAL
+#error "WARN_IF_C_STRINGS_NOT_EQUAL is not implemented for the current backend."
+#endif
+
+#ifndef FAIL_IF_C_STRINGS_NOT_EQUAL
+#error "FAIL_IF_C_STRINGS_NOT_EQUAL is not implemented for the current backend."
+#endif
+
+#ifndef EXIT_IF_C_STRINGS_NOT_EQUAL
+#error "EXIT_IF_C_STRINGS_NOT_EQUAL is not implemented for the current backend."
+#endif
+
+/// For individual characters
+
+#ifndef WARN_IF_CHARS_NOT_EQUAL
+#error "WARN_IF_CHARS_NOT_EQUAL is not implemented for the current backend."
+#endif
+
+#ifndef FAIL_IF_CHARS_NOT_EQUAL
+#error "FAIL_IF_CHARS_NOT_EQUAL is not implemented for the current backend."
+#endif
+
+#ifndef EXIT_IF_CHARS_NOT_EQUAL
+#error "EXIT_IF_CHARS_NOT_EQUAL is not implemented for the current backend."
 #endif

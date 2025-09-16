@@ -29,11 +29,11 @@ namespace detail
 #define FAIL_IF_NOT_EQUAL(actual, expected) CHECK_EQ(actual, expected)
 #define EXIT_IF_NOT_EQUAL(actual, expected) REQUIRE_EQ(actual, expected)
 
-#define WARN_IF_C_STRINGS_ARE_NOT_EQUAL(actual, expected) \
+#define WARN_IF_C_STRINGS_NOT_EQUAL(actual, expected) \
     detail::cStringsEqual(actual, expected, detail::FAILURE_LEVEL::WARN)
-#define FAIL_IF_C_STRINGS_ARE_NOT_EQUAL(actual, expected) \
+#define FAIL_IF_C_STRINGS_NOT_EQUAL(actual, expected) \
     detail::cStringsEqual(actual, expected, detail::FAILURE_LEVEL::FAIL)
-#define EXIT_IF_C_STRINGS_ARE_NOT_EQUAL(actual, expected) \
+#define EXIT_IF_C_STRINGS_NOT_EQUAL(actual, expected) \
     detail::cStringsEqual(actual, expected, detail::FAILURE_LEVEL::EXIT)
 
 #define FAIL_IF_CHARS_NOT_EQUAL(actual, expected) detail::charsEqual(actual, expected)
