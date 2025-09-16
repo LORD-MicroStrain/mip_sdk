@@ -16,7 +16,7 @@ TEST("C++ string concatenation", "A span of chars can be concatenated to a buffe
     const bool ok = microstrain::strings::concat(buffer, &index, microstrain::Span<const char>{CHECK_STRING});
 
     FAIL_IF_NOT_TRUE(ok);
-    FAIL_IF_C_STRINGS_ARE_NOT_EQUAL(buffer, CHECK_STRING);
+    FAIL_IF_C_STRINGS_NOT_EQUAL(buffer, CHECK_STRING);
     FAIL_IF_CHARS_NOT_EQUAL(buffer[CHECK_STRING_LENGTH], '\0');
 }
 
@@ -28,7 +28,7 @@ TEST("C++ string concatenation", "A std::string_view can be concatenated to a bu
     const bool ok = microstrain::strings::concat(buffer, &index, std::string_view{CHECK_STRING});
 
     FAIL_IF_NOT_TRUE(ok);
-    FAIL_IF_C_STRINGS_ARE_NOT_EQUAL(buffer, CHECK_STRING);
+    FAIL_IF_C_STRINGS_NOT_EQUAL(buffer, CHECK_STRING);
     FAIL_IF_CHARS_NOT_EQUAL(buffer[CHECK_STRING_LENGTH], '\0');
 }
 
@@ -40,7 +40,7 @@ TEST("C++ string concatenation", "A std::string can be concatenated to a buffer"
     const bool ok = microstrain::strings::concat(buffer, &index, std::string{CHECK_STRING});
 
     FAIL_IF_NOT_TRUE(ok);
-    FAIL_IF_C_STRINGS_ARE_NOT_EQUAL(buffer, CHECK_STRING);
+    FAIL_IF_C_STRINGS_NOT_EQUAL(buffer, CHECK_STRING);
     FAIL_IF_CHARS_NOT_EQUAL(buffer[CHECK_STRING_LENGTH], '\0');
 }
 
@@ -52,7 +52,7 @@ TEST("C++ string concatenation", "A zero-terminated C string can be concatenated
     const bool ok = microstrain::strings::concat_cstr(buffer, &index, CHECK_STRING);
 
     FAIL_IF_NOT_TRUE(ok);
-    FAIL_IF_C_STRINGS_ARE_NOT_EQUAL(buffer, CHECK_STRING);
+    FAIL_IF_C_STRINGS_NOT_EQUAL(buffer, CHECK_STRING);
     FAIL_IF_CHARS_NOT_EQUAL(buffer[CHECK_STRING_LENGTH], '\0');
 }
 
@@ -65,7 +65,7 @@ TEST("C++ string concatenation", "Up to N characters of a zero-terminated string
     const bool ok = microstrain::strings::concat_cstr(buffer, &index, "123456789", character_limit);
 
     FAIL_IF_NOT_TRUE(ok);
-    FAIL_IF_C_STRINGS_ARE_NOT_EQUAL(buffer, "1234");
+    FAIL_IF_C_STRINGS_NOT_EQUAL(buffer, "1234");
     FAIL_IF_CHARS_NOT_EQUAL(buffer[character_limit], '\0');
 }
 
@@ -77,6 +77,6 @@ TEST("C++ string concatenation", "A string literal can be concatenated to a buff
     const bool ok = microstrain::strings::concat_l(buffer, &index, "123456789");
 
     FAIL_IF_NOT_TRUE(ok);
-    FAIL_IF_C_STRINGS_ARE_NOT_EQUAL(buffer, "123456789");
+    FAIL_IF_C_STRINGS_NOT_EQUAL(buffer, "123456789");
     FAIL_IF_CHARS_NOT_EQUAL(buffer[9], '\0');
 }
