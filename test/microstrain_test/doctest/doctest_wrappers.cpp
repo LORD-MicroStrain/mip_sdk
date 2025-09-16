@@ -28,7 +28,7 @@ namespace detail
         CHECK_EQ(actual, expected);
     }
 
-    void verifyCStringsAreEqual(const char* actual, const char* expected, const FAILURE_LEVEL level)
+    void cStringsEqual(const char* actual, const char* expected, const FAILURE_LEVEL level)
     {
         // It is reasonable to assume expected is zero-terminated as it is set by the test
         const size_t expected_size = strlen(expected);

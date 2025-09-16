@@ -13,7 +13,7 @@ namespace detail
         EXIT
     };
 
-    void verifyCStringsAreEqual(const char* actual, const char* expected, FAILURE_LEVEL level);
+    void cStringsEqual(const char* actual, const char* expected, FAILURE_LEVEL level);
     void charsEqual(char actual, char expected);
 }
 
@@ -30,10 +30,10 @@ namespace detail
 #define EXIT_IF_NOT_EQUAL(actual, expected) REQUIRE_EQ(actual, expected)
 
 #define WARN_IF_C_STRINGS_ARE_NOT_EQUAL(actual, expected) \
-    detail::verifyCStringsAreEqual(actual, expected, detail::FAILURE_LEVEL::WARN)
+    detail::cStringsEqual(actual, expected, detail::FAILURE_LEVEL::WARN)
 #define FAIL_IF_C_STRINGS_ARE_NOT_EQUAL(actual, expected) \
-    detail::verifyCStringsAreEqual(actual, expected, detail::FAILURE_LEVEL::FAIL)
+    detail::cStringsEqual(actual, expected, detail::FAILURE_LEVEL::FAIL)
 #define EXIT_IF_C_STRINGS_ARE_NOT_EQUAL(actual, expected) \
-    detail::verifyCStringsAreEqual(actual, expected, detail::FAILURE_LEVEL::EXIT)
+    detail::cStringsEqual(actual, expected, detail::FAILURE_LEVEL::EXIT)
 
 #define FAIL_IF_CHARS_NOT_EQUAL(actual, expected) detail::charsEqual(actual, expected)
