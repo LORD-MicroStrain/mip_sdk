@@ -15,7 +15,7 @@ namespace detail
         }
     }
 
-    void charsEqual(const char actual, const char expected)
+    void charsEqual(const char actual, const char expected, FailureLevel failure_level)
     {
         std::ostringstream expected_output;
         std::ostringstream actual_output;
@@ -25,10 +25,15 @@ namespace detail
         INFO(expected_output.str());
         INFO(actual_output.str());
 
-        CHECK_EQ(actual, expected);
+        switch(failure_level)
+        {
+            case FailureLevel::WARN:  WARN_EQ(actual, expected);    break;
+            case FailureLevel::FAIL:  CHECK_EQ(actual, expected);   break;
+            case FailureLevel::FATAL: REQUIRE_EQ(actual, expected); break;
+        }
     }
 
-    void cStringsEqual(const char* actual, const char* expected, const FAILURE_LEVEL level)
+    void cStringsEqual(const char* actual, const char* expected, const FailureLevel failure_level)
     {
         // It is reasonable to assume expected is zero-terminated as it is set by the test
         const size_t expected_size = strlen(expected);
@@ -45,17 +50,11 @@ namespace detail
         INFO("Actual:   " << std::string(actual, expected_size));
         INFO("Expected: " << std::string(expected));
 
-        if (level == FAILURE_LEVEL::WARN)
+        switch(failure_level)
         {
-            WARN_EQ(strncmp(actual, expected, expected_size), 0);
-        }
-        else if (level == FAILURE_LEVEL::FAIL)
-        {
-            CHECK_EQ(strncmp(actual, expected, expected_size), 0);
-        }
-        else if (level == FAILURE_LEVEL::FATAL)
-        {
-            REQUIRE_EQ(strncmp(actual, expected, expected_size), 0);
+            case FailureLevel::WARN:  WARN_EQ(strncmp(actual, expected, expected_size), 0);    break;
+            case FailureLevel::FAIL:  CHECK_EQ(strncmp(actual, expected, expected_size), 0);   break;
+            case FailureLevel::FATAL: REQUIRE_EQ(strncmp(actual, expected, expected_size), 0); break;
         }
     }
 }

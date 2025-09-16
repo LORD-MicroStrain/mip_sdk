@@ -6,15 +6,15 @@
 
 namespace detail
 {
-    enum class FAILURE_LEVEL
+    enum class FailureLevel
     {
         WARN,
         FAIL,
         FATAL
     };
 
-    void cStringsEqual(const char* actual, const char* expected, FAILURE_LEVEL level);
-    void charsEqual(char actual, char expected);
+    void cStringsEqual(const char* actual, const char* expected, FailureLevel failure_level);
+    void charsEqual(char actual, char expected, FailureLevel failure_level);
 }
 
 // Using Doctest's tagging system here so we can run specific test suites without
@@ -29,11 +29,10 @@ namespace detail
 #define FAIL_IF_NOT_EQUAL(actual, expected) CHECK_EQ(actual, expected)
 #define FATAL_IF_NOT_EQUAL(actual, expected) REQUIRE_EQ(actual, expected)
 
-#define WARN_IF_C_STRINGS_NOT_EQUAL(actual, expected) \
-    detail::cStringsEqual(actual, expected, detail::FAILURE_LEVEL::WARN)
-#define FAIL_IF_C_STRINGS_NOT_EQUAL(actual, expected) \
-    detail::cStringsEqual(actual, expected, detail::FAILURE_LEVEL::FAIL)
-#define FATAL_IF_C_STRINGS_NOT_EQUAL(actual, expected) \
-    detail::cStringsEqual(actual, expected, detail::FAILURE_LEVEL::FATAL)
+#define WARN_IF_C_STRINGS_NOT_EQUAL(actual, expected) detail::cStringsEqual(actual, expected, detail::FailureLevel::WARN)
+#define FAIL_IF_C_STRINGS_NOT_EQUAL(actual, expected) detail::cStringsEqual(actual, expected, detail::FailureLevel::FAIL)
+#define FATAL_IF_C_STRINGS_NOT_EQUAL(actual, expected) detail::cStringsEqual(actual, expected, detail::FailureLevel::FATAL)
 
-#define FAIL_IF_CHARS_NOT_EQUAL(actual, expected) detail::charsEqual(actual, expected)
+#define WARN_IF_CHARS_NOT_EQUAL(actual, expected) detail::charsEqual(actual, expected, detail::FailureLevel::WARN)
+#define FAIL_IF_CHARS_NOT_EQUAL(actual, expected) detail::charsEqual(actual, expected, detail::FailureLevel::FAIL)
+#define FATAL_IF_CHARS_NOT_EQUAL(actual, expected) detail::charsEqual(actual, expected, detail::FailureLevel::FATAL)
