@@ -46,11 +46,11 @@ bool mip_format_field(char* buffer, size_t buffer_size, size_t* index, const mip
 
 // Logging functions
 
-void mip_log_packet(const mip_packet_view* packet, microstrain_log_level level);
+void mip_log_packet(const mip_packet_view* packet, microstrain_log_level level, microstrain_log_component_id component);
 
-void mip_log_field(const mip_field_view* field, microstrain_log_level level);
+void mip_log_field(const mip_field_view* field, microstrain_log_level level, microstrain_log_component_id component);
 
-void mip_log_packet_verbose(const mip_packet_view* packet, microstrain_log_level level);
+void mip_log_packet_verbose(const mip_packet_view* packet, microstrain_log_level level, microstrain_log_component_id component);
 
 #define MIP_LOG_PACKET(packet, level) mip_log_packet(packet, level)
 #define MIP_LOG_FIELD(field, level)   mip_log_packet(field, level)

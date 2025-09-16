@@ -191,7 +191,7 @@ bool mip_format_field(char* buffer, size_t buffer_size, size_t* index, const mip
 ///       Logging level passed to the microstrain log callback. If the current
 ///       log level is less than this value, nothing is printed.
 ///
-void mip_log_packet(const mip_packet_view* packet, microstrain_log_level level)
+void mip_log_packet(const mip_packet_view* packet, microstrain_log_level level, microstrain_log_component_id component)
 {
     if(microstrain_logging_level() < level)
         return;
@@ -204,7 +204,7 @@ void mip_log_packet(const mip_packet_view* packet, microstrain_log_level level)
 
     mip_format_packet(buffer, sizeof(buffer), &index, packet);
 
-    microstrain_logging_log(level, "%s\n", buffer);
+    microstrain_logging_log(level, component, "%s\n", buffer);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -220,7 +220,7 @@ void mip_log_packet(const mip_packet_view* packet, microstrain_log_level level)
 ///       Logging level passed to the microstrain log callback. If the current
 ///       log level is less than this value, nothing is printed.
 ///
-void mip_log_field(const mip_field_view* field, microstrain_log_level level)
+void mip_log_field(const mip_field_view* field, microstrain_log_level level, microstrain_log_component_id component)
 {
     if(microstrain_logging_level() < level)
         return;
@@ -232,7 +232,7 @@ void mip_log_field(const mip_field_view* field, microstrain_log_level level)
 
     mip_format_field(buffer, sizeof(buffer), &index, field);
 
-    microstrain_logging_log(level, "%s\n", buffer);
+    microstrain_logging_log(level, component, "%s\n", buffer);
 }
 
 
@@ -247,7 +247,7 @@ void mip_log_field(const mip_field_view* field, microstrain_log_level level)
 ///       Logging level passed to the microstrain log callback. If the current
 ///       log level is less than this value, nothing is printed.
 ///
-void mip_log_packet_verbose(const mip_packet_view* packet, microstrain_log_level level)
+void mip_log_packet_verbose(const mip_packet_view* packet, microstrain_log_level level, microstrain_log_component_id component)
 {
     if(microstrain_logging_level() < level)
         return;
@@ -258,28 +258,28 @@ void mip_log_packet_verbose(const mip_packet_view* packet, microstrain_log_level
 
     if(!mip_packet_is_sane(packet))
     {
-        microstrain_logging_log(level, "Invalid Packet: [%s]\n", byte_buffer);
+        microstrain_logging_log(level, component, "Invalid Packet: [%s]\n", byte_buffer);
 
         return;
     }
 
     const bool valid = mip_packet_compute_checksum(packet) == mip_packet_checksum_value(packet);
 
-    microstrain_logging_log(level, "Packet: [%s]\n", byte_buffer);
+    microstrain_logging_log(level, component, "Packet: [%s]\n", byte_buffer);
 
     // Print the packet details.
-    microstrain_logging_log(level, "%4s%-20s = %u\n",          " ", "Total Length", mip_packet_total_length(packet));
-    // microstrain_logging_log(level, "%4s%-20s = [%s]\n",        " ", "Raw Packet", byte_buffer);
-    microstrain_logging_log(level, "%4s%-20s = 0x%02X\n",      " ", "MIP SYNC1", mip_packet_pointer(packet)[0]);
-    microstrain_logging_log(level, "%4s%-20s = 0x%02X\n",      " ", "MIP SYNC2", mip_packet_pointer(packet)[1]);
-    microstrain_logging_log(level, "%4s%-20s = 0x%02X\n",      " ", "Descriptor Set", mip_packet_descriptor_set(packet));
-    microstrain_logging_log(level, "%4s%-20s = %u (0x%02X)\n", " ", "Payload Length", mip_packet_payload_length(packet), mip_packet_payload_length(packet));
-    microstrain_logging_log(level, "%4s%-20s = 0x%04X (%s)\n", " ", "Checksum", mip_packet_checksum_value(packet), valid ? "valid" : "INVALID");
+    microstrain_logging_log(level, component, "%4s%-20s = %u\n",          " ", "Total Length", mip_packet_total_length(packet));
+    // microstrain_logging_log(level, component, "%4s%-20s = [%s]\n",        " ", "Raw Packet", byte_buffer);
+    microstrain_logging_log(level, component, "%4s%-20s = 0x%02X\n",      " ", "MIP SYNC1", mip_packet_pointer(packet)[0]);
+    microstrain_logging_log(level, component, "%4s%-20s = 0x%02X\n",      " ", "MIP SYNC2", mip_packet_pointer(packet)[1]);
+    microstrain_logging_log(level, component, "%4s%-20s = 0x%02X\n",      " ", "Descriptor Set", mip_packet_descriptor_set(packet));
+    microstrain_logging_log(level, component, "%4s%-20s = %u (0x%02X)\n", " ", "Payload Length", mip_packet_payload_length(packet), mip_packet_payload_length(packet));
+    microstrain_logging_log(level, component, "%4s%-20s = 0x%04X (%s)\n", " ", "Checksum", mip_packet_checksum_value(packet), valid ? "valid" : "INVALID");
 
     mip_field_view field = mip_field_first_from_packet(packet);
     if(!mip_field_is_valid(&field))
     {
-        microstrain_logging_log(level, "%4sNo Fields\n", " ");
+        microstrain_logging_log(level, component, "%4sNo Fields\n", " ");
 
         return;
     }
@@ -295,7 +295,7 @@ void mip_log_packet_verbose(const mip_packet_view* packet, microstrain_log_level
         microstrain_string_bytes_to_hex_str(byte_buffer, sizeof(byte_buffer), &index, mip_field_payload(&field), mip_field_payload_length(&field), 0);
 
         microstrain_logging_log(
-            level, "%4sField %u: [%02X%02X %s]\n", " ",
+            level, component, "%4sField %u: [%02X%02X %s]\n", " ",
             i,
             field_length,
             mip_field_field_descriptor(&field),
@@ -303,13 +303,13 @@ void mip_log_packet_verbose(const mip_packet_view* packet, microstrain_log_level
         );
 
         // Print field info.
-        microstrain_logging_log(level, "%8s%-16s = %u (0x%02X)\n", " ", "Field Length", field_length, field_length);
-        microstrain_logging_log(level, "%8s%-16s = 0x%02X\n",      " ", "Field Descriptor", mip_field_field_descriptor(&field));
-        // microstrain_logging_log(level, "%8s%-16s = [%s]\n",        " ", "Raw Payload", byte_buffer);
+        microstrain_logging_log(level, component, "%8s%-16s = %u (0x%02X)\n", " ", "Field Length", field_length, field_length);
+        microstrain_logging_log(level, component, "%8s%-16s = 0x%02X\n",      " ", "Field Descriptor", mip_field_field_descriptor(&field));
+        // microstrain_logging_log(level, component, "%8s%-16s = [%s]\n",        " ", "Raw Payload", byte_buffer);
 
     } while(mip_field_next(&field));
 
-    microstrain_logging_log(level, "\n");
+    microstrain_logging_log(level, component, "\n");
 }
 
 

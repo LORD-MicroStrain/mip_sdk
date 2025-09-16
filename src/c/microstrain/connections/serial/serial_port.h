@@ -1,6 +1,9 @@
 #pragma once
 
 #include <microstrain/platform.h>
+#include <microstrain/logging.h>
+
+MICROSTRAIN_LOGGING_DECLARE_COMPONENT(microstrain_serial_port)
 
 #if defined MICROSTRAIN_PLATFORM_WINDOWS
 
