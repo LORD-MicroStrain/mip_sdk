@@ -29,10 +29,6 @@
     - *_IF_NOT_TRUE - Useful if you only care about whether a condition is true. Might not have full debugging info.
     - *_IF_NOT_EQUAL
     - *_IF_C_STRINGS_NOT_EQUAL - Same as equality check, but with additional safety and debugging output for C strings
-
- * TODO: Add docs for buffer terminated if keeping
-    /// Pass the size of the string contents, not the maximum size of the buffer.
-
 */
 #pragma once
 

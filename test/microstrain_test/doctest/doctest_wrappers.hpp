@@ -15,7 +15,6 @@ namespace detail
 
     void verifyCStringsAreEqual(const char* actual, const char* expected, FAILURE_LEVEL level);
     void charsEqual(char actual, char expected);
-    void verifyBufferTerminated(const char *buffer, size_t buffer_size, size_t position, FAILURE_LEVEL level);
 }
 
 // Using Doctest's tagging system here so we can run specific test suites without
@@ -38,17 +37,3 @@ namespace detail
     detail::verifyCStringsAreEqual(actual, expected, detail::FAILURE_LEVEL::EXIT)
 
 #define FAIL_IF_CHARS_NOT_EQUAL(actual, expected) detail::charsEqual(actual, expected)
-
-#define WARN_IF_BUFFER_IS_NOT_TERMINATED_AT_THE_END(buffer, contents_size) \
-    detail::verifyBufferTerminated(buffer, contents_size, contents_size, detail::FAILURE_LEVEL::WARN)
-#define FAIL_IF_BUFFER_IS_NOT_TERMINATED_AT_THE_END(buffer, contents_size) \
-    detail::verifyBufferTerminated(buffer, contents_size, contents_size, detail::FAILURE_LEVEL::FAIL)
-#define EXIT_IF_BUFFER_IS_NOT_TERMINATED_AT_THE_END(buffer, contents_size) \
-    detail::verifyBufferTerminated(buffer, contents_size, contents_size, detail::FAILURE_LEVEL::EXIT)
-
-#define WARN_IF_BUFFER_IS_NOT_TERMINATED_AT_POSITION(buffer, contents_size, position) \
-    detail::verifyBufferTerminated(buffer, contents_size, position, detail::FAILURE_LEVEL::WARN)
-#define FAIL_IF_BUFFER_IS_NOT_TERMINATED_AT_POSITION(buffer, contents_size, position) \
-    detail::verifyBufferTerminated(buffer, contents_size, position, detail::FAILURE_LEVEL::FAIL)
-#define EXIT_IF_BUFFER_IS_NOT_TERMINATED_AT_POSITION(buffer, contents_size, position) \
-    detail::verifyBufferTerminated(buffer, contents_size, position, detail::FAILURE_LEVEL::EXIT)

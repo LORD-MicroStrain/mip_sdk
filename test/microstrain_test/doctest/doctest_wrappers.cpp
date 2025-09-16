@@ -58,39 +58,4 @@ namespace detail
             REQUIRE_EQ(strncmp(actual, expected, expected_size), 0);
         }
     }
-
-    void fail_if_position_out_of_bounds(const size_t buffer_size, const size_t position)
-    {
-        if (position > buffer_size)
-        {
-            FAIL(
-                "Position out of bounds (can't be greater than the buffer size):\n"
-                "Buffer size: " << buffer_size << "\n"
-                "Position:    " << position << "\n";
-            );
-        }
-    }
-
-    void verifyBufferTerminated(const char *buffer, const size_t buffer_size, const size_t position, FAILURE_LEVEL level)
-    {
-        fail_if_position_out_of_bounds(buffer_size, position);
-
-        INFO("The buffer is not terminated at position: " << position);
-        const size_t start = (position < 4) ? 0 : position - 4;
-        const size_t length = position - start + 1;
-        INFO("Last max(5, N) characters: " << std::string(&buffer[start], length));
-
-        if (level == FAILURE_LEVEL::WARN)
-        {
-            WARN_EQ(buffer[position], '\0');
-        }
-        else if (level == FAILURE_LEVEL::FAIL)
-        {
-            CHECK_EQ(buffer[position], '\0');
-        }
-        else if (level == FAILURE_LEVEL::EXIT)
-        {
-            REQUIRE_EQ(buffer[position], '\0');
-        }
-    }
 }
