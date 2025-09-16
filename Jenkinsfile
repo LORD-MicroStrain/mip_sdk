@@ -64,7 +64,6 @@ pipeline {
                         }
                     }
                 }
-/*
                 stage('Windows x86') {
                     agent {
                         label 'windows10'
@@ -88,7 +87,6 @@ pipeline {
                                         -DMICROSTRAIN_BUILD_TESTS=ON
                                     cmake --build . --config Release --parallel \$env:NUMBER_OF_PROCESSORS
                                     cmake --build . --config Release --parallel \$env:NUMBER_OF_PROCESSORS --target package
-
                                 """
                                 archiveArtifacts artifacts: "mipsdk_*"
                                 powershell """
@@ -99,6 +97,13 @@ pipeline {
                                         --output-junit unit_test_results.xml `
                                         --parallel \$env:NUMBER_OF_PROCESSORS
                                 """
+                                junit testResults: "unit_test_results.xml", allowEmptyResults: false
+                            }
+                        }
+                    }
+                    post {
+                        always {
+                            dir("build_${BUILD_ARCH}") {
                                 junit testResults: "unit_test_results.xml", allowEmptyResults: false
                             }
                         }
@@ -138,12 +143,17 @@ pipeline {
                                         --output-junit unit_test_results.xml `
                                         --parallel \$env:NUMBER_OF_PROCESSORS
                                 """
+                            }
+                        }
+                    }
+                    post {
+                        always {
+                            dir("build_${BUILD_ARCH}") {
                                 junit testResults: "unit_test_results.xml", allowEmptyResults: false
                             }
                         }
                     }
                 }
- */
                 stage('Ubuntu amd64') {
                     agent {
                         label 'linux-amd64'
@@ -191,6 +201,12 @@ pipeline {
                             sh "./.devcontainer/docker_build.sh --os ${BUILD_OS} --arch ${BUILD_ARCH}"
                             dir("build_${BUILD_OS}_${BUILD_ARCH}") {
                                 archiveArtifacts artifacts: "mipsdk_*"
+                            }
+                        }
+                    }
+                    post {
+                        always {
+                            dir("build_${BUILD_OS}_${BUILD_ARCH}") {
                                 junit testResults: "unit_test_results.xml", allowEmptyResults: false
                             }
                         }
@@ -214,6 +230,13 @@ pipeline {
                             sh "./.devcontainer/docker_build.sh --os ${BUILD_OS} --arch ${BUILD_ARCH}"
                             dir("build_${BUILD_OS}_${BUILD_ARCH}") {
                                 archiveArtifacts artifacts: "mipsdk_*"
+                                junit testResults: "unit_test_results.xml", allowEmptyResults: false
+                            }
+                        }
+                    }
+                    post {
+                        always {
+                            dir("build_${BUILD_OS}_${BUILD_ARCH}") {
                                 junit testResults: "unit_test_results.xml", allowEmptyResults: false
                             }
                         }
