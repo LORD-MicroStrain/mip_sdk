@@ -15,7 +15,7 @@ namespace detail
         }
     }
 
-    void charsEqual(const char actual, const char expected, FailureLevel failure_level)
+    void charEqual(const char actual, const char expected, FailureLevel failure_level)
     {
         std::ostringstream expected_output;
         std::ostringstream actual_output;

@@ -17,7 +17,7 @@ TEST("C++ string concatenation", "A span of chars can be concatenated to a buffe
 
     FAIL_IF_NOT_TRUE(ok);
     FAIL_IF_C_STRINGS_NOT_EQUAL(buffer, CHECK_STRING);
-    FAIL_IF_CHARS_NOT_EQUAL(buffer[CHECK_STRING_LENGTH], '\0');
+    FAIL_IF_CHAR_NOT_EQUAL(buffer[CHECK_STRING_LENGTH], '\0');
 }
 
 TEST("C++ string concatenation", "A std::string_view can be concatenated to a buffer")
@@ -29,7 +29,7 @@ TEST("C++ string concatenation", "A std::string_view can be concatenated to a bu
 
     FAIL_IF_NOT_TRUE(ok);
     FAIL_IF_C_STRINGS_NOT_EQUAL(buffer, CHECK_STRING);
-    FAIL_IF_CHARS_NOT_EQUAL(buffer[CHECK_STRING_LENGTH], '\0');
+    FAIL_IF_CHAR_NOT_EQUAL(buffer[CHECK_STRING_LENGTH], '\0');
 }
 
 TEST("C++ string concatenation", "A std::string can be concatenated to a buffer")
@@ -41,7 +41,7 @@ TEST("C++ string concatenation", "A std::string can be concatenated to a buffer"
 
     FAIL_IF_NOT_TRUE(ok);
     FAIL_IF_C_STRINGS_NOT_EQUAL(buffer, CHECK_STRING);
-    FAIL_IF_CHARS_NOT_EQUAL(buffer[CHECK_STRING_LENGTH], '\0');
+    FAIL_IF_CHAR_NOT_EQUAL(buffer[CHECK_STRING_LENGTH], '\0');
 }
 
 TEST("C++ string concatenation", "A zero-terminated C string can be concatenated to a buffer")
@@ -53,7 +53,7 @@ TEST("C++ string concatenation", "A zero-terminated C string can be concatenated
 
     FAIL_IF_NOT_TRUE(ok);
     FAIL_IF_C_STRINGS_NOT_EQUAL(buffer, CHECK_STRING);
-    FAIL_IF_CHARS_NOT_EQUAL(buffer[CHECK_STRING_LENGTH], '\0');
+    FAIL_IF_CHAR_NOT_EQUAL(buffer[CHECK_STRING_LENGTH], '\0');
 }
 
 TEST("C++ string concatenation", "Up to N characters of a zero-terminated string can be concatenated to a buffer")
@@ -66,7 +66,7 @@ TEST("C++ string concatenation", "Up to N characters of a zero-terminated string
 
     FAIL_IF_NOT_TRUE(ok);
     FAIL_IF_C_STRINGS_NOT_EQUAL(buffer, "1234");
-    FAIL_IF_CHARS_NOT_EQUAL(buffer[character_limit], '\0');
+    FAIL_IF_CHAR_NOT_EQUAL(buffer[character_limit], '\0');
 }
 
 TEST("C++ string concatenation", "A string literal can be concatenated to a buffer")
@@ -78,5 +78,5 @@ TEST("C++ string concatenation", "A string literal can be concatenated to a buff
 
     FAIL_IF_NOT_TRUE(ok);
     FAIL_IF_C_STRINGS_NOT_EQUAL(buffer, "123456789");
-    FAIL_IF_CHARS_NOT_EQUAL(buffer[9], '\0');
+    FAIL_IF_CHAR_NOT_EQUAL(buffer[9], '\0');
 }

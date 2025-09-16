@@ -81,14 +81,14 @@
 
 /// For individual characters
 
-#ifndef WARN_IF_CHARS_NOT_EQUAL
-#error "WARN_IF_CHARS_NOT_EQUAL is not implemented for the current backend."
+#ifndef WARN_IF_CHAR_NOT_EQUAL
+#error "WARN_IF_CHAR_NOT_EQUAL is not implemented for the current backend."
 #endif
 
-#ifndef FAIL_IF_CHARS_NOT_EQUAL
-#error "FAIL_IF_CHARS_NOT_EQUAL is not implemented for the current backend."
+#ifndef FAIL_IF_CHAR_NOT_EQUAL
+#error "FAIL_IF_CHAR_NOT_EQUAL is not implemented for the current backend."
 #endif
 
-#ifndef FATAL_IF_CHARS_NOT_EQUAL
-#error "FATAL_IF_CHARS_NOT_EQUAL is not implemented for the current backend."
+#ifndef FATAL_IF_CHAR_NOT_EQUAL
+#error "FATAL_IF_CHAR_NOT_EQUAL is not implemented for the current backend."
 #endif
