@@ -64,6 +64,7 @@ pipeline {
                         }
                     }
                 }
+/*
                 stage('Windows x86') {
                     agent {
                         label 'windows10'
@@ -142,6 +143,7 @@ pipeline {
                         }
                     }
                 }
+ */
                 stage('Ubuntu amd64') {
                     agent {
                         label 'linux-amd64'
