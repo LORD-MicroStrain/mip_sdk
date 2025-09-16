@@ -83,14 +83,14 @@ docker run \
         mkdir ${docker_project_dir}/${build_dir_name}; \
         cd ${docker_project_dir}/${build_dir_name}; \
         cmake ${docker_project_dir} ${configure_flags}; \
-        cmake --build . -j$(nproc); \
-        cmake --build . --target ${build_target}; \
+        cmake --build . --parallel $(nproc) && \
+        cmake --build . --parallel $(nproc) --target ${build_target} && \
         if [ ${build_docs} != true ]; then \
             ctest \
                 -C Release \
                 --verbose \
                 --output-on-failure \
                 --output-junit unit_test_results.xml \
-                --parallel; \
+                --parallel $(nproc); \
         fi; \
     "

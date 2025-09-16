@@ -1,4 +1,3 @@
-
 // Utility function for getting the real branch name even in a pull request
 def branchName() {
     if (env.CHANGE_BRANCH) {
@@ -24,40 +23,16 @@ def checkoutRepo() {
             [name: 'refs/heads/' + BRANCH_NAME_REAL]
         ],
         userRemoteConfigs: [[credentialsId: 'Github_User_And_Token', url: 'https://github.com/LORD-MicroStrain/mip_sdk.git']],
-        extensions: [],
+        extensions: [
+        ]
     ])
 
-    env.setProperty('BRANCH_NAME', branchName())
-}
-
-def setUpWorkspace()
-{
-    cleanWs()
-    unstash 'source-code'
-}
-
-def buildLinux(String os, String arch, String options = "")
-{
-    setUpWorkspace()
-    sh "./.devcontainer/docker_build.sh --os ${os} --arch ${arch} ${options}"
-}
-
-def postBuild(boolean archiveTestResults = true)
-{
-    dir("${BUILD_DIRECTORY}") {
-        archiveArtifacts artifacts: 'mipsdk_*'
-
-        if (archiveTestResults)
-        {
-            archiveArtifacts artifacts: 'unit_test_results.xml', allowEmptyArchive: false
-            junit testResults: "unit_test_results.xml", allowEmptyResults: false
-        }
-    }
+  // Set the branch name
+  env.setProperty('BRANCH_NAME', branchName())
 }
 
 pipeline {
     agent none
-
     options {
         // Set a timeout for the whole pipeline. The timer starts when the project is queued
         timeout(time: 1, unit: 'HOURS')
@@ -65,198 +40,253 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: "10"))
         copyArtifactPermission('*')
     }
-
     stages {
-        stage('Checkout') {
-            agent {
-                label '!windows10'
-            }
-            options {
-                skipDefaultCheckout()
-            }
-            steps {
-                script {
-                    checkoutRepo()
-                    stash includes: '**', name: 'source-code'
-                }
-            }
-        }
-
-        stage('Multi-platform staging') {
+        stage('Build') {
+            // Run all the builds in parallel
             parallel {
-                stage('Windows x64') {
+                stage('Documentation') {
                     agent {
-                        label 'windows10'
+                        label 'linux-amd64'
                     }
                     environment {
-                        BUILD_DIRECTORY = "build_x64"
+                        BUILD_OS = "ubuntu"
+                        BUILD_ARCH = "amd64"
                     }
                     options {
                         skipDefaultCheckout()
-                        // timeout(time: 5, activity: true, unit: 'MINUTES')
+                        timeout(time: 5, activity: true, unit: 'MINUTES')
                     }
                     steps {
                         script {
-                            setUpWorkspace()
-                        }
-                        dir("${BUILD_DIRECTORY}") {
-                            powershell """
-                                cmake .. `
-                                    -DMICROSTRAIN_BUILD_EXAMPLES=ON `
-                                    -DMICROSTRAIN_BUILD_PACKAGE=ON `
-                                    -DMICROSTRAIN_BUILD_TESTS=ON
-                                cmake --build . --config Release
-                                cmake --build . --config Release --target package
-
-                                ctest `
-                                    -C Release `
-                                    --verbose `
-                                    --output-on-failure `
-                                    --output-junit unit_test_results.xml `
-                                    --parallel
-                            """
-                        }
-                    }
-                    post {
-                        always {
-                            postBuild()
+                            checkoutRepo()
+                            sh "./.devcontainer/docker_build.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} --docs"
+                            archiveArtifacts artifacts: "build_docs/mipsdk_*"
                         }
                     }
                 }
-
                 stage('Windows x86') {
                     agent {
                         label 'windows10'
                     }
                     environment {
-                        BUILD_DIRECTORY = "build_Win32"
+                        BUILD_ARCH = "Win32"
                     }
                     options {
                         skipDefaultCheckout()
-                        // timeout(time: 5, activity: true, unit: 'MINUTES')
+                        timeout(time: 5, activity: true, unit: 'MINUTES')
                     }
                     steps {
                         script {
-                            setUpWorkspace()
-                        }
-                        dir("${BUILD_DIRECTORY}") {
-                            powershell """
-                                cmake .. `
-                                    -A "Win32" `
-                                    -DMICROSTRAIN_BUILD_EXAMPLES=ON `
-                                    -DMICROSTRAIN_BUILD_PACKAGE=ON `
-                                    -DMICROSTRAIN_BUILD_TESTS=ON
-                                cmake --build . --config Release
-                                cmake --build . --config Release --target package
+                            checkoutRepo()
+                            dir("build_${BUILD_ARCH}") {
+                                powershell """
+                                    cmake .. `
+                                        -A "${BUILD_ARCH}" `
+                                        -DMICROSTRAIN_BUILD_EXAMPLES=ON `
+                                        -DMICROSTRAIN_BUILD_PACKAGE=ON `
+                                        -DMICROSTRAIN_BUILD_TESTS=ON
+                                    cmake --build . --config Release --parallel \$env:NUMBER_OF_PROCESSORS
+                                    cmake --build . --config Release --parallel \$env:NUMBER_OF_PROCESSORS --target package
 
-                                ctest `
-                                    -C Release `
-                                    --verbose `
-                                    --output-on-failure `
-                                    --output-junit unit_test_results.xml `
-                                    --parallel
-                            """
-                        }
-                    }
-                    post {
-                        always {
-                            postBuild()
+                                """
+                                archiveArtifacts artifacts: "mipsdk_*"
+                                powershell """
+                                    ctest `
+                                        -C Release `
+                                        --verbose `
+                                        --output-on-failure `
+                                        --output-junit unit_test_results.xml `
+                                        --parallel \$env:NUMBER_OF_PROCESSORS
+                                """
+                                junit testResults: "unit_test_results.xml", allowEmptyResults: false
+                            }
                         }
                     }
                 }
+                stage('Windows x64') {
+                    agent {
+                        label 'windows10'
+                    }
+                    environment {
+                        BUILD_ARCH = "x64"
+                    }
+                    options {
+                        skipDefaultCheckout()
+                        timeout(time: 5, activity: true, unit: 'MINUTES')
+                    }
+                    steps {
+                        script {
+                            checkoutRepo()
+                            dir("build_${BUILD_ARCH}") {
+                                powershell """
+                                    cmake .. `
+                                        -A "${BUILD_ARCH}" `
+                                        -DMICROSTRAIN_BUILD_EXAMPLES=ON `
+                                        -DMICROSTRAIN_BUILD_PACKAGE=ON `
+                                        -DMICROSTRAIN_BUILD_TESTS=ON
+                                    cmake --build . --config Release --parallel \$env:NUMBER_OF_PROCESSORS
+                                    cmake --build . --config Release --parallel \$env:NUMBER_OF_PROCESSORS --target package
 
+                                """
+                                archiveArtifacts artifacts: "mipsdk_*"
+                                powershell """
+                                    ctest `
+                                        -C Release `
+                                        --verbose `
+                                        --output-on-failure `
+                                        --output-junit unit_test_results.xml `
+                                        --parallel \$env:NUMBER_OF_PROCESSORS
+                                """
+                                junit testResults: "unit_test_results.xml", allowEmptyResults: false
+                            }
+                        }
+                    }
+                }
                 stage('Ubuntu amd64') {
                     agent {
                         label 'linux-amd64'
                     }
                     environment {
-                        BUILD_DIRECTORY = "build_ubuntu_amd64"
+                        BUILD_OS = "ubuntu"
+                        BUILD_ARCH = "amd64"
                     }
                     options {
                         skipDefaultCheckout()
-                        // timeout(time: 5, activity: true, unit: 'MINUTES')
+                        timeout(time: 5, activity: true, unit: 'MINUTES')
                     }
                     steps {
                         script {
-                            buildLinux('ubuntu', 'amd64')
-                        }
-                    }
-                    post {
-                        always {
-                            postBuild()
+                            checkoutRepo()
+                            sh "./.devcontainer/docker_build.sh --os ${BUILD_OS} --arch ${BUILD_ARCH}"
+                            dir("build_${BUILD_OS}_${BUILD_ARCH}") {
+                                archiveArtifacts artifacts: "mipsdk_*"
+                                junit testResults: "unit_test_results.xml", allowEmptyResults: false
+                            }
                         }
                     }
                 }
-
                 stage('Ubuntu arm64') {
                     agent {
                         label 'linux-arm64'
                     }
                     environment {
-                        BUILD_DIRECTORY = "build_ubuntu_arm64v8"
+                        BUILD_OS = "ubuntu"
+                        BUILD_ARCH = "arm64v8"
                     }
                     options {
                         skipDefaultCheckout()
-                        // timeout(time: 5, activity: true, unit: 'MINUTES')
+                        timeout(time: 5, activity: true, unit: 'MINUTES')
                     }
                     steps {
                         script {
-                            buildLinux('ubuntu', 'arm64v8')
-                        }
-                    }
-                    post {
-                        always {
-                            postBuild()
+                            checkoutRepo()
+                            sh "./.devcontainer/docker_build.sh --os ${BUILD_OS} --arch ${BUILD_ARCH}"
+                            dir("build_${BUILD_OS}_${BUILD_ARCH}") {
+                                archiveArtifacts artifacts: "mipsdk_*"
+                                junit testResults: "unit_test_results.xml", allowEmptyResults: false
+                            }
                         }
                     }
                 }
-
                 stage('Ubuntu arm32') {
                     agent {
                         label 'linux-arm64'
                     }
                     environment {
-                        BUILD_DIRECTORY = "build_ubuntu_arm32v7"
+                        BUILD_OS = "ubuntu"
+                        BUILD_ARCH = "arm32v7"
                     }
                     options {
                         skipDefaultCheckout()
-                        // timeout(time: 5, activity: true, unit: 'MINUTES')
+                        timeout(time: 5, activity: true, unit: 'MINUTES')
                     }
                     steps {
                         script {
-                            buildLinux('ubuntu', 'arm32v7')
+                            checkoutRepo()
+                            sh "./.devcontainer/docker_build.sh --os ${BUILD_OS} --arch ${BUILD_ARCH}"
+                            dir("build_${BUILD_OS}_${BUILD_ARCH}") {
+                                archiveArtifacts artifacts: "mipsdk_*"
+                                junit testResults: "unit_test_results.xml", allowEmptyResults: false
+                            }
                         }
                     }
-                    post {
-                        always {
-                            postBuild()
-                        }
-                    }
                 }
-            }
-        }
-
-        // We only want to generate documentation when the build succeeds
-        stage('Documentation') {
-            agent {
-                label 'linux-amd64'
-            }
-            environment {
-                BUILD_DIRECTORY = "build_docs"
-            }
-            options {
-                skipDefaultCheckout()
-                // timeout(time: 5, activity: true, unit: 'MINUTES')
-            }
-            steps {
-                script {
-                    buildLinux('ubuntu', 'amd64', '--docs')
-                }
-            }
-            post {
-                always {
-                    postBuild(false)
-                }
+//                 stage("Mac M2") {
+//                     agent {
+//                         label 'mac-m2'
+//                     }
+//                     environment {
+//                         BUILD_OS = "mac"
+//                         BUILD_ARCH = "arm64"
+//                     }
+//                     options {
+//                         skipDefaultCheckout()
+//                         timeout(time: 5, activity: true, unit: 'MINUTES')
+//                     }
+//                     steps {
+//                         script {
+//                             checkoutRepo()
+//                             dir("build_${BUILD_OS}_${BUILD_ARCH}") {
+//                                 sh '''
+//                                     cmake .. `
+//                                         -DMICROSTRAIN_BUILD_EXAMPLES=ON `
+//                                         -DMICROSTRAIN_BUILD_PACKAGE=ON `
+//                                         -DMICROSTRAIN_BUILD_TESTS=ON
+//                                     cmake --build . --parallel $(sysctl -n hw.ncpu)
+//                                     cmake --build . --parallel $(sysctl -n hw.ncpu) --target package
+//                                 '''
+//                                 archiveArtifacts artifacts: "mipsdk_*"
+//                                 sh '''
+//                                     ctest `
+//                                         -C Release `
+//                                         --verbose `
+//                                         --output-on-failure `
+//                                         --output-junit unit_test_results.xml `
+//                                         --parallel $(sysctl -n hw.ncpu)
+//                                 '''
+//                                 junit testResults: "unit_test_results.xml", allowEmptyResults: false
+//                             }
+//                         }
+//                     }
+//                 }
+//                 stage("Mac Intel") {
+//                     agent {
+//                         label 'mac-intel'
+//                     }
+//                     environment {
+//                         BUILD_OS = "mac"
+//                         BUILD_ARCH = "intel"
+//                     }
+//                     options {
+//                         skipDefaultCheckout()
+//                         timeout(time: 5, activity: true, unit: 'MINUTES')
+//                     }
+//                     steps {
+//                         script {
+//                             checkoutRepo()
+//                             dir("build_${BUILD_OS}_${BUILD_ARCH}") {
+//                                 sh '''
+//                                     cmake .. `
+//                                         -DMICROSTRAIN_BUILD_EXAMPLES=ON `
+//                                         -DMICROSTRAIN_BUILD_PACKAGE=ON `
+//                                         -DMICROSTRAIN_BUILD_TESTS=ON
+//                                     cmake --build . --parallel $(sysctl -n hw.ncpu)
+//                                     cmake --build . --parallel $(sysctl -n hw.ncpu) --target package
+//                                 '''
+//                                 archiveArtifacts artifacts: "mipsdk_*"
+//                                 sh '''
+//                                     ctest `
+//                                         -C Release `
+//                                         --verbose `
+//                                         --output-on-failure `
+//                                         --output-junit unit_test_results.xml `
+//                                         --parallel $(sysctl -n hw.ncpu)
+//                                 '''
+//                                 junit testResults: "unit_test_results.xml", allowEmptyResults: false
+//                             }
+//                         }
+//                     }
+//                 }
             }
         }
     }
@@ -306,48 +336,3 @@ pipeline {
         }
     }
 }
-
-/* TODO: Can we remove old Mac stuff?
-//         stage("Mac M2") {
-//           agent { label 'mac-m2' }
-//           options {
-//             skipDefaultCheckout()
-//             timeout(time: 5, activity: true, unit: 'MINUTES')
-//           }
-//           steps {
-//             script {
-//               checkoutRepo()
-//               env.setProperty('BRANCH_NAME', branchName())
-//               sh '''
-//                 mkdir build_mac_arm64
-//                 cd build_mac_arm64
-//                 cmake .. -DMICROSTRAIN_BUILD_EXAMPLES=ON -DMICROSTRAIN_BUILD_PACKAGE=ON -DCMAKE_BUILD_TYPE=RELEASE
-//                 cmake --build . -j $(sysctl -n hw.ncpu)
-//                 cmake --build . --target package
-//               '''
-//               archiveArtifacts artifacts: 'build_mac_arm64/mipsdk_*'
-//             }
-//           }
-//         }
-//         stage("Mac Intel") {
-//           agent { label 'mac-intel' }
-//           options {
-//             skipDefaultCheckout()
-//             timeout(time: 5, activity: true, unit: 'MINUTES')
-//           }
-//           steps {
-//             script {
-//               checkoutRepo()
-//               env.setProperty('BRANCH_NAME', branchName())
-//               sh '''
-//                 mkdir build_mac_intel
-//                 cd build_mac_intel
-//                 cmake .. -DMICROSTRAIN_BUILD_EXAMPLES=ON -DMICROSTRAIN_BUILD_PACKAGE=ON -DCMAKE_BUILD_TYPE=RELEASE
-//                 cmake --build . -j $(sysctl -n hw.ncpu)
-//                 cmake --build . --target package
-//               '''
-//               archiveArtifacts artifacts: 'build_mac_intel/mipsdk_*'
-//             }
-//           }
-//         }
- */
