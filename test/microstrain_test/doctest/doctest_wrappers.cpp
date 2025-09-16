@@ -40,11 +40,21 @@ namespace detail
 
         if (actual[expected_size] != '\0')
         {
-            FAIL(
-                "The actual string is not terminated when the expected string is:\n"
-                "Actual (up to expected + 1): " << std::string(actual, expected_size + 1) << "\n"
-                "Expected                   : " << std::string(expected) << "\n"
-            );
+            std::ostringstream expected_output;
+            std::ostringstream actual_output;
+            expected_output << "Expected: " << expected << getCharacterOutput(expected[expected_size]);
+            actual_output   << "Actual:   " << actual;
+
+            INFO("The actual string is not terminated when the expected string is:");
+            INFO(expected_output.str());
+            INFO(actual_output.str());
+
+            switch(failure_level)
+            {
+                case FailureLevel::WARN:
+                case FailureLevel::FAIL:  CHECK(false);   break;
+                case FailureLevel::FATAL: REQUIRE(false); break;
+            }
         }
 
         INFO("Actual:   " << std::string(actual, expected_size));
