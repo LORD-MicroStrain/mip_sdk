@@ -27,9 +27,9 @@
 /** Assertions
  *
  * There are three levels of failure:
- *   - WARN_*: Outputs a warning without failing the test.
- *   - FAIL_*: Fails the test but allows it to continue running.
- *   - EXIT_*: Fails and exits the test immediately.
+ *   - WARN_* : Outputs a warning without failing the test.
+ *   - FAIL_* : Fails the test but allows it to continue running.
+ *   - FATAL_*: Fails and exits the test immediately.
  *
  *   The arguments for each call follow the order (actual, expected). The order of arguments matters, as some assertions
  *   make assumptions on the size or bounds of the actual argument based on the expected argument.
@@ -49,8 +49,8 @@
 #error "FAIL_IF_NOT_TRUE is not implemented for the current backend."
 #endif
 
-#ifndef EXIT_IF_NOT_TRUE
-#error "EXIT_IF_NOT_TRUE is not implemented for the current backend."
+#ifndef FATAL_IF_NOT_TRUE
+#error "FATAL_IF_NOT_TRUE is not implemented for the current backend."
 #endif
 
 /// More specific checks for equality that print the values when debugging.
@@ -63,8 +63,8 @@
 #error "FAIL_IF_NOT_EQUAL is not implemented for the current backend."
 #endif
 
-#ifndef EXIT_IF_NOT_EQUAL
-#error "EXIT_IF_NOT_EQUAL is not implemented for the current backend."
+#ifndef FATAL_IF_NOT_EQUAL
+#error "FATAL_IF_NOT_EQUAL is not implemented for the current backend."
 #endif
 
 /// Same as the equality checks, but with additional safety and debugging info for C strings.
@@ -77,8 +77,8 @@
 #error "FAIL_IF_C_STRINGS_NOT_EQUAL is not implemented for the current backend."
 #endif
 
-#ifndef EXIT_IF_C_STRINGS_NOT_EQUAL
-#error "EXIT_IF_C_STRINGS_NOT_EQUAL is not implemented for the current backend."
+#ifndef FATAL_IF_C_STRINGS_NOT_EQUAL
+#error "FATAL_IF_C_STRINGS_NOT_EQUAL is not implemented for the current backend."
 #endif
 
 /// For individual characters
@@ -91,6 +91,6 @@
 #error "FAIL_IF_CHARS_NOT_EQUAL is not implemented for the current backend."
 #endif
 
-#ifndef EXIT_IF_CHARS_NOT_EQUAL
-#error "EXIT_IF_CHARS_NOT_EQUAL is not implemented for the current backend."
+#ifndef FATAL_IF_CHARS_NOT_EQUAL
+#error "FATAL_IF_CHARS_NOT_EQUAL is not implemented for the current backend."
 #endif

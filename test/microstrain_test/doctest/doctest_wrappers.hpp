@@ -10,7 +10,7 @@ namespace detail
     {
         WARN,
         FAIL,
-        EXIT
+        FATAL
     };
 
     void cStringsEqual(const char* actual, const char* expected, FAILURE_LEVEL level);
@@ -23,17 +23,17 @@ namespace detail
 
 #define WARN_IF_NOT_TRUE(condition) WARN(condition)
 #define FAIL_IF_NOT_TRUE(condition) CHECK(condition)
-#define EXIT_IF_NOT_TRUE(condition) REQUIRE(condition)
+#define FATAL_IF_NOT_TRUE(condition) REQUIRE(condition)
 
 #define WARN_IF_NOT_EQUAL(actual, expected) WARN_EQ(actual, expected)
 #define FAIL_IF_NOT_EQUAL(actual, expected) CHECK_EQ(actual, expected)
-#define EXIT_IF_NOT_EQUAL(actual, expected) REQUIRE_EQ(actual, expected)
+#define FATAL_IF_NOT_EQUAL(actual, expected) REQUIRE_EQ(actual, expected)
 
 #define WARN_IF_C_STRINGS_NOT_EQUAL(actual, expected) \
     detail::cStringsEqual(actual, expected, detail::FAILURE_LEVEL::WARN)
 #define FAIL_IF_C_STRINGS_NOT_EQUAL(actual, expected) \
     detail::cStringsEqual(actual, expected, detail::FAILURE_LEVEL::FAIL)
-#define EXIT_IF_C_STRINGS_NOT_EQUAL(actual, expected) \
-    detail::cStringsEqual(actual, expected, detail::FAILURE_LEVEL::EXIT)
+#define FATAL_IF_C_STRINGS_NOT_EQUAL(actual, expected) \
+    detail::cStringsEqual(actual, expected, detail::FAILURE_LEVEL::FATAL)
 
 #define FAIL_IF_CHARS_NOT_EQUAL(actual, expected) detail::charsEqual(actual, expected)

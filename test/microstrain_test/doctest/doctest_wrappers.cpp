@@ -53,7 +53,7 @@ namespace detail
         {
             CHECK_EQ(strncmp(actual, expected, expected_size), 0);
         }
-        else if (level == FAILURE_LEVEL::EXIT)
+        else if (level == FAILURE_LEVEL::FATAL)
         {
             REQUIRE_EQ(strncmp(actual, expected, expected_size), 0);
         }
