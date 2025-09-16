@@ -160,6 +160,12 @@ pipeline {
                             sh "./.devcontainer/docker_build.sh --os ${BUILD_OS} --arch ${BUILD_ARCH}"
                             dir("build_${BUILD_OS}_${BUILD_ARCH}") {
                                 archiveArtifacts artifacts: "mipsdk_*"
+                            }
+                        }
+                    }
+                    post {
+                        always {
+                            dir("build_${BUILD_OS}_${BUILD_ARCH}") {
                                 junit testResults: "unit_test_results.xml", allowEmptyResults: false
                             }
                         }
