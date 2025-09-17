@@ -33,6 +33,10 @@ Forthcoming
   * Setup test suite to be easily run locally
 ### Interface Changes
 * MIP parser callbacks must now return bool (return true to preserve existing behavior).
+* MicroStrain logging fixes
+  * Renamed logging level compiler definitions
+  * Fixed issues where not defining logging compiler definitions would integrate logging support incorrectly
+  * Added compiler definitions to check for supported logging levels based on the set max level
 ### Bug Fixes
 * Fixed possible infinite loop in MIP parser with timed-out packets.
 
