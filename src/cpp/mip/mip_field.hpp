@@ -37,7 +37,7 @@ public:
     FieldView(const C::mip_field_view& other) { std::memcpy(static_cast<C::mip_field_view*>(this), &other, sizeof(C::mip_field_view)); }
 
     /// Construct from descriptor and payload bytes
-    FieldView(CompositeDescriptor descriptor, microstrain::ConstBufferView payload) : FieldView(descriptor.descriptorSet, descriptor.fieldDescriptor, payload.data(), uint8_t(payload.size())) {}
+    FieldView(CompositeDescriptor descriptor, microstrain::ConstU8ArrayView payload) : FieldView(descriptor.descriptorSet, descriptor.fieldDescriptor, payload.data(), uint8_t(payload.size())) {}
 
     //
     // C function wrappers
@@ -63,7 +63,7 @@ public:
 
     uint8_t operator[](size_t index) const { return payload(index); }
 
-    microstrain::ConstBufferView payloadBytes() const { return {payloadPointer(), payloadLength()}; }
+    microstrain::ConstU8ArrayView payloadBytes() const { return {payloadPointer(), payloadLength()}; }
 
     ///@copydoc mip::C::mip_field_is_valid
     bool isValid() const { return C::mip_field_is_valid(this); }

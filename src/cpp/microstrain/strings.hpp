@@ -45,7 +45,7 @@ namespace strings {
 ///@returns True if sufficient buffer space exists or if buffer is NULL.
 ///@returns False if buffer is not NULL and insufficient space is available.
 ///
-inline bool concat(CharView buffer, size_t* index, const char* str, size_t len)
+inline bool concat(CharArrayView buffer, size_t* index, const char* str, size_t len)
 {
     return ::microstrain::C::microstrain_string_concat(buffer.data(), buffer.size(), index, str, len);
 }
@@ -71,7 +71,7 @@ inline bool concat(CharView buffer, size_t* index, const char* str, size_t len)
 ///@returns True if sufficient buffer space exists or if buffer is NULL.
 ///@returns False if buffer is not NULL and insufficient space is available.
 ///
-inline bool concat(CharView buffer, size_t* index, ConstCharView str)
+inline bool concat(CharArrayView buffer, size_t* index, ConstCharArrayView str)
 {
     return concat(buffer, index, str.data(), str.size());
 }
@@ -102,7 +102,7 @@ inline bool concat(CharView buffer, size_t* index, ConstCharView str)
 ///@returns True if sufficient buffer space exists or if buffer is NULL.
 ///@returns False if buffer is not NULL and insufficient space is available.
 ///
-inline bool concat(CharView buffer, size_t* index, std::string_view str)
+inline bool concat(CharArrayView buffer, size_t* index, std::string_view str)
 {
     return concat(buffer, index, str.data(), str.size());
 }
@@ -130,7 +130,7 @@ inline bool concat(CharView buffer, size_t* index, std::string_view str)
 ///@returns True if sufficient buffer space exists or if buffer is NULL.
 ///@returns False if buffer is not NULL and insufficient space is available.
 ///
-inline bool concat(CharView buffer, size_t* index, const std::string& str)
+inline bool concat(CharArrayView buffer, size_t* index, const std::string& str)
 {
     return concat(buffer, index, str.data(), str.size());
 }
@@ -170,10 +170,10 @@ inline bool concat(CharView buffer, size_t* index, const std::string& str)
 ///@returns True if sufficient buffer space exists or if buffer is NULL.
 ///@returns False if buffer is not NULL and insufficient space is available.
 ///
-inline bool concat_z(CharView buffer, size_t* index, const char* str, size_t maxLen=size_t(-1))
+inline bool concat_z(CharArrayView buffer, size_t* index, const char* str, size_t maxLen=size_t(-1))
 {
     const size_t len = std::min(maxLen, std::strlen(str));
-    return concat(buffer, index, ConstCharView{str, len});
+    return concat(buffer, index, ConstCharArrayView{str, len});
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -206,7 +206,7 @@ inline bool concat_z(CharView buffer, size_t* index, const char* str, size_t max
 ///@returns False if buffer is not NULL and insufficient space is available.
 ///
 template<size_t N>
-bool concat_l(CharView buffer, size_t* index, const char(&str)[N])
+bool concat_l(CharArrayView buffer, size_t* index, const char(&str)[N])
 {
     return concat(buffer, index, str, N-1);
 }
@@ -236,7 +236,7 @@ bool concat_l(CharView buffer, size_t* index, const char(&str)[N])
 ///         unchanged in this case.
 ///@returns False if insufficient space is available, unless buffer is NULL.
 ///
-inline bool format_v(CharView buffer, size_t* index, const char* fmt, va_list args)
+inline bool format_v(CharArrayView buffer, size_t* index, const char* fmt, va_list args)
 {
     return ::microstrain::C::microstrain_string_format_v(buffer.data(), buffer.size(), index, fmt, args);
 }
@@ -262,7 +262,7 @@ inline bool format_v(CharView buffer, size_t* index, const char* fmt, va_list ar
 ///         unchanged in this case.
 ///@returns False if insufficient space is available, unless buffer is NULL.
 ///
-inline bool format(CharView buffer, size_t* index, const char* fmt, ...)
+inline bool format(CharArrayView buffer, size_t* index, const char* fmt, ...)
 {
     va_list args;
     va_start(args, fmt);
@@ -310,7 +310,7 @@ inline bool format(CharView buffer, size_t* index, const char* fmt, ...)
 ///         unchanged in this case.
 ///@returns False if insufficient space is available, unless buffer is NULL.
 ///
-inline bool bytesToHexStr(CharView buffer, size_t* index, ConstBufferView data, unsigned int byte_grouping)
+inline bool bytesToHexStr(CharArrayView buffer, size_t* index, ConstU8ArrayView data, unsigned int byte_grouping)
 {
     return ::microstrain::C::microstrain_string_bytes_to_hex_str(buffer.data(), buffer.size(), index, data.data(), data.size(), byte_grouping);
 }

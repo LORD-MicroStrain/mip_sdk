@@ -20,7 +20,7 @@ void print_packet(const mip::PacketView& packet)
     print_buffer(stderr, packet.pointer(), packet.packetLength());
 }
 
-bool checkPacketView(const mip::PacketView& packet, microstrain::ConstBufferView compare, const char* method)
+bool checkPacketView(const mip::PacketView& packet, microstrain::ConstU8ArrayView compare, const char* method)
 {
     bool ok = true;
 
@@ -48,7 +48,7 @@ bool checkPacketView(const mip::PacketView& packet, microstrain::ConstBufferView
 }
 
 template<size_t Size>
-bool checkPacketBuf(mip::SizedPacketBuf<Size>& packet, microstrain::ConstBufferView compare, const char* method)
+bool checkPacketBuf(mip::SizedPacketBuf<Size>& packet, microstrain::ConstU8ArrayView compare, const char* method)
 {
     bool ok = checkPacketView(packet, compare, method);
 
@@ -104,10 +104,10 @@ void testPacketView()
     checkPingPacketView(packet3, "PacketView C constructor");
 
     mip::PacketView packet4(buffer, mip::commands_base::DESCRIPTOR_SET);
-    checkPacketView(packet4, buffer, "PacketView initializing constructor (BufferView version)");
+    checkPacketView(packet4, buffer, "PacketView initializing constructor (U8ArrayView version)");
 
     mip::PacketView packet5(PING);
-    checkPingPacketView(packet5, "PacketView existing constructor (BufferView version)");
+    checkPingPacketView(packet5, "PacketView existing constructor (U8ArrayView version)");
 
 
 }
@@ -126,7 +126,7 @@ void testPacketBuf()
     mip::PacketBuf packet2(mip::data_sensor::DESCRIPTOR_SET);
     check( packet2.descriptorSet() == mip::data_sensor::DESCRIPTOR_SET, "PacketBuf constructor with descriptor set doesn't work");
 
-    // Construct from raw buffer, BufferView, or existing view.
+    // Construct from raw buffer, U8ArrayView, or existing view.
     mip::PacketBuf packet3(PING, sizeof(PING));
     mip::PacketBuf packet4(PING);
     mip::PacketBuf packet5((mip::PacketView(packet4)));

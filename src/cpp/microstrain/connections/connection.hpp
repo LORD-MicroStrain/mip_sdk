@@ -29,15 +29,15 @@ namespace microstrain
         virtual bool sendToDevice(const uint8_t* data, size_t length) = 0;
         virtual bool recvFromDevice(uint8_t* buffer, size_t max_length, unsigned int wait_time_ms, size_t* length_out, EmbeddedTimestamp* timestamp_out) = 0;
 
-        bool sendBufferToDevice(microstrain::ConstBufferView data) { return sendToDevice(data.data(), data.size()); }
-        bool recvBufferFromDevice(microstrain::BufferView buffer, unsigned int wait_time_ms, size_t* length_out, EmbeddedTimestamp* timestamp_out)
+        bool sendBufferToDevice(microstrain::ConstU8ArrayView data) { return sendToDevice(data.data(), data.size()); }
+        bool recvBufferFromDevice(microstrain::U8ArrayView buffer, unsigned int wait_time_ms, size_t* length_out, EmbeddedTimestamp* timestamp_out)
         {
             if (!recvFromDevice(buffer.data(), buffer.size(), wait_time_ms, length_out, timestamp_out))
                 return false;
 
             return true;
         }
-        bool recvFromDeviceAndUpdateBufferView(microstrain::BufferView& buffer, unsigned int wait_time_ms, EmbeddedTimestamp* timestamp_out)
+        bool recvFromDeviceAndUpdateUint8ArrayView(microstrain::U8ArrayView& buffer, unsigned int wait_time_ms, EmbeddedTimestamp* timestamp_out)
         {
             size_t length = 0;
             if (!recvFromDevice(buffer.data(), buffer.size(), wait_time_ms, &length, timestamp_out))

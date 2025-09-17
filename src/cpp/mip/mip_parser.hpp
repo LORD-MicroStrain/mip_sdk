@@ -43,16 +43,16 @@ public:
     ///@copydoc mip::C::mip_parser_parse
     size_t parse(const uint8_t* inputBuffer, size_t inputCount, Timestamp timestamp) { return C::mip_parser_parse(this, inputBuffer, inputCount, timestamp); }
 
-    ///@brief Parse packets from a buffer (BufferView version).
+    ///@brief Parse packets from a buffer (U8ArrayView version).
     ///@copydetails mip::C::mip_parser_parse
-    size_t parse(microstrain::ConstBufferView data, Timestamp timestamp) { return parse(data.data(), data.size(), timestamp); }
+    size_t parse(microstrain::ConstU8ArrayView data, Timestamp timestamp) { return parse(data.data(), data.size(), timestamp); }
 
     ///@copydoc mip::C::mip_parser_flush
     void flush() { C::mip_parser_flush(this); }
 
     ///@copybrief mip::C::mip_parser_get_write_ptr
     ///@returns a buffer into which data can be written.
-    microstrain::BufferView getWritePtr() { uint8_t* ptr; size_t length = C::mip_parser_get_write_ptr(this, &ptr); return {ptr, length}; }
+    microstrain::U8ArrayView getWritePtr() { uint8_t* ptr; size_t length = C::mip_parser_get_write_ptr(this, &ptr); return {ptr, length}; }
 
     ///@copydoc mip::C::mip_parser_timeout
     Timeout timeout() const { return C::mip_parser_timeout(this); }

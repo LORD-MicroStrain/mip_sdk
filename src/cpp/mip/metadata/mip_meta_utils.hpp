@@ -71,7 +71,7 @@ namespace mip::metadata::utils
 #ifdef MICROSTRAIN_HAS_OPTIONAL
     ///@brief Reads a value of the given type from a buffer.
     ///
-    inline std::optional<uint64_t> extractIntegralType(mip::metadata::Type type, microstrain::ConstBufferView payload, size_t offset=0)
+    inline std::optional<uint64_t> extractIntegralType(mip::metadata::Type type, microstrain::ConstU8ArrayView payload, size_t offset=0)
     {
         switch(type)
         {

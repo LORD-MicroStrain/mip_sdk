@@ -13,9 +13,9 @@ constructor overloads taking a descriptor set parameter.
 
     mip::PacketView packet(buffer, sizeof(buffer), descriptor_set);
 
-Using a BufferView:
+Using a U8ArrayView:
 
-    microstrain::BufferView buffer_view(buffer, sizeof(buffer));
+    microstrain::U8ArrayView buffer_view(buffer, sizeof(buffer));
     mip::PacketView packet(buffer_view, descriptor_set);
 
 ### Create a new packet with a built-in buffer
@@ -77,9 +77,9 @@ Existing Packet Processing
         mip::PacketView packet(existing_buffer, sizeof(existing_buffer));
     }
 
-Using a BufferView
+Using a Uint8ArrayView
 
-    void handle_packet(microstrain::ConstBufferView buffer)
+    void handle_packet(microstrain::ConstUint8ArrayView buffer)
     {
         mip::PacketView packet(buffer);
     }
@@ -192,7 +192,7 @@ FieldViews have properties similar to PacketViews:
     const uint8_t* payload = field.payloadPointer();
 
     // Buffer version of payload
-    microstrain::ConstBufferView payload = field.payloadBytes();
+    microstrain::ConstUint8ArrayView payload = field.payloadBytes();
 
     // Determining the type of field, e.g. for routing it to the right function in your app.
     bool is_data_field    = field.isData();     // Data field, e.g. accel data

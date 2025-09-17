@@ -63,7 +63,7 @@ public:
     SerializerBase() = default;
     SerializerBase(uint8_t* ptr, size_t capacity, size_t offset=0) : m_ptr(ptr), m_size(capacity), m_offset(offset) {}
     SerializerBase(const uint8_t* ptr, size_t size, size_t offset=0) : m_ptr(const_cast<uint8_t*>(ptr)), m_size(size), m_offset(offset) {}
-    SerializerBase(microstrain::ConstBufferView buffer, size_t offset=0) : m_ptr(const_cast<uint8_t*>(buffer.data())), m_size(buffer.size()), m_offset(offset) {}
+    SerializerBase(microstrain::ConstU8ArrayView buffer, size_t offset=0) : m_ptr(const_cast<uint8_t*>(buffer.data())), m_size(buffer.size()), m_offset(offset) {}
 
     size_t capacity()   const { return m_size;                 }  ///< Returns the total size of the buffer.
     size_t offset()     const { return m_offset;               }  ///< Returns the current read or write offset.
@@ -822,7 +822,7 @@ bool insert(T value, microstrain::ArrayView<uint8_t> buffer, size_t offset=0, bo
 ///@returns True otherwise.
 ///
 template<serialization::Endian E, class T>
-bool extract(T& value, microstrain::ConstBufferView buffer, size_t offset=0, bool exact_size=false)
+bool extract(T& value, microstrain::ConstU8ArrayView buffer, size_t offset=0, bool exact_size=false)
 {
     return extract<E,T>(value, buffer.data(), buffer.size(), offset, exact_size);
 }
@@ -886,7 +886,7 @@ std::optional<T> extract(const uint8_t* buffer, size_t length, size_t offset, bo
 ///
 /// This overload is only enabled if std::optional is supported.
 ///
-///@see bool extract(T& value, microstrain::ConstBufferView buffer, size_t offset=0, bool exact_size=false)
+///@see bool extract(T& value, microstrain::ConstUint8ArrayView buffer, size_t offset=0, bool exact_size=false)
 ///
 ///@tparam E Endianness of buffer. Must be manually specified.
 ///@tparam T Type of value. Must be manually specified.
@@ -898,7 +898,7 @@ std::optional<T> extract(const uint8_t* buffer, size_t length, size_t offset, bo
 ///@returns The value read from the buffer, or std::nullopt if it couldn't be read.
 ///
 template<class T, serialization::Endian E>
-std::optional<T> extract(microstrain::ConstBufferView buffer, size_t offset, bool exact_size=false)
+std::optional<T> extract(microstrain::ConstU8ArrayView buffer, size_t offset, bool exact_size=false)
 {
     T value;
     if(extract<E,T>(value, buffer.data(), buffer.size(), offset, exact_size))

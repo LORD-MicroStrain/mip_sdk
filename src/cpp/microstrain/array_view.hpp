@@ -124,11 +124,11 @@ private:
 template<class T>
 using ConstArrayView = ArrayView<const T>;
 
-using BufferView      = ArrayView<uint8_t>;
-using ConstBufferView = ConstArrayView<uint8_t>;
+using U8ArrayView      = ArrayView<uint8_t>;
+using ConstU8ArrayView = ConstArrayView<uint8_t>;
 
-using CharView        = ArrayView<char>;
-using ConstCharView   = ConstArrayView<char>;
+using CharArrayView        = ArrayView<char>;
+using ConstCharArrayView   = ConstArrayView<char>;
 
 
 } // namespace microstrain

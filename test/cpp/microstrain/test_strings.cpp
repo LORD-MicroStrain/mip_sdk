@@ -17,7 +17,7 @@ struct StringTest
     char array[1024] = {0};
     size_t index = 0;
 
-    microstrain::CharView buffer() { return {array}; }
+    microstrain::CharArrayView buffer() { return {array}; }
 };
 
 
@@ -53,7 +53,7 @@ void concat_explicit_view_works()
 {
     StringTest test;
 
-    bool ok = microstrain::strings::concat(test.buffer(), &test.index, microstrain::ConstCharView{TEST_STRING});
+    bool ok = microstrain::strings::concat(test.buffer(), &test.index, microstrain::ConstCharArrayView{TEST_STRING});
 
     TEST_ASSERT(ok, "Success");
     TEST_ASSERT_BUFFER_COMPARE(test.array, TEST_STRING, sizeof(TEST_STRING), "");

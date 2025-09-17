@@ -142,7 +142,7 @@ Additionally, the following compound types are supported:
     bes.insert(me, basics);
     les.insert(me, basics);
     
-    /// Serialize an array and BufferView using the non-member functions.
+    /// Serialize an array and U8ArrayView using the non-member functions.
     /// This is equivalent to `s.insert(vector4, vector3)`.
     microstrain::insert(bes, vector4, vector3);
     microstrain::insert(les, vector4, vector3);
@@ -159,7 +159,7 @@ For convenience, a few additional methods are provided for serialization in a si
 void one_liners()
 {
      uint8_t buffer[4];
-     microstrain::BufferView view(buffer, sizeof(buffer));
+     microstrain::U8ArrayView view(buffer, sizeof(buffer));
 
      int32_t x = -501;
 
