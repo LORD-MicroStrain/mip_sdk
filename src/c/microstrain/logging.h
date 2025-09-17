@@ -1,13 +1,13 @@
 #pragma once
 
 #include <stdarg.h>
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <stdbool.h>
 
 #ifdef __cplusplus
 extern "C" {
-#endif
+#endif // __cplusplus
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup microstrain
@@ -34,19 +34,59 @@ extern "C" {
 ///
 ///@{
 
+#define MICROSTRAIN_LOGGING_LEVEL_OFF   0
+#define MICROSTRAIN_LOGGING_LEVEL_FATAL 1
+#define MICROSTRAIN_LOGGING_LEVEL_ERROR 2
+#define MICROSTRAIN_LOGGING_LEVEL_WARN  3
+#define MICROSTRAIN_LOGGING_LEVEL_INFO  4
+#define MICROSTRAIN_LOGGING_LEVEL_DEBUG 5
+#define MICROSTRAIN_LOGGING_LEVEL_TRACE 6
+
+#ifndef MICROSTRAIN_LOGGING_MAX_LEVEL
+// Define a default logging level
+#define MICROSTRAIN_LOGGING_MAX_LEVEL MICROSTRAIN_LOGGING_LEVEL_WARN
+#endif // !MICROSTRAIN_LOGGING_MAX_LEVEL
+
+#if MICROSTRAIN_LOGGING_MAX_LEVEL > MICROSTRAIN_LOGGING_LEVEL_OFF
+#define MICROSTRAIN_LOGGING_ENABLED
+#endif // MICROSTRAIN_LOGGING_MAX_LEVEL > MICROSTRAIN_LOGGING_LEVEL_OFF
+
+#if MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOGGING_LEVEL_FATAL
+#define MICROSTRAIN_LOGGING_ENABLED_FATAL
+#endif // MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOGGING_LEVEL_FATAL
+
+#if MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOGGING_LEVEL_ERROR
+#define MICROSTRAIN_LOGGING_ENABLED_ERROR
+#endif // MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOGGING_LEVEL_ERROR
+
+#if MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOGGING_LEVEL_WARN
+#define MICROSTRAIN_LOGGING_ENABLED_WARN
+#endif // MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOGGING_LEVEL_WARN
+
+#if MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOGGING_LEVEL_INFO
+#define MICROSTRAIN_LOGGING_ENABLED_INFO
+#endif // MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOGGING_LEVEL_INFO
+
+#if MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOGGING_LEVEL_DEBUG
+#define MICROSTRAIN_LOGGING_ENABLED_DEBUG
+#endif // MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOGGING_LEVEL_DEBUG
+
+#if MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOGGING_LEVEL_TRACE
+#define MICROSTRAIN_LOGGING_ENABLED_TRACE
+#endif // MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOGGING_LEVEL_TRACE
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Logging level enum
 ///
 typedef enum microstrain_log_level
 {
-    MICROSTRAIN_LOG_LEVEL_OFF   = 0,  ///< Signifies that the log is turned off
-    MICROSTRAIN_LOG_LEVEL_FATAL = 1,  ///< Fatal logs are logged when an unrecoverable error occurs
-    MICROSTRAIN_LOG_LEVEL_ERROR = 2,  ///< Error logs are logged when an error occurs
-    MICROSTRAIN_LOG_LEVEL_WARN  = 3,  ///< Warning logs are logged when something concerning happens that may or not be a mistake
-    MICROSTRAIN_LOG_LEVEL_INFO  = 4,  ///< Info logs are logged when some general info needs to be conveyed to the user
-    MICROSTRAIN_LOG_LEVEL_DEBUG = 5,  ///< Debug logs are logged for debug purposes.
-    MICROSTRAIN_LOG_LEVEL_TRACE = 6,  ///< Trace logs are logged in similar cases to debug logs but can be logged in tight loops
+    MICROSTRAIN_LOG_LEVEL_OFF   = MICROSTRAIN_LOGGING_LEVEL_OFF,   ///< Signifies that the log is turned off
+    MICROSTRAIN_LOG_LEVEL_FATAL = MICROSTRAIN_LOGGING_LEVEL_FATAL, ///< Fatal logs are logged when an unrecoverable error occurs
+    MICROSTRAIN_LOG_LEVEL_ERROR = MICROSTRAIN_LOGGING_LEVEL_ERROR, ///< Error logs are logged when an error occurs
+    MICROSTRAIN_LOG_LEVEL_WARN  = MICROSTRAIN_LOGGING_LEVEL_WARN,  ///< Warning logs are logged when something concerning happens that may or not be a mistake
+    MICROSTRAIN_LOG_LEVEL_INFO  = MICROSTRAIN_LOGGING_LEVEL_INFO,  ///< Info logs are logged when some general info needs to be conveyed to the user
+    MICROSTRAIN_LOG_LEVEL_DEBUG = MICROSTRAIN_LOGGING_LEVEL_DEBUG, ///< Debug logs are logged for debug purposes.
+    MICROSTRAIN_LOG_LEVEL_TRACE = MICROSTRAIN_LOGGING_LEVEL_TRACE, ///< Trace logs are logged in similar cases to debug logs but can be logged in tight loops
 } microstrain_log_level;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -85,11 +125,11 @@ void microstrain_log_bytes(const microstrain_log_level level, const char* msg, c
 ///@param user     User data that will be passed to the callback every time it
 ///                is executed
 ///
-#ifdef MICROSTRAIN_ENABLE_LOGGING
+#ifdef MICROSTRAIN_LOGGING_ENABLED
 #define MICROSTRAIN_LOG_INIT(callback, level, user) microstrain_logging_init(callback, level, user)
-#else
-#define MICROSTRAIN_LOG_INIT(callback, level, user) (void)0
-#endif
+#else // !MICROSTRAIN_LOGGING_ENABLED
+#define MICROSTRAIN_LOG_INIT(callback, level, user) (void)0; (void)callback; (void)level; (void)user
+#endif // MICROSTRAIN_LOGGING_ENABLED
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log data inside the MicroStrain SDK. Prefer
@@ -97,17 +137,13 @@ void microstrain_log_bytes(const microstrain_log_level level, const char* msg, c
 ///       possible.
 ///@copydetails microstrain_log_callback
 ///
-#ifdef MICROSTRAIN_ENABLE_LOGGING
+#ifdef MICROSTRAIN_LOGGING_ENABLED
 #define MICROSTRAIN_LOG_LOG(level, ...) microstrain_logging_log(level, __VA_ARGS__)
 #define MICROSTRAIN_LOG_LOG_V(level, fmt, args) microstrain_logging_log_v(level, fmt, args)
-#else
-#define MICROSTRAIN_LOG_LOG(level, ...) (void)0
-#define MICROSTRAIN_LOG_LOG_V(level, fmt, args) (void)0
-#endif
-
-#ifndef MICROSTRAIN_LOGGING_MAX_LEVEL
-#define MICROSTRAIN_LOGGING_MAX_LEVEL MICROSTRAIN_LOG_LEVEL_WARN
-#endif
+#else // !MICROSTRAIN_LOGGING_ENABLED
+#define MICROSTRAIN_LOG_LOG(level, ...) (void)0; (void)__VA_ARGS__
+#define MICROSTRAIN_LOG_LOG_V(level, fmt, args) (void)0; (void)fmt; (void)args
+#endif // MICROSTRAIN_LOGGING_ENABLED
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log data inside the MicroStrain SDK at fatal
@@ -118,97 +154,97 @@ void microstrain_log_bytes(const microstrain_log_level level, const char* msg, c
 ///@param fmt     printf style format string
 ///@param ...     Variadic args used to populate the fmt string
 ///
-#if MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOG_LEVEL_FATAL
+#ifdef MICROSTRAIN_LOGGING_ENABLED_FATAL
 #define MICROSTRAIN_LOG_FATAL(...) MICROSTRAIN_LOG_LOG(MICROSTRAIN_LOG_LEVEL_FATAL, __VA_ARGS__)
 #define MICROSTRAIN_LOG_FATAL_V(fmt, args) MICROSTRAIN_LOG_LOG_V(MICROSTRAIN_LOG_LEVEL_FATAL, fmt, args)
-#else
-#define MICROSTRAIN_LOG_FATAL(...) (void)0
-#define MICROSTRAIN_LOG_FATAL_V(fmt, args) (void)0
-#endif
+#else // !MICROSTRAIN_LOGGING_ENABLED_FATAL
+#define MICROSTRAIN_LOG_FATAL(...) (void)0; (void)__VA_ARGS__
+#define MICROSTRAIN_LOG_FATAL_V(fmt, args) (void)0; (void)fmt; (void)args
+#endif // MICROSTRAIN_LOGGING_ENABLED_FATAL
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log data inside the MicroStrain SDK at error
 ///       level
 ///@copydetails MICROSTRAIN_LOG_FATAL
 ///
-#if MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOG_LEVEL_ERROR
+#ifdef MICROSTRAIN_LOGGING_ENABLED_ERROR
 #define MICROSTRAIN_LOG_ERROR(...) MICROSTRAIN_LOG_LOG(MICROSTRAIN_LOG_LEVEL_ERROR, __VA_ARGS__)
 #define MICROSTRAIN_LOG_ERROR_V(fmt, args) MICROSTRAIN_LOG_LOG_V(MICROSTRAIN_LOG_LEVEL_ERROR, fmt, args)
-#else
-#define MICROSTRAIN_LOG_ERROR(...) (void)0
-#define MICROSTRAIN_LOG_ERROR_V(fmt, args) (void)0
-#endif
+#else // !MICROSTRAIN_LOGGING_ENABLED_ERROR
+#define MICROSTRAIN_LOG_ERROR(...) (void)0; (void)__VA_ARGS__
+#define MICROSTRAIN_LOG_ERROR_V(fmt, args) (void)0; (void)fmt; (void)args
+#endif // MICROSTRAIN_LOGGING_ENABLED_ERROR
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log data inside the MicroStrain SDK at warn level
 ///@copydetails MICROSTRAIN_LOG_FATAL
 ///
-#if MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOG_LEVEL_WARN
+#ifdef MICROSTRAIN_LOGGING_ENABLED_WARN
 #define MICROSTRAIN_LOG_WARN(...) MICROSTRAIN_LOG_LOG(MICROSTRAIN_LOG_LEVEL_WARN, __VA_ARGS__)
 #define MICROSTRAIN_LOG_WARN_V(fmt, args) MICROSTRAIN_LOG_LOG_V(MICROSTRAIN_LOG_LEVEL_WARN, fmt, args)
-#else
-#define MICROSTRAIN_LOG_WARN(...) (void)0
-#define MICROSTRAIN_LOG_WARN_V(fmt, args) (void)0
-#endif
+#else // !MICROSTRAIN_LOGGING_ENABLED_WARN
+#define MICROSTRAIN_LOG_WARN(...) (void)0; (void)__VA_ARGS__
+#define MICROSTRAIN_LOG_WARN_V(fmt, args) (void)0; (void)fmt; (void)args
+#endif // MICROSTRAIN_LOGGING_ENABLED_WARN
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log data inside the MicroStrain SDK at info level
 ///@copydetails MICROSTRAIN_LOG_FATAL
 ///
-#if MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOG_LEVEL_INFO
+#ifdef MICROSTRAIN_LOGGING_ENABLED_INFO
 #define MICROSTRAIN_LOG_INFO(...) MICROSTRAIN_LOG_LOG(MICROSTRAIN_LOG_LEVEL_INFO, __VA_ARGS__)
 #define MICROSTRAIN_LOG_INFO_V(fmt, args) MICROSTRAIN_LOG_LOG_V(MICROSTRAIN_LOG_LEVEL_INFO, fmt, args)
-#else
-#define MICROSTRAIN_LOG_INFO(...) (void)0
-#define MICROSTRAIN_LOG_INFO_V(fmt, args) (void)0
-#endif
+#else // !MICROSTRAIN_LOGGING_ENABLED_INFO
+#define MICROSTRAIN_LOG_INFO(...) (void)0; (void)__VA_ARGS__
+#define MICROSTRAIN_LOG_INFO_V(fmt, args) (void)0; (void)fmt; (void)args
+#endif // MICROSTRAIN_LOGGING_ENABLED_INFO
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log data inside the MicroStrain SDK at debug
 ///       level
 ///@copydetails MICROSTRAIN_LOG_FATAL
 ///
-#if MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOG_LEVEL_DEBUG
+#ifdef MICROSTRAIN_LOGGING_ENABLED_DEBUG
 #define MICROSTRAIN_LOG_DEBUG(...) MICROSTRAIN_LOG_LOG(MICROSTRAIN_LOG_LEVEL_DEBUG, __VA_ARGS__)
 #define MICROSTRAIN_LOG_DEBUG_V(fmt, args) MICROSTRAIN_LOG_LOG_V(MICROSTRAIN_LOG_LEVEL_DEBUG, fmt, args)
-#else
-#define MICROSTRAIN_LOG_DEBUG(...) (void)0
-#define MICROSTRAIN_LOG_DEBUG_V(fmt, args) (void)0
-#endif
+#else // !MICROSTRAIN_LOGGING_ENABLED_DEBUG
+#define MICROSTRAIN_LOG_DEBUG(...) (void)0; (void)__VA_ARGS__
+#define MICROSTRAIN_LOG_DEBUG_V(fmt, args) (void)0; (void)fmt; (void)args
+#endif // MICROSTRAIN_LOGGING_ENABLED_DEBUG
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log data inside the MicroStrain SDK at trace
 ///       level
 ///@copydetails MICROSTRAIN_LOG_FATAL
 ///
-#if MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOG_LEVEL_TRACE
+#ifdef MICROSTRAIN_LOGGING_ENABLED_TRACE
 #define MICROSTRAIN_LOG_TRACE(...) MICROSTRAIN_LOG_LOG(MICROSTRAIN_LOG_LEVEL_TRACE, __VA_ARGS__)
 #define MICROSTRAIN_LOG_TRACE_V(fmt, args) MICROSTRAIN_LOG_LOG_V(MICROSTRAIN_LOG_LEVEL_TRACE, fmt, args)
-#else
-#define MICROSTRAIN_LOG_TRACE(...) (void)0
-#define MICROSTRAIN_LOG_TRACE_V(fmt, args) (void)0
-#endif
+#else // !MICROSTRAIN_LOGGING_ENABLED_TRACE
+#define MICROSTRAIN_LOG_TRACE(...) (void)0; (void)__VA_ARGS__
+#define MICROSTRAIN_LOG_TRACE_V(fmt, args) (void)0; (void)fmt; (void)args
+#endif // MICROSTRAIN_LOGGING_ENABLED_TRACE
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log bytes as a hex sting
 ///
-#if MICROSTRAIN_ENABLE_LOGGING
+#ifdef MICROSTRAIN_LOGGING_ENABLED
 #define MICROSTRAIN_LOG_BYTES(level, msg, data, length) microstrain_log_bytes(level, msg, data, length)
-#else
-#define MICROSTRAIN_LOG_BYTES(level, msg, data, length) (void)0
-#endif
+#else // !MICROSTRAIN_LOGGING_ENABLED
+#define MICROSTRAIN_LOG_BYTES(level, msg, data, length) (void)0; (void)level; (void)msg; (void)data; (void)length
+#endif // MICROSTRAIN_LOGGING_ENABLED
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log bytes as a hex sting at trace level
 ///
-/// This optimizes out to a NO-OP when MICROSTRAIN_LOGGING_MAX_LEVEL is less
-/// than MICROSTRAIN_LOG_LEVEL_TRACE.
+/// This optimizes out to a NO-OP when MICROSTRAIN_LOGGING_ENABLED_TRACE is not
+/// defined.
 ///
-#if MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOG_LEVEL_TRACE
+#ifdef MICROSTRAIN_LOGGING_ENABLED_TRACE
 #define MICROSTRAIN_LOG_BYTES_TRACE(msg, data, length) microstrain_log_bytes(MICROSTRAIN_LOG_LEVEL_TRACE, msg, data, length)
-#else
-#define MICROSTRAIN_LOG_BYTES_TRACE(msg, data, length) (void)0
-#endif
+#else // !MICROSTRAIN_LOGGING_ENABLED_TRACE
+#define MICROSTRAIN_LOG_BYTES_TRACE(msg, data, length) (void)0; (void)msg; (void)data; (void)length
+#endif // MICROSTRAIN_LOGGING_ENABLED_TRACE
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -235,4 +271,4 @@ void microstrain_log_bytes(const microstrain_log_level level, const char* msg, c
 
 #ifdef __cplusplus
 } // extern "C"
-#endif
+#endif // __cplusplus

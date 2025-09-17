@@ -35,39 +35,39 @@ namespace logging {
 
     inline Callback get_callback()
     {
-#if MICROSTRAIN_ENABLE_LOGGING
+#ifdef MICROSTRAIN_LOGGING_ENABLED
         return ::microstrain::C::microstrain_logging_callback();
-#else
+#else // !MICROSTRAIN_LOGGING_ENABLED
         return nullptr;
-#endif
+#endif // MICROSTRAIN_LOGGING_ENABLED
     }
 
     inline Level max_level()
     {
-    #if MICROSTRAIN_ENABLE_LOGGING
+#ifdef MICROSTRAIN_LOGGING_ENABLED
        return ::microstrain::C::microstrain_logging_level();
-    #else
+#else // !MICROSTRAIN_LOGGING_ENABLED
        return LogLevel::OFF;
-    #endif
+#endif // MICROSTRAIN_LOGGING_ENABLED
     }
 
     inline void* user_pointer()
     {
-#if MICROSTRAIN_ENABLE_LOGGING
+#ifdef MICROSTRAIN_LOGGING_ENABLED
         return ::microstrain::C::microstrain_logging_user_data();
-#else
+#else // !MICROSTRAIN_LOGGING_ENABLED
         return nullptr;
-#endif
+#endif // MICROSTRAIN_LOGGING_ENABLED
     }
 
     inline void log(Level level, const char* fmt, ...)
     {
-#if MICROSTRAIN_ENABLE_LOGGING
+#ifdef MICROSTRAIN_LOGGING_ENABLED
         va_list args;
         va_start(args, fmt);
         ::microstrain::C::microstrain_logging_log_v(level, fmt, args);
         va_end(args);
-#endif
+#endif // MICROSTRAIN_LOGGING_ENABLED
     }
 
 ///@}

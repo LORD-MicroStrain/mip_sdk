@@ -1,6 +1,4 @@
-
-if(MICROSTRAIN_ENABLE_LOGGING)
-
+if(MIP_LOGGING_ENABLED)
     set(TEST_STRING_SOURCES
         "${CMAKE_CURRENT_LIST_DIR}/testutil_strings.h"
         "${CMAKE_CURRENT_LIST_DIR}/testutil_strings.c"
@@ -29,5 +27,4 @@ if(MICROSTRAIN_ENABLE_LOGGING)
         "${CMAKE_CURRENT_LIST_DIR}/test_strfmt_bytes.c"
         COMMAND test_microstrain_string_format_bytes
     )
-
 endif()
