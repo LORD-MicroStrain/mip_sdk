@@ -18,3 +18,7 @@ add_microstrain_test(
     COMMAND TestMicroStrainStrings
     USE_CPP TRUE
 )
+
+target_compile_definitions(TestMicroStrainStrings PRIVATE
+    "MICROSTRAIN_LOGGING_MAX_LEVEL=${MICROSTRAIN_LOGGING_MAX_LEVEL}"
+)
