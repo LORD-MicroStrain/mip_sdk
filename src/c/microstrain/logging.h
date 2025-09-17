@@ -141,7 +141,7 @@ void microstrain_log_bytes(const microstrain_log_level level, const char* msg, c
 #define MICROSTRAIN_LOG_LOG(level, ...) microstrain_logging_log(level, __VA_ARGS__)
 #define MICROSTRAIN_LOG_LOG_V(level, fmt, args) microstrain_logging_log_v(level, fmt, args)
 #else // !MICROSTRAIN_LOGGING_ENABLED
-#define MICROSTRAIN_LOG_LOG(level, ...) (void)0; (void)__VA_ARGS__
+#define MICROSTRAIN_LOG_LOG(level, ...) (void)0; (void)(__VA_ARGS__)
 #define MICROSTRAIN_LOG_LOG_V(level, fmt, args) (void)0; (void)fmt; (void)args
 #endif // MICROSTRAIN_LOGGING_ENABLED
 
@@ -158,7 +158,7 @@ void microstrain_log_bytes(const microstrain_log_level level, const char* msg, c
 #define MICROSTRAIN_LOG_FATAL(...) MICROSTRAIN_LOG_LOG(MICROSTRAIN_LOG_LEVEL_FATAL, __VA_ARGS__)
 #define MICROSTRAIN_LOG_FATAL_V(fmt, args) MICROSTRAIN_LOG_LOG_V(MICROSTRAIN_LOG_LEVEL_FATAL, fmt, args)
 #else // !MICROSTRAIN_LOGGING_ENABLED_FATAL
-#define MICROSTRAIN_LOG_FATAL(...) (void)0; (void)__VA_ARGS__
+#define MICROSTRAIN_LOG_FATAL(...) (void)0; (void)(__VA_ARGS__)
 #define MICROSTRAIN_LOG_FATAL_V(fmt, args) (void)0; (void)fmt; (void)args
 #endif // MICROSTRAIN_LOGGING_ENABLED_FATAL
 
@@ -171,7 +171,7 @@ void microstrain_log_bytes(const microstrain_log_level level, const char* msg, c
 #define MICROSTRAIN_LOG_ERROR(...) MICROSTRAIN_LOG_LOG(MICROSTRAIN_LOG_LEVEL_ERROR, __VA_ARGS__)
 #define MICROSTRAIN_LOG_ERROR_V(fmt, args) MICROSTRAIN_LOG_LOG_V(MICROSTRAIN_LOG_LEVEL_ERROR, fmt, args)
 #else // !MICROSTRAIN_LOGGING_ENABLED_ERROR
-#define MICROSTRAIN_LOG_ERROR(...) (void)0; (void)__VA_ARGS__
+#define MICROSTRAIN_LOG_ERROR(...) (void)0; (void)(__VA_ARGS__)
 #define MICROSTRAIN_LOG_ERROR_V(fmt, args) (void)0; (void)fmt; (void)args
 #endif // MICROSTRAIN_LOGGING_ENABLED_ERROR
 
@@ -183,7 +183,7 @@ void microstrain_log_bytes(const microstrain_log_level level, const char* msg, c
 #define MICROSTRAIN_LOG_WARN(...) MICROSTRAIN_LOG_LOG(MICROSTRAIN_LOG_LEVEL_WARN, __VA_ARGS__)
 #define MICROSTRAIN_LOG_WARN_V(fmt, args) MICROSTRAIN_LOG_LOG_V(MICROSTRAIN_LOG_LEVEL_WARN, fmt, args)
 #else // !MICROSTRAIN_LOGGING_ENABLED_WARN
-#define MICROSTRAIN_LOG_WARN(...) (void)0; (void)__VA_ARGS__
+#define MICROSTRAIN_LOG_WARN(...) (void)0; (void)(__VA_ARGS__)
 #define MICROSTRAIN_LOG_WARN_V(fmt, args) (void)0; (void)fmt; (void)args
 #endif // MICROSTRAIN_LOGGING_ENABLED_WARN
 
@@ -195,7 +195,7 @@ void microstrain_log_bytes(const microstrain_log_level level, const char* msg, c
 #define MICROSTRAIN_LOG_INFO(...) MICROSTRAIN_LOG_LOG(MICROSTRAIN_LOG_LEVEL_INFO, __VA_ARGS__)
 #define MICROSTRAIN_LOG_INFO_V(fmt, args) MICROSTRAIN_LOG_LOG_V(MICROSTRAIN_LOG_LEVEL_INFO, fmt, args)
 #else // !MICROSTRAIN_LOGGING_ENABLED_INFO
-#define MICROSTRAIN_LOG_INFO(...) (void)0; (void)__VA_ARGS__
+#define MICROSTRAIN_LOG_INFO(...) (void)0; (void)(__VA_ARGS__)
 #define MICROSTRAIN_LOG_INFO_V(fmt, args) (void)0; (void)fmt; (void)args
 #endif // MICROSTRAIN_LOGGING_ENABLED_INFO
 
@@ -208,7 +208,7 @@ void microstrain_log_bytes(const microstrain_log_level level, const char* msg, c
 #define MICROSTRAIN_LOG_DEBUG(...) MICROSTRAIN_LOG_LOG(MICROSTRAIN_LOG_LEVEL_DEBUG, __VA_ARGS__)
 #define MICROSTRAIN_LOG_DEBUG_V(fmt, args) MICROSTRAIN_LOG_LOG_V(MICROSTRAIN_LOG_LEVEL_DEBUG, fmt, args)
 #else // !MICROSTRAIN_LOGGING_ENABLED_DEBUG
-#define MICROSTRAIN_LOG_DEBUG(...) (void)0; (void)__VA_ARGS__
+#define MICROSTRAIN_LOG_DEBUG(...) (void)0; (void)(__VA_ARGS__)
 #define MICROSTRAIN_LOG_DEBUG_V(fmt, args) (void)0; (void)fmt; (void)args
 #endif // MICROSTRAIN_LOGGING_ENABLED_DEBUG
 
@@ -221,7 +221,7 @@ void microstrain_log_bytes(const microstrain_log_level level, const char* msg, c
 #define MICROSTRAIN_LOG_TRACE(...) MICROSTRAIN_LOG_LOG(MICROSTRAIN_LOG_LEVEL_TRACE, __VA_ARGS__)
 #define MICROSTRAIN_LOG_TRACE_V(fmt, args) MICROSTRAIN_LOG_LOG_V(MICROSTRAIN_LOG_LEVEL_TRACE, fmt, args)
 #else // !MICROSTRAIN_LOGGING_ENABLED_TRACE
-#define MICROSTRAIN_LOG_TRACE(...) (void)0; (void)__VA_ARGS__
+#define MICROSTRAIN_LOG_TRACE(...) (void)0; (void)(__VA_ARGS__)
 #define MICROSTRAIN_LOG_TRACE_V(fmt, args) (void)0; (void)fmt; (void)args
 #endif // MICROSTRAIN_LOGGING_ENABLED_TRACE
 
