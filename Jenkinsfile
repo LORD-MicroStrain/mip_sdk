@@ -31,6 +31,31 @@ def checkoutRepo() {
   env.setProperty('BRANCH_NAME', branchName())
 }
 
+def updateBuildStatusBadge(boolean success)
+{
+    echo "Updating build status badge for branch: ${env.BRANCH_NAME}"
+
+    def badgeData = [
+        schemaVersion: 1,
+        label: "Build Status Label Test",
+        message: success ? "Passing" : "Failing",
+        color: success ? "green" : "red",
+    ]
+
+    dir(".github/badges") {
+        def badgeFile = 'build-status.json'
+        writeJSON file: badgeFile, json: badgeData
+    }
+
+    withCredentials([string(credentialsId: 'Github_Token', variable: 'GH_TOKEN')]) {
+        sh '''
+            git add .github/badges/build-status.json
+            git commit -m "Updated build status badge for branch: ${env.BRANCH_NAME}"
+            git push origin ${BRANCH_NAME}
+        '''
+    }
+}
+
 pipeline {
     agent none
     options {
