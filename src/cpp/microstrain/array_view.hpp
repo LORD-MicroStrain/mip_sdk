@@ -13,7 +13,26 @@ static constexpr size_t DYNAMIC_EXTENT = SIZE_MAX;
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Represents a view over a contiguous array of objects, similar to
-///       std::span.
+///       std::span, and is implemented as a pointer and length.
+///
+/// It can be used as a function parameter to accommodate std::vector,
+/// std::array, and C-style arrays in one function signature. It's acceptable
+/// to pass ArrayViews by value, which is equivalent to passing separate pointer
+/// and length parameters. The underlying data would not be copied.
+///
+/// Note that because ArrayView doesn't store the underlying data, the original
+/// buffer must remain intact while the view is in use.
+///
+/// Some functions provide both pointer+length and ArrayView versions, while
+/// others provide just the ArrayView version. To call an ArrayView-only
+/// function with a pointer and length, just put braces around the pointer and
+/// length arguments. This will create an ArrayView implicitly with no
+/// performance impact:
+/// `theFunctionToCall( {pointer, length} );`
+///
+/// To pass an ArrayView to a function taking separate pointer and length
+/// parameters, call `.data()` and `.size()` for each, like so:
+/// `theFunctionToCall( view.data(), view.size() );`
 ///
 /// This class is intended to be mostly compatible and interchangeable with
 /// std::span, but certain features from span may be missing and additional ones

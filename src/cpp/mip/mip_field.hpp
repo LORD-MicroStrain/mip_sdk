@@ -63,7 +63,26 @@ public:
 
     uint8_t operator[](size_t index) const { return payload(index); }
 
-    microstrain::ConstU8ArrayView payloadBytes() const { return {payloadPointer(), payloadLength()}; }
+    ///@brief Get a const view of the payload data.
+    microstrain::ConstU8ArrayView payload() const { return {payloadPointer(), payloadLength()}; }
+
+    ///@brief Gets a view of the entire field, including the header.
+    ///
+    ///@warning FieldView contains a descriptor and payload pointer. It does not
+    ///         guarantee the descriptors are also stored in the same buffer as
+    ///         the payload.
+    ///         This function operates by using a negative index from the
+    ///         payload pointer, so it is up to the user to ensure such an index
+    ///         is safe. Generally, if the field was obtained from an existing
+    ///         packet then the header bytes will be available. E.g. the field
+    ///         was obtained via `PacketView::firstField()`,
+    ///         `for(FieldView field : packet)`, etc. then the whole packet,
+    ///         including all fields and their headers, should exist in the
+    ///         buffer. Standalone FieldViews created from a descriptor and
+    ///         payload array may not have header bytes and this function isn't
+    ///         safe in that case.
+    ///
+    microstrain::ConstU8ArrayView data() const { return {payloadPointer()-C::MIP_HEADER_LENGTH, size_t(payloadLength()+C::MIP_HEADER_LENGTH)}; }
 
     ///@copydoc mip::C::mip_field_is_valid
     bool isValid() const { return C::mip_field_is_valid(this); }
@@ -89,7 +108,7 @@ public:
     ///         too few bytes (or to many if exact_size is specified). The field data is not
     ///         valid unless this function returns true.
     template<class FieldType>
-    bool extract(FieldType& field, bool exact_size=true) const { return microstrain::extract<microstrain::serialization::Endian::big>(field, payloadBytes(), 0, exact_size); }
+    bool extract(FieldType& field, bool exact_size=true) const { return microstrain::extract<microstrain::serialization::Endian::big>(field, payload(), 0, exact_size); }
 
 
     ///@brief Determines if the field holds data (and not a command, reply, or response).

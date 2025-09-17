@@ -141,7 +141,7 @@ void printPacket(const mip::PacketView& _packetView)
     int  bufferOffset                                           = 0;
 
     // Get each byte in the packet, including header and checksum
-    for (size_t i = 0; i < _packetView.packetLength(); i++)
+    for (size_t i = 0; i < _packetView.totalLength(); i++)
     {
         bufferOffset += snprintf(
             &packetByteBuffer[bufferOffset],
@@ -154,7 +154,7 @@ void printPacket(const mip::PacketView& _packetView)
     const uint8_t payloadLength = _packetView.payloadLength();
 
     // Print the packet details before the fields
-    printf("%4s%-20s = %u\n", " ", "Packet Length", _packetView.packetLength());
+    printf("%4s%-20s = %u\n", " ", "Packet Length", _packetView.totalLength());
     printf("%4s%-20s = %s\n", " ", "Raw Packet", packetByteBuffer);
     printf("%4s%-20s = 0x%02X\n", " ", "MIP SYNC1", packetPointer[0]);
     printf("%4s%-20s = 0x%02X\n", " ", "MIP SYNC2", packetPointer[1]);
@@ -911,7 +911,7 @@ void createFromRawBufferPacket4()
     for (const mip::FieldView& fieldView : packetView)
     {
         // Create a deserializer for the field.
-        mip::Serializer serializer(fieldView.payloadBytes());
+        mip::Serializer serializer(fieldView.payload());
 
         // Check what data the field contains
         switch (fieldView.fieldDescriptor())

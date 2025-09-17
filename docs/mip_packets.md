@@ -121,7 +121,7 @@ Once a PacketView is created, it may be used to inspect the packet.
     uint8_t* payload = packet.payloadPointer();
 
     // This is the value that was passed to the constructor.
-    size_t buffer_size = packet.bufferSize();
+    size_t buffer_size = packet.bufferLength();
 
     // How much of the buffer's capacity has been used.
     // Note that the max size is also limited by PACKET_SIZE_MAX.
@@ -192,7 +192,7 @@ FieldViews have properties similar to PacketViews:
     const uint8_t* payload = field.payloadPointer();
 
     // Buffer version of payload
-    microstrain::ConstUint8ArrayView payload = field.payloadBytes();
+    microstrain::ConstUint8ArrayView payload = field.payload();
 
     // Determining the type of field, e.g. for routing it to the right function in your app.
     bool is_data_field    = field.isData();     // Data field, e.g. accel data
@@ -214,7 +214,7 @@ After checking the descriptor, field data can be deserialized.
 
 You may also deserialize it manually.
 
-    mip::Serializer serializer(field.payloadBytes());
+    mip::Serializer serializer(field.payload());
 
     // Same as prior example
     //serializer.extract(data);
