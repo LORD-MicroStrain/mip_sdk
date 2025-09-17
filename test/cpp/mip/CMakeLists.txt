@@ -36,3 +36,8 @@ add_mip_test(
     COMMAND TestMipFormattingCpp
     USE_CPP TRUE
 )
+
+# TODO: Replace with valid check for IO support
+target_compile_definitions(TestMipFormattingCpp PRIVATE
+    "MICROSTRAIN_LOGGING_MAX_LEVEL=${MIP_LOGGING_MAX_LEVEL}"
+)

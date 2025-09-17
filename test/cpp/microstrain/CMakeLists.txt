@@ -20,6 +20,7 @@ add_microstrain_test(
     USE_CPP TRUE
 )
 
+# TODO: Replace with valid check for IO support
 target_compile_definitions(TestMicroStrainStrings PRIVATE
     "MICROSTRAIN_LOGGING_MAX_LEVEL=${MICROSTRAIN_LOGGING_MAX_LEVEL}"
 )

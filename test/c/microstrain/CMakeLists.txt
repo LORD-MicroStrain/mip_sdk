@@ -4,6 +4,7 @@ if(MIP_LOGGING_ENABLED)
         "${CMAKE_CURRENT_LIST_DIR}/testutil_strings.c"
     )
 
+    # TODO: Replace with valid check for IO support
     set(MICROSTRAIN_TEST_COMPILER_DEFINITIONS
         "MICROSTRAIN_LOGGING_MAX_LEVEL=${MICROSTRAIN_LOGGING_MAX_LEVEL}"
     )
@@ -16,6 +17,7 @@ if(MIP_LOGGING_ENABLED)
         COMMAND test_microstrain_string_concat
     )
 
+    # TODO: Replace with valid check for IO support
     target_compile_definitions(test_microstrain_string_concat PRIVATE
         "${MICROSTRAIN_TEST_COMPILER_DEFINITIONS}"
     )
@@ -28,6 +30,7 @@ if(MIP_LOGGING_ENABLED)
         COMMAND test_microstrain_string_formatting
     )
 
+    # TODO: Replace with valid check for IO support
     target_compile_definitions(test_microstrain_string_formatting PRIVATE
         "${MICROSTRAIN_TEST_COMPILER_DEFINITIONS}"
     )
@@ -40,6 +43,7 @@ if(MIP_LOGGING_ENABLED)
         COMMAND test_microstrain_string_format_bytes
     )
 
+    # TODO: Replace with valid check for IO support
     target_compile_definitions(test_microstrain_string_format_bytes PRIVATE
         "${MICROSTRAIN_TEST_COMPILER_DEFINITIONS}"
     )
