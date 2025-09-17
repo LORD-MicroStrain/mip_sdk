@@ -17,6 +17,14 @@ if(MICROSTRAIN_LOGGING_MAX_LEVEL)
     endif()
 endif()
 
+# Add the logging level to the compile definitions
+# Needs to be here since the cache variable is defined here
+set(MICROSTRAIN_PRIVATE_COMPILE_DEFINITIONS
+    "${MICROSTRAIN_PRIVATE_COMPILE_DEFINITIONS}"
+    "MICROSTRAIN_LOGGING_MAX_LEVEL=${MICROSTRAIN_LOGGING_MAX_LEVEL}"
+    PARENT_SCOPE
+)
+
 set(MICROSTRAIN_SOURCES
     "${CMAKE_CURRENT_LIST_DIR}/embedded_time.h"
     "${CMAKE_CURRENT_LIST_DIR}/logging.h"
