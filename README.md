@@ -1,6 +1,8 @@
 MIP SDK
 =======
 
+![Build Status](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/LORD-MicroStrain/mip_sdk/feature/test_status_badge/.github/badge-data.json)
+
 Welcome to the official MIP Software Development Kit.
 
 If you have any questions or run into any issues, please let us know! [MicroStrain Support Portal](https://support.microstrain.com)
