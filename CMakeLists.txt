@@ -25,15 +25,15 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
 include(check_cxx_support)
 
-set(MIP_LOGGING_MAX_LEVEL "MICROSTRAIN_LOGGING_LEVEL_WARN" CACHE STRING "Max log level the SDK is allowed to log. If this is defined, any call to logging functions with a higher level than this will be compiled out.")
+set(MIP_LOGGING_MAX_LEVEL "MICROSTRAIN_LOGGING_LEVEL_TRACE_" CACHE STRING "Max log level the SDK is allowed to log. If this is defined, any call to logging functions with a higher level than this will be compiled out.")
 
 set(MIP_LOGGING_ENABLED OFF)
 if(MIP_LOGGING_MAX_LEVEL)
-    if(NOT "${MIP_LOGGING_MAX_LEVEL}" MATCHES "^MICROSTRAIN_LOGGING_LEVEL_[^_-]+$" AND NOT "${MIP_LOGGING_MAX_LEVEL}" MATCHES "^[0-9]$")
-        message(FATAL_ERROR "MIP_LOGGING_MAX_LEVEL must be MICROSTRAIN_LOGGING_LEVEL_* or a positive number")
+    if(NOT "${MIP_LOGGING_MAX_LEVEL}" MATCHES "^MICROSTRAIN_LOGGING_LEVEL_[^_-]+_$" AND NOT "${MIP_LOGGING_MAX_LEVEL}" MATCHES "^[0-9]$")
+        message(FATAL_ERROR "MIP_LOGGING_MAX_LEVEL must be MICROSTRAIN_LOGGING_LEVEL_*_ or a positive number")
     endif()
 
-    if(NOT "${MIP_LOGGING_MAX_LEVEL}" MATCHES "^MICROSTRAIN_LOGGING_LEVEL_OFF$" AND NOT "${MIP_LOGGING_MAX_LEVEL}" MATCHES "^0$")
+    if(NOT "${MIP_LOGGING_MAX_LEVEL}" MATCHES "^MICROSTRAIN_LOGGING_LEVEL_OFF_$" AND NOT "${MIP_LOGGING_MAX_LEVEL}" MATCHES "^0$")
         set(MIP_LOGGING_ENABLED ON)
 
         message("MIP logging is enabled. Max level = '${MIP_LOGGING_MAX_LEVEL}'")

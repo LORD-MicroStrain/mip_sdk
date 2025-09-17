@@ -2,15 +2,15 @@ set(MICROSTRAIN_LIBRARY "microstrain" CACHE INTERNAL "Name of the MicroStrain li
 mark_as_advanced(MICROSTRAIN_LIBRARY)
 
 set(MICROSTRAIN_TIMESTAMP_TYPE "uint64_t" CACHE STRING "Override the type used for received data timestamps and timeouts (must be unsigned or at least 64 bits).")
-set(MICROSTRAIN_LOGGING_MAX_LEVEL "MICROSTRAIN_LOGGING_LEVEL_WARN" CACHE STRING "Max log level the SDK is allowed to log. If this is defined, any call to logging functions with a higher level than this will be compiled out.")
+set(MICROSTRAIN_LOGGING_MAX_LEVEL "MICROSTRAIN_LOGGING_LEVEL_TRACE_" CACHE STRING "Max log level the SDK is allowed to log. If this is defined, any call to logging functions with a higher level than this will be compiled out.")
 
 set(MICROSTRAIN_LOGGING_ENABLED OFF)
 if(MICROSTRAIN_LOGGING_MAX_LEVEL)
-    if(NOT "${MICROSTRAIN_LOGGING_MAX_LEVEL}" MATCHES "^MICROSTRAIN_LOGGING_LEVEL_[^_-]+$" AND NOT "${MICROSTRAIN_LOGGING_MAX_LEVEL}" MATCHES "^[0-9]$")
-        message(FATAL_ERROR "MICROSTRAIN_LOGGING_MAX_LEVEL must be MICROSTRAIN_LOGGING_LEVEL_* or a positive number")
+    if(NOT "${MICROSTRAIN_LOGGING_MAX_LEVEL}" MATCHES "^MICROSTRAIN_LOGGING_LEVEL_[^_-]+_$" AND NOT "${MICROSTRAIN_LOGGING_MAX_LEVEL}" MATCHES "^[0-9]$")
+        message(FATAL_ERROR "MICROSTRAIN_LOGGING_MAX_LEVEL must be MICROSTRAIN_LOGGING_LEVEL_*_ or a positive number")
     endif()
 
-    if(NOT "${MICROSTRAIN_LOGGING_MAX_LEVEL}" MATCHES "^MICROSTRAIN_LOGGING_LEVEL_OFF$" AND NOT "${MICROSTRAIN_LOGGING_MAX_LEVEL}" MATCHES "^0$")
+    if(NOT "${MICROSTRAIN_LOGGING_MAX_LEVEL}" MATCHES "^MICROSTRAIN_LOGGING_LEVEL_OFF_$" AND NOT "${MICROSTRAIN_LOGGING_MAX_LEVEL}" MATCHES "^0$")
         set(MICROSTRAIN_LOGGING_ENABLED ON)
 
         message("MicroStrain logging is enabled. Max level = '${MICROSTRAIN_LOGGING_MAX_LEVEL}'")
