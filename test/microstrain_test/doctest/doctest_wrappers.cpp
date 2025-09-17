@@ -51,7 +51,7 @@ namespace detail
 
             switch(failure_level)
             {
-                case FailureLevel::WARN:
+                case FailureLevel::WARN:  WARN(false);    break;
                 case FailureLevel::FAIL:  CHECK(false);   break;
                 case FailureLevel::FATAL: REQUIRE(false); break;
             }
