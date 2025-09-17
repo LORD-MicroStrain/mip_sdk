@@ -12,9 +12,10 @@ add_microstrain_test(
 
 add_microstrain_test(
     NAME TestMicroStrainStrings
-    SOURCES "${CMAKE_CURRENT_LIST_DIR}/../../c/microstrain/testutil_strings.c"
-    SOURCES "${CMAKE_CURRENT_LIST_DIR}/../../c/microstrain/testutil_strings.h"
-    SOURCES "${CMAKE_CURRENT_LIST_DIR}/test_strings.cpp"
+    SOURCES
+        "${CMAKE_CURRENT_LIST_DIR}/../../c/microstrain/testutil_strings.c"
+        "${CMAKE_CURRENT_LIST_DIR}/../../c/microstrain/testutil_strings.h"
+        "${CMAKE_CURRENT_LIST_DIR}/test_strings.cpp"
     COMMAND TestMicroStrainStrings
     USE_CPP TRUE
 )

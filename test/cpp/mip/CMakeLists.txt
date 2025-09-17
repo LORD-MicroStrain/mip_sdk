@@ -29,9 +29,10 @@ add_mip_test(
 
 add_mip_test(
     NAME TestMipFormattingCpp
-    SOURCES "${CMAKE_CURRENT_LIST_DIR}/../../c/microstrain/testutil_strings.c"
-    SOURCES "${CMAKE_CURRENT_LIST_DIR}/../../c/microstrain/testutil_strings.h"
-    SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/test_mip_formatting.cpp"
+    SOURCES
+        "${CMAKE_CURRENT_LIST_DIR}/../../c/microstrain/testutil_strings.c"
+        "${CMAKE_CURRENT_LIST_DIR}/../../c/microstrain/testutil_strings.h"
+        "${CMAKE_CURRENT_SOURCE_DIR}/test_mip_formatting.cpp"
     COMMAND TestMipFormattingCpp
     USE_CPP TRUE
 )

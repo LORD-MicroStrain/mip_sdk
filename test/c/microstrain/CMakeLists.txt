@@ -23,8 +23,8 @@ if(MIP_LOGGING_ENABLED)
     add_microstrain_test(
         NAME test_microstrain_string_formatting
         SOURCES
-        ${TEST_STRING_SOURCES}
-        "${CMAKE_CURRENT_LIST_DIR}/test_strfmt.c"
+            ${TEST_STRING_SOURCES}
+            "${CMAKE_CURRENT_LIST_DIR}/test_strfmt.c"
         COMMAND test_microstrain_string_formatting
     )
 
@@ -35,8 +35,8 @@ if(MIP_LOGGING_ENABLED)
     add_microstrain_test(
         NAME test_microstrain_string_format_bytes
         SOURCES
-        ${TEST_STRING_SOURCES}
-        "${CMAKE_CURRENT_LIST_DIR}/test_strfmt_bytes.c"
+            ${TEST_STRING_SOURCES}
+            "${CMAKE_CURRENT_LIST_DIR}/test_strfmt_bytes.c"
         COMMAND test_microstrain_string_format_bytes
     )
 
