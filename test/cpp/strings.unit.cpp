@@ -8,12 +8,12 @@
 static constexpr char CHECK_STRING[] = "Test: \"quotes\" 'single' & <xml/> {json} [array] $100 €50 ¥200 @user #tag 🚀 \n\t\\ 100% café naïve";
 static constexpr size_t CHECK_STRING_LENGTH = sizeof(CHECK_STRING)-1; // Length without null terminator
 
-TEST("C++ string concatenation", "A span of chars can be concatenated to a buffer")
+TEST("C++ string concatenation", "A char array view can be concatenated to a buffer")
 {
     char buffer[1024] = {};
     size_t index = 0;
 
-    const bool ok = microstrain::strings::concat(buffer, &index, microstrain::Span<const char>{CHECK_STRING});
+    const bool ok = microstrain::strings::concat(buffer, &index, microstrain::ConstCharArrayView{CHECK_STRING});
 
     FAIL_IF_NOT_TRUE(ok);
     FAIL_IF_C_STRINGS_NOT_EQUAL(buffer, CHECK_STRING);
