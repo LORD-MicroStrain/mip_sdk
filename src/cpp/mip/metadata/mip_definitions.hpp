@@ -1,6 +1,6 @@
 #pragma once
 
-#include <microstrain/span.hpp>
+#include <microstrain/array_view.hpp>
 #include <mip/mip_descriptors.hpp>
 
 namespace mip::metadata
@@ -10,7 +10,7 @@ namespace mip::metadata
 
     // A list of const DescriptorSetInfo pointers.
     // This is a view of an array of const pointers to const DescriptorSetInfos.
-    using DescriptorSetSpan = microstrain::Span<DescriptorSetInfo const* const>;
+    using DescriptorSetSpan = microstrain::ConstArrayView<const DescriptorSetInfo *>;
 
     const DescriptorSetInfo* findDescriptorSet(const DescriptorSetSpan& descriptorSets, uint8_t descriptor);
     const FieldInfo* findField(const DescriptorSetSpan& descriptorSets, mip::CompositeDescriptor descriptor);

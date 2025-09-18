@@ -12,17 +12,6 @@ rule. This can cause linker errors or mysterious crashes and odd behavior. To av
 user explicitly opt-in to certain C++ features. This "opt-in" choice must be made identically when the library is
 compiled and then in the project where it is used (this includes anywhere the MIP SDK headers are included).
 
-std::span
----------
-
-A "span" in C++ parlance is the combination of a pointer and length, typically representing a view of an array. The
-MIP SDK provides an implementation called `microstrain::Span`, which tries to be compatible with `std::span` from C++20.
-It includes most, but not all, features from the standard version. If your compiler supports it, you may use `std::span`
-instead by defining `MICROSTRAIN_USE_STD_SPAN`. This will replace the microstrain span implementation with a
-typedef to `std::span`.
-
-https://en.cppreference.com/w/cpp/container/span
-
 std::endian
 -----------
 

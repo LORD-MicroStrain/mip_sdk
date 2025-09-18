@@ -2,10 +2,6 @@
 
 #include <microstrain/logging.h>
 
-#include <microstrain/span.hpp>
-
-#include <string>
-
 /*
 namespace microstrain {
 namespace logging {

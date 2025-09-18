@@ -54,25 +54,26 @@ public:
     ///@brief Create a new MIP packet in an existing buffer.
     ///@param buffer        Place to store the MIP packet bytes.
     ///@param descriptorSet Initializes the packet to this descriptor set.
-    PacketView(microstrain::Span<uint8_t> buffer, uint8_t descriptorSet) { C::mip_packet_create(this, buffer.data(), buffer.size(), descriptorSet); }
+    PacketView(microstrain::U8ArrayView buffer, uint8_t descriptorSet) { C::mip_packet_create(this, buffer.data(), buffer.size(), descriptorSet); }
 
     ///@brief Create a reference to an existing MIP packet.
     ///@param buffer Buffer containing an existing MIP packet.
     ///@warning Do not call functions which modify the packet (addField, finalize, reset, etc) unless you know the buffer is not const.
-    PacketView(microstrain::Span<const uint8_t> buffer) { C::mip_packet_from_buffer(this, const_cast<uint8_t*>(buffer.data()), buffer.size()); }
+    PacketView(microstrain::ConstU8ArrayView buffer) { C::mip_packet_from_buffer(this, const_cast<uint8_t*>(buffer.data()), buffer.size()); }
 
     //
     // C function wrappers
     //
 
     uint8_t        descriptorSet() const { return C::mip_packet_descriptor_set(this); }  ///<@copydoc mip::C::mip_packet_descriptor_set
-    uint_least16_t totalLength()   const { return C::mip_packet_total_length(this);   }  ///<@copydoc mip::C::mip_packet_total_length
+    uint_least16_t totalLength()  const { return C::mip_packet_total_length(this);   }  ///<@copydoc mip::C::mip_packet_total_length
     uint8_t        payloadLength() const { return C::mip_packet_payload_length(this); }  ///<@copydoc mip::C::mip_packet_payload_length
 
     bool isData() const { return C::mip_packet_is_data(this); }
 
-    const uint8_t* pointer() const { return C::mip_packet_pointer(this); }  ///<@copydoc mip::C::mip_packet_pointer
-    const uint8_t* payload() const { return C::mip_packet_payload(this); }  ///<@copydoc mip::C::mip_packet_payload
+    const uint8_t* pointer() const { return C::mip_packet_pointer(this); }         ///@brief Get a pointer to the entire packet data.
+    const uint8_t* payloadPointer() const { return C::mip_packet_payload(this); }  ///@brief Get a pointer to the payload data.
+    uint8_t payload(size_t i) const { assert(i < payloadLength()); return payloadPointer()[i]; }  ///@brief Get payload byte at index i.
 
     uint16_t checksumValue() const { return C::mip_packet_checksum_value(this); }     ///<@copydoc mip::C::mip_packet_checksum_value
     uint16_t computeChecksum() const { return C::mip_packet_compute_checksum(this); } ///<@copydoc mip::C::mip_packet_compute_checksum
@@ -81,7 +82,9 @@ public:
     bool isValid() const { return C::mip_packet_is_valid(this); }  ///<@copydoc mip::C::mip_packet_is_valid
     bool isEmpty() const { return C::mip_packet_is_empty(this); }  ///<@copydoc mip::C::mip_packet_is_empty
 
-    uint_least16_t bufferSize() const { return C::mip_packet_buffer_size(this); }  ///<@copydoc mip::C::mip_packet_buffer_size
+    const uint8_t* bufferPointer() const { return C::mip_packet_buffer(const_cast<PacketView*>(this)); } ///@copydoc mip::C::mip_packet_buffer
+    uint8_t*       bufferPointerWr()     { return C::mip_packet_buffer(this); } ///@copydoc mip::C::mip_packet_buffer
+    uint_least16_t bufferLength() const { return C::mip_packet_buffer_size(this); }  ///<@copydoc mip::C::mip_packet_buffer_size
     int remainingSpace() const { return C::mip_packet_remaining_space(this); }  ///<@copydoc mip::C::mip_packet_remaining_space
 
     bool addField(uint8_t fieldDescriptor, const uint8_t* payload, uint8_t payloadLength) { return C::mip_packet_add_field(this, fieldDescriptor, payload, payloadLength); }  ///<@copydoc mip::C::mip_packet_add_field
@@ -96,21 +99,28 @@ public:
     // C++ additions
     //
 
-    ///@brief Gets a span over the whole packet.
+    ///@brief Gets a const byte view for the whole packet.
     ///
-    microstrain::Span<const uint8_t> totalSpan() const { return {pointer(), totalLength()}; }
+    microstrain::ConstU8ArrayView data() const { return {pointer(), totalLength()}; }
 
-    ///@brief Gets a span over just the payload.
+    ///@brief Gets a const byte view of just the payload.
     ///
-    microstrain::Span<const uint8_t> payloadSpan() const { return {payload(), payloadLength()}; }
+    microstrain::ConstU8ArrayView payload() const { return {payloadPointer(), payloadLength()}; }
+
+    ///@brief Gets a const view to the entire storage buffer (usually more than just the packet).
+    microstrain::ConstU8ArrayView buffer() const { return {bufferPointer(), bufferLength()}; }
+
+    ///@brief Gets a writeable view to the entire storage buffer (usually more than just the packet).
+    ///@warning: The buffer can only be modified if the packet was constructed with a non-const buffer!
+    microstrain::U8ArrayView bufferWr() { return {bufferPointerWr(), bufferLength()}; }
 
     ///@brief Copies the given mip field to the packet.
     ///
-    bool addField(const FieldView& field) { return addField(field.fieldDescriptor(), field.payload(), field.payloadLength()); }
+    bool addField(const FieldView& field) { return addField(field.fieldDescriptor(), field.payload()); }
 
     ///@brief Creates a mip field with the given descriptor and copies the given payload.
     ///
-    bool addField(uint8_t fieldDescriptor, microstrain::Span<const uint8_t> payload) { return addField(fieldDescriptor, payload.data(), uint8_t(payload.size())); }
+    bool addField(uint8_t fieldDescriptor, microstrain::ConstU8ArrayView payload) { return addField(fieldDescriptor, payload.data(), uint8_t(payload.size())); }
 
 
     class AllocatedField : public Serializer
@@ -216,19 +226,18 @@ public:
     ///
     ///@tparam FieldType Any field class from a file in the mip/definitions directory.
     ///
-    ///@param buffer          Buffer to hold the packet bytes.
-    ///@param bufferSize      Size of buffer in bytes.
+    ///@param packetBuffer    Buffer to hold the packet bytes.
     ///@param field           Instance of the field to add to the packet.
     ///@param fieldDescriptor If specified, overrides the field descriptor.
     ///
     ///@returns A PacketRef object containing the field.
     ///
     template<class FieldType>
-    static PacketView createFromField(uint8_t* buffer, size_t bufferSize, const FieldType& field, uint8_t fieldDescriptor=INVALID_FIELD_DESCRIPTOR)
+    static PacketView createFromField(microstrain::ConstU8ArrayView packetBuffer, const FieldType& field, uint8_t fieldDescriptor=INVALID_FIELD_DESCRIPTOR)
     {
         if( fieldDescriptor == INVALID_FIELD_DESCRIPTOR )
             fieldDescriptor = FieldType::FIELD_DESCRIPTOR;
-        PacketView packet(buffer, bufferSize, FieldType::DESCRIPTOR_SET);
+        PacketView packet(packetBuffer, FieldType::DESCRIPTOR_SET);
         packet.addField<FieldType>(field, fieldDescriptor);
         packet.finalize();
         return packet;
@@ -257,7 +266,11 @@ public:
             // Required to make invalid fields equivalent for range-based for loop
             if( !mField.isValid() && !other.mField.isValid() )
                 return true;
-            return mField.descriptorSet() == other.mField.descriptorSet() && mField.fieldDescriptor() == other.mField.fieldDescriptor() && mField.payload() == other.mField.payload();
+            return (
+                mField.descriptorSet()   == other.mField.descriptorSet()   &&
+                mField.fieldDescriptor() == other.mField.fieldDescriptor() &&
+                mField.payloadPointer()  == other.mField.payloadPointer()
+            );
         }
         bool operator!=(const FieldIterator& other) const { return !(*this == other); }
 
@@ -276,18 +289,6 @@ public:
         FieldView mField;
     };
 
-    ///@brief Copies this packet to an external buffer.
-    ///
-    /// This packet must be sane (see isSane()). Undefined behavior otherwise due to lookup of totalLength().
-    ///
-    ///@param buffer    Data is copied into this location.
-    ///@param maxLength Maximum number of bytes to copy.
-    ///
-    ///@returns true if successful.
-    ///@returns false if maxLength is too short.
-    ///
-    bool copyPacketTo(uint8_t* buffer, size_t maxLength) { assert(isSane()); size_t copyLength = this->totalLength(); if(copyLength > maxLength) return false; std::memcpy(buffer, pointer(), copyLength); return true; }
-
     ///@brief Copies this packet to an external buffer (span version).
     ///
     /// This packet must be sane (see isSane()). Undefined behavior otherwise due to lookup of totalLength().
@@ -297,7 +298,15 @@ public:
     ///@returns true if successful.
     ///@returns false if maxLength is too short.
     ///
-    bool copyPacketTo(microstrain::Span<uint8_t> buffer) { return copyPacketTo(buffer.data(), buffer.size()); }
+    bool copyPacketTo(microstrain::U8ArrayView buffer) const
+    {
+        assert(isSane());
+        microstrain::ConstU8ArrayView packet = this->data();
+        if(packet.size() > buffer.size())
+            return false;
+        std::memcpy(buffer.data(), packet.data(), packet.size());
+        return true;
+    }
 };
 
 
@@ -310,15 +319,14 @@ class SizedPacketBuf : public PacketView
     static_assert(BufferSize >= PACKET_LENGTH_MIN, "BufferSize must be at least PACKET_LENGTH_MIN bytes");
 
 public:
-    SizedPacketBuf(uint8_t descriptorSet=INVALID_DESCRIPTOR_SET) : PacketView(mData, sizeof(mData), descriptorSet) {}
+    explicit SizedPacketBuf(uint8_t descriptorSet=INVALID_DESCRIPTOR_SET) : PacketView(mData, sizeof(mData), descriptorSet) {}
 
-    ///@brief Creates a PacketBuf by copying existing data.
+    ///@brief Construct by copying an existing buffer.
+    explicit SizedPacketBuf(microstrain::ConstU8ArrayView data) : PacketView(mData, sizeof(mData)) { copyFrom(data); }
+
+    ///@brief Creates a PacketBuf by copying an existing packet.
     ///
-    explicit SizedPacketBuf(const uint8_t* data, size_t length) : PacketView(mData, sizeof(mData)) { copyFrom(data, length); }
     explicit SizedPacketBuf(const PacketView& packet) : PacketView(mData, sizeof(mData)) { copyFrom(packet); }
-
-    ///@brief Construct from a span.
-    explicit SizedPacketBuf(microstrain::Span<const uint8_t> data) : SizedPacketBuf(data.data(), data.size()) {}
 
     ///@brief Copy constructor
     SizedPacketBuf(const SizedPacketBuf& other) : PacketView(mData, sizeof(mData)) { copyFrom(other); }
@@ -363,24 +371,23 @@ public:
 
     ///@brief Returns a pointer to the underlying buffer.
     /// This is technically the same as PacketRef::pointer but is writable.
-    uint8_t* buffer() { return mData; }
+    uint8_t* bufferPointer() { return mData; }
 
     ///@brief Returns a Span covering the entire buffer.
     ///
-    microstrain::Span<uint8_t, BufferSize> bufferSpan() { return microstrain::Span<uint8_t, BufferSize>{buffer(), BufferSize}; }
+    microstrain::ArrayView<uint8_t, BufferSize> buffer() { return {bufferPointer(), BufferSize}; }
 
-    ///@brief Copies the data from the pointer to this buffer. The data is not inspected.
+    ///@brief Copies the data from a U8ArrayView to this buffer. The data is not inspected.
     ///
-    ///@param data   Pointer to the start of the packet.
-    ///@param length Total length of the packet.
+    ///@param data Packet data to copy.
     ///
-    void copyFrom(const uint8_t* data, size_t length) { assert(length <= sizeof(mData)); std::memcpy(mData, data, length); }
+    void copyFrom(microstrain::ConstU8ArrayView data) { assert(data.size() <= sizeof(mData)); std::memcpy(mData, data.data(), data.size()); }
 
     ///@brief Copies an existing packet. The packet is assumed to be valid (undefined behavior otherwise).
     ///
     ///@param packet A "sane" (isSane()) mip packet.
     ///
-    void copyFrom(const PacketView& packet) { assert(packet.isSane()); copyFrom(packet.pointer(), packet.totalLength()); }
+    void copyFrom(const PacketView& packet) { assert(packet.isSane()); copyFrom(packet.data()); }
 
 private:
     uint8_t mData[BufferSize];

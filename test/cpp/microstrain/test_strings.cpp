@@ -17,7 +17,7 @@ struct StringTest
     char array[1024] = {0};
     size_t index = 0;
 
-    const microstrain::Span<char> buffer() { return {array}; }
+    microstrain::CharArrayView buffer() { return {array}; }
 };
 
 
@@ -37,7 +37,7 @@ void concat_works()
     TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(TEST_STRING)-1, "");
 }
 
-void concat_into_implicit_span_works()
+void concat_into_implicit_view_works()
 {
     StringTest test;
 
@@ -49,11 +49,11 @@ void concat_into_implicit_span_works()
     TEST_ASSERT_BUFFER_TERMINATED(test.array, sizeof(test.array), sizeof(TEST_STRING)-1, "");
 }
 
-void concat_explicit_span_works()
+void concat_explicit_view_works()
 {
     StringTest test;
 
-    bool ok = microstrain::strings::concat(test.buffer(), &test.index, microstrain::Span<const char>{TEST_STRING});
+    bool ok = microstrain::strings::concat(test.buffer(), &test.index, microstrain::ConstCharArrayView{TEST_STRING});
 
     TEST_ASSERT(ok, "Success");
     TEST_ASSERT_BUFFER_COMPARE(test.array, TEST_STRING, sizeof(TEST_STRING), "");
@@ -151,8 +151,8 @@ void format_bytes_works()
 int main()
 {
     concat_works();
-    concat_into_implicit_span_works();
-    concat_explicit_span_works();
+    concat_into_implicit_view_works();
+    concat_explicit_view_works();
     concat_explicit_string_view_works();
     concat_explicit_string_works();
     // strcat_n_implicit_str_works();  // this would be ambiguous (span or string?)

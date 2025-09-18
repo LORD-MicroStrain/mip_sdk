@@ -33,6 +33,8 @@ Forthcoming
   * Setup test suite to be easily run locally
 ### Interface Changes
 * MIP parser callbacks must now return bool (return true to preserve existing behavior).
+* microstrain::Span has been renamed to microstrain::ArrayView.
+* Certain PacketView and FieldView accessors have been renamed for clarity and consistency.
 * MicroStrain logging fixes
   * Renamed logging level compiler definitions
   * Fixed issues where not defining logging compiler definitions would integrate logging support incorrectly

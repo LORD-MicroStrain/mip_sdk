@@ -1,7 +1,7 @@
 
 #include "test.h"
 
-#include <microstrain/span.hpp>
+#include <microstrain/array_view.hpp>
 #include <mip/mip_packet.hpp>
 
 #include <mip/definitions/data_sensor.hpp>
@@ -17,24 +17,24 @@ const uint8_t ACCEL_PKT[] = { 0x75, 0x65, 0x80, 0x0e, 0x0e, 0x04, 0x3f, 0x80, 0x
 
 void print_packet(const mip::PacketView& packet)
 {
-    print_buffer(stderr, packet.pointer(), packet.totalLength());
+    print_buffer(stderr, packet.pointer(), packet.packetLength());
 }
 
-bool checkPacketView(const mip::PacketView& packet, microstrain::Span<const uint8_t> compare, const char* method)
+bool checkPacketView(const mip::PacketView& packet, microstrain::ConstU8ArrayView compare, const char* method)
 {
     bool ok = true;
 
     ok &= check(packet.isSane(), "Insane packet from %s", method);
     ok &= check(packet.descriptorSet() == compare[mip::C::MIP_INDEX_DESCSET], "Wrong descriptor set from %s", method);
     ok &= check(packet.payloadLength() == compare[mip::C::MIP_INDEX_LENGTH], "Wrong payload length from %s", method);
-    ok &= check(packet.totalLength() == packet.payloadLength()+mip::C::MIP_PACKET_LENGTH_MIN, "Wrong total length from %s", method);
-    ok &= check_equal(packet.payload(), packet.pointer() + mip::C::MIP_INDEX_PAYLOAD, "Wrong payload pointer from %s", method);
+    ok &= check(packet.packetLength() == packet.payloadLength()+mip::C::MIP_PACKET_LENGTH_MIN, "Wrong total length from %s", method);
+    ok &= check_equal(packet.payloadPointer(), packet.pointer() + mip::C::MIP_INDEX_PAYLOAD, "Wrong payload pointer from %s", method);
     ok &= check(packet.pointer() != nullptr, "PacketRef shouldn't have NULL pointer from %s", method);
-    ok &= check_equal(packet.totalSpan().data(), packet.pointer(), "totalSpan().data() should match pointer()");
-    ok &= check_equal(packet.totalSpan().size(), packet.totalLength(), "totalSpan().size() should match totalLength()");
-    ok &= check_equal(packet.payloadSpan().data(), packet.payload(), "payloadSpan().data() should match payload()");
-    ok &= check_equal(packet.payloadSpan().size(), packet.payloadLength(), "payloadSpan().size() should match payloadLength()");
-    ok &= check_equal(packet.remainingSpace(), packet.bufferSize()-packet.totalLength(), "remainingSpace() is wrong");
+    ok &= check_equal(packet.bytes().data(), packet.pointer(), "bytes().data() should match pointer()");
+    ok &= check_equal(packet.bytes().size(), packet.packetLength(), "bytes().size() should match totalLength()");
+    ok &= check_equal(packet.payloadBytes().data(), packet.payloadPointer(), "payload().data() should match payload()");
+    ok &= check_equal(packet.payloadBytes().size(), packet.payloadLength(), "payload().size() should match payloadLength()");
+    ok &= check_equal(packet.remainingSpace(), packet.bufferSize()-packet.packetLength(), "remainingSpace() is wrong");
 
     if(std::memcmp(packet.pointer(), compare.data(), compare.size()) != 0)
     {
@@ -48,29 +48,29 @@ bool checkPacketView(const mip::PacketView& packet, microstrain::Span<const uint
 }
 
 template<size_t Size>
-bool checkPacketBuf(mip::SizedPacketBuf<Size>& packet, microstrain::Span<const uint8_t> compare, const char* method)
+bool checkPacketBuf(mip::SizedPacketBuf<Size>& packet, microstrain::ConstU8ArrayView compare, const char* method)
 {
     bool ok = checkPacketView(packet, compare, method);
 
-    ok &= check(packet.buffer() != nullptr, "NULL buffer from %s", method);
+    ok &= check(packet.bufferPointer() != nullptr, "NULL buffer from %s", method);
     ok &= check_equal(packet.bufferSize(), Size, "bufferSize() should match templated size from %s", method);
-    ok &= check_equal(packet.pointer(), packet.buffer(), "Packet buffer/pointer mismatch from %s", method);
+    ok &= check_equal(packet.pointer(), packet.bufferPointer(), "Packet buffer/pointer mismatch from %s", method);
     ok &= check(packet.pointer() != compare.data(), "PacketBuf shouldn't point to original data buffer from %s", method);
-    ok &= check_equal(packet.bufferSpan().data(), packet.buffer(), "BufferSpan().data() doesn't match .buffer()");
-    ok &= check(packet.bufferSpan().size() == Size, "BufferSpan().data() doesn't match .buffer()");
+    ok &= check_equal(packet.buffer().data(), packet.bufferPointer(), ".buffer().data() doesn't match .bufferPointer()");
+    ok &= check(packet.buffer().size() == Size, "buffer().size() doesn't match Size");
 
     return ok;
 }
 
 bool checkPingPacketView(const mip::PacketView& packet, const char* method)
 {
-    return checkPacketView(packet, microstrain::Span<const uint8_t>(PING), method);
+    return checkPacketView(packet, PING, method);
 }
 
 template<size_t Size>
 bool checkPingPacketBuf(mip::SizedPacketBuf<Size>& packet, const char* method)
 {
-    return checkPacketBuf(packet, microstrain::Span<const uint8_t>(PING), method);
+    return checkPacketBuf(packet, PING, method);
 }
 
 
@@ -103,11 +103,11 @@ void testPacketView()
     mip::PacketView packet3(packet3c);
     checkPingPacketView(packet3, "PacketView C constructor");
 
-    mip::PacketView packet4(microstrain::Span<uint8_t>(buffer), mip::commands_base::DESCRIPTOR_SET);
-    checkPacketView(packet4, buffer, "PacketView initializing constructor (span version)");
+    mip::PacketView packet4(buffer, mip::commands_base::DESCRIPTOR_SET);
+    checkPacketView(packet4, buffer, "PacketView initializing constructor (U8ArrayView version)");
 
-    mip::PacketView packet5(microstrain::Span<const uint8_t>(PING, sizeof(PING)));
-    checkPingPacketView(packet5, "PacketView existing constructor (span version)");
+    mip::PacketView packet5(PING);
+    checkPingPacketView(packet5, "PacketView existing constructor (U8ArrayView version)");
 
 
 }
@@ -126,10 +126,10 @@ void testPacketBuf()
     mip::PacketBuf packet2(mip::data_sensor::DESCRIPTOR_SET);
     check( packet2.descriptorSet() == mip::data_sensor::DESCRIPTOR_SET, "PacketBuf constructor with descriptor set doesn't work");
 
-    // Construct from raw buffer, span, or existing view.
+    // Construct from raw buffer, U8ArrayView, or existing view.
     mip::PacketBuf packet3(PING, sizeof(PING));
-    mip::PacketBuf packet4(microstrain::Span<const uint8_t>(PING, sizeof(PING)));
-    mip::PacketBuf packet5(mip::PacketView(const_cast<uint8_t*>(PING), sizeof(PING)));
+    mip::PacketBuf packet4(PING);
+    mip::PacketBuf packet5((mip::PacketView(packet4)));
 
     checkPingPacketBuf(packet3, "PacketBuf raw buffer constructor");
     checkPingPacketBuf(packet4, "PacketBuf span constructor");
@@ -138,7 +138,7 @@ void testPacketBuf()
     // Regular copy constructor
     mip::PacketBuf packet6(packet5);
     checkPingPacketBuf(packet6, "PacketBuf copy constructor");
-    check(packet6.buffer() != packet5.buffer(), "Packet6 shouldn't point to packet5's data buffer from copy constructor");
+    check(packet6.bufferPointer() != packet5.bufferPointer(), "Packet6 shouldn't point to packet5's data buffer from copy constructor");
 
     // Construct from SizedPacketBuf of differing size
     mip::SizedPacketBuf<8> packet7(packet5);
@@ -147,13 +147,13 @@ void testPacketBuf()
     // Construction from PacketView
     mip::PacketBuf packet8(packet5.ref());
     checkPingPacketBuf(packet8, "PacketBuf copy constructor (PacketView)");
-    check(packet8.buffer() != packet5.buffer(), "Packet6 shouldn't point to packet5's data buffer from copy constructor");
+    check(packet8.bufferPointer() != packet5.bufferPointer(), "Packet6 shouldn't point to packet5's data buffer from copy constructor");
 
     // Assignment
     mip::PacketBuf packet9;
     packet9 = packet5;
     checkPingPacketBuf(packet9, "PacketBuf operator=");
-    check(packet9.buffer() != packet5.buffer(), "Packet9 shouldn't point to packet5's data buffer from operator=");
+    check(packet9.bufferPointer() != packet5.bufferPointer(), "Packet9 shouldn't point to packet5's data buffer from operator=");
 
     // Create from field
     mip::PacketBuf packet10(ACCEL_FIELD);
@@ -170,7 +170,7 @@ void testPacketBuf()
     check(std::memcmp(PING, tmp, sizeof(PING))==0, "Temporary buffer doesn't match after calling packet.copyPacketTo");
 
     std::memset(tmp, 0x00, sizeof(tmp));
-    packet5.copyPacketTo(microstrain::Span<uint8_t>(tmp));
+    packet5.copyPacketTo({tmp, sizeof(tmp)});
     check(std::memcmp(PING, tmp, sizeof(PING))==0, "Temporary buffer doesn't match after calling packet.copyPacketTo (span version)");
 
 }

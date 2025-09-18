@@ -122,7 +122,7 @@ The serialization library has support for the following basic types:
 Additionally, the following compound types are supported:
 * Arrays, both fixed-size and runtime size
   * `std::array<T, N>`
-  * `microstrain::Span<T>` / `std::span<T>`
+  * `microstrain::ArrayView<T>` / `std::ArrayView<T>`
   * C-style arrays of fixed, known size
   * Pointer and size
 * std::tuple (with c++17 support)
@@ -136,13 +136,13 @@ Additionally, the following compound types are supported:
     
     auto basics = std::make_tuple(a,b,c,d,e,f,g);
     std::array<float, 4> vector4 = {1.0f, 2.0f, 3.0f, 4.0f};
-    microstrain::Span<float> vector3(vector4[0], 3);
-    
+    microstrain::ArrayView<float> vector3(vector4[0], 3);
+
     /// Serialize a custom enum and the contents of a std::tuple.
     bes.insert(me, basics);
     les.insert(me, basics);
     
-    /// Serialize an array and Span using the non-member functions.
+    /// Serialize an array and U8ArrayView using the non-member functions.
     /// This is equivalent to `s.insert(vector4, vector3)`.
     microstrain::insert(bes, vector4, vector3);
     microstrain::insert(les, vector4, vector3);
@@ -159,12 +159,12 @@ For convenience, a few additional methods are provided for serialization in a si
 void one_liners()
 {
      uint8_t buffer[4];
-     microstrain::Span<uint8_t> span(buffer, sizeof(buffer));
+     microstrain::U8ArrayView view(buffer, sizeof(buffer));
 
      int32_t x = -501;
 
      // Write a single value to a buffer.
-     bool ok1 = microstrain::insert<microstrain::Endian::big>(x, span);
+     bool ok1 = microstrain::insert<microstrain::Endian::big>(x, view);
      bool ok2 = microstrain::insert<microstrain::Endian::big>(x, buffer, sizeof(buffer));
      bool ok3 = microstrain::insert<microstrain::Endian::big>(x, buffer, sizeof(buffer), 0, true);  // Enforces all bytes used
 
@@ -172,15 +172,15 @@ void one_liners()
 
      // Read a single value from the buffer
      int32_t y1,y2,y3;
-     ok1 = microstrain::extract<microstrain::Endian::big>(y1, span);
-     ok2 = microstrain::extract<microstrain::Endian::big>(y2, span, 0, true);  // Enforces all bytes read
+     ok1 = microstrain::extract<microstrain::Endian::big>(y1, view);
+     ok2 = microstrain::extract<microstrain::Endian::big>(y2, view, 0, true);  // Enforces all bytes read
      ok3 = microstrain::extract<microstrain::Endian::big>(y3, buffer, sizeof(buffer));
 
      assert(ok1 && ok2 && ok3 && y1 == x && y2 == x && y3 == x);
 
      // Read a value of the specified type from the buffer.
      // Note: only available with std::optional support from C++17.
-     std::optional<float> value1 = microstrain::extract<microstrain::Endian::big, int32_t>(span);
+     std::optional<float> value1 = microstrain::extract<microstrain::Endian::big, int32_t>(view);
      std::optional<float> value2 = microstrain::extract<microstrain::Endian::big, int32_t>(buffer, sizeof(buffer));
 
      assert(value1.has_value() && value2.has_value());

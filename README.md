@@ -198,12 +198,9 @@ Pass these to your compiler as appropriate, e.g. `arm-none-eabi-gcc -DMICROSTRAI
 These defines must be set when building the MIP SDK sources and for any code that includes
 MIP SDK headers.
 
-| Name                          | Description                                                                                  | 
-|-------------------------------|----------------------------------------------------------------------------------------------|
 | MICROSTRAIN_LOGGING_MAX_LEVEL | Enables/Disables logging more detailed messages (e.g. debug tracing) to improve performance. |
 | MICROSTRAIN_TIMESTAMP_TYPE    | Type to use for mip::Timestamp / mip::Timeout. Defaults to uint64_t if not defined.          |
 | MICROSTRAIN_USE_STD_ENDIAN    | Define to 1 to enable the use of std::span from C++20.                                       |
-| MICROSTRAIN_USE_STD_SPAN      | Define to 1 to enable the use of std::endian from C++20.                                     |
 | MIP_LOGGING_MAX_LEVEL         | Enables/Disables logging more detailed messages (e.g. debug tracing) to improve performance. |
 | MIP_ENABLE_DIAGNOSTICS        | Enables diagnostic counters.                                                                 |
 
