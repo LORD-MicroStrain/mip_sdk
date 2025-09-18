@@ -896,7 +896,7 @@ void createFromRawBufferPacket4()
     for (const mip::FieldView& fieldView : packetView)
     {
         // Create a deserializer for the field.
-        mip::Serializer serializer(fieldView.payload());
+        mip::Serializer serializer(fieldView.payloadPointer(), fieldView.payloadLength());
 
         // Check what data the field contains
         switch (fieldView.fieldDescriptor())
