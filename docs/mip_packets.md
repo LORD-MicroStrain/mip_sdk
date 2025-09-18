@@ -13,10 +13,10 @@ constructor overloads taking a descriptor set parameter.
 
     mip::PacketView packet(buffer, sizeof(buffer), descriptor_set);
 
-Using a Span:
+Using a U8ArrayView:
 
-    microstrain::Span<uint8_t> buffer_span(buffer, sizeof(buffer));
-    mip::PacketView packet(buffer_span, descriptor_set);
+    microstrain::U8ArrayView buffer_view(buffer, sizeof(buffer));
+    mip::PacketView packet(buffer_view, descriptor_set);
 
 ### Create a new packet with a built-in buffer
 
@@ -77,9 +77,9 @@ Existing Packet Processing
         mip::PacketView packet(existing_buffer, sizeof(existing_buffer));
     }
 
-Using a span
+Using a Uint8ArrayView
 
-    void handle_packet(microstrain::Span<const uint8_t> buffer)
+    void handle_packet(microstrain::ConstUint8ArrayView buffer)
     {
         mip::PacketView packet(buffer);
     }
@@ -107,21 +107,21 @@ You may compute the checksum manually as well:
 Once a PacketView is created, it may be used to inspect the packet.
 
     uint8_t desc_set       = packet.descriptorSet();
-    size_t  total_length   = packet.totalLength();
+    size_t  packet_length  = packet.packetLength();
     uint8_t payload_length = packet.payloadLength();
 
     // Pointer to raw bytes (e.g. to send to the device)
     // Do not modify data unless you can be sure the buffer passed
     // to the constructor was not const! I.e. only if using PacketBuf
     // or the descriptor_set version of PacketView's ctor.
-    uint8_t* data = packet.pointer();
+    uint8_t* data = packet.packetPointer();
 
     // Pointer to the start of the paylaod.
     // The caution about constness above applies here as well.
-    uint8_t* payload = packet.payload();
+    uint8_t* payload = packet.payloadPointer();
 
     // This is the value that was passed to the constructor.
-    size_t buffer_size = packet.bufferSize();
+    size_t buffer_size = packet.bufferLength();
 
     // How much of the buffer's capacity has been used.
     // Note that the max size is also limited by PACKET_SIZE_MAX.
@@ -189,10 +189,10 @@ FieldViews have properties similar to PacketViews:
     CompositeDescriptor desc = field.descriptor();
 
     uint8_t payload_length = field.payloadLength();
-    const uint8_t* payload = field.payload();
+    const uint8_t* payload = field.payloadPointer();
 
-    // Span version of payload
-    microstrain::Span<const uint8_t> payload = field.payloadSpan();
+    // Buffer version of payload
+    microstrain::ConstUint8ArrayView payload = field.payload();
 
     // Determining the type of field, e.g. for routing it to the right function in your app.
     bool is_data_field    = field.isData();     // Data field, e.g. accel data
@@ -214,7 +214,7 @@ After checking the descriptor, field data can be deserialized.
 
 You may also deserialize it manually.
 
-    mip::Serializer serializer(field.payloadSpan());
+    mip::Serializer serializer(field.payload());
 
     // Same as prior example
     //serializer.extract(data);
