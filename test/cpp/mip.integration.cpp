@@ -1,7 +1,7 @@
 #include <algorithm>
-#include <cstdio>
 #include <cstdlib>
 #include <iomanip>
+#include <random>
 
 #include <microstrain_test.hpp>
 #include <mip/mip.hpp>
@@ -57,25 +57,31 @@ bool packetCallback(void*, const PacketView *parsedPacket, Timestamp timestamp)
 
 TEST("Packet Builder", "Packets can be built and parsed correctly")
 {
+    std::random_device random_device;
+    std::mt19937 random_generator(random_device());
+    std::uniform_int_distribution<int> field_descriptor_distribution(1, 255);
+    std::uniform_int_distribution<int> payload_length_distribution(1, MIP_FIELD_PAYLOAD_LENGTH_MAX);
+    std::uniform_int_distribution<int> rand_max_distribution(1, RAND_MAX);
+
     Parser parser(packetCallback, nullptr, MIP_PARSER_DEFAULT_TIMEOUT_MS);
 
     constexpr unsigned int NUM_ITERATIONS = 1000000;
 
-    for(unsigned int i=0; i<NUM_ITERATIONS; i++)
+    for(unsigned int i = 0; i < NUM_ITERATIONS; ++i)
     {
         PacketView packet(packetBuffer, sizeof(packetBuffer), 0x80);
 
         for(numFields = 0; ; numFields++)
         {
-            const uint8_t fieldDescriptor = (rand() % 255) + 1;
-            const uint8_t payloadLength = (rand() % MIP_FIELD_PAYLOAD_LENGTH_MAX) + 1;
+            const uint8_t fieldDescriptor = field_descriptor_distribution(random_generator);
+            const uint8_t payloadLength = payload_length_distribution(random_generator);
 
             Serializer payload = packet.createField(fieldDescriptor, payloadLength);
             if(!payload.hasRemaining())
                 break;
 
             for(unsigned int p=0; p<payloadLength; p++)
-                payload.insert<uint8_t>(rand() & 0xFF);
+                payload.insert<uint8_t>(rand_max_distribution(random_generator) & 0xFF);
 
             INFO("Field " << numFields << " did not have the right size (wrote " << payload.offset() << ", expected " << payloadLength << ", max " << payload.capacity() << ").");
             FAIL_IF_NOT_TRUE(payload.isFinished());
