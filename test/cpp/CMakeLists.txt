@@ -8,19 +8,22 @@ add_executable(CppUnitTestRunner
     "logging.unit.cpp"
     "strings.unit.cpp"
 )
+
+add_executable(CppIntegrationTestRunner
+    "mip.integration.cpp"
+    # test_packet_interface.cpp
+    # test_serial.cpp
+)
+
 target_link_libraries(CppUnitTestRunner
     ${MIP_LIBRARY}
     microstrain_test
 )
-doctest_discover_tests(CppUnitTestRunner)
 
-add_executable(CppIntegrationTestRunner
-    # test_mip.cpp
-    # test_packet_interface.cpp
-    # test_serial.cpp
-)
 target_link_libraries(CppIntegrationTestRunner
     ${MIP_LIBRARY}
     microstrain_test
 )
+
+doctest_discover_tests(CppUnitTestRunner)
 doctest_discover_tests(CppIntegrationTestRunner)

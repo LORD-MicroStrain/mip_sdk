@@ -16,6 +16,8 @@
 
 /// Registers a test in the given test suite.
 ///
+/// Tests are defined as: TEST(suite_name, test_name)
+///
 /// Test suites are useful for grouping related behaviors. The test suite will be created automatically if it doesn't
 /// exist.
 #ifndef TEST
