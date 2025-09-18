@@ -190,7 +190,7 @@ namespace mip
 
         bool sendToDevice(const uint8_t* data, size_t length) { return C::mip_interface_send_to_device(this, data, length); }
         bool sendToDevice(microstrain::ConstU8ArrayView data) { return C::mip_interface_send_to_device(this, data.data(), data.size()); }
-        bool sendToDevice(const C::mip_packet_view& packet) { return sendToDevice(C::mip_packet_pointer(&packet), C::mip_packet_total_length(&packet)); }
+        bool sendToDevice(const C::mip_packet_view& packet) { return sendToDevice(C::mip_packet_data(&packet), C::mip_packet_total_length(&packet)); }
 
         bool recvFromDevice(microstrain::U8ArrayView buffer, Timeout wait_time, bool from_cmd, size_t* length_out, Timestamp* timestamp_out) { return C::mip_interface_recv_from_device(this, buffer.data(), buffer.size(), wait_time, from_cmd, length_out, timestamp_out); }
 

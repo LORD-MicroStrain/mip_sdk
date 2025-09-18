@@ -81,8 +81,8 @@ public:
     int            remainingSpace() const { return C::mip_packet_remaining_space(this); }  ///<@copydoc mip::C::mip_packet_remaining_space
 
     // Entire packet
-    const uint8_t* data() const { return C::mip_packet_pointer(this); }        ///@brief Get a pointer to the entire packet data.
-    const uint8_t* dataPtr() const { return C::mip_packet_pointer(this); }     ///@brief Get a pointer to the entire packet data.
+    const uint8_t* data() const { return C::mip_packet_data(this); }        ///@brief Get a pointer to the entire packet data.
+    const uint8_t* dataPtr() const { return C::mip_packet_data(this); }     ///@brief Get a pointer to the entire packet data.
     uint_least16_t totalLength()  const { return C::mip_packet_total_length(this);   }  ///<@copydoc mip::C::mip_packet_total_length
 
     // Just the payload
@@ -125,7 +125,7 @@ public:
 
     ///@brief Copies the given mip field to the packet.
     ///
-    bool addField(const FieldView& field) { return addField(field.fieldDescriptor(), field.payload()); }
+    bool addField(const FieldView& field) { return addField(field.fieldDescriptor(), field.payloadView()); }
 
     ///@brief Creates a mip field with the given descriptor and copies the given payload.
     ///
@@ -278,7 +278,7 @@ public:
             return (
                 mField.descriptorSet()   == other.mField.descriptorSet()   &&
                 mField.fieldDescriptor() == other.mField.fieldDescriptor() &&
-                mField.payloadPointer()  == other.mField.payloadPointer()
+                mField.payload()  == other.mField.payload()
             );
         }
         bool operator!=(const FieldIterator& other) const { return !(*this == other); }

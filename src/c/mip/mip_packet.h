@@ -101,7 +101,7 @@ uint8_t         mip_packet_descriptor_set(const mip_packet_view* packet);
 uint_least16_t  mip_packet_total_length(const mip_packet_view* packet);
 uint8_t         mip_packet_payload_length(const mip_packet_view* packet);
 uint8_t*        mip_packet_buffer(mip_packet_view* packet);
-const uint8_t*  mip_packet_pointer(const mip_packet_view* packet);
+const uint8_t*  mip_packet_data(const mip_packet_view* packet);
 const uint8_t*  mip_packet_payload(const mip_packet_view* packet);
 uint16_t        mip_packet_checksum_value(const mip_packet_view* packet);
 uint16_t        mip_packet_compute_checksum(const mip_packet_view* packet);

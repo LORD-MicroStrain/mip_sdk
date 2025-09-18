@@ -126,7 +126,7 @@ uint8_t* mip_packet_buffer(mip_packet_view* packet)
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Returns a pointer to the data buffer containing the packet.
 ///
-const uint8_t* mip_packet_pointer(const mip_packet_view* packet)
+const uint8_t* mip_packet_data(const mip_packet_view* packet)
 {
     return packet->_buffer;
 }
