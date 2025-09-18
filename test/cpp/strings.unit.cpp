@@ -6,7 +6,7 @@
 #include <microstrain/strings.hpp>
 
 static constexpr char CHECK_STRING[] = "Test: \"quotes\" 'single' & <xml/> {json} [array] $100 €50 ¥200 @user #tag 🚀 \n\t\\ 100% café naïve";
-static constexpr size_t CHECK_STRING_LENGTH = sizeof(CHECK_STRING)-1; // Length without null terminator
+static constexpr size_t CHECK_STRING_LENGTH = sizeof(CHECK_STRING) - 1; // Length without null terminator
 
 TEST("C++ string concatenation", "A char array view can be concatenated to a buffer")
 {

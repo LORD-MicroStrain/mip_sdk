@@ -1,3 +1,4 @@
+// TODO: Move out of the test suite. This is a diagnostics tool, not a test.
 
 #include "mip/mip.hpp"
 
@@ -121,13 +122,14 @@ struct ChunkStats
 
 ChunkStats chunked_test(const Test& test, size_t chunk_size)
 {
-    auto callback = +[](void* v, const mip::PacketView* p, mip::Timestamp)
+    mip::C::mip_packet_callback callback = +[](void* v, const mip::C::mip_packet_view* p, mip::Timestamp)->bool
     {
         *static_cast<size_t*>(v) += 1;
+
+        return true;
     };
     size_t num_pkts  = 0;
     mip::Parser parser(callback, &num_pkts, MIP_PARSER_DEFAULT_TIMEOUT_MS);
-
 
     const size_t num_full_chunks = (chunk_size == 0) ? 1 : (test.data.size() / chunk_size);
     std::vector<float> chunk_times(num_full_chunks * test.num_iterations);
@@ -164,7 +166,7 @@ ChunkStats chunked_test(const Test& test, size_t chunk_size)
     ChunkStats stats;
     stats.chunk_size = chunk_size;
     stats.num_calls  = num_full_chunks;
-    stats.total_time = std::accumulate(chunk_times.begin(), chunk_times.end(), 0.0) / test.num_iterations;  // Accumulate with double precision!
+    stats.total_time = static_cast<float>(std::accumulate(chunk_times.begin(), chunk_times.end(), 0.0) / test.num_iterations);  // Accumulate with double precision!
     stats.avg_time   = stats.total_time / num_full_chunks;
     stats.max_time   = *std::max_element(chunk_times.begin(), chunk_times.end());
 
