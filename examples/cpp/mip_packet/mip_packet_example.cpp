@@ -134,7 +134,7 @@ void printPacket(const mip::PacketView& _packetView)
     // this as an inexpensive validation step
     assert(_packetView.isSane());
 
-    const uint8_t* packetPointer = _packetView.pointer();
+    const uint8_t* packetPointer = _packetView.dataPtr();
 
     // Create a buffer for printing purposes
     char packetByteBuffer[mip::PacketView::PAYLOAD_LENGTH_MAX] = { 0 };
