@@ -34,7 +34,7 @@ Forthcoming
 ### Interface Changes
 * MIP parser callbacks must now return bool (return true to preserve existing behavior).
 * microstrain::Span has been renamed to microstrain::ArrayView.
-* Certain PacketView and FieldView accessors have been renamed for clarity and consistency.
+  * PacketView and FieldView accessors have been slightly modified.
 ### Bug Fixes
 * Fixed possible infinite loop in MIP parser with timed-out packets.
 
