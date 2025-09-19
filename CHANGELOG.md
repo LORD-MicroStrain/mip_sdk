@@ -48,6 +48,7 @@ Forthcoming
   * Added compiler definitions to check for supported logging levels based on the set max level
 ### Bug Fixes
 * Fixed possible infinite loop in MIP parser with timed-out packets.
+* Fixed incorrect timeouts for Windows serial connections
 
 V3.1.0
 -----------
