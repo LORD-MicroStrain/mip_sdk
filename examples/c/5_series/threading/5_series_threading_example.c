@@ -2,7 +2,7 @@
 /// @addtogroup examples_c
 /// @{
 ///
-/// @defgroup 5_series_threading_example_c 5-Series Threading Example [C]
+/// @defgroup _5_series_threading_example_c 5-Series Threading Example [C]
 ///
 /// @brief Example multithreading program for 5-series devices using C
 ///
@@ -833,6 +833,6 @@ void sched_yield()
 }
 #endif // _MSC_VER
 
-/// @} group 5_series_threading_example_c
+/// @} group _5_series_threading_example_c
 /// @} group examples_c
 ////////////////////////////////////////////////////////////////////////////////

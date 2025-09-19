@@ -2,7 +2,7 @@
 /// @addtogroup examples_cpp
 /// @{
 ///
-/// @defgroup 7_series_gnss_ins_example_cpp 7-Series GNSS/INS Example [CPP]
+/// @defgroup _7_series_gnss_ins_example_cpp 7-Series GNSS/INS Example [CPP]
 ///
 /// @brief Example setup program for the 3DM-GQ7-GNSS/INS, and 3DM-CV7-GNSS/INS
 ///        using C++
@@ -1168,6 +1168,6 @@ void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const c
     terminate(connection, "");
 }
 
-/// @} group 7_series_gnss_ins_example_cpp
+/// @} group _7_series_gnss_ins_example_cpp
 /// @} group examples_cpp
 ////////////////////////////////////////////////////////////////////////////////

@@ -2,7 +2,7 @@
 /// @addtogroup examples_cpp
 /// @{
 ///
-/// @defgroup 5_series_ahrs_example_cpp 5-Series AHRS Example [CPP]
+/// @defgroup _5_series_ahrs_example_cpp 5-Series AHRS Example [CPP]
 ///
 /// @details Example setup program for the 3DM-CX5-AHRS, 3DM-CV5-AHRS, and
 ///          3DM-GX5-AHRS using C++
@@ -740,6 +740,6 @@ void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const c
     terminate(connection, "");
 }
 
-/// @} group 5_series_ahrs_example_cpp
+/// @} group _5_series_ahrs_example_cpp
 /// @} group examples_cpp
 ////////////////////////////////////////////////////////////////////////////////

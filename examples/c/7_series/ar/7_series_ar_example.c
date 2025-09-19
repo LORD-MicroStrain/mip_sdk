@@ -2,7 +2,7 @@
 /// @addtogroup examples_c
 /// @{
 ///
-/// @defgroup 7_series_ar_example_c 7-Series AR Example [C]
+/// @defgroup _7_series_ar_example_c 7-Series AR Example [C]
 ///
 /// @brief Example setup program for the 3DM-CV7-AR, and 3DM-GV7-AR using C
 ///
@@ -1086,6 +1086,6 @@ void command_failure_terminate(const mip_interface* _device, const mip_cmd_resul
     }
 }
 
-/// @} group 7_series_ar_example_c
+/// @} group _7_series_ar_example_c
 /// @} group examples_c
 ////////////////////////////////////////////////////////////////////////////////

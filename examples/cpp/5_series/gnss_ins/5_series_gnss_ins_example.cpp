@@ -2,7 +2,7 @@
 /// @addtogroup examples_cpp
 /// @{
 ///
-/// @defgroup 5_series_gnss_ins_example_cpp 5-Series GNSS/INS Example [CPP]
+/// @defgroup _5_series_gnss_ins_example_cpp 5-Series GNSS/INS Example [CPP]
 ///
 /// @brief Example setup program for the 3DM-CX5-GNSS/INS, and 3DM-GX5-GNSS/INS
 ///        using C++
@@ -993,6 +993,6 @@ void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const c
     terminate(connection, "");
 }
 
-/// @} group 5_series_gnss_ins_example_cpp
+/// @} group _5_series_gnss_ins_example_cpp
 /// @} group examples_cpp
 ////////////////////////////////////////////////////////////////////////////////

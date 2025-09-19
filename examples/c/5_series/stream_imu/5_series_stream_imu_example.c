@@ -2,7 +2,7 @@
 /// @addtogroup examples_c
 /// @{
 ///
-/// @defgroup 5_series_stream_imu_example_c 5-Series Stream IMU Example [C]
+/// @defgroup _5_series_stream_imu_example_c 5-Series Stream IMU Example [C]
 ///
 /// @brief Example setup program for streaming IMU data on 5-series devices
 ///        using C
@@ -895,6 +895,6 @@ void command_failure_terminate(const mip_interface* _device, const mip_cmd_resul
     }
 }
 
-/// @} group 5_series_stream_imu_example_c
+/// @} group _5_series_stream_imu_example_c
 /// @} group examples_c
 ////////////////////////////////////////////////////////////////////////////////

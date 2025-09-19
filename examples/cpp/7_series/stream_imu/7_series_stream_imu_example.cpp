@@ -2,7 +2,7 @@
 /// @addtogroup examples_cpp
 /// @{
 ///
-/// @defgroup 7_series_stream_imu_example_cpp 7-Series Stream IMU Example [CPP]
+/// @defgroup _7_series_stream_imu_example_cpp 7-Series Stream IMU Example [CPP]
 ///
 /// @brief Example setup program for streaming IMU data on 7-series devices
 ///        using C++
@@ -763,6 +763,6 @@ void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const c
     terminate(connection, "");
 }
 
-/// @} group 7_series_stream_imu_example_cpp
+/// @} group _7_series_stream_imu_example_cpp
 /// @} group examples_cpp
 ////////////////////////////////////////////////////////////////////////////////

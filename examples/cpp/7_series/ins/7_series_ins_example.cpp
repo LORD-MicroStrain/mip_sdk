@@ -2,7 +2,7 @@
 /// @addtogroup examples_cpp
 /// @{
 ///
-/// @defgroup 7_series_ins_example_cpp 7-Series INS Example [CPP]
+/// @defgroup _7_series_ins_example_cpp 7-Series INS Example [CPP]
 ///
 /// @brief Example setup program for the 3DM-CV7-INS, and 3DM-GV7-INS using C++
 ///
@@ -1221,6 +1221,6 @@ void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const c
     terminate(connection, "");
 }
 
-/// @} group 7_series_ins_example_cpp
+/// @} group _7_series_ins_example_cpp
 /// @} group examples_cpp
 ////////////////////////////////////////////////////////////////////////////////

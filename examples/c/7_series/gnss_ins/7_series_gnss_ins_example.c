@@ -2,7 +2,7 @@
 /// @addtogroup examples_c
 /// @{
 ///
-/// @defgroup 7_series_gnss_ins_example_c 7-Series GNSS/INS Example [C]
+/// @defgroup _7_series_gnss_ins_example_c 7-Series GNSS/INS Example [C]
 ///
 /// @brief Example setup program for the 3DM-GQ7-GNSS/INS, and 3DM-CV7-GNSS/INS
 ///        using C
@@ -1293,6 +1293,6 @@ void command_failure_terminate(const mip_interface* _device, const mip_cmd_resul
     }
 }
 
-/// @} group 7_series_gnss_ins_example_c
+/// @} group _7_series_gnss_ins_example_c
 /// @} group examples_c
 ////////////////////////////////////////////////////////////////////////////////

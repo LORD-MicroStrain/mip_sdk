@@ -2,7 +2,7 @@
 /// @addtogroup examples_cpp
 /// @{
 ///
-/// @defgroup 5_series_ar_example_cpp 5-Series AR Example [CPP]
+/// @defgroup _5_series_ar_example_cpp 5-Series AR Example [CPP]
 ///
 /// @brief Example setup program for the 3DM-CX5-AR, 3DM-CV5-AR, and 3DM-GX5-AR
 ///        using C++
@@ -722,6 +722,6 @@ void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const c
     terminate(connection, "");
 }
 
-/// @} group 5_series_ar_example_cpp
+/// @} group _5_series_ar_example_cpp
 /// @} group examples_cpp
 ////////////////////////////////////////////////////////////////////////////////

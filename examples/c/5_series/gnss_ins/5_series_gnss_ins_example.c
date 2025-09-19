@@ -2,7 +2,7 @@
 /// @addtogroup examples_c
 /// @{
 ///
-/// @defgroup 5_series_gnss_ins_example_c 5-Series GNSS/INS Example [C]
+/// @defgroup _5_series_gnss_ins_example_c 5-Series GNSS/INS Example [C]
 ///
 /// @brief Example setup program for the 3DM-CX5-GNSS/INS, and 3DM-GX5-GNSS/INS
 ///        using C
@@ -1118,6 +1118,6 @@ void command_failure_terminate(const mip_interface* _device, const mip_cmd_resul
     }
 }
 
-/// @} group 5_series_gnss_ins_example_c
+/// @} group _5_series_gnss_ins_example_c
 /// @} group examples_c
 ////////////////////////////////////////////////////////////////////////////////

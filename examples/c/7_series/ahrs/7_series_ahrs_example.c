@@ -2,7 +2,7 @@
 /// @addtogroup examples_c
 /// @{
 ///
-/// @defgroup 7_series_ahrs_example_c 7-Series AHRS Example [C]
+/// @defgroup _7_series_ahrs_example_c 7-Series AHRS Example [C]
 ///
 /// @brief Example setup program for the 3DM-CV7-AHRS, and 3DM-GV7-AHRS using C
 ///
@@ -1105,6 +1105,6 @@ void command_failure_terminate(const mip_interface* _device, const mip_cmd_resul
     }
 }
 
-/// @} group 7_series_ahrs_example_c
+/// @} group _7_series_ahrs_example_c
 /// @} group examples_c
 ////////////////////////////////////////////////////////////////////////////////
