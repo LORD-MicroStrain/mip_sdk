@@ -1,23 +1,24 @@
 ////////////////////////////////////////////////////////////////////////////////
-/// 5_series_ahrs_example.cpp
+/// @addtogroup examples_cpp
+/// @{
 ///
-/// Example setup program for the 3DM-CX5-AHRS, 3DM-CV5-AHRS, and 3DM-GX5-AHRS
-/// using C++
+/// @defgroup 5_series_ahrs_example_cpp 5-Series AHRS Example [CPP]
 ///
-/// This example shows a basic setup for the 3DM-CX5-AHRS, 3DM-CV5-AHRS, and
-/// 3DM-GX5-AHRS using C++.
-/// This is not an exhaustive example of all settings for those devices.
-/// If this example does not meet your specific setup needs, please consult the
-/// MIP SDK API documentation for the proper commands.
+/// @details Example setup program for the 3DM-CX5-AHRS, 3DM-CV5-AHRS, and
+///          3DM-GX5-AHRS using C++
+///
+/// @details This example shows a basic setup for the 3DM-CX5-AHRS,
+///          3DM-CV5-AHRS, and 3DM-GX5-AHRS using C++. This is not an exhaustive
+///          example of all settings for those devices. If this example does not
+///          meet your specific setup needs, please consult the MIP SDK API
+///          documentation for the proper commands.
 ///
 /// @section LICENSE
 ///
-/// THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
-/// WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
-/// TIME. AS A RESULT, MICROSTRAIN BY HBK SHALL NOT BE HELD LIABLE FOR ANY
-/// DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
-/// FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
-/// CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+/// @copyright Copyright (c) 2025 MicroStrain by HBK
+///            Licensed under MIT License
+///
+/// @{
 ///
 
 // Include the MicroStrain Serial connection header
@@ -738,3 +739,7 @@ void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const c
 
     terminate(connection, "");
 }
+
+/// @} group 5_series_ahrs_example_cpp
+/// @} group examples_cpp
+////////////////////////////////////////////////////////////////////////////////

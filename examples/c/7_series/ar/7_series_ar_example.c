@@ -1,21 +1,23 @@
 ////////////////////////////////////////////////////////////////////////////////
-/// 7_series_ar_example.c
+/// @addtogroup examples_c
+/// @{
 ///
-/// Example setup program for the 3DM-CV7-AR, and 3DM-GV7-AR using C
+/// @defgroup 7_series_ar_example_c 7-Series AR Example [C]
 ///
-/// This example shows a basic setup for the 3DM-CV7-AR, and 3DM-GV7-AR using C.
-/// This is not an exhaustive example of all settings for those devices.
-/// If this example does not meet your specific setup needs, please consult the
-/// MIP SDK API documentation for the proper commands.
+/// @brief Example setup program for the 3DM-CV7-AR, and 3DM-GV7-AR using C
+///
+/// @details This example shows a basic setup for the 3DM-CV7-AR, and 3DM-GV7-AR
+///          using C. This is not an exhaustive example of all settings for
+///          those devices. If this example does not meet your specific setup
+///          needs, please consult the MIP SDK API documentation for the proper
+///          commands.
 ///
 /// @section LICENSE
 ///
-/// THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
-/// WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
-/// TIME. AS A RESULT, MICROSTRAIN BY HBK SHALL NOT BE HELD LIABLE FOR ANY
-/// DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
-/// FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
-/// CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+/// @copyright Copyright (c) 2025 MicroStrain by HBK
+///            Licensed under MIT License
+///
+/// @{
 ///
 
 // Include the MicroStrain Serial connection header
@@ -1083,3 +1085,7 @@ void command_failure_terminate(const mip_interface* _device, const mip_cmd_resul
         terminate(device_port, "", false);
     }
 }
+
+/// @} group 7_series_ar_example_c
+/// @} group examples_c
+////////////////////////////////////////////////////////////////////////////////

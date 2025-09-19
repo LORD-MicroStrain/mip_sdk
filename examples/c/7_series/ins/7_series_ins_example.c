@@ -1,22 +1,23 @@
 ////////////////////////////////////////////////////////////////////////////////
-/// 7_series_ins_example.c
+/// @addtogroup examples_c
+/// @{
 ///
-/// Example setup program for the 3DM-CV7-INS, and 3DM-GV7-INS using C
+/// @defgroup 7_series_ins_example_c 7-Series INS Example [C]
 ///
-/// This example shows a basic setup for the 3DM-CV7-INS, and 3DM-GV7-INS with
-/// external aiding measurements using C.
-/// This is not an exhaustive example of all settings for those devices.
-/// If this example does not meet your specific setup needs, please consult the
-/// MIP SDK API documentation for the proper commands.
+/// @brief Example setup program for the 3DM-CV7-INS, and 3DM-GV7-INS using C
+///
+/// @details This example shows a basic setup for the 3DM-CV7-INS, and
+///          3DM-GV7-INS with external aiding measurements using C. This is not
+///          an exhaustive example of all settings for those devices. If this
+///          example does not meet your specific setup needs, please consult the
+///          MIP SDK API documentation for the proper commands.
 ///
 /// @section LICENSE
 ///
-/// THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
-/// WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
-/// TIME. AS A RESULT, MICROSTRAIN BY HBK SHALL NOT BE HELD LIABLE FOR ANY
-/// DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
-/// FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
-/// CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+/// @copyright Copyright (c) 2025 MicroStrain by HBK
+///            Licensed under MIT License
+///
+/// @{
 ///
 
 // Include the MicroStrain Serial connection header
@@ -1331,3 +1332,7 @@ void command_failure_terminate(const mip_interface* _device, const mip_cmd_resul
         terminate(device_port, "", false);
     }
 }
+
+/// @} group 7_series_ins_example_c
+/// @} group examples_c
+////////////////////////////////////////////////////////////////////////////////

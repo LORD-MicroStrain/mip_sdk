@@ -207,6 +207,7 @@ if(MICROSTRAIN_BUILD_DOCUMENTATION)
     endif()
 
     set(DOXYGEN_EXTRACT_ALL YES)
+    set(DOXYGEN_REPEAT_BRIEF NO) # Don't copy the brief in the details
 
     if(MICROSTRAIN_BUILD_DOCUMENTATION_FULL)
         set(DOXYGEN_INTERNAL_DOCS YES)
@@ -223,7 +224,7 @@ if(MICROSTRAIN_BUILD_DOCUMENTATION)
     set(DOXYGEN_HTML_EXTRA_STYLESHEET "${CMAKE_CURRENT_LIST_DIR}/docs/style.css")
 
     doxygen_add_docs(docs
-        "${MICROSTRAIN_SRC_DIR}" "${CMAKE_CURRENT_LIST_DIR}/docs"
+        "${MICROSTRAIN_SRC_DIR}" "${CMAKE_CURRENT_LIST_DIR}/docs" "${CMAKE_CURRENT_LIST_DIR}/examples"
         COMMENT "Generating documentation."
     )
 

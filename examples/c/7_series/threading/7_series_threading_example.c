@@ -1,22 +1,24 @@
 ////////////////////////////////////////////////////////////////////////////////
-/// 7_series_threading_example.c
+/// @addtogroup examples_c
+/// @{
 ///
-/// Example multithreading program for 7-series devices using C
+/// @defgroup 7_series_threading_example_c 7-Series Threading Example [C]
 ///
-/// This example shows a basic setup for 7-series devices to demonstrate
-/// multithreading for data collection and command updates using C.
-/// This is not an exhaustive example of all settings for those devices.
-/// If this example does not meet your specific setup needs, please consult the
-/// MIP SDK API documentation for the proper commands.
+/// @brief Example multithreading program for 7-series devices using C
+///
+/// @details This example shows a basic setup for 7-series devices to
+///          demonstrate multithreading for data collection and command updates
+///          using C. This is not an exhaustive example of all settings for
+///          those devices. If this example does not meet your specific setup
+///          needs, please consult the MIP SDK API documentation for the proper
+///          commands.
 ///
 /// @section LICENSE
 ///
-/// THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
-/// WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
-/// TIME. AS A RESULT, MICROSTRAIN BY HBK SHALL NOT BE HELD LIABLE FOR ANY
-/// DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
-/// FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
-/// CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+/// @copyright Copyright (c) 2025 MicroStrain by HBK
+///            Licensed under MIT License
+///
+/// @{
 ///
 
 // Include the MicroStrain Serial connection header
@@ -832,3 +834,7 @@ void sched_yield()
     thrd_yield();
 }
 #endif // _MSC_VER
+
+/// @} group 7_series_threading_example_c
+/// @} group examples_c
+////////////////////////////////////////////////////////////////////////////////

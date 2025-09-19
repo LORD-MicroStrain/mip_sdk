@@ -1,22 +1,24 @@
 ////////////////////////////////////////////////////////////////////////////////
-/// mip_packet_example.cpp
+/// @addtogroup examples_cpp
+/// @{
 ///
-/// Example program to create raw and buffered MIP packets using C++
+/// @defgroup mip_packet_example_cpp MIP Packet Example [CPP]
 ///
-/// For this example, we have broken down each piece into separate functions
-/// for easier documentation and is not necessary in practice.
-/// This is not an exhaustive example of all MIP packet features.
-/// If this example does not meet your specific setup needs, please consult the
-/// MIP SDK API documentation for the proper commands.
+/// @brief Example program to create raw and buffered MIP packets using C++
+///
+/// @details For this example, we have broken down each piece into separate
+///          functions for easier documentation and is not necessary in
+///          practice. This is not an exhaustive example of all MIP packet
+///          features. If this example does not meet your specific setup needs,
+///          please consult the MIP SDK API documentation for the proper
+///          commands.
 ///
 /// @section LICENSE
 ///
-/// THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
-/// WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
-/// TIME. AS A RESULT, MICROSTRAIN BY HBK SHALL NOT BE HELD LIABLE FOR ANY
-/// DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
-/// FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
-/// CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+/// @copyright Copyright (c) 2025 MicroStrain by HBK
+///            Licensed under MIT License
+///
+/// @{
 ///
 
 // Include all necessary MIP headers
@@ -940,3 +942,7 @@ void createFromRawBufferPacket4()
 
     printf("\n");
 }
+
+/// @} group mip_packet_example_cpp
+/// @} group examples_cpp
+////////////////////////////////////////////////////////////////////////////////
