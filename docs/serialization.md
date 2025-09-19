@@ -8,7 +8,7 @@ Serialization infrastructure in C is very basic and is currently limited to buil
 
 To (de)serialize a buffer, follow these steps:
 1. Create a serializer and initialize it via @ref microstrain_serializer_init_insertion
-   or @ref microstrain_serializer_init_extraction, depending on whether you're 
+   or @ref microstrain_serializer_init_extraction, depending on whether you're
    writing or reading data.
 2. Call `microstrain_insert_*` or `microstrain_extract_*` for each parameter. E.g. [microstrain_extract_u32](@ref microstrain::C::microstrain_extract_u32).
 3. Call @ref microstrain_serializer_is_ok to check if all the data was written/read successfully (i.e. fit in the buffer).
@@ -45,15 +45,15 @@ int main()
     // Byte buffers
     uint8_t buffer_le[128];
     uint8_t buffer_be[128];
-    
+
     // Create serializers
     microstrain::BigEndianSerializer    bes(buffer_be, sizeof(buffer_be));
     microstrain::LittleEndianSerializer les(buffer_le, sizeof(buffer_le));
-    
+
     // Alternatively, specify the endianness via template argument.
     //microstrain::Serializer<microstrain::Endian::big   > bes2(buffer_be, sizeof(buffer_be));
     //microstrain::Serializer<microstrain::Endian::little> les2(buffer_le, sizeof(buffer_le));
-    
+
     // Some variables to serialize
     uint8_t  a = 22;
     int8_t   b = -33;
@@ -62,51 +62,51 @@ int main()
     uint64_t e = 0x81726354AABBCCDD;
     float    f = 1.25f;
     double   g = -1.1;
-    
+
     // Serialize all the basic variables.
     bes.insert(a,b,c,d,e,f,g);
     les.insert(a,b,c,d,e,f,g);
-    
+
     // buffer_be = [0x16, 0xDF, 0x04,0x00, 0xFF,0xF0,0xBD,0xC0, 0x81,0x72,0x63,0x54,0xAA,0xBB,0xCC,0xDD, 0x3F,0xA0,0x00,0x00, 0xBF,0xF1,0x99,0x99,0x99,0x99,0x99,0x9a]
     // buffer_le = [0x16, 0xDF, 0x00,0x04, 0xC0,0xBD,0xF0,0xFF, 0xDD,0xCC,0xBB,0xAA,0x54,0x63,0x72,0x81, 0x00,0x00,0xA0,0x3F, 0x9a,0x99,0x99,0x99,0x99,0x99,0xF1,0xBF]
-    
+
     // Serialize 20 u64s using C-style array or pointer and size.
     uint64_t too_much[20] = {0};
     bes.insert(too_much);          // Size is deduced from C-style array.
     les.insert(&too_much[0], 20);  // 20 items, not 20 bytes.
-    
+
     // Too much data! Note: no actual overrun / invalid access of the buffer has occurred.
     // (20*sizeof(uint64_t) = 160)  >  (sizeof(buffer) = 128)
     assert(!bes.isOk() && !les.isOk());
-    
+
     // Jump back to the start of the buffer for deserialization.
     // Note: this clears the overrun condition.
     bes.setOffset(0);
     les.setOffset(0);
     assert(bes.isOk() && les.isOk());
-    
+
     // Deserialize the values.
     bes.extract(a,b,c,d,e,f,g);
     les.extract(a,b,c,d,e,f,g);
-    
+
     // Check if everything was deserialized successfully.
     if(!bes.isOk() || !les.isOk())
      return 1;
-    
+
     // Jump to specific offset.
     bes.setOffset(4);
     les.setOffset(4);
-    
+
     // Try to read a value using std::optional (subject to compiler support for C++17).
     std::optional vg = microstrain::extract<int32_t>(bes);
     assert( vg.has_value() && *vg == d );
-    
+
     // Reset again
     bes.setOffset(0);
     les.setOffset(0);
-    
+
     // See following examples
-    
+
     return 0;
 }
 ~~~~~~~~
@@ -133,7 +133,7 @@ Additionally, the following compound types are supported:
     // A strongly-typed enum
     enum class MyEnum : uint8_t { ZERO=0, ONE=1, TWO=2, THREE, FOUR };
     MyEnum me = MyEnum::TWO;
-    
+
     auto basics = std::make_tuple(a,b,c,d,e,f,g);
     std::array<float, 4> vector4 = {1.0f, 2.0f, 3.0f, 4.0f};
     microstrain::ArrayView<float> vector3(vector4[0], 3);
@@ -141,7 +141,7 @@ Additionally, the following compound types are supported:
     /// Serialize a custom enum and the contents of a std::tuple.
     bes.insert(me, basics);
     les.insert(me, basics);
-    
+
     /// Serialize an array and U8ArrayView using the non-member functions.
     /// This is equivalent to `s.insert(vector4, vector3)`.
     microstrain::insert(bes, vector4, vector3);
@@ -214,14 +214,14 @@ namespace custom
 {
     // An enum which is not typed and thus cannot use the regular enum methods.
     enum Foo { A=0, B, C, MAX_FOO };
-    
+
     // Insert Foo function which just converts to u8.
     template<microstrain::Endian E>
     size_t insert(microstrain::Serializer<E>& serializer, Foo foo)
     {
         return microstrain::insert(serializer, uint8_t(foo));
     }
-    
+
     // Extract Foo function which range-checks and converts a u8.
     template<microstrain::Endian E>
     size_t extract(microstrain::Serializer<E>& serializer, Foo& foo)
@@ -245,24 +245,24 @@ void write_read_foo(custom::Foo foo)
 {
     // A byte buffer of 8 bytes.
     uint8_t buffer[8];
-    
+
     // Create the serializer, passing in the buffer.
     microstrain::BigEndianSerializer serializer(buffer, sizeof(buffer));
-    
+
     // Write foo to the buffer.
     // This calls Serializer::insert, which calls the non-member function 'insert'.
     // Despite being in the 'custom' namespace, the 'insert(Serializer&, Foo)'
     // function will be found via argument-dependent lookup because
     // 'Foo' is also in that namespace.
     serializer.insert(foo);
-    
+
     // Jump back to start of buffer for reading.
     serializer.setOffset(0);
-    
+
     // Read foo back out and compare to original.
     custom::Foo foo2;
     serializer.extract(foo2);
-    
+
     assert(foo2 == foo);
 }
 ~~~~~~~~

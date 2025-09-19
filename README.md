@@ -146,7 +146,7 @@ The following options may be specified when configuring the build with CMake (e.
 | MIP_ENABLE_METADATA                   | ON if supported                  | Builds metadata for MIP commands. If not set, the system will try to determine if C++20 is available to enable it. C++20 is required for the metadata module.                                                                                               |
 | MIP_ENABLE_EXTRAS                     | MICROSTRAIN_ENABLE_EXTRAS        | Builds some higher level utility classes and functions that may use dynamic memory. (default MICROSTRAIN_ENABLE_EXTRAS)                                                                                                                                     |
 
-### Compilation 
+### Compilation
 
 1. Create the build directory (e.g. `mkdir build`).
 2. In the build directory, run `cmake .. <options>`

@@ -170,7 +170,7 @@ inline bool concat(CharArrayView buffer, size_t* index, const std::string& str)
 ///@returns True if sufficient buffer space exists or if buffer is NULL.
 ///@returns False if buffer is not NULL and insufficient space is available.
 ///
-inline bool concat_z(CharArrayView buffer, size_t* index, const char* str, size_t maxLen=size_t(-1))
+inline bool concat_cstr(CharArrayView buffer, size_t* index, const char* str, size_t maxLen=size_t(-1))
 {
     const size_t len = std::min(maxLen, std::strlen(str));
     return concat(buffer, index, ConstCharArrayView{str, len});
