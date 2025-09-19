@@ -14,7 +14,7 @@ namespace mip
 ///
 ///@{
 
-#if MICROSTRAIN_ENABLE_LOGGING
+#ifdef MICROSTRAIN_LOGGING_ENABLED
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Format MIP packet bytes to a string.
@@ -129,7 +129,7 @@ inline void logPacketVerbose(const PacketView& packet, microstrain_log_level lev
     return mip::C::mip_log_packet_verbose(&packet, level);
 }
 
-#endif // MICROSTRAIN_ENABLE_LOGGING
+#endif // MICROSTRAIN_LOGGING_ENABLED
 
 ///@}
 ////////////////////////////////////////////////////////////////////////////////

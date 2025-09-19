@@ -31,10 +31,16 @@ Forthcoming
   * Disabled old broken tests
   * Set CI/CD pipeline to run test suite on all platforms
   * Setup test suite to be easily run locally
+  * Setup framework-independent wrapper assertions with doctest backend
+  * Converted string and formatting tests to new structure and use the new assertion wrappers
 ### Interface Changes
 * MIP parser callbacks must now return bool (return true to preserve existing behavior).
 * microstrain::Span has been renamed to microstrain::ArrayView.
 * Certain PacketView and FieldView accessors have been renamed for clarity and consistency.
+* MicroStrain logging fixes
+  * Renamed logging level compiler definitions
+  * Fixed issues where not defining logging compiler definitions would integrate logging support incorrectly
+  * Added compiler definitions to check for supported logging levels based on the set max level
 ### Bug Fixes
 * Fixed possible infinite loop in MIP parser with timed-out packets.
 

@@ -125,7 +125,7 @@ Once a PacketView is created, it may be used to inspect the packet.
 
     // How much of the buffer's capacity has been used.
     // Note that the max size is also limited by PACKET_SIZE_MAX.
-    // If this is negative, the packet is not "sane", i.e. 
+    // If this is negative, the packet is not "sane", i.e.
     // PacketView::isSane() is false and you cannot safely iterate fields
     // without risking reading past the end of the buffer.
     // See "validation" above.

@@ -1,8 +1,28 @@
 set(MICROSTRAIN_LIBRARY "microstrain" CACHE INTERNAL "Name of the MicroStrain library.")
 mark_as_advanced(MICROSTRAIN_LIBRARY)
 
-set(MICROSTRAIN_LOGGING_MAX_LEVEL "MICROSTRAIN_LOG_LEVEL_WARN" CACHE STRING "Max log level the SDK is allowed to log. If this is defined, any call to logging functions with a higher level than this will be compiled out.")
 set(MICROSTRAIN_TIMESTAMP_TYPE "uint64_t" CACHE STRING "Override the type used for received data timestamps and timeouts (must be unsigned or at least 64 bits).")
+set(MICROSTRAIN_LOGGING_MAX_LEVEL "MICROSTRAIN_LOGGING_LEVEL_TRACE_" CACHE STRING "Max log level the SDK is allowed to log. If this is defined, any call to logging functions with a higher level than this will be compiled out.")
+
+set(MICROSTRAIN_LOGGING_ENABLED OFF)
+if(MICROSTRAIN_LOGGING_MAX_LEVEL)
+    if(NOT "${MICROSTRAIN_LOGGING_MAX_LEVEL}" MATCHES "^MICROSTRAIN_LOGGING_LEVEL_[A-Z][A-Z][A-Z][A-Z]?[A-Z]?_$" AND NOT "${MICROSTRAIN_LOGGING_MAX_LEVEL}" MATCHES "^[0-9]$")
+        message(FATAL_ERROR "MICROSTRAIN_LOGGING_MAX_LEVEL must be MICROSTRAIN_LOGGING_LEVEL_*_ or a positive number")
+    endif()
+
+    if(NOT "${MICROSTRAIN_LOGGING_MAX_LEVEL}" MATCHES "^MICROSTRAIN_LOGGING_LEVEL_OFF_$" AND NOT "${MICROSTRAIN_LOGGING_MAX_LEVEL}" MATCHES "^0$")
+        set(MICROSTRAIN_LOGGING_ENABLED ON)
+
+        message("MicroStrain logging is enabled. Max level = '${MICROSTRAIN_LOGGING_MAX_LEVEL}'")
+    endif()
+endif()
+
+# Add the logging level to the compile definitions
+# Needs to be here since the cache variable is defined here
+list(APPEND MICROSTRAIN_PRIVATE_COMPILE_DEFINITIONS
+    "MICROSTRAIN_LOGGING_MAX_LEVEL=${MICROSTRAIN_LOGGING_MAX_LEVEL}"
+)
+set(MICROSTRAIN_PRIVATE_COMPILE_DEFINITIONS "${MICROSTRAIN_PRIVATE_COMPILE_DEFINITIONS}" PARENT_SCOPE)
 
 set(MICROSTRAIN_SOURCES
     "${CMAKE_CURRENT_LIST_DIR}/embedded_time.h"
@@ -38,11 +58,7 @@ target_compile_definitions(${MICROSTRAIN_LIBRARY}
 target_compile_options(${MICROSTRAIN_LIBRARY} PRIVATE ${MICROSTRAIN_PRIVATE_COMPILE_OPTIONS})
 
 # Logging is a little weird since we need to install the header no matter what
-if(MICROSTRAIN_ENABLE_LOGGING)
-    if(MICROSTRAIN_LOGGING_MAX_LEVEL STREQUAL "")
-        message(FATAL_ERROR "MICROSTRAIN_LOGGING_MAX_LEVEL must be MICROSTRAIN_LOG_LEVEL_* or a number")
-    endif()
-
+if(MICROSTRAIN_LOGGING_ENABLED)
     set(MICROSTRAIN_LOGGING_SOURCES
         "${CMAKE_CURRENT_LIST_DIR}/logging.c"
     )
@@ -54,12 +70,6 @@ if(MICROSTRAIN_ENABLE_LOGGING)
     if(MSVC)
         source_group(TREE ${MICROSTRAIN_SRC_DIR} FILES ${MICROSTRAIN_LOGGING_SOURCES})
     endif()
-
-    message("MicroStrain logging is enabled. Max level = '${MICROSTRAIN_LOGGING_MAX_LEVEL}'")
-
-    target_compile_definitions(${MICROSTRAIN_LIBRARY} PUBLIC
-        "MICROSTRAIN_ENABLE_LOGGING" "MICROSTRAIN_LOGGING_MAX_LEVEL=${MICROSTRAIN_LOGGING_MAX_LEVEL}"
-    )
 endif()
 
 target_include_directories(${MICROSTRAIN_LIBRARY} INTERFACE ${MICROSTRAIN_SRC_C_DIR})

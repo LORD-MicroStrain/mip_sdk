@@ -5,7 +5,7 @@
 #include <mip/mip_offsets.h>
 
 
-#ifdef MICROSTRAIN_ENABLE_LOGGING
+#ifdef MICROSTRAIN_LOGGING_ENABLED
 
 //
 // Formatting
@@ -313,4 +313,4 @@ void mip_log_packet_verbose(const mip_packet_view* packet, microstrain_log_level
 }
 
 
-#endif // MICROSTRAIN_ENABLE_LOGGING
+#endif // MICROSTRAIN_LOGGING_ENABLED

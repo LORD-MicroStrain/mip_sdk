@@ -1,5 +1,9 @@
 #pragma once
 
+// TODO: Find better way to check for this
+// Used to check if IO operations are supported
+#include "logging.h"
+
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -28,10 +32,6 @@ extern "C" {
 /// to chain multiple format calls in series without having to check for various
 /// error conditions between steps.
 ///
-/// Because sprintf and related functions can cause bloat in some embedded
-/// environments, functions which call snprintf are disabled unless logging is
-/// turned on via MICROSTRAIN_ENABLE_LOGGING.
-///
 ///@{
 ///@defgroup microstrain_strings_c   MicroStrain Strings [C]
 ///@defgroup microstrain_strings_cpp MicroStrain Strings [CPP]
@@ -50,13 +50,13 @@ bool microstrain_string_concat_z(char* buffer, size_t buffer_size, size_t* index
 
 #define microstrain_string_concat_l(buffer, buffer_size, index, str_lit) microstrain_string_concat(buffer, buffer_size, index, str_lit, sizeof(str_lit)-1)
 
-#if MICROSTRAIN_ENABLE_LOGGING
+// TODO: Use better check for this or move to extras
+#ifdef MICROSTRAIN_LOGGING_ENABLED
 // sprintf is too big for some embedded systems.
 // Disable it when logging is disabled.
 bool microstrain_string_format_v(char* buffer, size_t buffer_size, size_t* index, const char* fmt, va_list args);
 bool microstrain_string_format(char* buffer, size_t buffer_size, size_t* index, const char* fmt, ...);
-
-#endif // MICROSTRAIN_ENABLE_LOGGING
+#endif // MICROSTRAIN_LOGGING_ENABLED
 
 bool microstrain_string_bytes_to_hex_str(char* buffer, size_t buffer_size, size_t* index, const uint8_t* data, size_t data_size, unsigned int byte_grouping);
 
