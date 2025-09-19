@@ -31,6 +31,8 @@ Forthcoming
   * Disabled old broken tests
   * Set CI/CD pipeline to run test suite on all platforms
   * Setup test suite to be easily run locally
+  * Setup framework-independent wrapper assertions with doctest backend
+  * Converted string and formatting tests to new structure and use the new assertion wrappers
 ### Interface Changes
 * MIP parser callbacks must now return bool (return true to preserve existing behavior).
 * microstrain::Span has been renamed to microstrain::ArrayView.
