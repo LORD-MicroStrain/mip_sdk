@@ -47,7 +47,7 @@ namespace strings {
 ///
 inline bool concat(CharArrayView buffer, size_t* index, const char* str, size_t len)
 {
-    return ::microstrain::C::microstrain_string_concat(buffer.data(), buffer.size(), index, str, len);
+    return C::microstrain_string_concat(buffer.data(), buffer.size(), index, str, len);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -211,8 +211,8 @@ bool concat_l(CharArrayView buffer, size_t* index, const char(&str)[N])
     return concat(buffer, index, str, N-1);
 }
 
-#if MICROSTRAIN_ENABLE_LOGGING
-
+// TODO: Use better check for this or move to extras
+#ifdef MICROSTRAIN_LOGGING_ENABLED
 ////////////////////////////////////////////////////////////////////////////////
 ///@copybrief microstrain::C::microstrain_string_format_v
 ///
@@ -238,7 +238,7 @@ bool concat_l(CharArrayView buffer, size_t* index, const char(&str)[N])
 ///
 inline bool format_v(CharArrayView buffer, size_t* index, const char* fmt, va_list args)
 {
-    return ::microstrain::C::microstrain_string_format_v(buffer.data(), buffer.size(), index, fmt, args);
+    return C::microstrain_string_format_v(buffer.data(), buffer.size(), index, fmt, args);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -270,9 +270,7 @@ inline bool format(CharArrayView buffer, size_t* index, const char* fmt, ...)
     va_end(args);
     return ok;
 }
-
-#endif // MICROSTRAIN_ENABLE_LOGGING
-
+#endif // MICROSTRAIN_LOGGING_ENABLED
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Formats a byte array to a text buffer in hexadecimal.
@@ -312,7 +310,7 @@ inline bool format(CharArrayView buffer, size_t* index, const char* fmt, ...)
 ///
 inline bool bytesToHexStr(CharArrayView buffer, size_t* index, ConstU8ArrayView data, unsigned int byte_grouping)
 {
-    return ::microstrain::C::microstrain_string_bytes_to_hex_str(buffer.data(), buffer.size(), index, data.data(), data.size(), byte_grouping);
+    return C::microstrain_string_bytes_to_hex_str(buffer.data(), buffer.size(), index, data.data(), data.size(), byte_grouping);
 }
 
 

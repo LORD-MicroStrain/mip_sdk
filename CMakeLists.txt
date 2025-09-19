@@ -1,17 +1,14 @@
 cmake_minimum_required(VERSION 3.14)
 
+set(CMAKE_CXX_STANDARD 20) # CMake decays this to the highest supported by the compiler
+set(CMAKE_C_STANDARD 11)
+
 project(
     "MIP_SDK"
     VERSION "3.1.00"
     DESCRIPTION "MicroStrain Communications Library for embedded systems"
     LANGUAGES C CXX
 )
-
-set(CMAKE_CXX_STANDARD 20)
-# TODO: Should we enforce this? I think we may be having a bug with the C++ 20
-#       stuff on systems that don't have C++ 20.
-# set(CMAKE_CXX_STANDARD_REQUIRED True)
-set(CMAKE_C_STANDARD 11)
 
 set_property(GLOBAL PROPERTY
     USE_FOLDERS ON
@@ -26,13 +23,22 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 # Build options
 #
 
-# MicroStrain options
-option(MICROSTRAIN_ENABLE_LOGGING "Build with logging functions enabled" ON)
-
-set(MICROSTRAIN_LOGGING_MAX_LEVEL "MICROSTRAIN_LOG_LEVEL_INFO" CACHE STRING "Max log level the SDK is allowed to log. If this is defined, any log level logged at a higher level than this will result in a noop regardless of runtime configuration.")
-set(MICROSTRAIN_TIMESTAMP_TYPE "uint64_t" CACHE STRING "Override the type used for received data timestamps and timeouts (must be unsigned or at least 64 bits).")
-
 include(check_cxx_support)
+
+set(MIP_LOGGING_MAX_LEVEL "MICROSTRAIN_LOGGING_LEVEL_TRACE_" CACHE STRING "Max log level the SDK is allowed to log. If this is defined, any call to logging functions with a higher level than this will be compiled out.")
+
+set(MIP_LOGGING_ENABLED OFF)
+if(MIP_LOGGING_MAX_LEVEL)
+    if(NOT "${MIP_LOGGING_MAX_LEVEL}" MATCHES "^MICROSTRAIN_LOGGING_LEVEL_[A-Z][A-Z][A-Z][A-Z]?[A-Z]?_$" AND NOT "${MIP_LOGGING_MAX_LEVEL}" MATCHES "^[0-9]$")
+        message(FATAL_ERROR "MIP_LOGGING_MAX_LEVEL must be MICROSTRAIN_LOGGING_LEVEL_*_ or a positive number")
+    endif()
+
+    if(NOT "${MIP_LOGGING_MAX_LEVEL}" MATCHES "^MICROSTRAIN_LOGGING_LEVEL_OFF_$" AND NOT "${MIP_LOGGING_MAX_LEVEL}" MATCHES "^0$")
+        set(MIP_LOGGING_ENABLED ON)
+
+        message("MIP logging is enabled. Max level = '${MIP_LOGGING_MAX_LEVEL}'")
+    endif()
+endif()
 
 option(MICROSTRAIN_ENABLE_CPP "Enables the C++ API. Turn off to avoid compiling the C++ API." ON)
 #option(MICROSTRAIN_ENABLE_CPP_C_NAMESPACE "Wraps the C api in a C++ namespace to avoid global namespace pollution (e.g. microstrain::C::microstrain_serial_port)" ${MICROSTRAIN_ENABLE_CPP})
@@ -77,7 +83,7 @@ include(microstrain_utilities)
 
 if(WIN32)
     if(MSVC)
-        set(MICROSTRAIN_PRIVATE_COMPILE_OPTIONS
+        set(MIP_PRIVATE_COMPILE_OPTIONS
             "/external:anglebrackets" # Treat angle brackets as system includes
             "/external:W0"            # No warnings from system includes
             "/W4"                     # Enable warnings
@@ -87,7 +93,7 @@ if(WIN32)
         )
 
         if(${MSVC_TOOLSET_VERSION} LESS 143)
-            list(APPEND MICROSTRAIN_PRIVATE_COMPILE_OPTIONS
+            list(APPEND MIP_PRIVATE_COMPILE_OPTIONS
                 "/wd4201" # Suppress warnings related to nameless structs/unions
             )
         endif()
@@ -95,19 +101,27 @@ if(WIN32)
 
     # Disable windows defined min/max
     # Set Windows header version (0x0501 is _WIN32_WINNT_WINXP, required for TCP)
-    set(MICROSTRAIN_PRIVATE_COMPILE_DEFINITIONS
+    set(MIP_PRIVATE_COMPILE_DEFINITIONS
         "NOMINMAX=1"
         "_WIN32_WINNT=_WIN32_WINNT_WINXP"
     )
 else()
-    set(MICROSTRAIN_PRIVATE_COMPILE_OPTIONS
+    set(MIP_PRIVATE_COMPILE_OPTIONS
         "-Wall"   # Enable warnings
         "-Wextra" # Enable extra warnings
         "-Werror" # Warnings as errors
     )
 
-    set(MICROSTRAIN_PRIVATE_COMPILE_DEFINITIONS "")
+    set(MIP_PRIVATE_COMPILE_DEFINITIONS "")
 endif()
+
+# TODO: Move to the MicroStrain SDK project when separated
+set(MICROSTRAIN_PRIVATE_COMPILE_OPTIONS "${MIP_PRIVATE_COMPILE_OPTIONS}")
+set(MICROSTRAIN_PRIVATE_COMPILE_DEFINITIONS "${MIP_PRIVATE_COMPILE_DEFINITIONS}")
+
+list(APPEND MIP_PRIVATE_COMPILE_DEFINITIONS
+    "MICROSTRAIN_LOGGING_MAX_LEVEL=${MIP_LOGGING_MAX_LEVEL}"
+)
 
 # Suppress warnings due to adding files with target_sources.
 cmake_policy(SET CMP0076 NEW)
@@ -188,8 +202,8 @@ if(MICROSTRAIN_BUILD_DOCUMENTATION)
         list(APPEND DOXYGEN_PREDEFINED "__cplusplus")
     endif()
 
-    if(MICROSTRAIN_ENABLE_LOGGING)
-        list(APPEND DOXYGEN_PREDEFINED "MICROSTRAIN_ENABLE_LOGGING=1")
+    if(MIP_LOGGING_ENABLED)
+        list(APPEND DOXYGEN_PREDEFINED "MICROSTRAIN_LOGGING_MAX_LEVEL=${MIP_LOGGING_MAX_LEVEL}")
     endif()
 
     set(DOXYGEN_EXTRACT_ALL YES)
