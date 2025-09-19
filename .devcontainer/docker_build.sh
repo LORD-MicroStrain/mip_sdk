@@ -9,6 +9,7 @@ set -e
 os="ubuntu"
 arch="amd64"
 build_docs=false
+reset_cache=""
 while [[ $# -gt 0 ]]; do
   case $1 in
     --os)
@@ -23,6 +24,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --docs)
       build_docs=true
+      shift # past argument
+      ;;
+    --reset_cache)
+      reset_cache="--no-cache"
       shift # past argument
       ;;
     *)
@@ -41,6 +46,7 @@ image_name="microstrain/mipsdk_${os}_builder:${arch}"
 
 # Build the docker image
 docker build \
+  ${reset_cache} \
   -t "${image_name}" \
   --build-arg ARCH="${arch}" \
   --build-arg USER_ID="$(id -u)" \
