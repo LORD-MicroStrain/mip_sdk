@@ -145,8 +145,7 @@ Add these include directories:
 
 #### Compiler Definitions
 Add these compiler definitions:
-- `MICROSTRAIN_ENABLE_LOGGING=1` Enables the logging feature
-- `MICROSTRAIN_LOGGING_MAX_LEVEL=MICROSTRAIN_LOG_LEVEL_INFO` Sets the logging level to info which is the minimum required for this example
+- `MICROSTRAIN_LOGGING_MAX_LEVEL=MICROSTRAIN_LOGGING_LEVEL_INFO_` Sets the logging level to info which is the minimum required for this example
 
 ## Requirements
 

@@ -91,6 +91,5 @@ target_compile_options(${PROJECT_NAME} PRIVATE
 )
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE
-    "MICROSTRAIN_ENABLE_LOGGING"                               # Enable logging
-    "MICROSTRAIN_LOGGING_MAX_LEVEL=MICROSTRAIN_LOG_LEVEL_INFO" # Info logging level is required at a minimum
+    "MICROSTRAIN_LOGGING_MAX_LEVEL=MICROSTRAIN_LOGGING_LEVEL_INFO_" # Info logging level is required at a minimum
 )
