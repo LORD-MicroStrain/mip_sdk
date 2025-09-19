@@ -51,7 +51,7 @@ static constexpr uint32_t BAUDRATE = 115200;
 ////////////////////////////////////////////////////////////////////////////////
 
 // Custom logging handler callback
-void logCallback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args);
+void logCallback(void* _user, const microstrain_log_level _level, const microstrain_log_component_id component, const char* _format, va_list _args);
 
 // Common device initialization procedure
 void initializeDevice(mip::Interface& _device);
@@ -70,10 +70,10 @@ int main(const int argc, const char* argv[])
     MICROSTRAIN_LOG_INIT(&logCallback, MICROSTRAIN_LOG_LEVEL_INFO, nullptr);
 
     // Initialize the connection
-    MICROSTRAIN_LOG_INFO("Initializing the connection.\n");
+    MICROSTRAIN_LOG_INFO(nullptr, "Initializing the connection.\n");
     microstrain::connections::SerialConnection connection(PORT_NAME, BAUDRATE);
 
-    MICROSTRAIN_LOG_INFO("Connecting to the device on port %s with %d baudrate.\n", PORT_NAME, BAUDRATE);
+    MICROSTRAIN_LOG_INFO(nullptr, "Connecting to the device on port %s with %d baudrate.\n", PORT_NAME, BAUDRATE);
 
     // Open the connection to the device
     if (!connection.connect())
@@ -81,7 +81,7 @@ int main(const int argc, const char* argv[])
         terminate(&connection, "Could not open the connection!\n");
     }
 
-    MICROSTRAIN_LOG_INFO("Initializing the device interface.\n");
+    MICROSTRAIN_LOG_INFO(nullptr, "Initializing the device interface.\n");
     mip::Interface device(
         &connection,                                 // Connection for the device
         mip::C::mip_timeout_from_baudrate(BAUDRATE), // Set the base timeout for commands (milliseconds)
@@ -107,7 +107,7 @@ int main(const int argc, const char* argv[])
 /// @param _format Printf-style format string for the message
 /// @param _args Variable argument list containing message parameters
 ///
-void logCallback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args)
+void logCallback(void* _user, const microstrain_log_level _level, const microstrain_log_component_id component, const char* _format, va_list _args)
 {
     // Unused parameter
     (void)_user;
@@ -117,7 +117,7 @@ void logCallback(void* _user, const microstrain_log_level _level, const char* _f
         case MICROSTRAIN_LOG_LEVEL_FATAL:
         case MICROSTRAIN_LOG_LEVEL_ERROR:
         {
-            fprintf(stderr, "%s: ", microstrain_logging_level_name(_level));
+            fprintf(stderr, "%s: [%s] ", microstrain_logging_get_component_name(component), microstrain_logging_level_name(_level));
             vfprintf(stderr, _format, _args);
             break;
         }
@@ -126,7 +126,7 @@ void logCallback(void* _user, const microstrain_log_level _level, const char* _f
         case MICROSTRAIN_LOG_LEVEL_DEBUG:
         case MICROSTRAIN_LOG_LEVEL_TRACE:
         {
-            fprintf(stdout, "%s: ", microstrain_logging_level_name(_level));
+            fprintf(stdout, "%s: [%s] ", microstrain_logging_get_component_name(component), microstrain_logging_level_name(_level));
             vfprintf(stdout, _format, _args);
             break;
         }
@@ -152,7 +152,7 @@ void initializeDevice(mip::Interface& _device)
 {
     // Ping the device
     // Note: This is a good first step to make sure the device is present
-    MICROSTRAIN_LOG_INFO("Pinging the device.\n");
+    MICROSTRAIN_LOG_INFO(nullptr, "Pinging the device.\n");
     mip::CmdResult cmdResult = mip::commands_base::ping(_device);
     if (!cmdResult.isAck())
     {
@@ -161,7 +161,7 @@ void initializeDevice(mip::Interface& _device)
 
     // Set the device to Idle
     // Note: This is good to do during setup as high data traffic can cause commands to fail
-    MICROSTRAIN_LOG_INFO("Setting the device to idle.\n");
+    MICROSTRAIN_LOG_INFO(nullptr, "Setting the device to idle.\n");
     cmdResult = mip::commands_base::setIdle(_device);
     if (!cmdResult.isAck())
     {
@@ -169,7 +169,7 @@ void initializeDevice(mip::Interface& _device)
     }
 
     // Print device info to make sure the correct device is being used
-    MICROSTRAIN_LOG_INFO("Getting the device information.\n");
+    MICROSTRAIN_LOG_INFO(nullptr, "Getting the device information.\n");
     mip::commands_base::BaseDeviceInfo deviceInfo;
     cmdResult = mip::commands_base::getDeviceInfo(_device, &deviceInfo);
     if (!cmdResult.isAck())
@@ -190,14 +190,14 @@ void initializeDevice(mip::Interface& _device)
         patch
     );
 
-    MICROSTRAIN_LOG_INFO("-------- Device Information --------\n");
-    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Name",             deviceInfo.model_name);
-    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Model Number",     deviceInfo.model_number);
-    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Serial Number",    deviceInfo.serial_number);
-    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Lot Number",       deviceInfo.lot_number);
-    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Options",          deviceInfo.device_options);
-    MICROSTRAIN_LOG_INFO("%-16s | %16s\n",  "Firmware Version", firmwareVersion);
-    MICROSTRAIN_LOG_INFO("------------------------------------\n");
+    MICROSTRAIN_LOG_INFO(nullptr, "-------- Device Information --------\n");
+    MICROSTRAIN_LOG_INFO(nullptr, "%-16s | %.16s\n", "Name",             deviceInfo.model_name);
+    MICROSTRAIN_LOG_INFO(nullptr, "%-16s | %.16s\n", "Model Number",     deviceInfo.model_number);
+    MICROSTRAIN_LOG_INFO(nullptr, "%-16s | %.16s\n", "Serial Number",    deviceInfo.serial_number);
+    MICROSTRAIN_LOG_INFO(nullptr, "%-16s | %.16s\n", "Lot Number",       deviceInfo.lot_number);
+    MICROSTRAIN_LOG_INFO(nullptr, "%-16s | %.16s\n", "Options",          deviceInfo.device_options);
+    MICROSTRAIN_LOG_INFO(nullptr, "%-16s | %16s\n",  "Firmware Version", firmwareVersion);
+    MICROSTRAIN_LOG_INFO(nullptr, "------------------------------------\n");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -218,33 +218,33 @@ void terminate(microstrain::Connection* _connection, const char* _message, const
     {
         if (_successful)
         {
-            MICROSTRAIN_LOG_INFO("%s", _message);
+            MICROSTRAIN_LOG_INFO(nullptr, "%s", _message);
         }
         else
         {
-            MICROSTRAIN_LOG_ERROR("%s", _message);
+            MICROSTRAIN_LOG_ERROR(nullptr, "%s", _message);
         }
     }
 
     if (!_connection)
     {
         // Create the device interface with a connection or set it after creation
-        MICROSTRAIN_LOG_ERROR("Connection not set for the device interface. Cannot close the connection.\n");
+        MICROSTRAIN_LOG_ERROR(nullptr, "Connection not set for the device interface. Cannot close the connection.\n");
     }
     else
     {
         if (_connection->isConnected())
         {
-            MICROSTRAIN_LOG_INFO("Closing the connection.\n");
+            MICROSTRAIN_LOG_INFO(nullptr, "Closing the connection.\n");
 
             if (!_connection->disconnect())
             {
-                MICROSTRAIN_LOG_ERROR("Failed to close the connection!\n");
+                MICROSTRAIN_LOG_ERROR(nullptr, "Failed to close the connection!\n");
             }
         }
     }
 
-    MICROSTRAIN_LOG_INFO("Exiting the program.\n");
+    MICROSTRAIN_LOG_INFO(nullptr, "Exiting the program.\n");
 
 #ifdef _WIN32
     // Keep the console open on Windows
@@ -274,10 +274,10 @@ void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const c
 {
     va_list args;
     va_start(args, _format);
-    MICROSTRAIN_LOG_ERROR_V(_format, args);
+    MICROSTRAIN_LOG_ERROR_V(nullptr, _format, args);
     va_end(args);
 
-    MICROSTRAIN_LOG_ERROR("Command Result: (%d) %s.\n", _cmdResult.value, _cmdResult.name());
+    MICROSTRAIN_LOG_ERROR(nullptr, "Command Result: (%d) %s.\n", _cmdResult.value, _cmdResult.name());
 
     // Get the connection pointer that was set during device initialization
     microstrain::Connection* connection = static_cast<microstrain::Connection*>(_device.userPointer());

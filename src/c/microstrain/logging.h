@@ -35,6 +35,24 @@ extern "C" {
 ///@{
 
 
+typedef const char* (*microstrain_log_component_id)();
+
+
+#define MICROSTRAIN_LOGGING_DECLARE_COMPONENT(component_id)       \
+    const char*                  component_id ## _logging_name(); \
+    microstrain_log_component_id component_id ## _logging_id();   \
+
+#define MICROSTRAIN_LOGGING_IMPLEMENT_COMPONENT(component_id)                                              \
+    const char*                  component_id ## _logging_name() { return #component_id; }                 \
+    microstrain_log_component_id component_id ## _logging_id() { return & component_id ## _logging_name; } \
+
+#define MICROSTRAIN_LOGGING_ID(component_id)   component_id##_logging_id()
+#define MICROSTRAIN_LOGGING_NAME(component_id) component_id##_logging_name()
+
+
+#define MICROSTRAIN_LOGGING_COMPONENT_DEFAULT NULL
+
+
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Logging level enum
 ///
@@ -57,9 +75,9 @@ typedef enum microstrain_log_level
 ///@param fmt   printf style format string
 ///@param args  Variadic args used to populate the fmt string
 ///
-typedef void (*microstrain_log_callback)(void* user, const microstrain_log_level level, const char* fmt, va_list args);
+typedef void (*microstrain_log_callback)(void* user, microstrain_log_level level, microstrain_log_component_id component, const char* fmt, va_list args);
 
-void microstrain_logging_init(const microstrain_log_callback callback, const microstrain_log_level level, void* user);
+void microstrain_logging_init(microstrain_log_callback callback, microstrain_log_level level, void* user);
 
 microstrain_log_callback microstrain_logging_callback(void);
 
@@ -67,13 +85,16 @@ microstrain_log_level microstrain_logging_level(void);
 
 void* microstrain_logging_user_data(void);
 
-void microstrain_logging_log_v(const microstrain_log_level level, const char* fmt, va_list args);
+const char* microstrain_logging_get_component_name(microstrain_log_component_id component);
 
-void microstrain_logging_log(const microstrain_log_level level, const char* fmt, ...);
 
-const char* microstrain_logging_level_name(const microstrain_log_level level);
+void microstrain_logging_log_v(microstrain_log_level level, microstrain_log_component_id component, const char* fmt, va_list args);
 
-void microstrain_log_bytes(const microstrain_log_level level, const char* msg, const uint8_t* data, size_t length);
+void microstrain_logging_log(microstrain_log_level level, microstrain_log_component_id component, const char* fmt, ...);
+
+const char* microstrain_logging_level_name(microstrain_log_level level);
+
+void microstrain_log_bytes(microstrain_log_level level, microstrain_log_component_id component, const char* msg, const uint8_t* data, size_t length);
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to initialize the MicroStrain logger.
@@ -98,11 +119,11 @@ void microstrain_log_bytes(const microstrain_log_level level, const char* msg, c
 ///@copydetails microstrain_log_callback
 ///
 #ifdef MICROSTRAIN_ENABLE_LOGGING
-#define MICROSTRAIN_LOG_LOG(level, ...) microstrain_logging_log(level, __VA_ARGS__)
-#define MICROSTRAIN_LOG_LOG_V(level, fmt, args) microstrain_logging_log_v(level, fmt, args)
+#define MICROSTRAIN_LOG_LOG(level, component, ...) microstrain_logging_log(level, component, __VA_ARGS__)
+#define MICROSTRAIN_LOG_LOG_V(level, component, fmt, args) microstrain_logging_log_v(level, component, fmt, args)
 #else
-#define MICROSTRAIN_LOG_LOG(level, ...) (void)0
-#define MICROSTRAIN_LOG_LOG_V(level, fmt, args) (void)0
+#define MICROSTRAIN_LOG_LOG(level, component, ...) (void)0
+#define MICROSTRAIN_LOG_LOG_V(level, component, fmt, args) (void)0
 #endif
 
 #ifndef MICROSTRAIN_LOGGING_MAX_LEVEL
@@ -133,10 +154,10 @@ void microstrain_log_bytes(const microstrain_log_level level, const char* msg, c
 ///
 #if MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOG_LEVEL_ERROR
 #define MICROSTRAIN_LOG_ERROR(...) MICROSTRAIN_LOG_LOG(MICROSTRAIN_LOG_LEVEL_ERROR, __VA_ARGS__)
-#define MICROSTRAIN_LOG_ERROR_V(fmt, args) MICROSTRAIN_LOG_LOG_V(MICROSTRAIN_LOG_LEVEL_ERROR, fmt, args)
+#define MICROSTRAIN_LOG_ERROR_V(comp, fmt, args) MICROSTRAIN_LOG_LOG_V(MICROSTRAIN_LOG_LEVEL_ERROR, comp, fmt, args)
 #else
 #define MICROSTRAIN_LOG_ERROR(...) (void)0
-#define MICROSTRAIN_LOG_ERROR_V(fmt, args) (void)0
+#define MICROSTRAIN_LOG_ERROR_V(comp, fmt, args) (void)0
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -145,7 +166,7 @@ void microstrain_log_bytes(const microstrain_log_level level, const char* msg, c
 ///
 #if MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOG_LEVEL_WARN
 #define MICROSTRAIN_LOG_WARN(...) MICROSTRAIN_LOG_LOG(MICROSTRAIN_LOG_LEVEL_WARN, __VA_ARGS__)
-#define MICROSTRAIN_LOG_WARN_V(fmt, args) MICROSTRAIN_LOG_LOG_V(MICROSTRAIN_LOG_LEVEL_WARN, fmt, args)
+#define MICROSTRAIN_LOG_WARN_V(comp, fmt, args) MICROSTRAIN_LOG_LOG_V(MICROSTRAIN_LOG_LEVEL_WARN, comp, fmt, args)
 #else
 #define MICROSTRAIN_LOG_WARN(...) (void)0
 #define MICROSTRAIN_LOG_WARN_V(fmt, args) (void)0
@@ -157,7 +178,7 @@ void microstrain_log_bytes(const microstrain_log_level level, const char* msg, c
 ///
 #if MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOG_LEVEL_INFO
 #define MICROSTRAIN_LOG_INFO(...) MICROSTRAIN_LOG_LOG(MICROSTRAIN_LOG_LEVEL_INFO, __VA_ARGS__)
-#define MICROSTRAIN_LOG_INFO_V(fmt, args) MICROSTRAIN_LOG_LOG_V(MICROSTRAIN_LOG_LEVEL_INFO, fmt, args)
+#define MICROSTRAIN_LOG_INFO_V(comp, fmt, args) MICROSTRAIN_LOG_LOG_V(MICROSTRAIN_LOG_LEVEL_INFO, comp, fmt, args)
 #else
 #define MICROSTRAIN_LOG_INFO(...) (void)0
 #define MICROSTRAIN_LOG_INFO_V(fmt, args) (void)0
@@ -170,7 +191,7 @@ void microstrain_log_bytes(const microstrain_log_level level, const char* msg, c
 ///
 #if MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOG_LEVEL_DEBUG
 #define MICROSTRAIN_LOG_DEBUG(...) MICROSTRAIN_LOG_LOG(MICROSTRAIN_LOG_LEVEL_DEBUG, __VA_ARGS__)
-#define MICROSTRAIN_LOG_DEBUG_V(fmt, args) MICROSTRAIN_LOG_LOG_V(MICROSTRAIN_LOG_LEVEL_DEBUG, fmt, args)
+#define MICROSTRAIN_LOG_DEBUG_V(comp, fmt, args) MICROSTRAIN_LOG_LOG_V(MICROSTRAIN_LOG_LEVEL_DEBUG, comp, fmt, args)
 #else
 #define MICROSTRAIN_LOG_DEBUG(...) (void)0
 #define MICROSTRAIN_LOG_DEBUG_V(fmt, args) (void)0
@@ -183,7 +204,7 @@ void microstrain_log_bytes(const microstrain_log_level level, const char* msg, c
 ///
 #if MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOG_LEVEL_TRACE
 #define MICROSTRAIN_LOG_TRACE(...) MICROSTRAIN_LOG_LOG(MICROSTRAIN_LOG_LEVEL_TRACE, __VA_ARGS__)
-#define MICROSTRAIN_LOG_TRACE_V(fmt, args) MICROSTRAIN_LOG_LOG_V(MICROSTRAIN_LOG_LEVEL_TRACE, fmt, args)
+#define MICROSTRAIN_LOG_TRACE_V(comp, fmt, args) MICROSTRAIN_LOG_LOG_V(MICROSTRAIN_LOG_LEVEL_TRACE, comp, fmt, args)
 #else
 #define MICROSTRAIN_LOG_TRACE(...) (void)0
 #define MICROSTRAIN_LOG_TRACE_V(fmt, args) (void)0
@@ -193,9 +214,9 @@ void microstrain_log_bytes(const microstrain_log_level level, const char* msg, c
 ///@brief Helper macro used to log bytes as a hex sting
 ///
 #if MICROSTRAIN_ENABLE_LOGGING
-#define MICROSTRAIN_LOG_BYTES(level, msg, data, length) microstrain_log_bytes(level, msg, data, length)
+#define MICROSTRAIN_LOG_BYTES(level, component, msg, data, length) microstrain_log_bytes(level, component, msg, data, length)
 #else
-#define MICROSTRAIN_LOG_BYTES(level, msg, data, length) (void)0
+#define MICROSTRAIN_LOG_BYTES(level, component, msg, data, length) (void)0
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -205,9 +226,9 @@ void microstrain_log_bytes(const microstrain_log_level level, const char* msg, c
 /// than MICROSTRAIN_LOG_LEVEL_TRACE.
 ///
 #if MICROSTRAIN_LOGGING_MAX_LEVEL >= MICROSTRAIN_LOG_LEVEL_TRACE
-#define MICROSTRAIN_LOG_BYTES_TRACE(msg, data, length) microstrain_log_bytes(MICROSTRAIN_LOG_LEVEL_TRACE, msg, data, length)
+#define MICROSTRAIN_LOG_BYTES_TRACE(component, msg, data, length) microstrain_log_bytes(component, MICROSTRAIN_LOG_LEVEL_TRACE, msg, data, length)
 #else
-#define MICROSTRAIN_LOG_BYTES_TRACE(msg, data, length) (void)0
+#define MICROSTRAIN_LOG_BYTES_TRACE(component, msg, data, length) (void)0
 #endif
 
 
@@ -228,6 +249,7 @@ void microstrain_log_bytes(const microstrain_log_level level, const char* msg, c
 /// "<message here>: <error-code> <error-description>\n".
 ///
 #define MICROSTRAIN_LOG_ERROR_WITH_ERRNO_EX(msg, ...) MICROSTRAIN_LOG_ERROR(msg ": %d %s\n", __VA_ARGS__, errno, strerror(errno))
+
 
 ///@}
 ///@}

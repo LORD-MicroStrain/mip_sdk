@@ -28,7 +28,7 @@ void* microstrain_log_user_data_ = NULL;
 ///@param user     User data that will be passed to the callback every time it
 ///                is executed
 ///
-void microstrain_logging_init(const microstrain_log_callback callback, const microstrain_log_level level, void* user)
+void microstrain_logging_init(microstrain_log_callback callback, microstrain_log_level level, void* user)
 {
     microstrain_log_callback_  = callback;
     microstrain_log_level_     = level;
@@ -66,17 +66,30 @@ void* microstrain_logging_user_data(void)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+///@brief Gets the human-readable name of the logging component.
+///
+///@param component The component ID, as passed to microstrain_logging_log.
+///
+///@returns An immutable character string identifying the component by name.
+///
+const char* microstrain_logging_get_component_name(microstrain_log_component_id component)
+{
+    // The NULL component is the global default and is generally reserved for applications.
+    return component ? component() : "application";
+}
+
+////////////////////////////////////////////////////////////////////////////////
 ///@brief Internal log function called by variadic logging macros.
 ///       Call MICROSTRAIN_LOG_*_V macros instead of using this function
 ///       directly
 ///@copydetails microstrain_log_callback
 ///
-void microstrain_logging_log_v(const microstrain_log_level level, const char* fmt, va_list args)
+void microstrain_logging_log_v(microstrain_log_level level, microstrain_log_component_id component, const char* fmt, va_list args)
 {
     const microstrain_log_callback callback = microstrain_logging_callback();
     if(callback != NULL && microstrain_logging_level() >= level)
     {
-        callback(microstrain_logging_user_data(), level, fmt, args);
+        callback(microstrain_logging_user_data(), level, component, fmt, args);
     }
 }
 
@@ -85,11 +98,11 @@ void microstrain_logging_log_v(const microstrain_log_level level, const char* fm
 ///       Call MICROSTRAIN_LOG_* macros instead of using this function directly
 ///@copydetails microstrain_log_callback
 ///
-void microstrain_logging_log(const microstrain_log_level level, const char* fmt, ...)
+void microstrain_logging_log(microstrain_log_level level, microstrain_log_component_id component, const char* fmt, ...)
 {
     va_list args;
     va_start(args, fmt);
-    microstrain_logging_log_v(level, fmt, args);
+    microstrain_logging_log_v(level, component, fmt, args);
     va_end(args);
 }
 
@@ -101,7 +114,7 @@ void microstrain_logging_log(const microstrain_log_level level, const char* fmt,
 /// modified. The strings are padded to a uniform length for consistent
 /// alignment in log files.
 ///
-const char* microstrain_logging_level_name(const microstrain_log_level level)
+const char* microstrain_logging_level_name(microstrain_log_level level)
 {
     switch(level)
     {
@@ -133,7 +146,7 @@ const char* microstrain_logging_level_name(const microstrain_log_level level)
 ///@param length
 ///       Length of the data to print.
 ///
-void microstrain_log_bytes(const microstrain_log_level level, const char* msg, const uint8_t* data, size_t length)
+void microstrain_log_bytes(microstrain_log_level level, microstrain_log_component_id component, const char* msg, const uint8_t* data, size_t length)
 {
     if(level < microstrain_log_level_)
         return;
@@ -154,5 +167,5 @@ void microstrain_log_bytes(const microstrain_log_level level, const char* msg, c
         buffer[sizeof(buffer)-1] = '\0';
     }
 
-    microstrain_logging_log(level, "%s%s\n", msg, buffer);
+    microstrain_logging_log(level, component, "%s%s\n", msg, buffer);
 }
