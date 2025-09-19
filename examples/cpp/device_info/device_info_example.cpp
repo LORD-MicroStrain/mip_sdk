@@ -23,14 +23,6 @@
 // Include the MicroStrain Serial connection header
 #include <microstrain/connections/serial/serial_connection.hpp>
 
-#ifndef MICROSTRAIN_ENABLE_LOGGING
-#error This example requires logging to be enabled
-#endif // !MICROSTRAIN_ENABLE_LOGGING
-
-#if !defined MICROSTRAIN_LOGGING_MAX_LEVEL || MICROSTRAIN_LOGGING_MAX_LEVEL < MICROSTRAIN_LOG_LEVEL_INFO
-#error This example requires a logging level of at least MICROSTRAIN_LOG_LEVEL_INFO
-#endif // MICROSTRAIN_LOGGING_MAX_LEVEL < MICROSTRAIN_LOG_LEVEL_INFO
-
 // Include the MicroStrain logging header for custom logging
 #include <microstrain/logging.hpp>
 
@@ -77,7 +69,15 @@ int main(const int argc, const char* argv[])
     (void)argc;
     (void)argv;
 
+// Note: This is a compile-time way of checking that the proper logging level is enabled
+// Note: The max available logging level may differ in pre-packaged installations of the MIP SDK
+#ifndef MICROSTRAIN_LOGGING_ENABLED_INFO
+#error This example requires a logging level of at least MICROSTRAIN_LOGGING_LEVEL_INFO_ to work properly
+#endif // !MICROSTRAIN_LOGGING_ENABLED_INFO
+
     // Initialize the custom logger to print messages/errors as they occur
+    // Note: The logging level parameter doesn't need to match the max logging level.
+    // If the parameter is higher than the max level, higher-level logging functions will be ignored
     MICROSTRAIN_LOG_INIT(&logCallback, MICROSTRAIN_LOG_LEVEL_INFO, nullptr);
 
     // Initialize the connection
