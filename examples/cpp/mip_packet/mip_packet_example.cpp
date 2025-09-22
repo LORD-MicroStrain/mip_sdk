@@ -86,6 +86,9 @@ int main(const int argc, const char* argv[])
     (void)argc;
     (void)argv;
 
+    // Mark printf operations as unbuffered to flush with every operation
+    setvbuf(stdout, nullptr, _IONBF, 0);
+
     // Create packet 1 with multiple fields
     createFromScratchPacket1();
 
