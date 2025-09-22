@@ -23,34 +23,32 @@ bool packetCallback(void*, const PacketView *parsedPacket, Timestamp timestamp)
 
     for(FieldView field : *parsedPacket)
     {
-        // TODO: Figure out solution for INFO calls
-        INFO("  From field " << numParsedFields << "/" << numFields);
-        INFO("  Descriptor set: " << std::fixed << std::setprecision(2) << field.descriptorSet() << "/" << fields[numParsedFields].descriptorSet());
-        INFO("  Field Descriptor: " << std::fixed << std::setprecision(2) << field.fieldDescriptor() << "/" << fields[numParsedFields].fieldDescriptor());
-        INFO("  Payload Length: " << std::fixed << std::setprecision(2) << field.payloadLength() << "/" << fields[numParsedFields].payloadLength());
+        LOG_ON_FAIL("\tFrom field " << numParsedFields << "/" << numFields);
+        LOG_ON_FAIL("\tDescriptor set: " << std::fixed << std::setprecision(2) << field.descriptorSet() << "/" << fields[numParsedFields].descriptorSet());
+        LOG_ON_FAIL("\tField Descriptor: " << std::fixed << std::setprecision(2) << field.fieldDescriptor() << "/" << fields[numParsedFields].fieldDescriptor());
+        LOG_ON_FAIL("\tPayload Length: " << std::fixed << std::setprecision(2) << field.payloadLength() << "/" << fields[numParsedFields].payloadLength());
 
-        INFO("Descriptor set does not match.");
-        FAIL_IF_NOT_EQUAL(field.descriptorSet(), fields[numParsedFields].descriptorSet());
+        FAIL_AND_LOG_IF_NOT_EQUAL(field.descriptorSet(), fields[numParsedFields].descriptorSet(),
+            "Descriptor set does not match.");
 
-        INFO("Field descriptor does not match.");
-        FAIL_IF_NOT_EQUAL(field.fieldDescriptor(), fields[numParsedFields].fieldDescriptor());
+        FAIL_AND_LOG_IF_NOT_EQUAL(field.fieldDescriptor(), fields[numParsedFields].fieldDescriptor(),
+            "Field descriptor does not match.");
 
-        INFO("Payload length does not match.");
-        FAIL_IF_NOT_EQUAL(field.payloadLength(), fields[numParsedFields].payloadLength());
+        FAIL_AND_LOG_IF_NOT_EQUAL(field.payloadLength(), fields[numParsedFields].payloadLength(),
+            "Payload length does not match.");
 
-        INFO("Payloads do not match.");
         int result = std::memcmp(
             field.payload().data(),
             fields[numParsedFields].payload().data(),
             std::min(field.payloadLength(), fields[numParsedFields].payloadLength())
         );
-        FAIL_IF_NOT_EQUAL(result, 0);
+        FAIL_AND_LOG_IF_NOT_EQUAL(result, 0, "Payloads do not match.");
 
         numParsedFields++;
     }
 
-    INFO("Field count mismatch: " << numParsedFields << " != " << numFields);
-    FAIL_IF_NOT_EQUAL(numParsedFields, numFields);
+    FAIL_AND_LOG_IF_NOT_EQUAL(numParsedFields, numFields,
+        "Field count mismatch: " << numParsedFields << " != " << numFields);
 
     return true;
 }

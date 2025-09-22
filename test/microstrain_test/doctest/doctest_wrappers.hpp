@@ -22,6 +22,9 @@ namespace detail
 #define TEST(suite_name, test_name) \
     TEST_CASE("[" suite_name "] " test_name)
 
+#define LOG_ON_FAIL(message) \
+    INFO(message)
+
 #define WARN_IF_NOT_TRUE(condition) \
     WARN(condition)
 
