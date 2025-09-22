@@ -81,8 +81,9 @@ TEST("Packet Builder", "Packets can be built and parsed correctly")
             for(unsigned int p=0; p<payloadLength; p++)
                 payload.insert<uint8_t>(rand_max_distribution(random_generator) & 0xFF);
 
-            INFO("Field " << numFields << " did not have the right size (wrote " << payload.offset() << ", expected " << payloadLength << ", max " << payload.capacity() << ").");
-            FAIL_IF_NOT_TRUE(payload.isFinished());
+            FAIL_AND_LOG_IF_NOT_TRUE(payload.isFinished(),
+                "Field " << numFields << " did not have the right size (wrote " << payload.offset() << ", expected " << payloadLength << ", max " << payload.capacity() << ").";
+            );
 
             fields[numFields] = FieldView(packet.descriptorSet(), fieldDescriptor, payload.basePointer(), payloadLength);
         }
