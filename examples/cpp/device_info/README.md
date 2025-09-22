@@ -68,6 +68,20 @@ The example displays the following device information:
 - **Device Options**: Available device features and capabilities
 - **Firmware Version**: Current firmware version (formatted as x.x.xx)
 
+### Output Format
+
+The example displays the device information in the following format:
+```
+-------- Device Information --------
+Name             |      3DM-CV7-INS
+Model Number     |        6291-9960
+Serial Number    |      6291.123456
+Lot Number       |      6-5-2023_10
+Options          |  4-16g,250-1kdps
+Firmware Version |           1.2.04
+------------------------------------
+```
+
 ## Usage
 
 1. Connect your MIP-enabled MicroStrain device to the specified serial port

@@ -22,7 +22,7 @@ The example uses the following default settings:
 ## Key Functions
 
 ### Device Setup
-- `initialize_device()` - Establishes serial communication and validates device connection
+- `initialize_device()` - Establishes communication, and validates device connection
 - `get_device_information()` - Queries and retrieves comprehensive device information
 
 ### Device Information Display
@@ -54,6 +54,13 @@ This example showcases:
 - **Memory Safety**: Careful buffer management and bound checking
 - **Portability**: Cross-platform compatibility (Windows/Unix)
 
+## Custom Communication Functions
+
+The example implements custom communication handlers:
+- **Send Function**: `mip_interface_user_send_to_device()` handles outgoing data
+- **Receive Function**: `mip_interface_user_recv_from_device()` manages incoming data
+- **Timeout Handling**: Configurable timeouts for reliable communication
+
 ## Device Information Retrieved
 
 The example displays the following device information:
@@ -64,12 +71,19 @@ The example displays the following device information:
 - **Device Options**: Available device features and capabilities
 - **Firmware Version**: Current firmware version (formatted as x.x.xx)
 
-## Custom Communication Functions
+### Output Format
 
-The example implements custom communication handlers:
-- **Send Function**: `mip_interface_user_send_to_device()` handles outgoing data
-- **Receive Function**: `mip_interface_user_recv_from_device()` manages incoming data
-- **Timeout Handling**: Configurable timeouts for reliable communication
+The example displays the device information in the following format:
+```
+-------- Device Information --------
+Name             |      3DM-CV7-INS
+Model Number     |        6291-9960
+Serial Number    |      6291.123456
+Lot Number       |      6-5-2023_10
+Options          |  4-16g,250-1kdps
+Firmware Version |           1.2.04
+------------------------------------
+```
 
 ## Usage
 

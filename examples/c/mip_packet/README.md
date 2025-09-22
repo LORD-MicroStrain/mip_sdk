@@ -70,6 +70,30 @@ The example works with various MIP descriptor sets:
 - **Sensor Data**: IMU and sensor data fields
 - **Shared Data**: Common data structures across devices
 
+### Packet Output Format
+
+The example displays packet information in the following format:
+```
+Packet information:
+    Packet Length        = 16
+    Raw Packet           = 7565010A0201080901010001C200BE2F
+    MIP SYNC1            = 0x75
+    MIP SYNC2            = 0x65
+    Descriptor Set       = 0x01
+    Payload Length       = 0x0A
+    Fields:
+        Field Length     = 0x02
+        Field Descriptor = 0x01
+        Raw Payload      = 
+
+        Field Length     = 0x08
+        Field Descriptor = 0x09
+        Raw Payload      = 01010001C200
+    Checksum (Valid):
+        MSB              = 0xBE
+        LSB              = 0x2F
+```
+
 ## Usage
 
 1. Compile and run the example (no device connection required)

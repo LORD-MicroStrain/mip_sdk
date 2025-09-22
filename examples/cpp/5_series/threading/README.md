@@ -29,7 +29,7 @@ The example uses the following default settings:
 ## Key Functions
 
 ### Device Setup
-- `initializeDevice()` - Establishes communication and validates device connection
+- `initializeDevice()` - Establishes communication, validates device connection, and loads defaults
 
 ### Message Configuration
 - `configureSensorMessageFormat()` - Configures IMU sensor data output including:
@@ -108,11 +108,11 @@ This example uses modern C++ connection handling:
 ## Error Handling
 
 The example includes comprehensive error handling with:
-- Exception-safe thread operations
 - Command result checking using `mip::CmdResult`
 - Connection failure detection and recovery
 - Graceful termination functions for different error types
 - Detailed error messages with context using built-in documentation strings
+- Exception-safe thread operations
 
 ## C++ Features
 

@@ -29,7 +29,7 @@ The example uses the following default settings:
 ## Key Functions
 
 ### Device Setup
-- `initialize_device()` - Establishes communication and validates device connection
+- `initialize_device()` - Establishes communication, validates device connection, and loads defaults
 
 ### Message Configuration
 - `configure_sensor_message_format()` - Configures IMU sensor data output including:
@@ -110,11 +110,11 @@ The example implements thread-aware communication handlers:
 ## Error Handling
 
 The example includes comprehensive error handling with:
-- Thread creation and joining error checking
 - Command result checking using `mip_cmd_result`
 - Connection failure detection and recovery
 - Graceful termination functions for different error types
 - Detailed error messages with context
+- Thread creation and joining error checking
 
 ## C Features
 
@@ -159,7 +159,7 @@ Link against these libraries:
 - `mip` - Core MIP SDK library
 - `microstrain` - Core MicroStrain SDK library
 - `microstrain_serial` - MicroStrain serial communication library
-- `pthread` - Threading library (Linux only)
+- `pthread` - Threading library (not MSVC)
 
 Make sure to include those library paths as additional link directories if needed
 
