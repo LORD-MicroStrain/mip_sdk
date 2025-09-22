@@ -82,6 +82,18 @@
 #error "FATAL_IF_NOT_EQUAL is not implemented for the current backend."
 #endif
 
+#ifndef WARN_IF_EQUAL
+#error "WARN_IF_EQUAL is not implemented for the current backend."
+#endif
+
+#ifndef FAIL_IF_EQUAL
+#error "FAIL_IF_EQUAL is not implemented for the current backend."
+#endif
+
+#ifndef FATAL_IF_EQUAL
+#error "FATAL_IF_EQUAL is not implemented for the current backend."
+#endif
+
 /// -------------------------------------------------------------------------------------------- ///
 /// Same as the equality checks, but with additional safety and debugging info for C strings.
 /// -------------------------------------------------------------------------------------------- ///
@@ -140,6 +152,18 @@
 
 #ifndef FATAL_AND_LOG_IF_NOT_EQUAL
 #error "FATAL_AND_LOG_IF_NOT_EQUAL is not implemented for the current backend."
+#endif
+
+#ifndef WARN_AND_LOG_IF_EQUAL
+#error "WARN_AND_LOG_IF_EQUAL is not implemented for the current backend."
+#endif
+
+#ifndef FAIL_AND_LOG_IF_EQUAL
+#error "FAIL_AND_LOG_IF_EQUAL is not implemented for the current backend."
+#endif
+
+#ifndef FATAL_AND_LOG_IF_EQUAL
+#error "FATAL_AND_LOG_IF_EQUAL is not implemented for the current backend."
 #endif
 
 #ifndef WARN_AND_LOG_IF_C_STRINGS_NOT_EQUAL

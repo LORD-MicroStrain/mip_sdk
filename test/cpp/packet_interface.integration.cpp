@@ -1,12 +1,14 @@
-
-#include "test.h"
-
+#include <iomanip>
+#include <ios>
 #include <microstrain/array_view.hpp>
 #include <mip/mip_packet.hpp>
 
 #include <mip/definitions/data_sensor.hpp>
 #include <mip/definitions/data_shared.hpp>
 #include <mip/definitions/commands_base.hpp>
+
+#include <microstrain_test.hpp>
+#include <sstream>
 
 // A ping command
 const uint8_t PING[] = { 0x75, 0x65, 0x01, 0x02, 0x02, 0x01, 0xE0, 0xC6 };
@@ -15,36 +17,50 @@ const mip::data_sensor::ScaledAccel ACCEL_FIELD = { {1.f, 2.f, -3.f} };
 const uint8_t ACCEL_PKT[] = { 0x75, 0x65, 0x80, 0x0e, 0x0e, 0x04, 0x3f, 0x80, 0x00, 0x00, 0x40, 0x00, 0x00, 0x00, 0xC0, 0x40, 0x00, 0x00, 0x79, 0xed };
 //const mip::data_shared::ReferenceTimestamp REFTIME = { 1'234'567'890 };
 
-void print_packet(const mip::PacketView& packet)
+std::ostringstream print_packet(const uint8_t *packet_data, const size_t size)
 {
-    print_buffer(stderr, packet.pointer(), packet.packetLength());
-}
+    std::ostringstream output;
+    output << std::hex << std::uppercase << std::setfill('0') << std::setw(2);
 
-bool checkPacketView(const mip::PacketView& packet, microstrain::ConstU8ArrayView compare, const char* method)
-{
-    bool ok = true;
-
-    ok &= check(packet.isSane(), "Insane packet from %s", method);
-    ok &= check(packet.descriptorSet() == compare[mip::C::MIP_INDEX_DESCSET], "Wrong descriptor set from %s", method);
-    ok &= check(packet.payloadLength() == compare[mip::C::MIP_INDEX_LENGTH], "Wrong payload length from %s", method);
-    ok &= check(packet.packetLength() == packet.payloadLength()+mip::C::MIP_PACKET_LENGTH_MIN, "Wrong total length from %s", method);
-    ok &= check_equal(packet.payloadPointer(), packet.pointer() + mip::C::MIP_INDEX_PAYLOAD, "Wrong payload pointer from %s", method);
-    ok &= check(packet.pointer() != nullptr, "PacketRef shouldn't have NULL pointer from %s", method);
-    ok &= check_equal(packet.bytes().data(), packet.pointer(), "bytes().data() should match pointer()");
-    ok &= check_equal(packet.bytes().size(), packet.packetLength(), "bytes().size() should match totalLength()");
-    ok &= check_equal(packet.payloadBytes().data(), packet.payloadPointer(), "payload().data() should match payload()");
-    ok &= check_equal(packet.payloadBytes().size(), packet.payloadLength(), "payload().size() should match payloadLength()");
-    ok &= check_equal(packet.remainingSpace(), packet.bufferSize()-packet.packetLength(), "remainingSpace() is wrong");
-
-    if(std::memcmp(packet.pointer(), compare.data(), compare.size()) != 0)
+    for (size_t i = 0; i < size; ++i)
     {
-        fprintf(stderr, "Data mismatch from %s:\n", method);
-        print_packet(packet);
-        print_buffer(stderr, compare.data(), compare.size());
-        ok = false;
+        output << packet_data[i];
     }
 
-    return ok;
+    return output;
+}
+
+void checkPacketView(const mip::PacketView& packet, microstrain::ConstU8ArrayView compare, const char* method)
+{
+    FAIL_AND_LOG_IF_NOT_TRUE(packet.isSane(), "Insane packet from " << method);
+    FAIL_AND_LOG_IF_NOT_EQUAL(packet.descriptorSet(), compare[mip::C::MIP_INDEX_DESCSET],
+        "Wrong descriptor set from " << method);
+    FAIL_AND_LOG_IF_NOT_EQUAL(packet.payloadLength(), compare[mip::C::MIP_INDEX_LENGTH],
+        "Wrong payload length from " << method);
+    // TODO: These contain domain leakage. Any calculations for the expected value should be removed and replaced
+    //       with a hard-coded one. This will likely require restructuring how these tests work.
+    //FAIL_AND_LOG_IF_NOT_EQUAL(packet.totalLength(), packet.payloadLength() + mip::C::MIP_PACKET_LENGTH_MIN,
+    //    "Wrong total length from " << method);
+    //FAIL_AND_LOG_IF_NOT_EQUAL(packet.payloadPointer(), packet.pointer() + mip::C::MIP_INDEX_PAYLOAD,
+    //    "Wrong payload pointer from " << method);
+    FAIL_AND_LOG_IF_EQUAL(packet.pointer(), nullptr, "Packet pointer was NULL from " << method);
+    FAIL_AND_LOG_IF_NOT_EQUAL(packet.data().data(), packet.pointer(), "Packet data and pointer were not the same");
+    FAIL_AND_LOG_IF_NOT_EQUAL(packet.data().size(), packet.totalLength(), "Packet size doesn't match total length");
+    FAIL_AND_LOG_IF_NOT_EQUAL(packet.payload().data(), packet.payloadPointer(), "Payload data doesn't match pointer");
+    FAIL_AND_LOG_IF_NOT_EQUAL(packet.payload().size(), packet.payloadLength(), "Payload size doesn't match the length");
+    // TODO: This is domain leakage. Any calculations for the expected value should be removed and replaced
+    //       with a hard-coded one. This will likely require restructuring how these tests work.
+    //FAIL_AND_LOG_IF_NOT_EQUAL(packet.remainingSpace(), packet.bufferSize()-packet.packetLength(),
+    //    "Remaining space calculation is wrong");
+
+    int result = std::memcmp(packet.pointer(), compare.data(), compare.size());
+
+    std::ostringstream actual_output = print_packet(packet.pointer(), packet.payloadLength());
+    std::ostringstream expected_output = print_packet(compare.data(), compare.size());
+    LOG_ON_FAIL(actual_output.str());
+    LOG_ON_FAIL(expected_output.str());
+
+    FAIL_AND_LOG_IF_NOT_EQUAL(result, 0, "Data mismatch from " << method);
 }
 
 template<size_t Size>
@@ -74,12 +90,8 @@ bool checkPingPacketBuf(mip::SizedPacketBuf<Size>& packet, const char* method)
 }
 
 
-void testPacketView()
+TEST("Packet view", "Packet view works as expected")
 {
-    //
-    // Construction
-    //
-
     uint8_t buffer[mip::PACKET_LENGTH_MAX];
 
     mip::PacketView packet1(buffer, sizeof(buffer), mip::commands_base::DESCRIPTOR_SET);
@@ -108,11 +120,9 @@ void testPacketView()
 
     mip::PacketView packet5(PING);
     checkPingPacketView(packet5, "PacketView existing constructor (U8ArrayView version)");
-
-
 }
 
-void testPacketBuf()
+TEST("Packet buffer", "Packet buffer works as expected")
 {
     //
     // Construction
@@ -172,14 +182,4 @@ void testPacketBuf()
     std::memset(tmp, 0x00, sizeof(tmp));
     packet5.copyPacketTo({tmp, sizeof(tmp)});
     check(std::memcmp(PING, tmp, sizeof(PING))==0, "Temporary buffer doesn't match after calling packet.copyPacketTo (span version)");
-
-}
-
-
-int main()
-{
-    testPacketView();
-    testPacketBuf();
-
-    return num_errors;
 }
