@@ -42,7 +42,8 @@ bool packetCallback(void*, const PacketView *parsedPacket, Timestamp timestamp)
             fields[numParsedFields].payload().data(),
             std::min(field.payloadLength(), fields[numParsedFields].payloadLength())
         );
-        FAIL_AND_LOG_IF_NOT_EQUAL(result, 0, "Payloads do not match.");
+        FAIL_AND_LOG_IF_NOT_EQUAL(result, 0,
+            "Payloads do not match.");
 
         numParsedFields++;
     }

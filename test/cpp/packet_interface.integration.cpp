@@ -1,14 +1,13 @@
 #include <iomanip>
 #include <ios>
-#include <microstrain/array_view.hpp>
-#include <mip/mip_packet.hpp>
-
-#include <mip/definitions/data_sensor.hpp>
-#include <mip/definitions/data_shared.hpp>
-#include <mip/definitions/commands_base.hpp>
+#include <sstream>
 
 #include <microstrain_test.hpp>
-#include <sstream>
+#include <microstrain/array_view.hpp>
+#include <mip/mip_packet.hpp>
+#include <mip/definitions/commands_base.hpp>
+#include <mip/definitions/data_sensor.hpp>
+#include <mip/definitions/data_shared.hpp>
 
 // A ping command
 const uint8_t PING[] = { 0x75, 0x65, 0x01, 0x02, 0x02, 0x01, 0xE0, 0xC6 };
@@ -17,7 +16,7 @@ const mip::data_sensor::ScaledAccel ACCEL_FIELD = { {1.f, 2.f, -3.f} };
 const uint8_t ACCEL_PKT[] = { 0x75, 0x65, 0x80, 0x0e, 0x0e, 0x04, 0x3f, 0x80, 0x00, 0x00, 0x40, 0x00, 0x00, 0x00, 0xC0, 0x40, 0x00, 0x00, 0x79, 0xed };
 //const mip::data_shared::ReferenceTimestamp REFTIME = { 1'234'567'890 };
 
-std::ostringstream print_packet(const uint8_t *packet_data, const size_t size)
+std::string print_packet(const uint8_t *packet_data, const size_t size)
 {
     std::ostringstream output;
     output << std::hex << std::uppercase << std::setfill('0') << std::setw(2);
@@ -27,16 +26,14 @@ std::ostringstream print_packet(const uint8_t *packet_data, const size_t size)
         output << packet_data[i];
     }
 
-    return output;
+    return output.str();
 }
 
 void checkPacketView(const mip::PacketView& packet, microstrain::ConstU8ArrayView compare, const char* method)
 {
     FAIL_AND_LOG_IF_NOT_TRUE(packet.isSane(), "Insane packet from " << method);
-    FAIL_AND_LOG_IF_NOT_EQUAL(packet.descriptorSet(), compare[mip::C::MIP_INDEX_DESCSET],
-        "Wrong descriptor set from " << method);
-    FAIL_AND_LOG_IF_NOT_EQUAL(packet.payloadLength(), compare[mip::C::MIP_INDEX_LENGTH],
-        "Wrong payload length from " << method);
+    FAIL_AND_LOG_IF_NOT_EQUAL(packet.descriptorSet(), compare[mip::C::MIP_INDEX_DESCSET], "Wrong descriptor set from " << method);
+    FAIL_AND_LOG_IF_NOT_EQUAL(packet.payloadLength(), compare[mip::C::MIP_INDEX_LENGTH], "Wrong payload length from " << method);
     // TODO: These contain domain leakage. Any calculations for the expected value should be removed and replaced
     //       with a hard-coded one. This will likely require restructuring how these tests work.
     //FAIL_AND_LOG_IF_NOT_EQUAL(packet.totalLength(), packet.payloadLength() + mip::C::MIP_PACKET_LENGTH_MIN,
@@ -55,39 +52,41 @@ void checkPacketView(const mip::PacketView& packet, microstrain::ConstU8ArrayVie
 
     int result = std::memcmp(packet.pointer(), compare.data(), compare.size());
 
-    std::ostringstream actual_output = print_packet(packet.pointer(), packet.payloadLength());
-    std::ostringstream expected_output = print_packet(compare.data(), compare.size());
-    LOG_ON_FAIL(actual_output.str());
-    LOG_ON_FAIL(expected_output.str());
+    std::string actual_output = print_packet(packet.pointer(), packet.payloadLength());
+    std::string expected_output = print_packet(compare.data(), compare.size());
+    LOG_ON_FAIL(actual_output);
+    LOG_ON_FAIL(expected_output);
 
     FAIL_AND_LOG_IF_NOT_EQUAL(result, 0, "Data mismatch from " << method);
 }
 
 template<size_t Size>
-bool checkPacketBuf(mip::SizedPacketBuf<Size>& packet, microstrain::ConstU8ArrayView compare, const char* method)
+void checkPacketBuf(mip::SizedPacketBuf<Size>& packet, microstrain::ConstU8ArrayView compare, const char* method)
 {
-    bool ok = checkPacketView(packet, compare, method);
+    checkPacketView(packet, compare, method);
 
-    ok &= check(packet.bufferPointer() != nullptr, "NULL buffer from %s", method);
-    ok &= check_equal(packet.bufferSize(), Size, "bufferSize() should match templated size from %s", method);
-    ok &= check_equal(packet.pointer(), packet.bufferPointer(), "Packet buffer/pointer mismatch from %s", method);
-    ok &= check(packet.pointer() != compare.data(), "PacketBuf shouldn't point to original data buffer from %s", method);
-    ok &= check_equal(packet.buffer().data(), packet.bufferPointer(), ".buffer().data() doesn't match .bufferPointer()");
-    ok &= check(packet.buffer().size() == Size, "buffer().size() doesn't match Size");
-
-    return ok;
+    FAIL_AND_LOG_IF_EQUAL(packet.bufferPointer(), nullptr, "NULL buffer from " << method);
+    FAIL_AND_LOG_IF_NOT_EQUAL(packet.bufferSize(), Size, "Buffer size should match templated size from " << method);
+    FAIL_AND_LOG_IF_NOT_EQUAL(packet.pointer(), packet.bufferPointer(), "Packet buffer/pointer mismatch from " << method);
+    FAIL_AND_LOG_IF_EQUAL(packet.pointer(), compare.data(), "PacketBuf shouldn't point to original data buffer from " << method);
+    FAIL_AND_LOG_IF_NOT_EQUAL(packet.buffer().data(), packet.bufferPointer(), "Buffer data doesn't match the buffer pointer");
+    FAIL_AND_LOG_IF_NOT_EQUAL(packet.buffer().size(), Size, "Buffer size doesn't match Size");
 }
 
-bool checkPingPacketView(const mip::PacketView& packet, const char* method)
+/*
+void checkPingPacketView(const mip::PacketView& packet, const char* method)
 {
-    return checkPacketView(packet, PING, method);
+    checkPacketView(packet, PING, method);
 }
+*/
 
+/*
 template<size_t Size>
 bool checkPingPacketBuf(mip::SizedPacketBuf<Size>& packet, const char* method)
 {
     return checkPacketBuf(packet, PING, method);
 }
+*/
 
 
 TEST("Packet view", "Packet view works as expected")
@@ -96,30 +95,35 @@ TEST("Packet view", "Packet view works as expected")
 
     mip::PacketView packet1(buffer, sizeof(buffer), mip::commands_base::DESCRIPTOR_SET);
     checkPacketView(packet1, buffer, "PacketView initializing constructor");
-    check(packet1.isEmpty(), "Packet should be empty after packetView initializing constructor");
-    check_equal(packet1.bufferSize(), sizeof(buffer), "Wrong buffer size from PacketView initializing constructor");
-    check_equal(packet1.remainingSpace(), mip::C::MIP_PACKET_PAYLOAD_LENGTH_MAX, "remainingSpace wrong after PacketView initializing constructor");
+    FAIL_AND_LOG_IF_NOT_TRUE(packet1.isEmpty(), "Packet should be empty after packetView initializing constructor");
+    FAIL_AND_LOG_IF_NOT_EQUAL(packet1.buffer().size(), sizeof(buffer),
+        "Wrong buffer size from PacketView initializing constructor");
+    FAIL_AND_LOG_IF_NOT_EQUAL(packet1.remainingSpace(), mip::C::MIP_PACKET_PAYLOAD_LENGTH_MAX,
+        "Remaining space wrong after PacketView initializing constructor");
     //bool ok = packet1.addField(mip::commands_base::Ping::FIELD_DESCRIPTOR, nullptr, 0);
     //check(ok, "Failed to add field to packet1");
     //check_equal(packet1.remainingSpace(), mip::C::MIP_PACKET_PAYLOAD_LENGTH_MAX-2, "remainingSpace wrong after adding Ping command to packet1");
     //check_equal(packet1.bufferSize(), sizeof(buffer), "Wrong buffer size after adding Ping command to packet1");
     packet1.finalize();
-    if(!check(packet1.isValid(), "Packet1 not valid after finalization"))
-        print_packet(packet1);
+
+    std::ostringstream output;
+    output << "Packet 1 not valid after finalization.\n";
+    output << print_packet(packet1.pointer(), packet1.payloadLength());
+    FAIL_AND_LOG_IF_NOT_TRUE(packet1.isValid(), output.str());
 
     mip::PacketView packet2(PING, sizeof(PING));
-    checkPingPacketView(packet2, "PacketView existing constructor");
+    checkPacketView(packet2, PING, "PacketView existing constructor");
 
     mip::C::mip_packet_view packet3c;
     mip::C::mip_packet_from_buffer(&packet3c, PING, sizeof(PING));
     mip::PacketView packet3(packet3c);
-    checkPingPacketView(packet3, "PacketView C constructor");
+    checkPacketView(packet3, PING, "PacketView C constructor");
 
     mip::PacketView packet4(buffer, mip::commands_base::DESCRIPTOR_SET);
     checkPacketView(packet4, buffer, "PacketView initializing constructor (U8ArrayView version)");
 
     mip::PacketView packet5(PING);
-    checkPingPacketView(packet5, "PacketView existing constructor (U8ArrayView version)");
+    checkPacketView(packet5, PING, "PacketView existing constructor (U8ArrayView version)");
 }
 
 TEST("Packet buffer", "Packet buffer works as expected")
