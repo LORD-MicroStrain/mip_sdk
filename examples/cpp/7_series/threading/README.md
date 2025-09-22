@@ -155,6 +155,7 @@ When building manually, you need to configure the following:
 
 Link against these libraries:
 - `mip` - Core MIP SDK library
+- `microstrain` - Core MicroStrain SDK library
 - `microstrain_serial` - MicroStrain serial communication library
 - `pthread` - Threading library (not MSVC)
 

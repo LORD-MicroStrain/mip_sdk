@@ -132,6 +132,7 @@ When building manually, you need to configure the following:
 
 Link against these libraries:
 - `mip` - Core MIP SDK library
+- `microstrain` - Core MicroStrain SDK library
 
 Make sure to include those library paths as additional link directories if needed
 
