@@ -12,7 +12,7 @@
 ///          specific setup needs, please consult the MIP SDK API documentation
 ///          for the proper commands.
 ///
-/// @section License
+/// @section _7_series_ahrs_example_c_license License
 ///
 /// @copyright Copyright (c) 2025 MicroStrain by HBK
 ///            Licensed under MIT License

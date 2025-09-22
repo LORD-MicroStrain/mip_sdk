@@ -13,7 +13,7 @@
 ///          please consult the MIP SDK API documentation for the proper
 ///          commands.
 ///
-/// @section License
+/// @section mip_packet_example_cpp_license License
 ///
 /// @copyright Copyright (c) 2025 MicroStrain by HBK
 ///            Licensed under MIT License

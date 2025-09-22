@@ -234,13 +234,13 @@ Make sure to include those library paths as additional link directories if neede
 #### Include Directories
 
 Add these include directories:
-- `<path_to_mip_sdk_include>/c`
-- `<path_to_project_root>`
+- `[path_to_mip_sdk_include]/c`
+- `[path_to_project_root]`
 
-<path_to_mip_sdk_include> can be installed paths or source paths:
+`path_to_mip_sdk_include` can be installed paths or source paths:
 - Unix - `/usr/include/microstrain`
 - Windows - `C:/Program Files/MIP_SDK/include/microstrain`
-- Source: `<mip_sdk_project_root>/src`
+- Source: `[mip_sdk_project_root]/src`
 
 #### Compiler Definitions
 Add these compiler definitions:
