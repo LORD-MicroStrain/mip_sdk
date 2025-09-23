@@ -32,11 +32,15 @@ def checkoutRepo() {
 }
 
 // Utility function to build the MIP SDK on linux
-// This script requires BUILD_OS and BUILD_ARCH to have been set in the environment before it is called
+// This function requires BUILD_OS and BUILD_ARCH to have been set in the environment before it is called
 def buildMipSdkLinux() {
-    // Build the docker image and MIP SDK
+    // Build the docker image 
     sh '''
         ./.devcontainer/docker_build_image.sh --os ${BUILD_OS} --arch ${BUILD_ARCH}
+    '''
+
+    // Build the MIP packages
+    sh '''
         ./.devcontainer/docker_shell.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
             cmake \
                 -B build_${BUILD_OS}_${BUILD_ARCH} \
@@ -47,7 +51,13 @@ def buildMipSdkLinux() {
             cmake \
                 --build build_${BUILD_OS}_${BUILD_ARCH} \
                 --target package \
-                -j $(nproc); \
+                -j $(nproc);
+        "
+    '''
+
+    // Run the tests
+    sh '''
+        ./.devcontainer/docker_shell.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
             ctest \
                 --test-dir build_${BUILD_OS}_${BUILD_ARCH} \
                 -C Release \
@@ -60,6 +70,43 @@ def buildMipSdkLinux() {
 
     // Archive the artifacts and save the unit test results 
     dir("build_${BUILD_OS}_${BUILD_ARCH}") {
+        archiveArtifacts artifacts: "mipsdk_*"
+        junit testResults: "unit_test_results.xml", allowEmptyResults: false
+    }
+}
+
+// Utility function to build the MIP SDK on windows
+// This functions requires BUILD_ARCH to have been set in the environment before it is called
+def buildMipSdkWindows() {
+    // Build the MIP packages
+    powershell """
+        cmake `
+            -B "build_${BUILD_ARCH}" `
+            -A "${BUILD_ARCH}" `
+            -DMICROSTRAIN_BUILD_EXAMPLES=ON `
+            -DMICROSTRAIN_BUILD_PACKAGE=ON `
+            -DMICROSTRAIN_BUILD_TESTS=ON
+        cmake `
+            --build "build_${BUILD_ARCH} `
+            --config Release `
+            --parallel \$env:NUMBER_OF_PROCESSORS `
+            --target package
+
+    """
+
+    // Run the tests
+    powershell """
+        ctest `
+            --test-dir "build_${BUILD_ARCH}" `
+            -C Release `
+            --verbose `
+            --output-on-failure `
+            --output-junit unit_test_results.xml `
+            --parallel \$env:NUMBER_OF_PROCESSORS
+    """
+
+    // Archive the artifacts and save the unit test results 
+    dir("build_${BUILD_ARCH}") {
         archiveArtifacts artifacts: "mipsdk_*"
         junit testResults: "unit_test_results.xml", allowEmptyResults: false
     }
@@ -93,8 +140,14 @@ pipeline {
                     steps {
                         script {
                             checkoutRepo()
+
+                            // Build the docker image 
                             sh '''
                                 ./.devcontainer/docker_build_image.sh --os ${BUILD_OS} --arch ${BUILD_ARCH}
+                            '''
+
+                            // Build the documentation
+                            sh '''
                                 ./.devcontainer/docker_shell.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
                                     cmake \
                                         -B build_docs \
@@ -125,28 +178,7 @@ pipeline {
                     steps {
                         script {
                             checkoutRepo()
-                            dir("build_${BUILD_ARCH}") {
-                                powershell """
-                                    cmake .. `
-                                        -A "${BUILD_ARCH}" `
-                                        -DMICROSTRAIN_BUILD_EXAMPLES=ON `
-                                        -DMICROSTRAIN_BUILD_PACKAGE=ON `
-                                        -DMICROSTRAIN_BUILD_TESTS=ON
-                                    cmake --build . --config Release --parallel \$env:NUMBER_OF_PROCESSORS
-                                    cmake --build . --config Release --parallel \$env:NUMBER_OF_PROCESSORS --target package
-
-                                """
-                                archiveArtifacts artifacts: "mipsdk_*"
-                                powershell """
-                                    ctest `
-                                        -C Release `
-                                        --verbose `
-                                        --output-on-failure `
-                                        --output-junit unit_test_results.xml `
-                                        --parallel \$env:NUMBER_OF_PROCESSORS
-                                """
-                                junit testResults: "unit_test_results.xml", allowEmptyResults: false
-                            }
+                            buildMipSdkWindows()
                         }
                     }
                 }
@@ -164,28 +196,7 @@ pipeline {
                     steps {
                         script {
                             checkoutRepo()
-                            dir("build_${BUILD_ARCH}") {
-                                powershell """
-                                    cmake .. `
-                                        -A "${BUILD_ARCH}" `
-                                        -DMICROSTRAIN_BUILD_EXAMPLES=ON `
-                                        -DMICROSTRAIN_BUILD_PACKAGE=ON `
-                                        -DMICROSTRAIN_BUILD_TESTS=ON
-                                    cmake --build . --config Release --parallel \$env:NUMBER_OF_PROCESSORS
-                                    cmake --build . --config Release --parallel \$env:NUMBER_OF_PROCESSORS --target package
-
-                                """
-                                archiveArtifacts artifacts: "mipsdk_*"
-                                powershell """
-                                    ctest `
-                                        -C Release `
-                                        --verbose `
-                                        --output-on-failure `
-                                        --output-junit unit_test_results.xml `
-                                        --parallel \$env:NUMBER_OF_PROCESSORS
-                                """
-                                junit testResults: "unit_test_results.xml", allowEmptyResults: false
-                            }
+                            buildMipSdkWindows()
                         }
                     }
                 }

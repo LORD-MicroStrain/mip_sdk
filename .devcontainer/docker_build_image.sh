@@ -1,8 +1,7 @@
 #!/bin/bash
 
 ################################################################################################################################################
-# The purpose of this script is to build package files for the MIP SDK in a docker image of an OS for an arch
-# This script requires you to have run the docker_build_image.sh script before running with the same os and arch parameters
+# The purpose of this script is to build a docker image which can build the MIP SDK for an os and arch
 ################################################################################################################################################
 set -e
 
