@@ -37,7 +37,7 @@ def buildMipSdkLinux() {
     // Build the docker image and MIP SDK
     sh """
         ./.devcontainer/docker_build_image.sh --os ${BUILD_OS} --arch ${BUILD_ARCH}
-        ./.devcontainer/docker_shell.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
+        ./.devcontainer/docker_shell.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} ' \
             cmake \
                 -B build_${BUILD_OS}_${BUILD_ARCH} \
                 -DMICROSTRAIN_BUILD_EXAMPLES=ON \
@@ -55,7 +55,7 @@ def buildMipSdkLinux() {
                 --output-on-failure \
                 --output-junit unit_test_results.xml \
                 --parallel $(nproc); \
-        "
+        '
     """
 
     // Archive the artifacts and save the unit test results 
@@ -95,7 +95,7 @@ pipeline {
                             checkoutRepo()
                             sh """
                                 ./.devcontainer/docker_build_image.sh --os ${BUILD_OS} --arch ${BUILD_ARCH}
-                                ./.devcontainer/docker_shell.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
+                                ./.devcontainer/docker_shell.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} ' \
                                     cmake \
                                         -B build_docs \
                                         -DMICROSTRAIN_BUILD_DOCUMENTATION=ON \
@@ -105,7 +105,7 @@ pipeline {
                                         --build build_docs \
                                         --target package_docs \
                                         -j $(nproc)
-                                "
+                                '
                             """
                             archiveArtifacts artifacts: "build_docs/mipsdk_*"
                         }
