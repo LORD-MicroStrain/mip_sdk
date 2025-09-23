@@ -158,14 +158,29 @@ The following options may be specified when configuring the build with CMake (e.
 
 ### Running the test suite
 #### Automatically (preferred)
-The test suite uses CTest, which has good support for various development environments. How to run it depends on what you are using, but most IDEs provide a target such as "All CTest".
+The test suite uses CTest, which has good support for various development environments. To run automatically, set up build configurations:
+* Set the type to CTest application.
+* Set the target to `All CTest`, `UnitTests`, or `IntegrationTests` for the type of tests to run, respectively.
+* For unit and integration tests specifically, set the CTest arguments to `-L unit` or `-L integration`, respectively.
+
+Then, select the proper configuration when desired (typically the unit tests) and click the "run" button.
 
 #### Manually
-Navigate to the build directory and execute the following commands:
+If building all targets, there are no additional build instructions. If building a specific test suite, build one of the following targets:
+* UnitTests
+* IntegrationTests
+
+Once built, execute the following commands (in the build directory):
 ```
 ctest -C CONFIG --verbose --output-on-failure --parallel
 ```
 `CONFIG` should be replaced with the configuration that was built, such as Debug or Release.
+
+To run specific suites (such as unit and integrations tests):
+```
+ctest -C CONFIG --verbose --output-on-failure --parallel -L SUITE
+```
+`SUITE` should be replaced with the desired suite, such as `unit` or `integration`.
 
 ### Building without CMake
 
