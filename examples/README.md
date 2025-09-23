@@ -48,84 +48,84 @@ The examples demonstrate various aspects of working with MicroStrain devices, fr
 advanced navigation solutions. Each example includes comprehensive documentation and error handling.
 
 <table>
-  <colgroup></colgroup>
-  <colgroup></colgroup>
-  <colgroup></colgroup>
-  <colgroup></colgroup>
-  <tr align="center">
-    <th> Name </th>
-    <th> C </th>
-    <th> C++ </th>
-    <th> Description </th>
-  </tr>
-  <tr align="center">
-    <td rowspan="2"> AR Filter Examples </td>
-    <td><a href="c/5_series/ar">5_series_ar_example_c</a></td>
-    <td><a href="cpp/5_series/ar">5_series_ar_example_cpp</a></td>
-    <td rowspan="2">Attitude reference system example demonstrating roll/pitch estimation from devices</td>
-  </tr>
-  <tr align="center">
-    <td><a href="c/7_series/ar">7_series_ar_example_c</a></td>
-    <td><a href="cpp/7_series/ar">7_series_ar_example_cpp</a></td>
-  </tr>
-  <tr align="center">
-    <td rowspan="2"> AHRS Filter Examples </td>
-    <td><a href="c/5_series/ahrs">5_series_ahrs_example_c</a></td>
-    <td><a href="cpp/5_series/ahrs">5_series_ahrs_example_cpp</a></td>
-    <td rowspan="2">Configure and stream AHRS data from devices with filter initialization and gyro bias capture</td>
-  </tr>
-  <tr align="center">
-    <td><a href="c/7_series/ahrs">7_series_ahrs_example_c</a></td>
-    <td><a href="cpp/7_series/ahrs">7_series_ahrs_example_cpp</a></td>
-  </tr>
-  <tr align="center">
-    <td> External Aiding INS Examples </td>
-    <td><a href="c/7_series/ins">7_series_ins_example_c</a></td>
-    <td><a href="cpp/7_series/ins">7_series_ins_example_cpp</a></td>
-    <td>Complete INS example with external aiding measurements and reference frame configuration</td>
-  </tr>
-  <tr align="center">
-    <td rowspan="2"> GNSS/INS Examples </td>
-    <td><a href="c/5_series/gnss_ins">5_series_gnss_ins_example_c</a></td>
-    <td><a href="cpp/5_series/gnss_ins">5_series_gnss_ins_example_cpp</a></td>
-    <td rowspan="2">Full navigation solution combining GNSS and inertial data for position, velocity, and attitude</td>
-  </tr>
-  <tr align="center">
-    <td><a href="c/7_series/gnss_ins">7_series_gnss_ins_example_c</a></td>
-    <td><a href="cpp/7_series/gnss_ins">7_series_gnss_ins_example_cpp</a></td>
-  </tr>
-  <tr align="center">
-    <td rowspan="2"> IMU Data Streaming Examples </td>
-    <td><a href="c/5_series/stream_imu">5_series_stream_imu_example_c</a></td>
-    <td><a href="cpp/5_series/stream_imu">5_series_stream_imu_example_cpp</a></td>
-    <td rowspan="2">Basic IMU sensor data streaming with accelerometer, gyroscope, and magnetometer output</td>
-  </tr>
-  <tr align="center">
-    <td><a href="c/7_series/stream_imu">7_series_stream_imu_example_c</a></td>
-    <td><a href="cpp/7_series/stream_imu">7_series_stream_imu_example_cpp</a></td>
-  </tr>
-  <tr align="center">
-    <td rowspan="2"> Multithreaded Examples </td>
-    <td><a href="c/5_series/threading">5_series_threading_example_c</a></td>
-    <td><a href="cpp/5_series/threading">5_series_threading_example_cpp</a></td>
-    <td rowspan="2">Multithreaded data streaming example showing concurrent data processing patterns</td>
-  </tr>
-  <tr align="center">
-    <td><a href="c/7_series/threading">7_series_threading_example_c</a></td>
-    <td><a href="cpp/7_series/threading">7_series_threading_example_cpp</a></td>
-  </tr>
-  <tr align="center">
-    <td> Device Information Examples </td>
-    <td><a href="c/device_info">device_info_example_c</a></td>
-    <td><a href="cpp/device_info">device_info_example_cpp</a></td>
-    <td>Retrieve and display comprehensive device information from any MIP-enabled device</td>
-  </tr>
-  <tr align="center">
-    <td> MIP Packet Examples </td>
-    <td><a href="c/mip_packet">mip_packet_example_c</a></td>
-    <td><a href="cpp/mip_packet">mip_packet_example_cpp</a></td>
-    <td>Create, manipulate, and work with raw MIP packets for custom applications</td>
-  </tr>
+  <thead>
+    <tr align="center">
+      <th> Name </th>
+      <th> C </th>
+      <th> C++ </th>
+      <th> Description </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr align="center">
+      <td rowspan="2"> AR Filter Examples </td>
+      <td><a href="c/5_series/ar">5_series_ar_example_c</a></td>
+      <td><a href="\ref cpp/5_series/ar">5_series_ar_example_cpp</a></td>
+      <td rowspan="2">Attitude reference system example demonstrating roll/pitch estimation from devices</td>
+    </tr>
+    <tr align="center">
+      <td><a href="c/7_series/ar">7_series_ar_example_c</a></td>
+      <td><a href="cpp/7_series/ar">7_series_ar_example_cpp</a></td>
+    </tr>
+    <tr align="center">
+      <td rowspan="2"> AHRS Filter Examples </td>
+      <td><a href="c/5_series/ahrs">5_series_ahrs_example_c</a></td>
+      <td><a href="cpp/5_series/ahrs">5_series_ahrs_example_cpp</a></td>
+      <td rowspan="2">Configure and stream AHRS data from devices with filter initialization and gyro bias capture</td>
+    </tr>
+    <tr align="center">
+      <td><a href="c/7_series/ahrs">7_series_ahrs_example_c</a></td>
+      <td><a href="cpp/7_series/ahrs">7_series_ahrs_example_cpp</a></td>
+    </tr>
+    <tr align="center">
+      <td> External Aiding INS Examples </td>
+      <td><a href="c/7_series/ins">7_series_ins_example_c</a></td>
+      <td><a href="cpp/7_series/ins">7_series_ins_example_cpp</a></td>
+      <td>Complete INS example with external aiding measurements and reference frame configuration</td>
+    </tr>
+    <tr align="center">
+      <td rowspan="2"> GNSS/INS Examples </td>
+      <td><a href="c/5_series/gnss_ins">5_series_gnss_ins_example_c</a></td>
+      <td><a href="cpp/5_series/gnss_ins">5_series_gnss_ins_example_cpp</a></td>
+      <td rowspan="2">Full navigation solution combining GNSS and inertial data for position, velocity, and attitude</td>
+    </tr>
+    <tr align="center">
+      <td><a href="c/7_series/gnss_ins">7_series_gnss_ins_example_c</a></td>
+      <td><a href="cpp/7_series/gnss_ins">7_series_gnss_ins_example_cpp</a></td>
+    </tr>
+    <tr align="center">
+      <td rowspan="2"> IMU Data Streaming Examples </td>
+      <td><a href="c/5_series/stream_imu">5_series_stream_imu_example_c</a></td>
+      <td><a href="cpp/5_series/stream_imu">5_series_stream_imu_example_cpp</a></td>
+      <td rowspan="2">Basic IMU sensor data streaming with accelerometer, gyroscope, and magnetometer output</td>
+    </tr>
+    <tr align="center">
+      <td><a href="c/7_series/stream_imu">7_series_stream_imu_example_c</a></td>
+      <td><a href="cpp/7_series/stream_imu">7_series_stream_imu_example_cpp</a></td>
+    </tr>
+    <tr align="center">
+      <td rowspan="2"> Multithreaded Examples </td>
+      <td><a href="c/5_series/threading">5_series_threading_example_c</a></td>
+      <td><a href="cpp/5_series/threading">5_series_threading_example_cpp</a></td>
+      <td rowspan="2">Multithreaded data streaming example showing concurrent data processing patterns</td>
+    </tr>
+    <tr align="center">
+      <td><a href="c/7_series/threading">7_series_threading_example_c</a></td>
+      <td><a href="cpp/7_series/threading">7_series_threading_example_cpp</a></td>
+    </tr>
+    <tr align="center">
+      <td> Device Information Examples </td>
+      <td><a href="c/device_info">device_info_example_c</a></td>
+      <td><a href="cpp/device_info">device_info_example_cpp</a></td>
+      <td>Retrieve and display comprehensive device information from any MIP-enabled device</td>
+    </tr>
+    <tr align="center">
+      <td> MIP Packet Examples </td>
+      <td><a href="c/mip_packet">mip_packet_example_c</a></td>
+      <td><a href="cpp/mip_packet">mip_packet_example_cpp</a></td>
+      <td>Create, manipulate, and work with raw MIP packets for custom applications</td>
+    </tr>
+  </tbody>
 </table>
 
 ## Key Features Demonstrated
