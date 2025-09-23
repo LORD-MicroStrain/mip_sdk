@@ -1,9 +1,6 @@
 include(${doctest_SOURCE_DIR}/scripts/cmake/doctest.cmake)
 
 add_executable(CppUnitTestRunner
-    # TODO: Commented tests are disabled as they are either broken or integration tests
-    # test_packet_interface.cpp
-    # test_serial.cpp
     "logging.unit.cpp"
     "strings.unit.cpp"
 )
@@ -11,8 +8,7 @@ add_executable(CppUnitTestRunner
 add_executable(CppIntegrationTestRunner
     "mip.integration.cpp"
     "packet_interface.integration.cpp"
-    # test_packet_interface.cpp
-    # test_serial.cpp
+    "serial.integration.cpp"
 )
 
 target_link_libraries(CppUnitTestRunner
