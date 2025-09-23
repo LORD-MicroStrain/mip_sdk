@@ -87,7 +87,7 @@ def buildMipSdkWindows() {
             -DMICROSTRAIN_BUILD_PACKAGE=ON `
             -DMICROSTRAIN_BUILD_TESTS=ON
         cmake `
-            --build "build_${BUILD_ARCH} `
+            --build "build_${BUILD_ARCH}" `
             --config Release `
             --parallel \$env:NUMBER_OF_PROCESSORS `
             --target package
