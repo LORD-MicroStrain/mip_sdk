@@ -20,6 +20,10 @@ while [[ $# -gt 0 ]]; do
       shift # past argument
       shift # past value
       ;;
+    --no-cache)
+      no_cache="--no-cache"
+      shift # past argument
+      ;;
     *)
       shift # past argument
       ;;
@@ -35,6 +39,7 @@ image_name="microstrain/mipsdk_${os}_builder:${arch}"
 # Build the docker image
 docker build \
   -t "${image_name}" \
+  ${no_cache} \
   --build-arg ARCH="${arch}" \
   --build-arg USER_ID="$(id -u)" \
   --build-arg GROUP_ID="$(id -g)" \
