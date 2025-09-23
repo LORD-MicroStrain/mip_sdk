@@ -208,6 +208,8 @@ if(MICROSTRAIN_BUILD_DOCUMENTATION)
 
     set(DOXYGEN_CASE_SENSE_NAMES YES)
     set(DOXYGEN_EXTRACT_ALL YES)
+    set(DOXYGEN_EXTRACT_STATIC YES)
+    set(DOXYGEN_SORT_MEMBER_DOCS NO) # Keep the order that things are defined instead of alphabetical
     set(DOXYGEN_REPEAT_BRIEF NO) # Don't copy the brief in the details
 
     if(MICROSTRAIN_BUILD_DOCUMENTATION_FULL)
@@ -225,7 +227,9 @@ if(MICROSTRAIN_BUILD_DOCUMENTATION)
     set(DOXYGEN_HTML_EXTRA_STYLESHEET "${CMAKE_CURRENT_LIST_DIR}/docs/style.css")
 
     doxygen_add_docs(docs
-        "${MICROSTRAIN_SRC_DIR}" "${CMAKE_CURRENT_LIST_DIR}/docs" "${CMAKE_CURRENT_LIST_DIR}/examples"
+        "${MICROSTRAIN_SRC_DIR}"
+        "${CMAKE_CURRENT_LIST_DIR}/docs"
+        "${CMAKE_CURRENT_LIST_DIR}/examples"
         COMMENT "Generating documentation."
     )
 

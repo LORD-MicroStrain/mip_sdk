@@ -1,8 +1,8 @@
 ////////////////////////////////////////////////////////////////////////////////
-/// @addtogroup mip
-/// @{
-///
 /// @defgroup examples_cpp Examples [CPP]
+///
+/// @ingroup mip
+///
 /// @brief C++ language examples demonstrating MIP SDK usage and functionality.
 ///
 /// @details This group contains comprehensive C++ examples that demonstrate how
@@ -20,6 +20,4 @@
 ///          integrating MicroStrain sensors into C++ applications, showcasing
 ///          both basic SDK usage and advanced C++ techniques for robust sensor
 ///          integration.
-///
-/// @} group mip
 ///

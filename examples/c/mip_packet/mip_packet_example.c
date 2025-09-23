@@ -1,8 +1,9 @@
 ////////////////////////////////////////////////////////////////////////////////
-/// @addtogroup examples_c
-/// @{
+/// @file mip_packet_example.c
 ///
 /// @defgroup mip_packet_example_c MIP Packet Example [C]
+///
+/// @ingroup examples_c
 ///
 /// @brief Example program to create raw and buffered MIP packets using C
 ///
@@ -17,8 +18,6 @@
 ///
 /// @copyright Copyright (c) 2025 MicroStrain by HBK
 ///            Licensed under MIT License
-///
-/// @{
 ///
 
 // Include all necessary MIP headers
@@ -38,40 +37,40 @@
 #include <stdio.h>
 
 // Print the state of a packet
-void print_packet(const mip_packet_view* _packet_view);
+static void print_packet(const mip_packet_view* _packet_view);
 
 // Initialize an empty packet for a given descriptor set
-void initialize_empty_packet(
+static void initialize_empty_packet(
     mip_packet_view* _packet_view, uint8_t* _buffer, const size_t _buffer_size, const uint8_t _descriptor_set
 );
 
 // Compute and add the checksum to a packet
-void add_checksum_to_packet(mip_packet_view* _packet_view);
+static void add_checksum_to_packet(mip_packet_view* _packet_view);
 
 // Fields added to packet 1
-void add_ping_command_to_packet(mip_packet_view* _packet_view);
-void add_comm_speed_bytes_to_packet(mip_packet_view* _packet_view);
-void add_comm_speed_field_to_packet(mip_packet_view* _packet_view);
-void add_comm_speed_serializer_bytes_to_packet(mip_packet_view* _packet_view);
+static void add_ping_command_to_packet(mip_packet_view* _packet_view);
+static void add_comm_speed_bytes_to_packet(mip_packet_view* _packet_view);
+static void add_comm_speed_field_to_packet(mip_packet_view* _packet_view);
+static void add_comm_speed_serializer_bytes_to_packet(mip_packet_view* _packet_view);
 
 // Fields added to packet 2
-void add_message_format_field_to_packet(mip_packet_view* _packet_view);
+static void add_message_format_field_to_packet(mip_packet_view* _packet_view);
 
 // Fields added to packet 3
-void add_poll_data_field_to_packet(mip_packet_view* _packet_view);
+static void add_poll_data_field_to_packet(mip_packet_view* _packet_view);
 
 // Fields extracted from packet 4
-void extract_shared_reference_time_field(microstrain_serializer* _serializer);
-void extract_shared_reference_time_delta_field(microstrain_serializer* _serializer);
-void extract_sensor_accel_scaled_field(microstrain_serializer* _serializer);
-void extract_sensor_gyro_scaled_field(microstrain_serializer* _serializer);
-void extract_sensor_delta_theta_field(microstrain_serializer* _serializer);
-void extract_sensor_delta_velocity_field(const mip_field_view* _field_view);
+static void extract_shared_reference_time_field(microstrain_serializer* _serializer);
+static void extract_shared_reference_time_delta_field(microstrain_serializer* _serializer);
+static void extract_sensor_accel_scaled_field(microstrain_serializer* _serializer);
+static void extract_sensor_gyro_scaled_field(microstrain_serializer* _serializer);
+static void extract_sensor_delta_theta_field(microstrain_serializer* _serializer);
+static void extract_sensor_delta_velocity_field(const mip_field_view* _field_view);
 
 // Packet creation
-void create_from_scratch_packet_1();
-void create_from_scratch_packet_2_and_3();
-void create_from_raw_buffer_packet_4();
+static void create_from_scratch_packet_1();
+static void create_from_scratch_packet_2_and_3();
+static void create_from_raw_buffer_packet_4();
 
 int main(const int argc, const char* argv[])
 {
@@ -117,7 +116,9 @@ int main(const int argc, const char* argv[])
 ///
 /// @param _packet_view Pointer to the MIP packet view to inspect
 ///
-void print_packet(const mip_packet_view* _packet_view)
+/// @ingroup mip_packet_example_c
+///
+static void print_packet(const mip_packet_view* _packet_view)
 {
     printf("Packet information:\n");
 
@@ -209,7 +210,9 @@ void print_packet(const mip_packet_view* _packet_view)
 /// @param _buffer_size Size of the buffer in bytes
 /// @param _descriptor_set Descriptor set to use for the packet
 ///
-void initialize_empty_packet(
+/// @ingroup mip_packet_example_c
+///
+static void initialize_empty_packet(
     mip_packet_view* _packet_view, uint8_t* _buffer, const size_t _buffer_size, const uint8_t _descriptor_set
 )
 {
@@ -234,7 +237,9 @@ void initialize_empty_packet(
 ///
 /// @param _packet_view Pointer to the packet to finalize with checksum
 ///
-void add_checksum_to_packet(mip_packet_view* _packet_view)
+/// @ingroup mip_packet_example_c
+///
+static void add_checksum_to_packet(mip_packet_view* _packet_view)
 {
     mip_packet_finalize(_packet_view);
 
@@ -255,7 +260,9 @@ void add_checksum_to_packet(mip_packet_view* _packet_view)
 ///
 /// @param _packet_view Pointer to the packet to add the field to
 ///
-void add_ping_command_to_packet(mip_packet_view* _packet_view)
+/// @ingroup mip_packet_example_c
+///
+static void add_ping_command_to_packet(mip_packet_view* _packet_view)
 {
     mip_packet_add_field(
         _packet_view,
@@ -281,7 +288,9 @@ void add_ping_command_to_packet(mip_packet_view* _packet_view)
 ///
 /// @param _packet_view Pointer to the packet to add the field to
 ///
-void add_comm_speed_bytes_to_packet(mip_packet_view* _packet_view)
+/// @ingroup mip_packet_example_c
+///
+static void add_comm_speed_bytes_to_packet(mip_packet_view* _packet_view)
 {
     // Build the raw payload for the packet
     const uint8_t comm_speed_payload[] = {
@@ -314,7 +323,9 @@ void add_comm_speed_bytes_to_packet(mip_packet_view* _packet_view)
 ///
 /// @param _packet_view Pointer to the packet to add the field to
 ///
-void add_comm_speed_field_to_packet(mip_packet_view* _packet_view)
+/// @ingroup mip_packet_example_c
+///
+static void add_comm_speed_field_to_packet(mip_packet_view* _packet_view)
 {
     mip_base_comm_speed_command comm_speed_command;
     comm_speed_command.function = MIP_FUNCTION_WRITE;
@@ -351,7 +362,9 @@ void add_comm_speed_field_to_packet(mip_packet_view* _packet_view)
 ///
 /// @param _packet_view Pointer to the packet to add the field to
 ///
-void add_comm_speed_serializer_bytes_to_packet(mip_packet_view* _packet_view)
+/// @ingroup mip_packet_example_c
+///
+static void add_comm_speed_serializer_bytes_to_packet(mip_packet_view* _packet_view)
 {
     // This part is analogous to 'mip_serializer_init_new_field' from field 3
     uint8_t*      payload        = NULL;
@@ -409,7 +422,9 @@ void add_comm_speed_serializer_bytes_to_packet(mip_packet_view* _packet_view)
 ///
 /// @param _packet_view Pointer to the packet to add the field to
 ///
-void add_message_format_field_to_packet(mip_packet_view* _packet_view)
+/// @ingroup mip_packet_example_c
+///
+static void add_message_format_field_to_packet(mip_packet_view* _packet_view)
 {
     mip_3dm_message_format_command message_format;
 
@@ -465,7 +480,9 @@ void add_message_format_field_to_packet(mip_packet_view* _packet_view)
 ///
 /// @param _packet_view Pointer to the packet to add the field to
 ///
-void add_poll_data_field_to_packet(mip_packet_view* _packet_view)
+/// @ingroup mip_packet_example_c
+///
+static void add_poll_data_field_to_packet(mip_packet_view* _packet_view)
 {
     // This part is analogous to 'mip_serializer_init_new_field' from field 3
     // It's almost the same as in field 4, except we use a zero-length field
@@ -541,7 +558,9 @@ void add_poll_data_field_to_packet(mip_packet_view* _packet_view)
 ///
 /// @param _serializer Pointer to the serializer containing the field data
 ///
-void extract_shared_reference_time_field(microstrain_serializer* _serializer)
+/// @ingroup mip_packet_example_c
+///
+static void extract_shared_reference_time_field(microstrain_serializer* _serializer)
 {
     uint64_t nanoseconds;
     microstrain_extract_u64(_serializer, &nanoseconds);
@@ -561,7 +580,9 @@ void extract_shared_reference_time_field(microstrain_serializer* _serializer)
 ///
 /// @param _serializer Pointer to the serializer containing the field data
 ///
-void extract_shared_reference_time_delta_field(microstrain_serializer* _serializer)
+/// @ingroup mip_packet_example_c
+///
+static void extract_shared_reference_time_delta_field(microstrain_serializer* _serializer)
 {
     uint64_t dt_nanoseconds;
 
@@ -584,7 +605,9 @@ void extract_shared_reference_time_delta_field(microstrain_serializer* _serializ
 ///
 /// @param _serializer Pointer to the serializer containing the field data
 ///
-void extract_sensor_accel_scaled_field(microstrain_serializer* _serializer)
+/// @ingroup mip_packet_example_c
+///
+static void extract_sensor_accel_scaled_field(microstrain_serializer* _serializer)
 {
     // Note: This is not one of the recommended methods
     mip_vector3f scaled_accel_data;
@@ -616,7 +639,9 @@ void extract_sensor_accel_scaled_field(microstrain_serializer* _serializer)
 ///
 /// @param _serializer Pointer to the serializer containing the field data
 ///
-void extract_sensor_gyro_scaled_field(microstrain_serializer* _serializer)
+/// @ingroup mip_packet_example_c
+///
+static void extract_sensor_gyro_scaled_field(microstrain_serializer* _serializer)
 {
     // Same as scaled accel except using the field data structure
     // Note: This is one of the recommended methods
@@ -647,7 +672,9 @@ void extract_sensor_gyro_scaled_field(microstrain_serializer* _serializer)
 ///
 /// @param _serializer Pointer to the serializer containing the field data
 ///
-void extract_sensor_delta_theta_field(microstrain_serializer* _serializer)
+/// @ingroup mip_packet_example_c
+///
+static void extract_sensor_delta_theta_field(microstrain_serializer* _serializer)
 {
     // Same as scaled accel except using the field data structure
     // Note: This is one of the recommended methods
@@ -678,7 +705,9 @@ void extract_sensor_delta_theta_field(microstrain_serializer* _serializer)
 ///
 /// @param _field_view Pointer to the field view containing the data
 ///
-void extract_sensor_delta_velocity_field(const mip_field_view* _field_view)
+/// @ingroup mip_packet_example_c
+///
+static void extract_sensor_delta_velocity_field(const mip_field_view* _field_view)
 {
     // Same as scaled accel except using the field data structure
     // Note: This is the recommended method
@@ -727,7 +756,9 @@ void extract_sensor_delta_velocity_field(const mip_field_view* _field_view)
 /// @see add_comm_speed_field_to_packet
 /// @see add_comm_speed_serializer_bytes_to_packet
 ///
-void create_from_scratch_packet_1()
+/// @ingroup mip_packet_example_c
+///
+static void create_from_scratch_packet_1()
 {
     printf("Creating packet 1 from scratch.\n\n");
 
@@ -784,7 +815,9 @@ void create_from_scratch_packet_1()
 /// @see mip_packet_reset
 /// @see print_packet
 ///
-void create_from_scratch_packet_2_and_3()
+/// @ingroup mip_packet_example_c
+///
+static void create_from_scratch_packet_2_and_3()
 {
     printf("\nCreating packet 2 (3DM Message Format command) from scratch.\n\n");
 
@@ -852,7 +885,9 @@ void create_from_scratch_packet_2_and_3()
 /// @see extract_sensor_delta_theta_field
 /// @see extract_sensor_delta_velocity_field
 ///
-void create_from_raw_buffer_packet_4()
+/// @ingroup mip_packet_example_c
+///
+static void create_from_raw_buffer_packet_4()
 {
     printf("\nCreating packet 4 from a raw byte buffer.\n\n");
 
@@ -978,7 +1013,3 @@ void create_from_raw_buffer_packet_4()
 
     printf("\n");
 }
-
-/// @} group mip_packet_example_c
-/// @} group examples_c
-////////////////////////////////////////////////////////////////////////////////

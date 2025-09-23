@@ -1,8 +1,8 @@
 ////////////////////////////////////////////////////////////////////////////////
-/// @addtogroup mip
-/// @{
-///
 /// @defgroup examples_c Examples [C]
+///
+/// @ingroup mip
+///
 /// @brief C language examples demonstrating MIP SDK usage and functionality.
 ///
 /// @details This group contains comprehensive C examples that demonstrate how
@@ -19,6 +19,4 @@
 ///          integrating MicroStrain sensors into C-based applications,
 ///          providing clear implementations of common use cases and SDK
 ///          patterns.
-///
-/// @} group mip
 ///

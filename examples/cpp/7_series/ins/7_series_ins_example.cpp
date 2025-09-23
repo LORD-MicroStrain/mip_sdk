@@ -1,8 +1,9 @@
 ////////////////////////////////////////////////////////////////////////////////
-/// @addtogroup examples_cpp
-/// @{
+/// @file 7_series_ins_example.cpp
 ///
 /// @defgroup _7_series_ins_example_cpp 7-Series INS Example [CPP]
+///
+/// @ingroup examples_cpp
 ///
 /// @brief Example setup program for the 3DM-CV7-INS, and 3DM-GV7-INS using C++
 ///
@@ -52,25 +53,29 @@
 // NOTE: Setting these globally for example purposes
 
 // TODO: Update to the correct port name and baudrate
-// Set the port name for the connection (Serial/USB)
+/// @brief Set the port name for the connection (Serial/USB)
 #ifdef _WIN32
 static constexpr const char* PORT_NAME = "COM1";
 #else  // Unix
 static constexpr const char* PORT_NAME = "/dev/ttyACM0";
 #endif // _WIN32
 
-// Set the baudrate for the connection (Serial/USB)
-// Note: For native serial connections this needs to be 115200 due to the device default settings command
-// Use mip_3dm_*_uart_baudrate() to write and save the baudrate on the device
+/// @brief Set the baudrate for the connection (Serial/USB)
+/// @note For native serial connections this needs to be 115200 due to the device default settings command
+// Use mip::commands_base::*CommSpeed() to write and save the baudrate on the device
 static constexpr uint32_t BAUDRATE = 115200;
 
 // TODO: Update to the desired streaming rate. Setting low for readability purposes
-// Streaming rate in Hz
+/// @brief Streaming rate in Hz
 static constexpr uint16_t SAMPLE_RATE_HZ = 1;
 
 // TODO: Update to change the example run time
-// Example run time
+/// @brief Example run time
 static constexpr uint32_t RUN_TIME_SECONDS = 30;
+////////////////////////////////////////////////////////////////////////////////
+
+///
+/// @} group _7_series_ins_example_cpp
 ////////////////////////////////////////////////////////////////////////////////
 
 // Time of arrival latency in nanoseconds
@@ -83,53 +88,42 @@ static constexpr uint8_t GNSS_FRAME_CONFIG_ID          = 2;
 static constexpr uint8_t BODY_VELOCITY_FRAME_CONFIG_ID = 3;
 
 // Custom logging handler callback
-void logCallback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args);
+static void logCallback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args);
 
 // Capture gyro bias
-void captureGyroBias(mip::Interface& _device);
+static void captureGyroBias(mip::Interface& _device);
 
 // Filter message format configuration
-void configureFilterMessageFormat(mip::Interface& _device);
+static void configureFilterMessageFormat(mip::Interface& _device);
 
 // External aiding configuration
-void configureExternalAidingHeading(mip::Interface& _device);
-void configureExternalAidingGnssAntenna(mip::Interface& _device);
-void configureExternalAidingNedVelocity(mip::Interface& _device);
+static void configureExternalAidingHeading(mip::Interface& _device);
+static void configureExternalAidingGnssAntenna(mip::Interface& _device);
+static void configureExternalAidingNedVelocity(mip::Interface& _device);
 
 // Filter initialization
-void initializeFilter(mip::Interface& _device);
+static void initializeFilter(mip::Interface& _device);
 
 // Utility to display filter state changes
-void displayFilterState(const mip::data_filter::FilterMode _filterState);
+static void displayFilterState(const mip::data_filter::FilterMode _filterState);
 
 // Used for basic timestamping (since epoch in milliseconds)
 // TODO: Update this to whatever timestamping method is desired
-mip::Timestamp getCurrentTimestamp();
+static mip::Timestamp getCurrentTimestamp();
 
 // Common device initialization procedure
-void initializeDevice(mip::Interface& _device);
+static void initializeDevice(mip::Interface& _device);
 
 // Utilities to send simulated external data to the device
 // Note: All of this data should ideally come from a valid external source
-void sendSimulatedExternalMeasurementsHeading(
-    mip::Interface& _device, const mip::commands_aiding::Time& _externalMeasurementTime
-);
-
-void sendSimulatedExternalMeasurementsPosition(
-    mip::Interface& _device, const mip::commands_aiding::Time& _externalMeasurementTime
-);
-
-void sendSimulatedExternalMeasurementsNedVelocity(
-    mip::Interface& _device, const mip::commands_aiding::Time& _externalMeasurementTime
-);
-
-void sendSimulatedExternalMeasurementsVehicleFrameVelocity(
-    mip::Interface& _device, const mip::commands_aiding::Time& _externalMeasurementTime
-);
+static void sendSimulatedHeadingData(mip::Interface& _device, const mip::commands_aiding::Time& _aidingTime);
+static void sendSimulatedPositionData(mip::Interface& _device, const mip::commands_aiding::Time& _aidingTime);
+static void sendSimulatedNedVelocityData(mip::Interface& _device, const mip::commands_aiding::Time& _aidingTime);
+static void sendSimulatedVehicleFrameVelocityData(mip::Interface& _device, const mip::commands_aiding::Time& _aidingTime);
 
 // Utility functions the handle application closing and printing error messages
-void terminate(microstrain::Connection* _connection, const char* _message, const bool _successful = false);
-void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const char* _format, ...);
+static void terminate(microstrain::Connection* _connection, const char* _message, const bool _successful = false);
+static void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const char* _format, ...);
 
 int main(const int argc, const char* argv[])
 {
@@ -266,10 +260,10 @@ int main(const int argc, const char* argv[])
         // Send the external updates every 500 ms
         if (currentTimestamp - previousExternalDataTimestamp >= 500)
         {
-            sendSimulatedExternalMeasurementsHeading(device, externalMeasurementTime);
-            sendSimulatedExternalMeasurementsPosition(device, externalMeasurementTime);
-            sendSimulatedExternalMeasurementsNedVelocity(device, externalMeasurementTime);
-            sendSimulatedExternalMeasurementsVehicleFrameVelocity(device, externalMeasurementTime);
+            sendSimulatedHeadingData(device, externalMeasurementTime);
+            sendSimulatedPositionData(device, externalMeasurementTime);
+            sendSimulatedNedVelocityData(device, externalMeasurementTime);
+            sendSimulatedVehicleFrameVelocityData(device, externalMeasurementTime);
 
             previousExternalDataTimestamp = currentTimestamp;
         }
@@ -303,10 +297,10 @@ int main(const int argc, const char* argv[])
         // Send the external updates every 500 ms
         if (currentTimestamp - previousExternalDataTimestamp >= 500)
         {
-            sendSimulatedExternalMeasurementsHeading(device, externalMeasurementTime);
-            sendSimulatedExternalMeasurementsPosition(device, externalMeasurementTime);
-            sendSimulatedExternalMeasurementsNedVelocity(device, externalMeasurementTime);
-            sendSimulatedExternalMeasurementsVehicleFrameVelocity(device, externalMeasurementTime);
+            sendSimulatedHeadingData(device, externalMeasurementTime);
+            sendSimulatedPositionData(device, externalMeasurementTime);
+            sendSimulatedNedVelocityData(device, externalMeasurementTime);
+            sendSimulatedVehicleFrameVelocityData(device, externalMeasurementTime);
 
             previousExternalDataTimestamp = currentTimestamp;
         }
@@ -357,7 +351,9 @@ int main(const int argc, const char* argv[])
 /// @param _format Printf-style format string for the message
 /// @param _args Variable argument list containing message parameters
 ///
-void logCallback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args)
+/// @ingroup _7_series_ins_example_cpp
+///
+static void logCallback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args)
 {
     // Unused parameter
     (void)_user;
@@ -395,7 +391,9 @@ void logCallback(void* _user, const microstrain_log_level _level, const char* _f
 ///
 /// @param _device Reference to the initialized MIP device interface
 ///
-void captureGyroBias(mip::Interface& _device)
+/// @ingroup _7_series_ins_example_cpp
+///
+static void captureGyroBias(mip::Interface& _device)
 {
     // Get the command queue so we can increase the reply timeout during the capture duration,
     // then reset it afterward
@@ -417,10 +415,7 @@ void captureGyroBias(mip::Interface& _device)
     };
 
     // Note: When capturing gyro bias, the device needs to remain still on a flat surface
-    MICROSTRAIN_LOG_WARN(
-        "About to capture gyro bias for %.2g seconds!\n",
-        static_cast<float>(captureDuration) / 1000.0f
-    );
+    MICROSTRAIN_LOG_WARN("About to capture gyro bias for %.2g seconds!\n", static_cast<float>(captureDuration) / 1000.0f);
     MICROSTRAIN_LOG_WARN("Please do not move the device during this time!\n");
     MICROSTRAIN_LOG_WARN("Press 'Enter' when ready...");
 
@@ -440,12 +435,7 @@ void captureGyroBias(mip::Interface& _device)
         terminate(_device, cmdResult, "Failed to capture gyro bias!\n");
     }
 
-    MICROSTRAIN_LOG_INFO(
-        "Capture gyro bias completed with result: [%f, %f, %f]\n",
-        gyroBias[0],
-        gyroBias[1],
-        gyroBias[2]
-    );
+    MICROSTRAIN_LOG_INFO("Capture gyro bias completed with result: [%f, %f, %f]\n", gyroBias[0], gyroBias[1], gyroBias[2]);
 
     MICROSTRAIN_LOG_INFO("Reverting command reply timeout to %dms.\n", previousTimeout);
     cmdQueue.setBaseReplyTimeout(previousTimeout);
@@ -467,7 +457,9 @@ void captureGyroBias(mip::Interface& _device)
 ///
 /// @param _device Reference to the initialized MIP device interface
 ///
-void configureFilterMessageFormat(mip::Interface& _device)
+/// @ingroup _7_series_ins_example_cpp
+///
+static void configureFilterMessageFormat(mip::Interface& _device)
 {
     // Note: Querying the device base rate is only one way to calculate the descriptor decimation
     // We could have also set it directly with information from the datasheet
@@ -552,7 +544,9 @@ void configureFilterMessageFormat(mip::Interface& _device)
 ///       measurements. Frame IDs correspond to those used in external
 ///       measurement functions.
 ///
-void configureExternalAidingHeading(mip::Interface& _device)
+/// @ingroup _7_series_ins_example_cpp
+///
+static void configureExternalAidingHeading(mip::Interface& _device)
 {
     MICROSTRAIN_LOG_INFO("Configuring the reference frame for external heading.\n");
     const mip::Vector3f externalHeadingTranslation = {
@@ -601,7 +595,9 @@ void configureExternalAidingHeading(mip::Interface& _device)
 ///       measurements. Frame IDs correspond to those used in external
 ///       measurement functions.
 ///
-void configureExternalAidingGnssAntenna(mip::Interface& _device)
+/// @ingroup _7_series_ins_example_cpp
+///
+static void configureExternalAidingGnssAntenna(mip::Interface& _device)
 {
     MICROSTRAIN_LOG_INFO("Configuring the reference frame for external GNSS antenna.\n");
     const mip::Vector3f externalGnssAntennaTranslation = {
@@ -651,7 +647,9 @@ void configureExternalAidingGnssAntenna(mip::Interface& _device)
 ///       measurements. Frame IDs correspond to those used in external
 ///       measurement functions.
 ///
-void configureExternalAidingNedVelocity(mip::Interface& _device)
+/// @ingroup _7_series_ins_example_cpp
+///
+static void configureExternalAidingNedVelocity(mip::Interface& _device)
 {
     MICROSTRAIN_LOG_INFO("Configuring the reference frame for external body frame velocity.\n");
     const mip::Vector3f externalBodyFrameVelocityTranslation = {
@@ -696,7 +694,9 @@ void configureExternalAidingNedVelocity(mip::Interface& _device)
 ///
 /// @param _device Reference to the initialized MIP device interface
 ///
-void initializeFilter(mip::Interface& _device)
+/// @ingroup _7_series_ins_example_cpp
+///
+static void initializeFilter(mip::Interface& _device)
 {
     // Configure Filter Aiding Measurements
     MICROSTRAIN_LOG_INFO(
@@ -719,10 +719,7 @@ void initializeFilter(mip::Interface& _device)
         );
     }
 
-    MICROSTRAIN_LOG_INFO(
-        "Enabling the %s for external heading.\n",
-        mip::commands_filter::AidingMeasurementEnable::DOC_NAME
-    );
+    MICROSTRAIN_LOG_INFO("Enabling the %s for external heading.\n", mip::commands_filter::AidingMeasurementEnable::DOC_NAME);
     cmdResult = mip::commands_filter::writeAidingMeasurementEnable(
         _device,
         mip::commands_filter::AidingMeasurementEnable::AidingSource::EXTERNAL_HEADING, // Aiding Source type
@@ -809,7 +806,9 @@ void initializeFilter(mip::Interface& _device)
 ///
 /// @param _filterState Current filter mode from the MIP device interface
 ///
-void displayFilterState(const mip::data_filter::FilterMode _filterState)
+/// @ingroup _7_series_ins_example_cpp
+///
+static void displayFilterState(const mip::data_filter::FilterMode _filterState)
 {
     const char* modeDescription = "startup";
     const char* modeType        = "STARTUP";
@@ -867,7 +866,9 @@ void displayFilterState(const mip::data_filter::FilterMode _filterState)
 ///
 /// @return Current timestamp in milliseconds since epoch
 ///
-mip::Timestamp getCurrentTimestamp()
+/// @ingroup _7_series_ins_example_cpp
+///
+static mip::Timestamp getCurrentTimestamp()
 {
     const std::chrono::nanoseconds timeSinceEpoch = std::chrono::system_clock::now().time_since_epoch();
     return static_cast<mip::Timestamp>(std::chrono::duration_cast<std::chrono::milliseconds>(timeSinceEpoch).count());
@@ -884,7 +885,9 @@ mip::Timestamp getCurrentTimestamp()
 ///
 /// @param _device Reference to a MIP device interface to initialize
 ///
-void initializeDevice(mip::Interface& _device)
+/// @ingroup _7_series_ins_example_cpp
+///
+static void initializeDevice(mip::Interface& _device)
 {
     // Ping the device
     // Note: This is a good first step to make sure the device is present
@@ -944,9 +947,7 @@ void initializeDevice(mip::Interface& _device)
         // Note: Default settings will reset the baudrate to 115200 and may cause connection issues
         if (cmdResult == mip::CmdResult::STATUS_TIMEDOUT && BAUDRATE != 115200)
         {
-            MICROSTRAIN_LOG_WARN(
-                "On a native serial connections the baudrate needs to be 115200 for this example to run.\n"
-            );
+            MICROSTRAIN_LOG_WARN("On a native serial connections the baudrate needs to be 115200 for this example to run.\n");
         }
 
         terminate(_device, cmdResult, "Could not load %s!\n", mip::commands_3dm::DeviceSettings::DOC_NAME);
@@ -962,21 +963,21 @@ void initializeDevice(mip::Interface& _device)
 ///          - Uncertainty: 0.001 radians
 ///
 /// @param _device Reference to the initialized MIP device interface
-/// @param _externalMeasurementTime Timestamp for the external measurement
+/// @param _aidingTime Reference to the timestamp for the external measurement
 ///
 /// @note Issues warning if the command fails but does not terminate execution.
 ///       Used for testing external aiding functionality with known data.
 ///
-void sendSimulatedExternalMeasurementsHeading(
-    mip::Interface& _device, const mip::commands_aiding::Time& _externalMeasurementTime
-)
+/// @ingroup _7_series_ins_example_cpp
+///
+static void sendSimulatedHeadingData(mip::Interface& _device, const mip::commands_aiding::Time& _aidingTime)
 {
     constexpr float heading     = 0.0f;
     constexpr float uncertainty = 0.001f;
 
     const mip::CmdResult cmdResult = mip::commands_aiding::headingTrue(
         _device,
-        _externalMeasurementTime,
+        _aidingTime,
         HEADING_FRAME_CONFIG_ID,
         heading,
         uncertainty,
@@ -1000,15 +1001,14 @@ void sendSimulatedExternalMeasurementsHeading(
 ///          - Uncertainty: 1.0 m in all axes
 ///
 /// @param _device Reference to the initialized MIP device interface
-/// @param _externalMeasurementTime Reference to the timestamp for the external
-///                                 measurement
+/// @param _aidingTime Reference to the timestamp for the external measurement
 ///
 /// @note Issues warning if the command fails but does not terminate execution.
 ///       Used for testing external aiding functionality with a known location.
 ///
-void sendSimulatedExternalMeasurementsPosition(
-    mip::Interface& _device, const mip::commands_aiding::Time& _externalMeasurementTime
-)
+/// @ingroup _7_series_ins_example_cpp
+///
+static void sendSimulatedPositionData(mip::Interface& _device, const mip::commands_aiding::Time& _aidingTime)
 {
     // Coordinates for MicroStrain headquarters
     constexpr double latitude  = 44.43729093897896;
@@ -1023,7 +1023,7 @@ void sendSimulatedExternalMeasurementsPosition(
 
     const mip::CmdResult cmdResult = mip::commands_aiding::posLlh(
         _device,
-        _externalMeasurementTime,
+        _aidingTime,
         GNSS_FRAME_CONFIG_ID,
         latitude,
         longitude,
@@ -1047,15 +1047,14 @@ void sendSimulatedExternalMeasurementsPosition(
 ///          - Uncertainty: 0.1 m/s in all axes
 ///
 /// @param _device Reference to the initialized MIP device interface
-/// @param _externalMeasurementTime Reference to the timestamp for the external
-///                                 measurement
+/// @param _aidingTime Reference to the timestamp for the external measurement
 ///
 /// @note Issues warning if the command fails but does not terminate execution.
 ///       Used for testing external aiding functionality with stationary data.
 ///
-void sendSimulatedExternalMeasurementsNedVelocity(
-    mip::Interface& _device, const mip::commands_aiding::Time& _externalMeasurementTime
-)
+/// @ingroup _7_series_ins_example_cpp
+///
+static void sendSimulatedNedVelocityData(mip::Interface& _device, const mip::commands_aiding::Time& _aidingTime)
 {
     const mip::Vector3f velocity = {
         0.0f, // X
@@ -1071,7 +1070,7 @@ void sendSimulatedExternalMeasurementsNedVelocity(
 
     const mip::CmdResult cmdResult = mip::commands_aiding::velNed(
         _device,
-        _externalMeasurementTime,
+        _aidingTime,
         GNSS_FRAME_CONFIG_ID,
         velocity,
         uncertainty,
@@ -1094,15 +1093,14 @@ void sendSimulatedExternalMeasurementsNedVelocity(
 ///          - Uncertainty: 0.1 m/s in all axes
 ///
 /// @param _device Reference to the initialized MIP device interface
-/// @param _externalMeasurementTime Reference to the timestamp for the external
-///                                 measurement
+/// @param _aidingTime Reference to the timestamp for the external measurement
 ///
 /// @note Issues warning if the command fails but does not terminate execution.
 ///       Used for testing external aiding functionality with vehicle-relative data.
 ///
-void sendSimulatedExternalMeasurementsVehicleFrameVelocity(
-    mip::Interface& _device, const mip::commands_aiding::Time& _externalMeasurementTime
-)
+/// @ingroup _7_series_ins_example_cpp
+///
+static void sendSimulatedVehicleFrameVelocityData(mip::Interface& _device, const mip::commands_aiding::Time& _aidingTime)
 {
     const mip::Vector3f velocity = {
         0.0f, // X
@@ -1118,7 +1116,7 @@ void sendSimulatedExternalMeasurementsVehicleFrameVelocity(
 
     const mip::CmdResult cmdResult = mip::commands_aiding::velBodyFrame(
         _device,
-        _externalMeasurementTime,
+        _aidingTime,
         BODY_VELOCITY_FRAME_CONFIG_ID,
         velocity,
         uncertainty,
@@ -1127,10 +1125,7 @@ void sendSimulatedExternalMeasurementsVehicleFrameVelocity(
 
     if (!cmdResult.isAck())
     {
-        MICROSTRAIN_LOG_WARN(
-            "Failed to send external %s to the device!\n",
-            mip::commands_aiding::VelBodyFrame::DOC_NAME
-        );
+        MICROSTRAIN_LOG_WARN("Failed to send external %s to the device!\n", mip::commands_aiding::VelBodyFrame::DOC_NAME);
     }
 }
 
@@ -1146,7 +1141,9 @@ void sendSimulatedExternalMeasurementsVehicleFrameVelocity(
 /// @param _message Error message to display
 /// @param _successful Whether termination is due to success or failure
 ///
-void terminate(microstrain::Connection* _connection, const char* _message, const bool _successful /* = false */)
+/// @ingroup _7_series_ins_example_cpp
+///
+static void terminate(microstrain::Connection* _connection, const char* _message, const bool _successful /* = false */)
 {
     if (_message && strlen(_message) != 0)
     {
@@ -1203,7 +1200,9 @@ void terminate(microstrain::Connection* _connection, const char* _message, const
 /// @param _format Printf-style format string for error message
 /// @param ... Variable arguments for format string
 ///
-void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const char* _format, ...)
+/// @ingroup _7_series_ins_example_cpp
+///
+static void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const char* _format, ...)
 {
     if (_format && strlen(_format) != 0)
     {
@@ -1220,7 +1219,3 @@ void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const c
 
     terminate(connection, "");
 }
-
-/// @} group _7_series_ins_example_cpp
-/// @} group examples_cpp
-////////////////////////////////////////////////////////////////////////////////

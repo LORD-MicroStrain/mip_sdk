@@ -1,8 +1,9 @@
 ////////////////////////////////////////////////////////////////////////////////
-/// @addtogroup examples_c
-/// @{
+/// @file 7_series_stream_imu_example.c
 ///
 /// @defgroup _7_series_stream_imu_example_c 7-Series Stream IMU Example [C]
+///
+/// @ingroup examples_c
 ///
 /// @brief Example setup program for streaming IMU data on 7-series devices
 ///        using C
@@ -50,64 +51,68 @@
 // NOTE: Setting these globally for example purposes
 
 // TODO: Update to the correct port name and baudrate
-// Set the port name for the connection (Serial/USB)
+/// @brief  Set the port name for the connection (Serial/USB)
 #ifdef _WIN32
 static const char* PORT_NAME = "COM1";
 #else  // Unix
 static const char* PORT_NAME = "/dev/ttyACM0";
 #endif // _WIN32
 
-// Set the baudrate for the connection (Serial/USB)
-// Note: For native serial connections this needs to be 115200 due to the device default settings command
-// Use mip_3dm_*_uart_baudrate() to write and save the baudrate on the device
+/// @brief  Set the baudrate for the connection (Serial/USB)
+/// @note For native serial connections this needs to be 115200 due to the device default settings command
+// Use mip_base_*_comm_speed() to write and save the baudrate on the device
 static const uint32_t BAUDRATE = 115200;
 
 // TODO: Update to the desired streaming rate. Setting low for readability purposes
-// Streaming rate in Hz
+/// @brief Streaming rate in Hz
 static const uint16_t SAMPLE_RATE_HZ = 1;
 
 // TODO: Update to change the example run time
-// Example run time
+/// @brief Example run time
 static const uint32_t RUN_TIME_SECONDS = 30;
 ////////////////////////////////////////////////////////////////////////////////
 
+///
+/// @} group _7_series_stream_imu_example_c
+////////////////////////////////////////////////////////////////////////////////
+
 // Custom logging handler callback
-void log_callback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args);
+static void log_callback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args);
 
 // Used for basic timestamping (since epoch in milliseconds)
 // TODO: Update this to whatever timestamping method is desired
-mip_timestamp get_current_timestamp();
+static mip_timestamp get_current_timestamp();
 
 // Device callbacks used for reading and writing packets
-bool mip_interface_user_send_to_device(mip_interface* _device, const uint8_t* _data, size_t _length);
-bool mip_interface_user_recv_from_device(
+static bool mip_interface_user_send_to_device(mip_interface* _device, const uint8_t* _data, size_t _length);
+static bool mip_interface_user_recv_from_device(
     mip_interface* _device, uint8_t* _buffer, size_t _max_length, mip_timeout _wait_time, bool _from_cmd,
     size_t* _length_out, mip_timestamp* _timestamp_out
 );
 
 // Common device initialization procedure
-void initialize_device(mip_interface* _device, serial_port* _device_port, const uint32_t _baudrate);
+static void initialize_device(mip_interface* _device, serial_port* _device_port, const uint32_t _baudrate);
 
 // Utility to help check if the device supports a descriptor
-bool is_descriptor_supported(
+static bool is_descriptor_supported(
     const uint8_t _descriptor_set, const uint8_t _field_descriptor, const uint16_t* _supported_descriptors,
     const uint8_t _supported_descriptor_count
 );
 
 // Message format configuration
-void configure_sensor_message_format(
+static void configure_sensor_message_format(
     mip_interface* _device, const uint16_t* _supported_descriptors, const uint8_t _supported_descriptor_count
 );
 
 // Callback handlers
-void packet_callback(void* _user, const mip_packet_view* _packet_view, mip_timestamp _timestamp);
-void accel_field_callback(void* _user, const mip_field_view* _field_view, mip_timestamp _timestamp);
-void gyro_field_callback(void* _user, const mip_field_view* _field_view, mip_timestamp _timestamp);
-void mag_field_callback(void* _user, const mip_field_view* _field_view, mip_timestamp _timestamp);
+static void packet_callback(void* _user, const mip_packet_view* _packet_view, mip_timestamp _timestamp);
+static void accel_field_callback(void* _user, const mip_field_view* _field_view, mip_timestamp _timestamp);
+static void gyro_field_callback(void* _user, const mip_field_view* _field_view, mip_timestamp _timestamp);
+static void mag_field_callback(void* _user, const mip_field_view* _field_view, mip_timestamp _timestamp);
 
 // Utility functions the handle application closing and printing error messages
-void terminate(serial_port* _device_port, const char* _message, const bool _successful);
-void command_failure_terminate(const mip_interface* _device, const mip_cmd_result _cmd_result, const char* _format, ...);
+static void terminate(serial_port* _device_port, const char* _message, const bool _successful);
+static void exit_from_command(const mip_interface* _device, const mip_cmd_result _cmd_result, const char* _format, ...);
 
 int main(const int argc, const char* argv[])
 {
@@ -156,7 +161,7 @@ int main(const int argc, const char* argv[])
 
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        command_failure_terminate(&device, cmd_result, "Could not get supported descriptors!\n");
+        exit_from_command(&device, cmd_result, "Could not get supported descriptors!\n");
     }
 
     // Some devices have a large number of descriptors
@@ -173,7 +178,7 @@ int main(const int argc, const char* argv[])
 
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        command_failure_terminate(&device, cmd_result, "Could not get extended supported descriptors!\n");
+        exit_from_command(&device, cmd_result, "Could not get extended supported descriptors!\n");
     }
 
     // Configure the message format for sensor data
@@ -239,7 +244,7 @@ int main(const int argc, const char* argv[])
 
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        command_failure_terminate(&device, cmd_result, "Could not resume the device!\n");
+        exit_from_command(&device, cmd_result, "Could not resume the device!\n");
     }
 
     MICROSTRAIN_LOG_INFO("The device is configured... waiting for data.\n");
@@ -279,7 +284,9 @@ int main(const int argc, const char* argv[])
 /// @param _format Printf-style format string for the message
 /// @param _args Variable argument list containing message parameters
 ///
-void log_callback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args)
+/// @ingroup _7_series_stream_imu_example_c
+///
+static void log_callback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args)
 {
     // Unused parameter
     (void)_user;
@@ -325,7 +332,9 @@ void log_callback(void* _user, const microstrain_log_level _level, const char* _
 ///
 /// @return Current system time in milliseconds since epoch
 ///
-mip_timestamp get_current_timestamp()
+/// @ingroup _7_series_stream_imu_example_c
+///
+static mip_timestamp get_current_timestamp()
 {
     struct timespec ts;
 
@@ -353,7 +362,9 @@ mip_timestamp get_current_timestamp()
 ///
 /// @return True if send was successful, false otherwise
 ///
-bool mip_interface_user_send_to_device(mip_interface* _device, const uint8_t* _data, size_t _length)
+/// @ingroup _7_series_stream_imu_example_c
+///
+static bool mip_interface_user_send_to_device(mip_interface* _device, const uint8_t* _data, size_t _length)
 {
     // Extract the serial port pointer that was used in the callback initialization
     serial_port* device_port = (serial_port*)mip_interface_user_pointer(_device);
@@ -390,7 +401,9 @@ bool mip_interface_user_send_to_device(mip_interface* _device, const uint8_t* _d
 ///
 /// @return True if receive was successful, false otherwise
 ///
-bool mip_interface_user_recv_from_device(
+/// @ingroup _7_series_stream_imu_example_c
+///
+static bool mip_interface_user_recv_from_device(
     mip_interface* _device, uint8_t* _buffer, size_t _max_length, mip_timeout _wait_time, bool _from_cmd,
     size_t* _length_out, mip_timestamp* _timestamp_out
 )
@@ -430,7 +443,9 @@ bool mip_interface_user_recv_from_device(
 ///                     communication
 /// @param _baudrate Serial communication baudrate for the device
 ///
-void initialize_device(mip_interface* _device, serial_port* _device_port, const uint32_t _baudrate)
+/// @ingroup _7_series_stream_imu_example_c
+///
+static void initialize_device(mip_interface* _device, serial_port* _device_port, const uint32_t _baudrate)
 {
     MICROSTRAIN_LOG_INFO("Initializing the device interface.\n");
     mip_interface_init(
@@ -450,7 +465,7 @@ void initialize_device(mip_interface* _device, serial_port* _device_port, const 
 
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        command_failure_terminate(_device, cmd_result, "Could not ping the device!\n");
+        exit_from_command(_device, cmd_result, "Could not ping the device!\n");
     }
 
     // Set the device to Idle
@@ -460,7 +475,7 @@ void initialize_device(mip_interface* _device, serial_port* _device_port, const 
 
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        command_failure_terminate(_device, cmd_result, "Could not set the device to idle!\n");
+        exit_from_command(_device, cmd_result, "Could not set the device to idle!\n");
     }
 
     // Print device info to make sure the correct device is being used
@@ -470,7 +485,7 @@ void initialize_device(mip_interface* _device, serial_port* _device_port, const 
 
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        command_failure_terminate(_device, cmd_result, "Could not get the device information!\n");
+        exit_from_command(_device, cmd_result, "Could not get the device information!\n");
     }
 
     // Extract the major minor and patch values
@@ -501,12 +516,10 @@ void initialize_device(mip_interface* _device, serial_port* _device_port, const 
         // Note: Default settings will reset the baudrate to 115200 and may cause connection issues
         if (cmd_result == MIP_STATUS_TIMEDOUT && BAUDRATE != 115200)
         {
-            MICROSTRAIN_LOG_WARN(
-                "On a native serial connections the baudrate needs to be 115200 for this example to run.\n"
-            );
+            MICROSTRAIN_LOG_WARN("On a native serial connections the baudrate needs to be 115200 for this example to run.\n");
         }
 
-        command_failure_terminate(_device, cmd_result, "Could not load device default settings!\n");
+        exit_from_command(_device, cmd_result, "Could not load device default settings!\n");
     }
 }
 
@@ -525,7 +538,9 @@ void initialize_device(mip_interface* _device, serial_port* _device_port, const 
 ///
 /// @returns true if the descriptor combination is supported, false otherwise
 ///
-bool is_descriptor_supported(
+/// @ingroup _7_series_stream_imu_example_c
+///
+static bool is_descriptor_supported(
     const uint8_t _descriptor_set, const uint8_t _field_descriptor, const uint16_t* _supported_descriptors,
     const uint8_t _supported_descriptor_count
 )
@@ -560,7 +575,9 @@ bool is_descriptor_supported(
 /// @param _supported_descriptors Array of descriptors supported by the device
 /// @param _supported_descriptor_count Number of descriptors in the array
 ///
-void configure_sensor_message_format(
+/// @ingroup _7_series_stream_imu_example_c
+///
+static void configure_sensor_message_format(
     mip_interface* _device, const uint16_t* _supported_descriptors, const uint8_t _supported_descriptor_count
 )
 {
@@ -577,14 +594,14 @@ void configure_sensor_message_format(
 
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        command_failure_terminate(_device, cmd_result, "Could not get the base rate for sensor data!\n");
+        exit_from_command(_device, cmd_result, "Could not get the base rate for sensor data!\n");
     }
 
     // Supported sample rates can be any value from 1 up to the base rate
     // Note: Decimation can be anything from 1 to 65,565 (uint16_t::max)
     if (SAMPLE_RATE_HZ == 0 || SAMPLE_RATE_HZ > sensor_base_rate)
     {
-        command_failure_terminate(
+        exit_from_command(
             _device,
             MIP_NACK_INVALID_PARAM,
             "Invalid sample rate of %dHz! Supported rates are [1, %d].\n",
@@ -644,7 +661,7 @@ void configure_sensor_message_format(
 
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        command_failure_terminate(_device, cmd_result, "Could not configure message format for sensor data!\n");
+        exit_from_command(_device, cmd_result, "Could not configure message format for sensor data!\n");
     }
 }
 
@@ -663,7 +680,9 @@ void configure_sensor_message_format(
 /// @param _packet_view Pointer to the received MIP packet
 /// @param _timestamp Timestamp when the packet was received
 ///
-void packet_callback(void* _user, const mip_packet_view* _packet_view, mip_timestamp _timestamp)
+/// @ingroup _7_series_stream_imu_example_c
+///
+static void packet_callback(void* _user, const mip_packet_view* _packet_view, mip_timestamp _timestamp)
 {
     // Unused parameter
     (void)_user;
@@ -713,7 +732,9 @@ void packet_callback(void* _user, const mip_packet_view* _packet_view, mip_times
 /// @param _timestamp Timestamp indicating when the field was received from the
 ///                   device (unused in this implementation)
 ///
-void accel_field_callback(void* _user, const mip_field_view* _field_view, mip_timestamp _timestamp)
+/// @ingroup _7_series_stream_imu_example_c
+///
+static void accel_field_callback(void* _user, const mip_field_view* _field_view, mip_timestamp _timestamp)
 {
     // Unused parameters
     (void)_user;
@@ -747,7 +768,9 @@ void accel_field_callback(void* _user, const mip_field_view* _field_view, mip_ti
 /// @param _timestamp Timestamp indicating when the field was received from the
 ///                   device (unused in this implementation)
 ///
-void gyro_field_callback(void* _user, const mip_field_view* _field_view, mip_timestamp _timestamp)
+/// @ingroup _7_series_stream_imu_example_c
+///
+static void gyro_field_callback(void* _user, const mip_field_view* _field_view, mip_timestamp _timestamp)
 {
     // Unused parameters
     (void)_user;
@@ -781,7 +804,9 @@ void gyro_field_callback(void* _user, const mip_field_view* _field_view, mip_tim
 /// @param _timestamp Timestamp indicating when the field was received from the
 ///                   device (unused in this implementation)
 ///
-void mag_field_callback(void* _user, const mip_field_view* _field_view, mip_timestamp _timestamp)
+/// @ingroup _7_series_stream_imu_example_c
+///
+static void mag_field_callback(void* _user, const mip_field_view* _field_view, mip_timestamp _timestamp)
 {
     // Unused parameters
     (void)_user;
@@ -815,7 +840,9 @@ void mag_field_callback(void* _user, const mip_field_view* _field_view, mip_time
 /// @param _message Error message to display
 /// @param _successful Whether termination is due to success or failure
 ///
-void terminate(serial_port* _device_port, const char* _message, const bool _successful)
+/// @ingroup _7_series_stream_imu_example_c
+///
+static void terminate(serial_port* _device_port, const char* _message, const bool _successful)
 {
     if (_message != NULL && strlen(_message) != 0)
     {
@@ -872,7 +899,9 @@ void terminate(serial_port* _device_port, const char* _message, const bool _succ
 /// @param _format Printf-style format string for error message
 /// @param ... Variable arguments for format string
 ///
-void command_failure_terminate(const mip_interface* _device, const mip_cmd_result _cmd_result, const char* _format, ...)
+/// @ingroup _7_series_stream_imu_example_c
+///
+static void exit_from_command(const mip_interface* _device, const mip_cmd_result _cmd_result, const char* _format, ...)
 {
     if (_format != NULL && strlen(_format) != 0)
     {
@@ -896,7 +925,3 @@ void command_failure_terminate(const mip_interface* _device, const mip_cmd_resul
         terminate(device_port, "", false);
     }
 }
-
-/// @} group _7_series_stream_imu_example_c
-/// @} group examples_c
-////////////////////////////////////////////////////////////////////////////////
