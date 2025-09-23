@@ -100,7 +100,7 @@ pipeline {
                                         -B build_docs \
                                         -DMICROSTRAIN_BUILD_DOCUMENTATION=ON \
                                         -DMICROSTRAIN_BUILD_DOCUMENTATION_QUIET=OFF \
-                                        -DCMAKE_BUILD_TYPE=RELEASE; \ \
+                                        -DCMAKE_BUILD_TYPE=RELEASE; \
                                     cmake \
                                         --build build_docs \
                                         --target package_docs \
