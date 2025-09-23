@@ -6,41 +6,40 @@ implementations for most use cases.
 
 ## MicroStrain Device Overview
 
+### 7-Series Devices
+
+The MicroStrain 7-series devices represent the latest generation of tactical-grade inertial sensors with advanced
+capabilities, compact designs, and ruggedizedIP68 packages.
+
+| Device Model                                                                                                        | Description                                                                      |
+|---------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
+| [3DM-GQ7-GNSS/INS](https://www.hbkworld.com/en/products/transducers/inertial-sensors/navigation/3dm-gq7-gnss-ins)   | Dual-antenna RTK GNSS/INS with centimeter-level accuracy                         |
+| [3DM-CV7-AR](https://www.hbkworld.com/en/products/transducers/inertial-sensors/vertical-reference/3dm-cv7-ar)       | Advanced vertical reference unit with cutting-edge algorithms                    |
+| [3DM-CV7-AHRS](https://www.hbkworld.com/en/products/transducers/inertial-sensors/attitude-and-heading/3dm-cv7-ahrs) | Tactical grade AHRS with 1.5?/hr gyro bias instability                           |
+| [3DM-CV7-INS](https://www.hbkworld.com/en/products/transducers/inertial-sensors/navigation/3dm-cv7-ins)             | Compact INS solution with tactical grade performance                             |
+| [3DM-CV7-GNSS/INS](https://www.hbkworld.com/en/products/transducers/inertial-sensors/navigation/3dm-cv7-gnss-ins)   | RTK-capable GNSS/INS with dual-frequency receiver and tactical grade performance |
+| [3DM-GV7-AR](https://www.hbkworld.com/en/products/transducers/inertial-sensors/vertical-reference/3dm-gv7-ar)       | IP68 ruggedized vertical reference unit for harsh environments                   |
+| [3DM-GV7-AHRS](https://www.hbkworld.com/en/products/transducers/inertial-sensors/attitude-and-heading/3dm-gv7-ahrs) | IP68 ruggedized tactical grade AHRS with precision machined enclosure            |
+| [3DM-GV7-INS](https://www.hbkworld.com/en/products/transducers/inertial-sensors/navigation/3dm-gv7-ins)             | Ruggedized tactical grade INS solution                                           |
+
 ### 5-Series Devices
 
 The MicroStrain 5-series devices are industrial-grade inertial sensors featuring fully calibrated and
 temperature-compensated sensors with high-performance capabilities.
 
-| Device Model                                                                                                                                 | Description                                                              |
-|----------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------|
-| [3DM-CX5-IMU](https://www.hbkworld.com/en/products/transducers/inertial-sensors/inertial-measurement-units--imu-/3dm-cx5-imu)                | Smallest and lightest high performance IMU with fully calibrated sensors |
-| [3DM-CX5-AR](https://www.hbkworld.com/en/products/transducers/inertial-sensors/vertical-reference-units--vru-/3dm-cx5-ar)                    | Embeddable high performance vertical reference unit and tilt sensor      |
-| [3DM-CX5-AHRS](https://www.hbkworld.com/en/products/transducers/inertial-sensors/attitude-and-heading-reference-systems--ahrs-/3dm-cx5-ahrs) | Smallest and lightest industrial AHRS with adaptive Kalman filter        |
-| [3DM-CX5-GNSS/INS](https://www.hbkworld.com/en/products/transducers/inertial-sensors/inertial-navigation-systems--ins-/3dm-cx5-gnss-ins)     | All-in-one navigation solution with multi-constellation GNSS receiver    |
-| [3DM-CV5-IMU](https://www.hbkworld.com/en/products/transducers/inertial-sensors/inertial-measurement-units--imu-/3dm-cv5-imu)                | Value-focused embeddable IMU with calibrated sensors                     |
-| [3DM-CV5-AR](https://www.hbkworld.com/en/products/transducers/inertial-sensors/vertical-reference-units--vru-/3dm-cv5-ar)                    | Vertical reference unit for attitude determination                       |
-| [3DM-CV5-AHRS](https://www.hbkworld.com/en/products/transducers/inertial-sensors/attitude-and-heading-reference-systems--ahrs-/3dm-cv5-ahrs) | Smallest and lightest industrial AHRS with adaptive Kalman filter        |
-| [3DM-GX5-IMU](https://www.hbkworld.com/en/products/transducers/inertial-sensors/inertial-measurement-units--imu-/3dm-gx5-imu)                | High performance IMU with precision-machined aluminum housing            |
-| [3DM-GX5-AHRS](https://www.hbkworld.com/en/products/transducers/inertial-sensors/attitude-and-heading-reference-systems--ahrs-/3dm-gx5-ahrs) | Industry's most proven high performance industrial AHRS                  |
-| [3DM-GX5-AR](https://www.hbkworld.com/en/products/transducers/inertial-sensors/vertical-reference-units--vru-/3dm-gx5-ar)                    | High performance vertical reference unit                                 |
-| [3DM-GX5-GNSS/INS](https://www.hbkworld.com/en/products/transducers/inertial-sensors/inertial-navigation-systems--ins-/3dm-gx5-gnss-ins)     | Navigation solution with integrated GNSS receiver                        |
-
-
-### 7-Series Devices
-
-The MicroStrain 7-series devices represent the latest generation of tactical-grade inertial sensors with advanced 
-capabilities, compact designs, and ruggedizedIP68 packages.
-
-| Device Model                                                                                                                                 | Description                                                                      |
-|----------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
-| [3DM-GQ7-GNSS/INS](https://www.hbkworld.com/en/products/transducers/inertial-sensors/inertial-navigation-systems--ins-/3dm-gq7-gnss-ins)     | Dual-antenna RTK GNSS/INS with centimeter-level accuracy                         |
-| [3DM-CV7-AR](https://www.hbkworld.com/en/products/transducers/inertial-sensors/vertical-reference-units--vru-/3dm-cv7-ar)                    | Advanced vertical reference unit with cutting-edge algorithms                    |
-| [3DM-CV7-AHRS](https://www.hbkworld.com/en/products/transducers/inertial-sensors/attitude-and-heading-reference-systems--ahrs-/3dm-cv7-ahrs) | Tactical grade AHRS with 1.5?/hr gyro bias instability                           |
-| [3DM-CV7-INS](https://www.hbkworld.com/en/products/transducers/inertial-sensors/inertial-navigation-systems--ins-/3dm-cv7-ins)               | Compact INS solution with tactical grade performance                             |
-| [3DM-CV7-GNSS/INS](https://www.hbkworld.com/en/products/transducers/inertial-sensors/inertial-navigation-systems--ins-/3dm-cv7-gnss-ins)     | RTK-capable GNSS/INS with dual-frequency receiver and tactical grade performance |
-| [3DM-GV7-AR](https://www.hbkworld.com/en/products/transducers/inertial-sensors/vertical-reference-units--vru-/3dm-gv7-ar)                    | IP68 ruggedized vertical reference unit for harsh environments                   |
-| [3DM-GV7-AHRS](https://www.hbkworld.com/en/products/transducers/inertial-sensors/attitude-and-heading-reference-systems--ahrs-/3dm-gv7-ahrs) | IP68 ruggedized tactical grade AHRS with precision machined enclosure            |
-| [3DM-GV7-INS](https://www.hbkworld.com/en/products/transducers/inertial-sensors/inertial-navigation-systems--ins-/3dm-gv7-ins)               | Ruggedized tactical grade INS solution                                           |
+| Device Model                                                                                                        | Description                                                              |
+|---------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------|
+| [3DM-CX5-IMU](https://www.hbkworld.com/en/products/transducers/inertial-sensors/measurement-units/3dm-cx5-imu)      | Smallest and lightest high performance IMU with fully calibrated sensors |
+| [3DM-CX5-AR](https://www.hbkworld.com/en/products/transducers/inertial-sensors/vertical-reference/3dm-cx5-ar)       | Embeddable high performance vertical reference unit and tilt sensor      |
+| [3DM-CX5-AHRS](https://www.hbkworld.com/en/products/transducers/inertial-sensors/attitude-and-heading/3dm-cx5-ahrs) | Smallest and lightest industrial AHRS with adaptive Kalman filter        |
+| [3DM-CX5-GNSS/INS](https://www.hbkworld.com/en/products/transducers/inertial-sensors/navigation/3dm-cx5-gnss-ins)   | All-in-one navigation solution with multi-constellation GNSS receiver    |
+| [3DM-CV5-IMU](https://www.hbkworld.com/en/products/transducers/inertial-sensors/measurement-units/3dm-cv5-imu)      | Value-focused embeddable IMU with calibrated sensors                     |
+| [3DM-CV5-AR](https://www.hbkworld.com/en/products/transducers/inertial-sensors/vertical-reference/3dm-cv5-ar)       | Vertical reference unit for attitude determination                       |
+| [3DM-CV5-AHRS](https://www.hbkworld.com/en/products/transducers/inertial-sensors/attitude-and-heading/3dm-cv5-ahrs) | Smallest and lightest industrial AHRS with adaptive Kalman filter        |
+| [3DM-GX5-IMU](https://www.hbkworld.com/en/products/transducers/inertial-sensors/measurement-units/3dm-gx5-imu)      | High performance IMU with precision-machined aluminum housing            |
+| [3DM-GX5-AHRS](https://www.hbkworld.com/en/products/transducers/inertial-sensors/attitude-and-heading/3dm-gx5-ahrs) | Industry's most proven high performance industrial AHRS                  |
+| [3DM-GX5-AR](https://www.hbkworld.com/en/products/transducers/inertial-sensors/vertical-reference/3dm-gx5-ar)       | High performance vertical reference unit                                 |
+| [3DM-GX5-GNSS/INS](https://www.hbkworld.com/en/products/transducers/inertial-sensors/navigation/3dm-gx5-gnss-ins)   | Navigation solution with integrated GNSS receiver                        |
 
 ## Examples Overview
 
