@@ -5,8 +5,8 @@
 
     Wrapper library for C/C++ automated testing frameworks
 
-	The goal is to provide a standardized interface for automated testing, regardless of the backend framework being
-	used.
+    The goal is to provide a standardized interface for automated testing, regardless of the backend framework being
+    used.
 */
 #pragma once
 

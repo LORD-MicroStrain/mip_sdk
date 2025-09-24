@@ -9,27 +9,51 @@ if(MICROSTRAIN_TEST_USE_DOCTEST)
     FetchContent_MakeAvailable(doctest)
 endif()
 
-add_library(microstrain_test STATIC)
+set(MICROSTRAIN_TEST_LIBRARY "microstrain_test")
 
-target_include_directories(microstrain_test
-    PUBLIC "${CMAKE_CURRENT_LIST_DIR}"
-    PRIVATE "${CMAKE_CURRENT_LIST_DIR}/src"
+add_library("${MICROSTRAIN_TEST_LIBRARY}" STATIC)
+
+target_include_directories("${MICROSTRAIN_TEST_LIBRARY}" PUBLIC
+    "${CMAKE_CURRENT_LIST_DIR}"
 )
 
-target_sources(microstrain_test
-    PUBLIC "microstrain_test.hpp"
+target_sources("${MICROSTRAIN_TEST_LIBRARY}" PUBLIC
+    "${CMAKE_CURRENT_LIST_DIR}/microstrain_test.hpp"
+)
+
+if(MSVC)
+    set(COMPILE_OPTIONS
+        "/W4" # Enable warnings
+        "/WX" # Warnings as errors
+        "/MP" # Multi-process compilation
+    )
+else()
+    set(COMPILE_OPTIONS
+        "-Wall"   # Enable warnings
+        "-Wextra" # Enable extra warnings
+        "-Werror" # Warnings as errors
+    )
+endif()
+
+target_compile_options(${MICROSTRAIN_TEST_LIBRARY} PUBLIC
+    "${COMPILE_OPTIONS}"
+)
+
+target_compile_definitions("${MICROSTRAIN_TEST_LIBRARY}" PUBLIC
+    "MICROSTRAIN_LOGGING_MAX_LEVEL=${MIP_LOGGING_MAX_LEVEL}"
 )
 
 if(MICROSTRAIN_TEST_USE_DOCTEST)
-    target_sources(microstrain_test
-        PRIVATE
-            "doctest/doctest_wrappers.hpp"
-            "doctest/doctest_wrappers.cpp"
+    target_sources("${MICROSTRAIN_TEST_LIBRARY}" PRIVATE
+        "${CMAKE_CURRENT_LIST_DIR}/doctest/doctest_wrappers.hpp"
+        "${CMAKE_CURRENT_LIST_DIR}/doctest/doctest_wrappers.cpp"
     )
-    target_compile_definitions(microstrain_test
-        PUBLIC MICROSTRAIN_TEST_USE_DOCTEST
+
+    target_compile_definitions("${MICROSTRAIN_TEST_LIBRARY}" PUBLIC
+        "MICROSTRAIN_TEST_USE_DOCTEST"
     )
-    target_link_libraries(microstrain_test
-        PUBLIC doctest_with_main
+
+    target_link_libraries("${MICROSTRAIN_TEST_LIBRARY}" PUBLIC
+        "doctest_with_main"
     )
 endif()

@@ -110,8 +110,8 @@ here:
 * 1 - No packet found yet; search for the start of the next packet (SOP).
   New expected_packet_length is 2.
 * 2 - SYNC1 (SOP) byte found; check if the next byte SYNC2. New
-  expected_packet_length is 4. 
-* 4 - SYNC1 and SYNC2 received. Read the payload length from the buffer. Update 
+  expected_packet_length is 4.
+* 4 - SYNC1 and SYNC2 received. Read the payload length from the buffer. Update
   expected_packet_length to the full packet length.
 * N>=6 - The full length of the packet is known; Verify the checksum and call
   the packet callback if valid. Then erase the packet data and restart parsing.

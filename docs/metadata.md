@@ -21,7 +21,7 @@ void print_parameters()
 {
     // Obtain a reference for easier access.
     constexpr const mip::metadata::FieldInfo& field = mip::metadata::MetadataFor<FieldType>::value;
-    
+
     // Print field name and descriptor.
     std::printf("Field (0x%02X,%02X) %s:\n", field.descriptor.descriptorSet, field.descriptor.fieldDescriptor, field.title);
 
@@ -32,22 +32,22 @@ void print_parameters()
         // Single element (most parameters)?
         if(param.count.count == 1)
             std::printf("  Parameter %u: %s\n", p, param.name);
-            
+
         // Fixed-size array?
         else if(param.count.isFixed())
             std::printf("  Parameter %u: %s[%u]\n", p, param.name, param.count.count);
-            
+
         // Variable-sized array with another parameter holding the count?
         else if(param.count.hasCounter())
             std::printf("  Parameter %u: %s[%s]\n", p, param.name, field.parameters[param.count.counter.index()].name);
-            
+
         // Variable-length array which is determined by the payload length.
         else
             std::printf("  Parameter %u: %s[]\n", p, param.name);
 
         p++;
     }
-    
+
     std::printf("\n");
 }
 
