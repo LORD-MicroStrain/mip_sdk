@@ -10,9 +10,9 @@ The example showcases basic device communication and information retrieval, incl
 - Device information querying
 - Display of comprehensive device details
 
-## Configuration
+## Configurable Options
 
-The example uses the following default settings:
+The example uses the following default settings, which should be adjusted based on application requirements:
 
 | Setting     | Value                                         | Description                          |
 |-------------|-----------------------------------------------|--------------------------------------|
@@ -22,7 +22,7 @@ The example uses the following default settings:
 ## Usage
 
 1. Connect your MIP-enabled MicroStrain device to the specified serial port
-2. Update the `PORT_NAME` constant if using a different port
+2. Update the [configuration options](#configurable-options) based on your application needs
 3. Compile and run the example
 4. The program will:
     - Initialize the device

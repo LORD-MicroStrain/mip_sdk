@@ -12,9 +12,9 @@ The example showcases basic IMU sensor data streaming setup and operation of a 7
 - Dynamic magnetometer support detection
 - Basic packet and field-level callbacks
 
-## Configuration
+## Configurable Options
 
-The example uses the following default settings:
+The example uses the following default settings, which should be adjusted based on application requirements:
 
 | Setting            | Value                                         | Description                          |
 |--------------------|-----------------------------------------------|--------------------------------------|
@@ -26,7 +26,7 @@ The example uses the following default settings:
 ## Usage
 
 1. Connect your 7-series device to the specified serial port
-2. Update the `PORT_NAME` constant if using a different port
+2. Update the [configuration options](#configurable-options) based on your application needs
 3. Compile and run the example
 4. The program will:
     - Initialize the device and query supported descriptors

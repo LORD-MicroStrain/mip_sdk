@@ -14,9 +14,9 @@ The example showcases basic threading concepts for 5-series devices, including:
 - Modern C++ threading primitives
 - Proper thread synchronization and cleanup
 
-## Configuration
+## Configurable Options
 
-The example uses the following default settings:
+The example uses the following default settings, which should be adjusted based on application requirements:
 
 | Setting            | Value                                         | Description                             |
 |--------------------|-----------------------------------------------|-----------------------------------------|
@@ -29,7 +29,7 @@ The example uses the following default settings:
 ## Usage
 
 1. Connect your 5-series device to the specified serial port
-2. Update the `PORT_NAME` constant if using a different port
+2. Update the [configuration options](#configurable-options) based on your application needs
 3. Set `USE_THREADS` to `true` to enable threading (default)
 4. Compile and run the example
 5. The program will:

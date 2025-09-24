@@ -13,9 +13,9 @@ The example showcases the basic setup and operation of a 5-series GNSS/INS devic
 - Filter initialization and heading source configuration
 - Real-time data streaming and display
 
-## Configuration
+## Configurable Options
 
-The example uses the following default settings:
+The example uses the following default settings, which should be adjusted based on application requirements:
 
 | Setting            | Value                                         | Description                          |
 |--------------------|-----------------------------------------------|--------------------------------------|
@@ -27,7 +27,7 @@ The example uses the following default settings:
 ## Usage
 
 1. Connect your 5-series GNSS/INS device to the specified serial port
-2. Update the `PORT_NAME` constant if using a different port
+2. Update the [configuration options](#configurable-options) based on your application needs
 3. Compile and run the example
 4. Follow the gyro bias capture prompt (keep the device stationary)
 5. The program will:
