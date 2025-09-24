@@ -72,8 +72,8 @@ TEST("Packet Builder", "Packets can be built and parsed correctly")
 
         for(numFields = 0; ; numFields++)
         {
-            const uint8_t fieldDescriptor = field_descriptor_distribution(random_generator);
-            const uint8_t payloadLength = payload_length_distribution(random_generator);
+            const uint8_t fieldDescriptor = static_cast<uint8_t>(field_descriptor_distribution(random_generator));
+            const uint8_t payloadLength = static_cast<uint8_t>(payload_length_distribution(random_generator));
 
             Serializer payload = packet.createField(fieldDescriptor, payloadLength);
             if(!payload.hasRemaining())
