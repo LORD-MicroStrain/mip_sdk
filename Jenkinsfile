@@ -112,6 +112,30 @@ def buildMipSdkWindows() {
     }
 }
 
+def buildDocumentation() {
+    // Build the docker image
+    sh '''
+        ./.devcontainer/docker_build_image.sh --os ${BUILD_OS} --arch ${BUILD_ARCH}
+    '''
+
+    // Build the documentation
+    sh '''
+        ./.devcontainer/docker_shell.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
+            cmake \
+                -B build_docs \
+                -DMICROSTRAIN_BUILD_DOCUMENTATION=ON \
+                -DMICROSTRAIN_BUILD_DOCUMENTATION_QUIET=OFF \
+                -DCMAKE_BUILD_TYPE=RELEASE; \
+            cmake \
+                --build build_docs \
+                --target package_docs \
+                -j $(nproc)
+        "
+    '''
+
+    archiveArtifacts artifacts: "build_docs/mipsdk_*"
+}
+
 pipeline {
     agent none
     options {
@@ -140,27 +164,7 @@ pipeline {
                     steps {
                         script {
                             checkoutRepo()
-
-                            // Build the docker image 
-                            sh '''
-                                ./.devcontainer/docker_build_image.sh --os ${BUILD_OS} --arch ${BUILD_ARCH}
-                            '''
-
-                            // Build the documentation
-                            sh '''
-                                ./.devcontainer/docker_shell.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
-                                    cmake \
-                                        -B build_docs \
-                                        -DMICROSTRAIN_BUILD_DOCUMENTATION=ON \
-                                        -DMICROSTRAIN_BUILD_DOCUMENTATION_QUIET=OFF \
-                                        -DCMAKE_BUILD_TYPE=RELEASE; \
-                                    cmake \
-                                        --build build_docs \
-                                        --target package_docs \
-                                        -j $(nproc)
-                                "
-                            '''
-                            archiveArtifacts artifacts: "build_docs/mipsdk_*"
+                            buildDocumentation()
                         }
                     }
                 }
