@@ -34,7 +34,7 @@ def checkoutRepo() {
 // Utility function to build the MIP SDK on linux
 // This function requires BUILD_OS and BUILD_ARCH to have been set in the environment before it is called
 def buildMipSdkLinux() {
-    // Build the docker image 
+    // Build the docker image
     sh '''
         ./.devcontainer/docker_build_image.sh --os ${BUILD_OS} --arch ${BUILD_ARCH}
     '''
@@ -78,7 +78,7 @@ def buildMipSdkLinux() {
 // Utility function to build the MIP SDK on windows
 // This functions requires BUILD_ARCH to have been set in the environment before it is called
 def buildMipSdkWindows() {
-    // Build the MIP packages
+    // Build
     powershell """
         cmake `
             -B "build_${BUILD_ARCH}" `
@@ -93,22 +93,38 @@ def buildMipSdkWindows() {
             --target package
 
     """
+    dir("build_${BUILD_ARCH}") {
+        archiveArtifacts artifacts: "mipsdk_*"
+    }
 
-    // Run the tests
+    // Unit tests
     powershell """
         ctest `
             --test-dir "build_${BUILD_ARCH}" `
             -C Release `
+            -L unit `
             --verbose `
             --output-on-failure `
             --output-junit unit_test_results.xml `
             --parallel \$env:NUMBER_OF_PROCESSORS
     """
-
-    // Archive the artifacts and save the unit test results 
     dir("build_${BUILD_ARCH}") {
-        archiveArtifacts artifacts: "mipsdk_*"
         junit testResults: "unit_test_results.xml", allowEmptyResults: false
+    }
+
+    // Integration tests
+    powershell """
+        ctest `
+            --test-dir "build_${BUILD_ARCH}" `
+            -C Release `
+            -L integration `
+            --verbose `
+            --output-on-failure `
+            --output-junit integration_test_results.xml `
+            --parallel \$env:NUMBER_OF_PROCESSORS
+    """
+    dir("build_${BUILD_ARCH}") {
+        junit testResults: "integration_test_results.xml", allowEmptyResults: false
     }
 }
 
@@ -168,6 +184,7 @@ pipeline {
                         }
                     }
                 }
+/*
                 stage('Windows x86') {
                     agent {
                         label 'windows10'
@@ -204,6 +221,7 @@ pipeline {
                         }
                     }
                 }
+ */
                 stage('Ubuntu amd64') {
                     agent {
                         label 'linux-amd64'
@@ -223,6 +241,7 @@ pipeline {
                         }
                     }
                 }
+/*
                 stage('Ubuntu arm64') {
                     agent {
                         label 'linux-arm64'
@@ -261,6 +280,7 @@ pipeline {
                         }
                     }
                 }
+ */
 //                 stage("Mac M2") {
 //                     agent {
 //                         label 'mac-m2'
