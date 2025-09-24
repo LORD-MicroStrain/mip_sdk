@@ -19,6 +19,63 @@ The example uses the following default settings:
 | `PORT_NAME` | `"COM1"` (Windows)<br>`"/dev/ttyACM0"` (Unix) | Serial port for device communication |
 | `BAUDRATE`  | `115200`                                      | Communication baud rate              |
 
+## Usage
+
+1. Connect your MIP-enabled MicroStrain device to the specified serial port
+2. Update the `PORT_NAME` constant if using a different port
+3. Compile and run the example
+4. The program will:
+    - Initialize the device
+    - Retrieve device information
+    - Display formatted device details
+    - Clean up and exit
+
+## Building
+
+### With CMake
+
+The project can be configured on its own using the supplied [CMakeLists.txt](CMakeLists.txt).
+The file is configured to work directly in the MIP SDK project or as a standalone project.
+If building outside the MIP SDK project, all that's needed is to define `MIP_SDK_ROOT_DIR`.
+When building within the MIP SDK project, make sure to enable the examples using the `MICROSTRAIN_BUILD_EXAMPLES`
+CMake option.
+
+#### Standalone Command Line
+```shell
+mkdir build
+cd build
+cmake .. -DMIP_SDK_ROOT_DIR:PATH=<path_to_mip_sdk>
+```
+
+### Without CMake
+
+When building manually, you need to configure the following:
+
+#### Required Libraries
+
+Link against these libraries:
+- `mip` - Core MIP SDK library
+- `microstrain` - Core MicroStrain SDK library
+- `microstrain_serial` - MicroStrain serial communication library
+
+Make sure to include those library paths as additional link directories if needed
+
+#### Include Directories
+
+Add these include directories:
+- `[path_to_mip_sdk_include]/c`
+- `[path_to_mip_sdk_include]/cpp`
+- `[path_to_project_root]`
+
+`path_to_mip_sdk_include` can be installed paths or source paths:
+- Unix - `/usr/include/microstrain`
+- Windows - `C:/Program Files/MIP_SDK/include/microstrain`
+- Source: `[mip_sdk_project_root]/src`
+
+#### Compiler Definitions
+Add these compiler definitions:
+- `MICROSTRAIN_LOGGING_MAX_LEVEL=MICROSTRAIN_LOGGING_LEVEL_INFO_` Sets the logging level to info which is the minimum required for this example
+
 ## Key Functions
 
 ### Device Setup
@@ -82,17 +139,6 @@ Firmware Version |           1.2.04
 ------------------------------------
 ```
 
-## Usage
-
-1. Connect your MIP-enabled MicroStrain device to the specified serial port
-2. Update the `PORT_NAME` constant if using a different port
-3. Compile and run the example
-4. The program will:
-    - Initialize the device
-    - Retrieve device information
-    - Display formatted device details
-    - Clean up and exit
-
 ## Error Handling
 
 The example includes comprehensive error handling with:
@@ -115,52 +161,6 @@ This example provides additional C++ benefits:
 - **Built-in Documentation**: Data structures include `DOC_NAME` constants for easy reference
 - **Strongly Typed Enums**: C++ enum classes prevent accidental misuse
 - **Automatic Descriptors**: `DESCRIPTOR` constants eliminate magic numbers
-
-## Building
-
-### With CMake
-
-The project can be configured on its own using the supplied [CMakeLists.txt](CMakeLists.txt).
-The file is configured to work directly in the MIP SDK project or as a standalone project.
-If building outside the MIP SDK project, all that's needed is to define `MIP_SDK_ROOT_DIR`.
-When building within the MIP SDK project, make sure to enable the examples using the `MICROSTRAIN_BUILD_EXAMPLES`
-CMake option.
-
-#### Standalone Command Line
-```shell
-mkdir build
-cd build
-cmake .. -DMIP_SDK_ROOT_DIR:PATH=<path_to_mip_sdk>
-```
-
-### Without CMake
-
-When building manually, you need to configure the following:
-
-#### Required Libraries
-
-Link against these libraries:
-- `mip` - Core MIP SDK library
-- `microstrain` - Core MicroStrain SDK library
-- `microstrain_serial` - MicroStrain serial communication library
-
-Make sure to include those library paths as additional link directories if needed
-
-#### Include Directories
-
-Add these include directories:
-- `[path_to_mip_sdk_include]/c`
-- `[path_to_mip_sdk_include]/cpp`
-- `[path_to_project_root]`
-
-`path_to_mip_sdk_include` can be installed paths or source paths:
-- Unix - `/usr/include/microstrain`
-- Windows - `C:/Program Files/MIP_SDK/include/microstrain`
-- Source: `[mip_sdk_project_root]/src`
-
-#### Compiler Definitions
-Add these compiler definitions:
-- `MICROSTRAIN_LOGGING_MAX_LEVEL=MICROSTRAIN_LOGGING_LEVEL_INFO_` Sets the logging level to info which is the minimum required for this example
 
 ## Requirements
 

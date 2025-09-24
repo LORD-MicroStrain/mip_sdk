@@ -34,6 +34,67 @@ The example configures dual-antenna GNSS setup for enhanced navigation accuracy 
 | `1`        | Primary GNSS Antenna   | [-0.25, 0, 0] m | Main GNSS receiver positioned 0.25m behind the device center          |
 | `2`        | Secondary GNSS Antenna | [ 0.25, 0, 0] m | Secondary GNSS receiver positioned 0.25m forward of the device center |
 
+## Usage
+
+1. Connect your 7-series GNSS/INS device to the specified serial port
+2. Update the `PORT_NAME` constant if using a different port
+3. Update the `WHEELED_VEHICLE_APPLICATION` constant if using a wheeled-vehicle application
+4. Compile and run the example
+5. Follow the gyro bias capture prompt (keep the device stationary)
+6. The program will:
+    - Initialize the device
+    - Configure data streaming
+    - Wait for the filter to reach full navigation mode
+    - Stream data for the specified runtime
+    - Display filter state and GNSS fix transitions
+    - Display real-time filter data
+    - Clean up and exit
+
+## Building
+
+### With CMake
+
+The project can be configured on its own using the supplied [CMakeLists.txt](CMakeLists.txt).
+The file is configured to work directly in the MIP SDK project or as a standalone project.
+If building outside the MIP SDK project, all that's needed is to define `MIP_SDK_ROOT_DIR`.
+When building within the MIP SDK project, make sure to enable the examples using the `MICROSTRAIN_BUILD_EXAMPLES`
+CMake option.
+
+#### Standalone Command Line
+```shell
+mkdir build
+cd build
+cmake .. -DMIP_SDK_ROOT_DIR:PATH=<path_to_mip_sdk>
+```
+
+### Without CMake
+
+When building manually, you need to configure the following:
+
+#### Required Libraries
+
+Link against these libraries:
+- `mip` - Core MIP SDK library
+- `microstrain` - Core MicroStrain SDK library
+- `microstrain_serial` - MicroStrain serial communication library
+
+Make sure to include those library paths as additional link directories if needed
+
+#### Include Directories
+
+Add these include directories:
+- `[path_to_mip_sdk_include]/c`
+- `[path_to_project_root]`
+
+`path_to_mip_sdk_include` can be installed paths or source paths:
+- Unix - `/usr/include/microstrain`
+- Windows - `C:/Program Files/MIP_SDK/include/microstrain`
+- Source: `[mip_sdk_project_root]/src`
+
+#### Compiler Definitions
+Add these compiler definitions:
+- `MICROSTRAIN_LOGGING_MAX_LEVEL=MICROSTRAIN_LOGGING_LEVEL_INFO_` Sets the logging level to info which is the minimum required for this example
+
 ## Key Functions
 
 ### Device Setup
@@ -120,22 +181,6 @@ The example displays filter data in the following format:
 TOW = 123456.789    Position LLH = [ 4.123456, -83.54321,  123.4567]    Velocity NED = [ 1.234567, -0.987654,  0.123456]     Euler Angles = [ 0.012345, -0.067890,  1.234567]
 ```
 
-## Usage
-
-1. Connect your 7-series GNSS/INS device to the specified serial port
-2. Update the `PORT_NAME` constant if using a different port
-3. Update the `WHEELED_VEHICLE_APPLICATION` constant if using a wheeled-vehicle application
-4. Compile and run the example
-5. Follow the gyro bias capture prompt (keep the device stationary)
-6. The program will:
-    - Initialize the device
-    - Configure data streaming
-    - Wait for the filter to reach full navigation mode
-    - Stream data for the specified runtime
-    - Display filter state and GNSS fix transitions
-    - Display real-time filter data
-    - Clean up and exit
-
 ## Filter State Progression
 
 The example monitors and displays filter state transitions:
@@ -200,51 +245,6 @@ This configuration enables:
 - **Improved Initialization**: Faster filter convergence with dual-antenna alignment
 - **Signal Diversity**: Better performance in challenging GNSS environments
 - **RTK Float/Fixed**: Support for high-precision positioning modes
-
-## Building
-
-### With CMake
-
-The project can be configured on its own using the supplied [CMakeLists.txt](CMakeLists.txt).
-The file is configured to work directly in the MIP SDK project or as a standalone project.
-If building outside the MIP SDK project, all that's needed is to define `MIP_SDK_ROOT_DIR`.
-When building within the MIP SDK project, make sure to enable the examples using the `MICROSTRAIN_BUILD_EXAMPLES`
-CMake option.
-
-#### Standalone Command Line
-```shell
-mkdir build
-cd build
-cmake .. -DMIP_SDK_ROOT_DIR:PATH=<path_to_mip_sdk>
-```
-
-### Without CMake
-
-When building manually, you need to configure the following:
-
-#### Required Libraries
-
-Link against these libraries:
-- `mip` - Core MIP SDK library
-- `microstrain` - Core MicroStrain SDK library
-- `microstrain_serial` - MicroStrain serial communication library
-
-Make sure to include those library paths as additional link directories if needed
-
-#### Include Directories
-
-Add these include directories:
-- `[path_to_mip_sdk_include]/c`
-- `[path_to_project_root]`
-
-`path_to_mip_sdk_include` can be installed paths or source paths:
-- Unix - `/usr/include/microstrain`
-- Windows - `C:/Program Files/MIP_SDK/include/microstrain`
-- Source: `[mip_sdk_project_root]/src`
-
-#### Compiler Definitions
-Add these compiler definitions:
-- `MICROSTRAIN_LOGGING_MAX_LEVEL=MICROSTRAIN_LOGGING_LEVEL_INFO_` Sets the logging level to info which is the minimum required for this example
 
 ## Requirements
 

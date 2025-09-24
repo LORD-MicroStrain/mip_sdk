@@ -23,6 +23,67 @@ The example uses the following default settings:
 | `SAMPLE_RATE_HZ`   | `1`                                           | Data output rate in Hz               |
 | `RUN_TIME_SECONDS` | `30`                                          | Example runtime duration             |
 
+## Usage
+
+1. Connect your 7-series AHRS device to the specified serial port
+2. Update the `PORT_NAME` constant if using a different port
+3. Compile and run the example
+4. Follow the gyro bias capture prompt (keep the device stationary)
+5. The program will:
+    - Initialize the device
+    - Configure data streaming
+    - Wait for the filter to reach AHRS mode
+    - Stream data for the specified runtime
+    - Display filter state transitions
+    - Display real-time filter data
+    - Clean up and exit
+
+## Building
+
+### With CMake
+
+The project can be configured on its own using the supplied [CMakeLists.txt](CMakeLists.txt).
+The file is configured to work directly in the MIP SDK project or as a standalone project.
+If building outside the MIP SDK project, all that's needed is to define `MIP_SDK_ROOT_DIR`.
+When building within the MIP SDK project, make sure to enable the examples using the `MICROSTRAIN_BUILD_EXAMPLES`
+CMake option.
+
+#### Standalone Command Line
+```shell
+mkdir build
+cd build
+cmake .. -DMIP_SDK_ROOT_DIR:PATH=<path_to_mip_sdk>
+```
+
+### Without CMake
+
+When building manually, you need to configure the following:
+
+#### Required Libraries
+
+Link against these libraries:
+- `mip` - Core MIP SDK library
+- `microstrain` - Core MicroStrain SDK library
+- `microstrain_serial` - MicroStrain serial communication library
+
+Make sure to include those library paths as additional link directories if needed
+
+#### Include Directories
+
+Add these include directories:
+- `[path_to_mip_sdk_include]/c`
+- `[path_to_mip_sdk_include]/cpp`
+- `[path_to_project_root]`
+
+`path_to_mip_sdk_include` can be installed paths or source paths:
+- Unix - `/usr/include/microstrain`
+- Windows - `C:/Program Files/MIP_SDK/include/microstrain`
+- Source: `[mip_sdk_project_root]/src`
+
+#### Compiler Definitions
+Add these compiler definitions:
+- `MICROSTRAIN_LOGGING_MAX_LEVEL=MICROSTRAIN_LOGGING_LEVEL_INFO_` Sets the logging level to info which is the minimum required for this example
+
 ## Key Functions
 
 ### Device Setup
@@ -88,21 +149,6 @@ The example displays filter data in the following format:
 TOW = 123456.789     Euler Angles = [ 0.012345, -0.067890,  1.234567]
 ```
 
-## Usage
-
-1. Connect your 7-series AHRS device to the specified serial port
-2. Update the `PORT_NAME` constant if using a different port
-3. Compile and run the example
-4. Follow the gyro bias capture prompt (keep the device stationary)
-5. The program will:
-    - Initialize the device
-    - Configure data streaming
-    - Wait for the filter to reach AHRS mode
-    - Stream data for the specified runtime
-    - Display filter state transitions
-    - Display real-time filter data
-    - Clean up and exit
-
 ## Filter State Progression
 
 The example monitors and displays filter state transitions:
@@ -135,52 +181,6 @@ This example provides additional C++ benefits:
 - **Built-in Documentation**: Data structures include `DOC_NAME` constants for easy reference
 - **Strongly Typed Enums**: C++ enum classes prevent accidental misuse
 - **Automatic Descriptors**: `DESCRIPTOR` constants eliminate magic numbers
-
-## Building
-
-### With CMake
-
-The project can be configured on its own using the supplied [CMakeLists.txt](CMakeLists.txt).
-The file is configured to work directly in the MIP SDK project or as a standalone project.
-If building outside the MIP SDK project, all that's needed is to define `MIP_SDK_ROOT_DIR`.
-When building within the MIP SDK project, make sure to enable the examples using the `MICROSTRAIN_BUILD_EXAMPLES`
-CMake option.
-
-#### Standalone Command Line
-```shell
-mkdir build
-cd build
-cmake .. -DMIP_SDK_ROOT_DIR:PATH=<path_to_mip_sdk>
-```
-
-### Without CMake
-
-When building manually, you need to configure the following:
-
-#### Required Libraries
-
-Link against these libraries:
-- `mip` - Core MIP SDK library
-- `microstrain` - Core MicroStrain SDK library
-- `microstrain_serial` - MicroStrain serial communication library
-
-Make sure to include those library paths as additional link directories if needed
-
-#### Include Directories
-
-Add these include directories:
-- `[path_to_mip_sdk_include]/c`
-- `[path_to_mip_sdk_include]/cpp`
-- `[path_to_project_root]`
-
-`path_to_mip_sdk_include` can be installed paths or source paths:
-- Unix - `/usr/include/microstrain`
-- Windows - `C:/Program Files/MIP_SDK/include/microstrain`
-- Source: `[mip_sdk_project_root]/src`
-
-#### Compiler Definitions
-Add these compiler definitions:
-- `MICROSTRAIN_LOGGING_MAX_LEVEL=MICROSTRAIN_LOGGING_LEVEL_INFO_` Sets the logging level to info which is the minimum required for this example
 
 ## Requirements
 

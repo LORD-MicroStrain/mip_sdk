@@ -23,6 +23,64 @@ The example uses the following default settings:
 | `SAMPLE_RATE_HZ`   | `1`                                           | Data output rate in Hz               |
 | `RUN_TIME_SECONDS` | `30`                                          | Example runtime duration             |
 
+## Usage
+
+1. Connect your 7-series device to the specified serial port
+2. Update the `PORT_NAME` constant if using a different port
+3. Compile and run the example
+4. The program will:
+    - Initialize the device and query supported descriptors
+    - Configure data streaming
+    - Register callbacks for data processing
+    - Stream data for the specified runtime
+    - Display real-time sensor data
+    - Clean up and exit
+
+## Building
+
+### With CMake
+
+The project can be configured on its own using the supplied [CMakeLists.txt](CMakeLists.txt).
+The file is configured to work directly in the MIP SDK project or as a standalone project.
+If building outside the MIP SDK project, all that's needed is to define `MIP_SDK_ROOT_DIR`.
+When building within the MIP SDK project, make sure to enable the examples using the `MICROSTRAIN_BUILD_EXAMPLES`
+CMake option.
+
+#### Standalone Command Line
+```shell
+mkdir build
+cd build
+cmake .. -DMIP_SDK_ROOT_DIR:PATH=<path_to_mip_sdk>
+```
+
+### Without CMake
+
+When building manually, you need to configure the following:
+
+#### Required Libraries
+
+Link against these libraries:
+- `mip` - Core MIP SDK library
+- `microstrain` - Core MicroStrain SDK library
+- `microstrain_serial` - MicroStrain serial communication library
+
+Make sure to include those library paths as additional link directories if needed
+
+#### Include Directories
+
+Add these include directories:
+- `[path_to_mip_sdk_include]/c`
+- `[path_to_project_root]`
+
+`path_to_mip_sdk_include` can be installed paths or source paths:
+- Unix - `/usr/include/microstrain`
+- Windows - `C:/Program Files/MIP_SDK/include/microstrain`
+- Source: `[mip_sdk_project_root]/src`
+
+#### Compiler Definitions
+Add these compiler definitions:
+- `MICROSTRAIN_LOGGING_MAX_LEVEL=MICROSTRAIN_LOGGING_LEVEL_INFO_` Sets the logging level to info which is the minimum required for this example
+
 ## Key Functions
 
 ### Device Setup
@@ -90,19 +148,6 @@ The example streams the following IMU sensor data:
 - **Format**: [X, Y, Z] scaled magnetic field vector
 - **Note**: Automatically detected and configured if available
 
-## Usage
-
-1. Connect your 7-series device to the specified serial port
-2. Update the `PORT_NAME` constant if using a different port
-3. Compile and run the example
-4. The program will:
-    - Initialize the device and query supported descriptors
-    - Configure data streaming
-    - Register callbacks for data processing
-    - Stream data for the specified runtime
-    - Display real-time sensor data
-    - Clean up and exit
-
 ## Streaming Output Format
 
 The example displays sensor data in the following format:
@@ -128,51 +173,6 @@ This example demonstrates:
 - Direct hardware interface programming
 - Efficient memory usage patterns
 - Cross-platform serial communication
-
-## Building
-
-### With CMake
-
-The project can be configured on its own using the supplied [CMakeLists.txt](CMakeLists.txt).
-The file is configured to work directly in the MIP SDK project or as a standalone project.
-If building outside the MIP SDK project, all that's needed is to define `MIP_SDK_ROOT_DIR`.
-When building within the MIP SDK project, make sure to enable the examples using the `MICROSTRAIN_BUILD_EXAMPLES`
-CMake option.
-
-#### Standalone Command Line
-```shell
-mkdir build
-cd build
-cmake .. -DMIP_SDK_ROOT_DIR:PATH=<path_to_mip_sdk>
-```
-
-### Without CMake
-
-When building manually, you need to configure the following:
-
-#### Required Libraries
-
-Link against these libraries:
-- `mip` - Core MIP SDK library
-- `microstrain` - Core MicroStrain SDK library
-- `microstrain_serial` - MicroStrain serial communication library
-
-Make sure to include those library paths as additional link directories if needed
-
-#### Include Directories
-
-Add these include directories:
-- `[path_to_mip_sdk_include]/c`
-- `[path_to_project_root]`
-
-`path_to_mip_sdk_include` can be installed paths or source paths:
-- Unix - `/usr/include/microstrain`
-- Windows - `C:/Program Files/MIP_SDK/include/microstrain`
-- Source: `[mip_sdk_project_root]/src`
-
-#### Compiler Definitions
-Add these compiler definitions:
-- `MICROSTRAIN_LOGGING_MAX_LEVEL=MICROSTRAIN_LOGGING_LEVEL_INFO_` Sets the logging level to info which is the minimum required for this example
 
 ## Requirements
 

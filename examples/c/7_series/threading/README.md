@@ -26,6 +26,65 @@ The example uses the following default settings:
 | `RUN_TIME_SECONDS` | `30`                                          | Example runtime duration                |
 | `USE_THREADS`      | `true`                                        | Enable/disable threading (compile-time) |
 
+## Usage
+
+1. Connect your 7-series device to the specified serial port
+2. Update the `PORT_NAME` constant if using a different port
+3. Set `USE_THREADS` to `true` to enable threading (default)
+4. Compile and run the example
+5. The program will:
+    - Initialize the device and threading infrastructure
+    - Start a dedicated data collection thread
+    - Execute stress testing with rapid ping commands
+    - Display received packet information
+    - Perform thread cleanup and exit
+
+## Building
+
+### With CMake
+
+The project can be configured on its own using the supplied [CMakeLists.txt](CMakeLists.txt).
+The file is configured to work directly in the MIP SDK project or as a standalone project.
+If building outside the MIP SDK project, all that's needed is to define `MIP_SDK_ROOT_DIR`.
+When building within the MIP SDK project, make sure to enable the examples using the `MICROSTRAIN_BUILD_EXAMPLES`
+CMake option.
+
+#### Standalone Command Line
+```shell
+mkdir build
+cd build
+cmake .. -DMIP_SDK_ROOT_DIR:PATH=<path_to_mip_sdk>
+```
+
+### Without CMake
+
+When building manually, you need to configure the following:
+
+#### Required Libraries
+
+Link against these libraries:
+- `mip` - Core MIP SDK library
+- `microstrain` - Core MicroStrain SDK library
+- `microstrain_serial` - MicroStrain serial communication library
+- `pthread` - Threading library (not MSVC)
+
+Make sure to include those library paths as additional link directories if needed
+
+#### Include Directories
+
+Add these include directories:
+- `[path_to_mip_sdk_include]/c`
+- `[path_to_project_root]`
+
+`path_to_mip_sdk_include` can be installed paths or source paths:
+- Unix - `/usr/include/microstrain`
+- Windows - `C:/Program Files/MIP_SDK/include/microstrain`
+- Source: `[mip_sdk_project_root]/src`
+
+#### Compiler Definitions
+Add these compiler definitions:
+- `MICROSTRAIN_LOGGING_MAX_LEVEL=MICROSTRAIN_LOGGING_LEVEL_INFO_` Sets the logging level to info which is the minimum required for this example
+
 ## Key Functions
 
 ### Device Setup
@@ -94,19 +153,6 @@ The example implements thread-aware communication handlers:
 - **Update Function**: Context-aware device state updates
 - **Stress Testing**: Rapid command execution to test thread safety
 
-## Usage
-
-1. Connect your 7-series device to the specified serial port
-2. Update the `PORT_NAME` constant if using a different port
-3. Set `USE_THREADS` to `true` to enable threading (default)
-4. Compile and run the example
-5. The program will:
-    - Initialize the device and threading infrastructure
-    - Start a dedicated data collection thread
-    - Execute stress testing with rapid ping commands
-    - Display received packet information
-    - Perform thread cleanup and exit
-
 ## Error Handling
 
 The example includes comprehensive error handling with:
@@ -131,52 +177,6 @@ The example includes platform-specific threading support:
 - **Unix/Linux**: Native pthread support
 - **Windows (MSVC)**: Custom pthread wrapper using C11 threads.h
 - **Cross-Platform**: Unified interface regardless of platform
-
-## Building
-
-### With CMake
-
-The project can be configured on its own using the supplied [CMakeLists.txt](CMakeLists.txt).
-The file is configured to work directly in the MIP SDK project or as a standalone project.
-If building outside the MIP SDK project, all that's needed is to define `MIP_SDK_ROOT_DIR`.
-When building within the MIP SDK project, make sure to enable the examples using the `MICROSTRAIN_BUILD_EXAMPLES`
-CMake option.
-
-#### Standalone Command Line
-```shell
-mkdir build
-cd build
-cmake .. -DMIP_SDK_ROOT_DIR:PATH=<path_to_mip_sdk>
-```
-
-### Without CMake
-
-When building manually, you need to configure the following:
-
-#### Required Libraries
-
-Link against these libraries:
-- `mip` - Core MIP SDK library
-- `microstrain` - Core MicroStrain SDK library
-- `microstrain_serial` - MicroStrain serial communication library
-- `pthread` - Threading library (not MSVC)
-
-Make sure to include those library paths as additional link directories if needed
-
-#### Include Directories
-
-Add these include directories:
-- `[path_to_mip_sdk_include]/c`
-- `[path_to_project_root]`
-
-`path_to_mip_sdk_include` can be installed paths or source paths:
-- Unix - `/usr/include/microstrain`
-- Windows - `C:/Program Files/MIP_SDK/include/microstrain`
-- Source: `[mip_sdk_project_root]/src`
-
-#### Compiler Definitions
-Add these compiler definitions:
-- `MICROSTRAIN_LOGGING_MAX_LEVEL=MICROSTRAIN_LOGGING_LEVEL_INFO_` Sets the logging level to info which is the minimum required for this example
 
 ## Requirements
 
