@@ -34,13 +34,11 @@ def checkoutRepo() {
 // Utility function to build the MIP SDK on linux
 // This function requires BUILD_OS and BUILD_ARCH to have been set in the environment before it is called
 def buildMipSdkLinux() {
-    // Build the docker image
-    sh '''
+    sh(label: 'Build docker image', script: '''
         ./.devcontainer/docker_build_image.sh --os ${BUILD_OS} --arch ${BUILD_ARCH}
-    '''
+    ''')
 
-    // Build the MIP packages
-    sh '''
+    sh(label: 'Build MIP SDK', script: '''
         ./.devcontainer/docker_shell.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
             cmake \
                 -B build_${BUILD_OS}_${BUILD_ARCH} \
@@ -53,25 +51,41 @@ def buildMipSdkLinux() {
                 --target package \
                 -j $(nproc);
         "
-    '''
+    ''')
+    dir("build_${BUILD_OS}_${BUILD_ARCH}") {
+        archiveArtifacts artifacts: "mipsdk_*"
+    }
 
-    // Run the tests
-    sh '''
+    sh(label: 'Unit tests', script: '''
         ./.devcontainer/docker_shell.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
             ctest \
                 --test-dir build_${BUILD_OS}_${BUILD_ARCH} \
                 -C Release \
+                -L unit \
                 --verbose \
                 --output-on-failure \
                 --output-junit unit_test_results.xml \
                 --parallel $(nproc); \
         "
-    '''
-
-    // Archive the artifacts and save the unit test results 
+    ''')
     dir("build_${BUILD_OS}_${BUILD_ARCH}") {
-        archiveArtifacts artifacts: "mipsdk_*"
         junit testResults: "unit_test_results.xml", allowEmptyResults: false
+    }
+
+    sh(label: 'Integration tests', script: '''
+        ./.devcontainer/docker_shell.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
+            ctest \
+                --test-dir build_${BUILD_OS}_${BUILD_ARCH} \
+                -C Release \
+                -L integration \
+                --verbose \
+                --output-on-failure \
+                --output-junit integration_test_results.xml \
+                --parallel $(nproc); \
+        "
+    ''')
+    dir("build_${BUILD_OS}_${BUILD_ARCH}") {
+        junit testResults: "integration_test_results.xml", allowEmptyResults: false
     }
 }
 
