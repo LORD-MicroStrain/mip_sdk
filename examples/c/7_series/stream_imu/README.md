@@ -38,7 +38,7 @@ The example uses the following default settings, which should be adjusted based 
 
 ## Building
 
-### With CMake
+### With CMake (Recommended)
 
 The project can be configured on its own using the supplied [CMakeLists.txt](CMakeLists.txt).
 The file is configured to work directly in the MIP SDK project or as a standalone project.
@@ -55,7 +55,7 @@ cmake .. -DMIP_SDK_ROOT_DIR:PATH=<path_to_mip_sdk>
 
 ### Without CMake
 
-When building manually, you need to configure the following:
+ If the project cannot be configured using CMake, then the following project configurations are required:
 
 #### Required Libraries
 
