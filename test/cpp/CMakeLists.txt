@@ -16,6 +16,7 @@ doctest_discover_tests(UnitTests
 
 add_executable(IntegrationTests
     "mip.integration.cpp"
+    # TODO: Broken, can't be fixed until naming conventions decided
     "packet_interface.integration.cpp"
 )
 

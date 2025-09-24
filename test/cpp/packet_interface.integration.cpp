@@ -154,10 +154,8 @@ TEST("Packet buffer", "Packet buffer construction works as expected")
 
     // Create from field
     // TODO: Fix
-    /*
     mip::PacketBuf packet10(ACCEL_FIELD);
     checkPacketBuf(packet10, ACCEL_PKT, "PacketBuf field constructor");
-    */
 
     // .ref() already tested
     // .buffer() already tested
