@@ -1,10 +1,7 @@
-
-#include "testutil_strings.h"
-
-#include <microstrain/strings.h>
-
 #include <string.h>
 
+#include <microstrain/strings.h>
+#include <microstrain_test.hpp>
 
 void string_concat_to_empty_unterminated_buffer_works()
 {
