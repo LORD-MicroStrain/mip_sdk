@@ -1,4 +1,2 @@
-#[[
-add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/microstrain")
-add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/mip")
-]]
+add_subdirectory("microstrain")
+#add_subdirectory("mip")

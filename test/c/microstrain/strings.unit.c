@@ -1,8 +1,10 @@
 #include <string.h>
 
-#include <microstrain/strings.h>
-#include <microstrain_test.hpp>
+#include <unity.h>
 
+#include <microstrain/strings.h>
+
+/*
 void string_concat_to_empty_unterminated_buffer_works()
 {
     char buffer[10];
@@ -174,3 +176,4 @@ int main()
 
     return (int)g_fail_count;
 }
+*/

@@ -1,5 +1,7 @@
 #[[
-    Main CMake file for the test suite. Responsible for orchestrating test building and execution.
+    Main CMake file for the test suite.
+
+    Responsible for orchestrating test building and execution.
 #]]
 
 # ---------------------------------------------------------------
@@ -13,12 +15,14 @@ add_executable(IntegrationTests)
 # Subdirectories
 # ---------------------------------------------------------------
 
-add_subdirectory("microstrain_test")
 add_subdirectory("c")
 
 if(MICROSTRAIN_ENABLE_CPP)
     add_subdirectory("cpp")
 endif()
+
+add_subdirectory("microstrain_test")
+add_subdirectory("unity")
 
 # ---------------------------------------------------------------
 # Library linking
@@ -27,6 +31,7 @@ endif()
 target_link_libraries(UnitTests
     ${MIP_LIBRARY}
     microstrain_test
+    unity
 )
 
 target_link_libraries(IntegrationTests

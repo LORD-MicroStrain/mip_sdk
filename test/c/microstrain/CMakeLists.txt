@@ -1,3 +1,7 @@
-include(${doctest_SOURCE_DIR}/scripts/cmake/doctest.cmake)
+target_sources(UnitTests PRIVATE
+    "strings.unit.c"
+)
 
-add_executable()
+target_sources(IntegrationTests PRIVATE
+    # TODO: Add
+)
