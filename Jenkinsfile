@@ -56,12 +56,13 @@ def buildMipSdkLinux() {
         archiveArtifacts artifacts: "mipsdk_*"
     }
 
-    sh(label: 'Unit tests', script: '''
+    sh(label: 'Run unit tests', script: '''
         ./.devcontainer/docker_shell.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
             ctest \
                 --test-dir build_${BUILD_OS}_${BUILD_ARCH} \
                 -C Release \
                 -L unit \
+                --no-tests-error \
                 --verbose \
                 --output-on-failure \
                 --output-junit unit_test_results.xml \
@@ -78,6 +79,7 @@ def buildMipSdkLinux() {
                 --test-dir build_${BUILD_OS}_${BUILD_ARCH} \
                 -C Release \
                 -L integration \
+                --no-tests-error \
                 --verbose \
                 --output-on-failure \
                 --output-junit integration_test_results.xml \
