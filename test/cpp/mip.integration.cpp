@@ -56,6 +56,7 @@ bool packetCallback(void*, const PacketView *parsedPacket, Timestamp timestamp)
 
 TEST("Packet Builder", "Packets can be built and parsed correctly")
 {
+    FAIL_IF_NOT_TRUE(false); // TODO: Remove
     std::random_device random_device;
     std::mt19937 random_generator(random_device());
     std::uniform_int_distribution<int> field_descriptor_distribution(1, 255);
