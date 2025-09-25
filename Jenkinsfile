@@ -31,6 +31,87 @@ def checkoutRepo() {
   env.setProperty('BRANCH_NAME', branchName())
 }
 
+// Utility function to build the MIP SDK on linux
+// This function requires BUILD_OS and BUILD_ARCH to have been set in the environment before it is called
+def buildMipSdkLinux() {
+    // Build the docker image 
+    sh '''
+        ./.devcontainer/docker_build_image.sh --os ${BUILD_OS} --arch ${BUILD_ARCH}
+    '''
+
+    // Build the MIP packages
+    sh '''
+        ./.devcontainer/docker_shell.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
+            cmake \
+                -B build_${BUILD_OS}_${BUILD_ARCH} \
+                -DMICROSTRAIN_BUILD_EXAMPLES=ON \
+                -DMICROSTRAIN_BUILD_PACKAGE=ON \
+                -DMICROSTRAIN_BUILD_TESTS=ON \
+                -DCMAKE_BUILD_TYPE=RELEASE; \
+            cmake \
+                --build build_${BUILD_OS}_${BUILD_ARCH} \
+                --target package \
+                -j $(nproc);
+        "
+    '''
+
+    // Run the tests
+    sh '''
+        ./.devcontainer/docker_shell.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
+            ctest \
+                --test-dir build_${BUILD_OS}_${BUILD_ARCH} \
+                -C Release \
+                --verbose \
+                --output-on-failure \
+                --output-junit unit_test_results.xml \
+                --parallel $(nproc); \
+        "
+    '''
+
+    // Archive the artifacts and save the unit test results 
+    dir("build_${BUILD_OS}_${BUILD_ARCH}") {
+        archiveArtifacts artifacts: "mipsdk_*"
+        junit testResults: "unit_test_results.xml", allowEmptyResults: false
+    }
+}
+
+// Utility function to build the MIP SDK on windows
+// This functions requires BUILD_ARCH to have been set in the environment before it is called
+def buildMipSdkWindows() {
+    // Build the MIP packages
+    powershell """
+        cmake `
+            -B "build_${BUILD_ARCH}" `
+            -A "${BUILD_ARCH}" `
+            -DMICROSTRAIN_BUILD_EXAMPLES=ON `
+            -DMICROSTRAIN_BUILD_PACKAGE=ON `
+            -DMICROSTRAIN_BUILD_TESTS=ON
+        cmake `
+            --build "build_${BUILD_ARCH}" `
+            --config Release `
+            --parallel \$env:NUMBER_OF_PROCESSORS `
+            --target package
+
+    """
+
+    // Run the tests
+    powershell """
+        ctest `
+            --test-dir "build_${BUILD_ARCH}" `
+            -C Release `
+            --verbose `
+            --output-on-failure `
+            --output-junit unit_test_results.xml `
+            --parallel \$env:NUMBER_OF_PROCESSORS
+    """
+
+    // Archive the artifacts and save the unit test results 
+    dir("build_${BUILD_ARCH}") {
+        archiveArtifacts artifacts: "mipsdk_*"
+        junit testResults: "unit_test_results.xml", allowEmptyResults: false
+    }
+}
+
 pipeline {
     agent none
     options {
@@ -59,7 +140,26 @@ pipeline {
                     steps {
                         script {
                             checkoutRepo()
-                            sh "./.devcontainer/docker_build.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} --docs"
+
+                            // Build the docker image 
+                            sh '''
+                                ./.devcontainer/docker_build_image.sh --os ${BUILD_OS} --arch ${BUILD_ARCH}
+                            '''
+
+                            // Build the documentation
+                            sh '''
+                                ./.devcontainer/docker_shell.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
+                                    cmake \
+                                        -B build_docs \
+                                        -DMICROSTRAIN_BUILD_DOCUMENTATION=ON \
+                                        -DMICROSTRAIN_BUILD_DOCUMENTATION_QUIET=OFF \
+                                        -DCMAKE_BUILD_TYPE=RELEASE; \
+                                    cmake \
+                                        --build build_docs \
+                                        --target package_docs \
+                                        -j $(nproc)
+                                "
+                            '''
                             archiveArtifacts artifacts: "build_docs/mipsdk_*"
                         }
                     }
@@ -78,28 +178,7 @@ pipeline {
                     steps {
                         script {
                             checkoutRepo()
-                            dir("build_${BUILD_ARCH}") {
-                                powershell """
-                                    cmake .. `
-                                        -A "${BUILD_ARCH}" `
-                                        -DMICROSTRAIN_BUILD_EXAMPLES=ON `
-                                        -DMICROSTRAIN_BUILD_PACKAGE=ON `
-                                        -DMICROSTRAIN_BUILD_TESTS=ON
-                                    cmake --build . --config Release --parallel \$env:NUMBER_OF_PROCESSORS
-                                    cmake --build . --config Release --parallel \$env:NUMBER_OF_PROCESSORS --target package
-
-                                """
-                                archiveArtifacts artifacts: "mipsdk_*"
-                                powershell """
-                                    ctest `
-                                        -C Release `
-                                        --verbose `
-                                        --output-on-failure `
-                                        --output-junit unit_test_results.xml `
-                                        --parallel \$env:NUMBER_OF_PROCESSORS
-                                """
-                                junit testResults: "unit_test_results.xml", allowEmptyResults: false
-                            }
+                            buildMipSdkWindows()
                         }
                     }
                 }
@@ -117,28 +196,7 @@ pipeline {
                     steps {
                         script {
                             checkoutRepo()
-                            dir("build_${BUILD_ARCH}") {
-                                powershell """
-                                    cmake .. `
-                                        -A "${BUILD_ARCH}" `
-                                        -DMICROSTRAIN_BUILD_EXAMPLES=ON `
-                                        -DMICROSTRAIN_BUILD_PACKAGE=ON `
-                                        -DMICROSTRAIN_BUILD_TESTS=ON
-                                    cmake --build . --config Release --parallel \$env:NUMBER_OF_PROCESSORS
-                                    cmake --build . --config Release --parallel \$env:NUMBER_OF_PROCESSORS --target package
-
-                                """
-                                archiveArtifacts artifacts: "mipsdk_*"
-                                powershell """
-                                    ctest `
-                                        -C Release `
-                                        --verbose `
-                                        --output-on-failure `
-                                        --output-junit unit_test_results.xml `
-                                        --parallel \$env:NUMBER_OF_PROCESSORS
-                                """
-                                junit testResults: "unit_test_results.xml", allowEmptyResults: false
-                            }
+                            buildMipSdkWindows()
                         }
                     }
                 }
@@ -157,11 +215,7 @@ pipeline {
                     steps {
                         script {
                             checkoutRepo()
-                            sh "./.devcontainer/docker_build.sh --os ${BUILD_OS} --arch ${BUILD_ARCH}"
-                            dir("build_${BUILD_OS}_${BUILD_ARCH}") {
-                                archiveArtifacts artifacts: "mipsdk_*"
-                                junit testResults: "unit_test_results.xml", allowEmptyResults: false
-                            }
+                            buildMipSdkLinux()
                         }
                     }
                 }
@@ -180,11 +234,7 @@ pipeline {
                     steps {
                         script {
                             checkoutRepo()
-                            sh "./.devcontainer/docker_build.sh --os ${BUILD_OS} --arch ${BUILD_ARCH}"
-                            dir("build_${BUILD_OS}_${BUILD_ARCH}") {
-                                archiveArtifacts artifacts: "mipsdk_*"
-                                junit testResults: "unit_test_results.xml", allowEmptyResults: false
-                            }
+                            buildMipSdkLinux()
                         }
                     }
                 }
@@ -203,11 +253,7 @@ pipeline {
                     steps {
                         script {
                             checkoutRepo()
-                            sh "./.devcontainer/docker_build.sh --os ${BUILD_OS} --arch ${BUILD_ARCH}"
-                            dir("build_${BUILD_OS}_${BUILD_ARCH}") {
-                                archiveArtifacts artifacts: "mipsdk_*"
-                                junit testResults: "unit_test_results.xml", allowEmptyResults: false
-                            }
+                            buildMipSdkLinux()
                         }
                     }
                 }
