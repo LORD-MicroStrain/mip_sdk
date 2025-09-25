@@ -7,11 +7,14 @@
 ///
 /// @brief Example setup program for the 3DM-CV7-INS, and 3DM-GV7-INS using C
 ///
-/// @details This example shows a basic setup for the 3DM-CV7-INS, and
-///          3DM-GV7-INS with external aiding measurements using C. This is not
-///          an exhaustive example of all settings for those devices. If this
-///          example does not meet your specific setup needs, please consult the
-///          MIP SDK API documentation for the proper commands.
+/// @details This example shows a basic setup to configure the navigation filter
+///          with external heading, and GNSS position and velocity as the
+///          heading sources to stream filter data using simulated external
+///          aiding measurements for the 3DM-CV7-INS, and 3DM-GV7-INS with
+///          external aiding measurements using C. This is not an exhaustive
+///          example of all settings for those devices. If this example does not
+///          meet your specific setup needs, please consult the MIP SDK API
+///          documentation for the proper commands.
 ///
 /// @section _7_series_ins_example_c_license License
 ///

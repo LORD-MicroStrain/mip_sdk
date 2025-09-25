@@ -8,11 +8,13 @@
 /// @brief Example setup program for the 3DM-CX5-GNSS/INS, and 3DM-GX5-GNSS/INS
 ///        using C
 ///
-/// @details This example shows a basic setup for the 3DM-CX5-GNSS/INS, and
-///          3DM-GX5-GNSS/INS devices using C. This is not an exhaustive example
-///          of all settings for those devices. If this example does not meet
-///          your specific setup needs, please consult the MIP SDK API
-///          documentation for the proper commands.
+/// @details This example shows a basic setup to configure the navigation filter
+///          with GNSS velocity and magnetometer as the heading source to stream
+///          filter data for the 3DM-CX5-GNSS/INS, and 3DM-GX5-GNSS/INS devices
+///          using C. This is not an exhaustive example of all settings for
+///          those devices. If this example does not meet your specific setup
+///          needs, please consult the MIP SDK API documentation for the proper
+///          commands.
 ///
 /// @section _5_series_gnss_ins_example_c_license License
 ///

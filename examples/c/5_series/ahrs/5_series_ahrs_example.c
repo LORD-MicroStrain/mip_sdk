@@ -8,11 +8,12 @@
 /// @brief Example setup program for the 3DM-CX5-AHRS, 3DM-CV5-AHRS, and
 ///        3DM-GX5-AHRS using C
 ///
-/// @details This example shows a basic setup for the 3DM-CX5-AHRS,
-///          3DM-CV5-AHRS, and 3DM-GX5-AHRS using C. This is not an exhaustive
-///          example of all settings for those devices. If this example does not
-///          meet your specific setup needs, please consult the MIP SDK API
-///          documentation for the proper commands.
+/// @details This example shows a basic setup to configure the attitude filter
+///          with magnetometer as the heading source to stream filter data for
+///          the 3DM-CX5-AHRS, 3DM-CV5-AHRS, and 3DM-GX5-AHRS using C. This is
+///          not an exhaustive example of all settings for those devices. If
+///          this example does not meet your specific setup needs, please
+///          consult the MIP SDK API documentation for the proper commands.
 ///
 /// @section _5_series_ahrs_example_c_license License
 ///

@@ -8,8 +8,9 @@
 /// @brief Example setup program for the 3DM-CX5-AR, 3DM-CV5-AR, and 3DM-GX5-AR
 ///        using C
 ///
-/// @details This example shows a basic setup for the 3DM-CX5-AR, 3DM-CV5-AR,
-///          and 3DM-GX5-AR using C. This is not an exhaustive example of all
+/// @details This example shows a basic setup to configure the attitude filter
+///          to stream filter data for the 3DM-CX5-AR, 3DM-CV5-AR, and
+///          3DM-GX5-AR using C. This is not an exhaustive example of all
 ///          settings for those devices. If this example does not meet your
 ///          specific setup needs, please consult the MIP SDK API documentation
 ///          for the proper commands.
