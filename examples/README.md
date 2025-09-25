@@ -4,7 +4,7 @@ This directory contains comprehensive examples demonstrating how to use the MIP 
 sensors. The examples are organized by device series and programming language, providing both C and C++ 
 implementations for most use cases.
 
-## MicroStrain Device Overview
+## MicroStrain Inertial Device Overview
 
 ### 7-Series Devices
 
