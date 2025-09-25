@@ -27,6 +27,8 @@ The example uses the following default settings, which should be adjusted based 
 
 ## GNSS Antenna Configuration
 
+***Please consult the device's user manual for more information on proper configuration of the antennas***</br>
+This example requires connected dual antennas with proper configuration and a clear sky view.</br>
 The example configures dual-antenna GNSS setup for enhanced navigation accuracy and heading determination:
 
 | Antenna ID | Purpose                | Translation     | Description                                                           |
@@ -37,7 +39,8 @@ The example configures dual-antenna GNSS setup for enhanced navigation accuracy 
 ## Usage
 
 1. Connect your 7-series GNSS/INS device to the specified serial port
-2. Update the [configuration options](#configurable-options) based on your application needs
+2. Update the [configuration options](#configurable-options) and the [antenna offset](#gnss-antenna-configuration) based
+   on your application needs
 3. Update the `WHEELED_VEHICLE_APPLICATION` constant if using a wheeled-vehicle application
 4. Compile and run the example
 5. Follow the gyro bias capture prompt (keep the device stationary)

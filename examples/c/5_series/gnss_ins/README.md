@@ -24,10 +24,21 @@ The example uses the following default settings, which should be adjusted based 
 | `SAMPLE_RATE_HZ`   | `1`                                           | Data output rate in Hz               |
 | `RUN_TIME_SECONDS` | `30`                                          | Example runtime duration             |
 
+## GNSS Antenna Configuration
+
+***Please consult the device's user manual for more information on proper configuration of the antenna***</br>
+This example requires a connected antenna with proper configuration and a clear sky view.</br>
+The example configures antenna GNSS setup for enhanced navigation accuracy:
+
+| Translation     | Description                                             |
+|-----------------|---------------------------------------------------------|
+| [-0.25, 0, 0] m | GNSS receiver positioned 0.25m behind the device center |
+
 ## Usage
 
 1. Connect your 5-series GNSS/INS device to the specified serial port
-2. Update the [configuration options](#configurable-options) based on your application needs
+2. Update the [configuration options](#configurable-options) and the [antenna offset](#gnss-antenna-configuration) based
+   on your application needs
 3. Compile and run the example
 4. Follow the gyro bias capture prompt (keep the device stationary)
 5. The program will:
