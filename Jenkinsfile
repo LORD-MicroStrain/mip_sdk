@@ -31,8 +31,7 @@ def checkoutRepo() {
   env.setProperty('BRANCH_NAME', branchName())
 }
 
-// Utility function to build the MIP SDK on linux
-// This function requires BUILD_OS and BUILD_ARCH to have been set in the environment before it is called
+// Build steps for Linux. Requires BUILD_OS and BUILD_ARCH to be set.
 def buildMipSdkLinux() {
     sh(label: 'Build docker image', script: '''
         ./.devcontainer/docker_build_image.sh --os ${BUILD_OS} --arch ${BUILD_ARCH}
@@ -93,11 +92,9 @@ def buildMipSdkLinux() {
     }
 }
 
-// Utility function to build the MIP SDK on windows
-// This functions requires BUILD_ARCH to have been set in the environment before it is called
+// Build steps for Windows. Requires BUILD_ARCH to be set.
 def buildMipSdkWindows() {
-    // Build
-    powershell """
+    powershell(label: 'Build MIP SDK', script: """
         cmake `
             -B "build_${BUILD_ARCH}" `
             -A "${BUILD_ARCH}" `
@@ -110,37 +107,39 @@ def buildMipSdkWindows() {
             --parallel \$env:NUMBER_OF_PROCESSORS `
             --target package
 
-    """
+    """)
     dir("build_${BUILD_ARCH}") {
         archiveArtifacts artifacts: "mipsdk_*"
     }
 
-    // Unit tests
-    powershell """
-        ctest `
-            --test-dir "build_${BUILD_ARCH}" `
-            -C Release `
-            -L unit `
-            --verbose `
-            --output-on-failure `
-            --output-junit unit_test_results.xml `
-            --parallel \$env:NUMBER_OF_PROCESSORS
-    """
+    catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE') {
+        powershell(label: 'Run unit tests', script: """
+            ctest `
+                --test-dir "build_${BUILD_ARCH}" `
+                -C Release `
+                -L unit `
+                --verbose `
+                --output-on-failure `
+                --output-junit unit_test_results.xml `
+                --parallel \$env:NUMBER_OF_PROCESSORS
+        """)
+    }
     dir("build_${BUILD_ARCH}") {
         junit testResults: "unit_test_results.xml", allowEmptyResults: false
     }
 
-    // Integration tests
-    powershell """
-        ctest `
-            --test-dir "build_${BUILD_ARCH}" `
-            -C Release `
-            -L integration `
-            --verbose `
-            --output-on-failure `
-            --output-junit integration_test_results.xml `
-            --parallel \$env:NUMBER_OF_PROCESSORS
-    """
+    catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE') {
+        powershell(label: 'Run integration tests', script: """
+            ctest `
+                --test-dir "build_${BUILD_ARCH}" `
+                -C Release `
+                -L integration `
+                --verbose `
+                --output-on-failure `
+                --output-junit integration_test_results.xml `
+                --parallel \$env:NUMBER_OF_PROCESSORS
+        """)
+    }
     dir("build_${BUILD_ARCH}") {
         junit testResults: "integration_test_results.xml", allowEmptyResults: false
     }
@@ -148,7 +147,6 @@ def buildMipSdkWindows() {
 
 def buildDocumentation() {
     // Build the docker image
-/*
     sh '''
         ./.devcontainer/docker_build_image.sh --os ${BUILD_OS} --arch ${BUILD_ARCH}
     '''
@@ -169,7 +167,6 @@ def buildDocumentation() {
     '''
 
     archiveArtifacts artifacts: "build_docs/mipsdk_*"
- */
 }
 
 pipeline {
@@ -204,7 +201,6 @@ pipeline {
                         }
                     }
                 }
-/*
                 stage('Windows x86') {
                     agent {
                         label 'windows10'
@@ -241,7 +237,6 @@ pipeline {
                         }
                     }
                 }
- */
                 stage('Ubuntu amd64') {
                     agent {
                         label 'linux-amd64'
@@ -261,7 +256,6 @@ pipeline {
                         }
                     }
                 }
-/*
                 stage('Ubuntu arm64') {
                     agent {
                         label 'linux-arm64'
@@ -300,7 +294,6 @@ pipeline {
                         }
                     }
                 }
- */
 //                 stage("Mac M2") {
 //                     agent {
 //                         label 'mac-m2'
