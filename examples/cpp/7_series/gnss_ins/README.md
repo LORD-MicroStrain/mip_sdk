@@ -1,7 +1,7 @@
 # 7 Series GNSS/INS Example (C++)
 
-This example demonstrates how to configure and use a MicroStrain 7-series GNSS/INS device with the MIP SDK using the
-C++ API.
+This example demonstrates how to configure the navigation filter with GNSS heading, and GNSS position and velocity as
+the heading sources to stream filter data on a MicroStrain 7-series GNSS/INS device with the MIP SDK using the C++ API.
 
 ## Overview
 

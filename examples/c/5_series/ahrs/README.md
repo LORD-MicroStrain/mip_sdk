@@ -1,6 +1,7 @@
 # 5 Series AHRS Example (C)
 
-This example demonstrates how to configure and use a MicroStrain 5-series AHRS device with the MIP SDK using the C API.
+This example demonstrates how to configure the attitude filter with magnetometer as the heading source to stream filter
+data on a MicroStrain 5-series AHRS device with the MIP SDK using the C API.
 
 ## Overview
 

@@ -1,6 +1,7 @@
 # 5 Series AR Example (C)
 
-This example demonstrates how to configure and use a MicroStrain 5-series AR device with the MIP SDK using the C API.
+This example demonstrates how to configure the attitude filter to stream filter data on a MicroStrain 5-series AR device
+with the MIP SDK using the C API.
 
 ## Overview
 

@@ -9,7 +9,7 @@ The example showcases basic IMU sensor data streaming setup and operation of a 5
 - Device initialization and communication
 - Sensor message format configuration
 - Real-time data streaming and display
-- Dynamic magnetometer support detection
+- Dynamic magnetometer support detection (device feature check)
 - Basic packet and field-level callbacks
 
 ## Configurable Options
@@ -85,7 +85,7 @@ Add these compiler definitions:
 
 ### Device Setup
 - `initialize_device()` - Establishes communication, validates device connection, and loads defaults
-- `is_descriptor_supported()` - Checks device capabilities for sensor data types
+- `is_descriptor_supported()` - Checks device capabilities for supported data types
 
 ### Message Configuration
 - `configure_sensor_message_format()` - Configures IMU sensor data output including:
