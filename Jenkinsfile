@@ -55,7 +55,7 @@ def buildMipSdkLinux() {
         archiveArtifacts artifacts: "mipsdk_*"
     }
 
-    catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE') {
+    catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', catchInterruptions: false) {
         sh(label: 'Run unit tests', script: '''
             ./.devcontainer/docker_shell.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
                 ctest \
@@ -73,7 +73,7 @@ def buildMipSdkLinux() {
         junit testResults: "unit_test_results.xml", allowEmptyResults: false
     }
 
-    catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE') {
+    catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', catchInterruptions: false) {
         sh(label: 'Run integration tests', script: '''
             ./.devcontainer/docker_shell.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
                 ctest \
@@ -112,7 +112,7 @@ def buildMipSdkWindows() {
         archiveArtifacts artifacts: "mipsdk_*"
     }
 
-    catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE') {
+    catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', catchInterruptions: false) {
         powershell(label: 'Run unit tests', script: """
             ctest `
                 --test-dir "build_${BUILD_ARCH}" `
@@ -128,7 +128,7 @@ def buildMipSdkWindows() {
         junit testResults: "unit_test_results.xml", allowEmptyResults: false
     }
 
-    catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE') {
+    catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', catchInterruptions: false) {
         powershell(label: 'Run integration tests', script: """
             ctest `
                 --test-dir "build_${BUILD_ARCH}" `
