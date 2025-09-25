@@ -15,7 +15,7 @@ TEST("C++ string concatenation", "A char array view can be concatenated to a buf
 
     const bool ok = microstrain::strings::concat(buffer, &index, microstrain::ConstCharArrayView{CHECK_STRING});
 
-    FAIL_IF_NOT_TRUE(!ok); // TODO: Change back
+    FAIL_IF_NOT_TRUE(ok);
     FAIL_IF_C_STRINGS_NOT_EQUAL(buffer, CHECK_STRING);
     FAIL_IF_CHAR_NOT_EQUAL(buffer[CHECK_STRING_LENGTH], '\0');
 }

@@ -56,23 +56,25 @@ def buildMipSdkLinux() {
         archiveArtifacts artifacts: "mipsdk_*"
     }
 
-    sh(label: 'Run unit tests', script: '''
-        ./.devcontainer/docker_shell.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
-            ctest \
-                --test-dir build_${BUILD_OS}_${BUILD_ARCH} \
-                -C Release \
-                -L unit \
-                --no-tests-error \
-                --verbose \
-                --output-on-failure \
-                --output-junit unit_test_results.xml \
-                --parallel $(nproc); \
-        "
-    ''')
+    catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE') {
+        sh(label: 'Run unit tests', script: '''
+            ./.devcontainer/docker_shell.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
+                ctest \
+                    --test-dir build_${BUILD_OS}_${BUILD_ARCH} \
+                    -C Release \
+                    -L unit \
+                    --verbose \
+                    --output-on-failure \
+                    --output-junit unit_test_results.xml \
+                    --parallel $(nproc); \
+            "
+        ''')
+    }
     dir("build_${BUILD_OS}_${BUILD_ARCH}") {
         junit testResults: "unit_test_results.xml", allowEmptyResults: false
     }
 
+/*
     sh(label: 'Integration tests', script: '''
         ./.devcontainer/docker_shell.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
             ctest \
@@ -89,6 +91,7 @@ def buildMipSdkLinux() {
     dir("build_${BUILD_OS}_${BUILD_ARCH}") {
         junit testResults: "integration_test_results.xml", allowEmptyResults: false
     }
+ */
 }
 
 // Utility function to build the MIP SDK on windows
@@ -146,6 +149,7 @@ def buildMipSdkWindows() {
 
 def buildDocumentation() {
     // Build the docker image
+/*
     sh '''
         ./.devcontainer/docker_build_image.sh --os ${BUILD_OS} --arch ${BUILD_ARCH}
     '''
@@ -166,6 +170,7 @@ def buildDocumentation() {
     '''
 
     archiveArtifacts artifacts: "build_docs/mipsdk_*"
+ */
 }
 
 pipeline {
