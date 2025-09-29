@@ -1,23 +1,28 @@
 #ifndef CMOCKA_WRAPPER_H
 #define CMOCKA_WRAPPER_H
 
-// #ifdef _MSC_VER
-// #ifndef _CRT_SECURE_NO_WARNINGS
-// #define _CRT_SECURE_NO_WARNINGS
-// #endif // !_CRT_SECURE_NO_WARNINGS
-//
-// #ifndef WIN32_LEAN_AND_MEAN
-// #define WIN32_LEAN_AND_MEAN
-// #endif // !WIN32_LEAN_AND_MEAN
-// #endif // _MSC_VER
+#ifdef _MSC_VER
+#ifndef _CRT_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS
+#endif // !_CRT_SECURE_NO_WARNINGS
+
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif // !WIN32_LEAN_AND_MEAN
+#endif // _MSC_VER
 
 #include <setjmp.h>
 
-// #define UNIT_TESTING
-// #include "config.h"
 #include "cmocka.h"
 
-#define MICROSTRAIN_TEST_SUITE_START(name) struct CMUnitTest* name = NULL; int name##_count = 0
+typedef struct CMUnitTest CMUnitTest;
+
+#define MICROSTRAIN_UNIT_TEST_FAILURES total_failures
+#define MICROSTRAIN_UNIT_TESTS_INIT int MICROSTRAIN_UNIT_TEST_FAILURES = 0
+#define MICROSTRAIN_TEST_SUITE_START(name) CMUnitTest* name = NULL; int name##_count = 0;
+#define MICROSTRAIN_TEST_SUITE_RUN(group_name, name) if (name##_count > 0) { MICROSTRAIN_UNIT_TEST_FAILURES += _cmocka_run_group_tests(group_name, name, name##_count, NULL, NULL); }
+#define MICROSTRAIN_TEST_SUITE_END(name) free(name); int name##_count = 0
+
 
 #define MICROSTRAIN_ASSERT_TRUE(val, message) if (val) { print_message(message); } assert_true(val);
 #define MICROSTRAIN_ASSERT_FALSE(val, message) if (!val) { print_message(message); } assert_false(val);
@@ -49,9 +54,9 @@ static inline bool should_run_test(const char* testName)
 }
 
 // Helper function to add a test to a dynamic array
-static inline struct CMUnitTest* add_test(struct CMUnitTest* tests, int* count, const struct CMUnitTest test)
+static inline CMUnitTest* add_test(CMUnitTest* tests, int* count, const CMUnitTest test)
 {
-    tests = (struct CMUnitTest*)realloc(tests, (*count + 1) * sizeof(struct CMUnitTest));
+    tests = (CMUnitTest*)realloc(tests, (*count + 1) * sizeof(CMUnitTest));
 
     if (tests == NULL)
     {
@@ -81,9 +86,9 @@ static inline struct CMUnitTest* add_test(struct CMUnitTest* tests, int* count, 
 // } \
 // while (0)
 #define MICROSTRAIN_ADD_UNIT_TEST(test, test_suite, test_count) \
-if (should_run_test(#test)) { \
-test_suite = add_test(test_suite, &test_count, cmocka_unit_test(test)); \
+if (should_run_test(#test)) \
+{ \
+    test_suite = add_test(test_suite, &test_count, cmocka_unit_test(test)); \
 }
-
 
 #endif // !CMOCKA_WRAPPER_H

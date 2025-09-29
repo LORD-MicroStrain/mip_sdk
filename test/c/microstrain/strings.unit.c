@@ -24,11 +24,9 @@ static void string_concat_to_empty_unterminated_buffer_works(void **state)
     //  |    |
     //  0  index
 
-    MICROSTRAIN_ASSERT_TRUE(ok, "strcat_n should succeed");
-    MICROSTRAIN_ASSERT_FALSE(ok, "strcat_n should not succeed");
-    // TEST_ASSERT(ok, "strcat_n should succeed");
-    // TEST_ASSERT_EQ(index, len, "Index must be updated correctly");
-    // TEST_ASSERT_BUFFER_COMPARE(buffer, "12345\0____", sizeof(buffer), "Buffer should match expected result");
+    TEST_ASSERT(ok, "strcat_n should succeed");
+    TEST_ASSERT_EQ(index, len, "Index must be updated correctly");
+    TEST_ASSERT_BUFFER_COMPARE(buffer, "12345\0____", sizeof(buffer), "Buffer should match expected result");
 }
 
 static void string_concat_fails_gracefully_if_buffer_too_small(void** state)
@@ -52,9 +50,9 @@ static void string_concat_fails_gracefully_if_buffer_too_small(void** state)
     //  |  |
     //  0  size
 
-    // TEST_ASSERT(!ok, "strcat_n should fail");
-    // TEST_ASSERT_EQ(index, len, "Index must still be updated correctly");
-    // TEST_ASSERT_BUFFER_COMPARE(buffer, "123\0______", sizeof(buffer), "Buffer contents are as expected");
+    TEST_ASSERT(!ok, "strcat_n should fail");
+    TEST_ASSERT_EQ(index, len, "Index must still be updated correctly");
+    TEST_ASSERT_BUFFER_COMPARE(buffer, "123\0______", sizeof(buffer), "Buffer contents are as expected");
 }
 
 static void string_concat_computes_size_if_buffer_null(void** state)
@@ -65,8 +63,8 @@ static void string_concat_computes_size_if_buffer_null(void** state)
 
     bool ok = microstrain_string_concat(NULL, 0, &index, str, len);
 
-    // TEST_ASSERT(ok, "strcat_n should succeed");
-    // TEST_ASSERT_EQ(index, len, "Index should be correct");
+    TEST_ASSERT(ok, "strcat_n should succeed");
+    TEST_ASSERT_EQ(index, len, "Index should be correct");
 }
 
 static void string_concat_at_offset_works(void** state)
@@ -88,9 +86,9 @@ static void string_concat_at_offset_works(void** state)
     //  |        |
     //  0      index
 
-    // TEST_ASSERT(ok, "strcat_n should succeed");
-    // TEST_ASSERT_EQ(index, 9, "Index must be updated correctly");
-    // TEST_ASSERT_BUFFER_COMPARE(buffer, "123456789\0", sizeof(buffer), "Buffer should match expected result");
+    TEST_ASSERT(ok, "strcat_n should succeed");
+    TEST_ASSERT_EQ(index, 9, "Index must be updated correctly");
+    TEST_ASSERT_BUFFER_COMPARE(buffer, "123456789\0", sizeof(buffer), "Buffer should match expected result");
 }
 
 static void string_concat_at_offset_fails_gracefully_if_buffer_too_small(void** state)
@@ -102,9 +100,9 @@ static void string_concat_at_offset_fails_gracefully_if_buffer_too_small(void** 
 
     bool ok = microstrain_string_concat(buffer, fake_buffer_size, &index, "89ABCDEF", 8);
 
-    // TEST_ASSERT(!ok, "strcat_n should fail");
-    // TEST_ASSERT_EQ(index, 16, "Index must be updated correctly");
-    // TEST_ASSERT_BUFFER_COMPARE(buffer, "012345678\0##########", sizeof(buffer), "Buffer should match expected result");
+    TEST_ASSERT(!ok, "strcat_n should fail");
+    TEST_ASSERT_EQ(index, 16, "Index must be updated correctly");
+    TEST_ASSERT_BUFFER_COMPARE(buffer, "012345678\0##########", sizeof(buffer), "Buffer should match expected result");
 }
 
 static void string_concat_at_offset_fails_gracefully_if_index_at_end(void** state)
@@ -118,9 +116,9 @@ static void string_concat_at_offset_fails_gracefully_if_index_at_end(void** stat
 
     bool ok = microstrain_string_concat(buffer, fake_buffer_size, &index, msg, msg_size);
 
-    // TEST_ASSERT(!ok, "strcat_n should fail");
-    // TEST_ASSERT_EQ(index, 18, "Index must be updated correctly");
-    // TEST_ASSERT_BUFFER_COMPARE(buffer, "012345678\0__________", sizeof(buffer), "Buffer should match expected result");
+    TEST_ASSERT(!ok, "strcat_n should fail");
+    TEST_ASSERT_EQ(index, 18, "Index must be updated correctly");
+    TEST_ASSERT_BUFFER_COMPARE(buffer, "012345678\0__________", sizeof(buffer), "Buffer should match expected result");
 }
 
 static void multiple_string_concats_work(void** state)
@@ -137,10 +135,10 @@ static void multiple_string_concats_work(void** state)
     ok &= microstrain_string_concat_l(buffer, sizeof(buffer), &index, "long ");
     ok &= microstrain_string_concat_l(buffer, sizeof(buffer), &index, "test...");
 
-    // TEST_ASSERT(ok, "Should be successful");
-    // TEST_ASSERT_EQ(index, 27, "Index should be the total number of chars");
-    // TEST_ASSERT_BUFFER_COMPARE(buffer, "This is a very long test...", 27, "Buffer should have entire string");
-    // TEST_ASSERT_BUFFER_NOT_OVERRUN(buffer, sizeof(buffer), 28, "Buffer has not overrun");
+    TEST_ASSERT(ok, "Should be successful");
+    TEST_ASSERT_EQ(index, 27, "Index should be the total number of chars");
+    TEST_ASSERT_BUFFER_COMPARE(buffer, "This is a very long test...", 27, "Buffer should have entire string");
+    TEST_ASSERT_BUFFER_NOT_OVERRUN(buffer, sizeof(buffer), 28, "Buffer has not overrun");
 }
 
 static void multiple_string_concats_fail_gracefully_when_buffer_too_small(void** state)
@@ -158,29 +156,28 @@ static void multiple_string_concats_fail_gracefully_when_buffer_too_small(void**
     ok &= microstrain_string_concat_l(buffer, fake_buffer_size, &index, "long ");
     ok &= microstrain_string_concat_l(buffer, fake_buffer_size, &index, "test...");
 
-    // TEST_ASSERT(!ok, "Should not be successful");
-    // TEST_ASSERT_EQ(index, 27, "Index should be the total number of chars");
-    // TEST_ASSERT_BUFFER_COMPARE(buffer, "This is a", 10, "Buffer should have partial string w/ terminator");
-    // TEST_ASSERT_BUFFER_NOT_OVERRUN(buffer, sizeof(buffer), 10, "Buffer has not overrun");
+    TEST_ASSERT(!ok, "Should not be successful");
+    TEST_ASSERT_EQ(index, 27, "Index should be the total number of chars");
+    TEST_ASSERT_BUFFER_COMPARE(buffer, "This is a", 10, "Buffer should have partial string w/ terminator");
+    TEST_ASSERT_BUFFER_NOT_OVERRUN(buffer, sizeof(buffer), 10, "Buffer has not overrun");
 }
 
 int main()
 {
-    const struct CMUnitTest string_tests[] = {
-        cmocka_unit_test(string_concat_to_empty_unterminated_buffer_works)
+    MICROSTRAIN_UNIT_TESTS_INIT;
+
+    const CMUnitTest string_tests[] = {
+        cmocka_unit_test(string_concat_to_empty_unterminated_buffer_works),
+        cmocka_unit_test(string_concat_fails_gracefully_if_buffer_too_small),
+        cmocka_unit_test(string_concat_computes_size_if_buffer_null),
+        cmocka_unit_test(string_concat_at_offset_works),
+        cmocka_unit_test(string_concat_at_offset_fails_gracefully_if_buffer_too_small),
+        cmocka_unit_test(string_concat_at_offset_fails_gracefully_if_index_at_end),
+        cmocka_unit_test(multiple_string_concats_work),
+        cmocka_unit_test(multiple_string_concats_fail_gracefully_when_buffer_too_small)
     };
 
-    const int failures = cmocka_run_group_tests_name("String Tests", string_tests, NULL, NULL);
+    MICROSTRAIN_UNIT_TEST_FAILURES += cmocka_run_group_tests_name("String Tests", string_tests, NULL, NULL);
 
-    // string_concat_to_empty_unterminated_buffer_works();
-    // string_concat_fails_gracefully_if_buffer_too_small();
-    // string_concat_computes_size_if_buffer_null();
-    // string_concat_at_offset_works();
-    // string_concat_at_offset_fails_gracefully_if_buffer_too_small();
-    // string_concat_at_offset_fails_gracefully_if_index_at_end();
-    // multiple_string_concats_work();
-    // multiple_string_concats_fail_gracefully_when_buffer_too_small();
-
-    // return (int)g_fail_count;
-    return failures;
+    return MICROSTRAIN_UNIT_TEST_FAILURES;
 }
