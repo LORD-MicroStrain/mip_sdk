@@ -9,55 +9,35 @@ MICROSTRAIN_TEST_CASE(A_zero_terminated_string_can_be_concatenated_to_a_buffer)
     char buffer[10];
     size_t index = 0;
     memset(buffer, '_', sizeof(buffer));
-    const char* const str = "12345";
-    const size_t len = strlen(str);
+    const char* const string = "12345";
+    const size_t string_length = strlen(string);
 
-    // Before:
-    // [__________]
-    //  |
-    //  0,index
-
-    const bool ok = microstrain_string_concat(buffer, sizeof(buffer), &index, str, len);
-
-    // After:
-    // [12345\0____]
-    //  |    |
-    //  0  index
+    const bool ok = microstrain_string_concat(buffer, sizeof(buffer), &index, string, string_length);
 
     assert_true(ok);
-    print_error("yep");
-    assert_int_equal(index, len);
-    assert_string_equal(buffer[5], '\0');
+    assert_int_equal(index, string_length);
+    assert_char_equal(buffer[5], '\0');
     assert_string_equal(buffer, "12345\0____");
 }
 
-/*
-MICROSTRAIN_TEST_CASE(string_concat_fails_gracefully_if_buffer_too_small)
+MICROSTRAIN_TEST_CASE(String_concatenation_fails_gracefully_if_buffer_too_small)
 {
     char buffer[10];
     const size_t fake_buffer_size = 4;  // dummy so we can check if the buffer overran
     size_t index = 0;
     memset(buffer, '_', sizeof(buffer));
-    const char* const str = "12345";
-    const size_t len = strlen(str);
+    const char* const string = "12345";
+    const size_t string_length = strlen(string);
 
-    // Before:
-    // [__________]
-    //  |  |
-    //  0  size
+    const bool ok = microstrain_string_concat(buffer, fake_buffer_size, &index, string, string_length);
 
-    bool ok = microstrain_string_concat(buffer, fake_buffer_size, &index, str, len);
-
-    // After:
-    // [123\0______]
-    //  |  |
-    //  0  size
-
-    TEST_ASSERT(!ok, "strcat_n should fail");
-    TEST_ASSERT_EQ(index, len, "Index must still be updated correctly");
-    TEST_ASSERT_BUFFER_COMPARE(buffer, "123\0______", sizeof(buffer), "Buffer contents are as expected");
+    assert_false(ok);
+    assert_int_equal(index, string_length);
+    assert_char_equal(buffer[3], '\0');
+    assert_string_equal(buffer, "123\0______");
 }
 
+/*
 MICROSTRAIN_TEST_CASE(string_concat_computes_size_if_buffer_null)
 {
     size_t index = 0;
@@ -172,9 +152,9 @@ int main()
 
     MICROSTRAIN_TEST_SUITE_START(string_tests);
 
-    MICROSTRAIN_TEST_ADD(string_tests, string_concat_to_empty_unterminated_buffer_works);
+    MICROSTRAIN_TEST_ADD(string_tests, A_zero_terminated_string_can_be_concatenated_to_a_buffer);
+    MICROSTRAIN_TEST_ADD(string_tests, String_concatenation_fails_gracefully_if_buffer_too_small);
     /*
-    MICROSTRAIN_TEST_ADD(string_tests, string_concat_fails_gracefully_if_buffer_too_small);
     MICROSTRAIN_TEST_ADD(string_tests, string_concat_computes_size_if_buffer_null);
     MICROSTRAIN_TEST_ADD(string_tests, string_concat_at_offset_works);
     MICROSTRAIN_TEST_ADD(string_tests, string_concat_at_offset_fails_gracefully_if_buffer_too_small);

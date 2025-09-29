@@ -36,6 +36,22 @@ typedef struct CMUnitTest CMUnitTest;
 #include <stdlib.h>
 #include <string.h>
 
+/* ------------------------------------------------------------------------------------------------- */
+/* Custom Assertions                                                                                 */
+/* ------------------------------------------------------------------------------------------------- */
+
+// Compares two characters and displays them (instead of their ASCII codes) when failed
+#define assert_char_equal(a, b)        \
+    do                                 \
+    {                                  \
+        if (a != b)                    \
+        {                              \
+            fail_msg("%c != \\0", a);  \
+        }                              \
+    } while (0)
+
+/* ------------------------------------------------------------------------------------------------- */
+
 // Helper function to check if a test name is in argv
 static inline bool should_run_test(const char* testName)
 {
