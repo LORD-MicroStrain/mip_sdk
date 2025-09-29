@@ -93,7 +93,7 @@ static inline CMUnitTest microstrain_create_unit_case(const char* name, const CM
 #define microstrain_create_test cmocka_unit_test
 #endif // _MSC_VER
 
-#define MICROSTRAIN_ADD_TEST(test_suite, test) \
+#define MICROSTRAIN_TEST_ADD(test_suite, test) \
 if (should_run_test(#test)) \
 { \
     test_suite = add_test(test_suite, &test_suite##_count, microstrain_create_test(test)); \

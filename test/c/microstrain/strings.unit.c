@@ -168,14 +168,14 @@ int main()
 
     MICROSTRAIN_TEST_SUITE_START(string_tests);
 
-    MICROSTRAIN_ADD_TEST(string_tests, string_concat_to_empty_unterminated_buffer_works);
-    MICROSTRAIN_ADD_TEST(string_tests, string_concat_fails_gracefully_if_buffer_too_small);
-    MICROSTRAIN_ADD_TEST(string_tests, string_concat_computes_size_if_buffer_null);
-    MICROSTRAIN_ADD_TEST(string_tests, string_concat_at_offset_works);
-    MICROSTRAIN_ADD_TEST(string_tests, string_concat_at_offset_fails_gracefully_if_buffer_too_small);
-    MICROSTRAIN_ADD_TEST(string_tests, string_concat_at_offset_fails_gracefully_if_index_at_end);
-    MICROSTRAIN_ADD_TEST(string_tests, multiple_string_concats_work);
-    MICROSTRAIN_ADD_TEST(string_tests, multiple_string_concats_fail_gracefully_when_buffer_too_small);
+    MICROSTRAIN_TEST_ADD(string_tests, string_concat_to_empty_unterminated_buffer_works);
+    MICROSTRAIN_TEST_ADD(string_tests, string_concat_fails_gracefully_if_buffer_too_small);
+    MICROSTRAIN_TEST_ADD(string_tests, string_concat_computes_size_if_buffer_null);
+    MICROSTRAIN_TEST_ADD(string_tests, string_concat_at_offset_works);
+    MICROSTRAIN_TEST_ADD(string_tests, string_concat_at_offset_fails_gracefully_if_buffer_too_small);
+    MICROSTRAIN_TEST_ADD(string_tests, string_concat_at_offset_fails_gracefully_if_index_at_end);
+    MICROSTRAIN_TEST_ADD(string_tests, multiple_string_concats_work);
+    MICROSTRAIN_TEST_ADD(string_tests, multiple_string_concats_fail_gracefully_when_buffer_too_small);
 
     MICROSTRAIN_TEST_SUITE_RUN("String Tests", string_tests);
 
