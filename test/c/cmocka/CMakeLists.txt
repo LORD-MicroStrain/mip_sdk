@@ -21,4 +21,4 @@ FetchContent_MakeAvailable(cmocka)
 
 # Include the CMocka CMake modules for easy integration
 list(APPEND CMAKE_MODULE_PATH "${cmocka_SOURCE_DIR}/cmake/Modules")
-include(AddCMockaTest)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} PARENT_SCOPE)
