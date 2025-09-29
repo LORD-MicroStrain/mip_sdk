@@ -4,7 +4,7 @@
 
 #include <string.h>
 
-static void string_concat_to_empty_unterminated_buffer_works(void **state)
+static void string_concat_to_empty_unterminated_buffer_works(void** state)
 {
     char buffer[10];
     size_t index = 0;
@@ -166,18 +166,20 @@ int main()
 {
     MICROSTRAIN_UNIT_TESTS_INIT;
 
-    const CMUnitTest string_tests[] = {
-        cmocka_unit_test(string_concat_to_empty_unterminated_buffer_works),
-        cmocka_unit_test(string_concat_fails_gracefully_if_buffer_too_small),
-        cmocka_unit_test(string_concat_computes_size_if_buffer_null),
-        cmocka_unit_test(string_concat_at_offset_works),
-        cmocka_unit_test(string_concat_at_offset_fails_gracefully_if_buffer_too_small),
-        cmocka_unit_test(string_concat_at_offset_fails_gracefully_if_index_at_end),
-        cmocka_unit_test(multiple_string_concats_work),
-        cmocka_unit_test(multiple_string_concats_fail_gracefully_when_buffer_too_small)
-    };
+    MICROSTRAIN_TEST_SUITE_START(string_tests);
 
-    MICROSTRAIN_UNIT_TEST_FAILURES += cmocka_run_group_tests_name("String Tests", string_tests, NULL, NULL);
+    MICROSTRAIN_ADD_UNIT_TEST(string_tests, string_concat_to_empty_unterminated_buffer_works);
+    MICROSTRAIN_ADD_UNIT_TEST(string_tests, string_concat_fails_gracefully_if_buffer_too_small);
+    MICROSTRAIN_ADD_UNIT_TEST(string_tests, string_concat_computes_size_if_buffer_null);
+    MICROSTRAIN_ADD_UNIT_TEST(string_tests, string_concat_at_offset_works);
+    MICROSTRAIN_ADD_UNIT_TEST(string_tests, string_concat_at_offset_fails_gracefully_if_buffer_too_small);
+    MICROSTRAIN_ADD_UNIT_TEST(string_tests, string_concat_at_offset_fails_gracefully_if_index_at_end);
+    MICROSTRAIN_ADD_UNIT_TEST(string_tests, multiple_string_concats_work);
+    MICROSTRAIN_ADD_UNIT_TEST(string_tests, multiple_string_concats_fail_gracefully_when_buffer_too_small);
+
+    MICROSTRAIN_TEST_SUITE_RUN("String Tests", string_tests);
+
+    MICROSTRAIN_TEST_SUITE_END(string_tests);
 
     return MICROSTRAIN_UNIT_TEST_FAILURES;
 }
