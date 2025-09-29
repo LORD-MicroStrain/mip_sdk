@@ -23,6 +23,8 @@ typedef struct CMUnitTest CMUnitTest;
 #define MICROSTRAIN_TEST_SUITE_RUN(group_name, name) if (name##_count > 0) { MICROSTRAIN_UNIT_TEST_FAILURES += _cmocka_run_group_tests(group_name, name, name##_count, NULL, NULL); }
 #define MICROSTRAIN_TEST_SUITE_END(name) free(name)
 
+#define MICROSTRAIN_UNIT_TEST(test) static void test(void** state)
+
 
 #define MICROSTRAIN_ASSERT_TRUE(val, message) if (val) { print_message(message); } assert_true(val);
 #define MICROSTRAIN_ASSERT_FALSE(val, message) if (!val) { print_message(message); } assert_false(val);

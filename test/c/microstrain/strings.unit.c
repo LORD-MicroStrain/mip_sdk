@@ -4,7 +4,7 @@
 
 #include <string.h>
 
-static void string_concat_to_empty_unterminated_buffer_works(void** state)
+MICROSTRAIN_UNIT_TEST(string_concat_to_empty_unterminated_buffer_works)
 {
     char buffer[10];
     size_t index = 0;
@@ -29,7 +29,7 @@ static void string_concat_to_empty_unterminated_buffer_works(void** state)
     TEST_ASSERT_BUFFER_COMPARE(buffer, "12345\0____", sizeof(buffer), "Buffer should match expected result");
 }
 
-static void string_concat_fails_gracefully_if_buffer_too_small(void** state)
+MICROSTRAIN_UNIT_TEST(string_concat_fails_gracefully_if_buffer_too_small)
 {
     char buffer[10];
     const size_t fake_buffer_size = 4;  // dummy so we can check if the buffer overran
@@ -55,7 +55,7 @@ static void string_concat_fails_gracefully_if_buffer_too_small(void** state)
     TEST_ASSERT_BUFFER_COMPARE(buffer, "123\0______", sizeof(buffer), "Buffer contents are as expected");
 }
 
-static void string_concat_computes_size_if_buffer_null(void** state)
+MICROSTRAIN_UNIT_TEST(string_concat_computes_size_if_buffer_null)
 {
     size_t index = 0;
     const char* const str = "12345";
@@ -67,7 +67,7 @@ static void string_concat_computes_size_if_buffer_null(void** state)
     TEST_ASSERT_EQ(index, len, "Index should be correct");
 }
 
-static void string_concat_at_offset_works(void** state)
+MICROSTRAIN_UNIT_TEST(string_concat_at_offset_works)
 {
     char buffer[10];
     memset(buffer, '_', sizeof(buffer));
@@ -91,7 +91,7 @@ static void string_concat_at_offset_works(void** state)
     TEST_ASSERT_BUFFER_COMPARE(buffer, "123456789\0", sizeof(buffer), "Buffer should match expected result");
 }
 
-static void string_concat_at_offset_fails_gracefully_if_buffer_too_small(void** state)
+MICROSTRAIN_UNIT_TEST(string_concat_at_offset_fails_gracefully_if_buffer_too_small)
 {
     char buffer[20];
     const size_t fake_buffer_size = 10;
@@ -105,7 +105,7 @@ static void string_concat_at_offset_fails_gracefully_if_buffer_too_small(void** 
     TEST_ASSERT_BUFFER_COMPARE(buffer, "012345678\0##########", sizeof(buffer), "Buffer should match expected result");
 }
 
-static void string_concat_at_offset_fails_gracefully_if_index_at_end(void** state)
+MICROSTRAIN_UNIT_TEST(string_concat_at_offset_fails_gracefully_if_index_at_end)
 {
     char buffer[20];
     memcpy(buffer, "012345678\0__________", 20);
@@ -121,7 +121,7 @@ static void string_concat_at_offset_fails_gracefully_if_index_at_end(void** stat
     TEST_ASSERT_BUFFER_COMPARE(buffer, "012345678\0__________", sizeof(buffer), "Buffer should match expected result");
 }
 
-static void multiple_string_concats_work(void** state)
+MICROSTRAIN_UNIT_TEST(multiple_string_concats_work)
 {
     char buffer[50];
     memset(buffer, '_', sizeof(buffer));
@@ -141,7 +141,7 @@ static void multiple_string_concats_work(void** state)
     TEST_ASSERT_BUFFER_NOT_OVERRUN(buffer, sizeof(buffer), 28, "Buffer has not overrun");
 }
 
-static void multiple_string_concats_fail_gracefully_when_buffer_too_small(void** state)
+MICROSTRAIN_UNIT_TEST(multiple_string_concats_fail_gracefully_when_buffer_too_small)
 {
     char buffer[50];
     const size_t fake_buffer_size = 10;
