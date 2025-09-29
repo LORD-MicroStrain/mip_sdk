@@ -72,15 +72,15 @@ static inline CMUnitTest* add_test(CMUnitTest* tests, int* count, CMUnitTest tes
 
 #ifdef _MSC_VER
 // MSVC doesn't work nicely with compound literals in C
-static inline CMUnitTest microstrain_create_unit_test(const char* name, CMUnitTestFunction test_function) \
+static inline CMUnitTest microstrain_create_unit_test(const char* name, const CMUnitTestFunction test_function) \
 {
-    const CMUnitTest microstrain_unit_test {
-        .name = name,
-        .test_func = test_function,
-        .setup_func = NULL,
-        .teardown_func = NULL,
-        .initial_state = NULL,
-    };
+    CMUnitTest microstrain_unit_test;
+
+    microstrain_unit_test.name = name;
+    microstrain_unit_test.test_func = test_function;
+    microstrain_unit_test.setup_func = NULL;
+    microstrain_unit_test.teardown_func = NULL;
+    microstrain_unit_test.initial_state = NULL;
 
     return microstrain_unit_test;
 }
