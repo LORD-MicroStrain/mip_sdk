@@ -11,23 +11,25 @@
 #endif // !WIN32_LEAN_AND_MEAN
 #endif // _MSC_VER
 
+// CMocka required headers
 #include <setjmp.h>
+#include <stdarg.h>
+#include <stddef.h>
+#include <stdint.h>
 
 #include "cmocka.h"
 
 typedef struct CMUnitTest CMUnitTest;
 
-#define MICROSTRAIN_UNIT_TEST_FAILURES total_failures
-#define MICROSTRAIN_UNIT_TESTS_INIT int MICROSTRAIN_UNIT_TEST_FAILURES = 0
+#define MICROSTRAIN_TEST_FAILURE_COUNT total_failures
+#define MICROSTRAIN_TEST_INIT int MICROSTRAIN_TEST_FAILURE_COUNT = 0
 #define MICROSTRAIN_TEST_SUITE_START(name) CMUnitTest* name = NULL; int name##_count = 0
-#define MICROSTRAIN_TEST_SUITE_RUN(group_name, name) if (name##_count > 0) { MICROSTRAIN_UNIT_TEST_FAILURES += _cmocka_run_group_tests(group_name, name, name##_count, NULL, NULL); }
+#define MICROSTRAIN_TEST_SUITE_RUN(group_name, name) if (name##_count > 0) { MICROSTRAIN_TEST_FAILURE_COUNT += _cmocka_run_group_tests(group_name, name, name##_count, NULL, NULL); }
 #define MICROSTRAIN_TEST_SUITE_END(name) free(name)
+#define MICROSTRAIN_TEST_CASE(test) static void test(void** state)
 
-#define MICROSTRAIN_UNIT_TEST(test) static void test(void** state)
-
-
-#define MICROSTRAIN_ASSERT_TRUE(val, message) if (val) { print_message(message); } assert_true(val);
-#define MICROSTRAIN_ASSERT_FALSE(val, message) if (!val) { print_message(message); } assert_false(val);
+#define MICROSTRAIN_TEST_ASSERT_TRUE(val, message) if (val) { print_message(message); } assert_true(val);
+#define MICROSTRAIN_TEST_ASSERT_FALSE(val, message) if (!val) { print_message(message); } assert_false(val);
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -74,7 +76,7 @@ static inline CMUnitTest* add_test(CMUnitTest* tests, int* count, CMUnitTest tes
 
 #ifdef _MSC_VER
 // MSVC doesn't work nicely with compound literals in C
-static inline CMUnitTest microstrain_create_unit_test(const char* name, const CMUnitTestFunction test_function) \
+static inline CMUnitTest microstrain_create_unit_case(const char* name, const CMUnitTestFunction test_function) \
 {
     CMUnitTest microstrain_unit_test;
 
@@ -86,15 +88,15 @@ static inline CMUnitTest microstrain_create_unit_test(const char* name, const CM
 
     return microstrain_unit_test;
 }
-#define create_unit_test(test) microstrain_create_unit_test(#test, test)
+#define microstrain_create_test(test) microstrain_create_unit_case(#test, test)
 #else
-#define create_unit_test cmocka_unit_test
+#define microstrain_create_test cmocka_unit_test
 #endif // _MSC_VER
 
-#define MICROSTRAIN_ADD_UNIT_TEST(test_suite, test) \
+#define MICROSTRAIN_ADD_TEST(test_suite, test) \
 if (should_run_test(#test)) \
 { \
-    test_suite = add_test(test_suite, &test_suite##_count, create_unit_test(test)); \
+    test_suite = add_test(test_suite, &test_suite##_count, microstrain_create_test(test)); \
 }
 
 #endif // !CMOCKA_WRAPPER_H
