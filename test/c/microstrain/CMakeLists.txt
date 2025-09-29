@@ -1,11 +1,9 @@
-#target_sources(UnitTests PRIVATE
-#    "strings.unit.c"
-#)
-#
-#target_sources(IntegrationTests PRIVATE
-#    # TODO: Add
-#)
+#string(APPEND cmocka-library_BINARY_DIR "/Debug")
 
-target_sources("${MIP_UNIT_TEST_TARGET_C}" PRIVATE
-    "${CMAKE_CURRENT_LIST_DIR}/strings.unit.c"
+add_cmocka_test(
+    "mip_strings_unit_test_c"
+    SOURCES ${CMAKE_CURRENT_LIST_DIR}/strings.unit.c
+    LINK_LIBRARIES ${MIP_UNIT_TEST_TARGET_C}
 )
+
+#add_cmocka_test_environment(mip_strings_unit_test_c)

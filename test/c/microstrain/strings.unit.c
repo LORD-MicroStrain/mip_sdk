@@ -1,10 +1,10 @@
-#include <string.h>
-
 #include "mip_cmocka.h"
 
 #include <microstrain/strings.h>
 
-void string_concat_to_empty_unterminated_buffer_works()
+#include <string.h>
+
+static void string_concat_to_empty_unterminated_buffer_works(void **state)
 {
     char buffer[10];
     size_t index = 0;
@@ -25,11 +25,13 @@ void string_concat_to_empty_unterminated_buffer_works()
     //  0  index
 
     MICROSTRAIN_ASSERT_TRUE(ok, "strcat_n should succeed");
+    MICROSTRAIN_ASSERT_FALSE(ok, "strcat_n should not succeed");
+    // TEST_ASSERT(ok, "strcat_n should succeed");
     // TEST_ASSERT_EQ(index, len, "Index must be updated correctly");
     // TEST_ASSERT_BUFFER_COMPARE(buffer, "12345\0____", sizeof(buffer), "Buffer should match expected result");
 }
 
-void string_concat_fails_gracefully_if_buffer_too_small()
+static void string_concat_fails_gracefully_if_buffer_too_small(void** state)
 {
     char buffer[10];
     const size_t fake_buffer_size = 4;  // dummy so we can check if the buffer overran
@@ -55,7 +57,7 @@ void string_concat_fails_gracefully_if_buffer_too_small()
     // TEST_ASSERT_BUFFER_COMPARE(buffer, "123\0______", sizeof(buffer), "Buffer contents are as expected");
 }
 
-void string_concat_computes_size_if_buffer_null()
+static void string_concat_computes_size_if_buffer_null(void** state)
 {
     size_t index = 0;
     const char* const str = "12345";
@@ -67,7 +69,7 @@ void string_concat_computes_size_if_buffer_null()
     // TEST_ASSERT_EQ(index, len, "Index should be correct");
 }
 
-void string_concat_at_offset_works()
+static void string_concat_at_offset_works(void** state)
 {
     char buffer[10];
     memset(buffer, '_', sizeof(buffer));
@@ -91,7 +93,7 @@ void string_concat_at_offset_works()
     // TEST_ASSERT_BUFFER_COMPARE(buffer, "123456789\0", sizeof(buffer), "Buffer should match expected result");
 }
 
-void string_concat_at_offset_fails_gracefully_if_buffer_too_small()
+static void string_concat_at_offset_fails_gracefully_if_buffer_too_small(void** state)
 {
     char buffer[20];
     const size_t fake_buffer_size = 10;
@@ -105,7 +107,7 @@ void string_concat_at_offset_fails_gracefully_if_buffer_too_small()
     // TEST_ASSERT_BUFFER_COMPARE(buffer, "012345678\0##########", sizeof(buffer), "Buffer should match expected result");
 }
 
-void string_concat_at_offset_fails_gracefully_if_index_at_end()
+static void string_concat_at_offset_fails_gracefully_if_index_at_end(void** state)
 {
     char buffer[20];
     memcpy(buffer, "012345678\0__________", 20);
@@ -121,7 +123,7 @@ void string_concat_at_offset_fails_gracefully_if_index_at_end()
     // TEST_ASSERT_BUFFER_COMPARE(buffer, "012345678\0__________", sizeof(buffer), "Buffer should match expected result");
 }
 
-void multiple_string_concats_work()
+static void multiple_string_concats_work(void** state)
 {
     char buffer[50];
     memset(buffer, '_', sizeof(buffer));
@@ -141,7 +143,7 @@ void multiple_string_concats_work()
     // TEST_ASSERT_BUFFER_NOT_OVERRUN(buffer, sizeof(buffer), 28, "Buffer has not overrun");
 }
 
-void multiple_string_concats_fail_gracefully_when_buffer_too_small()
+static void multiple_string_concats_fail_gracefully_when_buffer_too_small(void** state)
 {
     char buffer[50];
     const size_t fake_buffer_size = 10;
@@ -162,17 +164,23 @@ void multiple_string_concats_fail_gracefully_when_buffer_too_small()
     // TEST_ASSERT_BUFFER_NOT_OVERRUN(buffer, sizeof(buffer), 10, "Buffer has not overrun");
 }
 
-// int main()
-// {
-//     string_concat_to_empty_unterminated_buffer_works();
-//     string_concat_fails_gracefully_if_buffer_too_small();
-//     string_concat_computes_size_if_buffer_null();
-//     string_concat_at_offset_works();
-//     string_concat_at_offset_fails_gracefully_if_buffer_too_small();
-//     string_concat_at_offset_fails_gracefully_if_index_at_end();
-//     multiple_string_concats_work();
-//     multiple_string_concats_fail_gracefully_when_buffer_too_small();
-//
-//     // return (int)g_fail_count;
-//     return 1;
-// }
+int main()
+{
+    const struct CMUnitTest string_tests[] = {
+        cmocka_unit_test(string_concat_to_empty_unterminated_buffer_works)
+    };
+
+    const int failures = cmocka_run_group_tests_name("String Tests", string_tests, NULL, NULL);
+
+    // string_concat_to_empty_unterminated_buffer_works();
+    // string_concat_fails_gracefully_if_buffer_too_small();
+    // string_concat_computes_size_if_buffer_null();
+    // string_concat_at_offset_works();
+    // string_concat_at_offset_fails_gracefully_if_buffer_too_small();
+    // string_concat_at_offset_fails_gracefully_if_index_at_end();
+    // multiple_string_concats_work();
+    // multiple_string_concats_fail_gracefully_when_buffer_too_small();
+
+    // return (int)g_fail_count;
+    return failures;
+}
