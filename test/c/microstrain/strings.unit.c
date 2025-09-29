@@ -80,8 +80,7 @@ MICROSTRAIN_TEST_CASE(String_concatenation_to_a_non_empty_buffer_fails_gracefull
                                                           //       Should they be?
 }
 
-/*
-MICROSTRAIN_TEST_CASE(string_concat_at_offset_fails_gracefully_if_index_at_end)
+MICROSTRAIN_TEST_CASE(String_concatenation_to_a_non_empty_buffer_fails_gracefully_if_index_is_at_the_end)
 {
     char buffer[20];
     memcpy(buffer, "012345678\0__________", 20);
@@ -90,14 +89,15 @@ MICROSTRAIN_TEST_CASE(string_concat_at_offset_fails_gracefully_if_index_at_end)
     const char* msg = "ABCDEF";
     const size_t msg_size = strlen(msg);
 
-    bool ok = microstrain_string_concat(buffer, fake_buffer_size, &index, msg, msg_size);
+    const bool ok = microstrain_string_concat(buffer, fake_buffer_size, &index, msg, msg_size);
 
-    TEST_ASSERT(!ok, "strcat_n should fail");
-    TEST_ASSERT_EQ(index, 18, "Index must be updated correctly");
-    TEST_ASSERT_BUFFER_COMPARE(buffer, "012345678\0__________", sizeof(buffer), "Buffer should match expected result");
+    assert_false(ok);
+    assert_int_equal(index, 18);
+    assert_char_equal(buffer[9], '\0');
+    assert_string_equal(buffer, "012345678\0__________");
 }
 
-MICROSTRAIN_TEST_CASE(multiple_string_concats_work)
+MICROSTRAIN_TEST_CASE(Multiple_string_concatenations_work)
 {
     char buffer[50];
     memset(buffer, '_', sizeof(buffer));
@@ -111,13 +111,13 @@ MICROSTRAIN_TEST_CASE(multiple_string_concats_work)
     ok &= microstrain_string_concat_l(buffer, sizeof(buffer), &index, "long ");
     ok &= microstrain_string_concat_l(buffer, sizeof(buffer), &index, "test...");
 
-    TEST_ASSERT(ok, "Should be successful");
-    TEST_ASSERT_EQ(index, 27, "Index should be the total number of chars");
-    TEST_ASSERT_BUFFER_COMPARE(buffer, "This is a very long test...", 27, "Buffer should have entire string");
-    TEST_ASSERT_BUFFER_NOT_OVERRUN(buffer, sizeof(buffer), 28, "Buffer has not overrun");
+    assert_true(ok);
+    assert_int_equal(index, 27);
+    assert_char_equal(buffer[27], '\0');
+    assert_string_equal(buffer, "This is a very long test...");
 }
 
-MICROSTRAIN_TEST_CASE(multiple_string_concats_fail_gracefully_when_buffer_too_small)
+MICROSTRAIN_TEST_CASE(Multiple_string_concatenations_fail_gracefully_when_buffer_too_small)
 {
     char buffer[50];
     const size_t fake_buffer_size = 10;
@@ -132,13 +132,12 @@ MICROSTRAIN_TEST_CASE(multiple_string_concats_fail_gracefully_when_buffer_too_sm
     ok &= microstrain_string_concat_l(buffer, fake_buffer_size, &index, "long ");
     ok &= microstrain_string_concat_l(buffer, fake_buffer_size, &index, "test...");
 
-    TEST_ASSERT(!ok, "Should not be successful");
-    TEST_ASSERT_EQ(index, 27, "Index should be the total number of chars");
-    TEST_ASSERT_BUFFER_COMPARE(buffer, "This is a", 10, "Buffer should have partial string w/ terminator");
-    TEST_ASSERT_BUFFER_NOT_OVERRUN(buffer, sizeof(buffer), 10, "Buffer has not overrun");
+    assert_false(ok);
+    assert_int_equal(index, 27);
+    assert_char_equal(buffer[9], '\0');
+    assert_string_equal(buffer, "This is a");
 }
 
-*/
 int main()
 {
     MICROSTRAIN_TEST_INIT;
@@ -150,11 +149,9 @@ int main()
     MICROSTRAIN_TEST_ADD(string_tests, String_concatenation_automatically_computes_size_when_buffer_is_null);
     MICROSTRAIN_TEST_ADD(string_tests, A_zero_terminated_string_can_be_concatenated_to_a_non_empty_buffer);
     MICROSTRAIN_TEST_ADD(string_tests, String_concatenation_to_a_non_empty_buffer_fails_gracefully_if_buffer_too_small);
-    /*
-    MICROSTRAIN_TEST_ADD(string_tests, string_concat_at_offset_fails_gracefully_if_index_at_end);
-    MICROSTRAIN_TEST_ADD(string_tests, multiple_string_concats_work);
-    MICROSTRAIN_TEST_ADD(string_tests, multiple_string_concats_fail_gracefully_when_buffer_too_small);
-    */
+    MICROSTRAIN_TEST_ADD(string_tests, String_concatenation_to_a_non_empty_buffer_fails_gracefully_if_index_is_at_the_end);
+    MICROSTRAIN_TEST_ADD(string_tests, Multiple_string_concatenations_work);
+    MICROSTRAIN_TEST_ADD(string_tests, Multiple_string_concatenations_fail_gracefully_when_buffer_too_small);
 
     MICROSTRAIN_TEST_SUITE_RUN("String Tests", string_tests);
 
