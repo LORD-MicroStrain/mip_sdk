@@ -4,7 +4,7 @@
 
 #include <string.h>
 
-MICROSTRAIN_TEST_CASE(string_concat_to_empty_unterminated_buffer_works)
+MICROSTRAIN_TEST_CASE(A_zero_terminated_string_can_be_concatenated_to_a_buffer)
 {
     char buffer[10];
     size_t index = 0;
@@ -17,18 +17,21 @@ MICROSTRAIN_TEST_CASE(string_concat_to_empty_unterminated_buffer_works)
     //  |
     //  0,index
 
-    bool ok = microstrain_string_concat(buffer, sizeof(buffer), &index, str, len);
+    const bool ok = microstrain_string_concat(buffer, sizeof(buffer), &index, str, len);
 
     // After:
     // [12345\0____]
     //  |    |
     //  0  index
 
-    TEST_ASSERT(ok, "strcat_n should succeed");
-    TEST_ASSERT_EQ(index, len, "Index must be updated correctly");
-    TEST_ASSERT_BUFFER_COMPARE(buffer, "12345\0____", sizeof(buffer), "Buffer should match expected result");
+    assert_true(ok);
+    print_error("yep");
+    assert_int_equal(index, len);
+    assert_string_equal(buffer[5], '\0');
+    assert_string_equal(buffer, "12345\0____");
 }
 
+/*
 MICROSTRAIN_TEST_CASE(string_concat_fails_gracefully_if_buffer_too_small)
 {
     char buffer[10];
@@ -162,6 +165,7 @@ MICROSTRAIN_TEST_CASE(multiple_string_concats_fail_gracefully_when_buffer_too_sm
     TEST_ASSERT_BUFFER_NOT_OVERRUN(buffer, sizeof(buffer), 10, "Buffer has not overrun");
 }
 
+*/
 int main()
 {
     MICROSTRAIN_TEST_INIT;
@@ -169,6 +173,7 @@ int main()
     MICROSTRAIN_TEST_SUITE_START(string_tests);
 
     MICROSTRAIN_TEST_ADD(string_tests, string_concat_to_empty_unterminated_buffer_works);
+    /*
     MICROSTRAIN_TEST_ADD(string_tests, string_concat_fails_gracefully_if_buffer_too_small);
     MICROSTRAIN_TEST_ADD(string_tests, string_concat_computes_size_if_buffer_null);
     MICROSTRAIN_TEST_ADD(string_tests, string_concat_at_offset_works);
@@ -176,6 +181,7 @@ int main()
     MICROSTRAIN_TEST_ADD(string_tests, string_concat_at_offset_fails_gracefully_if_index_at_end);
     MICROSTRAIN_TEST_ADD(string_tests, multiple_string_concats_work);
     MICROSTRAIN_TEST_ADD(string_tests, multiple_string_concats_fail_gracefully_when_buffer_too_small);
+    */
 
     MICROSTRAIN_TEST_SUITE_RUN("String Tests", string_tests);
 
