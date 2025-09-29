@@ -4,6 +4,8 @@
     Responsible for orchestrating test building and execution.
 #]]
 
+# TODO: Figure out why cmocka isn't working or switch to unity
+
 # ---------------------------------------------------------------
 # Executables
 # ---------------------------------------------------------------
@@ -22,7 +24,7 @@ if(MICROSTRAIN_ENABLE_CPP)
 endif()
 
 add_subdirectory("microstrain_test")
-add_subdirectory("unity")
+add_subdirectory("cmocka")
 
 # ---------------------------------------------------------------
 # Library linking
@@ -31,7 +33,6 @@ add_subdirectory("unity")
 target_link_libraries(UnitTests
     ${MIP_LIBRARY}
     microstrain_test
-    unity
 )
 
 target_link_libraries(IntegrationTests
