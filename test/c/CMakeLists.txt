@@ -37,6 +37,10 @@ target_link_libraries("${MIP_UNIT_TEST_TARGET_C}" INTERFACE
     "cmocka"
 )
 
+target_compile_definitions("${MIP_UNIT_TEST_TARGET_C}" INTERFACE
+    "MICROSTRAIN_LOGGING_MAX_LEVEL=MICROSTRAIN_LOGGING_LEVEL_WARN_"
+)
+
 target_include_directories("${MIP_UNIT_TEST_TARGET_C}" INTERFACE
     "${CMAKE_CURRENT_LIST_DIR}"
 )
