@@ -222,17 +222,15 @@ if(MICROSTRAIN_BUILD_DOCUMENTATION)
 
     set(DOXYGEN_HTML_EXTRA_STYLESHEET "${CMAKE_CURRENT_LIST_DIR}/docs/style.css")
 
-    set(MIP_DOCS_TARGET "mip_docs")
-
-    doxygen_add_docs("${MIP_DOCS_TARGET}"
+    doxygen_add_docs(docs
         "${MICROSTRAIN_SRC_DIR}" "${CMAKE_CURRENT_LIST_DIR}/docs"
         COMMENT "Generating documentation."
     )
 
     # Add a target to enable users to zip up the docs
-    add_custom_target("${MIP_DOCS_TARGET}_package"
+    add_custom_target(package_docs
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/documentation/html
-        DEPENDS "${MIP_DOCS_TARGET}"
+        DEPENDS docs
         COMMAND ${CMAKE_COMMAND} -E tar "cf" "${CMAKE_CURRENT_BINARY_DIR}/mipsdk_${MICROSTRAIN_GIT_VERSION}_Documentation.zip" --format=zip "."
     )
 endif()
