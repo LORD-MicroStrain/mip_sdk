@@ -57,25 +57,31 @@ advanced navigation solutions. Each example includes comprehensive documentation
   </thead>
   <tbody>
     <tr align="center">
-      <td rowspan="2"> AR Filter Examples </td>
-      <td><a href="c/5_series/ar">5_series_ar_example_c</a></td>
-      <td><a href="\ref cpp/5_series/ar">5_series_ar_example_cpp</a></td>
-      <td rowspan="2">Basic attitude filter configuration for streaming filter data</td>
+      <td rowspan="4"> AR Filter Examples </td>
+      <td rowspan="2"><a href="c/5_series/ar">5_series_ar_example_c</a></td>
+      <td rowspan="2"><a href="\ref cpp/5_series/ar">5_series_ar_example_cpp</a></td>
+      <td rowspan="4">Basic attitude filter configuration for streaming filter data</td>
     </tr>
+    <tr></tr>
     <tr align="center">
-      <td><a href="c/7_series/ar">7_series_ar_example_c</a></td>
-      <td><a href="cpp/7_series/ar">7_series_ar_example_cpp</a></td>
+      <td rowspan="2"><a href="c/7_series/ar">7_series_ar_example_c</a></td>
+      <td rowspan="2"><a href="cpp/7_series/ar">7_series_ar_example_cpp</a></td>
     </tr>
+    <tr></tr>
+    <tr></tr>
     <tr align="center">
-      <td rowspan="2"> AHRS Filter Examples </td>
-      <td><a href="c/5_series/ahrs">5_series_ahrs_example_c</a></td>
-      <td><a href="cpp/5_series/ahrs">5_series_ahrs_example_cpp</a></td>
-      <td rowspan="2">Basic attitude filter configuration with magnetometer heading for streaming filter data</td>
+      <td rowspan="4"> AHRS Filter Examples </td>
+      <td rowspan="2"><a href="c/5_series/ahrs">5_series_ahrs_example_c</a></td>
+      <td rowspan="2"><a href="cpp/5_series/ahrs">5_series_ahrs_example_cpp</a></td>
+      <td rowspan="4">Basic attitude filter configuration with magnetometer heading for streaming filter data</td>
     </tr>
+    <tr></tr>
     <tr align="center">
-      <td><a href="c/7_series/ahrs">7_series_ahrs_example_c</a></td>
-      <td><a href="cpp/7_series/ahrs">7_series_ahrs_example_cpp</a></td>
+      <td rowspan="2"><a href="c/7_series/ahrs">7_series_ahrs_example_c</a></td>
+      <td rowspan="2"><a href="cpp/7_series/ahrs">7_series_ahrs_example_cpp</a></td>
     </tr>
+    <tr></tr>
+    <tr></tr>
     <tr align="center">
       <td> INS External Aiding Examples </td>
       <td><a href="c/7_series/ins">7_series_ins_example_c</a></td>
@@ -83,35 +89,44 @@ advanced navigation solutions. Each example includes comprehensive documentation
       <td>Complete INS example with external aiding measurements and reference frame configuration using simulated external data</td>
     </tr>
     <tr align="center">
-      <td rowspan="2"> GNSS/INS Navigation Examples </td>
-      <td><a href="c/5_series/gnss_ins">5_series_gnss_ins_example_c</a></td>
-      <td><a href="cpp/5_series/gnss_ins">5_series_gnss_ins_example_cpp</a></td>
-      <td rowspan="2">Full navigation solution combining GNSS and inertial data for position, velocity, and attitude</td>
+      <td rowspan="4"> GNSS/INS Navigation Examples </td>
+      <td rowspan="2"><a href="c/5_series/gnss_ins">5_series_gnss_ins_example_c</a></td>
+      <td rowspan="2"><a href="cpp/5_series/gnss_ins">5_series_gnss_ins_example_cpp</a></td>
+      <td rowspan="4">Full navigation solution combining GNSS and inertial data for position, velocity, and attitude</td>
     </tr>
+    <tr></tr>
     <tr align="center">
-      <td><a href="c/7_series/gnss_ins">7_series_gnss_ins_example_c</a></td>
-      <td><a href="cpp/7_series/gnss_ins">7_series_gnss_ins_example_cpp</a></td>
+      <td rowspan="2"><a href="c/7_series/gnss_ins">7_series_gnss_ins_example_c</a></td>
+      <td rowspan="2"><a href="cpp/7_series/gnss_ins">7_series_gnss_ins_example_cpp</a></td>
     </tr>
+    <tr></tr>
+    <tr></tr>
     <tr align="center">
-      <td rowspan="2"> IMU Data Streaming Examples </td>
-      <td><a href="c/5_series/stream_imu">5_series_stream_imu_example_c</a></td>
-      <td><a href="cpp/5_series/stream_imu">5_series_stream_imu_example_cpp</a></td>
-      <td rowspan="2">Basic IMU sensor data streaming with accelerometer, gyroscope, and magnetometer output</td>
+      <td rowspan="4"> IMU Data Streaming Examples </td>
+      <td rowspan="2"><a href="c/5_series/stream_imu">5_series_stream_imu_example_c</a></td>
+      <td rowspan="2"><a href="cpp/5_series/stream_imu">5_series_stream_imu_example_cpp</a></td>
+      <td rowspan="4">Basic IMU sensor data streaming with accelerometer, gyroscope, and magnetometer output</td>
     </tr>
+    <tr></tr>
     <tr align="center">
-      <td><a href="c/7_series/stream_imu">7_series_stream_imu_example_c</a></td>
-      <td><a href="cpp/7_series/stream_imu">7_series_stream_imu_example_cpp</a></td>
+      <td rowspan="2"><a href="c/7_series/stream_imu">7_series_stream_imu_example_c</a></td>
+      <td rowspan="2"><a href="cpp/7_series/stream_imu">7_series_stream_imu_example_cpp</a></td>
     </tr>
+    <tr></tr>
+    <tr></tr>
     <tr align="center">
-      <td rowspan="2"> Multithreaded Examples </td>
-      <td><a href="c/5_series/threading">5_series_threading_example_c</a></td>
-      <td><a href="cpp/5_series/threading">5_series_threading_example_cpp</a></td>
-      <td rowspan="2">Multithreaded data streaming example showing concurrent data processing patterns</td>
+      <td rowspan="4"> Multithreaded Examples </td>
+      <td rowspan="2"><a href="c/5_series/threading">5_series_threading_example_c</a></td>
+      <td rowspan="2"><a href="cpp/5_series/threading">5_series_threading_example_cpp</a></td>
+      <td rowspan="4">Multithreaded data streaming example showing concurrent data processing patterns</td>
     </tr>
+    <tr></tr>
     <tr align="center">
-      <td><a href="c/7_series/threading">7_series_threading_example_c</a></td>
-      <td><a href="cpp/7_series/threading">7_series_threading_example_cpp</a></td>
+      <td rowspan="2"><a href="c/7_series/threading">7_series_threading_example_c</a></td>
+      <td rowspan="2"><a href="cpp/7_series/threading">7_series_threading_example_cpp</a></td>
     </tr>
+    <tr></tr>
+    <tr></tr>
     <tr align="center">
       <td> Device Information Examples </td>
       <td><a href="c/device_info">device_info_example_c</a></td>
