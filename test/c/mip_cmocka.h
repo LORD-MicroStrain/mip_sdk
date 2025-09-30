@@ -49,17 +49,6 @@ typedef struct CMUnitTest CMUnitTest;
 // Compares two characters and displays them (instead of their ASCII codes) when failed
 #define assert_char_equal(a, b) \
     MICROSTRAIN_TEST_ASSERT_MESSAGE(a == b, "%c != %c", a, b);
-    /*
-    do                                  \
-    {                                   \
-        if (a != b)                     \
-        {                               \
-            fail_msg("%c != %c", a, b); \
-        }                               \
-    } while (0)
-    */
-
-//MICROSTRAIN_TEST_ASSERT_MESSAGE(a == b, "%c != %c", a, b)
 
 /* ------------------------------------------------------------------------------------------------- */
 
