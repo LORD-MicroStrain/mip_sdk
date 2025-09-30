@@ -46,9 +46,13 @@ typedef struct CMUnitTest CMUnitTest;
 /* Custom Assertions                                                                                 */
 /* ------------------------------------------------------------------------------------------------- */
 
-// Compares two characters and displays them (instead of their ASCII codes) when failed
+// Fails if the characters are not equal.
 #define assert_char_equal(a, b) \
     MICROSTRAIN_TEST_ASSERT_MESSAGE(a == b, "%c != %c", a, b);
+
+// Fails if the buffer does not contain a zero terminator at the specified position.
+#define assert_null_terminated(buffer, position) \
+    MICROSTRAIN_TEST_ASSERT_MESSAGE(buffer[position] == '\0', "%c != \\0", buffer[position]);
 
 /* ------------------------------------------------------------------------------------------------- */
 

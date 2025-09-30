@@ -16,7 +16,7 @@ MICROSTRAIN_TEST_CASE(A_zero_terminated_string_can_be_concatenated_to_an_empty_b
 
     assert_true(ok);
     assert_int_equal(index, string_length);
-    assert_char_equal(buffer[4], '\0');
+    assert_null_terminated(buffer, 5);
     assert_string_equal(buffer, "12345\0____");
 }
 
@@ -33,7 +33,7 @@ MICROSTRAIN_TEST_CASE(String_concatenation_to_an_empty_buffer_fails_gracefully_i
 
     assert_false(ok);
     assert_int_equal(index, string_length);
-    assert_char_equal(buffer[3], '\0');
+    assert_null_terminated(buffer, 3);
     assert_string_equal(buffer, "123\0______");
 }
 
@@ -60,7 +60,7 @@ MICROSTRAIN_TEST_CASE(A_zero_terminated_string_can_be_concatenated_to_a_non_empt
 
     assert_true(ok);
     assert_int_equal(index, 9);
-    assert_char_equal(buffer[9], '\0');
+    assert_null_terminated(buffer, 9);
     assert_string_equal(buffer, "123456789\0");
 }
 
@@ -75,7 +75,7 @@ MICROSTRAIN_TEST_CASE(String_concatenation_to_a_non_empty_buffer_fails_gracefull
 
     assert_false(ok);
     assert_int_equal(index, 16);
-    assert_char_equal(buffer[9], '\0');
+    assert_null_terminated(buffer, 9);
     assert_string_equal(buffer, "012345678\0##########"); // TODO: I don't think characters after the null terminator are compared.
                                                           //       Should they be?
 }
@@ -93,7 +93,7 @@ MICROSTRAIN_TEST_CASE(String_concatenation_to_a_non_empty_buffer_fails_gracefull
 
     assert_false(ok);
     assert_int_equal(index, 18);
-    assert_char_equal(buffer[9], '\0');
+    assert_null_terminated(buffer, 9);
     assert_string_equal(buffer, "012345678\0__________");
 }
 
@@ -113,7 +113,7 @@ MICROSTRAIN_TEST_CASE(Multiple_string_concatenations_work)
 
     assert_true(ok);
     assert_int_equal(index, 27);
-    assert_char_equal(buffer[27], '\0');
+    assert_null_terminated(buffer, 27);
     assert_string_equal(buffer, "This is a very long test...");
 }
 
@@ -134,7 +134,7 @@ MICROSTRAIN_TEST_CASE(Multiple_string_concatenations_fail_gracefully_when_buffer
 
     assert_false(ok);
     assert_int_equal(index, 27);
-    assert_char_equal(buffer[9], '\0');
+    assert_null_terminated(buffer, 9);
     assert_string_equal(buffer, "This is a");
 }
 
