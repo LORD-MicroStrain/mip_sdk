@@ -226,11 +226,37 @@ if(MICROSTRAIN_BUILD_DOCUMENTATION)
 
     set(DOXYGEN_HTML_EXTRA_STYLESHEET "${CMAKE_CURRENT_LIST_DIR}/docs/style.css")
 
+    set(MICROSTRAIN_EXAMPLES_DIR "${CMAKE_CURRENT_LIST_DIR}/examples")
+
     doxygen_add_docs(docs
         "${MICROSTRAIN_SRC_DIR}"
         "${CMAKE_CURRENT_LIST_DIR}/docs"
-        "${CMAKE_CURRENT_LIST_DIR}/examples"
+        "${MICROSTRAIN_EXAMPLES_DIR}"
         COMMENT "Generating documentation."
+    )
+
+    set(EXAMPLES_README_FILE "${MICROSTRAIN_EXAMPLES_DIR}/README")
+    set(EXAMPLES_README_CONFIG_FILE "${CMAKE_CURRENT_BINARY_DIR}/examples_readme.cmake")
+
+    file(CONFIGURE OUTPUT "${EXAMPLES_README_CONFIG_FILE}" CONTENT
+        "file(READ \"${EXAMPLES_README_FILE}.md\" CONTENT)\n
+# Wrap all <table> blocks with @htmlonly/@endhtmlonly
+string(REGEX REPLACE \"(<table)\" \"@htmlonly\\n\\\\1\" CONTENT \"\${CONTENT}\")\n
+string(REGEX REPLACE \"(</table>)\" \"\\\\1\\n@endhtmlonly\" CONTENT \"\${CONTENT}\")\n
+file(WRITE \"${EXAMPLES_README_FILE}.md\" \"\${CONTENT}\")"
+        @ONLY
+    )
+
+    add_custom_command(TARGET docs PRE_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy "${EXAMPLES_README_FILE}.md" "${EXAMPLES_README_FILE}.bak"
+        COMMAND ${CMAKE_COMMAND} -P "${EXAMPLES_README_CONFIG_FILE}"
+        COMMENT "Preparing examples README.md for Doxygen"
+    )
+
+    add_custom_command(TARGET docs POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different "${EXAMPLES_README_FILE}.bak" "${EXAMPLES_README_FILE}.md"
+        COMMAND ${CMAKE_COMMAND} -E remove "${EXAMPLES_README_FILE}.bak"
+        COMMENT "Restoring original examples README.md"
     )
 
     # Add a target to enable users to zip up the docs
