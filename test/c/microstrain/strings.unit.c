@@ -16,7 +16,7 @@ MICROSTRAIN_TEST_CASE(A_zero_terminated_string_can_be_concatenated_to_an_empty_b
 
     assert_true(ok);
     assert_int_equal(index, string_length);
-    assert_char_equal(buffer[5], '\0');
+    assert_char_equal(buffer[4], '\0');
     assert_string_equal(buffer, "12345\0____");
 }
 
