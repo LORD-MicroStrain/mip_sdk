@@ -235,6 +235,8 @@ if(MICROSTRAIN_BUILD_DOCUMENTATION)
         COMMENT "Generating documentation."
     )
 
+    # Fix Doxygen inline HTML parsing within the examples README.md file
+    # This is needed to tell Doxygen to treat the HTML table as HTML and not convert it to a Doxygen table
     set(EXAMPLES_README_FILE "${MICROSTRAIN_EXAMPLES_DIR}/README")
     set(EXAMPLES_README_CONFIG_FILE "${CMAKE_CURRENT_BINARY_DIR}/examples_readme.cmake")
 
@@ -247,11 +249,12 @@ file(WRITE \"${EXAMPLES_README_FILE}.md\" \"\${CONTENT}\")"
         @ONLY
     )
 
-    add_custom_command(TARGET docs PRE_BUILD
+    add_custom_target(doxygen_prepare_examples_readme
         COMMAND ${CMAKE_COMMAND} -E copy "${EXAMPLES_README_FILE}.md" "${EXAMPLES_README_FILE}.bak"
         COMMAND ${CMAKE_COMMAND} -P "${EXAMPLES_README_CONFIG_FILE}"
         COMMENT "Preparing examples README.md for Doxygen"
     )
+    add_dependencies(docs doxygen_prepare_examples_readme)
 
     add_custom_command(TARGET docs POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different "${EXAMPLES_README_FILE}.bak" "${EXAMPLES_README_FILE}.md"
