@@ -556,7 +556,7 @@ static void configure_gnss_message_format(mip_interface* _device, const uint8_t 
     }
 
     // Multi-antenna GNSS IDs correspond to 0x91 as GNSS 1, 0x92 as GNSS 2, etc.
-    const uint8_t gnss_id = 0x90 - _gnss_data_descriptor_set;
+    const uint8_t gnss_id = _gnss_data_descriptor_set - 0x90;
 
     // Note: Querying the device base rate is only one way to calculate the descriptor decimation
     // We could have also set it directly with information from the datasheet
