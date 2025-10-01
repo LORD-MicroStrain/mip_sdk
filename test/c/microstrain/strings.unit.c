@@ -190,22 +190,22 @@ MICROSTRAIN_TEST_CASE(A_string_can_be_formatted_and_written_to_a_non_empty_buffe
     assert_string_equal(buffer, "Test: 4096==0x1000\0_");
 }
 
-/*
-void string_format_at_offset_fails_gracefully_if_buffer_too_small()
+MICROSTRAIN_TEST_CASE(String_formatting_to_a_non_empty_buffer_fails_gracefully_if_buffer_too_small)
 {
     char buffer[20];
     memset(buffer, '_', sizeof(buffer));
     memcpy(buffer, "Test: ", 6+1);
     size_t index = 6;
 
-    bool ok = microstrain_string_format(buffer, 10, &index, "%d==0x%x", 4096, 0x1000);
+    const bool ok = microstrain_string_format(buffer, 10, &index, "%d==0x%x", 4096, 0x1000);
 
-    TEST_ASSERT(!ok, "format should fail");
-    TEST_ASSERT_EQ(index, 6+4+2+2+4, "Index must be calculated correctly");
-    TEST_ASSERT_BUFFER_COMPARE(buffer, "Test: 409\0__________", sizeof(buffer), "Buffer should match expected result");
+    assert_false(ok);
+    assert_int_equal(index, 6+4+2+2+4);
+    assert_null_terminated(buffer, 9);
+    assert_string_equal(buffer, "Test: 409\0__________");
 }
 
-void multiple_formats_work()
+MICROSTRAIN_TEST_CASE(Multiple_string_formattings_work)
 {
     char buffer[100];
     memset(buffer, '_', sizeof(buffer));
@@ -218,12 +218,13 @@ void multiple_formats_work()
     ok &= microstrain_string_format(buffer, 50, &index, "C=%s", "abcdefg");
     ok &= microstrain_string_format(buffer, 50, &index, "]");
 
-    TEST_ASSERT(ok, "Should be successful");
-    TEST_ASSERT_BUFFER_COMPARE(buffer, "Values: [A=54321, B=0xABCD, C=abcdefg]", 39, "Buffer should match expected result");
-    TEST_ASSERT_BUFFER_NOT_OVERRUN(buffer, sizeof(buffer), 39, "Buffer should not be overrun");
+    assert_true(ok);
+    assert_int_equal(index, 9+2+5+2+4+4+2+2+7+1);
+    assert_null_terminated(buffer, 38);
+    assert_string_equal(buffer, "Values: [A=54321, B=0xABCD, C=abcdefg]");
 }
 
-void multiple_formats_fail_gracefully_when_buffer_too_small()
+MICROSTRAIN_TEST_CASE(Multiple_string_formattings_fail_gracefully_when_buffer_too_small)
 {
     char buffer[100];
     memset(buffer, '_', sizeof(buffer));
@@ -236,11 +237,11 @@ void multiple_formats_fail_gracefully_when_buffer_too_small()
     ok &= microstrain_string_format(buffer, 25, &index, "C=%s", "abcdefg");
     ok &= microstrain_string_format(buffer, 25, &index, "]");
 
-    TEST_ASSERT(!ok, "Should not be successful");
-    TEST_ASSERT_BUFFER_COMPARE(buffer, "Values: [A=54321, B=0xAB", 25, "Buffer should match expected result");
-    TEST_ASSERT_BUFFER_NOT_OVERRUN(buffer, sizeof(buffer), 25, "Buffer should not be overrun");
+    assert_false(ok);
+    assert_int_equal(index, 9+2+5+2+4+4+2+2+7+1);
+    assert_null_terminated(buffer, 24);
+    assert_string_equal(buffer, "Values: [A=54321, B=0xAB");
 }
-*/
 
 int main()
 {
@@ -264,9 +265,12 @@ int main()
     MICROSTRAIN_TEST_SUITE_START(string_formatting);
 
     MICROSTRAIN_TEST_ADD(string_formatting, A_string_can_be_formatted_and_written_to_an_empty_buffer);
-    MICROSTRAIN_TEST_ADD(string_formatting, String_formatting_fails_gracefully_when_buffer_is_too_small)
-    MICROSTRAIN_TEST_ADD(string_formatting, String_formatting_calculates_required_buffer_size_if_buffer_is_null)
+    MICROSTRAIN_TEST_ADD(string_formatting, String_formatting_fails_gracefully_when_buffer_is_too_small);
+    MICROSTRAIN_TEST_ADD(string_formatting, String_formatting_calculates_required_buffer_size_if_buffer_is_null);
     MICROSTRAIN_TEST_ADD(string_formatting, A_string_can_be_formatted_and_written_to_a_non_empty_buffer);
+    MICROSTRAIN_TEST_ADD(string_formatting, String_formatting_to_a_non_empty_buffer_fails_gracefully_if_buffer_too_small);
+    MICROSTRAIN_TEST_ADD(string_formatting, Multiple_string_formattings_work);
+    MICROSTRAIN_TEST_ADD(string_formatting, Multiple_string_formattings_fail_gracefully_when_buffer_too_small)
     MICROSTRAIN_TEST_SUITE_RUN("String Formatting", string_formatting);
 
     MICROSTRAIN_TEST_SUITE_END(string_formatting);
