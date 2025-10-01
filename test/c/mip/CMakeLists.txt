@@ -3,12 +3,7 @@
 # Unit
 # ---------------------------------------------------------------
 
-add_cmocka_test(
-    "C_mip_packet_builder_unit"
-    SOURCES "${CMAKE_CURRENT_LIST_DIR}/mip_packet_builder.unit.c"
-    LINK_LIBRARIES ${MIP_INTEGRATION_TEST_TARGET_C}
-)
-set_tests_properties("C_mip_packet_builder_unit" PROPERTIES LABELS "unit")
+# TODO: Add when implemented
 
 # ---------------------------------------------------------------
 # Integration
