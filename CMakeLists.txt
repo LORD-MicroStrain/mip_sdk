@@ -245,16 +245,22 @@ if(MICROSTRAIN_BUILD_DOCUMENTATION)
 # Wrap all <table> blocks with @htmlonly/@endhtmlonly
 string(REGEX REPLACE \"(<table)\" \"@htmlonly\\n\\\\1\" CONTENT \"\${CONTENT}\")\n
 string(REGEX REPLACE \"(</table>)\" \"\\\\1\\n@endhtmlonly\" CONTENT \"\${CONTENT}\")\n
+# Update the example page references
+string(REGEX REPLACE \"(<a href=\\\")([a-z]+)/([57]+)_([a-z]+)/([a-z]+)_([a-z]+)(\\\">)\" \"\\\\1group____\\\\3__\\\\4__\\\\5__\\\\6__example__\\\\2.html\\\\7\" CONTENT \"\${CONTENT}\")\n
+string(REGEX REPLACE \"(<a href=\\\")([a-z]+)/([57]+)_([a-z]+)/([a-z]+)(\\\">)\" \"\\\\1group____\\\\3__\\\\4__\\\\5__example__\\\\2.html\\\\6\" CONTENT \"\${CONTENT}\")\n
+string(REGEX REPLACE \"(<a href=\\\")([a-z]+)/([a-z]+)_([a-z]+)(\\\">)\" \"\\\\1group__\\\\3__\\\\4__example__\\\\2.html\\\\5\" CONTENT \"\${CONTENT}\")\n
 file(WRITE \"${EXAMPLES_README_FILE}.md\" \"\${CONTENT}\")"
         @ONLY
     )
 
-    add_custom_target(doxygen_prepare_examples_readme
+    set(MIP_PREPARE_EXAMPLES_README_TARGET "doxygen_prepare_examples_readme")
+
+    add_custom_target("${MIP_PREPARE_EXAMPLES_README_TARGET}"
         COMMAND ${CMAKE_COMMAND} -E copy "${EXAMPLES_README_FILE}.md" "${EXAMPLES_README_FILE}.bak"
         COMMAND ${CMAKE_COMMAND} -P "${EXAMPLES_README_CONFIG_FILE}"
         COMMENT "Preparing examples README.md for Doxygen"
     )
-    add_dependencies(docs doxygen_prepare_examples_readme)
+    add_dependencies(docs "${MIP_PREPARE_EXAMPLES_README_TARGET}")
 
     add_custom_command(TARGET docs POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different "${EXAMPLES_README_FILE}.bak" "${EXAMPLES_README_FILE}.md"

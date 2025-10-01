@@ -59,7 +59,7 @@ advanced navigation solutions. Each example includes comprehensive documentation
     <tr align="center" class="markdownTableRowOdd">
       <td rowspan="4"> AR Filter Examples </td>
       <td rowspan="2"><a href="c/5_series/ar">5_series_ar_example_c</a></td>
-      <td rowspan="2"><a href="\ref cpp/5_series/ar">5_series_ar_example_cpp</a></td>
+      <td rowspan="2"><a href="cpp/5_series/ar">5_series_ar_example_cpp</a></td>
       <td rowspan="4">Basic attitude filter configuration for streaming filter data</td>
     </tr>
     <tr></tr>
