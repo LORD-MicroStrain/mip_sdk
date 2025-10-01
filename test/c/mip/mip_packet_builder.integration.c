@@ -23,22 +23,8 @@ int main()
     return MICROSTRAIN_TEST_FAILURE_COUNT;
 }
 
+
 /*
-void test_create()
-{
-    struct mip_packet_view packet;
-
-    uint8_t descriptors[] = {0x80, 0x01, 0x0C};
-
-    for(unsigned int i=0; i<sizeof(descriptors); i++)
-    {
-        mip_packet_create(&packet, buffer, sizeof(buffer), descriptors[i]);
-
-        check(packet._buffer == buffer && packet._buffer_length == sizeof(buffer)-EXTRA, "mip_packet_create sets wrong buffer info");
-        check(packet._buffer[MIP_INDEX_DESCSET] == descriptors[i], "mip_packet_create sets wrong descriptor set (%02X != %02X)", packet._buffer[MIP_INDEX_DESCSET], descriptors[i]);
-    }
-}
-
 void test_add_fields()
 {
     struct mip_packet_view packet;
