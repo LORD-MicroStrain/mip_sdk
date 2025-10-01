@@ -244,6 +244,21 @@ MICROSTRAIN_TEST_CASE(Multiple_string_formattings_fail_gracefully_when_buffer_to
     assert_string_equal(buffer, "Values: [A=54321, B=0xAB");
 }
 
+MICROSTRAIN_TEST_CASE(A_byte_array_can_formatted_as_hexadecimal_and_written_to_a_string_buffer)
+{
+    char buffer[50];
+    memset(buffer, '_', sizeof(buffer));
+    size_t index = 0;
+    const uint8_t data[] = {0xA1, 0xB2, 0xC3, 0xD4};
+
+    const bool ok = microstrain_string_bytes_to_hex_str(buffer, 25, &index, data, sizeof(data), 0);
+
+    assert_true(ok);
+    assert_int_equal(index, 2+2+2+2);
+    assert_null_terminated(buffer, 8);
+    assert_string_equal(buffer, "A1B2C3D4");
+}
+
 int main()
 {
     MICROSTRAIN_TEST_INIT;
@@ -272,6 +287,7 @@ int main()
     MICROSTRAIN_TEST_ADD(string_formatting, String_formatting_to_a_non_empty_buffer_fails_gracefully_if_buffer_too_small);
     MICROSTRAIN_TEST_ADD(string_formatting, Multiple_string_formattings_work);
     MICROSTRAIN_TEST_ADD(string_formatting, Multiple_string_formattings_fail_gracefully_when_buffer_too_small)
+    MICROSTRAIN_TEST_ADD(string_formatting, A_byte_array_can_formatted_as_hexadecimal_and_written_to_a_string_buffer)
     MICROSTRAIN_TEST_SUITE_RUN("String Formatting", string_formatting);
 
     MICROSTRAIN_TEST_SUITE_END(string_formatting);
