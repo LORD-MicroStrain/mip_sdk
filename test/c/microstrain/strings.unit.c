@@ -325,10 +325,42 @@ MICROSTRAIN_TEST_CASE(Byte_formatting_handles_no_data_properly)
     memset(buffer, '_', sizeof(buffer));
     size_t index = 0;
 
-    bool ok = microstrain_string_bytes_to_hex_str(buffer, 10, &index, NULL, 0, 0);
+    const bool ok = microstrain_string_bytes_to_hex_str(buffer, 10, &index, NULL, 0, 0);
 
-    TEST_ASSERT(ok, "Should be successful");
-    TEST_ASSERT_EQ(index, 0, "Index should be unchanged");
+    assert_true(ok);
+    assert_int_equal(index, 0);
+}
+
+MICROSTRAIN_TEST_CASE(A_byte_array_can_formatted_as_hexadecimal_and_written_to_a_non_empty_string_buffer)
+{
+    char buffer[50];
+    memset(buffer, '_', sizeof(buffer));
+    memcpy(buffer, "Data: ", 7);
+    size_t index = 6;
+    const uint8_t data[] = {0xA1, 0xB2, 0xC3, 0xD4};
+
+    const bool ok = microstrain_string_bytes_to_hex_str(buffer, 25, &index, data, sizeof(data), 0);
+
+    assert_true(ok);
+    assert_int_equal(index, 6+2+2+2+2);
+    assert_null_terminated(buffer, 14);
+    assert_string_equal(buffer, "Data: A1B2C3D4");
+}
+
+MICROSTRAIN_TEST_CASE(Byte_formatting_fails_gracefully_when_buffer_too_small)
+{
+    char buffer[50];
+    memset(buffer, '_', sizeof(buffer));
+    memcpy(buffer, "Data: ", 7);
+    size_t index = 6;
+    const uint8_t data[] = {0xA1, 0xB2, 0xC3, 0xD4};
+
+    const bool ok = microstrain_string_bytes_to_hex_str(buffer, 10, &index, data, sizeof(data), 0);
+
+    assert_false(ok);
+    assert_int_equal(index, 6+2+2+2+2);
+    assert_null_terminated(buffer, 6);
+    assert_string_equal(buffer, "Data: ");
 }
 
 int main()
@@ -365,6 +397,8 @@ int main()
     MICROSTRAIN_TEST_ADD(string_formatting, A_byte_array_can_formatted_as_hexadecimal_with_partial_group2_and_written_to_a_string_buffer);
     MICROSTRAIN_TEST_ADD(string_formatting, A_byte_array_can_formatted_as_hexadecimal_with_group4_and_written_to_a_string_buffer);
     MICROSTRAIN_TEST_ADD(string_formatting, Byte_formatting_handles_no_data_properly);
+    MICROSTRAIN_TEST_ADD(string_formatting, A_byte_array_can_formatted_as_hexadecimal_and_written_to_a_non_empty_string_buffer);
+    MICROSTRAIN_TEST_ADD(string_formatting, Byte_formatting_fails_gracefully_when_buffer_too_small);
     MICROSTRAIN_TEST_SUITE_RUN("String Formatting", string_formatting);
 
     MICROSTRAIN_TEST_SUITE_END(string_formatting);
