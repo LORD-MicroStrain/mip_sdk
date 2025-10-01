@@ -4,8 +4,6 @@
     Responsible for orchestrating test building and execution.
 #]]
 
-# TODO: Figure out why cmocka isn't working or switch to unity
-
 # ---------------------------------------------------------------
 # Executables
 # ---------------------------------------------------------------

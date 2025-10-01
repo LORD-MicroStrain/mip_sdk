@@ -1,10 +1,10 @@
 
-# TODO: Move to integration test target
 add_cmocka_test(
     "C_Mip_fields"
     SOURCES "${CMAKE_CURRENT_LIST_DIR}/mip_fields.integration.c"
-    LINK_LIBRARIES ${MIP_UNIT_TEST_TARGET_C}
+    LINK_LIBRARIES ${MIP_INTEGRATION_TEST_TARGET_C}
 )
+set_tests_properties("C_Mip_fields" PROPERTIES LABELS "integration")
 
 #[[
 add_mip_test(
