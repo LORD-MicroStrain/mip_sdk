@@ -6,49 +6,26 @@
 #include <mip/mip_offsets.h>
 #include <mip/mip_packet.h>
 
-#define EXTRA 1
-uint8_t buffer[MIP_PACKET_LENGTH_MAX + EXTRA];
 
-
-int main()
-{
-    MICROSTRAIN_TEST_INIT;
-
-    MICROSTRAIN_TEST_SUITE_START(mip_packet_builder);
-
-    MICROSTRAIN_TEST_SUITE_RUN("Mip packet builder", mip_packet_builder);
-
-    MICROSTRAIN_TEST_SUITE_END(mip_packet_builder);
-
-    return MICROSTRAIN_TEST_FAILURE_COUNT;
-}
-
-
-/*
-void test_add_fields()
-{
-    struct mip_packet_view packet;
-
-    mip_packet_create(&packet, buffer, sizeof(buffer), 0x80);
-
-    check(packet._buffer[MIP_INDEX_DESCSET] == 0x80, "Packet has wrong descriptor set (%02X != %02X)", packet._buffer[MIP_INDEX_DESCSET], 0x80);
-    check_equal( mip_packet_total_length(&packet), MIP_PACKET_LENGTH_MIN, "Empty packet has wrong size" );
-    check_equal( mip_packet_payload_length(&packet), 0, "Packet has nonzero empty payload");
-    check(mip_packet_is_sane(&packet), "Packet is not sane");
-
+ /*
     size_t payload_size = 0;
 
-    check( mip_packet_add_field(&packet, 0x04, NULL, 0), "Could not add an empty field" );
-    check_equal( mip_packet_total_length(&packet), MIP_PACKET_LENGTH_MIN + MIP_FIELD_HEADER_LENGTH, "Empty field - Total length is wrong" );
-    check_equal( mip_packet_payload_length(&packet), MIP_FIELD_HEADER_LENGTH, "Empty field - Packet payload length is wrong" );
-    check_equal( mip_packet_payload(&packet)[MIP_INDEX_FIELD_DESC], 0x04, "Empty field - Field descriptor is wrong" );
-    check_equal( mip_packet_payload(&packet)[MIP_INDEX_FIELD_LEN], 2, "Empty field - Field length is wrong" );
+    const bool success = mip_packet_add_field(&packet, 0x04, NULL, 0);
 
-    payload_size += 2;
+    // One field
+    assert_true(success);
+    assert_int_equal(mip_packet_total_length(&packet), MIP_PACKET_LENGTH_MIN + MIP_FIELD_HEADER_LENGTH);
+    assert_int_equal(mip_packet_payload_length(&packet), MIP_FIELD_HEADER_LENGTH);
+    assert_int_equal(mip_packet_payload(&packet)[MIP_INDEX_FIELD_DESC], 0x04);
+    assert_int_equal(mip_packet_payload(&packet)[MIP_INDEX_FIELD_LEN], 2);
+
+    //payload_size += 2;
 
     uint8_t payload1[] = { 1, 2, 3, 4, 5, 6 };
 
-    check( mip_packet_add_field(&packet, 0x05, payload1, sizeof(payload1)), "Could not add payload of size %d", sizeof(payload1));
+    const bool payload1_success = mip_packet_add_field(&packet, 0x05, payload1, sizeof(payload1));
+
+    assert_true(payload1_success);
     // 7565 800A 0204 0805 010203040506 00...
     check_equal( mip_packet_total_length(&packet), MIP_PACKET_LENGTH_MIN + payload_size + MIP_FIELD_HEADER_LENGTH + sizeof(payload1), "Field 1 - Total length is wrong" );
     check_equal( mip_packet_payload_length(&packet), payload_size + MIP_FIELD_HEADER_LENGTH + sizeof(payload1), "Field 1 - Packet payload length is wrong" );
@@ -78,7 +55,24 @@ void test_add_fields()
     check_equal( mip_packet_checksum_value(&packet), 0x80F0, "Checksum is wrong" );
 
     check( buffer[MIP_PACKET_LENGTH_MAX] == 0x00, "Extra byte at end of buffer got clobbered" );
+*/
+
+int main()
+{
+    MICROSTRAIN_TEST_INIT;
+
+    MICROSTRAIN_TEST_SUITE_START(mip_packet_builder);
+
+    // TODO: Add tests here
+    MICROSTRAIN_TEST_SUITE_RUN("Mip packet builder", mip_packet_builder);
+
+    MICROSTRAIN_TEST_SUITE_END(mip_packet_builder);
+
+    return MICROSTRAIN_TEST_FAILURE_COUNT;
 }
+
+
+/*
 
 void test_short_buffer()
 {

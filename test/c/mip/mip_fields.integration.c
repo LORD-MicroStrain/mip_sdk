@@ -14,7 +14,7 @@
 #include <mip/mip_packet.h>
 
 
-uint8_t packet_buffer[MIP_PACKET_LENGTH_MAX];
+uint8_t packet_buffer[MIP_PACKET_LENGTH_MAX] = {0};
 mip_packet_view packet;
 
 mip_field_view fields[MIP_PACKET_PAYLOAD_LENGTH_MAX / MIP_FIELD_LENGTH_MIN];
