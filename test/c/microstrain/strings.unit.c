@@ -259,6 +259,66 @@ MICROSTRAIN_TEST_CASE(A_byte_array_can_formatted_as_hexadecimal_and_written_to_a
     assert_string_equal(buffer, "A1B2C3D4");
 }
 
+MICROSTRAIN_TEST_CASE(A_byte_array_can_formatted_as_hexadecimal_with_group1_and_written_to_a_string_buffer)
+{
+    char buffer[50];
+    memset(buffer, '_', sizeof(buffer));
+    size_t index = 0;
+    const uint8_t data[] = {0xA1, 0xB2, 0xC3, 0xD4};
+
+    const bool ok = microstrain_string_bytes_to_hex_str(buffer, 25, &index, data, sizeof(data), 1);
+
+    assert_true(ok);
+    assert_int_equal(index, 2+1+2+1+2+1+2);
+    assert_null_terminated(buffer, 11);
+    assert_string_equal(buffer, "A1 B2 C3 D4");
+}
+
+MICROSTRAIN_TEST_CASE(A_byte_array_can_formatted_as_hexadecimal_with_group2_and_written_to_a_string_buffer)
+{
+    char buffer[50];
+    memset(buffer, '_', sizeof(buffer));
+    size_t index = 0;
+    const uint8_t data[] = {0xA1, 0xB2, 0xC3, 0xD4};
+
+    const bool ok = microstrain_string_bytes_to_hex_str(buffer, 25, &index, data, sizeof(data), 2);
+
+    assert_true(ok);
+    assert_int_equal(index, 2+2+1+2+2);
+    assert_null_terminated(buffer, 9);
+    assert_string_equal(buffer, "A1B2 C3D4");
+}
+
+MICROSTRAIN_TEST_CASE(A_byte_array_can_formatted_as_hexadecimal_with_partial_group2_and_written_to_a_string_buffer)
+{
+    char buffer[50];
+    memset(buffer, '_', sizeof(buffer));
+    size_t index = 0;
+    const uint8_t data[] = {0xA1, 0xB2, 0xC3, 0xD4, 0xE5};
+
+    const bool ok = microstrain_string_bytes_to_hex_str(buffer, 25, &index, data, sizeof(data), 2);
+
+    assert_true(ok);
+    assert_int_equal(index, 2+2+1+2+2+1+2);
+    assert_null_terminated(buffer, 12);
+    assert_string_equal(buffer, "A1B2 C3D4 E5");
+}
+
+MICROSTRAIN_TEST_CASE(A_byte_array_can_formatted_as_hexadecimal_with_group4_and_written_to_a_string_buffer)
+{
+    char buffer[50];
+    memset(buffer, '_', sizeof(buffer));
+    size_t index = 0;
+    const uint8_t data[] = {0xA8, 0xB9, 0xCE, 0xDF, 0x01, 0x23, 0x45, 0x67};
+
+    const bool ok = microstrain_string_bytes_to_hex_str(buffer, 25, &index, data, sizeof(data), 4);
+
+    assert_true(ok);
+    assert_int_equal(index, 2+2+2+2+1+2+2+2+2);
+    assert_null_terminated(buffer, 17);
+    assert_string_equal(buffer, "A8B9CEDF 01234567");
+}
+
 int main()
 {
     MICROSTRAIN_TEST_INIT;
@@ -288,6 +348,10 @@ int main()
     MICROSTRAIN_TEST_ADD(string_formatting, Multiple_string_formattings_work);
     MICROSTRAIN_TEST_ADD(string_formatting, Multiple_string_formattings_fail_gracefully_when_buffer_too_small)
     MICROSTRAIN_TEST_ADD(string_formatting, A_byte_array_can_formatted_as_hexadecimal_and_written_to_a_string_buffer)
+    MICROSTRAIN_TEST_ADD(string_formatting, A_byte_array_can_formatted_as_hexadecimal_with_group1_and_written_to_a_string_buffer)
+    MICROSTRAIN_TEST_ADD(string_formatting, A_byte_array_can_formatted_as_hexadecimal_with_group2_and_written_to_a_string_buffer)
+    MICROSTRAIN_TEST_ADD(string_formatting, A_byte_array_can_formatted_as_hexadecimal_with_partial_group2_and_written_to_a_string_buffer)
+    MICROSTRAIN_TEST_ADD(string_formatting, A_byte_array_can_formatted_as_hexadecimal_with_group4_and_written_to_a_string_buffer)
     MICROSTRAIN_TEST_SUITE_RUN("String Formatting", string_formatting);
 
     MICROSTRAIN_TEST_SUITE_END(string_formatting);
