@@ -50,9 +50,15 @@
 // MSVC doesn't support pthread
 // Wrapping basic pthread functionality through threads.h
 #include <threads.h>
-typedef thrd_t                pthread_t;
-typedef struct pthread_attr_t pthread_attr_t;
+typedef thrd_t                     pthread_t;
+typedef struct pthread_attr_t      pthread_attr_t;
+typedef mtx_t                      pthread_mutex_t;
+typedef struct pthread_mutexattr_t pthread_mutexattr_t;
 
+int  pthread_mutex_init(pthread_mutex_t *m, const pthread_mutexattr_t *a);
+int  pthread_mutex_destroy(pthread_mutex_t *m);
+int  pthread_mutex_lock(pthread_mutex_t *m);
+int  pthread_mutex_unlock(pthread_mutex_t *m);
 int  pthread_create(pthread_t* th, const pthread_attr_t* attr, void* (*func)(void*), void* arg);
 int  pthread_join(pthread_t t, void** res);
 int  nanosleep(const struct timespec* request, struct timespec* remain);
@@ -140,16 +146,42 @@ int main(const int argc, const char* argv[])
     (void)argc;
     (void)argv;
 
+    // Mark printf operations as unbuffered to flush with every operation
+    setvbuf(stdout, NULL, _IONBF, 0);
+    setvbuf(stderr, NULL, _IONBF, 0);
+
 // Note: This is a compile-time way of checking that the proper logging level is enabled
 // Note: The max available logging level may differ in pre-packaged installations of the MIP SDK
 #ifndef MICROSTRAIN_LOGGING_ENABLED_INFO
 #error This example requires a logging level of at least MICROSTRAIN_LOGGING_LEVEL_INFO_ to work properly
 #endif // !MICROSTRAIN_LOGGING_ENABLED_INFO
 
+#if USE_THREADS
+    // Create a mutex for the logging callbacks when multi-threading
+    fprintf(stdout, "Initializing the threading mutex.\n");
+    pthread_mutex_t lock;
+    if (pthread_mutex_init(&lock, NULL) != 0)
+    {
+        fprintf(stderr, "Failed to initialize the threading mutex!\n");
+
+        fprintf(stdout, "Press 'Enter' to exit the program.\n");
+
+        // Make sure the console remains open
+        const int confirm_exit = getc(stdin);
+        (void)confirm_exit; // Unused
+
+        return 1;
+    }
+#endif // USE_THREADS
+
     // Initialize the custom logger to print messages/errors as they occur
     // Note: The logging level parameter doesn't need to match the max logging level.
     // If the parameter is higher than the max level, higher-level logging functions will be ignored
+#if USE_THREADS
+    MICROSTRAIN_LOG_INIT(&log_callback, MICROSTRAIN_LOG_LEVEL_INFO, (void*)&lock);
+#else
     MICROSTRAIN_LOG_INIT(&log_callback, MICROSTRAIN_LOG_LEVEL_INFO, NULL);
+#endif // USE_THREADS
 
     // Initialize the connection
     MICROSTRAIN_LOG_INFO("Initializing the connection.\n");
@@ -236,10 +268,12 @@ int main(const int argc, const char* argv[])
     void* thread_return_code = NULL; // Return code from the thread function (Unused)
     if (pthread_join(data_thread, &thread_return_code) != 0)
     {
+        pthread_mutex_destroy(&lock);
         free(thread_return_code);
         terminate(&device_port, "Failed to join the thread!\n", false);
     }
 
+    pthread_mutex_destroy(&lock);
     free(thread_return_code);
 #endif // USE_THREADS
 
@@ -256,7 +290,7 @@ int main(const int argc, const char* argv[])
 ///          errors and fatal messages go to stderr while other levels go to
 ///          stdout. Each message is prefixed with its severity level name.
 ///
-/// @param _user Pointer to user data (unused in this implementation)
+/// @param _user Pointer to the threading mutex (if threading is enabled)
 /// @param _level Log message severity level from microstrain_log_level enum
 /// @param _format Printf-style format string for the message
 /// @param _args Variable argument list containing message parameters
@@ -265,8 +299,16 @@ int main(const int argc, const char* argv[])
 ///
 static void log_callback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args)
 {
+#if USE_THREADS
+    pthread_mutex_t* lock = (pthread_mutex_t*)_user;
+    assert(lock);
+
+    // Lock the mutex since the callbacks can happen across threads
+    pthread_mutex_lock(lock);
+#else
     // Unused parameter
     (void)_user;
+#endif // USE_THREADS
 
     switch (_level)
     {
@@ -275,7 +317,6 @@ static void log_callback(void* _user, const microstrain_log_level _level, const 
         {
             fprintf(stderr, "%s: ", microstrain_logging_level_name(_level));
             vfprintf(stderr, _format, _args);
-            fflush(stderr);
             break;
         }
         case MICROSTRAIN_LOG_LEVEL_WARN:
@@ -285,7 +326,6 @@ static void log_callback(void* _user, const microstrain_log_level _level, const 
         {
             fprintf(stdout, "%s: ", microstrain_logging_level_name(_level));
             vfprintf(stdout, _format, _args);
-            fflush(stdout);
             break;
         }
         case MICROSTRAIN_LOG_LEVEL_OFF:
@@ -294,6 +334,11 @@ static void log_callback(void* _user, const microstrain_log_level _level, const 
             break;
         }
     }
+
+#if USE_THREADS
+    // Release the logging callback for other threads
+    pthread_mutex_unlock(lock);
+#endif // USE_THREADS
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -827,6 +872,35 @@ static void exit_from_command(const mip_interface* _device, const mip_cmd_result
 
 #ifdef _MSC_VER
 // threads.h wrappers for unsupported pthread functionality used in this example
+
+// threads.h wrapper for pthread pthread_mutex_init
+int pthread_mutex_init(pthread_mutex_t *m, const pthread_mutexattr_t *a)
+{
+    // Unused parameter
+    (void)a;
+
+    // Simple non-recursive mutex
+    return mtx_init(m, mtx_plain);
+}
+
+// threads.h wrapper for pthread pthread_mutex_destroy
+int pthread_mutex_destroy(pthread_mutex_t *m)
+{
+    mtx_destroy(m);
+    return 0;
+}
+
+// threads.h wrapper for pthread pthread_mutex_lock
+int pthread_mutex_lock(pthread_mutex_t *m)
+{
+    return mtx_lock(m);
+}
+
+// threads.h wrapper for pthread pthread_mutex_unlock
+int pthread_mutex_unlock(pthread_mutex_t *m)
+{
+    return mtx_unlock(m);
+}
 
 // threads.h wrapper for pthread pthread_create
 int pthread_create(pthread_t* th, const pthread_attr_t* attr, void* (*func)(void*), void* arg)
