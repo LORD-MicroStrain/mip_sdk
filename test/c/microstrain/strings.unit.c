@@ -1,8 +1,8 @@
-#include "mip_cmocka.h"
+#include <string.h>
 
+#include <mip_cmocka.h>
 #include <microstrain/strings.h>
 
-#include <string.h>
 
 MICROSTRAIN_TEST_CASE(A_zero_terminated_string_can_be_concatenated_to_an_empty_buffer)
 {

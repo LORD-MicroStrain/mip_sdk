@@ -46,4 +46,4 @@ target_include_directories("${MIP_UNIT_TEST_TARGET_C}" INTERFACE
 )
 
 add_subdirectory("microstrain")
-#add_subdirectory("mip")
+add_subdirectory("mip")

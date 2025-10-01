@@ -1,14 +1,18 @@
-add_mip_test(
-    NAME test_mip_fields
-    SOURCES "${CMAKE_CURRENT_LIST_DIR}/test_mip_fields.c"
-    COMMAND test_mip_fields
+
+# TODO: Move to integration test target
+add_cmocka_test(
+    "C_Mip_fields"
+    SOURCES "${CMAKE_CURRENT_LIST_DIR}/mip_fields.integration.c"
+    LINK_LIBRARIES ${MIP_UNIT_TEST_TARGET_C}
 )
 
+#[[
 add_mip_test(
     NAME test_mip_packet_builder
     SOURCES "${CMAKE_CURRENT_LIST_DIR}/test_mip_packet_builder.c"
     COMMAND test_mip_packet_builder
 )
+]]
 
 # TODO: Disabled test compiles, but is failing. This looks like it might be a false positive.
 #[[
