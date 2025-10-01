@@ -319,6 +319,18 @@ MICROSTRAIN_TEST_CASE(A_byte_array_can_formatted_as_hexadecimal_with_group4_and_
     assert_string_equal(buffer, "A8B9CEDF 01234567");
 }
 
+MICROSTRAIN_TEST_CASE(Byte_formatting_handles_no_data_properly)
+{
+    char buffer[20];
+    memset(buffer, '_', sizeof(buffer));
+    size_t index = 0;
+
+    bool ok = microstrain_string_bytes_to_hex_str(buffer, 10, &index, NULL, 0, 0);
+
+    TEST_ASSERT(ok, "Should be successful");
+    TEST_ASSERT_EQ(index, 0, "Index should be unchanged");
+}
+
 int main()
 {
     MICROSTRAIN_TEST_INIT;
@@ -346,12 +358,13 @@ int main()
     MICROSTRAIN_TEST_ADD(string_formatting, A_string_can_be_formatted_and_written_to_a_non_empty_buffer);
     MICROSTRAIN_TEST_ADD(string_formatting, String_formatting_to_a_non_empty_buffer_fails_gracefully_if_buffer_too_small);
     MICROSTRAIN_TEST_ADD(string_formatting, Multiple_string_formattings_work);
-    MICROSTRAIN_TEST_ADD(string_formatting, Multiple_string_formattings_fail_gracefully_when_buffer_too_small)
-    MICROSTRAIN_TEST_ADD(string_formatting, A_byte_array_can_formatted_as_hexadecimal_and_written_to_a_string_buffer)
-    MICROSTRAIN_TEST_ADD(string_formatting, A_byte_array_can_formatted_as_hexadecimal_with_group1_and_written_to_a_string_buffer)
-    MICROSTRAIN_TEST_ADD(string_formatting, A_byte_array_can_formatted_as_hexadecimal_with_group2_and_written_to_a_string_buffer)
-    MICROSTRAIN_TEST_ADD(string_formatting, A_byte_array_can_formatted_as_hexadecimal_with_partial_group2_and_written_to_a_string_buffer)
-    MICROSTRAIN_TEST_ADD(string_formatting, A_byte_array_can_formatted_as_hexadecimal_with_group4_and_written_to_a_string_buffer)
+    MICROSTRAIN_TEST_ADD(string_formatting, Multiple_string_formattings_fail_gracefully_when_buffer_too_small);
+    MICROSTRAIN_TEST_ADD(string_formatting, A_byte_array_can_formatted_as_hexadecimal_and_written_to_a_string_buffer);
+    MICROSTRAIN_TEST_ADD(string_formatting, A_byte_array_can_formatted_as_hexadecimal_with_group1_and_written_to_a_string_buffer);
+    MICROSTRAIN_TEST_ADD(string_formatting, A_byte_array_can_formatted_as_hexadecimal_with_group2_and_written_to_a_string_buffer);
+    MICROSTRAIN_TEST_ADD(string_formatting, A_byte_array_can_formatted_as_hexadecimal_with_partial_group2_and_written_to_a_string_buffer);
+    MICROSTRAIN_TEST_ADD(string_formatting, A_byte_array_can_formatted_as_hexadecimal_with_group4_and_written_to_a_string_buffer);
+    MICROSTRAIN_TEST_ADD(string_formatting, Byte_formatting_handles_no_data_properly);
     MICROSTRAIN_TEST_SUITE_RUN("String Formatting", string_formatting);
 
     MICROSTRAIN_TEST_SUITE_END(string_formatting);

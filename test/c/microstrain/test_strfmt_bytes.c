@@ -11,17 +11,6 @@
 
 
 
-void format_bytes_works_when_no_data()
-{
-    char buffer[20];
-    memset(buffer, '_', sizeof(buffer));
-    size_t index = 0;
-
-    bool ok = microstrain_string_bytes_to_hex_str(buffer, 10, &index, NULL, 0, 0);
-
-    TEST_ASSERT(ok, "Should be successful");
-    TEST_ASSERT_EQ(index, 0, "Index should be unchanged");
-}
 
 void format_bytes_at_offset_works()
 {
