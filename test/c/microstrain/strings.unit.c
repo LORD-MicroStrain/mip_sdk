@@ -248,19 +248,19 @@ int main()
 {
     MICROSTRAIN_TEST_INIT;
 
-    MICROSTRAIN_TEST_SUITE_START(string_tests);
+    MICROSTRAIN_TEST_SUITE_START(string_concatenation);
 
-    MICROSTRAIN_TEST_ADD(string_tests, A_zero_terminated_string_can_be_concatenated_to_an_empty_buffer);
-    MICROSTRAIN_TEST_ADD(string_tests, String_concatenation_to_an_empty_buffer_fails_gracefully_if_buffer_too_small);
-    MICROSTRAIN_TEST_ADD(string_tests, String_concatenation_computes_required_buffer_size_when_buffer_is_null);
-    MICROSTRAIN_TEST_ADD(string_tests, A_zero_terminated_string_can_be_concatenated_to_a_non_empty_buffer);
-    MICROSTRAIN_TEST_ADD(string_tests, String_concatenation_to_a_non_empty_buffer_fails_gracefully_if_buffer_too_small);
-    MICROSTRAIN_TEST_ADD(string_tests, String_concatenation_to_a_non_empty_buffer_fails_gracefully_if_index_is_at_the_end);
-    MICROSTRAIN_TEST_ADD(string_tests, Multiple_string_concatenations_work);
-    MICROSTRAIN_TEST_ADD(string_tests, Multiple_string_concatenations_fail_gracefully_when_buffer_too_small);
-    MICROSTRAIN_TEST_SUITE_RUN("String Tests", string_tests);
+    MICROSTRAIN_TEST_ADD(string_concatenation, A_zero_terminated_string_can_be_concatenated_to_an_empty_buffer);
+    MICROSTRAIN_TEST_ADD(string_concatenation, String_concatenation_to_an_empty_buffer_fails_gracefully_if_buffer_too_small);
+    MICROSTRAIN_TEST_ADD(string_concatenation, String_concatenation_computes_required_buffer_size_when_buffer_is_null);
+    MICROSTRAIN_TEST_ADD(string_concatenation, A_zero_terminated_string_can_be_concatenated_to_a_non_empty_buffer);
+    MICROSTRAIN_TEST_ADD(string_concatenation, String_concatenation_to_a_non_empty_buffer_fails_gracefully_if_buffer_too_small);
+    MICROSTRAIN_TEST_ADD(string_concatenation, String_concatenation_to_a_non_empty_buffer_fails_gracefully_if_index_is_at_the_end);
+    MICROSTRAIN_TEST_ADD(string_concatenation, Multiple_string_concatenations_work);
+    MICROSTRAIN_TEST_ADD(string_concatenation, Multiple_string_concatenations_fail_gracefully_when_buffer_too_small);
+    MICROSTRAIN_TEST_SUITE_RUN("String Concatenation", string_concatenation);
 
-    MICROSTRAIN_TEST_SUITE_END(string_tests);
+    MICROSTRAIN_TEST_SUITE_END(string_concatenation);
 
 
     MICROSTRAIN_TEST_SUITE_START(string_formatting);
