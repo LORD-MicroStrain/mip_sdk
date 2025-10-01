@@ -38,7 +38,7 @@ bool add_random_field()
     return true;
 }
 
-MICROSTRAIN_TEST_CASE(Rename_me)
+MICROSTRAIN_TEST_CASE(Mip_fields_can_be_created_and_read_from_properly)
 {
     srand(0);
 
@@ -100,7 +100,7 @@ int main()
 
     MICROSTRAIN_TEST_SUITE_START(mip_fields);
 
-    MICROSTRAIN_TEST_ADD(mip_fields, Rename_me);
+    MICROSTRAIN_TEST_ADD(mip_fields, Mip_fields_can_be_created_and_read_from_properly);
     MICROSTRAIN_TEST_SUITE_RUN("Mip Fields", mip_fields);
 
     MICROSTRAIN_TEST_SUITE_END(mip_fields);

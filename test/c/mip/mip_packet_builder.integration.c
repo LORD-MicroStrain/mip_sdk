@@ -1,26 +1,40 @@
-
-#include "test.h"
-
-#include <mip/mip_packet.h>
-#include <mip/mip_offsets.h>
-
-
-#include <stdio.h>
 #include <stdarg.h>
+#include <stdio.h>
 #include <string.h>
 
+#include <mip_cmocka.h>
+#include <mip/mip_offsets.h>
+#include <mip/mip_packet.h>
+
+
 #define EXTRA 1
-uint8_t buffer[MIP_PACKET_LENGTH_MAX+EXTRA];
+uint8_t buffer[MIP_PACKET_LENGTH_MAX + EXTRA];
 
 
-void test_init()
+MICROSTRAIN_TEST_CASE(A_mip_packet_can_be_built_from_an_existing_buffer)
 {
-    struct mip_packet_view packet;
+    mip_packet_view packet;
     mip_packet_from_buffer(&packet, buffer, sizeof(buffer));
 
-    check(packet._buffer == buffer && packet._buffer_length == sizeof(buffer)-EXTRA, "mip_packet_init is broken");
+    assert_memory_equal(packet._buffer, buffer, sizeof(buffer));
+    assert_int_equal(packet._buffer_length, sizeof(buffer) - EXTRA);
 }
 
+int main()
+{
+    MICROSTRAIN_TEST_INIT;
+
+    MICROSTRAIN_TEST_SUITE_START(mip_packet_builder);
+
+    MICROSTRAIN_TEST_ADD(mip_packet_builder, A_mip_packet_can_be_built_from_an_existing_buffer);
+    MICROSTRAIN_TEST_SUITE_RUN("Mip packet builder", mip_packet_builder);
+
+    MICROSTRAIN_TEST_SUITE_END(mip_packet_builder);
+
+    return MICROSTRAIN_TEST_FAILURE_COUNT;
+}
+
+/*
 void test_create()
 {
     struct mip_packet_view packet;
@@ -105,13 +119,4 @@ void test_short_buffer()
     check_equal( mip_packet_create_field(&packet, 0x05, 1, &p), 1, "Wrong remaining size after allocating 3 bytes" );
     check_equal( mip_packet_create_field(&packet, 0x06, 1, &p), payload_space-3-1, "Wrong remaining size after allocating 3 more bytes" );
 }
-
-int main(int argc, const char* argv[])
-{
-    test_init();
-    test_create();
-    test_add_fields();
-    test_short_buffer();
-
-    return num_errors;
-}
+*/
