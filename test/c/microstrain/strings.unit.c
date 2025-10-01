@@ -161,6 +161,7 @@ MICROSTRAIN_TEST_CASE(String_formatting_fails_gracefully_when_buffer_is_too_smal
     const bool ok = microstrain_string_format(buffer, 10, &index, "%d==0x%x", 4096, 0x1000);
 
     assert_false(ok);
+    assert_int_equal(index, 4+2+2+4);
     assert_null_terminated(buffer, 9);
     assert_string_equal(buffer, "4096==0x1\0__________");
 }
