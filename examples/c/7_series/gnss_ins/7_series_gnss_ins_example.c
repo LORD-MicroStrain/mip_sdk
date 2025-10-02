@@ -62,7 +62,7 @@ static const char* PORT_NAME = "/dev/ttyACM0";
 
 /// @brief  Set the baudrate for the connection (Serial/USB)
 /// @note For native serial connections this needs to be 115200 due to the device default settings command
-// Use mip_base_*_comm_speed() to write and save the baudrate on the device
+/// Use mip_base_*_comm_speed() to write and save the baudrate on the device
 static const uint32_t BAUDRATE = 115200;
 
 // TODO: Update to the desired streaming rate. Setting low for readability purposes

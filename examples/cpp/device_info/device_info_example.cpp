@@ -54,7 +54,7 @@ static constexpr const char* PORT_NAME = "/dev/ttyACM0";
 
 /// @brief Set the baudrate for the connection (Serial/USB)
 /// @note For native serial connections this needs to be 115200 due to the device default settings command
-// Use mip::commands_base::*CommSpeed() or mip::commands_3dm::*UartBaudrate() to write and save the baudrate on the device
+/// Use mip::commands_base::*CommSpeed() or mip::commands_3dm::*UartBaudrate() to write and save the baudrate on the device
 static constexpr uint32_t BAUDRATE = 115200;
 ////////////////////////////////////////////////////////////////////////////////
 
