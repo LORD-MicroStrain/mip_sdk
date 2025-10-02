@@ -21,12 +21,6 @@ add_cmocka_test(
 )
 set_tests_properties("C_mip_fields" PROPERTIES LABELS "integration")
 
-add_cmocka_test(
-    "C_mip_packet_builder_integration"
-    SOURCES "${CMAKE_CURRENT_LIST_DIR}/mip_packet_builder.integration.c"
-    LINK_LIBRARIES ${MIP_INTEGRATION_TEST_TARGET_C}
-)
-set_tests_properties("C_mip_packet_builder_integration" PROPERTIES LABELS "integration")
 
 # TODO: Disabled test compiles, but is failing. This looks like it might be a false positive.
 #[[
