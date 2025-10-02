@@ -42,6 +42,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <mutex>
 #include <thread>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -115,10 +116,20 @@ int main(const int argc, const char* argv[])
 #error This example requires a logging level of at least MICROSTRAIN_LOGGING_LEVEL_INFO_ to work properly
 #endif // !MICROSTRAIN_LOGGING_ENABLED_INFO
 
+#if USE_THREADS
+    // Create a mutex for the logging callbacks when multi-threading
+    fprintf(stdout, "Initializing the threading mutex.\n");
+    std::mutex mutex;
+#endif // USE_THREADS
+
     // Initialize the custom logger to print messages/errors as they occur
     // Note: The logging level parameter doesn't need to match the max logging level.
     // If the parameter is higher than the max level, higher-level logging functions will be ignored
+#if USE_THREADS
+    MICROSTRAIN_LOG_INIT(&logCallback, MICROSTRAIN_LOG_LEVEL_INFO, static_cast<void*>(&mutex));
+#else
     MICROSTRAIN_LOG_INIT(&logCallback, MICROSTRAIN_LOG_LEVEL_INFO, nullptr);
+#endif // USE_THREADS
 
     // Initialize the connection
     MICROSTRAIN_LOG_INFO("Initializing the connection.\n");
@@ -220,7 +231,7 @@ int main(const int argc, const char* argv[])
 ///          errors and fatal messages go to stderr while other levels go to
 ///          stdout. Each message is prefixed with its severity level name.
 ///
-/// @param _user Pointer to user data (unused in this implementation)
+/// @param _user Pointer to the threading mutex (if threading is enabled)
 /// @param _level Log message severity level from microstrain_log_level enum
 /// @param _format Printf-style format string for the message
 /// @param _args Variable argument list containing message parameters
@@ -229,8 +240,16 @@ int main(const int argc, const char* argv[])
 ///
 static void logCallback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args)
 {
+#if USE_THREADS
+    std::mutex* mutex = static_cast<std::mutex*>(_user);
+    assert(mutex);
+
+    // Lock the mutex since the callbacks can happen across threads
+    mutex->lock();
+#else
     // Unused parameter
     (void)_user;
+#endif // USE_THREADS
 
     switch (_level)
     {
@@ -258,6 +277,11 @@ static void logCallback(void* _user, const microstrain_log_level _level, const c
             break;
         }
     }
+
+#if USE_THREADS
+    // Release the logging callback for other threads
+    mutex->unlock();
+#endif // USE_THREADS
 }
 
 ////////////////////////////////////////////////////////////////////////////////
