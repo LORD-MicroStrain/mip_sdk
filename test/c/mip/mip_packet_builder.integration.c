@@ -14,11 +14,6 @@
     payload_size += 2+sizeof(payload1);
 
 
-    mip_packet_finalize(&packet);
-
-    check_equal( mip_packet_checksum_value(&packet), 0x80F0, "Checksum is wrong" );
-
-    check( buffer[MIP_PACKET_LENGTH_MAX] == 0x00, "Extra byte at end of buffer got clobbered" );
 */
 
 int main()

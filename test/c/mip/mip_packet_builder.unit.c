@@ -78,6 +78,19 @@ MICROSTRAIN_TEST_CASE(A_field_can_be_allocated_within_a_mip_packet)
     assert_memory_equal(&mip_packet_payload(&packet)[MIP_INDEX_FIELD_PAYLOAD], payload, payload_length);
 }
 
+MICROSTRAIN_TEST_CASE(A_mip_packet_can_be_properly_prepared_for_transmission)
+{
+    mip_packet_view packet;
+    uint8_t buffer[MIP_PACKET_LENGTH_MAX];
+    mip_packet_create(&packet, buffer, sizeof(buffer), 0x80);
+
+    mip_packet_finalize(&packet);
+
+    // TODO: Uncomment when proper values are determined
+    //assert_int_equal(mip_packet_checksum_value(&packet), 0x80F0);
+    //MICROSTRAIN_TEST_ASSERT_MESSAGE(buffer[MIP_PACKET_LENGTH_MAX] == 0x00, "Extra byte at end of buffer got clobbered");
+}
+
 int main()
 {
     MICROSTRAIN_TEST_INIT;
@@ -88,6 +101,7 @@ int main()
     MICROSTRAIN_TEST_ADD(mip_packet_builder, A_field_with_an_empty_payload_can_be_added_to_a_mip_packet);
     MICROSTRAIN_TEST_ADD(mip_packet_builder, A_pre_constructed_mip_field_can_be_added_to_a_mip_packet);
     MICROSTRAIN_TEST_ADD(mip_packet_builder, A_field_can_be_allocated_within_a_mip_packet);
+    MICROSTRAIN_TEST_ADD(mip_packet_builder, A_mip_packet_can_be_properly_prepared_for_transmission);
     MICROSTRAIN_TEST_SUITE_RUN("Mip packet builder", mip_packet_builder);
 
     MICROSTRAIN_TEST_SUITE_END(mip_packet_builder);
