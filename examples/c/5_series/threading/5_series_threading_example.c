@@ -55,10 +55,10 @@ typedef struct pthread_attr_t      pthread_attr_t;
 typedef mtx_t                      pthread_mutex_t;
 typedef struct pthread_mutexattr_t pthread_mutexattr_t;
 
-int  pthread_mutex_init(pthread_mutex_t *m, const pthread_mutexattr_t *a);
-int  pthread_mutex_destroy(pthread_mutex_t *m);
-int  pthread_mutex_lock(pthread_mutex_t *m);
-int  pthread_mutex_unlock(pthread_mutex_t *m);
+int  pthread_mutex_init(pthread_mutex_t* m, const pthread_mutexattr_t* a);
+int  pthread_mutex_destroy(pthread_mutex_t* m);
+int  pthread_mutex_lock(pthread_mutex_t* m);
+int  pthread_mutex_unlock(pthread_mutex_t* m);
 int  pthread_create(pthread_t* th, const pthread_attr_t* attr, void* (*func)(void*), void* arg);
 int  pthread_join(pthread_t t, void** res);
 int  nanosleep(const struct timespec* request, struct timespec* remain);
@@ -874,7 +874,7 @@ static void exit_from_command(const mip_interface* _device, const mip_cmd_result
 // threads.h wrappers for unsupported pthread functionality used in this example
 
 // threads.h wrapper for pthread pthread_mutex_init
-int pthread_mutex_init(pthread_mutex_t *m, const pthread_mutexattr_t *a)
+int pthread_mutex_init(pthread_mutex_t* m, const pthread_mutexattr_t* a)
 {
     // Unused parameter
     (void)a;
@@ -884,20 +884,20 @@ int pthread_mutex_init(pthread_mutex_t *m, const pthread_mutexattr_t *a)
 }
 
 // threads.h wrapper for pthread pthread_mutex_destroy
-int pthread_mutex_destroy(pthread_mutex_t *m)
+int pthread_mutex_destroy(pthread_mutex_t* m)
 {
     mtx_destroy(m);
     return 0;
 }
 
 // threads.h wrapper for pthread pthread_mutex_lock
-int pthread_mutex_lock(pthread_mutex_t *m)
+int pthread_mutex_lock(pthread_mutex_t* m)
 {
     return mtx_lock(m);
 }
 
 // threads.h wrapper for pthread pthread_mutex_unlock
-int pthread_mutex_unlock(pthread_mutex_t *m)
+int pthread_mutex_unlock(pthread_mutex_t* m)
 {
     return mtx_unlock(m);
 }
