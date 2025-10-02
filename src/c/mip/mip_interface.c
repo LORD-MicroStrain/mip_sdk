@@ -694,7 +694,7 @@ bool mip_interface_start_command_packet(mip_interface* device, const mip_packet_
 {
     mip_cmd_queue_enqueue(mip_interface_cmd_queue(device), cmd);
 
-    if( !mip_interface_send_to_device(device, mip_packet_data(packet), mip_packet_total_length(packet)) )
+    if( !mip_interface_send_to_device(device, mip_packet_data_pointer(packet), mip_packet_total_length(packet)) )
     {
         mip_cmd_queue_dequeue(mip_interface_cmd_queue(device), cmd);
         return false;

@@ -127,7 +127,7 @@ void print_packet(const mip_packet_view* _packet_view)
     // this as an inexpensive validation step
     assert(mip_packet_is_sane(_packet_view));
 
-    const uint8_t* packet_pointer = mip_packet_data(_packet_view);
+    const uint8_t* packet_pointer = mip_packet_data_pointer(_packet_view);
 
     // Create a buffer for printing purposes
     char packet_byte_buffer[MIP_PACKET_PAYLOAD_LENGTH_MAX] = { 0 };
@@ -147,10 +147,10 @@ void print_packet(const mip_packet_view* _packet_view)
     const uint8_t payload_length = mip_packet_payload_length(_packet_view);
 
     // Print the packet details before the fields
-    printf("%4s%-20s = %u\n", " ", "Total Length", mip_packet_total_length(_packet_view));
+    printf("%4s%-20s = %zu\n", " ", "Total Length", mip_packet_total_length(_packet_view));
     printf("%4s%-20s = %s\n", " ", "Raw Packet", packet_byte_buffer);
-    printf("%4s%-20s = 0x%02X\n", " ", "MIP SYNC1", packet_pointer[0]);
-    printf("%4s%-20s = 0x%02X\n", " ", "MIP SYNC2", packet_pointer[1]);
+    printf("%4s%-20s = 0x%02X\n", " ", "MIP SYNC1", packet_pointer[MIP_INDEX_SYNC1]);
+    printf("%4s%-20s = 0x%02X\n", " ", "MIP SYNC2", packet_pointer[MIP_INDEX_SYNC2]);
     printf("%4s%-20s = 0x%02X\n", " ", "Descriptor Set", mip_packet_descriptor_set(_packet_view));
     printf("%4s%-20s = 0x%02X\n", " ", "Payload Length", payload_length);
 
