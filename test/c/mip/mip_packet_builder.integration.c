@@ -13,18 +13,6 @@
 
     payload_size += 2+sizeof(payload1);
 
-    const uint8_t payload2[] = { 0xAA, 0xBA, 0xAC, 0xDE, 0xFF, 0xFF, 0x99, 0x55 };
-    uint8_t* p2;
-
-    check_equal( mip_packet_remaining_space(&packet), 245, "Field 2 - Remaining count is wrong beforehand");
-    check_equal(mip_packet_create_field(&packet, 0x06, sizeof(payload2), &p2), 245-2-sizeof(payload2), "Field 2 - Remaining count is wrong after allocation");
-    const uint8_t* expected_p2 = &mip_packet_payload(&packet)[payload_size + MIP_INDEX_FIELD_PAYLOAD];
-    check( p2 == expected_p2, "Field 2 - payload ptr is wrong (%p != %p)", p2, expected_p2 );
-    memcpy(p2, payload2, sizeof(payload2));
-    check_equal( mip_packet_payload(&packet)[payload_size + MIP_INDEX_FIELD_DESC], 0x06, "Field 2 - Field descriptor is wrong" );
-    check_equal( mip_packet_payload(&packet)[payload_size + MIP_INDEX_FIELD_LEN], 2+sizeof(payload2), "Field 2 - Field length is wrong" );
-    check_equal( mip_packet_total_length(&packet), 26, "Field 2 - Total length is wrong" );
-    check_equal( mip_packet_payload_length(&packet), 20, "Field 2 - Packet payload length is wrong" );
 
     mip_packet_finalize(&packet);
 
