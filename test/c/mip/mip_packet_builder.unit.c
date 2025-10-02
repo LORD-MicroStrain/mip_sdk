@@ -11,12 +11,48 @@ MICROSTRAIN_TEST_CASE(Creating_a_mip_packet_handles_when_the_buffer_size_is_too_
 {
     mip_packet_view packet;
     uint8_t buffer[MIP_PACKET_LENGTH_MAX + 12345];
+    const size_t buffer_size = sizeof(buffer);
+    const uint8_t descriptor_set = 0x80;
 
-    mip_packet_create(&packet, buffer, sizeof(buffer), 0x80);
+    mip_packet_create(&packet, buffer, buffer_size, descriptor_set);
 
     assert_int_equal(mip_packet_total_length(&packet), MIP_PACKET_LENGTH_MIN);
     assert_int_equal(mip_packet_payload_length(&packet), 0);
     assert_true(mip_packet_is_sane(&packet));
+}
+
+MICROSTRAIN_TEST_CASE(A_field_with_an_empty_payload_can_be_added_to_a_mip_packet)
+{
+    mip_packet_view packet;
+    uint8_t buffer[MIP_PACKET_LENGTH_MAX];
+    mip_packet_create(&packet, buffer, sizeof(buffer), 0x80);
+    const uint8_t field_descriptor = 0x04;
+    const uint8_t *empty_payload = NULL;
+    const uint8_t payload_length = 0;
+
+    const bool success = mip_packet_add_field(&packet, field_descriptor, empty_payload, payload_length);
+
+    assert_true(success);
+    assert_int_equal(mip_packet_payload_length(&packet), MIP_FIELD_HEADER_LENGTH);
+    assert_int_equal(mip_packet_payload(&packet)[MIP_INDEX_FIELD_DESC], field_descriptor);
+    assert_int_equal(mip_packet_payload(&packet)[MIP_INDEX_FIELD_LEN], 2);
+}
+
+MICROSTRAIN_TEST_CASE(A_field_with_a_non_empty_payload_can_be_added_to_a_mip_packet)
+{
+    mip_packet_view packet;
+    uint8_t buffer[MIP_PACKET_LENGTH_MAX];
+    mip_packet_create(&packet, buffer, sizeof(buffer), 0x80);
+    const uint8_t field_descriptor = 0x05;
+    const uint8_t payload[] = { 1, 2, 3, 4, 5, 6 };
+    const uint8_t payload_length = sizeof(payload);
+
+    const bool success = mip_packet_add_field(&packet, field_descriptor, payload, payload_length);
+
+    assert_true(success);
+    assert_int_equal(mip_packet_payload(&packet)[MIP_INDEX_FIELD_DESC], field_descriptor);
+    assert_int_equal(mip_packet_payload(&packet)[MIP_INDEX_FIELD_LEN], 8);
+    assert_memory_equal(&mip_packet_payload(&packet)[MIP_INDEX_FIELD_PAYLOAD], payload, payload_length);
 }
 
 int main()
@@ -26,6 +62,8 @@ int main()
     MICROSTRAIN_TEST_SUITE_START(mip_packet_builder);
 
     MICROSTRAIN_TEST_ADD(mip_packet_builder, Creating_a_mip_packet_handles_when_the_buffer_size_is_too_large);
+    MICROSTRAIN_TEST_ADD(mip_packet_builder, A_field_with_an_empty_payload_can_be_added_to_a_mip_packet);
+    MICROSTRAIN_TEST_ADD(mip_packet_builder, A_field_with_a_non_empty_payload_can_be_added_to_a_mip_packet);
     MICROSTRAIN_TEST_SUITE_RUN("Mip packet builder", mip_packet_builder);
 
     MICROSTRAIN_TEST_SUITE_END(mip_packet_builder);

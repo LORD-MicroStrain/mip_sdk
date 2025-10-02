@@ -6,35 +6,11 @@
 #include <mip/mip_offsets.h>
 #include <mip/mip_packet.h>
 
-
  /*
-    size_t payload_size = 0;
-
-    const bool success = mip_packet_add_field(&packet, 0x04, NULL, 0);
-
-    // One field
-    assert_true(success);
-    assert_int_equal(mip_packet_total_length(&packet), MIP_PACKET_LENGTH_MIN + MIP_FIELD_HEADER_LENGTH);
-    assert_int_equal(mip_packet_payload_length(&packet), MIP_FIELD_HEADER_LENGTH);
-    assert_int_equal(mip_packet_payload(&packet)[MIP_INDEX_FIELD_DESC], 0x04);
-    assert_int_equal(mip_packet_payload(&packet)[MIP_INDEX_FIELD_LEN], 2);
-
     //payload_size += 2;
 
-    uint8_t payload1[] = { 1, 2, 3, 4, 5, 6 };
 
-    const bool payload1_success = mip_packet_add_field(&packet, 0x05, payload1, sizeof(payload1));
 
-    assert_true(payload1_success);
-    // 7565 800A 0204 0805 010203040506 00...
-    check_equal( mip_packet_total_length(&packet), MIP_PACKET_LENGTH_MIN + payload_size + MIP_FIELD_HEADER_LENGTH + sizeof(payload1), "Field 1 - Total length is wrong" );
-    check_equal( mip_packet_payload_length(&packet), payload_size + MIP_FIELD_HEADER_LENGTH + sizeof(payload1), "Field 1 - Packet payload length is wrong" );
-    check_equal( mip_packet_payload(&packet)[payload_size + MIP_INDEX_FIELD_DESC], 0x05, "Field 1 - Field descriptor is wrong" );
-    check_equal( mip_packet_payload(&packet)[payload_size + MIP_INDEX_FIELD_LEN], 2+sizeof(payload1), "Field 1 - Field length is wrong" );
-    for(unsigned int j=0; j<sizeof(payload1); j++)
-    {
-        check_equal( mip_packet_payload(&packet)[payload_size + MIP_INDEX_FIELD_PAYLOAD + j], payload1[j], "Field 1 - Field payload is wrong at index %d", j);
-    }
     payload_size += 2+sizeof(payload1);
 
     const uint8_t payload2[] = { 0xAA, 0xBA, 0xAC, 0xDE, 0xFF, 0xFF, 0x99, 0x55 };
