@@ -32,15 +32,10 @@ add_mip_test(
 )
 ]]
 
+
 # TODO: Disabled tests compile but take a long time to run.
 #     ---> Move to an integration test suite
 #[[
-add_mip_test(
-    NAME test_mip_random
-    SOURCES "${CMAKE_CURRENT_LIST_DIR}/test_mip_random.c"
-    COMMAND test_mip_random
-)
-
 add_mip_test(
     NAME test_mip_packet_formatting
     SOURCES
