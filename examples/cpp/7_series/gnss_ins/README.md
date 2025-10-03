@@ -27,8 +27,8 @@ The example uses the following default settings, which should be adjusted based 
 
 ## GNSS Antenna Configuration
 
-***Please consult the device's user manual for more information on proper configuration of the antennas***</br>
-This example requires connected dual antennas with proper configuration and a clear sky view.</br>
+***Please consult the device's user manual for more information on proper configuration of the antennas***<br>
+This example requires connected dual antennas with proper configuration and a clear sky view.<br>
 The example configures dual-antenna GNSS setup for enhanced navigation accuracy and heading determination:
 
 | Antenna ID | Purpose                | Translation     | Description                                                           |

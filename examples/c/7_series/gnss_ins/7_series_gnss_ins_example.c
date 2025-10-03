@@ -427,6 +427,11 @@ int main(const int argc, const char* argv[])
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+/// @addtogroup _7_series_gnss_ins_example_c
+/// @{
+///
+
+////////////////////////////////////////////////////////////////////////////////
 /// @brief Custom logging callback for MIP SDK message formatting and output
 ///
 /// @details Processes and formats log messages from the MIP SDK based on
@@ -438,8 +443,6 @@ int main(const int argc, const char* argv[])
 /// @param _level Log message severity level from microstrain_log_level enum
 /// @param _format Printf-style format string for the message
 /// @param _args Variable argument list containing message parameters
-///
-/// @ingroup _7_series_gnss_ins_example_c
 ///
 static void log_callback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args)
 {
@@ -478,8 +481,6 @@ static void log_callback(void* _user, const microstrain_log_level _level, const 
 /// @brief Captures and configures device gyro bias
 ///
 /// @param _device Pointer to the initialized MIP device interface
-///
-/// @ingroup _7_series_gnss_ins_example_c
 ///
 static void capture_gyro_bias(mip_interface* _device)
 {
@@ -542,8 +543,6 @@ static void capture_gyro_bias(mip_interface* _device)
 /// @param _device Pointer to the initialized MIP device interface
 /// @param _gnss_data_descriptor_set Data descriptor set for the GNSS ID to
 ///                                  configure
-///
-/// @ingroup _7_series_gnss_ins_example_c
 ///
 static void configure_gnss_message_format(mip_interface* _device, const uint8_t _gnss_data_descriptor_set)
 {
@@ -635,8 +634,6 @@ static void configure_gnss_message_format(mip_interface* _device, const uint8_t 
 ///
 /// @param _device Pointer to the initialized MIP device interface
 ///
-/// @ingroup _7_series_gnss_ins_example_c
-///
 static void configure_filter_message_format(mip_interface* _device)
 {
     // Note: Querying the device base rate is only one way to calculate the descriptor decimation
@@ -717,8 +714,6 @@ static void configure_filter_message_format(mip_interface* _device)
 /// @note Offset values are specific to physical device setup and may need to be
 ///       adjusted based on actual antenna placement
 ///
-/// @ingroup _7_series_gnss_ins_example_c
-///
 static void configure_antenna_offset(mip_interface* _device, const mip_vector3f _antenna_offset, const uint8_t _antenna_id)
 {
     MICROSTRAIN_LOG_INFO(
@@ -753,8 +748,6 @@ static void configure_antenna_offset(mip_interface* _device, const mip_vector3f 
 ///          4. Resetting the filter to apply new settings
 ///
 /// @param _device Pointer to the initialized MIP device interface
-///
-/// @ingroup _7_series_gnss_ins_example_c
 ///
 static void initialize_filter(mip_interface* _device)
 {
@@ -863,8 +856,6 @@ static void initialize_filter(mip_interface* _device)
 ///                     which GNSS receiver to report (0 = primary antenna,
 ///                     1 = secondary antenna)
 ///
-/// @ingroup _7_series_gnss_ins_example_c
-///
 static void display_gnss_fix_state(const mip_gnss_fix_info_data* _fix_info_array, const uint8_t _array_index)
 {
     const uint8_t antenna_id      = _array_index + 1;
@@ -962,8 +953,6 @@ static void display_gnss_fix_state(const mip_gnss_fix_info_data* _fix_info_array
 ///
 /// @param _filter_state Current filter mode from the MIP device interface
 ///
-/// @ingroup _7_series_gnss_ins_example_c
-///
 static void display_filter_state(const mip_filter_mode _filter_state)
 {
     const char* mode_description = "startup";
@@ -1017,8 +1006,6 @@ static void display_filter_state(const mip_filter_mode _filter_state)
 ///
 /// @return Current system time in milliseconds since epoch
 ///
-/// @ingroup _7_series_gnss_ins_example_c
-///
 static mip_timestamp get_current_timestamp()
 {
     struct timespec ts;
@@ -1046,8 +1033,6 @@ static mip_timestamp get_current_timestamp()
 /// @param _length Number of bytes to send
 ///
 /// @return True if send was successful, false otherwise
-///
-/// @ingroup _7_series_gnss_ins_example_c
 ///
 static bool mip_interface_user_send_to_device(mip_interface* _device, const uint8_t* _data, size_t _length)
 {
@@ -1085,8 +1070,6 @@ static bool mip_interface_user_send_to_device(mip_interface* _device, const uint
 /// @param _timestamp_out Timestamp when data was received
 ///
 /// @return True if receive was successful, false otherwise
-///
-/// @ingroup _7_series_gnss_ins_example_c
 ///
 static bool mip_interface_user_recv_from_device(
     mip_interface* _device, uint8_t* _buffer, size_t _max_length, mip_timeout _wait_time, bool _from_cmd,
@@ -1127,8 +1110,6 @@ static bool mip_interface_user_recv_from_device(
 /// @param _device_port Pointer to an initialized serial port for device
 ///                     communication
 /// @param _baudrate Serial communication baudrate for the device
-///
-/// @ingroup _7_series_gnss_ins_example_c
 ///
 static void initialize_device(mip_interface* _device, serial_port* _device_port, const uint32_t _baudrate)
 {
@@ -1220,8 +1201,6 @@ static void initialize_device(mip_interface* _device, serial_port* _device_port,
 /// @param _message Error message to display
 /// @param _successful Whether termination is due to success or failure
 ///
-/// @ingroup _7_series_gnss_ins_example_c
-///
 static void terminate(serial_port* _device_port, const char* _message, const bool _successful)
 {
     if (_message != NULL && strlen(_message) != 0)
@@ -1279,8 +1258,6 @@ static void terminate(serial_port* _device_port, const char* _message, const boo
 /// @param _format Printf-style format string for error message
 /// @param ... Variable arguments for format string
 ///
-/// @ingroup _7_series_gnss_ins_example_c
-///
 static void exit_from_command(const mip_interface* _device, const mip_cmd_result _cmd_result, const char* _format, ...)
 {
     if (_format != NULL && strlen(_format) != 0)
@@ -1305,3 +1282,7 @@ static void exit_from_command(const mip_interface* _device, const mip_cmd_result
         terminate(device_port, "", false);
     }
 }
+
+///
+/// @} group _7_series_gnss_ins_example_c
+////////////////////////////////////////////////////////////////////////////////

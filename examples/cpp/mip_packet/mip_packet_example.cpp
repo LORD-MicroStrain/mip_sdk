@@ -115,6 +115,11 @@ int main(const int argc, const char* argv[])
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+/// @addtogroup mip_packet_example_cpp
+/// @{
+///
+
+////////////////////////////////////////////////////////////////////////////////
 /// @brief Prints detailed information about a MIP packet's structure and
 ///        contents
 ///
@@ -128,8 +133,6 @@ int main(const int argc, const char* argv[])
 ///          - Checksum values and validity
 ///
 /// @param _packetView Reference to the MIP packet view to inspect
-///
-/// @ingroup mip_packet_example_cpp
 ///
 static void printPacket(const mip::PacketView& _packetView)
 {
@@ -224,8 +227,6 @@ static void printPacket(const mip::PacketView& _packetView)
 ///
 /// @return A PacketView referencing the initialized packet
 ///
-/// @ingroup mip_packet_example_cpp
-///
 static mip::PacketView initializeEmptyPacket(uint8_t* _buffer, const size_t _bufferSize, const uint8_t _descriptorSet)
 {
     // If the descriptor set is specified, even if it's invalid, i.e., 0x00,
@@ -254,8 +255,6 @@ static mip::PacketView initializeEmptyPacket(uint8_t* _buffer, const size_t _buf
 ///
 /// @return A PacketBuf containing the initialized packet
 ///
-/// @ingroup mip_packet_example_cpp
-///
 static mip::PacketBuf initializeEmptyPacket(const uint8_t _descriptorSet)
 {
     // If the descriptor set is specified, even if it's invalid, i.e., 0x00,
@@ -282,8 +281,6 @@ static mip::PacketBuf initializeEmptyPacket(const uint8_t _descriptorSet)
 ///
 /// @param _packetView Reference to the packet to finalize with checksum
 ///
-/// @ingroup mip_packet_example_cpp
-///
 static void addChecksumToPacket(mip::PacketView& _packetView)
 {
     _packetView.finalize();
@@ -304,8 +301,6 @@ static void addChecksumToPacket(mip::PacketView& _packetView)
 /// @remark Field 1
 ///
 /// @param _packetView Reference to the packet to add the field to
-///
-/// @ingroup mip_packet_example_cpp
 ///
 static void addPingCommandToPacket(mip::PacketView& _packetView)
 {
@@ -331,8 +326,6 @@ static void addPingCommandToPacket(mip::PacketView& _packetView)
 /// @remark Field 2
 ///
 /// @param _packetView Reference to the packet to add the field to
-///
-/// @ingroup mip_packet_example_cpp
 ///
 static void addCommSpeedBytesToPacket(mip::PacketView& _packetView)
 {
@@ -366,8 +359,6 @@ static void addCommSpeedBytesToPacket(mip::PacketView& _packetView)
 ///
 /// @param _packetView Reference to the packet to add the field to
 ///
-/// @ingroup mip_packet_example_cpp
-///
 static void addCommSpeedFieldToPacket(mip::PacketView& _packetView)
 {
     mip::commands_base::CommSpeed commSpeed;
@@ -396,8 +387,6 @@ static void addCommSpeedFieldToPacket(mip::PacketView& _packetView)
 ///       This is intended to show what happens "behind the scenes".
 ///
 /// @param _packetView Reference to the packet to add the field to
-///
-/// @ingroup mip_packet_example_cpp
 ///
 static void addCommSpeedSerializerBytesToPacket(mip::PacketView& _packetView)
 {
@@ -443,8 +432,6 @@ static void addCommSpeedSerializerBytesToPacket(mip::PacketView& _packetView)
 ///       Again, this is the recommended method for field creation.
 ///
 /// @param _packetView Reference to the packet to add the field to
-///
-/// @ingroup mip_packet_example_cpp
 ///
 static void addMessageFormatFieldToPacket(mip::PacketView& _packetView)
 {
@@ -499,8 +486,6 @@ static void addMessageFormatFieldToPacket(mip::PacketView& _packetView)
 ///
 /// @param _packetView Reference to the packet to add the field to
 ///
-/// @ingroup mip_packet_example_cpp
-///
 static void addPollDataFieldToPacket(mip::PacketView& _packetView)
 {
     // Create a field of unknown length
@@ -545,8 +530,6 @@ static void addPollDataFieldToPacket(mip::PacketView& _packetView)
 ///
 /// @param _serializer Reference to the serializer containing the field data
 ///
-/// @ingroup mip_packet_example_cpp
-///
 static void extractSharedReferenceTimeField(mip::Serializer& _serializer)
 {
     uint64_t nanoseconds;
@@ -567,8 +550,6 @@ static void extractSharedReferenceTimeField(mip::Serializer& _serializer)
 ///
 /// @param _serializer Reference to the serializer containing the field data
 ///
-/// @ingroup mip_packet_example_cpp
-///
 static void extractSharedReferenceTimeDeltaField(mip::Serializer& _serializer)
 {
     uint64_t dtNanoseconds;
@@ -588,8 +569,6 @@ static void extractSharedReferenceTimeDeltaField(mip::Serializer& _serializer)
 ///          successfully extracted.
 ///
 /// @param _serializer Reference to the serializer containing the field data
-///
-/// @ingroup mip_packet_example_cpp
 ///
 static void extractSensorAccelScaledField(mip::Serializer& _serializer)
 {
@@ -617,8 +596,6 @@ static void extractSensorAccelScaledField(mip::Serializer& _serializer)
 ///          the values if successfully extracted.
 ///
 /// @param _serializer Reference to the serializer containing the field data
-///
-/// @ingroup mip_packet_example_cpp
 ///
 static void extractSensorGyroScaledField(mip::Serializer& _serializer)
 {
@@ -648,8 +625,6 @@ static void extractSensorGyroScaledField(mip::Serializer& _serializer)
 ///
 /// @param _serializer Reference to the serializer containing the field data
 ///
-/// @ingroup mip_packet_example_cpp
-///
 static void extractSensorDeltaThetaField(mip::Serializer& _serializer)
 {
     // Same as scaled accel except using the field data structure
@@ -677,8 +652,6 @@ static void extractSensorDeltaThetaField(mip::Serializer& _serializer)
 ///          the values if successfully extracted.
 ///
 /// @param _fieldView Reference to the field view containing the data
-///
-/// @ingroup mip_packet_example_cpp
 ///
 static void extractSensorDeltaVelocityField(const mip::FieldView& _fieldView)
 {
@@ -728,8 +701,6 @@ static void extractSensorDeltaVelocityField(const mip::FieldView& _fieldView)
 /// @see addCommSpeedBytesToPacket
 /// @see addCommSpeedFieldToPacket
 /// @see addCommSpeedSerializerBytesToPacket
-///
-/// @ingroup mip_packet_example_cpp
 ///
 static void createFromScratchPacket1()
 {
@@ -792,8 +763,6 @@ static void createFromScratchPacket1()
 /// @see addChecksumToPacket
 /// @see mip::PacketView::reset
 /// @see printPacket
-///
-/// @ingroup mip_packet_example_cpp
 ///
 static void createFromScratchPacket2And3()
 {
@@ -869,8 +838,6 @@ static void createFromScratchPacket2And3()
 /// @see extractSensorGyroScaledField
 /// @see extractSensorDeltaThetaField
 /// @see extractSensorDeltaVelocityField
-///
-/// @ingroup mip_packet_example_cpp
 ///
 static void createFromRawBufferPacket4()
 {
@@ -988,3 +955,7 @@ static void createFromRawBufferPacket4()
 
     printf("\n");
 }
+
+///
+/// @} group mip_packet_example_cpp
+////////////////////////////////////////////////////////////////////////////////

@@ -272,6 +272,11 @@ int main(const int argc, const char* argv[])
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+/// @addtogroup _5_series_stream_imu_example_c
+/// @{
+///
+
+////////////////////////////////////////////////////////////////////////////////
 /// @brief Custom logging callback for MIP SDK message formatting and output
 ///
 /// @details Processes and formats log messages from the MIP SDK based on
@@ -283,8 +288,6 @@ int main(const int argc, const char* argv[])
 /// @param _level Log message severity level from microstrain_log_level enum
 /// @param _format Printf-style format string for the message
 /// @param _args Variable argument list containing message parameters
-///
-/// @ingroup _5_series_stream_imu_example_c
 ///
 static void log_callback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args)
 {
@@ -332,8 +335,6 @@ static void log_callback(void* _user, const microstrain_log_level _level, const 
 ///
 /// @return Current system time in milliseconds since epoch
 ///
-/// @ingroup _5_series_stream_imu_example_c
-///
 static mip_timestamp get_current_timestamp()
 {
     struct timespec ts;
@@ -361,8 +362,6 @@ static mip_timestamp get_current_timestamp()
 /// @param _length Number of bytes to send
 ///
 /// @return True if send was successful, false otherwise
-///
-/// @ingroup _5_series_stream_imu_example_c
 ///
 static bool mip_interface_user_send_to_device(mip_interface* _device, const uint8_t* _data, size_t _length)
 {
@@ -400,8 +399,6 @@ static bool mip_interface_user_send_to_device(mip_interface* _device, const uint
 /// @param _timestamp_out Timestamp when data was received
 ///
 /// @return True if receive was successful, false otherwise
-///
-/// @ingroup _5_series_stream_imu_example_c
 ///
 static bool mip_interface_user_recv_from_device(
     mip_interface* _device, uint8_t* _buffer, size_t _max_length, mip_timeout _wait_time, bool _from_cmd,
@@ -442,8 +439,6 @@ static bool mip_interface_user_recv_from_device(
 /// @param _device_port Pointer to an initialized serial port for device
 ///                     communication
 /// @param _baudrate Serial communication baudrate for the device
-///
-/// @ingroup _5_series_stream_imu_example_c
 ///
 static void initialize_device(mip_interface* _device, serial_port* _device_port, const uint32_t _baudrate)
 {
@@ -538,8 +533,6 @@ static void initialize_device(mip_interface* _device, serial_port* _device_port,
 ///
 /// @returns true if the descriptor combination is supported, false otherwise
 ///
-/// @ingroup _5_series_stream_imu_example_c
-///
 static bool is_descriptor_supported(
     const uint8_t _descriptor_set, const uint8_t _field_descriptor, const uint16_t* _supported_descriptors,
     const uint8_t _supported_descriptor_count
@@ -574,8 +567,6 @@ static bool is_descriptor_supported(
 /// @param _device Pointer to the initialized MIP device interface
 /// @param _supported_descriptors Array of descriptors supported by the device
 /// @param _supported_descriptor_count Number of descriptors in the array
-///
-/// @ingroup _5_series_stream_imu_example_c
 ///
 static void configure_sensor_message_format(
     mip_interface* _device, const uint16_t* _supported_descriptors, const uint8_t _supported_descriptor_count
@@ -678,8 +669,6 @@ static void configure_sensor_message_format(
 /// @param _packet_view Pointer to the received MIP packet
 /// @param _timestamp Timestamp when the packet was received
 ///
-/// @ingroup _5_series_stream_imu_example_c
-///
 static void packet_callback(void* _user, const mip_packet_view* _packet_view, mip_timestamp _timestamp)
 {
     // Unused parameter
@@ -730,8 +719,6 @@ static void packet_callback(void* _user, const mip_packet_view* _packet_view, mi
 /// @param _timestamp Timestamp indicating when the field was received from the
 ///                   device (unused in this implementation)
 ///
-/// @ingroup _5_series_stream_imu_example_c
-///
 static void accel_field_callback(void* _user, const mip_field_view* _field_view, mip_timestamp _timestamp)
 {
     // Unused parameters
@@ -765,8 +752,6 @@ static void accel_field_callback(void* _user, const mip_field_view* _field_view,
 /// @param _field_view Pointer to the field containing gyroscope data
 /// @param _timestamp Timestamp indicating when the field was received from the
 ///                   device (unused in this implementation)
-///
-/// @ingroup _5_series_stream_imu_example_c
 ///
 static void gyro_field_callback(void* _user, const mip_field_view* _field_view, mip_timestamp _timestamp)
 {
@@ -802,8 +787,6 @@ static void gyro_field_callback(void* _user, const mip_field_view* _field_view, 
 /// @param _timestamp Timestamp indicating when the field was received from the
 ///                   device (unused in this implementation)
 ///
-/// @ingroup _5_series_stream_imu_example_c
-///
 static void mag_field_callback(void* _user, const mip_field_view* _field_view, mip_timestamp _timestamp)
 {
     // Unused parameters
@@ -837,8 +820,6 @@ static void mag_field_callback(void* _user, const mip_field_view* _field_view, m
 /// @param _device_port Serial port connection to close
 /// @param _message Error message to display
 /// @param _successful Whether termination is due to success or failure
-///
-/// @ingroup _5_series_stream_imu_example_c
 ///
 static void terminate(serial_port* _device_port, const char* _message, const bool _successful)
 {
@@ -897,8 +878,6 @@ static void terminate(serial_port* _device_port, const char* _message, const boo
 /// @param _format Printf-style format string for error message
 /// @param ... Variable arguments for format string
 ///
-/// @ingroup _5_series_stream_imu_example_c
-///
 static void exit_from_command(const mip_interface* _device, const mip_cmd_result _cmd_result, const char* _format, ...)
 {
     if (_format != NULL && strlen(_format) != 0)
@@ -923,3 +902,7 @@ static void exit_from_command(const mip_interface* _device, const mip_cmd_result
         terminate(device_port, "", false);
     }
 }
+
+///
+/// @} group _5_series_stream_imu_example_c
+////////////////////////////////////////////////////////////////////////////////

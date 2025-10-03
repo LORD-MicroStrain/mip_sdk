@@ -79,18 +79,22 @@ static const uint16_t SAMPLE_RATE_HZ = 1;
 static const uint32_t RUN_TIME_SECONDS = 30;
 ////////////////////////////////////////////////////////////////////////////////
 
+/// @brief Time of arrival latency in nanoseconds
+/// @note This is the time it takes to package the command before it arrives and is typically around 100 ms
+static const uint64_t TIME_OF_ARRIVAL_LATENCY_NS = 100 * 1000000;
+
+/// @brief Frame config ID for external heading
+static const uint8_t HEADING_FRAME_CONFIG_ID = 1;
+
+/// @brief Frame config ID for external GNSS antenna
+static const uint8_t GNSS_FRAME_CONFIG_ID = 2;
+
+/// @brief Frame config ID for body frame velocity
+static const uint8_t BODY_VELOCITY_FRAME_CONFIG_ID = 3;
+
 ///
 /// @} group _7_series_ins_example_c
 ////////////////////////////////////////////////////////////////////////////////
-
-// Time of arrival latency in nanoseconds
-// Note: This is the time it takes to package the command before it arrives and is typically around 100 ms
-static const uint64_t TIME_OF_ARRIVAL_LATENCY_NS = 100 * 1000000;
-
-// Frame config identifiers
-static const uint8_t HEADING_FRAME_CONFIG_ID       = 1;
-static const uint8_t GNSS_FRAME_CONFIG_ID          = 2;
-static const uint8_t BODY_VELOCITY_FRAME_CONFIG_ID = 3;
 
 // Custom logging handler callback
 static void log_callback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args);
@@ -370,6 +374,11 @@ int main(const int argc, const char* argv[])
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+/// @addtogroup _7_series_ins_example_c
+/// @{
+///
+
+////////////////////////////////////////////////////////////////////////////////
 /// @brief Custom logging callback for MIP SDK message formatting and output
 ///
 /// @details Processes and formats log messages from the MIP SDK based on
@@ -381,8 +390,6 @@ int main(const int argc, const char* argv[])
 /// @param _level Log message severity level from microstrain_log_level enum
 /// @param _format Printf-style format string for the message
 /// @param _args Variable argument list containing message parameters
-///
-/// @ingroup _7_series_ins_example_c
 ///
 static void log_callback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args)
 {
@@ -421,8 +428,6 @@ static void log_callback(void* _user, const microstrain_log_level _level, const 
 /// @brief Captures and configures device gyro bias
 ///
 /// @param _device Pointer to the initialized MIP device interface
-///
-/// @ingroup _7_series_ins_example_c
 ///
 static void capture_gyro_bias(mip_interface* _device)
 {
@@ -487,8 +492,6 @@ static void capture_gyro_bias(mip_interface* _device)
 ///             - Euler angles
 ///
 /// @param _device Pointer to the initialized MIP device interface
-///
-/// @ingroup _7_series_ins_example_c
 ///
 static void configure_filter_message_format(mip_interface* _device)
 {
@@ -570,8 +573,6 @@ static void configure_filter_message_format(mip_interface* _device)
 ///       measurements. Frame IDs correspond to those used in external
 ///       measurement functions.
 ///
-/// @ingroup _7_series_ins_example_c
-///
 static void configure_external_aiding_heading(mip_interface* _device)
 {
     MICROSTRAIN_LOG_INFO("Configuring the reference frame for external heading.\n");
@@ -618,8 +619,6 @@ static void configure_external_aiding_heading(mip_interface* _device)
 ///       establish the coordinate system relationships for external
 ///       measurements. Frame IDs correspond to those used in external
 ///       measurement functions.
-///
-/// @ingroup _7_series_ins_example_c
 ///
 static void configure_external_aiding_gnss_antenna(mip_interface* _device)
 {
@@ -669,8 +668,6 @@ static void configure_external_aiding_gnss_antenna(mip_interface* _device)
 ///       measurements. Frame IDs correspond to those used in external
 ///       measurement functions.
 ///
-/// @ingroup _7_series_ins_example_c
-///
 static void configure_external_aiding_ned_velocity(mip_interface* _device)
 {
     MICROSTRAIN_LOG_INFO("Configuring the reference frame for external body frame velocity.\n");
@@ -713,8 +710,6 @@ static void configure_external_aiding_ned_velocity(mip_interface* _device)
 ///          4. Resetting the filter to apply new settings
 ///
 /// @param _device Pointer to the initialized MIP device interface
-///
-/// @ingroup _7_series_ins_example_c
 ///
 static void initialize_filter(mip_interface* _device)
 {
@@ -812,8 +807,6 @@ static void initialize_filter(mip_interface* _device)
 ///
 /// @param _filter_state Current filter mode from the MIP device interface
 ///
-/// @ingroup _7_series_ins_example_c
-///
 static void display_filter_state(const mip_filter_mode _filter_state)
 {
     const char* mode_description = "startup";
@@ -867,8 +860,6 @@ static void display_filter_state(const mip_filter_mode _filter_state)
 ///
 /// @return Current system time in milliseconds since epoch
 ///
-/// @ingroup _7_series_ins_example_c
-///
 static mip_timestamp get_current_timestamp()
 {
     struct timespec ts;
@@ -896,8 +887,6 @@ static mip_timestamp get_current_timestamp()
 /// @param _length Number of bytes to send
 ///
 /// @return True if send was successful, false otherwise
-///
-/// @ingroup _7_series_ins_example_c
 ///
 static bool mip_interface_user_send_to_device(mip_interface* _device, const uint8_t* _data, size_t _length)
 {
@@ -935,8 +924,6 @@ static bool mip_interface_user_send_to_device(mip_interface* _device, const uint
 /// @param _timestamp_out Timestamp when data was received
 ///
 /// @return True if receive was successful, false otherwise
-///
-/// @ingroup _7_series_ins_example_c
 ///
 static bool mip_interface_user_recv_from_device(
     mip_interface* _device, uint8_t* _buffer, size_t _max_length, mip_timeout _wait_time, bool _from_cmd,
@@ -977,8 +964,6 @@ static bool mip_interface_user_recv_from_device(
 /// @param _device_port Pointer to an initialized serial port for device
 ///                     communication
 /// @param _baudrate Serial communication baudrate for the device
-///
-/// @ingroup _7_series_ins_example_c
 ///
 static void initialize_device(mip_interface* _device, serial_port* _device_port, const uint32_t _baudrate)
 {
@@ -1072,8 +1057,6 @@ static void initialize_device(mip_interface* _device, serial_port* _device_port,
 /// @note Issues warning if the command fails but does not terminate execution.
 ///       Used for testing external aiding functionality with known data.
 ///
-/// @ingroup _7_series_ins_example_c
-///
 static void send_simulated_heading_data(mip_interface* _device, const mip_time* _aiding_time)
 {
     const float heading     = 0.0f;
@@ -1109,8 +1092,6 @@ static void send_simulated_heading_data(mip_interface* _device, const mip_time* 
 ///
 /// @note Issues warning if the command fails but does not terminate execution.
 ///       Used for testing external aiding functionality with a known location.
-///
-/// @ingroup _7_series_ins_example_c
 ///
 static void send_simulated_position_data(mip_interface* _device, const mip_time* _aiding_time)
 {
@@ -1156,8 +1137,6 @@ static void send_simulated_position_data(mip_interface* _device, const mip_time*
 /// @note Issues warning if the command fails but does not terminate execution.
 ///       Used for testing external aiding functionality with stationary data.
 ///
-/// @ingroup _7_series_ins_example_c
-///
 static void send_simulated_ned_velocity_data(mip_interface* _device, const mip_time* _aiding_time)
 {
     const mip_vector3f velocity = {
@@ -1202,8 +1181,6 @@ static void send_simulated_ned_velocity_data(mip_interface* _device, const mip_t
 /// @note Issues warning if the command fails but does not terminate execution.
 ///       Used for testing external aiding functionality with vehicle-relative data.
 ///
-/// @ingroup _7_series_ins_example_c
-///
 static void send_simulated_vehicle_frame_velocity_data(mip_interface* _device, const mip_time* _aiding_time)
 {
     const mip_vector3f velocity = {
@@ -1244,8 +1221,6 @@ static void send_simulated_vehicle_frame_velocity_data(mip_interface* _device, c
 /// @param _device_port Serial port connection to close
 /// @param _message Error message to display
 /// @param _successful Whether termination is due to success or failure
-///
-/// @ingroup _7_series_ins_example_c
 ///
 static void terminate(serial_port* _device_port, const char* _message, const bool _successful)
 {
@@ -1304,8 +1279,6 @@ static void terminate(serial_port* _device_port, const char* _message, const boo
 /// @param _format Printf-style format string for error message
 /// @param ... Variable arguments for format string
 ///
-/// @ingroup _7_series_ins_example_c
-///
 static void exit_from_command(const mip_interface* _device, const mip_cmd_result _cmd_result, const char* _format, ...)
 {
     if (_format != NULL && strlen(_format) != 0)
@@ -1330,3 +1303,7 @@ static void exit_from_command(const mip_interface* _device, const mip_cmd_result
         terminate(device_port, "", false);
     }
 }
+
+///
+/// @} group _7_series_ins_example_c
+////////////////////////////////////////////////////////////////////////////////

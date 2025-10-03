@@ -77,18 +77,22 @@ static constexpr uint16_t SAMPLE_RATE_HZ = 1;
 static constexpr uint32_t RUN_TIME_SECONDS = 30;
 ////////////////////////////////////////////////////////////////////////////////
 
+/// @brief Time of arrival latency in nanoseconds
+/// @note This is the time it takes to package the command before it arrives and is typically around 100 ms
+static constexpr uint64_t TIME_OF_ARRIVAL_LATENCY_NS = 100 * 1000000;
+
+/// @brief Frame config ID for external heading
+static constexpr uint8_t HEADING_FRAME_CONFIG_ID = 1;
+
+/// @brief Frame config ID for external GNSS antenna
+static constexpr uint8_t GNSS_FRAME_CONFIG_ID = 2;
+
+/// @brief Frame config ID for body frame velocity
+static constexpr uint8_t BODY_VELOCITY_FRAME_CONFIG_ID = 3;
+
 ///
 /// @} group _7_series_ins_example_cpp
 ////////////////////////////////////////////////////////////////////////////////
-
-// Time of arrival latency in nanoseconds
-// Note: This is the time it takes to package the command before it arrives and is typically around 100 ms
-static constexpr uint64_t TIME_OF_ARRIVAL_LATENCY_NS = 100 * 1000000;
-
-// Frame config identifiers
-static constexpr uint8_t HEADING_FRAME_CONFIG_ID       = 1;
-static constexpr uint8_t GNSS_FRAME_CONFIG_ID          = 2;
-static constexpr uint8_t BODY_VELOCITY_FRAME_CONFIG_ID = 3;
 
 // Custom logging handler callback
 static void logCallback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args);
@@ -342,6 +346,11 @@ int main(const int argc, const char* argv[])
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+/// @addtogroup _7_series_ins_example_cpp
+/// @{
+///
+
+////////////////////////////////////////////////////////////////////////////////
 /// @brief Custom logging callback for MIP SDK message formatting and output
 ///
 /// @details Processes and formats log messages from the MIP SDK based on
@@ -353,8 +362,6 @@ int main(const int argc, const char* argv[])
 /// @param _level Log message severity level from microstrain_log_level enum
 /// @param _format Printf-style format string for the message
 /// @param _args Variable argument list containing message parameters
-///
-/// @ingroup _7_series_ins_example_cpp
 ///
 static void logCallback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args)
 {
@@ -393,8 +400,6 @@ static void logCallback(void* _user, const microstrain_log_level _level, const c
 /// @brief Captures and configures device gyro bias
 ///
 /// @param _device Reference to the initialized MIP device interface
-///
-/// @ingroup _7_series_ins_example_cpp
 ///
 static void captureGyroBias(mip::Interface& _device)
 {
@@ -459,8 +464,6 @@ static void captureGyroBias(mip::Interface& _device)
 ///             - Euler angles
 ///
 /// @param _device Reference to the initialized MIP device interface
-///
-/// @ingroup _7_series_ins_example_cpp
 ///
 static void configureFilterMessageFormat(mip::Interface& _device)
 {
@@ -547,8 +550,6 @@ static void configureFilterMessageFormat(mip::Interface& _device)
 ///       measurements. Frame IDs correspond to those used in external
 ///       measurement functions.
 ///
-/// @ingroup _7_series_ins_example_cpp
-///
 static void configureExternalAidingHeading(mip::Interface& _device)
 {
     MICROSTRAIN_LOG_INFO("Configuring the reference frame for external heading.\n");
@@ -597,8 +598,6 @@ static void configureExternalAidingHeading(mip::Interface& _device)
 ///       establish the coordinate system relationships for external
 ///       measurements. Frame IDs correspond to those used in external
 ///       measurement functions.
-///
-/// @ingroup _7_series_ins_example_cpp
 ///
 static void configureExternalAidingGnssAntenna(mip::Interface& _device)
 {
@@ -650,8 +649,6 @@ static void configureExternalAidingGnssAntenna(mip::Interface& _device)
 ///       measurements. Frame IDs correspond to those used in external
 ///       measurement functions.
 ///
-/// @ingroup _7_series_ins_example_cpp
-///
 static void configureExternalAidingNedVelocity(mip::Interface& _device)
 {
     MICROSTRAIN_LOG_INFO("Configuring the reference frame for external body frame velocity.\n");
@@ -696,8 +693,6 @@ static void configureExternalAidingNedVelocity(mip::Interface& _device)
 ///          4. Resetting the filter to apply new settings
 ///
 /// @param _device Reference to the initialized MIP device interface
-///
-/// @ingroup _7_series_ins_example_cpp
 ///
 static void initializeFilter(mip::Interface& _device)
 {
@@ -809,8 +804,6 @@ static void initializeFilter(mip::Interface& _device)
 ///
 /// @param _filterState Current filter mode from the MIP device interface
 ///
-/// @ingroup _7_series_ins_example_cpp
-///
 static void displayFilterState(const mip::data_filter::FilterMode _filterState)
 {
     const char* modeDescription = "startup";
@@ -869,8 +862,6 @@ static void displayFilterState(const mip::data_filter::FilterMode _filterState)
 ///
 /// @return Current timestamp in milliseconds since epoch
 ///
-/// @ingroup _7_series_ins_example_cpp
-///
 static mip::Timestamp getCurrentTimestamp()
 {
     const std::chrono::nanoseconds timeSinceEpoch = std::chrono::system_clock::now().time_since_epoch();
@@ -887,8 +878,6 @@ static mip::Timestamp getCurrentTimestamp()
 ///          4. Loads default device settings for a known state
 ///
 /// @param _device Reference to a MIP device interface to initialize
-///
-/// @ingroup _7_series_ins_example_cpp
 ///
 static void initializeDevice(mip::Interface& _device)
 {
@@ -971,8 +960,6 @@ static void initializeDevice(mip::Interface& _device)
 /// @note Issues warning if the command fails but does not terminate execution.
 ///       Used for testing external aiding functionality with known data.
 ///
-/// @ingroup _7_series_ins_example_cpp
-///
 static void sendSimulatedHeadingData(mip::Interface& _device, const mip::commands_aiding::Time& _aidingTime)
 {
     constexpr float heading     = 0.0f;
@@ -1008,8 +995,6 @@ static void sendSimulatedHeadingData(mip::Interface& _device, const mip::command
 ///
 /// @note Issues warning if the command fails but does not terminate execution.
 ///       Used for testing external aiding functionality with a known location.
-///
-/// @ingroup _7_series_ins_example_cpp
 ///
 static void sendSimulatedPositionData(mip::Interface& _device, const mip::commands_aiding::Time& _aidingTime)
 {
@@ -1055,8 +1040,6 @@ static void sendSimulatedPositionData(mip::Interface& _device, const mip::comman
 /// @note Issues warning if the command fails but does not terminate execution.
 ///       Used for testing external aiding functionality with stationary data.
 ///
-/// @ingroup _7_series_ins_example_cpp
-///
 static void sendSimulatedNedVelocityData(mip::Interface& _device, const mip::commands_aiding::Time& _aidingTime)
 {
     const mip::Vector3f velocity = {
@@ -1101,8 +1084,6 @@ static void sendSimulatedNedVelocityData(mip::Interface& _device, const mip::com
 /// @note Issues warning if the command fails but does not terminate execution.
 ///       Used for testing external aiding functionality with vehicle-relative data.
 ///
-/// @ingroup _7_series_ins_example_cpp
-///
 static void sendSimulatedVehicleFrameVelocityData(mip::Interface& _device, const mip::commands_aiding::Time& _aidingTime)
 {
     const mip::Vector3f velocity = {
@@ -1143,8 +1124,6 @@ static void sendSimulatedVehicleFrameVelocityData(mip::Interface& _device, const
 /// @param _connection Pointer to the device connection to close
 /// @param _message Error message to display
 /// @param _successful Whether termination is due to success or failure
-///
-/// @ingroup _7_series_ins_example_cpp
 ///
 static void terminate(microstrain::Connection* _connection, const char* _message, const bool _successful /* = false */)
 {
@@ -1203,8 +1182,6 @@ static void terminate(microstrain::Connection* _connection, const char* _message
 /// @param _format Printf-style format string for error message
 /// @param ... Variable arguments for format string
 ///
-/// @ingroup _7_series_ins_example_cpp
-///
 static void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const char* _format, ...)
 {
     if (_format && strlen(_format) != 0)
@@ -1222,3 +1199,7 @@ static void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, 
 
     terminate(connection, "");
 }
+
+///
+/// @} group _7_series_ins_example_cpp
+////////////////////////////////////////////////////////////////////////////////

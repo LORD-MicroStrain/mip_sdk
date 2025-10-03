@@ -399,6 +399,11 @@ int main(const int argc, const char* argv[])
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+/// @addtogroup _7_series_gnss_ins_example_cpp
+/// @{
+///
+
+////////////////////////////////////////////////////////////////////////////////
 /// @brief Custom logging callback for MIP SDK message formatting and output
 ///
 /// @details Processes and formats log messages from the MIP SDK based on
@@ -410,8 +415,6 @@ int main(const int argc, const char* argv[])
 /// @param _level Log message severity level from microstrain_log_level enum
 /// @param _format Printf-style format string for the message
 /// @param _args Variable argument list containing message parameters
-///
-/// @ingroup _7_series_gnss_ins_example_cpp
 ///
 static void logCallback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args)
 {
@@ -450,8 +453,6 @@ static void logCallback(void* _user, const microstrain_log_level _level, const c
 /// @brief Captures and configures device gyro bias
 ///
 /// @param _device Reference to the initialized MIP device interface
-///
-/// @ingroup _7_series_gnss_ins_example_cpp
 ///
 static void captureGyroBias(mip::Interface& _device)
 {
@@ -514,8 +515,6 @@ static void captureGyroBias(mip::Interface& _device)
 /// @param _device Reference to the initialized MIP device interface
 /// @param _gnssDataDescriptorSet Data descriptor set for the GNSS ID to
 ///                               configure
-///
-/// @ingroup _7_series_gnss_ins_example_cpp
 ///
 static void configureGnssMessageFormat(mip::Interface& _device, const uint8_t _gnssDataDescriptorSet)
 {
@@ -613,8 +612,6 @@ static void configureGnssMessageFormat(mip::Interface& _device, const uint8_t _g
 ///
 /// @param _device Reference to the initialized MIP device interface
 ///
-/// @ingroup _7_series_gnss_ins_example_cpp
-///
 static void configureFilterMessageFormat(mip::Interface& _device)
 {
     // Note: Querying the device base rate is only one way to calculate the descriptor decimation
@@ -700,8 +697,6 @@ static void configureFilterMessageFormat(mip::Interface& _device)
 /// @note Offset values are specific to physical device setup and may need to be
 ///       adjusted based on actual antenna placement
 ///
-/// @ingroup _7_series_gnss_ins_example_cpp
-///
 static void configureAntennaOffset(mip::Interface& _device, const mip::Vector3f _antennaOffset, const uint8_t _antennaId)
 {
     MICROSTRAIN_LOG_INFO(
@@ -736,8 +731,6 @@ static void configureAntennaOffset(mip::Interface& _device, const mip::Vector3f 
 ///          4. Resetting the filter to apply new settings
 ///
 /// @param _device Reference to the initialized MIP device interface
-///
-/// @ingroup _7_series_gnss_ins_example_cpp
 ///
 static void initializeFilter(mip::Interface& _device)
 {
@@ -860,8 +853,6 @@ static void initializeFilter(mip::Interface& _device)
 ///                    which GNSS receiver to report (0 = primary antenna,
 ///                    1 = secondary antenna)
 ///
-/// @ingroup _7_series_gnss_ins_example_cpp
-///
 static void displayGnssFixState(const mip::data_gnss::FixInfo* _fixInfoArray, const uint8_t _arrayIndex)
 {
     const uint8_t antennaId      = _arrayIndex + 1;
@@ -947,8 +938,6 @@ static void displayGnssFixState(const mip::data_gnss::FixInfo* _fixInfoArray, co
 ///
 /// @param _filterState Current filter mode from the MIP device interface
 ///
-/// @ingroup _7_series_gnss_ins_example_cpp
-///
 static void displayFilterState(const mip::data_filter::FilterMode _filterState)
 {
     const char* modeDescription = "startup";
@@ -1007,8 +996,6 @@ static void displayFilterState(const mip::data_filter::FilterMode _filterState)
 ///
 /// @return Current timestamp in milliseconds since epoch
 ///
-/// @ingroup _7_series_gnss_ins_example_cpp
-///
 static mip::Timestamp getCurrentTimestamp()
 {
     const std::chrono::nanoseconds timeSinceEpoch = std::chrono::system_clock::now().time_since_epoch();
@@ -1025,8 +1012,6 @@ static mip::Timestamp getCurrentTimestamp()
 ///          4. Loads default device settings for a known state
 ///
 /// @param _device Reference to a MIP device interface to initialize
-///
-/// @ingroup _7_series_gnss_ins_example_cpp
 ///
 static void initializeDevice(mip::Interface& _device)
 {
@@ -1107,8 +1092,6 @@ static void initializeDevice(mip::Interface& _device)
 /// @param _message Error message to display
 /// @param _successful Whether termination is due to success or failure
 ///
-/// @ingroup _7_series_gnss_ins_example_cpp
-///
 static void terminate(microstrain::Connection* _connection, const char* _message, const bool _successful /* = false */)
 {
     if (_message && strlen(_message) != 0)
@@ -1166,8 +1149,6 @@ static void terminate(microstrain::Connection* _connection, const char* _message
 /// @param _format Printf-style format string for error message
 /// @param ... Variable arguments for format string
 ///
-/// @ingroup _7_series_gnss_ins_example_cpp
-///
 static void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const char* _format, ...)
 {
     if (_format && strlen(_format) != 0)
@@ -1185,3 +1166,7 @@ static void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, 
 
     terminate(connection, "");
 }
+
+///
+/// @} group _7_series_gnss_ins_example_cpp
+////////////////////////////////////////////////////////////////////////////////

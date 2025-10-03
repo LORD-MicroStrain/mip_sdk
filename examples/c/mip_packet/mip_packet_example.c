@@ -102,6 +102,11 @@ int main(const int argc, const char* argv[])
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+/// @addtogroup mip_packet_example_c
+/// @{
+///
+
+////////////////////////////////////////////////////////////////////////////////
 /// @brief Prints detailed information about a MIP packet's structure and
 ///        contents
 ///
@@ -115,8 +120,6 @@ int main(const int argc, const char* argv[])
 ///          - Checksum values and validity
 ///
 /// @param _packet_view Pointer to the MIP packet view to inspect
-///
-/// @ingroup mip_packet_example_c
 ///
 static void print_packet(const mip_packet_view* _packet_view)
 {
@@ -210,8 +213,6 @@ static void print_packet(const mip_packet_view* _packet_view)
 /// @param _buffer_size Size of the buffer in bytes
 /// @param _descriptor_set Descriptor set to use for the packet
 ///
-/// @ingroup mip_packet_example_c
-///
 static void initialize_empty_packet(
     mip_packet_view* _packet_view, uint8_t* _buffer, const size_t _buffer_size, const uint8_t _descriptor_set
 )
@@ -237,8 +238,6 @@ static void initialize_empty_packet(
 ///
 /// @param _packet_view Pointer to the packet to finalize with checksum
 ///
-/// @ingroup mip_packet_example_c
-///
 static void add_checksum_to_packet(mip_packet_view* _packet_view)
 {
     mip_packet_finalize(_packet_view);
@@ -259,8 +258,6 @@ static void add_checksum_to_packet(mip_packet_view* _packet_view)
 /// @remark Field 1
 ///
 /// @param _packet_view Pointer to the packet to add the field to
-///
-/// @ingroup mip_packet_example_c
 ///
 static void add_ping_command_to_packet(mip_packet_view* _packet_view)
 {
@@ -287,8 +284,6 @@ static void add_ping_command_to_packet(mip_packet_view* _packet_view)
 /// @remark Field 2
 ///
 /// @param _packet_view Pointer to the packet to add the field to
-///
-/// @ingroup mip_packet_example_c
 ///
 static void add_comm_speed_bytes_to_packet(mip_packet_view* _packet_view)
 {
@@ -322,8 +317,6 @@ static void add_comm_speed_bytes_to_packet(mip_packet_view* _packet_view)
 /// @remark Field 3
 ///
 /// @param _packet_view Pointer to the packet to add the field to
-///
-/// @ingroup mip_packet_example_c
 ///
 static void add_comm_speed_field_to_packet(mip_packet_view* _packet_view)
 {
@@ -361,8 +354,6 @@ static void add_comm_speed_field_to_packet(mip_packet_view* _packet_view)
 ///       This is intended to show what happens "behind the scenes".
 ///
 /// @param _packet_view Pointer to the packet to add the field to
-///
-/// @ingroup mip_packet_example_c
 ///
 static void add_comm_speed_serializer_bytes_to_packet(mip_packet_view* _packet_view)
 {
@@ -422,8 +413,6 @@ static void add_comm_speed_serializer_bytes_to_packet(mip_packet_view* _packet_v
 ///
 /// @param _packet_view Pointer to the packet to add the field to
 ///
-/// @ingroup mip_packet_example_c
-///
 static void add_message_format_field_to_packet(mip_packet_view* _packet_view)
 {
     mip_3dm_message_format_command message_format;
@@ -479,8 +468,6 @@ static void add_message_format_field_to_packet(mip_packet_view* _packet_view)
 ///       and a slightly different command.
 ///
 /// @param _packet_view Pointer to the packet to add the field to
-///
-/// @ingroup mip_packet_example_c
 ///
 static void add_poll_data_field_to_packet(mip_packet_view* _packet_view)
 {
@@ -558,8 +545,6 @@ static void add_poll_data_field_to_packet(mip_packet_view* _packet_view)
 ///
 /// @param _serializer Pointer to the serializer containing the field data
 ///
-/// @ingroup mip_packet_example_c
-///
 static void extract_shared_reference_time_field(microstrain_serializer* _serializer)
 {
     uint64_t nanoseconds;
@@ -579,8 +564,6 @@ static void extract_shared_reference_time_field(microstrain_serializer* _seriali
 ///          the time elapsed since the last reference time.
 ///
 /// @param _serializer Pointer to the serializer containing the field data
-///
-/// @ingroup mip_packet_example_c
 ///
 static void extract_shared_reference_time_delta_field(microstrain_serializer* _serializer)
 {
@@ -604,8 +587,6 @@ static void extract_shared_reference_time_delta_field(microstrain_serializer* _s
 ///          successfully extracted.
 ///
 /// @param _serializer Pointer to the serializer containing the field data
-///
-/// @ingroup mip_packet_example_c
 ///
 static void extract_sensor_accel_scaled_field(microstrain_serializer* _serializer)
 {
@@ -639,8 +620,6 @@ static void extract_sensor_accel_scaled_field(microstrain_serializer* _serialize
 ///
 /// @param _serializer Pointer to the serializer containing the field data
 ///
-/// @ingroup mip_packet_example_c
-///
 static void extract_sensor_gyro_scaled_field(microstrain_serializer* _serializer)
 {
     // Same as scaled accel except using the field data structure
@@ -672,8 +651,6 @@ static void extract_sensor_gyro_scaled_field(microstrain_serializer* _serializer
 ///
 /// @param _serializer Pointer to the serializer containing the field data
 ///
-/// @ingroup mip_packet_example_c
-///
 static void extract_sensor_delta_theta_field(microstrain_serializer* _serializer)
 {
     // Same as scaled accel except using the field data structure
@@ -704,8 +681,6 @@ static void extract_sensor_delta_theta_field(microstrain_serializer* _serializer
 ///          the values if successfully extracted.
 ///
 /// @param _field_view Pointer to the field view containing the data
-///
-/// @ingroup mip_packet_example_c
 ///
 static void extract_sensor_delta_velocity_field(const mip_field_view* _field_view)
 {
@@ -755,8 +730,6 @@ static void extract_sensor_delta_velocity_field(const mip_field_view* _field_vie
 /// @see add_comm_speed_bytes_to_packet
 /// @see add_comm_speed_field_to_packet
 /// @see add_comm_speed_serializer_bytes_to_packet
-///
-/// @ingroup mip_packet_example_c
 ///
 static void create_from_scratch_packet_1()
 {
@@ -814,8 +787,6 @@ static void create_from_scratch_packet_1()
 /// @see add_checksum_to_packet
 /// @see mip_packet_reset
 /// @see print_packet
-///
-/// @ingroup mip_packet_example_c
 ///
 static void create_from_scratch_packet_2_and_3()
 {
@@ -884,8 +855,6 @@ static void create_from_scratch_packet_2_and_3()
 /// @see extract_sensor_gyro_scaled_field
 /// @see extract_sensor_delta_theta_field
 /// @see extract_sensor_delta_velocity_field
-///
-/// @ingroup mip_packet_example_c
 ///
 static void create_from_raw_buffer_packet_4()
 {
@@ -1013,3 +982,7 @@ static void create_from_raw_buffer_packet_4()
 
     printf("\n");
 }
+
+///
+/// @} group mip_packet_example_c
+////////////////////////////////////////////////////////////////////////////////

@@ -255,6 +255,11 @@ int main(const int argc, const char* argv[])
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+/// @addtogroup _5_series_stream_imu_example_cpp
+/// @{
+///
+
+////////////////////////////////////////////////////////////////////////////////
 /// @brief Custom logging callback for MIP SDK message formatting and output
 ///
 /// @details Processes and formats log messages from the MIP SDK based on
@@ -266,8 +271,6 @@ int main(const int argc, const char* argv[])
 /// @param _level Log message severity level from microstrain_log_level enum
 /// @param _format Printf-style format string for the message
 /// @param _args Variable argument list containing message parameters
-///
-/// @ingroup _5_series_stream_imu_example_cpp
 ///
 static void logCallback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args)
 {
@@ -315,8 +318,6 @@ static void logCallback(void* _user, const microstrain_log_level _level, const c
 ///
 /// @return Current timestamp in milliseconds since epoch
 ///
-/// @ingroup _5_series_stream_imu_example_cpp
-///
 static mip::Timestamp getCurrentTimestamp()
 {
     const std::chrono::nanoseconds timeSinceEpoch = std::chrono::system_clock::now().time_since_epoch();
@@ -333,8 +334,6 @@ static mip::Timestamp getCurrentTimestamp()
 ///          4. Loads default device settings for a known state
 ///
 /// @param _device Reference to a MIP device interface to initialize
-///
-/// @ingroup _5_series_stream_imu_example_cpp
 ///
 static void initializeDevice(mip::Interface& _device)
 {
@@ -416,8 +415,6 @@ static void initializeDevice(mip::Interface& _device)
 ///
 /// @returns true if the descriptor is supported, false otherwise
 ///
-/// @ingroup _5_series_stream_imu_example_cpp
-///
 static bool isDescriptorSupported(
     const mip::CompositeDescriptor& _compositeDescriptor, const uint16_t* _supportedDescriptors,
     const uint8_t _supportedDescriptorCount
@@ -449,8 +446,6 @@ static bool isDescriptorSupported(
 /// @param _device Reference to the initialized MIP device interface
 /// @param _supportedDescriptors Array of descriptors supported by the device
 /// @param _supportedDescriptorCount Number of descriptors in the array
-///
-/// @ingroup _5_series_stream_imu_example_cpp
 ///
 static void configureSensorMessageFormat(
     mip::Interface& _device, const uint16_t* _supportedDescriptors, const uint8_t _supportedDescriptorCount
@@ -551,8 +546,6 @@ static void configureSensorMessageFormat(
 /// @param _packetView Reference to the received MIP packet
 /// @param _timestamp Timestamp when the packet was received
 ///
-/// @ingroup _5_series_stream_imu_example_cpp
-///
 static void packetCallback(void* _user, const mip::PacketView& _packetView, mip::Timestamp _timestamp)
 {
     // Unused parameter
@@ -599,8 +592,6 @@ static void packetCallback(void* _user, const mip::PacketView& _packetView, mip:
 /// @param _timestamp Timestamp indicating when the field was received from the
 ///                   device (unused in this implementation)
 ///
-/// @ingroup _5_series_stream_imu_example_cpp
-///
 static void accelFieldCallback(void* _user, const mip::FieldView& _fieldView, mip::Timestamp _timestamp)
 {
     // Unused parameters
@@ -634,8 +625,6 @@ static void accelFieldCallback(void* _user, const mip::FieldView& _fieldView, mi
 /// @param _fieldView Reference to the field containing gyroscope data
 /// @param _timestamp Timestamp indicating when the field was received from the
 ///                   device (unused in this implementation)
-///
-/// @ingroup _5_series_stream_imu_example_cpp
 ///
 static void gyroFieldCallback(void* _user, const mip::FieldView& _fieldView, mip::Timestamp _timestamp)
 {
@@ -671,8 +660,6 @@ static void gyroFieldCallback(void* _user, const mip::FieldView& _fieldView, mip
 /// @param _timestamp Timestamp indicating when the field was received from the
 ///                   device (unused in this implementation)
 ///
-/// @ingroup _5_series_stream_imu_example_cpp
-///
 static void magFieldCallback(void* _user, const mip::FieldView& _fieldView, mip::Timestamp _timestamp)
 {
     // Unused parameters
@@ -706,8 +693,6 @@ static void magFieldCallback(void* _user, const mip::FieldView& _fieldView, mip:
 /// @param _connection Pointer to the device connection to close
 /// @param _message Error message to display
 /// @param _successful Whether termination is due to success or failure
-///
-/// @ingroup _5_series_stream_imu_example_cpp
 ///
 static void terminate(microstrain::Connection* _connection, const char* _message, const bool _successful /* = false */)
 {
@@ -766,8 +751,6 @@ static void terminate(microstrain::Connection* _connection, const char* _message
 /// @param _format Printf-style format string for error message
 /// @param ... Variable arguments for format string
 ///
-/// @ingroup _5_series_stream_imu_example_cpp
-///
 static void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const char* _format, ...)
 {
     if (_format && strlen(_format) != 0)
@@ -785,3 +768,7 @@ static void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, 
 
     terminate(connection, "");
 }
+
+///
+/// @} group _5_series_stream_imu_example_cpp
+////////////////////////////////////////////////////////////////////////////////

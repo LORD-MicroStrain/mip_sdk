@@ -224,6 +224,11 @@ int main(const int argc, const char* argv[])
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+/// @addtogroup _5_series_threading_example_cpp
+/// @{
+///
+
+////////////////////////////////////////////////////////////////////////////////
 /// @brief Custom logging callback for MIP SDK message formatting and output
 ///
 /// @details Processes and formats log messages from the MIP SDK based on
@@ -235,8 +240,6 @@ int main(const int argc, const char* argv[])
 /// @param _level Log message severity level from microstrain_log_level enum
 /// @param _format Printf-style format string for the message
 /// @param _args Variable argument list containing message parameters
-///
-/// @ingroup _5_series_threading_example_cpp
 ///
 static void logCallback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args)
 {
@@ -297,8 +300,6 @@ static void logCallback(void* _user, const microstrain_log_level _level, const c
 ///
 /// @return Current timestamp in milliseconds since epoch
 ///
-/// @ingroup _5_series_threading_example_cpp
-///
 static mip::Timestamp getCurrentTimestamp()
 {
     const std::chrono::nanoseconds timeSinceEpoch = std::chrono::system_clock::now().time_since_epoch();
@@ -315,8 +316,6 @@ static mip::Timestamp getCurrentTimestamp()
 ///          4. Loads default device settings for a known state
 ///
 /// @param _device Reference to a MIP device interface to initialize
-///
-/// @ingroup _5_series_threading_example_cpp
 ///
 static void initializeDevice(mip::Interface& _device)
 {
@@ -397,8 +396,6 @@ static void initializeDevice(mip::Interface& _device)
 ///
 /// @param _device Reference to the initialized MIP device interface
 ///
-/// @ingroup _5_series_threading_example_cpp
-///
 static void configureSensorMessageFormat(mip::Interface& _device)
 {
     // Note: Querying the device base rate is only one way to calculate the descriptor decimation
@@ -476,8 +473,6 @@ static void configureSensorMessageFormat(mip::Interface& _device)
 /// @param _packetView Reference to the received MIP packet
 /// @param _timestamp Timestamp when the packet was received
 ///
-/// @ingroup _5_series_threading_example_cpp
-///
 static void packetCallback(void* _user, const mip::PacketView& _packetView, mip::Timestamp _timestamp)
 {
     // Unused parameter
@@ -533,8 +528,6 @@ static void packetCallback(void* _user, const mip::PacketView& _packetView, mip:
 ///          Always returns true when called from commands to avoid race
 ///          conditions.
 ///
-/// @ingroup _5_series_threading_example_cpp
-///
 static bool updateDevice(mip::Interface& _device, mip::Timeout _waitTime, bool _fromCmd)
 {
     // Do normal updates only if not called from a command handler
@@ -566,8 +559,6 @@ static bool updateDevice(mip::Interface& _device, mip::Timeout _waitTime, bool _
 ///
 /// @param _device Reference to the MIP device interface
 /// @param _running Reference to volatile boolean controlling thread execution
-///
-/// @ingroup _5_series_threading_example_cpp
 ///
 static void dataCollectionThread(mip::Interface& _device, const volatile bool& _running)
 {
@@ -607,8 +598,6 @@ static void dataCollectionThread(mip::Interface& _device, const volatile bool& _
 /// @param _connection Pointer to the device connection to close
 /// @param _message Error message to display
 /// @param _successful Whether termination is due to success or failure
-///
-/// @ingroup _5_series_threading_example_cpp
 ///
 static void terminate(microstrain::Connection* _connection, const char* _message, const bool _successful /* = false */)
 {
@@ -667,8 +656,6 @@ static void terminate(microstrain::Connection* _connection, const char* _message
 /// @param _format Printf-style format string for error message
 /// @param ... Variable arguments for format string
 ///
-/// @ingroup _5_series_threading_example_cpp
-///
 static void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const char* _format, ...)
 {
     if (_format && strlen(_format) != 0)
@@ -686,3 +673,7 @@ static void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, 
 
     terminate(connection, "");
 }
+
+///
+/// @} group _5_series_threading_example_cpp
+////////////////////////////////////////////////////////////////////////////////
