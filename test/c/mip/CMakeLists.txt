@@ -10,6 +10,13 @@ add_cmocka_test(
 )
 set_tests_properties("C_mip_packet_builder_unit" PROPERTIES LABELS "unit")
 
+add_cmocka_test(
+    "C_mip_logging"
+    SOURCES "${CMAKE_CURRENT_LIST_DIR}/mip_logging.unit.c"
+    LINK_LIBRARIES ${MIP_INTEGRATION_TEST_TARGET_C}
+)
+set_tests_properties("C_mip_logging" PROPERTIES LABELS "unit")
+
 # ---------------------------------------------------------------
 # Integration
 # ---------------------------------------------------------------
@@ -29,19 +36,5 @@ add_mip_test(
     SOURCES "${CMAKE_CURRENT_LIST_DIR}/test_mip_parser.c"
     COMMAND test_mip_parsing
     ARGS "${MIP_TEST_DATA_BIN}"
-)
-]]
-
-
-# TODO: Disabled tests compile but take a long time to run.
-#     ---> Move to an integration test suite
-#[[
-add_mip_test(
-    NAME test_mip_packet_formatting
-    SOURCES
-        "${CMAKE_CURRENT_LIST_DIR}/../microstrain/testutil_strings.c"
-        "${CMAKE_CURRENT_LIST_DIR}/../microstrain/testutil_strings.h"
-        "${CMAKE_CURRENT_LIST_DIR}/test_mip_format.c"
-    COMMAND test_mip_packet_formatting
 )
 ]]

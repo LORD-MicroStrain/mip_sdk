@@ -3,7 +3,7 @@
 //       of iterations and remove test brittleness. Looks like some possible dangling references
 //       as well.
 
-// TODO: Replace these tests completely with new integration test structure once implemented.
+// TODO: Convert to unit tests testing the field reading
 
 #include <stdio.h>
 #include <stdlib.h>
