@@ -143,7 +143,7 @@ int main(const int argc, const char* argv[])
     // Get supported descriptors to check if certain data descriptors are supported for streaming
     MICROSTRAIN_LOG_INFO("Getting supported descriptors for the device.\n");
     uint8_t  descriptorsCount          = 0;
-    uint16_t supportedDescriptors[256] = { 0 };
+    uint16_t supportedDescriptors[256] = {0};
 
     mip::CmdResult cmdResult = mip::commands_base::getDeviceDescriptors(
         device,
@@ -491,9 +491,9 @@ static void configureSensorMessageFormat(
 
     // Descriptor rate is a pair of data descriptor set and decimation
     const mip::DescriptorRate sensorDescriptors[3] = {
-        { mip::data_sensor::ScaledAccel::FIELD_DESCRIPTOR, sensorDecimation },
-        { mip::data_sensor::ScaledGyro::FIELD_DESCRIPTOR,  sensorDecimation },
-        { mip::data_sensor::ScaledMag::FIELD_DESCRIPTOR,   sensorDecimation }
+        {mip::data_sensor::ScaledAccel::FIELD_DESCRIPTOR, sensorDecimation},
+        {mip::data_sensor::ScaledGyro::FIELD_DESCRIPTOR,  sensorDecimation},
+        {mip::data_sensor::ScaledMag::FIELD_DESCRIPTOR,   sensorDecimation}
     };
 
     // Assume all descriptors are supported until the check below
@@ -553,7 +553,7 @@ static void packetCallback(void* _user, const mip::PacketView& _packetView, mip:
     (void)_user;
 
     // Create a buffer for printing purposes
-    char fieldDescriptorsBuffer[255] = { 0 };
+    char fieldDescriptorsBuffer[255] = {0};
     int  bufferOffset                = 0;
 
     // Iterate the packet and extract each field

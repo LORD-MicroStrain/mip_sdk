@@ -455,9 +455,9 @@ static void configureFilterMessageFormat(mip::Interface& _device)
 
     // Descriptor rate is a pair of data descriptor set and decimation
     const mip::DescriptorRate filterDescriptors[3] = {
-        { mip::data_shared::GpsTimestamp::FIELD_DESCRIPTOR, filterDecimation },
-        { mip::data_filter::Status::FIELD_DESCRIPTOR,       filterDecimation },
-        { mip::data_filter::EulerAngles::FIELD_DESCRIPTOR,  filterDecimation }
+        {mip::data_shared::GpsTimestamp::FIELD_DESCRIPTOR, filterDecimation},
+        {mip::data_filter::Status::FIELD_DESCRIPTOR,       filterDecimation},
+        {mip::data_filter::EulerAngles::FIELD_DESCRIPTOR,  filterDecimation}
     };
 
     MICROSTRAIN_LOG_INFO("Configuring %s for filter data.\n", mip::commands_3dm::MessageFormat::DOC_NAME);

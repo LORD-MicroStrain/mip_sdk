@@ -153,7 +153,7 @@ static void printPacket(const mip::PacketView& _packetView)
     const uint8_t* packetPointer = _packetView.pointer();
 
     // Create a buffer for printing purposes
-    char packetByteBuffer[mip::PacketView::PAYLOAD_LENGTH_MAX] = { 0 };
+    char packetByteBuffer[mip::PacketView::PAYLOAD_LENGTH_MAX] = {0};
     int  bufferOffset                                          = 0;
 
     // Get each byte in the packet, including header and checksum
@@ -331,9 +331,15 @@ static void addCommSpeedBytesToPacket(mip::PacketView& _packetView)
 {
     // Build the raw payload for the packet
     const uint8_t commSpeedPayload[] = {
-        0x01,                  // Function selector
-        0x01,                  // Port
-        0x00, 0x01, 0xC2, 0x00 // Baudrate
+        // Function selector
+        0x01,
+        // Port
+        0x01,
+        // Baudrate
+        0x00,
+        0x01,
+        0xC2,
+        0x00
     };
 
     _packetView.addField(
@@ -711,7 +717,7 @@ static void createFromScratchPacket1()
 #if USE_MANUAL_BUFFERS
     // Create a packet and an empty storage buffer for the packet
     // Note: This approach is similar to the C API
-    uint8_t         buffer[mip::PacketView::PACKET_SIZE_MAX] = { 0 };
+    uint8_t         buffer[mip::PacketView::PACKET_SIZE_MAX] = {0};
     mip::PacketView packet = initializeEmptyPacket(buffer, sizeof(buffer) / sizeof(buffer[0]), packetDescriptorSet);
 #else  // !USE_MANUAL_BUFFERS
     // Create a packet using a packet buffer object
@@ -774,7 +780,7 @@ static void createFromScratchPacket2And3()
     // Create a packet and an empty storage buffer for the packet
     // Note: Declared here to demonstrate resetting packets for reuse
     // Note: This approach is similar to the C API
-    uint8_t         buffer[mip::PacketView::PACKET_SIZE_MAX] = { 0 };
+    uint8_t         buffer[mip::PacketView::PACKET_SIZE_MAX] = {0};
     mip::PacketView packet = initializeEmptyPacket(buffer, sizeof(buffer) / sizeof(buffer[0]), packetDescriptorSet);
 #else  // !USE_MANUAL_BUFFERS
     // Create a packet using a packet buffer object

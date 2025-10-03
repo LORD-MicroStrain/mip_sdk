@@ -140,7 +140,7 @@ static void print_packet(const mip_packet_view* _packet_view)
     const uint8_t* packet_pointer = mip_packet_pointer(_packet_view);
 
     // Create a buffer for printing purposes
-    char packet_byte_buffer[MIP_PACKET_PAYLOAD_LENGTH_MAX] = { 0 };
+    char packet_byte_buffer[MIP_PACKET_PAYLOAD_LENGTH_MAX] = {0};
     int  buffer_offset                                     = 0;
 
     // Get each byte in the packet, including header and checksum
@@ -289,9 +289,15 @@ static void add_comm_speed_bytes_to_packet(mip_packet_view* _packet_view)
 {
     // Build the raw payload for the packet
     const uint8_t comm_speed_payload[] = {
-        0x01,                  // Function selector
-        0x01,                  // Port
-        0x00, 0x01, 0xC2, 0x00 // Baudrate
+        // Function selector
+        0x01,
+        // Port
+        0x01,
+        // Baudrate
+        0x00,
+        0x01,
+        0xC2,
+        0x00
     };
 
     mip_packet_add_field(
@@ -737,7 +743,7 @@ static void create_from_scratch_packet_1()
 
     // Create a packet and an empty storage buffer for the packet
     mip_packet_view packet_view;
-    uint8_t         buffer[MIP_PACKET_LENGTH_MAX] = { 0 };
+    uint8_t         buffer[MIP_PACKET_LENGTH_MAX] = {0};
 
     // Initialize the packet with the buffer
     initialize_empty_packet(&packet_view, buffer, sizeof(buffer) / sizeof(buffer[0]), MIP_BASE_CMD_DESC_SET);
@@ -795,7 +801,7 @@ static void create_from_scratch_packet_2_and_3()
     // Create a packet and an empty storage buffer for the packet
     // Note: Declared here to demonstrate resetting packets for reuse
     mip_packet_view packet_view;
-    uint8_t         buffer[MIP_PACKET_LENGTH_MAX] = { 0 };
+    uint8_t         buffer[MIP_PACKET_LENGTH_MAX] = {0};
 
     initialize_empty_packet(&packet_view, buffer, sizeof(buffer) / sizeof(buffer[0]), MIP_3DM_CMD_DESC_SET);
 

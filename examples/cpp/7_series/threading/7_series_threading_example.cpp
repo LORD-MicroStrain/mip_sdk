@@ -439,7 +439,7 @@ static void configureSensorMessageFormat(mip::Interface& _device)
 
     // Descriptor rate is a pair of data descriptor set and decimation
     const mip::DescriptorRate sensorDescriptors[1] = {
-        { mip::data_sensor::ScaledAccel::FIELD_DESCRIPTOR, sensorDecimation }
+        {mip::data_sensor::ScaledAccel::FIELD_DESCRIPTOR, sensorDecimation}
     };
 
     MICROSTRAIN_LOG_INFO("Configuring %s for sensor data.\n", mip::commands_3dm::MessageFormat::DOC_NAME);
@@ -482,7 +482,7 @@ static void packetCallback(void* _user, const mip::PacketView& _packetView, mip:
     (void)_user;
 
     // Create a buffer for printing purposes
-    char fieldDescriptorsBuffer[255] = { 0 };
+    char fieldDescriptorsBuffer[255] = {0};
     int  bufferOffset                = 0;
 
     // Iterate the packet and extract each field

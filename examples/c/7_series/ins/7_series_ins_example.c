@@ -537,11 +537,11 @@ static void configure_filter_message_format(mip_interface* _device)
 
     // Descriptor rate is a pair of data descriptor set and decimation
     const mip_descriptor_rate filter_descriptors[5] = {
-        { MIP_DATA_DESC_SHARED_GPS_TIME,         filter_decimation },
-        { MIP_DATA_DESC_FILTER_FILTER_STATUS,    filter_decimation },
-        { MIP_DATA_DESC_FILTER_POS_LLH,          filter_decimation },
-        { MIP_DATA_DESC_FILTER_VEL_NED,          filter_decimation },
-        { MIP_DATA_DESC_FILTER_ATT_EULER_ANGLES, filter_decimation }
+        {MIP_DATA_DESC_SHARED_GPS_TIME,         filter_decimation},
+        {MIP_DATA_DESC_FILTER_FILTER_STATUS,    filter_decimation},
+        {MIP_DATA_DESC_FILTER_POS_LLH,          filter_decimation},
+        {MIP_DATA_DESC_FILTER_VEL_NED,          filter_decimation},
+        {MIP_DATA_DESC_FILTER_ATT_EULER_ANGLES, filter_decimation}
     };
 
     MICROSTRAIN_LOG_INFO("Configuring message format for filter data.\n");

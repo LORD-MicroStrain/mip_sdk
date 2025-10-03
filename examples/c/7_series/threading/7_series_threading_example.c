@@ -222,7 +222,7 @@ int main(const int argc, const char* argv[])
     // Note: This allows the update function to be split into command and data updates across multiple threads
     mip_interface_set_update_function(&device, &update_device);
 
-    thread_data_t data = { .device = &device, .running = true };
+    thread_data_t data = {.device = &device, .running = true};
 
     MICROSTRAIN_LOG_INFO("Creating the data collection thread.\n");
     pthread_t data_thread;
@@ -595,7 +595,7 @@ static void configure_sensor_message_format(mip_interface* _device)
 
     // Descriptor rate is a pair of data descriptor set and decimation
     const mip_descriptor_rate sensor_descriptors[1] = {
-        { MIP_DATA_DESC_SENSOR_ACCEL_SCALED, sensor_decimation }
+        {MIP_DATA_DESC_SENSOR_ACCEL_SCALED, sensor_decimation}
     };
 
     MICROSTRAIN_LOG_INFO("Configuring message format for sensor data.\n");
@@ -633,7 +633,7 @@ static void packet_callback(void* _user, const mip_packet_view* _packet_view, mi
     (void)_user;
 
     // Create a buffer for printing purposes
-    char field_descriptors_buffer[255] = { 0 };
+    char field_descriptors_buffer[255] = {0};
     int  buffer_offset                 = 0;
 
     // Field object for iterating the packet and extracting each field

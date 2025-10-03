@@ -499,7 +499,7 @@ static void configureGnssMessageFormat(mip::Interface& _device)
 
     // Descriptor rate is a pair of data descriptor set and decimation
     const mip::DescriptorRate gnssDescriptors[1] = {
-        { mip::data_gnss::FixInfo::FIELD_DESCRIPTOR, gnssDecimation }
+        {mip::data_gnss::FixInfo::FIELD_DESCRIPTOR, gnssDecimation}
     };
 
     MICROSTRAIN_LOG_INFO("Configuring %s for GNSS data.\n", mip::commands_3dm::GnssMessageFormat::DOC_NAME);
@@ -577,11 +577,11 @@ static void configureFilterMessageFormat(mip::Interface& _device)
 
     // Descriptor rate is a pair of data descriptor set and decimation
     const mip::DescriptorRate filterDescriptors[5] = {
-        { mip::data_filter::Timestamp::FIELD_DESCRIPTOR,   filterDecimation },
-        { mip::data_filter::Status::FIELD_DESCRIPTOR,      filterDecimation },
-        { mip::data_filter::PositionLlh::FIELD_DESCRIPTOR, filterDecimation },
-        { mip::data_filter::VelocityNed::FIELD_DESCRIPTOR, filterDecimation },
-        { mip::data_filter::EulerAngles::FIELD_DESCRIPTOR, filterDecimation }
+        {mip::data_filter::Timestamp::FIELD_DESCRIPTOR,   filterDecimation},
+        {mip::data_filter::Status::FIELD_DESCRIPTOR,      filterDecimation},
+        {mip::data_filter::PositionLlh::FIELD_DESCRIPTOR, filterDecimation},
+        {mip::data_filter::VelocityNed::FIELD_DESCRIPTOR, filterDecimation},
+        {mip::data_filter::EulerAngles::FIELD_DESCRIPTOR, filterDecimation}
     };
 
     MICROSTRAIN_LOG_INFO("Configuring %s for filter data.\n", mip::commands_3dm::FilterMessageFormat::DOC_NAME);
