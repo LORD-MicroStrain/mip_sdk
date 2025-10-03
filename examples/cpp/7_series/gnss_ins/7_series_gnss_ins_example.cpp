@@ -577,7 +577,7 @@ static void configureGnssMessageFormat(mip::Interface& _device, const uint8_t _g
     MICROSTRAIN_LOG_INFO("Configuring %s for GNSS %d data.\n", mip::commands_3dm::MessageFormat::DOC_NAME, gnssId);
     cmdResult = mip::commands_3dm::writeMessageFormat(
         _device,
-        mip::data_filter::DESCRIPTOR_SET,                     // Data descriptor set
+        _gnssDataDescriptorSet,                               // Data descriptor set
         sizeof(gnssDescriptors) / sizeof(gnssDescriptors[0]), // Number of descriptors to include
         gnssDescriptors                                       // Descriptor array
     );
