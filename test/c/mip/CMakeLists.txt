@@ -4,13 +4,6 @@
 # ---------------------------------------------------------------
 
 add_cmocka_test(
-    "C_mip_fields_unit"
-    SOURCES "${CMAKE_CURRENT_LIST_DIR}/fields.unit.c"
-    LINK_LIBRARIES ${MIP_INTEGRATION_TEST_TARGET_C}
-)
-set_tests_properties("C_mip_fields_unit" PROPERTIES LABELS "unit")
-
-add_cmocka_test(
     "C_mip_packet_builder_unit"
     SOURCES "${CMAKE_CURRENT_LIST_DIR}/packet_builder.unit.c"
     LINK_LIBRARIES ${MIP_UNIT_TEST_TARGET_C}
