@@ -247,11 +247,11 @@ int main(const int argc, const char* argv[])
 
     MICROSTRAIN_LOG_INFO("The device is configured... waiting for the filter to initialize.\n");
 
-    mip::data_gnss::FixInfo::FixType currentFixType = gnssFixInfo.fix_type;
+    mip::data_gnss::FixInfo::FixType currentFixType = mip::data_gnss::FixInfo::FixType::FIX_NONE;
     mip::data_filter::FilterMode     currentState   = filterStatus.filter_state;
 
     // Wait for the device to initialize
-    while (filterStatus.filter_state < mip::data_filter::FilterMode::GX5_RUN_SOLUTION_VALID)
+    while (filterStatus.filter_state != mip::data_filter::FilterMode::GX5_RUN_SOLUTION_VALID)
     {
         // Update the device state
         // Note: This will update the device callbacks to trigger the filter state change

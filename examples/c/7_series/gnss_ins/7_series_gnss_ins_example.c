@@ -318,8 +318,11 @@ int main(const int argc, const char* argv[])
 
     MICROSTRAIN_LOG_INFO("The device is configured... waiting for the filter to enter full navigation mode.\n");
 
-    mip_gnss_fix_info_data_fix_type current_fix_type[2] = { gnss_fix_info[0].fix_type, gnss_fix_info[1].fix_type };
-    mip_filter_mode                 current_state       = filter_status.filter_state;
+    mip_gnss_fix_info_data_fix_type current_fix_type[2] = {
+        MIP_GNSS_FIX_INFO_DATA_FIX_TYPE_FIX_NONE,
+        MIP_GNSS_FIX_INFO_DATA_FIX_TYPE_FIX_NONE
+    };
+    mip_filter_mode current_state = filter_status.filter_state;
 
     // Wait for the device to initialize
     while (filter_status.filter_state < MIP_FILTER_MODE_FULL_NAV)
@@ -334,7 +337,7 @@ int main(const int argc, const char* argv[])
         );
 
         // Check for fix type state changes for each antenna
-        for (uint8_t gnss_index = 0; gnss_index < 2; ++gnss_index)
+        for (uint8_t gnss_index = 0; gnss_index < sizeof(current_fix_type) / sizeof(current_fix_type[0]); ++gnss_index)
         {
             // Fix type state change
             if (current_fix_type[gnss_index] != gnss_fix_info[gnss_index].fix_type)
@@ -371,7 +374,7 @@ int main(const int argc, const char* argv[])
         );
 
         // Check for fix type state changes for each antenna
-        for (uint8_t gnss_index = 0; gnss_index < 2; ++gnss_index)
+        for (uint8_t gnss_index = 0; gnss_index < sizeof(current_fix_type) / sizeof(current_fix_type[0]); ++gnss_index)
         {
             // Fix type state change
             if (current_fix_type[gnss_index] != gnss_fix_info[gnss_index].fix_type)
