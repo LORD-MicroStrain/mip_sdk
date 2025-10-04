@@ -107,17 +107,13 @@ public:
     uint8_t  payload(size_t i) const { assert(i < payloadLength()); return                      C::mip_packet_payload(this)[i];  }  ///@brief Get payload byte at index i.
     uint8_t& payload(size_t i)       { assert(i < payloadLength()); return const_cast<uint8_t&>(C::mip_packet_payload(this)[i]); }  ///@brief Get writable payload byte at index i.
 
-    ///@brief Copies the given mip field to the packet.
+    ///@brief Creates a mip field with the given descriptor and a copy of the payload.
     ///
-    bool addField(uint8_t fieldDescriptor, microstrain::ConstU8ArrayView payload) { return C::mip_packet_add_field(this, fieldDescriptor, payload.data(), payload.size()); }  ///<@copydoc mip::C::mip_packet_add_field
+    bool addField(uint8_t fieldDescriptor, microstrain::ConstU8ArrayView payload) { return addField(fieldDescriptor, payload.data(), uint8_t(payload.size())); }
 
     ///@brief Copies the given mip field to the packet.
     ///
     bool addField(const FieldView& field) { return addField(field.fieldDescriptor(), field.payload()); }
-
-    ///@brief Creates a mip field with the given descriptor and copies the given payload.
-    ///
-    bool addField(uint8_t fieldDescriptor, microstrain::ConstU8ArrayView payload) { return addField(fieldDescriptor, payload.data(), uint8_t(payload.size())); }
 
 
     class AllocatedField : public Serializer

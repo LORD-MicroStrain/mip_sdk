@@ -49,14 +49,15 @@ public:
     uint8_t fieldDescriptor() const { return C::mip_field_field_descriptor(this); }
     ///@brief Returns the descriptor set and field descriptor.
     CompositeDescriptor descriptor() const { return {descriptorSet(), fieldDescriptor()}; }
-    ///@copydoc mip::C::mip_field_payload_length
-    uint8_t payloadLength() const { return C::mip_field_payload_length(this); }
+
     ///@copydoc mip::C::mip_field_total_length
     uint8_t totalLength() const { return C::mip_field_total_length(this); }
-    ///@copydoc mip::C::mip_field_payload
-    const uint8_t* payloadPtr() const { return C::mip_field_payload(this); }
-    ///@copydoc mip::C::mip_field_payload
-    const uint8_t* payload() const { return C::mip_field_payload(this); }
+
+    ///@copydoc mip::C::mip_field_payload_length
+    uint8_t payloadLength() const { return C::mip_field_payload_length(this); }
+
+    ///@brief Get a const view of the payload data.
+    microstrain::ConstU8ArrayView payload() const { return {C::mip_field_payload(this), C::mip_field_payload_length(this)}; }
 
     ///@brief Index the payload at the given location.
     ///@param index Byte index into payload. 0 <= index < payloadLength().
@@ -65,10 +66,10 @@ public:
 
     uint8_t operator[](size_t index) const { return payload(index); }
 
-    ///@brief Get a const view of the payload data.
-    microstrain::ConstU8ArrayView payloadView() const { return {payload(), payloadLength()}; }
-
     ///@brief Gets a view of the entire field, including the header.
+    ///
+    ///@note You want to use payload() instead if you're trying to extract
+    ///      parameters/data contained within a field.
     ///
     ///@warning FieldView contains a descriptor and payload pointer. It does not
     ///         guarantee the descriptors are also stored in the same buffer as
@@ -84,7 +85,7 @@ public:
     ///         payload array may not have header bytes and this function isn't
     ///         safe in that case.
     ///
-    microstrain::ConstU8ArrayView data() const { return {payload()-C::MIP_HEADER_LENGTH, size_t(payloadLength()+C::MIP_HEADER_LENGTH)}; }
+    microstrain::ConstU8ArrayView bytes() const { return {payload()-C::MIP_HEADER_LENGTH, size_t(payloadLength()+C::MIP_HEADER_LENGTH)}; }
 
     ///@copydoc mip::C::mip_field_is_valid
     bool isValid() const { return C::mip_field_is_valid(this); }
