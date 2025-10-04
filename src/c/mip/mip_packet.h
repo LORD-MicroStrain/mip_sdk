@@ -49,8 +49,8 @@ struct microstrain_serializer;
 ///
 typedef struct mip_packet_view
 {
-    uint8_t* _buffer;         ///<@private Pointer to the packet data.
-    size_t   _buffer_length;  ///<@private Length of the buffer (not necessarily the packet length!).
+    uint8_t*       _buffer;         ///<@private Pointer to the packet data.
+    uint_least16_t _buffer_length;  ///<@private Length of the buffer (not necessarily the packet length!).
 } mip_packet_view;
 
 
@@ -95,31 +95,23 @@ void mip_packet_reset(mip_packet_view* packet, uint8_t descriptor_set);
 ///
 ///@{
 
-void            mip_packet_from_buffer(mip_packet_view* packet, const uint8_t* buffer, size_t length);
+void mip_packet_from_buffer(mip_packet_view* packet, const uint8_t* buffer, size_t length);
 
 uint8_t         mip_packet_descriptor_set(const mip_packet_view* packet);
-
-const uint8_t*  mip_packet_buffer_pointer(const mip_packet_view* packet);
-      uint8_t*  mip_packet_buffer_pointer_w(mip_packet_view* packet);
-const uint8_t*  mip_packet_data_pointer(const mip_packet_view* packet);
-const uint8_t*  mip_packet_payload_pointer(const mip_packet_view* packet);
-
-size_t          mip_packet_buffer_length(const mip_packet_view* packet);
-size_t          mip_packet_total_length(const mip_packet_view* packet);
+uint_least16_t  mip_packet_total_length(const mip_packet_view* packet);
 uint8_t         mip_packet_payload_length(const mip_packet_view* packet);
-
-const uint8_t*  mip_packet_buffer(const mip_packet_view* packet, size_t* length_out);
-uint8_t*        mip_packet_buffer_w(mip_packet_view* packet, size_t* length_out);
-const uint8_t*  mip_packet_data(const mip_packet_view* packet, size_t* length_out);
-const uint8_t*  mip_packet_payload(const mip_packet_view* packet, size_t* length_out);
-
+uint8_t*        mip_packet_buffer(mip_packet_view* packet);
+const uint8_t*  mip_packet_data(const mip_packet_view* packet);
+const uint8_t*  mip_packet_payload(const mip_packet_view* packet);
 uint16_t        mip_packet_checksum_value(const mip_packet_view* packet);
 uint16_t        mip_packet_compute_checksum(const mip_packet_view* packet);
+
 
 bool            mip_packet_is_sane(const mip_packet_view* packet);
 bool            mip_packet_is_valid(const mip_packet_view* packet);
 bool            mip_packet_is_empty(const mip_packet_view* packet);
 
+uint_least16_t  mip_packet_buffer_size(const mip_packet_view* packet);
 int             mip_packet_remaining_space(const mip_packet_view* packet);
 
 bool            mip_packet_is_data(const mip_packet_view* packet);

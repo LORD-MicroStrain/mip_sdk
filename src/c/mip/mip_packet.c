@@ -45,8 +45,12 @@ void mip_packet_from_buffer(mip_packet_view* packet, const uint8_t* buffer, size
 {
     assert(buffer != NULL);
 
+    // Limit the length in case it's longer than a mip packet (or worse, longer than the buffer size field can hold)
+    if( length > MIP_PACKET_LENGTH_MAX )
+        length = MIP_PACKET_LENGTH_MAX;
+
     packet->_buffer        = (uint8_t*)buffer;
-    packet->_buffer_length = length;
+    packet->_buffer_length = (uint_least16_t)length;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -106,23 +110,23 @@ uint8_t mip_packet_payload_length(const mip_packet_view* packet)
 ///
 ///@returns The length of the packet. Always at least MIP_PACKET_LENGTH_MIN.
 ///
-size_t mip_packet_total_length(const mip_packet_view* packet)
+uint_least16_t mip_packet_total_length(const mip_packet_view* packet)
 {
     return mip_packet_payload_length(packet) + MIP_PACKET_LENGTH_MIN;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Returns a read-only pointer to the data buffer.
+///@brief Returns a writable pointer to the data buffer.
 ///
-const uint8_t* mip_packet_buffer_pointer(const mip_packet_view* packet)
+uint8_t* mip_packet_buffer(mip_packet_view* packet)
 {
     return packet->_buffer;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Returns a writable pointer to the data buffer.
+///@brief Returns a pointer to the data buffer containing the packet.
 ///
-uint8_t* mip_packet_buffer_pointer_w(mip_packet_view* packet)
+const uint8_t* mip_packet_data(const mip_packet_view* packet)
 {
     return packet->_buffer;
 }
@@ -130,79 +134,8 @@ uint8_t* mip_packet_buffer_pointer_w(mip_packet_view* packet)
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Returns a pointer to the packet's payload (the first field).
 ///
-const uint8_t* mip_packet_payload_pointer(const mip_packet_view* packet)
+const uint8_t* mip_packet_payload(const mip_packet_view* packet)
 {
-    return packet->_buffer + MIP_INDEX_PAYLOAD;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-///@brief Returns a pointer to the data buffer containing the packet.
-///
-const uint8_t* mip_packet_data_pointer(const mip_packet_view* packet)
-{
-    return packet->_buffer;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-///@brief Returns a read-only pointer to the data buffer.
-///
-///@param packet
-///@param length_out If not NULL, returns the buffer length.
-///
-///@returns A pointer to the payload data.
-///
-const uint8_t* mip_packet_buffer(const mip_packet_view* packet, size_t* length_out)
-{
-    if(length_out)
-        *length_out = mip_packet_buffer_length(packet);
-
-    return packet->_buffer;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-///@brief Returns a writable pointer to the data buffer.
-///
-///@param packet
-///@param length_out If not NULL, returns the buffer length.
-///
-///@returns A pointer to the payload data.
-///
-uint8_t* mip_packet_buffer_w(mip_packet_view* packet, size_t* length_out)
-{
-    if(length_out)
-        *length_out = mip_packet_buffer_length(packet);
-
-    return packet->_buffer;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-///@brief Obtains the packet bytes.
-///
-///@param packet
-///@param length_out If not NULL, returns the packet's total length.
-///
-///@returns A pointer to the packet's raw data.
-///
-const uint8_t* mip_packet_data(const mip_packet_view* packet, size_t* length_out)
-{
-    if(length_out)
-        *length_out = mip_packet_total_length(packet);
-
-    return packet->_buffer;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-///@brief Obtains the packet's payload data.
-///
-///@param packet
-///@param length_out If not NULL, returns the payload length.
-///
-///@returns A pointer to the payload data.
-const uint8_t* mip_packet_payload(const mip_packet_view* packet, size_t* length_out)
-{
-    if(length_out)
-        *length_out = mip_packet_payload_length(packet);
-
     return packet->_buffer + MIP_INDEX_PAYLOAD;
 }
 
@@ -253,11 +186,7 @@ uint16_t mip_packet_compute_checksum(const mip_packet_view* packet)
 ///
 bool mip_packet_is_sane(const mip_packet_view* packet)
 {
-    return (
-        packet->_buffer &&
-        (packet->_buffer_length >= MIP_PACKET_LENGTH_MIN) &&
-        (packet->_buffer_length >= (size_t)(mip_packet_payload_length(packet))+MIP_PACKET_LENGTH_MIN)
-    );
+    return packet->_buffer && (packet->_buffer_length >= MIP_PACKET_LENGTH_MIN) && (packet->_buffer_length >= mip_packet_payload_length(packet)+MIP_PACKET_LENGTH_MIN);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -300,7 +229,7 @@ bool mip_packet_is_empty(const mip_packet_view* packet)
 ///
 ///@note This is the BUFFER SIZE and not the packet length.
 ///
-size_t mip_packet_buffer_length(const mip_packet_view* packet)
+uint_least16_t mip_packet_buffer_size(const mip_packet_view* packet)
 {
     return packet->_buffer_length;
 }
@@ -316,7 +245,7 @@ size_t mip_packet_buffer_length(const mip_packet_view* packet)
 ///
 int mip_packet_remaining_space(const mip_packet_view* packet)
 {
-    return (int)(mip_packet_buffer_length(packet) - mip_packet_total_length(packet));
+    return mip_packet_buffer_size(packet) - mip_packet_total_length(packet);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -522,7 +451,7 @@ int mip_packet_cancel_last_field(mip_packet_view* packet, uint8_t* payload_ptr)
 void mip_packet_finalize(mip_packet_view* packet)
 {
     uint16_t checksum = mip_packet_compute_checksum(packet);
-    size_t   length   = mip_packet_total_length(packet) - MIP_CHECKSUM_LENGTH;
+    uint_least16_t length = mip_packet_total_length(packet) - MIP_CHECKSUM_LENGTH;
 
     packet->_buffer[length+0] = checksum >> 8;
     packet->_buffer[length+1] = checksum & 0xFF;
@@ -539,7 +468,7 @@ void mip_packet_finalize(mip_packet_view* packet)
 ///
 void mip_packet_reset(mip_packet_view* packet, uint8_t descriptor_set)
 {
-    mip_packet_create(packet, mip_packet_buffer_pointer_w(packet), mip_packet_buffer_length(packet), descriptor_set);
+    mip_packet_create(packet, mip_packet_buffer(packet), mip_packet_buffer_size(packet), descriptor_set);
 }
 
 

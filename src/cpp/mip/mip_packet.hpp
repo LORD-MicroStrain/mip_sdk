@@ -74,21 +74,21 @@ public:
     uint8_t descriptorSet() const { return C::mip_packet_descriptor_set(this); }  ///<@copydoc mip::C::mip_packet_descriptor_set
 
     // Full buffer
-    const uint8_t* buffer(size_t* lengthOut) const { return C::mip_packet_buffer(this, lengthOut); } ///@copydoc mip::C::mip_packet_buffer
-          uint8_t* buffer_w(size_t* lengthOut) { return C::mip_packet_buffer_w(this, lengthOut); } ///@copydoc mip::C::mip_packet_buffer
-    const uint8_t* bufferPtr() const { return C::mip_packet_buffer_pointer(this); }      ///@copydoc mip::C::mip_packet_buffer
-    uint8_t*       bufferPtr_w()     { return C::mip_packet_buffer_pointer_w(this); }      ///@copydoc mip::C::mip_packet_buffer
-    uint_least16_t bufferLength() const { return C::mip_packet_buffer_length(this); }      ///<@copydoc mip::C::mip_packet_buffer_size
+    const uint8_t* buffer()    const { return C::mip_packet_buffer(const_cast<PacketView*>(this)); } ///@copydoc mip::C::mip_packet_buffer
+    const uint8_t* bufferPtr() const { return C::mip_packet_buffer(const_cast<PacketView*>(this)); } ///@copydoc mip::C::mip_packet_buffer
+    uint8_t*       bufferPtrWr()     { return C::mip_packet_buffer(this); } ///@copydoc mip::C::mip_packet_buffer
+    uint_least16_t bufferLength() const { return C::mip_packet_buffer_size(this); }  ///<@copydoc mip::C::mip_packet_buffer_size
     int            remainingSpace() const { return C::mip_packet_remaining_space(this); }  ///<@copydoc mip::C::mip_packet_remaining_space
 
     // Entire packet
-    const uint8_t* data(size_t* lengthOut) const { return C::mip_packet_data(this, lengthOut); }        ///@brief Get a pointer to the entire packet data.
-    const uint8_t* dataPtr() const { return C::mip_packet_data_pointer(this); }       ///@brief Get a pointer to the entire packet data.
-    uint_least16_t totalLength()  const { return C::mip_packet_total_length(this); }  ///<@copydoc mip::C::mip_packet_total_length
+    const uint8_t* data() const { return C::mip_packet_data(this); }        ///@brief Get a pointer to the entire packet data.
+    const uint8_t* dataPtr() const { return C::mip_packet_data(this); }     ///@brief Get a pointer to the entire packet data.
+    uint_least16_t totalLength()  const { return C::mip_packet_total_length(this);   }  ///<@copydoc mip::C::mip_packet_total_length
 
     // Just the payload
-    const uint8_t* payload(size_t* lengthOut) const { return C::mip_packet_payload(this, lengthOut); }     ///@brief Get a pointer to the payload data.
-    const uint8_t* payloadPtr() const { return C::mip_packet_payload_pointer(this); }     ///@brief Get a pointer to the payload data.
+    const uint8_t* payload() const { return C::mip_packet_payload(this); }     ///@brief Get a pointer to the payload data.
+    const uint8_t* payloadPtr() const { return C::mip_packet_payload(this); }  ///@brief Get a pointer to the payload data.
+    uint8_t        payload(size_t i) const { assert(i < payloadLength()); return payload()[i]; }  ///@brief Get payload byte at index i.
     uint8_t        payloadLength() const { return C::mip_packet_payload_length(this); }  ///<@copydoc mip::C::mip_packet_payload_length
 
     // Checksum
@@ -108,20 +108,20 @@ public:
     // C++ additions
     //
 
-    ///@brief Gets a writeable view to the entire storage buffer (usually more than just the packet).
-    ///@warning: The buffer can only be modified if the packet was constructed with a non-const buffer!
-    microstrain::U8ArrayView bufferW() { return {C::mip_packet_buffer_pointer_w(this), C::mip_packet_buffer_length(this)}; }
-
     ///@brief Gets a const byte view for the whole packet.
     ///
-    microstrain::ConstU8ArrayView data() const { return {C::mip_packet_data_pointer(this), C::mip_packet_total_length(this)}; }
+    microstrain::ConstU8ArrayView dataView() const { return {data(), totalLength()}; }
 
     ///@brief Gets a const byte view of just the payload.
     ///
-    microstrain::ConstU8ArrayView payload() const { return {payloadPtr(), payloadLength()}; }
+    microstrain::ConstU8ArrayView payloadView() const { return {payload(), payloadLength()}; }
 
-    ///@brief Get payload byte at index i.
-    uint8_t payload(size_t i) const { assert(i < payloadLength()); return payload()[i]; }
+    ///@brief Gets a const view to the entire storage buffer (usually more than just the packet).
+    microstrain::ConstU8ArrayView bufferView() const { return {bufferPtr(), bufferLength()}; }
+
+    ///@brief Gets a writeable view to the entire storage buffer (usually more than just the packet).
+    ///@warning: The buffer can only be modified if the packet was constructed with a non-const buffer!
+    microstrain::U8ArrayView bufferViewWr() { return {bufferPtrWr(), bufferLength()}; }
 
     ///@brief Copies the given mip field to the packet.
     ///
@@ -310,7 +310,7 @@ public:
     bool copyPacketTo(microstrain::U8ArrayView buffer) const
     {
         assert(isSane());
-        microstrain::ConstU8ArrayView packet = this->data();
+        microstrain::ConstU8ArrayView packet = this->dataView();
         if(packet.size() > buffer.size())
             return false;
         std::memcpy(buffer.data(), packet.data(), packet.size());
@@ -388,7 +388,7 @@ public:
     ///
     ///@param packet A "sane" (isSane()) mip packet.
     ///
-    void copyFrom(const PacketView& packet) { assert(packet.isSane()); copyFrom(packet.data()); }
+    void copyFrom(const PacketView& packet) { assert(packet.isSane()); copyFrom(packet.dataView()); }
 
 private:
     uint8_t mData[BufferSize];

@@ -300,7 +300,7 @@ static enum mip_cmd_result process_fields_for_pending_cmd(mip_pending_cmd* pendi
             if( mip_field_payload_length(&field) != 2 )
                 continue;
 
-            const uint8_t* const payload = mip_field_payload_ptr(&field);
+            const uint8_t* const payload = mip_field_payload(&field);
 
             const uint8_t cmd_descriptor = payload[MIP_INDEX_REPLY_DESCRIPTOR];
             const uint8_t ack_code       = payload[MIP_INDEX_REPLY_ACK_CODE];
@@ -345,7 +345,7 @@ static enum mip_cmd_result process_fields_for_pending_cmd(mip_pending_cmd* pendi
 
             // Copy response data to the pending buffer (skip if response_field is invalid).
             if( pending->_response_length > 0 )
-                memcpy(pending->_response_buffer, mip_field_payload_ptr(&response_field), pending->_response_length);
+                memcpy(pending->_response_buffer, mip_field_payload(&response_field), pending->_response_length);
 
             // pending->_ack_code   = ack_code;
             pending->_reply_time = timestamp;  // Completion time

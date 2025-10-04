@@ -81,27 +81,8 @@ uint8_t mip_field_total_length(const mip_field_view* field)
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Returns the payload pointer for the field data.
 ///
-const uint8_t* mip_field_payload_ptr(const mip_field_view* field)
+const uint8_t* mip_field_payload(const mip_field_view* field)
 {
-    return field->_payload;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-///@brief Returns the payload pointer for the field data.
-///
-uint8_t* mip_field_payload_ptr_w(mip_field_view* field)
-{
-    return (uint8_t*)(field->_payload);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-///@brief Returns the payload pointer for the field data.
-///
-const uint8_t* mip_field_payload(const mip_field_view* field, size_t* length_out)
-{
-    if(length_out != NULL)
-        *length_out = field->_payload_length;
-
     return field->_payload;
 }
 
@@ -196,7 +177,7 @@ mip_field_view mip_field_from_header_ptr(const uint8_t* header, uint8_t total_le
 ///
 mip_field_view mip_field_first_from_packet(const mip_packet_view* packet)
 {
-    return mip_field_from_header_ptr( mip_packet_payload_pointer(packet), mip_packet_payload_length(packet), mip_packet_descriptor_set(packet) );
+    return mip_field_from_header_ptr( mip_packet_payload(packet), mip_packet_payload_length(packet), mip_packet_descriptor_set(packet) );
 }
 
 ////////////////////////////////////////////////////////////////////////////////
