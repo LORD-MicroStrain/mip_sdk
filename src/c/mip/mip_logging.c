@@ -41,7 +41,7 @@
 bool mip_format_packet_bytes(char* buffer, size_t buffer_size, size_t* index, const mip_packet_view* packet)
 {
     if(!mip_packet_is_sane(packet))
-        return microstrain_string_bytes_to_hex_str(buffer, buffer_size, index, mip_packet_data(packet), mip_packet_buffer_size(packet), 0);
+        return microstrain_string_bytes_to_hex_str(buffer, buffer_size, index, mip_packet_data(packet), mip_packet_buffer_length(packet), 0);
 
     bool ok = true;
     // ok &= microstrain_string_concat_l(buffer, buffer_size, index, "[");
@@ -270,8 +270,8 @@ void mip_log_packet_verbose(const mip_packet_view* packet, microstrain_log_level
     // Print the packet details.
     microstrain_logging_log(level, "%4s%-20s = %u\n",          " ", "Total Length", mip_packet_total_length(packet));
     // microstrain_logging_log(level, "%4s%-20s = [%s]\n",        " ", "Raw Packet", byte_buffer);
-    microstrain_logging_log(level, "%4s%-20s = 0x%02X\n",      " ", "MIP SYNC1", mip_packet_data(packet)[0]);
-    microstrain_logging_log(level, "%4s%-20s = 0x%02X\n",      " ", "MIP SYNC2", mip_packet_data(packet)[1]);
+    microstrain_logging_log(level, "%4s%-20s = 0x%02X\n",      " ", "MIP SYNC1", mip_packet_data(packet)[MIP_INDEX_SYNC1]);
+    microstrain_logging_log(level, "%4s%-20s = 0x%02X\n",      " ", "MIP SYNC2", mip_packet_data(packet)[MIP_INDEX_SYNC2]);
     microstrain_logging_log(level, "%4s%-20s = 0x%02X\n",      " ", "Descriptor Set", mip_packet_descriptor_set(packet));
     microstrain_logging_log(level, "%4s%-20s = %u (0x%02X)\n", " ", "Payload Length", mip_packet_payload_length(packet), mip_packet_payload_length(packet));
     microstrain_logging_log(level, "%4s%-20s = 0x%04X (%s)\n", " ", "Checksum", mip_packet_checksum_value(packet), valid ? "valid" : "INVALID");
