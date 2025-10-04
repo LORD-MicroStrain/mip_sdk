@@ -1213,7 +1213,7 @@ namespace mip
         PacketBuf packet(cmd);
 
         C::mip_pending_cmd pending;
-        C::mip_pending_cmd_init_full(&pending, Cmd::DESCRIPTOR_SET, Cmd::FIELD_DESCRIPTOR, Cmd::Response::FIELD_DESCRIPTOR, packet.buffer(), FIELD_PAYLOAD_LENGTH_MAX, additionalTime);
+        C::mip_pending_cmd_init_full(&pending, Cmd::DESCRIPTOR_SET, Cmd::FIELD_DESCRIPTOR, Cmd::Response::FIELD_DESCRIPTOR, packet.bufferPointerWr(), FIELD_PAYLOAD_LENGTH_MAX, additionalTime);
 
         CmdResult result = C::mip_interface_run_command_packet(&device, &packet, &pending);
         if (result != C::MIP_ACK_OK)
@@ -1221,7 +1221,7 @@ namespace mip
 
         size_t responseLength = C::mip_pending_cmd_response_length(&pending);
 
-        return extract(response, packet.buffer(), responseLength, 0) ? CmdResult::ACK_OK : CmdResult::STATUS_ERROR;
+        return extract(response, packet.bufferPointerWr(), responseLength, 0) ? CmdResult::ACK_OK : CmdResult::STATUS_ERROR;
     }
 
     template<class Cmd>

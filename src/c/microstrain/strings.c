@@ -1,14 +1,12 @@
-
 #include "strings.h"
 
 #include <assert.h>
 #include <stddef.h>
 #include <string.h>
 
-#if MICROSTRAIN_ENABLE_LOGGING
+#ifdef MICROSTRAIN_LOGGING_ENABLED
 #include <stdio.h>
-#endif
-
+#endif // MICROSTRAIN_LOGGING_ENABLED
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Concatenate a string into a buffer.
@@ -96,7 +94,7 @@ bool microstrain_string_concat_z(char* buffer, size_t buffer_size, size_t* index
     return microstrain_string_concat(buffer, buffer_size, index, str, strlen(str));
 }
 
-#if MICROSTRAIN_ENABLE_LOGGING
+#ifdef MICROSTRAIN_LOGGING_ENABLED
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Wrapper for std::vsnprintf with a better interface.
@@ -195,8 +193,7 @@ bool microstrain_string_format(char* buffer, size_t buffer_size, size_t* index, 
     return ok;
 }
 
-#endif // MICROSTRAIN_ENABLE_LOGGING
-
+#endif // MICROSTRAIN_LOGGING_ENABLED
 
 static const char NIBBLE_HEX_TABLE[16] = {
     '0', '1', '2', '3', '4', '5', '6', '7',

@@ -227,7 +227,7 @@ public:
     ///@returns A PacketRef object containing the field.
     ///
     template<class FieldType>
-    static PacketView createFromField(microstrain::ConstU8ArrayView packetBuffer, const FieldType& field, uint8_t fieldDescriptor=INVALID_FIELD_DESCRIPTOR)
+    static PacketView createFromField(microstrain::U8ArrayView packetBuffer, const FieldType& field, uint8_t fieldDescriptor=INVALID_FIELD_DESCRIPTOR)
     {
         if( fieldDescriptor == INVALID_FIELD_DESCRIPTOR )
             fieldDescriptor = FieldType::FIELD_DESCRIPTOR;
@@ -351,7 +351,7 @@ public:
         typename std::enable_if<std::is_class<FieldType>::value, void>::type* = nullptr
     ) : PacketView(mData, sizeof(mData))
     {
-        createFromField<FieldType>(mData, sizeof(mData), field, fieldDescriptor);
+        createFromField<FieldType>({mData, sizeof(mData)}, field, fieldDescriptor);
     }
 
 

@@ -34,7 +34,7 @@ extern "C" {
 ///@{
 
 
-#if MICROSTRAIN_ENABLE_LOGGING
+#ifdef MICROSTRAIN_LOGGING_ENABLED
 
 // Format functions
 
@@ -58,7 +58,7 @@ void mip_log_packet_verbose(const mip_packet_view* packet, microstrain_log_level
 #define MIP_LOG_PACKET_VERBOSE(packet, level) mip_log_packet_verbose(packet, level)
 
 
-#else // MICROSTRAIN_ENABLE_LOGGING
+#else // !MICROSTRAIN_LOGGING_ENABLED
 
 
 #define MIP_LOG_PACKET(packet, grouping, level)
@@ -68,7 +68,7 @@ void mip_log_packet_verbose(const mip_packet_view* packet, microstrain_log_level
 #define MIP_LOG_FIELD_VERBOSE(field, grouping, level)
 
 
-#endif // MICROSTRAIN_ENABLE_LOGGING
+#endif // MICROSTRAIN_LOGGING_ENABLED
 
 
 ///@}

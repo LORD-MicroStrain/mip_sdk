@@ -1,9 +1,12 @@
-
-if(MICROSTRAIN_ENABLE_LOGGING)
-
+if(MIP_LOGGING_ENABLED)
     set(TEST_STRING_SOURCES
         "${CMAKE_CURRENT_LIST_DIR}/testutil_strings.h"
         "${CMAKE_CURRENT_LIST_DIR}/testutil_strings.c"
+    )
+
+    # TODO: Replace with valid check for IO support
+    set(MICROSTRAIN_TEST_COMPILER_DEFINITIONS
+        "MICROSTRAIN_LOGGING_MAX_LEVEL=${MICROSTRAIN_LOGGING_MAX_LEVEL}"
     )
 
     add_microstrain_test(
@@ -14,20 +17,34 @@ if(MICROSTRAIN_ENABLE_LOGGING)
         COMMAND test_microstrain_string_concat
     )
 
+    # TODO: Replace with valid check for IO support
+    target_compile_definitions(test_microstrain_string_concat PRIVATE
+        "${MICROSTRAIN_TEST_COMPILER_DEFINITIONS}"
+    )
+
     add_microstrain_test(
         NAME test_microstrain_string_formatting
         SOURCES
-        ${TEST_STRING_SOURCES}
-        "${CMAKE_CURRENT_LIST_DIR}/test_strfmt.c"
+            ${TEST_STRING_SOURCES}
+            "${CMAKE_CURRENT_LIST_DIR}/test_strfmt.c"
         COMMAND test_microstrain_string_formatting
+    )
+
+    # TODO: Replace with valid check for IO support
+    target_compile_definitions(test_microstrain_string_formatting PRIVATE
+        "${MICROSTRAIN_TEST_COMPILER_DEFINITIONS}"
     )
 
     add_microstrain_test(
         NAME test_microstrain_string_format_bytes
         SOURCES
-        ${TEST_STRING_SOURCES}
-        "${CMAKE_CURRENT_LIST_DIR}/test_strfmt_bytes.c"
+            ${TEST_STRING_SOURCES}
+            "${CMAKE_CURRENT_LIST_DIR}/test_strfmt_bytes.c"
         COMMAND test_microstrain_string_format_bytes
     )
 
+    # TODO: Replace with valid check for IO support
+    target_compile_definitions(test_microstrain_string_format_bytes PRIVATE
+        "${MICROSTRAIN_TEST_COMPILER_DEFINITIONS}"
+    )
 endif()
