@@ -12,7 +12,7 @@ uint8_t parse_buffer[1024];
 size_t bytes_parsed = 0;
 uint8_t check_buffer[MIP_PACKET_LENGTH_MAX];
 
-void readFile(FILE **file, const char *filename)
+void openFile(FILE **file, const char *filename)
 {
     const errno_t error_code = fopen_s(file, filename, "rb");
 
@@ -29,7 +29,7 @@ bool handle_packet(void* p, const mip_packet_view* packet, mip_timestamp t)
     FILE* expected_data_file = p;
 
     const size_t length = mip_packet_total_length(packet);
-    assert_true(length > MIP_PACKET_LENGTH_MAX);
+    assert_true(length <= MIP_PACKET_LENGTH_MAX);
     // size_t written = fwrite(mip_packet_buffer(packet), 1, length, outfile);
     // return written == length;
 
@@ -41,29 +41,7 @@ bool handle_packet(void* p, const mip_packet_view* packet, mip_timestamp t)
 
     const uint8_t* packet_buffer = mip_packet_pointer(packet);
 
-     printf("Packet: ");
-     for(size_t i=0; i<length; i++)
-         printf(" %02X", packet_buffer[i]);
-     fputc('\n', stdout);
-
-    const bool good = memcmp(check_buffer, packet_buffer, length) == 0;
-
-    if( !good )
-    {
-        fprintf(stderr, "Packet does not match next sequence in input file:\n");
-
-        fputs("Packet:    ", stderr);
-        for(size_t i=0; i<length; i++)
-            fprintf(stderr, " %02X", packet_buffer[i]);
-
-        fputs("Reference: ", stderr);
-        for(size_t i=0; i<length; i++)
-            fprintf(stderr, " %02X", check_buffer[i]);
-
-        fputc('\n', stderr);
-
-        assert_true(false);
-    }
+    assert_memory_equal(check_buffer, packet_buffer, length);
 
     return true;
 }
@@ -72,8 +50,8 @@ bool handle_packet(void* p, const mip_packet_view* packet, mip_timestamp t)
 MICROSTRAIN_TEST_CASE(RENAME_ME)
 {
     // TODO: Copy files over during build + switch to build versions
-    FILE *actual_data_file = NULL; readFile(&actual_data_file, "C:/HBK/Dev/mip_sdk/test/c/mip/../../data/mip_data.bin");
-    FILE *expected_data_file = NULL; readFile(&expected_data_file, "C:/HBK/Dev/mip_sdk/test/c/mip/../../data/packet_example_cpp_check.txt");
+    FILE *actual_data_file = NULL; openFile(&actual_data_file, "C:/HBK/Dev/mip_sdk/test/c/mip/../../data/mip_data.bin");
+    FILE *expected_data_file = NULL; openFile(&expected_data_file, "C:/HBK/Dev/mip_sdk/test/c/mip/../../data/packet_example_cpp_check.txt");
     uint8_t input_buffer[1024];
     mip_parser parser;
     size_t bytes_read = 0;
@@ -82,7 +60,6 @@ MICROSTRAIN_TEST_CASE(RENAME_ME)
 
     while (true)
     {
-
         const size_t num_to_read = 10; // Arbitrary number picked for no particular reason
         const size_t num_read = fread(input_buffer, 1, num_to_read, actual_data_file);
         bytes_read += num_read;
