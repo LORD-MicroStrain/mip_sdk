@@ -48,26 +48,20 @@ bool handle_packet(void* p, const mip_packet_view* packet, mip_timestamp t)
 MICROSTRAIN_TEST_CASE(RENAME_ME)
 {
     // TODO: Copy files over during build + switch to build versions
-
     struct ParseResults parse_results = {.length = 0, .packet_buffer = {0}, .parse_buffer = {0}, .bytes_parsed = 0};
-    uint8_t check_buffer[MIP_PACKET_LENGTH_MAX];
-
     FILE *actual_data_file = NULL; openFile(&actual_data_file, "C:/HBK/Dev/mip_sdk/test/c/mip/../../data/mip_data.bin");
-    FILE *expected_data_file = NULL; openFile(&expected_data_file, "C:/HBK/Dev/mip_sdk/test/c/mip/../../data/packet_example_cpp_check.txt");
     uint8_t input_buffer[1024];
     mip_parser parser;
-    size_t bytes_read = 0;
-
+    const size_t num_read = fread(input_buffer, 1, 1024, actual_data_file);
     mip_parser_init(&parser, &handle_packet, &parse_results, MIP_PARSER_DEFAULT_TIMEOUT_MS);
-
-    const size_t num_to_read = 1024; // Arbitrary number picked for no particular reason
-    const size_t num_read = fread(input_buffer, 1, num_to_read, actual_data_file);
-    bytes_read += num_read;
 
     mip_parser_parse(&parser, input_buffer, num_read, 0);
 
+    size_t bytes_read = 0;
+    bytes_read += num_read;
+    FILE *expected_data_file = NULL; openFile(&expected_data_file, "C:/HBK/Dev/mip_sdk/test/c/mip/../../data/packet_example_cpp_check.txt");
+    uint8_t check_buffer[MIP_PACKET_LENGTH_MAX];
     const size_t read = fread(check_buffer, 1, parse_results.length, expected_data_file);
-
     assert_int_less_or_equal(parse_results.length, MIP_PACKET_LENGTH_MAX);
     assert_int_equal(read, parse_results.length);
     assert_memory_equal(check_buffer, parse_results.packet_buffer, parse_results.length); // TODO: move and remove
