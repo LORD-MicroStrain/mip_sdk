@@ -54,6 +54,12 @@ typedef struct CMUnitTest CMUnitTest;
 #define assert_null_terminated(buffer, position) \
     MICROSTRAIN_TEST_ASSERT_MESSAGE(buffer[position] == '\0', "%c != \\0", buffer[position]);
 
+#define assert_int_greater_than(a, b) \
+    MICROSTRAIN_TEST_ASSERT_MESSAGE(a > b, "Not true: %d > %d", a, b);
+
+#define assert_int_less_or_equal(a, b) \
+    MICROSTRAIN_TEST_ASSERT_MESSAGE(a <= b, "Not true: %d <= %d", a, b);
+
 /* ------------------------------------------------------------------------------------------------- */
 
 // Helper function to check if a test name is in argv
