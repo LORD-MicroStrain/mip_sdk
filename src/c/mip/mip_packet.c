@@ -123,7 +123,6 @@ const uint8_t* mip_packet_buffer(const mip_packet_view* packet)
     return packet->_buffer;
 }
 
-
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Returns a writable pointer to the data buffer.
 ///
