@@ -55,20 +55,20 @@ MICROSTRAIN_TEST_CASE(RENAME_ME)
 
     FILE *actual_data_file = NULL; openFile(&actual_data_file, "C:/HBK/Dev/mip_sdk/test/c/mip/../../data/mip_data.bin");
     uint8_t input_buffer[1024];
-    const size_t num_read = fread(input_buffer, 1, 1024, actual_data_file);
+    const size_t actual_element_count = fread(input_buffer, 1, 1024, actual_data_file);
 
     // Act
-    mip_parser_parse(&parser, input_buffer, num_read, 0);
+    mip_parser_parse(&parser, input_buffer, actual_element_count, 0);
 
     // Assert
     assert_int_less_or_equal(parse_results.length, MIP_PACKET_LENGTH_MAX);
 
     uint8_t check_buffer[MIP_PACKET_LENGTH_MAX];
     FILE *expected_data_file = NULL; openFile(&expected_data_file, "C:/HBK/Dev/mip_sdk/test/c/mip/../../data/packet_example_cpp_check.txt");
-    const size_t read = fread(check_buffer, 1, parse_results.length, expected_data_file);
-    assert_int_equal(parse_results.length, read);
+    const size_t expected_element_count = fread(check_buffer, 1, parse_results.length, expected_data_file);
 
-    assert_int_equal(parse_results.bytes_parsed, num_read);
+    assert_int_equal(parse_results.length, expected_element_count);
+    assert_int_equal(parse_results.bytes_parsed, expected_element_count);
     assert_memory_equal(check_buffer, parse_results.packet_buffer, parse_results.length);
 
     fclose(actual_data_file);
