@@ -1,47 +1,45 @@
-
-#include <mip/mip_parser.h>
+// TODO: This is not a structured properly due to the current interface. Refactor this to be
+//       structured properly when interface supports it.
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include <mip_cmocka.h>
+#include <mip/mip_parser.h>
 
 uint8_t parse_buffer[1024];
-uint8_t input_buffer[1024];
+size_t bytes_parsed = 0;
 uint8_t check_buffer[MIP_PACKET_LENGTH_MAX];
 
-struct mip_parser parser;
+FILE* readFile(const char *filename)
+{
+    FILE* file = NULL;
 
-unsigned int num_errors = 0;
-size_t bytesRead = 0;
-size_t bytes_parsed = 0;
+    const errno_t error_code = fopen_s(&file, filename, "rb");
 
-void handle_packet(void* p, const struct mip_packet_view* packet, mip_timestamp t)
+    if (error_code != 0)
+    {
+        fail_msg("Could not open file: %s", filename);
+    }
+}
+
+void handle_packet(void* p, const mip_packet_view* packet, mip_timestamp t)
 {
     (void)t;
 
-    FILE* infile2 = (FILE*)p;
+    FILE* file2 = p;
 
-    size_t length = mip_packet_total_length(packet);
-    if( length > MIP_PACKET_LENGTH_MAX )
-    {
-        num_errors++;
-        fprintf(stderr, "Packet with length too long (%zu)\n", length);
-        return;
-    }
+    const size_t length = mip_packet_total_length(packet);
+    assert_true(length > MIP_PACKET_LENGTH_MAX);
     // size_t written = fwrite(mip_packet_buffer(packet), 1, length, outfile);
     // return written == length;
 
     bytes_parsed += length;
 
-    size_t read = fread(check_buffer, 1, length, infile2);
+    const size_t read = fread(check_buffer, 1, length, file2);
 
-    if( read != length )
-    {
-        num_errors++;
-        fprintf(stderr, "Failed to read from input file (2).\n");
-        return;
-    }
+    assert_int_equal(read, length);
 
     const uint8_t* packet_buffer = mip_packet_pointer(packet);
 
@@ -50,7 +48,7 @@ void handle_packet(void* p, const struct mip_packet_view* packet, mip_timestamp 
          printf(" %02X", packet_buffer[i]);
      fputc('\n', stdout);
 
-    bool good = memcmp(check_buffer, packet_buffer, length) == 0;
+    const bool good = memcmp(check_buffer, packet_buffer, length) == 0;
 
     if( !good )
     {
@@ -65,63 +63,55 @@ void handle_packet(void* p, const struct mip_packet_view* packet, mip_timestamp 
             fprintf(stderr, " %02X", check_buffer[i]);
 
         fputc('\n', stderr);
+
+        assert_true(false);
     }
 }
 
 
-int main(int argc, const char* argv[])
+MICROSTRAIN_TEST_CASE(RENAME_ME)
 {
-    if( argc < 2 )
+    FILE *file1 = readFile("mip_data.bin");
+    FILE *file2 = readFile("packet_example_cpp_check.txt");
+    uint8_t input_buffer[1024];
+    mip_parser parser;
+    size_t bytes_read = 0;
+
+    mip_parser_init(&parser, &handle_packet, file2, MIP_PARSER_DEFAULT_TIMEOUT_MS);
+
+    while (true)
     {
-        fprintf(stderr, "Usage: %s <input-file>\n", argv[0]);
-        return 1;
-    }
 
-    const char* input_filename = argv[1];
+        const size_t num_to_read = 10; // Arbitrary number picked for no particular reason
+        const size_t num_read = fread(input_buffer, 1, num_to_read, file1);
+        bytes_read += num_read;
 
-    FILE* infile = fopen(input_filename, "rb");
-    if( !infile )
-    {
-        fprintf(stderr, "Error: could not open input file '%s'.", input_filename);
-        return 1;
-    }
+        mip_parser_parse(&parser, input_buffer, num_read, 0);
 
-    FILE* infile2 = fopen(input_filename, "rb");
-    if( !infile2 )
-    {
-        fclose(infile);
-        fprintf(stderr, "Error: could not open input file '%s' (2).", input_filename);
-        return 1;
-    }
-
-    srand(0);
-
-    mip_parser_init(&parser, &handle_packet, infile2, MIP_PARSER_DEFAULT_TIMEOUT_MS);
-
-    do
-    {
-        const size_t numToRead = rand() % sizeof(input_buffer);
-
-        const size_t numRead = fread(input_buffer, 1, numToRead, infile);
-        bytesRead += numRead;
-
-        mip_parser_parse(&parser, input_buffer, numRead, 0);
-
-        // End of file (or error)
-        if( numRead != numToRead )
+        // End of file or error
+        if (num_read == num_to_read)
+        {
             break;
-
-    } while(num_errors == 0);
-
-    fclose(infile);
-
-    if( bytes_parsed != bytesRead )
-    {
-        num_errors++;
-        fprintf(stderr, "Read %zu bytes but only parsed %zu bytes (delta %zu).\n", bytesRead, bytes_parsed, bytesRead-bytes_parsed);
+        }
     }
 
-    fclose(infile2);
 
-    return num_errors;
+    assert_int_equal(bytes_parsed, bytes_read);
+    fclose(file1);
+    fclose(file2);
 }
+
+int main()
+{
+    MICROSTRAIN_TEST_INIT;
+
+    MICROSTRAIN_TEST_SUITE_START(mip_parser);
+
+    MICROSTRAIN_TEST_ADD(mip_parser, RENAME_ME);
+    MICROSTRAIN_TEST_SUITE_RUN("Mip parser", mip_parser);
+
+    MICROSTRAIN_TEST_SUITE_END(mip_parser);
+
+    return MICROSTRAIN_TEST_FAILURE_COUNT;
+}
+
