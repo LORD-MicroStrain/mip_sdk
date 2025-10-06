@@ -145,7 +145,7 @@ void printPacket(const mip::PacketView& _packetView)
             &packetByteBuffer[bufferOffset],
             sizeof(packetByteBuffer) / sizeof(packetByteBuffer[0]) - bufferOffset,
             "%02X",
-            _packetView.data()[i]
+            _packetView.dataAt(i)
         );
     }
 
@@ -154,8 +154,8 @@ void printPacket(const mip::PacketView& _packetView)
     // Print the packet details before the fields
     printf("%4s%-20s = %u\n", " ", "Packet Length", _packetView.totalLength());
     printf("%4s%-20s = %s\n", " ", "Raw Packet", packetByteBuffer);
-    printf("%4s%-20s = 0x%02X\n", " ", "MIP SYNC1", _packetView.data()[mip::C::MIP_INDEX_SYNC1]);
-    printf("%4s%-20s = 0x%02X\n", " ", "MIP SYNC2", _packetView.data()[mip::C::MIP_INDEX_SYNC2]);
+    printf("%4s%-20s = 0x%02X\n", " ", "MIP SYNC1", _packetView.dataAt(mip::C::MIP_INDEX_SYNC1));
+    printf("%4s%-20s = 0x%02X\n", " ", "MIP SYNC2", _packetView.dataAt(mip::C::MIP_INDEX_SYNC2));
     printf("%4s%-20s = 0x%02X\n", " ", "Descriptor Set", _packetView.descriptorSet());
     printf("%4s%-20s = 0x%02X\n", " ", "Payload Length", payloadLength);
 

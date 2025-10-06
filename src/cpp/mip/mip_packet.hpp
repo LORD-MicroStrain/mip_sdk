@@ -84,7 +84,8 @@ public:
     uint_least16_t                totalLength()    const { return C::mip_packet_total_length(this);    }  ///<@copydoc mip::C::mip_packet_total_length
 
     // Payload
-    microstrain::ConstU8ArrayView payload() const { return {C::mip_packet_payload(this), C::mip_packet_payload_length(this)}; }  ///@brief Get the payload as raw bytes.
+    microstrain::ConstU8ArrayView payload() const { return {C::mip_packet_payload(this),   C::mip_packet_payload_length(this)}; }  ///@brief Get the payload as raw bytes.
+    microstrain::U8ArrayView      payload_w()     { return {C::mip_packet_payload_w(this), C::mip_packet_payload_length(this)}; }  ///@brief Get the payload as raw bytes.
     uint8_t                       payloadLength()  const { return C::mip_packet_payload_length(this);  }  ///<@copydoc mip::C::mip_packet_payload_length
 
     // Checksum
@@ -104,8 +105,11 @@ public:
     // C++ additions
     //
 
-    uint8_t  payload(size_t i) const { assert(i < payloadLength()); return                      C::mip_packet_payload(this)[i];  }  ///@brief Get payload byte at index i.
-    uint8_t& payload(size_t i)       { assert(i < payloadLength()); return const_cast<uint8_t&>(C::mip_packet_payload(this)[i]); }  ///@brief Get writable payload byte at index i.
+    uint8_t  dataAt(size_t i) const { assert(i < totalLength()); return payload()[i];   }
+    uint8_t& dataAt(size_t i)       { assert(i < totalLength()); return payload_w()[i]; }
+
+    uint8_t  payloadAt(size_t i) const { assert(i < payloadLength()); return                      C::mip_packet_payload(this)[i];  }  ///@brief Get payload byte at index i.
+    uint8_t& payloadAt(size_t i)       { assert(i < payloadLength()); return const_cast<uint8_t&>(C::mip_packet_payload(this)[i]); }  ///@brief Get writable payload byte at index i.
 
     ///@brief Creates a mip field with the given descriptor and a copy of the payload.
     ///
@@ -159,8 +163,8 @@ public:
         return {*this, ptr, max_size};
     }
 
-    uint8_t  operator[](unsigned int index) const { return payload(index); }
-    uint8_t& operator[](unsigned int index)       { return payload(index); }
+    //uint8_t  operator[](unsigned int index) const { return payloadAt(index); }
+    //uint8_t& operator[](unsigned int index)       { return payloadAt(index); }
 
     //
     // Additional functions which have no C equivalent
