@@ -37,17 +37,10 @@ bool handle_packet(void* p, const mip_packet_view* packet, mip_timestamp t)
 
     parse_results.length = mip_packet_total_length(packet);
 
-    //assert_true(length <= MIP_PACKET_LENGTH_MAX); TODO: Remove
-
     // size_t written = fwrite(mip_packet_buffer(packet), 1, length, outfile);
     // return written == length;
 
     bytes_parsed += parse_results.length;
-
-    // TODO: Maybe move out of callback?
-    const size_t read = fread(check_buffer, 1, parse_results.length, expected_data_file);
-
-    //assert_int_equal(read, parse_results.length); // TODO: Move and remove
 
     const uint8_t* packet_buffer = mip_packet_pointer(packet);
 
@@ -72,9 +65,13 @@ MICROSTRAIN_TEST_CASE(RENAME_ME)
     const size_t num_read = fread(input_buffer, 1, num_to_read, actual_data_file);
     bytes_read += num_read;
 
+
     mip_parser_parse(&parser, input_buffer, num_read, 0);
 
+    const size_t read = fread(check_buffer, 1, parse_results.length, expected_data_file);
+
     assert_int_less_or_equal(parse_results.length, MIP_PACKET_LENGTH_MAX);
+    assert_int_equal(read, parse_results.length);
     assert_int_equal(bytes_parsed, bytes_read);
     fclose(actual_data_file);
     fclose(expected_data_file);
