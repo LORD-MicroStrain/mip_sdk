@@ -11,9 +11,8 @@
 struct ParseResults
 {
     size_t length;
+    uint8_t packet_buffer[MIP_PACKET_LENGTH_MAX];
 };
-
-struct ParseResults parse_results;
 
 uint8_t parse_buffer[1024];
 size_t bytes_parsed = 0;
@@ -33,18 +32,16 @@ bool handle_packet(void* p, const mip_packet_view* packet, mip_timestamp t)
 {
     (void)t;
 
-    FILE* expected_data_file = p;
+    struct ParseResults *parse_results = p;
 
-    parse_results.length = mip_packet_total_length(packet);
+    parse_results->length = mip_packet_total_length(packet);
 
     // size_t written = fwrite(mip_packet_buffer(packet), 1, length, outfile);
     // return written == length;
 
-    bytes_parsed += parse_results.length;
+    bytes_parsed += parse_results->length;
 
-    const uint8_t* packet_buffer = mip_packet_pointer(packet);
-
-    //assert_memory_equal(check_buffer, packet_buffer, parse_results.length); // TODO: move and remove
+    memcpy(parse_results->packet_buffer, mip_packet_pointer(packet), parse_results->length);
 
     return true;
 }
@@ -53,18 +50,18 @@ bool handle_packet(void* p, const mip_packet_view* packet, mip_timestamp t)
 MICROSTRAIN_TEST_CASE(RENAME_ME)
 {
     // TODO: Copy files over during build + switch to build versions
+    struct ParseResults parse_results;
     FILE *actual_data_file = NULL; openFile(&actual_data_file, "C:/HBK/Dev/mip_sdk/test/c/mip/../../data/mip_data.bin");
     FILE *expected_data_file = NULL; openFile(&expected_data_file, "C:/HBK/Dev/mip_sdk/test/c/mip/../../data/packet_example_cpp_check.txt");
     uint8_t input_buffer[1024];
     mip_parser parser;
     size_t bytes_read = 0;
 
-    mip_parser_init(&parser, &handle_packet, expected_data_file, MIP_PARSER_DEFAULT_TIMEOUT_MS);
+    mip_parser_init(&parser, &handle_packet, &parse_results, MIP_PARSER_DEFAULT_TIMEOUT_MS);
 
     const size_t num_to_read = 1024; // Arbitrary number picked for no particular reason
     const size_t num_read = fread(input_buffer, 1, num_to_read, actual_data_file);
     bytes_read += num_read;
-
 
     mip_parser_parse(&parser, input_buffer, num_read, 0);
 
@@ -72,7 +69,9 @@ MICROSTRAIN_TEST_CASE(RENAME_ME)
 
     assert_int_less_or_equal(parse_results.length, MIP_PACKET_LENGTH_MAX);
     assert_int_equal(read, parse_results.length);
+    assert_memory_equal(check_buffer, parse_results.packet_buffer, parse_results.length); // TODO: move and remove
     assert_int_equal(bytes_parsed, bytes_read);
+
     fclose(actual_data_file);
     fclose(expected_data_file);
 }
