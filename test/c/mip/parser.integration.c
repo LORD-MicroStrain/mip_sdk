@@ -12,11 +12,9 @@ struct ParseResults
 {
     size_t length;
     uint8_t packet_buffer[MIP_PACKET_LENGTH_MAX];
+    uint8_t parse_buffer[1024];
+    size_t bytes_parsed;
 };
-
-uint8_t parse_buffer[1024];
-size_t bytes_parsed = 0;
-uint8_t check_buffer[MIP_PACKET_LENGTH_MAX];
 
 void openFile(FILE **file, const char *filename)
 {
@@ -39,7 +37,7 @@ bool handle_packet(void* p, const mip_packet_view* packet, mip_timestamp t)
     // size_t written = fwrite(mip_packet_buffer(packet), 1, length, outfile);
     // return written == length;
 
-    bytes_parsed += parse_results->length;
+    parse_results->bytes_parsed += parse_results->length;
 
     memcpy(parse_results->packet_buffer, mip_packet_pointer(packet), parse_results->length);
 
@@ -50,7 +48,10 @@ bool handle_packet(void* p, const mip_packet_view* packet, mip_timestamp t)
 MICROSTRAIN_TEST_CASE(RENAME_ME)
 {
     // TODO: Copy files over during build + switch to build versions
-    struct ParseResults parse_results;
+
+    struct ParseResults parse_results = {.length = 0, .packet_buffer = {0}, .parse_buffer = {0}, .bytes_parsed = 0};
+    uint8_t check_buffer[MIP_PACKET_LENGTH_MAX];
+
     FILE *actual_data_file = NULL; openFile(&actual_data_file, "C:/HBK/Dev/mip_sdk/test/c/mip/../../data/mip_data.bin");
     FILE *expected_data_file = NULL; openFile(&expected_data_file, "C:/HBK/Dev/mip_sdk/test/c/mip/../../data/packet_example_cpp_check.txt");
     uint8_t input_buffer[1024];
@@ -70,7 +71,7 @@ MICROSTRAIN_TEST_CASE(RENAME_ME)
     assert_int_less_or_equal(parse_results.length, MIP_PACKET_LENGTH_MAX);
     assert_int_equal(read, parse_results.length);
     assert_memory_equal(check_buffer, parse_results.packet_buffer, parse_results.length); // TODO: move and remove
-    assert_int_equal(bytes_parsed, bytes_read);
+    assert_int_equal(parse_results.bytes_parsed, bytes_read);
 
     fclose(actual_data_file);
     fclose(expected_data_file);
