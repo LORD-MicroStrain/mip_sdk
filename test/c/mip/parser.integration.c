@@ -26,7 +26,7 @@ bool handle_packet(void* p, const mip_packet_view* packet, mip_timestamp t)
 {
     (void)t;
 
-    FILE* file2 = p;
+    FILE* expected_data_file = p;
 
     const size_t length = mip_packet_total_length(packet);
     assert_true(length > MIP_PACKET_LENGTH_MAX);
@@ -35,7 +35,7 @@ bool handle_packet(void* p, const mip_packet_view* packet, mip_timestamp t)
 
     bytes_parsed += length;
 
-    const size_t read = fread(check_buffer, 1, length, file2);
+    const size_t read = fread(check_buffer, 1, length, expected_data_file);
 
     assert_int_equal(read, length);
 
@@ -71,22 +71,22 @@ bool handle_packet(void* p, const mip_packet_view* packet, mip_timestamp t)
 
 MICROSTRAIN_TEST_CASE(RENAME_ME)
 {
-    FILE *file1 = NULL; readFile(file1, "mip_data.bin");
-    FILE *file2 = NULL; readFile(file2, "packet_example_cpp_check.txt");
+    FILE *actual_data_file = NULL; readFile(actual_data_file, "mip_data.bin");
+    FILE *expected_data_file = NULL; readFile(expected_data_file, "packet_example_cpp_check.txt");
     uint8_t input_buffer[1024];
     mip_parser parser;
     size_t bytes_read = 0;
 
-    mip_parser_init(&parser, &handle_packet, file2, MIP_PARSER_DEFAULT_TIMEOUT_MS);
+    mip_parser_init(&parser, &handle_packet, expected_data_file, MIP_PARSER_DEFAULT_TIMEOUT_MS);
 
     while (true)
     {
 
         const size_t num_to_read = 10; // Arbitrary number picked for no particular reason
-        const size_t num_read = fread(input_buffer, 1, num_to_read, file1);
+        const size_t num_read = fread(input_buffer, 1, num_to_read, actual_data_file);
         bytes_read += num_read;
 
-        mip_parser_parse(&parser, input_buffer, num_read, 0);
+        mip_parser_parse(&parser, input_buffer, num_to_read, 0);
 
         // End of file or error
         if (num_read == num_to_read)
@@ -95,10 +95,9 @@ MICROSTRAIN_TEST_CASE(RENAME_ME)
         }
     }
 
-
     assert_int_equal(bytes_parsed, bytes_read);
-    fclose(file1);
-    fclose(file2);
+    fclose(actual_data_file);
+    fclose(expected_data_file);
 }
 
 int main()
