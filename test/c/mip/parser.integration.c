@@ -12,10 +12,8 @@ uint8_t parse_buffer[1024];
 size_t bytes_parsed = 0;
 uint8_t check_buffer[MIP_PACKET_LENGTH_MAX];
 
-FILE* readFile(const char *filename)
+void readFile(FILE *file, const char *filename)
 {
-    FILE* file = NULL;
-
     const errno_t error_code = fopen_s(&file, filename, "rb");
 
     if (error_code != 0)
@@ -24,7 +22,7 @@ FILE* readFile(const char *filename)
     }
 }
 
-void handle_packet(void* p, const mip_packet_view* packet, mip_timestamp t)
+bool handle_packet(void* p, const mip_packet_view* packet, mip_timestamp t)
 {
     (void)t;
 
@@ -66,13 +64,15 @@ void handle_packet(void* p, const mip_packet_view* packet, mip_timestamp t)
 
         assert_true(false);
     }
+
+    return true;
 }
 
 
 MICROSTRAIN_TEST_CASE(RENAME_ME)
 {
-    FILE *file1 = readFile("mip_data.bin");
-    FILE *file2 = readFile("packet_example_cpp_check.txt");
+    FILE *file1 = NULL; readFile(file1, "mip_data.bin");
+    FILE *file2 = NULL; readFile(file2, "packet_example_cpp_check.txt");
     uint8_t input_buffer[1024];
     mip_parser parser;
     size_t bytes_read = 0;
