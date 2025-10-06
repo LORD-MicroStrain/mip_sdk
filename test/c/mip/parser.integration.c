@@ -48,24 +48,28 @@ bool handle_packet(void* p, const mip_packet_view* packet, mip_timestamp t)
 MICROSTRAIN_TEST_CASE(RENAME_ME)
 {
     // TODO: Copy files over during build + switch to build versions
-    struct ParseResults parse_results = {.length = 0, .packet_buffer = {0}, .parse_buffer = {0}, .bytes_parsed = 0};
-    FILE *actual_data_file = NULL; openFile(&actual_data_file, "C:/HBK/Dev/mip_sdk/test/c/mip/../../data/mip_data.bin");
-    uint8_t input_buffer[1024];
+    // Arrange
     mip_parser parser;
-    const size_t num_read = fread(input_buffer, 1, 1024, actual_data_file);
+    struct ParseResults parse_results = {.length = 0, .packet_buffer = {0}, .parse_buffer = {0}, .bytes_parsed = 0};
     mip_parser_init(&parser, &handle_packet, &parse_results, MIP_PARSER_DEFAULT_TIMEOUT_MS);
 
+    FILE *actual_data_file = NULL; openFile(&actual_data_file, "C:/HBK/Dev/mip_sdk/test/c/mip/../../data/mip_data.bin");
+    uint8_t input_buffer[1024];
+    const size_t num_read = fread(input_buffer, 1, 1024, actual_data_file);
+
+    // Act
     mip_parser_parse(&parser, input_buffer, num_read, 0);
 
-    size_t bytes_read = 0;
-    bytes_read += num_read;
-    FILE *expected_data_file = NULL; openFile(&expected_data_file, "C:/HBK/Dev/mip_sdk/test/c/mip/../../data/packet_example_cpp_check.txt");
-    uint8_t check_buffer[MIP_PACKET_LENGTH_MAX];
-    const size_t read = fread(check_buffer, 1, parse_results.length, expected_data_file);
+    // Assert
     assert_int_less_or_equal(parse_results.length, MIP_PACKET_LENGTH_MAX);
-    assert_int_equal(read, parse_results.length);
-    assert_memory_equal(check_buffer, parse_results.packet_buffer, parse_results.length); // TODO: move and remove
-    assert_int_equal(parse_results.bytes_parsed, bytes_read);
+
+    uint8_t check_buffer[MIP_PACKET_LENGTH_MAX];
+    FILE *expected_data_file = NULL; openFile(&expected_data_file, "C:/HBK/Dev/mip_sdk/test/c/mip/../../data/packet_example_cpp_check.txt");
+    const size_t read = fread(check_buffer, 1, parse_results.length, expected_data_file);
+    assert_int_equal(parse_results.length, read);
+
+    assert_int_equal(parse_results.bytes_parsed, num_read);
+    assert_memory_equal(check_buffer, parse_results.packet_buffer, parse_results.length);
 
     fclose(actual_data_file);
     fclose(expected_data_file);
