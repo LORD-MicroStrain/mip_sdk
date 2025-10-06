@@ -12,13 +12,13 @@ uint8_t parse_buffer[1024];
 size_t bytes_parsed = 0;
 uint8_t check_buffer[MIP_PACKET_LENGTH_MAX];
 
-void readFile(FILE *file, const char *filename)
+void readFile(FILE **file, const char *filename)
 {
-    const errno_t error_code = fopen_s(&file, filename, "rb");
+    const errno_t error_code = fopen_s(file, filename, "rb");
 
     if (error_code != 0)
     {
-        fail_msg("Could not open file: %s", filename);
+        fail_msg("Could not open file: %s, error code: %d", filename, error_code);
     }
 }
 
@@ -71,8 +71,9 @@ bool handle_packet(void* p, const mip_packet_view* packet, mip_timestamp t)
 
 MICROSTRAIN_TEST_CASE(RENAME_ME)
 {
-    FILE *actual_data_file = NULL; readFile(actual_data_file, "mip_data.bin");
-    FILE *expected_data_file = NULL; readFile(expected_data_file, "packet_example_cpp_check.txt");
+    // TODO: Copy files over during build + switch to build versions
+    FILE *actual_data_file = NULL; readFile(&actual_data_file, "C:/HBK/Dev/mip_sdk/test/c/mip/../../data/mip_data.bin");
+    FILE *expected_data_file = NULL; readFile(&expected_data_file, "C:/HBK/Dev/mip_sdk/test/c/mip/../../data/packet_example_cpp_check.txt");
     uint8_t input_buffer[1024];
     mip_parser parser;
     size_t bytes_read = 0;
@@ -86,10 +87,10 @@ MICROSTRAIN_TEST_CASE(RENAME_ME)
         const size_t num_read = fread(input_buffer, 1, num_to_read, actual_data_file);
         bytes_read += num_read;
 
-        mip_parser_parse(&parser, input_buffer, num_to_read, 0);
+        mip_parser_parse(&parser, input_buffer, num_read, 0);
 
         // End of file or error
-        if (num_read == num_to_read)
+        if (num_read != num_to_read)
         {
             break;
         }
