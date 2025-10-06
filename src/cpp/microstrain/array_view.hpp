@@ -63,7 +63,8 @@ struct ArrayView
     constexpr element_type front() const noexcept { return *m_ptr; }
     constexpr element_type back() const noexcept { return *m_ptr[extent-1]; }
 
-    constexpr reference operator[](size_t idx) const noexcept { return m_ptr[idx]; }
+    template<typename Index>  // Required because otherwise operator T* would make this ambiguous
+    constexpr reference operator[](Index idx) const noexcept { assert(idx < extent); return m_ptr[idx]; }
 
     constexpr pointer data() const noexcept { return m_ptr; }
 
@@ -114,7 +115,8 @@ struct ArrayView<T, DYNAMIC_EXTENT>
     constexpr element_type front() const noexcept { return *m_ptr; }
     constexpr element_type back() const noexcept { return *m_ptr[m_cnt-1]; }
 
-    constexpr reference operator[](size_t idx) const noexcept { return m_ptr[idx]; }
+    template<typename Index>  // Required because otherwise operator T* would make this ambiguous
+    constexpr reference operator[](Index idx) const noexcept { assert(idx < m_cnt); return m_ptr[idx]; }
 
     constexpr pointer data() const noexcept { return m_ptr; }
 
