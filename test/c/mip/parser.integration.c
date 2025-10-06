@@ -58,20 +58,11 @@ MICROSTRAIN_TEST_CASE(RENAME_ME)
 
     mip_parser_init(&parser, &handle_packet, expected_data_file, MIP_PARSER_DEFAULT_TIMEOUT_MS);
 
-    while (true)
-    {
-        const size_t num_to_read = 10; // Arbitrary number picked for no particular reason
-        const size_t num_read = fread(input_buffer, 1, num_to_read, actual_data_file);
-        bytes_read += num_read;
+    const size_t num_to_read = 1024; // Arbitrary number picked for no particular reason
+    const size_t num_read = fread(input_buffer, 1, num_to_read, actual_data_file);
+    bytes_read += num_read;
 
-        mip_parser_parse(&parser, input_buffer, num_read, 0);
-
-        // End of file or error
-        if (num_read != num_to_read)
-        {
-            break;
-        }
-    }
+    mip_parser_parse(&parser, input_buffer, num_read, 0);
 
     assert_int_equal(bytes_parsed, bytes_read);
     fclose(actual_data_file);
