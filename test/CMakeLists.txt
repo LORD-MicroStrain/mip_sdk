@@ -1,18 +1,13 @@
-#[[
-    Main CMake file for the test suite.
-
-    Responsible for orchestrating test building and execution.
-#]]
+# Main CMake file for the test suite.
 
 # ---------------------------------------------------------------
-# Executables
+# Target templates
 # ---------------------------------------------------------------
+
+# See the C and CPP subdirectories for what these are expanded to.
 
 set(MIP_UNIT_TEST_TARGET "mip_unit_tests")
 set(MIP_INTEGRATION_TEST_TARGET "mip_integration_tests")
-
-#add_executable(UnitTests)
-#add_executable(IntegrationTests)
 
 # ---------------------------------------------------------------
 # Subdirectories
@@ -20,41 +15,7 @@ set(MIP_INTEGRATION_TEST_TARGET "mip_integration_tests")
 
 add_subdirectory("c")
 
-#if(MICROSTRAIN_ENABLE_CPP)
-##    add_subdirectory("cpp")
-#endif()
-#
-#add_subdirectory("microstrain_test")
-##add_subdirectory("cmocka")
-#
-## ---------------------------------------------------------------
-## Library linking
-## ---------------------------------------------------------------
-#
-#target_link_libraries(UnitTests
-#    ${MIP_LIBRARY}
-#    microstrain_test
-#)
-#
-#target_link_libraries(IntegrationTests
-#    ${MIP_LIBRARY}
-#    microstrain_test
-#)
-
-# ---------------------------------------------------------------
-# Automatic test discovery
-# ---------------------------------------------------------------
-
-#include(${doctest_SOURCE_DIR}/scripts/cmake/doctest.cmake)
-#
-#doctest_add_test()
-#
-#doctest_discover_tests(UnitTests
-#    PROPERTIES
-#        LABELS "unit"
-#)
-#
-#doctest_discover_tests(IntegrationTests
-#    PROPERTIES
-#        LABELS "integration"
-#)
+if(MICROSTRAIN_ENABLE_CPP)
+    add_subdirectory("microstrain_test") # TODO: Remove when disbanded
+    add_subdirectory("cpp")
+endif()

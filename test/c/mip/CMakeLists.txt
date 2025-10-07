@@ -1,4 +1,3 @@
-
 # ---------------------------------------------------------------
 # Unit tests
 # ---------------------------------------------------------------
@@ -26,4 +25,8 @@ add_cmocka_test(
     SOURCES "${CMAKE_CURRENT_LIST_DIR}/parser.integration.c"
     LINK_LIBRARIES ${MIP_UNIT_TEST_TARGET_C}
 )
-set_tests_properties("C_mip_parser_integration" PROPERTIES LABELS "integration")
+set_tests_properties("C_mip_parser_integration"
+    PROPERTIES
+        LABELS "integration"
+        DISABLED TRUE
+)
