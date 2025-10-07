@@ -118,6 +118,7 @@ def buildMipSdkWindows() {
                 --test-dir "build_${BUILD_ARCH}" `
                 -C Release `
                 -L unit `
+                -LE SKIP `
                 --verbose `
                 --output-on-failure `
                 --output-junit unit_test_results.xml `

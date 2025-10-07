@@ -27,6 +27,6 @@ add_cmocka_test(
 )
 set_tests_properties("C_mip_parser_integration"
     PROPERTIES
-        LABELS "integration"
+        LABELS "SKIP;integration"
         DISABLED TRUE
 )
