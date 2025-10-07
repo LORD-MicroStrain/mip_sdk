@@ -35,8 +35,11 @@ Forthcoming
   * Converted string and formatting tests to new structure and use the new assertion wrappers
 ### Interface Changes
 * MIP parser callbacks must now return bool (return true to preserve existing behavior).
-* microstrain::Span has been renamed to microstrain::ArrayView.
+* `microstrain::Span` has been renamed to `microstrain::ArrayView`.
+  * ArrayViews decay to the base pointer type.
 * Certain PacketView and FieldView accessors have been renamed for clarity and consistency.
+* Offset parameter in Serializer constructor has been removed to avoid silent bug due to accessor type changes.
+  * Use `setOffset` as a workaround if needed.
 * MicroStrain logging fixes
   * Renamed logging level compiler definitions
   * Fixed issues where not defining logging compiler definitions would integrate logging support incorrectly
