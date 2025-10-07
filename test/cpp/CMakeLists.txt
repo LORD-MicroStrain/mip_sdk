@@ -1,16 +1,3 @@
-#[[
-target_sources(UnitTests PRIVATE
-    "logging.unit.cpp"
-    "strings.unit.cpp"
-)
-
-target_sources(IntegrationTests PRIVATE
-    "mip.integration.cpp"
-    # TODO: Broken, can't be fixed until naming conventions decided
-    #"packet_interface.integration.cpp"
-)
-]]
-
 # ---------------------------------------------------------------
 # Targets
 # ---------------------------------------------------------------
@@ -50,34 +37,6 @@ target_link_libraries("${MIP_INTEGRATION_TEST_TARGET_CPP}" PRIVATE
     "${MIP_LIBRARIES}"
     "${MICROSTRAIN_LIBRARIES}"
     microstrain_test
-)
-
-# ---------------------------------------------------------------
-# Compile definitions
-# ---------------------------------------------------------------
-
-# TODO: Might not need these
-
-target_compile_definitions("${MIP_UNIT_TEST_TARGET_CPP}" PRIVATE
-    "MICROSTRAIN_LOGGING_MAX_LEVEL=MICROSTRAIN_LOGGING_LEVEL_WARN_"
-)
-
-target_compile_definitions("${MIP_INTEGRATION_TEST_TARGET_CPP}" PRIVATE
-    "MICROSTRAIN_LOGGING_MAX_LEVEL=MICROSTRAIN_LOGGING_LEVEL_WARN_"
-)
-
-# ---------------------------------------------------------------
-# Include directories
-# ---------------------------------------------------------------
-
-# TODO: Might not need these
-
-target_include_directories("${MIP_UNIT_TEST_TARGET_CPP}" PRIVATE
-    "${CMAKE_CURRENT_LIST_DIR}"
-)
-
-target_include_directories("${MIP_INTEGRATION_TEST_TARGET_CPP}" PRIVATE
-    "${CMAKE_CURRENT_LIST_DIR}"
 )
 
 # ---------------------------------------------------------------
