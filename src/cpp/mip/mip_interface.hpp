@@ -190,7 +190,7 @@ namespace mip
 
         bool sendToDevice(const uint8_t* data, size_t length) { return C::mip_interface_send_to_device(this, data, length); }
         bool sendToDevice(microstrain::ConstU8ArrayView data) { return C::mip_interface_send_to_device(this, data.data(), data.size()); }
-        bool sendToDevice(const C::mip_packet_view& packet) { return sendToDevice(C::mip_packet_pointer(&packet), C::mip_packet_total_length(&packet)); }
+        bool sendToDevice(const C::mip_packet_view& packet) { return sendToDevice(C::mip_packet_data(&packet), C::mip_packet_total_length(&packet)); }
 
         bool recvFromDevice(microstrain::U8ArrayView buffer, Timeout wait_time, bool from_cmd, size_t* length_out, Timestamp* timestamp_out) { return C::mip_interface_recv_from_device(this, buffer.data(), buffer.size(), wait_time, from_cmd, length_out, timestamp_out); }
 
@@ -1213,7 +1213,7 @@ namespace mip
         PacketBuf packet(cmd);
 
         C::mip_pending_cmd pending;
-        C::mip_pending_cmd_init_full(&pending, Cmd::DESCRIPTOR_SET, Cmd::FIELD_DESCRIPTOR, Cmd::Response::FIELD_DESCRIPTOR, packet.buffer(), FIELD_PAYLOAD_LENGTH_MAX, additionalTime);
+        C::mip_pending_cmd_init_full(&pending, Cmd::DESCRIPTOR_SET, Cmd::FIELD_DESCRIPTOR, Cmd::Response::FIELD_DESCRIPTOR, packet.buffer_w(), FIELD_PAYLOAD_LENGTH_MAX, additionalTime);
 
         CmdResult result = C::mip_interface_run_command_packet(&device, &packet, &pending);
         if (result != C::MIP_ACK_OK)
@@ -1221,7 +1221,7 @@ namespace mip
 
         size_t responseLength = C::mip_pending_cmd_response_length(&pending);
 
-        return extract(response, packet.buffer(), responseLength, 0) ? CmdResult::ACK_OK : CmdResult::STATUS_ERROR;
+        return extract(response, packet.buffer_w(), responseLength, 0) ? CmdResult::ACK_OK : CmdResult::STATUS_ERROR;
     }
 
     template<class Cmd>

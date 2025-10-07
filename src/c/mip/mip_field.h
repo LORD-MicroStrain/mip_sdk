@@ -21,6 +21,7 @@ extern "C" {
 ///@brief Functions for processing received MIP fields.
 ///
 ///~~~
+/// The MIP Packet
 /// ---------------+------------+------------+-----/ /-----+------------+
 ///  ...   Header  |   Field    |   Field    |     ...     |  Checksum  |
 /// ---------------+------------+------------+-----/ /-----+------------+

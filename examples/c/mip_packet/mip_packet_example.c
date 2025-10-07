@@ -137,7 +137,7 @@ static void print_packet(const mip_packet_view* _packet_view)
     // this as an inexpensive validation step
     assert(mip_packet_is_sane(_packet_view));
 
-    const uint8_t* packet_pointer = mip_packet_pointer(_packet_view);
+    const uint8_t* packet_pointer = mip_packet_data(_packet_view);
 
     // Create a buffer for printing purposes
     char packet_byte_buffer[MIP_PACKET_PAYLOAD_LENGTH_MAX] = {0};

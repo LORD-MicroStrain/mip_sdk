@@ -65,28 +65,34 @@ public:
     // C function wrappers
     //
 
-    uint8_t        descriptorSet() const { return C::mip_packet_descriptor_set(this); }  ///<@copydoc mip::C::mip_packet_descriptor_set
-    uint_least16_t totalLength()  const { return C::mip_packet_total_length(this);   }  ///<@copydoc mip::C::mip_packet_total_length
-    uint8_t        payloadLength() const { return C::mip_packet_payload_length(this); }  ///<@copydoc mip::C::mip_packet_payload_length
-
-    bool isData() const { return C::mip_packet_is_data(this); }
-
-    const uint8_t* pointer() const { return C::mip_packet_pointer(this); }         ///@brief Get a pointer to the entire packet data.
-    const uint8_t* payloadPointer() const { return C::mip_packet_payload(this); }  ///@brief Get a pointer to the payload data.
-    uint8_t payload(size_t i) const { assert(i < payloadLength()); return payloadPointer()[i]; }  ///@brief Get payload byte at index i.
-
-    uint16_t checksumValue() const { return C::mip_packet_checksum_value(this); }     ///<@copydoc mip::C::mip_packet_checksum_value
-    uint16_t computeChecksum() const { return C::mip_packet_compute_checksum(this); } ///<@copydoc mip::C::mip_packet_compute_checksum
-
+    // General
     bool isSane() const { return C::mip_packet_is_sane(this); }    ///<@copydoc mip::C::mip_packet_is_sane
     bool isValid() const { return C::mip_packet_is_valid(this); }  ///<@copydoc mip::C::mip_packet_is_valid
     bool isEmpty() const { return C::mip_packet_is_empty(this); }  ///<@copydoc mip::C::mip_packet_is_empty
+    bool isData() const { return C::mip_packet_is_data(this); }    ///<@copydoc mip::C::mip_packet_is_data
 
-    const uint8_t* bufferPointer() const { return C::mip_packet_buffer(const_cast<PacketView*>(this)); } ///@copydoc mip::C::mip_packet_buffer
-    uint8_t*       bufferPointerWr()     { return C::mip_packet_buffer(this); } ///@copydoc mip::C::mip_packet_buffer
-    uint_least16_t bufferLength() const { return C::mip_packet_buffer_size(this); }  ///<@copydoc mip::C::mip_packet_buffer_size
-    int remainingSpace() const { return C::mip_packet_remaining_space(this); }  ///<@copydoc mip::C::mip_packet_remaining_space
+    uint8_t descriptorSet()  const { return C::mip_packet_descriptor_set(this);  }  ///<@copydoc mip::C::mip_packet_descriptor_set
 
+    // Entire buffer
+    microstrain::ConstU8ArrayView buffer() const { return {C::mip_packet_buffer  (this), C::mip_packet_buffer_length(this)}; } ///@brief Gets the entire storage buffer for the packet.
+    microstrain::U8ArrayView      buffer_w()     { return {C::mip_packet_buffer_w(this), C::mip_packet_buffer_length(this)}; } ///@brief Gets the entire storage buffer for the packet.
+    uint_least16_t                bufferLength()   const { return C::mip_packet_buffer_length(this);   }  ///<@copydoc mip::C::mip_packet_buffer_size
+    int                           remainingSpace() const { return C::mip_packet_remaining_space(this); }  ///<@copydoc mip::C::mip_packet_remaining_space
+
+    // Entire packet
+    microstrain::ConstU8ArrayView data()    const { return {C::mip_packet_data(this), C::mip_packet_total_length(this)}; }  ///@brief Get the entire packet as raw bytes.
+    uint_least16_t                totalLength()    const { return C::mip_packet_total_length(this);    }  ///<@copydoc mip::C::mip_packet_total_length
+
+    // Payload
+    microstrain::ConstU8ArrayView payload() const { return {C::mip_packet_payload(this),   C::mip_packet_payload_length(this)}; }  ///@brief Get the payload as raw bytes.
+    microstrain::U8ArrayView      payload_w()     { return {C::mip_packet_payload_w(this), C::mip_packet_payload_length(this)}; }  ///@brief Get the payload as raw bytes.
+    uint8_t                       payloadLength()  const { return C::mip_packet_payload_length(this);  }  ///<@copydoc mip::C::mip_packet_payload_length
+
+    // Checksum
+    uint16_t checksumValue() const { return C::mip_packet_checksum_value(this); }     ///<@copydoc mip::C::mip_packet_checksum_value
+    uint16_t computeChecksum() const { return C::mip_packet_compute_checksum(this); } ///<@copydoc mip::C::mip_packet_compute_checksum
+
+    // Packet building
     bool addField(uint8_t fieldDescriptor, const uint8_t* payload, uint8_t payloadLength) { return C::mip_packet_add_field(this, fieldDescriptor, payload, payloadLength); }  ///<@copydoc mip::C::mip_packet_add_field
     Serializer createField(uint8_t fieldDescriptor, uint8_t length) { uint8_t* ptr; if(C::mip_packet_create_field(this, fieldDescriptor, length, &ptr) < 0) length =0; return Serializer{ptr, length}; }
 
@@ -99,28 +105,19 @@ public:
     // C++ additions
     //
 
-    ///@brief Gets a const byte view for the whole packet.
+    uint8_t  dataAt(size_t i) const { assert(i < totalLength()); return payload()[i];   }
+    uint8_t& dataAt(size_t i)       { assert(i < totalLength()); return payload_w()[i]; }
+
+    uint8_t  payloadAt(size_t i) const { assert(i < payloadLength()); return                      C::mip_packet_payload(this)[i];  }  ///@brief Get payload byte at index i.
+    uint8_t& payloadAt(size_t i)       { assert(i < payloadLength()); return const_cast<uint8_t&>(C::mip_packet_payload(this)[i]); }  ///@brief Get writable payload byte at index i.
+
+    ///@brief Creates a mip field with the given descriptor and a copy of the payload.
     ///
-    microstrain::ConstU8ArrayView data() const { return {pointer(), totalLength()}; }
-
-    ///@brief Gets a const byte view of just the payload.
-    ///
-    microstrain::ConstU8ArrayView payload() const { return {payloadPointer(), payloadLength()}; }
-
-    ///@brief Gets a const view to the entire storage buffer (usually more than just the packet).
-    microstrain::ConstU8ArrayView buffer() const { return {bufferPointer(), bufferLength()}; }
-
-    ///@brief Gets a writeable view to the entire storage buffer (usually more than just the packet).
-    ///@warning: The buffer can only be modified if the packet was constructed with a non-const buffer!
-    microstrain::U8ArrayView bufferWr() { return {bufferPointerWr(), bufferLength()}; }
+    bool addField(uint8_t fieldDescriptor, microstrain::ConstU8ArrayView payload) { return addField(fieldDescriptor, payload.data(), uint8_t(payload.size())); }
 
     ///@brief Copies the given mip field to the packet.
     ///
     bool addField(const FieldView& field) { return addField(field.fieldDescriptor(), field.payload()); }
-
-    ///@brief Creates a mip field with the given descriptor and copies the given payload.
-    ///
-    bool addField(uint8_t fieldDescriptor, microstrain::ConstU8ArrayView payload) { return addField(fieldDescriptor, payload.data(), uint8_t(payload.size())); }
 
 
     class AllocatedField : public Serializer
@@ -166,7 +163,8 @@ public:
         return {*this, ptr, max_size};
     }
 
-    uint8_t operator[](unsigned int index) const { return pointer()[index]; }
+    //uint8_t  operator[](unsigned int index) const { return payloadAt(index); }
+    //uint8_t& operator[](unsigned int index)       { return payloadAt(index); }
 
     //
     // Additional functions which have no C equivalent
@@ -179,7 +177,7 @@ public:
     /// Returns a sentry object representing the end of fields in the packet.
     ///
 #if __cpp_range_based_for >= 201603
-    // After 201603, for loops allow different clases for begin and end.
+    // After 201603, for loops allow different classes for begin and end.
     // Using nullptr is simpler and more efficient than creating an end iterator.
     std::nullptr_t end() const { return nullptr; }
 #else
@@ -196,7 +194,7 @@ public:
     ///
     ///@returns A Field instance representing the first field (if any).
     ///
-    FieldView firstField() const { return FieldView(C::mip_field_first_from_packet(this)); }
+    FieldView firstField() const { return {C::mip_field_first_from_packet(this)}; }
 
     ///@brief Adds a field of the given type to the packet.
     ///
@@ -233,7 +231,7 @@ public:
     ///@returns A PacketRef object containing the field.
     ///
     template<class FieldType>
-    static PacketView createFromField(microstrain::ConstU8ArrayView packetBuffer, const FieldType& field, uint8_t fieldDescriptor=INVALID_FIELD_DESCRIPTOR)
+    static PacketView createFromField(microstrain::U8ArrayView packetBuffer, const FieldType& field, uint8_t fieldDescriptor=INVALID_FIELD_DESCRIPTOR)
     {
         if( fieldDescriptor == INVALID_FIELD_DESCRIPTOR )
             fieldDescriptor = FieldType::FIELD_DESCRIPTOR;
@@ -269,7 +267,7 @@ public:
             return (
                 mField.descriptorSet()   == other.mField.descriptorSet()   &&
                 mField.fieldDescriptor() == other.mField.fieldDescriptor() &&
-                mField.payloadPointer()  == other.mField.payloadPointer()
+                mField.payload()  == other.mField.payload()
             );
         }
         bool operator!=(const FieldIterator& other) const { return !(*this == other); }
@@ -357,7 +355,7 @@ public:
         typename std::enable_if<std::is_class<FieldType>::value, void>::type* = nullptr
     ) : PacketView(mData, sizeof(mData))
     {
-        createFromField<FieldType>(mData, sizeof(mData), field, fieldDescriptor);
+        createFromField<FieldType>({mData, sizeof(mData)}, field, fieldDescriptor);
     }
 
 
@@ -369,13 +367,9 @@ public:
     ///
     const PacketView& ref() const { return *this; }
 
-    ///@brief Returns a pointer to the underlying buffer.
-    /// This is technically the same as PacketRef::pointer but is writable.
-    uint8_t* bufferPointer() { return mData; }
-
-    ///@brief Returns a Span covering the entire buffer.
+    ///@brief Returns an ArrayView covering the entire buffer.
     ///
-    microstrain::ArrayView<uint8_t, BufferSize> buffer() { return {bufferPointer(), BufferSize}; }
+    microstrain::ArrayView<uint8_t, BufferSize> buffer() { return {mData}; }
 
     ///@brief Copies the data from a U8ArrayView to this buffer. The data is not inspected.
     ///

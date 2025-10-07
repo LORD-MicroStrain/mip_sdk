@@ -55,7 +55,7 @@ struct ArrayView
     using const_reference = const T&;
     using const_iterator = const T*;
 
-    constexpr ArrayView(pointer ptr, size_t count) : m_ptr(ptr) { assert(count==extent); }
+    constexpr explicit ArrayView(pointer ptr) : m_ptr(ptr) {}
 
     constexpr pointer begin() const noexcept { return m_ptr; }
     constexpr pointer end() const noexcept { return m_ptr+extent; }
@@ -63,8 +63,8 @@ struct ArrayView
     constexpr element_type front() const noexcept { return *m_ptr; }
     constexpr element_type back() const noexcept { return *m_ptr[extent-1]; }
 
-    constexpr reference operator[](size_t idx) noexcept { return m_ptr[idx]; }
-    constexpr const_reference operator[](size_t idx) const noexcept { return m_ptr[idx]; }
+    template<typename Index>  // Required because otherwise operator T* would make this ambiguous
+    constexpr reference operator[](Index idx) const noexcept { assert(idx < extent); return m_ptr[idx]; }
 
     constexpr pointer data() const noexcept { return m_ptr; }
 
@@ -83,6 +83,8 @@ struct ArrayView
     [[nodiscard]] constexpr ArrayView<T, DYNAMIC_EXTENT> last(size_t count) const { return {m_ptr+(size()-count), count};}
     template<size_t Count>
     [[nodiscard]] constexpr ArrayView<T, Count> last() const { static_assert(Count<=Extent, "Count out of range"); return {m_ptr+(Extent-Count)}; }
+
+    [[nodiscard]] constexpr operator pointer() const { return m_ptr; }
 
 private:
     pointer m_ptr = nullptr;
@@ -113,8 +115,8 @@ struct ArrayView<T, DYNAMIC_EXTENT>
     constexpr element_type front() const noexcept { return *m_ptr; }
     constexpr element_type back() const noexcept { return *m_ptr[m_cnt-1]; }
 
-    constexpr reference operator[](size_t idx) noexcept { return m_ptr[idx]; }
-    constexpr const_reference operator[](size_t idx) const noexcept { return m_ptr[idx]; }
+    template<typename Index>  // Required because otherwise operator T* would make this ambiguous
+    constexpr reference operator[](Index idx) const noexcept { assert(idx < m_cnt); return m_ptr[idx]; }
 
     constexpr pointer data() const noexcept { return m_ptr; }
 
@@ -133,6 +135,8 @@ struct ArrayView<T, DYNAMIC_EXTENT>
     [[nodiscard]] constexpr ArrayView<T, DYNAMIC_EXTENT> last(size_t count) const { return {m_ptr+(size()-count), count};}
     template<size_t Count>
     [[nodiscard]] constexpr ArrayView<T, Count> last() const { return {m_ptr+(size()-Count)}; }
+
+    [[nodiscard]] constexpr operator pointer() const { return m_ptr; }
 
 private:
     pointer m_ptr   = nullptr;
