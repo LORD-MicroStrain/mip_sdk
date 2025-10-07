@@ -23,7 +23,8 @@ RUN set -ex \
         subversion \
         build-essential \
         bash-completion \
-        doxygen
+        doxygen \
+        xz-utils
 
 # Use the minimum required CMake version for the project (Allows us to check if we're using new options without updating the version in CMakeLists.txt)
 ARG CMAKE_MIN_MAJOR_VERSION="3"
