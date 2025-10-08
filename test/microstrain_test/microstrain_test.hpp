@@ -1,7 +1,6 @@
 /**
+    TODO: Replace contents with utility macros to be shared between frameworks
     TODO: This should be moved to its own repository so it can be used by multiple projects
-
-    TODO: Move documentation to markdown file(s)
 
     Wrapper library for C/C++ automated testing frameworks
 

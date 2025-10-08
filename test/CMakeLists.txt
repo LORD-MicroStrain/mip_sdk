@@ -1,4 +1,12 @@
 # ---------------------------------------------------------------
+# Dependencies
+# ---------------------------------------------------------------
+
+# TODO: Will be moved to separate repo
+set(MICROSTRAIN_TEST_USE_DOCTEST ON CACHE BOOL "" FORCE)
+add_subdirectory("microstrain_test")
+
+# ---------------------------------------------------------------
 # Target templates
 # ---------------------------------------------------------------
 
@@ -14,6 +22,5 @@ set(MIP_INTEGRATION_TEST_TARGET "mip_integration_tests")
 add_subdirectory("c")
 
 if(MICROSTRAIN_ENABLE_CPP)
-    add_subdirectory("microstrain_test") # TODO: Remove when disbanded
     add_subdirectory("cpp")
 endif()
