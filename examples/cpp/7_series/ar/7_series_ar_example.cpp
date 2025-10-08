@@ -221,7 +221,7 @@ int main(const int argc, const char* argv[])
         terminate(device, cmdResult, "Could not resume the device!\n");
     }
 
-    MICROSTRAIN_LOG_INFO("The device is configured... waiting for the filter to initialize.\n");
+    MICROSTRAIN_LOG_INFO("The device is configured... waiting for the filter to enter vertical gyro mode.\n");
 
     mip::data_filter::FilterMode currentState = filterStatus.filter_state;
 

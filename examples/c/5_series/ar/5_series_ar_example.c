@@ -213,12 +213,12 @@ int main(const int argc, const char* argv[])
         exit_from_command(&device, cmd_result, "Could not resume the device!\n");
     }
 
-    MICROSTRAIN_LOG_INFO("The device is configured... waiting for the filter to initialize.\n");
+    MICROSTRAIN_LOG_INFO("The device is configured... waiting for a valid filter solution.\n");
 
     mip_filter_mode current_state = filter_status.filter_state;
 
     // Wait for the device to initialize
-    while (filter_status.filter_state <= MIP_FILTER_MODE_GX5_INIT)
+    while (filter_status.filter_state != MIP_FILTER_MODE_GX5_RUN_SOLUTION_VALID)
     {
         // Update the device state
         // Note: This will update the device callbacks to trigger the filter state change

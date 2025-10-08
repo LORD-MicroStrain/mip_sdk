@@ -272,7 +272,7 @@ int main(const int argc, const char* argv[])
         exit_from_command(&device, cmd_result, "Could not resume the device!\n");
     }
 
-    MICROSTRAIN_LOG_INFO("The device is configured... waiting for the filter to initialize.\n");
+    MICROSTRAIN_LOG_INFO("The device is configured... waiting for a valid filter solution.\n");
 
     mip_gnss_fix_info_data_fix_type current_fix_type = gnss_fix_info.fix_type;
     mip_filter_mode                 current_state    = filter_status.filter_state;
