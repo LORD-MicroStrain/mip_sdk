@@ -182,6 +182,7 @@ pipeline {
         stage('Build') {
             // Run all the builds in parallel
             parallel {
+/*
                 stage('Documentation') {
                     agent {
                         label 'linux-amd64'
@@ -237,6 +238,7 @@ pipeline {
                         }
                     }
                 }
+ */
                 stage('Ubuntu amd64') {
                     agent {
                         label 'linux-amd64'
