@@ -228,6 +228,10 @@ int main(const int argc, const char* argv[])
     // Data stores for GNSS data
     mip::data_gnss::FixInfo gnssFixInfo[2]; // GNSS 1 & 2
 
+    // Initialize the fix type to NONE (0 is 3D, which is incorrect in this case)
+    gnssFixInfo[0].fix_type = mip::data_gnss::FixInfo::FixType::FIX_NONE;
+    gnssFixInfo[1].fix_type = mip::data_gnss::FixInfo::FixType::FIX_NONE;
+
     // Register the callbacks for the GNSS fields
 
     device.registerExtractor(
@@ -294,11 +298,8 @@ int main(const int argc, const char* argv[])
 
     MICROSTRAIN_LOG_INFO("The device is configured... waiting for the filter to enter full navigation mode.\n");
 
-    mip::data_gnss::FixInfo::FixType currentFixType[2] = {
-        mip::data_gnss::FixInfo::FixType::FIX_NONE,
-        mip::data_gnss::FixInfo::FixType::FIX_NONE
-    };
-    mip::data_filter::FilterMode currentState = filterStatus.filter_state;
+    mip::data_gnss::FixInfo::FixType currentFixType[2] = {gnssFixInfo[0].fix_type, gnssFixInfo[1].fix_type};
+    mip::data_filter::FilterMode     currentState      = filterStatus.filter_state;
 
     // Wait for the device to initialize
     while (filterStatus.filter_state < mip::data_filter::FilterMode::FULL_NAV)

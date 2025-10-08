@@ -189,6 +189,9 @@ int main(const int argc, const char* argv[])
     // Data stores for GNSS data
     mip::data_gnss::FixInfo gnssFixInfo;
 
+    // Initialize the fix type to NONE (0 is 3D, which is incorrect in this case)
+    gnssFixInfo.fix_type = mip::data_gnss::FixInfo::FixType::FIX_NONE;
+
     // Register the callbacks for the GNSS fields
 
     device.registerExtractor(
@@ -247,7 +250,7 @@ int main(const int argc, const char* argv[])
 
     MICROSTRAIN_LOG_INFO("The device is configured... waiting for a valid filter solution.\n");
 
-    mip::data_gnss::FixInfo::FixType currentFixType = mip::data_gnss::FixInfo::FixType::FIX_NONE;
+    mip::data_gnss::FixInfo::FixType currentFixType = gnssFixInfo.fix_type;
     mip::data_filter::FilterMode     currentState   = filterStatus.filter_state;
 
     // Wait for the device to initialize
