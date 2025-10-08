@@ -55,14 +55,19 @@ typedef struct CMUnitTest CMUnitTest;
     MICROSTRAIN_TEST_ASSERT_MESSAGE(buffer[position] == '\0', "%c != \\0", buffer[position]);
 
 #define assert_int_greater_than(a, b) \
-    MICROSTRAIN_TEST_ASSERT_MESSAGE(a > b, "Not true: %d > %d", a, b);
+    size_t _a = a;                    \
+    size_t _b = b;                    \
+    MICROSTRAIN_TEST_ASSERT_MESSAGE(a > b, "Not true: %ld > %ld", _a, _b);
 
 #define assert_int_less_or_equal(a, b) \
-    MICROSTRAIN_TEST_ASSERT_MESSAGE(a <= b, "Not true: %d <= %d", a, b);
+    size_t _a = a;                     \
+    size_t _b = b;                     \
+    MICROSTRAIN_TEST_ASSERT_MESSAGE(a <= b, "Not true: %ld <= %ld", _a, _b);
 
 /* ------------------------------------------------------------------------------------------------- */
 
 // Helper function to check if a test name is in argv
+/*
 static inline bool should_run_test(const char* testName)
 {
     // If no specific tests are provided (only program name), run all tests
@@ -82,6 +87,7 @@ static inline bool should_run_test(const char* testName)
 
     return false;
 }
+*/
 
 // Helper function to add a test to a dynamic array
 static inline CMUnitTest* add_test(CMUnitTest* tests, int* count, CMUnitTest test)
@@ -100,7 +106,6 @@ static inline CMUnitTest* add_test(CMUnitTest* tests, int* count, CMUnitTest tes
     return tests;
 }
 
-#ifdef _MSC_VER
 // MSVC doesn't work nicely with compound literals in C
 static inline CMUnitTest microstrain_create_unit_case(const char* name, const CMUnitTestFunction test_function) \
 {
@@ -115,17 +120,11 @@ static inline CMUnitTest microstrain_create_unit_case(const char* name, const CM
     return microstrain_unit_test;
 }
 #define microstrain_create_test(test) microstrain_create_unit_case(#test, test)
-#else
-#define microstrain_create_test cmocka_unit_test
-#endif // _MSC_VER
 
 #define MICROSTRAIN_TEST_ADD(test_suite, test)                                                     \
     do                                                                                             \
     {                                                                                              \
-        if (should_run_test(#test))                                                                \
-        {                                                                                          \
-            test_suite = add_test(test_suite, &test_suite##_count, microstrain_create_test(test)); \
-        }                                                                                          \
+        test_suite = add_test(test_suite, &test_suite##_count, microstrain_create_test(test));     \
     } while (0)
 
 #endif // !CMOCKA_WRAPPER_H

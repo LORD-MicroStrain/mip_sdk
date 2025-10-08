@@ -16,14 +16,16 @@ struct ParseResults
     size_t bytes_parsed;
 };
 
-void openFile(FILE **file, const char *filename)
+FILE* openFile(const char *filename)
 {
-    const errno_t error_code = fopen_s(file, filename, "rb");
+    FILE *file = fopen(filename, "rb");
 
-    if (error_code != 0)
+    if (file == NULL)
     {
-        fail_msg("Could not open file: %s, error code: %d", filename, error_code);
+        fail_msg("Could not open file: %s.", filename);
     }
+
+    return file;
 }
 
 bool handle_packet(void* p, const mip_packet_view* packet, mip_timestamp t)
@@ -53,7 +55,7 @@ MICROSTRAIN_TEST_CASE(Mip_packets_can_be_parsed_correctly)
     struct ParseResults parse_results = {.length = 0, .packet_buffer = {0}, .parse_buffer = {0}, .bytes_parsed = 0};
     mip_parser_init(&parser, &handle_packet, &parse_results, MIP_PARSER_DEFAULT_TIMEOUT_MS);
 
-    FILE *actual_data_file = NULL; openFile(&actual_data_file, "C:/HBK/Dev/mip_sdk/test/c/mip/../../data/mip_data.bin");
+    FILE *actual_data_file = openFile("C:/HBK/Dev/mip_sdk/test/c/mip/../../data/mip_data.bin");
     uint8_t input_buffer[1024];
     const size_t actual_element_count = fread(input_buffer, 1, 1024, actual_data_file);
 
@@ -64,7 +66,7 @@ MICROSTRAIN_TEST_CASE(Mip_packets_can_be_parsed_correctly)
     assert_int_less_or_equal(parse_results.length, MIP_PACKET_LENGTH_MAX);
 
     uint8_t check_buffer[MIP_PACKET_LENGTH_MAX];
-    FILE *expected_data_file = NULL; openFile(&expected_data_file, "C:/HBK/Dev/mip_sdk/test/c/mip/../../data/packet_example_cpp_check.txt");
+    FILE *expected_data_file = openFile("C:/HBK/Dev/mip_sdk/test/c/mip/../../data/packet_example_cpp_check.txt");
     const size_t expected_element_count = fread(check_buffer, 1, parse_results.length, expected_data_file);
 
     assert_int_equal(parse_results.length, expected_element_count);
