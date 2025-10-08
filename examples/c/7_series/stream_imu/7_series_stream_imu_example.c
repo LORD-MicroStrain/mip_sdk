@@ -166,23 +166,31 @@ int main(const int argc, const char* argv[])
 
     // Some devices have a large number of descriptors
     // The extended descriptors command can get the remaining descriptors
-    MICROSTRAIN_LOG_INFO("Getting extended supported descriptors for the device.\n");
-    uint8_t extended_descriptors_count = 0;
-
-    cmd_result = mip_base_get_extended_descriptors(
-        &device,
-        &supported_descriptors[descriptors_count],                                            // Append to the array
-        sizeof(supported_descriptors) / sizeof(supported_descriptors[0]) - descriptors_count, // Remaining array size
-        &extended_descriptors_count
-    );
-
-    if (!mip_cmd_result_is_ack(cmd_result))
+    // Note: Extended descriptors only need to be checked if the max standard descriptors were returned (half of the total)
+    // Field payload length max - field length byte - reply descriptor byte - command descriptor byte - response code byte
+    if (descriptors_count == (MIP_FIELD_PAYLOAD_LENGTH_MAX - 4) / sizeof(uint16_t))
     {
-        exit_from_command(&device, cmd_result, "Could not get extended supported descriptors!\n");
+        MICROSTRAIN_LOG_INFO("Getting extended supported descriptors for the device.\n");
+        uint8_t extended_descriptors_count = 0;
+
+        cmd_result = mip_base_get_extended_descriptors(
+            &device,
+            &supported_descriptors[descriptors_count],                                            // Append to the array
+            sizeof(supported_descriptors) / sizeof(supported_descriptors[0]) - descriptors_count, // Remaining array size
+            &extended_descriptors_count
+        );
+
+        if (!mip_cmd_result_is_ack(cmd_result))
+        {
+            exit_from_command(&device, cmd_result, "Could not get extended supported descriptors!\n");
+        }
+
+        // Calculate the total number of supported descriptors
+        descriptors_count += extended_descriptors_count;
     }
 
     // Configure the message format for sensor data
-    configure_sensor_message_format(&device, supported_descriptors, descriptors_count + extended_descriptors_count);
+    configure_sensor_message_format(&device, supported_descriptors, descriptors_count);
 
     // Register packet and data callbacks
 

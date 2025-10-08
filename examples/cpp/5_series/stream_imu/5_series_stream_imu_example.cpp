@@ -159,23 +159,31 @@ int main(const int argc, const char* argv[])
 
     // Some devices have a large number of descriptors
     // The extended descriptors command can get the remaining descriptors
-    MICROSTRAIN_LOG_INFO("Getting extended supported descriptors for the device.\n");
-    uint8_t extendedDescriptorsCount = 0;
-
-    cmdResult = mip::commands_base::getExtendedDescriptors(
-        device,
-        &supportedDescriptors[descriptorsCount],                                           // Append to the array
-        sizeof(supportedDescriptors) / sizeof(supportedDescriptors[0]) - descriptorsCount, // Remaining array size
-        &extendedDescriptorsCount
-    );
-
-    if (!cmdResult.isAck())
+    // Note: Extended descriptors only need to be checked if the max standard descriptors were returned (half of the total)
+    // Field payload length max - field length byte - reply descriptor byte - command descriptor byte - response code byte
+    if (descriptorsCount == (mip::FieldView::PAYLOAD_LENGTH_MAX - 4) / sizeof(uint16_t))
     {
-        terminate(device, cmdResult, "Could not get extended supported descriptors!\n");
+        MICROSTRAIN_LOG_INFO("Getting extended supported descriptors for the device.\n");
+        uint8_t extendedDescriptorsCount = 0;
+
+        cmdResult = mip::commands_base::getExtendedDescriptors(
+            device,
+            &supportedDescriptors[descriptorsCount],                                           // Append to the array
+            sizeof(supportedDescriptors) / sizeof(supportedDescriptors[0]) - descriptorsCount, // Remaining array size
+            &extendedDescriptorsCount
+        );
+
+        if (!cmdResult.isAck())
+        {
+            terminate(device, cmdResult, "Could not get extended supported descriptors!\n");
+        }
+
+        // Calculate the total number of supported descriptors
+        descriptorsCount += extendedDescriptorsCount;
     }
 
     // Configure the message format for sensor data
-    configureSensorMessageFormat(device, supportedDescriptors, descriptorsCount + extendedDescriptorsCount);
+    configureSensorMessageFormat(device, supportedDescriptors, descriptorsCount);
 
     // Register packet and data callbacks
 
