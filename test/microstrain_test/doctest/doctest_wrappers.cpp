@@ -19,26 +19,6 @@ namespace detail
         }
     }
 
-    /// @brief Equality check for two single characters (char 1 == char 2).
-    ///
-    /// Output for test failure will display both characters, even if they are special characters.
-    void charEqual(const char actual, const char expected, FailureLevel failure_level)
-    {
-        std::ostringstream expected_output;
-        std::ostringstream actual_output;
-        expected_output << "Expected: " << formatCharacterOutput(expected);
-        actual_output   << "Actual:   " << formatCharacterOutput(actual);
-
-        INFO(expected_output.str());
-        INFO(actual_output.str());
-
-        switch(failure_level)
-        {
-            case FailureLevel::WARN:  WARN_EQ(actual, expected);    break;
-            case FailureLevel::FAIL:  CHECK_EQ(actual, expected);   break;
-            case FailureLevel::FATAL: REQUIRE_EQ(actual, expected); break;
-        }
-    }
 
     /// @brief Safe equality check for two C strings.
     ///

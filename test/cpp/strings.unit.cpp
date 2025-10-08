@@ -17,7 +17,6 @@ TEST("C++ string concatenation", "A char array view can be concatenated to a buf
 
     CHECK(ok);
     FAIL_IF_C_STRINGS_NOT_EQUAL(buffer, CHECK_STRING);
-    FAIL_IF_CHAR_NOT_EQUAL(buffer[CHECK_STRING_LENGTH], '\0');
 }
 
 TEST("C++ string concatenation", "A std::string_view can be concatenated to a buffer")
@@ -29,7 +28,6 @@ TEST("C++ string concatenation", "A std::string_view can be concatenated to a bu
 
     CHECK(ok);
     FAIL_IF_C_STRINGS_NOT_EQUAL(buffer, CHECK_STRING);
-    FAIL_IF_CHAR_NOT_EQUAL(buffer[CHECK_STRING_LENGTH], '\0');
 }
 
 TEST("C++ string concatenation", "A std::string can be concatenated to a buffer")
@@ -41,7 +39,6 @@ TEST("C++ string concatenation", "A std::string can be concatenated to a buffer"
 
     CHECK(ok);
     FAIL_IF_C_STRINGS_NOT_EQUAL(buffer, CHECK_STRING);
-    FAIL_IF_CHAR_NOT_EQUAL(buffer[CHECK_STRING_LENGTH], '\0');
 }
 
 TEST("C++ string concatenation", "A zero-terminated C string can be concatenated to a buffer")
@@ -53,7 +50,6 @@ TEST("C++ string concatenation", "A zero-terminated C string can be concatenated
 
     CHECK(ok);
     FAIL_IF_C_STRINGS_NOT_EQUAL(buffer, CHECK_STRING);
-    FAIL_IF_CHAR_NOT_EQUAL(buffer[CHECK_STRING_LENGTH], '\0');
 }
 
 TEST("C++ string concatenation", "Up to N characters of a zero-terminated string can be concatenated to a buffer")
@@ -65,8 +61,8 @@ TEST("C++ string concatenation", "Up to N characters of a zero-terminated string
     const bool ok = microstrain::strings::concat_cstr(buffer, &index, "123456789", character_limit);
 
     CHECK(ok);
+    CHECK_EQ(buffer[character_limit], '\0');
     FAIL_IF_C_STRINGS_NOT_EQUAL(buffer, "1234");
-    FAIL_IF_CHAR_NOT_EQUAL(buffer[character_limit], '\0');
 }
 
 TEST("C++ string concatenation", "A string literal can be concatenated to a buffer")
@@ -78,5 +74,4 @@ TEST("C++ string concatenation", "A string literal can be concatenated to a buff
 
     CHECK(ok);
     FAIL_IF_C_STRINGS_NOT_EQUAL(buffer, "123456789");
-    FAIL_IF_CHAR_NOT_EQUAL(buffer[9], '\0');
 }
