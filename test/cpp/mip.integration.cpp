@@ -23,10 +23,10 @@ bool packetCallback(void*, const PacketView *parsedPacket, Timestamp timestamp)
 
     for(FieldView field : *parsedPacket)
     {
-        LOG_ON_FAIL("\tFrom field " << numParsedFields << "/" << numFields);
-        LOG_ON_FAIL("\tDescriptor set: " << std::fixed << std::setprecision(2) << field.descriptorSet() << "/" << fields[numParsedFields].descriptorSet());
-        LOG_ON_FAIL("\tField Descriptor: " << std::fixed << std::setprecision(2) << field.fieldDescriptor() << "/" << fields[numParsedFields].fieldDescriptor());
-        LOG_ON_FAIL("\tPayload Length: " << std::fixed << std::setprecision(2) << field.payloadLength() << "/" << fields[numParsedFields].payloadLength());
+        INFO("\tFrom field " << numParsedFields << "/" << numFields);
+        INFO("\tDescriptor set: " << std::fixed << std::setprecision(2) << field.descriptorSet() << "/" << fields[numParsedFields].descriptorSet());
+        INFO("\tField Descriptor: " << std::fixed << std::setprecision(2) << field.fieldDescriptor() << "/" << fields[numParsedFields].fieldDescriptor());
+        INFO("\tPayload Length: " << std::fixed << std::setprecision(2) << field.payloadLength() << "/" << fields[numParsedFields].payloadLength());
 
         CHECK_MESSAGE(field.descriptorSet() == fields[numParsedFields].descriptorSet(),
             "Descriptor set does not match.");

@@ -23,11 +23,6 @@ namespace detail
 
 /* ---------------------------------------------------------------------------------------------- */
 
-#define LOG_ON_FAIL(message) \
-    INFO(message)
-
-/* ---------------------------------------------------------------------------------------------- */
-
 
 #define WARN_IF_C_STRINGS_NOT_EQUAL(actual, expected) \
     detail::cStringsEqual(actual, expected, detail::FailureLevel::WARN)
