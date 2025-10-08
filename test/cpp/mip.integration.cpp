@@ -28,13 +28,13 @@ bool packetCallback(void*, const PacketView *parsedPacket, Timestamp timestamp)
         LOG_ON_FAIL("\tField Descriptor: " << std::fixed << std::setprecision(2) << field.fieldDescriptor() << "/" << fields[numParsedFields].fieldDescriptor());
         LOG_ON_FAIL("\tPayload Length: " << std::fixed << std::setprecision(2) << field.payloadLength() << "/" << fields[numParsedFields].payloadLength());
 
-        FAIL_AND_LOG_IF_NOT_EQUAL(field.descriptorSet(), fields[numParsedFields].descriptorSet(),
+        CHECK_MESSAGE(field.descriptorSet() == fields[numParsedFields].descriptorSet(),
             "Descriptor set does not match.");
 
-        FAIL_AND_LOG_IF_NOT_EQUAL(field.fieldDescriptor(), fields[numParsedFields].fieldDescriptor(),
+        CHECK_MESSAGE(field.fieldDescriptor() == fields[numParsedFields].fieldDescriptor(),
             "Field descriptor does not match.");
 
-        FAIL_AND_LOG_IF_NOT_EQUAL(field.payloadLength(), fields[numParsedFields].payloadLength(),
+        CHECK_MESSAGE(field.payloadLength() == fields[numParsedFields].payloadLength(),
             "Payload length does not match.");
 
         int result = std::memcmp(
@@ -42,13 +42,13 @@ bool packetCallback(void*, const PacketView *parsedPacket, Timestamp timestamp)
             fields[numParsedFields].payload().data(),
             std::min(field.payloadLength(), fields[numParsedFields].payloadLength())
         );
-        FAIL_AND_LOG_IF_NOT_EQUAL(result, 0,
+        CHECK_MESSAGE(result == 0,
             "Payloads do not match.");
 
         numParsedFields++;
     }
 
-    FAIL_AND_LOG_IF_NOT_EQUAL(numParsedFields, numFields,
+    CHECK_MESSAGE(numParsedFields == numFields,
         "Field count mismatch: " << numParsedFields << " != " << numFields);
 
     return true;
@@ -82,7 +82,7 @@ TEST("Packet Builder", "Packets can be built and parsed correctly")
             for(unsigned int p=0; p<payloadLength; p++)
                 payload.insert<uint8_t>(rand_max_distribution(random_generator) & 0xFF);
 
-            FAIL_AND_LOG_IF_NOT_TRUE(payload.isFinished(),
+            CHECK_MESSAGE(payload.isFinished(),
                 "Field " << numFields << " did not have the right size (wrote " << payload.offset() << ", expected " << payloadLength << ", max " << payload.capacity() << ").";
             );
 
