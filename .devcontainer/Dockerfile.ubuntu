@@ -24,6 +24,7 @@ RUN set -ex \
         build-essential \
         bash-completion \
         doxygen \
+        gzip \
         xz-utils
 
 # Use the minimum required CMake version for the project (Allows us to check if we're using new options without updating the version in CMakeLists.txt)
