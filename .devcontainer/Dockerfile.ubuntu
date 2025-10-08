@@ -24,8 +24,9 @@ RUN set -ex \
         build-essential \
         bash-completion \
         doxygen \
-        gzip \
-        xz-utils
+        xz-utils \
+        libssl-dev \
+    && rm -rf /var/lib/apt/lists/*
 
 # Use the minimum required CMake version for the project (Allows us to check if we're using new options without updating the version in CMakeLists.txt)
 ARG CMAKE_MIN_MAJOR_VERSION="3"
@@ -47,7 +48,7 @@ RUN set -ex \
                 -- \
                 -DCMAKE_INSTALL_PREFIX="/usr" \
                 -DCMAKE_BUILD_TYPE="RELEASE" \
-                -DCMAKE_USE_OPENSSL=OFF && \
+                -DCMAKE_USE_OPENSSL=ON && \
             make -j$(nproc) && \
             make install \
         '; \
