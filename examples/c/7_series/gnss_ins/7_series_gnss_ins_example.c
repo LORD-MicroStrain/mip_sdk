@@ -225,7 +225,11 @@ int main(const int argc, const char* argv[])
     mip_dispatch_handler gnss_data_handlers[2];
 
     // Data stores for GNSS data
-    mip_gnss_fix_info_data gnss_fix_info[2]; // GNSS 1 & 2
+    mip_gnss_fix_info_data gnss_fix_info[2] = {0}; // GNSS 1 & 2
+
+    // Initialize the fix type to NONE (0 is 3D, which is incorrect in this case)
+    gnss_fix_info[0].fix_type = MIP_GNSS_FIX_INFO_DATA_FIX_TYPE_FIX_NONE;
+    gnss_fix_info[1].fix_type = MIP_GNSS_FIX_INFO_DATA_FIX_TYPE_FIX_NONE;
 
     // Register the callbacks for the GNSS fields
 
@@ -253,11 +257,11 @@ int main(const int argc, const char* argv[])
     mip_dispatch_handler filter_data_handlers[5];
 
     // Data stores for filter data
-    mip_shared_gps_timestamp_data filter_gps_timestamp;
-    mip_filter_status_data        filter_status;
-    mip_filter_position_llh_data  filter_position_llh;
-    mip_filter_velocity_ned_data  filter_velocity_ned;
-    mip_filter_euler_angles_data  filter_euler_angles;
+    mip_shared_gps_timestamp_data filter_gps_timestamp = {0};
+    mip_filter_status_data        filter_status        = {0};
+    mip_filter_position_llh_data  filter_position_llh  = {0};
+    mip_filter_velocity_ned_data  filter_velocity_ned  = {0};
+    mip_filter_euler_angles_data  filter_euler_angles  = {0};
 
     // Register the callbacks for the filter fields
 
@@ -318,11 +322,8 @@ int main(const int argc, const char* argv[])
 
     MICROSTRAIN_LOG_INFO("The device is configured... waiting for the filter to enter full navigation mode.\n");
 
-    mip_gnss_fix_info_data_fix_type current_fix_type[2] = {
-        MIP_GNSS_FIX_INFO_DATA_FIX_TYPE_FIX_NONE,
-        MIP_GNSS_FIX_INFO_DATA_FIX_TYPE_FIX_NONE
-    };
-    mip_filter_mode current_state = filter_status.filter_state;
+    mip_gnss_fix_info_data_fix_type current_fix_type[2] = {gnss_fix_info[0].fix_type, gnss_fix_info[1].fix_type};
+    mip_filter_mode                 current_state       = filter_status.filter_state;
 
     // Wait for the device to initialize
     while (filter_status.filter_state < MIP_FILTER_MODE_FULL_NAV)
@@ -1162,7 +1163,7 @@ static void initialize_device(mip_interface* _device, serial_port* _device_port,
     const uint16_t patch = device_info.firmware_version % 100;
 
     // Firmware version format is x.x.xx
-    char firmwareVersion[16];
+    char firmwareVersion[16] = {0};
     snprintf(firmwareVersion, sizeof(firmwareVersion) / sizeof(firmwareVersion[0]), "%d.%d.%02d", major, minor, patch);
 
     MICROSTRAIN_LOG_INFO("-------- Device Information --------\n");

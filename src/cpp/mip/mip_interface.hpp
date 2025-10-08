@@ -1213,7 +1213,7 @@ namespace mip
         PacketBuf packet(cmd);
 
         C::mip_pending_cmd pending;
-        C::mip_pending_cmd_init_full(&pending, Cmd::DESCRIPTOR_SET, Cmd::FIELD_DESCRIPTOR, Cmd::Response::FIELD_DESCRIPTOR, packet.buffer_w(), FIELD_PAYLOAD_LENGTH_MAX, additionalTime);
+        C::mip_pending_cmd_init_full(&pending, Cmd::DESCRIPTOR_SET, Cmd::FIELD_DESCRIPTOR, Cmd::Response::FIELD_DESCRIPTOR, packet.buffer_w(), FieldView::PAYLOAD_LENGTH_MAX, additionalTime);
 
         CmdResult result = C::mip_interface_run_command_packet(&device, &packet, &pending);
         if (result != C::MIP_ACK_OK)

@@ -137,7 +137,7 @@ static void print_packet(const mip_packet_view* _packet_view)
     // this as an inexpensive validation step
     assert(mip_packet_is_sane(_packet_view));
 
-    const uint8_t* packet_pointer = mip_packet_data(_packet_view);
+    const uint8_t* packet_data = mip_packet_data(_packet_view);
 
     // Create a buffer for printing purposes
     char packet_byte_buffer[MIP_PACKET_PAYLOAD_LENGTH_MAX] = {0};
@@ -150,7 +150,7 @@ static void print_packet(const mip_packet_view* _packet_view)
             &packet_byte_buffer[buffer_offset],
             sizeof(packet_byte_buffer) / sizeof(packet_byte_buffer[0]) - buffer_offset,
             "%02X",
-            packet_pointer[i]
+            packet_data[i]
         );
     }
 
@@ -159,8 +159,8 @@ static void print_packet(const mip_packet_view* _packet_view)
     // Print the packet details before the fields
     printf("%4s%-20s = %u\n", " ", "Packet Length", mip_packet_total_length(_packet_view));
     printf("%4s%-20s = %s\n", " ", "Raw Packet", packet_byte_buffer);
-    printf("%4s%-20s = 0x%02X\n", " ", "MIP SYNC1", packet_pointer[0]);
-    printf("%4s%-20s = 0x%02X\n", " ", "MIP SYNC2", packet_pointer[1]);
+    printf("%4s%-20s = 0x%02X\n", " ", "MIP SYNC 1", packet_data[MIP_PACKET_INDEX_SYNC_1]);
+    printf("%4s%-20s = 0x%02X\n", " ", "MIP SYNC 2", packet_data[MIP_PACKET_INDEX_SYNC_2]);
     printf("%4s%-20s = 0x%02X\n", " ", "Descriptor Set", mip_packet_descriptor_set(_packet_view));
     printf("%4s%-20s = 0x%02X\n", " ", "Payload Length", payload_length);
 
@@ -326,10 +326,7 @@ static void add_comm_speed_bytes_to_packet(mip_packet_view* _packet_view)
 ///
 static void add_comm_speed_field_to_packet(mip_packet_view* _packet_view)
 {
-    mip_base_comm_speed_command comm_speed_command;
-    comm_speed_command.function = MIP_FUNCTION_WRITE;
-    comm_speed_command.port     = 0x01;
-    comm_speed_command.baud     = 115200;
+    const mip_base_comm_speed_command comm_speed_command = {.function = MIP_FUNCTION_WRITE, .port = 0x01, .baud = 115200};
 
     // Create a new field with a serializer.
     mip_serializer serializer;

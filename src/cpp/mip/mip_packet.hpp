@@ -3,7 +3,6 @@
 #include "mip_field.hpp"
 
 #include <mip/mip_packet.h>
-#include <mip/mip_offsets.h>
 
 #include <microstrain/serialization.hpp>
 
@@ -35,13 +34,27 @@ namespace mip
 class PacketView : public C::mip_packet_view
 {
 public:
+    enum class Index : uint8_t
+    {
+        SYNC_1   = C::MIP_PACKET_INDEX_SYNC_1,
+        SYNC_2   = C::MIP_PACKET_INDEX_SYNC_2,
+        DESC_SET = C::MIP_PACKET_INDEX_DESC_SET,
+        LENGTH   = C::MIP_PACKET_INDEX_LENGTH,
+        PAYLOAD  = C::MIP_PACKET_INDEX_PAYLOAD
+    };
+
+    static constexpr uint8_t SYNC_1 = C::MIP_SYNC_1;
+    static constexpr uint8_t SYNC_2 = C::MIP_SYNC_2;
+
+    static constexpr size_t HEADER_LENGTH      = C::MIP_PACKET_HEADER_LENGTH;
+    static constexpr size_t CHECKSUM_LENGTH    = C::MIP_PACKET_CHECKSUM_LENGTH;
+    static constexpr size_t LENGTH_MIN         = C::MIP_PACKET_LENGTH_MIN;
+    static constexpr size_t LENGTH_MAX         = C::MIP_PACKET_LENGTH_MAX;
+    static constexpr size_t PAYLOAD_LENGTH_MIN = C::MIP_PACKET_PAYLOAD_LENGTH_MIN;
     static constexpr size_t PAYLOAD_LENGTH_MAX = C::MIP_PACKET_PAYLOAD_LENGTH_MAX;
-    static constexpr size_t PACKET_SIZE_MIN    = C::MIP_PACKET_LENGTH_MIN;
-    static constexpr size_t PACKET_SIZE_MAX    = C::MIP_PACKET_LENGTH_MAX;
 
     class FieldIterator;
 
-public:
     ///@copydoc mip::C::mip_packet_create
     PacketView(uint8_t* buffer, size_t bufferSize, uint8_t descriptorSet) { C::mip_packet_create(this, buffer, bufferSize, descriptorSet); }
     ///@copydoc mip::C::mip_packet_from_buffer
@@ -105,11 +118,13 @@ public:
     // C++ additions
     //
 
-    uint8_t  dataAt(size_t i) const { assert(i < totalLength()); return payload()[i];   }
-    uint8_t& dataAt(size_t i)       { assert(i < totalLength()); return payload_w()[i]; }
+    uint8_t  dataAt(const size_t i) const { assert(i < totalLength()); return payload()[i];   }
+    uint8_t& dataAt(const size_t i)       { assert(i < totalLength()); return payload_w()[i]; }
+    uint8_t  dataAt(const Index i)  const { return dataAt(static_cast<size_t>(i)); }
+    uint8_t& dataAt(const Index i)        { return dataAt(static_cast<size_t>(i)); }
 
-    uint8_t  payloadAt(size_t i) const { assert(i < payloadLength()); return                      C::mip_packet_payload(this)[i];  }  ///@brief Get payload byte at index i.
-    uint8_t& payloadAt(size_t i)       { assert(i < payloadLength()); return const_cast<uint8_t&>(C::mip_packet_payload(this)[i]); }  ///@brief Get writable payload byte at index i.
+    uint8_t  payloadAt(const size_t i) const { assert(i < payloadLength()); return                      C::mip_packet_payload(this)[i];  }  ///@brief Get payload byte at index i.
+    uint8_t& payloadAt(const size_t i)       { assert(i < payloadLength()); return const_cast<uint8_t&>(C::mip_packet_payload(this)[i]); }  ///@brief Get writable payload byte at index i.
 
     ///@brief Creates a mip field with the given descriptor and a copy of the payload.
     ///
@@ -137,7 +152,7 @@ public:
 
         bool commit()
         {
-            assert(capacity() <= FIELD_PAYLOAD_LENGTH_MAX);
+            assert(capacity() <= FieldView::PAYLOAD_LENGTH_MAX);
 
             bool ok = isOk();
 
@@ -314,7 +329,7 @@ public:
 template<size_t BufferSize>
 class SizedPacketBuf : public PacketView
 {
-    static_assert(BufferSize >= PACKET_LENGTH_MIN, "BufferSize must be at least PACKET_LENGTH_MIN bytes");
+    static_assert(BufferSize >= LENGTH_MIN, "BufferSize must be at least PacketView::LENGTH_MIN bytes");
 
 public:
     explicit SizedPacketBuf(uint8_t descriptorSet=INVALID_DESCRIPTOR_SET) : PacketView(mData, sizeof(mData), descriptorSet) {}
@@ -393,7 +408,7 @@ private:
 /// Generally you should use this instead of SizedPacketBuf directly, unless you
 /// know the maximum size of your packet will be less than PACKET_LENGTH_MAX.
 ///
-typedef SizedPacketBuf<mip::PACKET_LENGTH_MAX> PacketBuf;
+typedef SizedPacketBuf<PacketView::LENGTH_MAX> PacketBuf;
 
 
 

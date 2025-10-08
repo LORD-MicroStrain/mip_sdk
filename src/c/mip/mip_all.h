@@ -18,7 +18,6 @@
 #include "mip_dispatch.h"
 #include "mip_field.h"
 #include "mip_interface.h"
-#include "mip_offsets.h"
 #include "mip_packet.h"
 #include "mip_parser.h"
 #include "mip_result.h"

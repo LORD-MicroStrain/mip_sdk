@@ -170,9 +170,9 @@ int main(const int argc, const char* argv[])
     mip_dispatch_handler filter_data_handlers[3];
 
     // Data stores for filter data
-    mip_filter_timestamp_data    filter_timestamp;
-    mip_filter_status_data       filter_status;
-    mip_filter_euler_angles_data filter_euler_angles;
+    mip_filter_timestamp_data    filter_timestamp    = {0};
+    mip_filter_status_data       filter_status       = {0};
+    mip_filter_euler_angles_data filter_euler_angles = {0};
 
     // Register the callbacks for the filter fields
 
@@ -726,7 +726,7 @@ static void initialize_device(mip_interface* _device, serial_port* _device_port,
     const uint16_t patch = device_info.firmware_version % 100;
 
     // Firmware version format is x.x.xx
-    char firmwareVersion[16];
+    char firmwareVersion[16] = {0};
     snprintf(firmwareVersion, sizeof(firmwareVersion) / sizeof(firmwareVersion[0]), "%d.%d.%02d", major, minor, patch);
 
     MICROSTRAIN_LOG_INFO("-------- Device Information --------\n");

@@ -627,7 +627,7 @@ static void initializeDevice(mip::Interface& _device)
     const uint16_t patch = deviceInfo.firmware_version % 100;
 
     // Firmware version format is x.x.xx
-    char firmwareVersion[16];
+    char firmwareVersion[16] = {0};
     snprintf(firmwareVersion, sizeof(firmwareVersion) / sizeof(firmwareVersion[0]), "%d.%d.%02d", major, minor, patch);
 
     MICROSTRAIN_LOG_INFO("-------- Device Information --------\n");

@@ -186,9 +186,9 @@ int main(const int argc, const char* argv[])
     mip_dispatch_handler filter_data_handlers[4];
 
     // Data stores for filter data
-    mip_shared_gps_timestamp_data filter_gps_timestamp;
-    mip_filter_status_data        filter_status;
-    mip_filter_euler_angles_data  filter_euler_angles;
+    mip_shared_gps_timestamp_data filter_gps_timestamp = {0};
+    mip_filter_status_data        filter_status        = {0};
+    mip_filter_euler_angles_data  filter_euler_angles  = {0};
 
     // Register the callbacks for the filter fields
 

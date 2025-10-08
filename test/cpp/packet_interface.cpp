@@ -25,10 +25,10 @@ bool checkPacketView(const mip::PacketView& packet, microstrain::ConstU8ArrayVie
     bool ok = true;
 
     ok &= check(packet.isSane(), "Insane packet from %s", method);
-    ok &= check(packet.descriptorSet() == compare[mip::C::MIP_INDEX_DESCSET], "Wrong descriptor set from %s", method);
-    ok &= check(packet.payloadLength() == compare[mip::C::MIP_INDEX_LENGTH], "Wrong payload length from %s", method);
-    ok &= check(packet.packetLength() == packet.payloadLength()+mip::C::MIP_PACKET_LENGTH_MIN, "Wrong total length from %s", method);
-    ok &= check_equal(packet.payloadPointer(), packet.pointer() + mip::C::MIP_INDEX_PAYLOAD, "Wrong payload pointer from %s", method);
+    ok &= check(packet.descriptorSet() == compare[mip::PacketView::Index::DESC_SET], "Wrong descriptor set from %s", method);
+    ok &= check(packet.payloadLength() == compare[mip::PacketView::Index::LENGTH], "Wrong payload length from %s", method);
+    ok &= check(packet.packetLength() == packet.payloadLength()+mip::PacketView::LENGTH_MIN, "Wrong total length from %s", method);
+    ok &= check_equal(packet.payloadPointer(), packet.pointer() + mip::PacketView::Index::PAYLOAD, "Wrong payload pointer from %s", method);
     ok &= check(packet.pointer() != nullptr, "PacketRef shouldn't have NULL pointer from %s", method);
     ok &= check_equal(packet.bytes().data(), packet.pointer(), "bytes().data() should match pointer()");
     ok &= check_equal(packet.bytes().size(), packet.packetLength(), "bytes().size() should match totalLength()");
@@ -86,10 +86,10 @@ void testPacketView()
     checkPacketView(packet1, buffer, "PacketView initializing constructor");
     check(packet1.isEmpty(), "Packet should be empty after packetView initializing constructor");
     check_equal(packet1.bufferSize(), sizeof(buffer), "Wrong buffer size from PacketView initializing constructor");
-    check_equal(packet1.remainingSpace(), mip::C::MIP_PACKET_PAYLOAD_LENGTH_MAX, "remainingSpace wrong after PacketView initializing constructor");
+    check_equal(packet1.remainingSpace(), mip::PacketView::PAYLOAD_LENGTH_MAX, "remainingSpace wrong after PacketView initializing constructor");
     //bool ok = packet1.addField(mip::commands_base::Ping::FIELD_DESCRIPTOR, nullptr, 0);
     //check(ok, "Failed to add field to packet1");
-    //check_equal(packet1.remainingSpace(), mip::C::MIP_PACKET_PAYLOAD_LENGTH_MAX-2, "remainingSpace wrong after adding Ping command to packet1");
+    //check_equal(packet1.remainingSpace(), mip::PacketView::PAYLOAD_LENGTH_MAX-2, "remainingSpace wrong after adding Ping command to packet1");
     //check_equal(packet1.bufferSize(), sizeof(buffer), "Wrong buffer size after adding Ping command to packet1");
     packet1.finalize();
     if(!check(packet1.isValid(), "Packet1 not valid after finalization"))
