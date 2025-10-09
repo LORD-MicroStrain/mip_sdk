@@ -1,4 +1,5 @@
 
+#include <mip/mip_field.h>
 #include <mip/mip_packet.h>
 #include <mip/mip_parser.h>
 
@@ -121,7 +122,7 @@ int main(int argc, const char* argv[])
         bool potentially_nested = false;
         for(unsigned int b=1; b<mip_packet_total_length(&packet)-1; b++)
         {
-            if(mip_packet_pointer(&packet)[b] == MIP_SYNC1 && mip_packet_pointer(&packet)[b+1] == MIP_SYNC2)
+            if(mip_packet_pointer(&packet)[b] == MIP_SYNC_1 && mip_packet_pointer(&packet)[b+1] == MIP_SYNC_2)
                 potentially_nested = true;
         }
 

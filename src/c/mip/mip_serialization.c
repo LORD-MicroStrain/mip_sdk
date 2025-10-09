@@ -1,6 +1,5 @@
 
 #include "mip_serialization.h"
-#include "mip_offsets.h"
 
 #include <assert.h>
 

@@ -6,7 +6,6 @@
 #include <microstrain/array_view.hpp>
 
 #include <mip/mip_field.h>
-#include <mip/mip_offsets.h>
 
 #include <cstring>
 
@@ -25,7 +24,18 @@ namespace mip
 class FieldView : public C::mip_field_view
 {
 public:
-    static constexpr size_t MAX_PAYLOAD_LENGTH = C::MIP_FIELD_PAYLOAD_LENGTH_MAX;
+    enum class Index : uint8_t
+    {
+        LENGTH   = C::MIP_FIELD_INDEX_LENGTH,
+        DESC     = C::MIP_FIELD_INDEX_DESC,
+        PAYLOAD  = C::MIP_FIELD_INDEX_PAYLOAD
+    };
+
+    static constexpr size_t HEADER_LENGTH      = C::MIP_FIELD_HEADER_LENGTH;
+    static constexpr size_t LENGTH_MIN         = C::MIP_FIELD_LENGTH_MIN;
+    static constexpr size_t LENGTH_MAX         = C::MIP_FIELD_LENGTH_MAX;
+    static constexpr size_t PAYLOAD_LENGTH_MIN = C::MIP_FIELD_PAYLOAD_LENGTH_MIN;
+    static constexpr size_t PAYLOAD_LENGTH_MAX = C::MIP_FIELD_PAYLOAD_LENGTH_MAX;
 
     /// Construct an empty MIP field.
     FieldView() { C::mip_field_view::_payload=nullptr; C::mip_field_view::_payload_length=0; C::mip_field_view::_field_descriptor=0x00; C::mip_field_view::_descriptor_set=0x00; C::mip_field_view::_remaining_length=0; }
@@ -85,7 +95,7 @@ public:
     ///         payload array may not have header bytes and this function isn't
     ///         safe in that case.
     ///
-    microstrain::ConstU8ArrayView bytes() const { return {payload()-C::MIP_HEADER_LENGTH, size_t(payloadLength()+C::MIP_HEADER_LENGTH)}; }
+    microstrain::ConstU8ArrayView bytes() const { return {payload() - HEADER_LENGTH, static_cast<size_t>(payloadLength() + HEADER_LENGTH)}; }
 
     ///@copydoc mip::C::mip_field_is_valid
     bool isValid() const { return C::mip_field_is_valid(this); }

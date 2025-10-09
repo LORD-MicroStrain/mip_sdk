@@ -11,10 +11,10 @@
 using namespace mip;
 using namespace mip::C;
 
-uint8_t packetBuffer[PACKET_LENGTH_MAX];
+uint8_t packetBuffer[MIP_PACKET_LENGTH_MAX];
 uint8_t parseBuffer[1024];
 
-FieldView fields[(unsigned int)MIP_PACKET_PAYLOAD_LENGTH_MAX / (unsigned int)MIP_FIELD_LENGTH_MIN];
+FieldView fields[(unsigned int)mip::PacketView::PAYLOAD_LENGTH_MAX / (unsigned int)mip::FieldView::LENGTH_MIN];
 unsigned int numFields = 0;
 
 unsigned int numErrors = 0;

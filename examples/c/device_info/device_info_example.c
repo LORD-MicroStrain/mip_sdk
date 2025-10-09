@@ -1,20 +1,26 @@
 ////////////////////////////////////////////////////////////////////////////////
-/// device_info_example.c
+/// @file device_info_example.c
 ///
-/// Example program to print device information from any MIP-enabled MicroStrain
-/// device using C
+/// @defgroup device_info_example_c Device Info Example [C]
 ///
-/// If this example does not meet your specific setup needs, please consult the
-/// MIP SDK API documentation for the proper commands.
+/// @ingroup examples_c
 ///
-/// @section LICENSE
+/// @brief Example program to print device information for any MIP-enabled
+///        MicroStrain device using C
 ///
-/// THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
-/// WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
-/// TIME. AS A RESULT, MICROSTRAIN BY HBK SHALL NOT BE HELD LIABLE FOR ANY
-/// DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
-/// FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
-/// CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+/// @details This example shows a basic setup for any MIP-enabled MicroStrain
+///          device to demonstrate how to get and print device information using
+///          C. This is not an exhaustive example of all settings for those
+///          devices. If this example does not meet your specific setup needs,
+///          please consult the MIP SDK API documentation for the proper
+///          commands.
+///
+/// @section device_info_example_c_license License
+///
+/// @copyright Copyright (c) 2025 MicroStrain by HBK
+///            Licensed under MIT License
+///
+/// @{
 ///
 
 // Include the MicroStrain Serial connection header
@@ -41,35 +47,43 @@
 // NOTE: Setting these globally for example purposes
 
 // TODO: Update to the correct port name and baudrate
-// Set the port name for the connection (Serial/USB)
+/// @brief  Set the port name for the connection (Serial/USB)
 #ifdef _WIN32
 static const char* PORT_NAME = "COM1";
-#else // Unix
-static const char* PORT_NAME = "/dev/ttyUSB0";
+#else  // Unix
+static const char* PORT_NAME = "/dev/ttyACM0";
 #endif // _WIN32
 
-// Set the baudrate for the connection (Serial/USB)
+/// @brief  Set the baudrate for the connection (Serial/USB)
+/// @note For native serial connections this needs to be 115200 due to the device default settings command
+/// Use mip_base_*_comm_speed() or mip_3dm_*_uart_baudrate() to write and save the baudrate on the device
 static const uint32_t BAUDRATE = 115200;
 ////////////////////////////////////////////////////////////////////////////////
 
+///
+/// @} group device_info_example_c
+////////////////////////////////////////////////////////////////////////////////
+
 // Custom logging handler callback
-void log_callback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args);
+static void log_callback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args);
 
 // Used for basic timestamping (since epoch in milliseconds)
 // TODO: Update this to whatever timestamping method is desired
-mip_timestamp get_current_timestamp();
+static mip_timestamp get_current_timestamp();
 
 // Device callbacks used for reading and writing packets
-bool mip_interface_user_send_to_device(mip_interface* _device, const uint8_t* _data, size_t _length);
-bool mip_interface_user_recv_from_device(mip_interface* _device, uint8_t* _buffer, size_t _max_length,
-    mip_timeout _wait_time, bool _from_cmd, size_t* _length_out, mip_timestamp* _timestamp_out);
+static bool mip_interface_user_send_to_device(mip_interface* _device, const uint8_t* _data, size_t _length);
+static bool mip_interface_user_recv_from_device(
+    mip_interface* _device, uint8_t* _buffer, size_t _max_length, mip_timeout _wait_time, bool _from_cmd,
+    size_t* _length_out, mip_timestamp* _timestamp_out
+);
 
 // Common device initialization procedure
-void initialize_device(mip_interface* _device, serial_port* _device_port, const uint32_t _baudrate);
+static void initialize_device(mip_interface* _device, serial_port* _device_port, const uint32_t _baudrate);
 
 // Utility functions the handle application closing and printing error messages
-void terminate(serial_port* _device_port, const char* _message, const bool _successful);
-void command_failure_terminate(const mip_interface* _device, const mip_cmd_result _cmd_result, const char* _format, ...);
+static void terminate(serial_port* _device_port, const char* _message, const bool _successful);
+static void exit_from_command(const mip_interface* _device, const mip_cmd_result _cmd_result, const char* _format, ...);
 
 int main(const int argc, const char* argv[])
 {
@@ -77,7 +91,15 @@ int main(const int argc, const char* argv[])
     (void)argc;
     (void)argv;
 
+// Note: This is a compile-time way of checking that the proper logging level is enabled
+// Note: The max available logging level may differ in pre-packaged installations of the MIP SDK
+#ifndef MICROSTRAIN_LOGGING_ENABLED_INFO
+#error This example requires a logging level of at least MICROSTRAIN_LOGGING_LEVEL_INFO_ to work properly
+#endif // !MICROSTRAIN_LOGGING_ENABLED_INFO
+
     // Initialize the custom logger to print messages/errors as they occur
+    // Note: The logging level parameter doesn't need to match the max logging level.
+    // If the parameter is higher than the max level, higher-level logging functions will be ignored
     MICROSTRAIN_LOG_INIT(&log_callback, MICROSTRAIN_LOG_LEVEL_INFO, NULL);
 
     // Initialize the connection
@@ -102,6 +124,11 @@ int main(const int argc, const char* argv[])
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+/// @addtogroup device_info_example_c
+/// @{
+///
+
+////////////////////////////////////////////////////////////////////////////////
 /// @brief Custom logging callback for MIP SDK message formatting and output
 ///
 /// @details Processes and formats log messages from the MIP SDK based on
@@ -114,7 +141,7 @@ int main(const int argc, const char* argv[])
 /// @param _format Printf-style format string for the message
 /// @param _args Variable argument list containing message parameters
 ///
-void log_callback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args)
+static void log_callback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args)
 {
     // Unused parameter
     (void)_user;
@@ -126,6 +153,7 @@ void log_callback(void* _user, const microstrain_log_level _level, const char* _
         {
             fprintf(stderr, "%s: ", microstrain_logging_level_name(_level));
             vfprintf(stderr, _format, _args);
+            fflush(stderr);
             break;
         }
         case MICROSTRAIN_LOG_LEVEL_WARN:
@@ -135,6 +163,7 @@ void log_callback(void* _user, const microstrain_log_level _level, const char* _
         {
             fprintf(stdout, "%s: ", microstrain_logging_level_name(_level));
             vfprintf(stdout, _format, _args);
+            fflush(stdout);
             break;
         }
         case MICROSTRAIN_LOG_LEVEL_OFF:
@@ -158,7 +187,7 @@ void log_callback(void* _user, const microstrain_log_level _level, const char* _
 ///
 /// @return Current system time in milliseconds since epoch
 ///
-mip_timestamp get_current_timestamp()
+static mip_timestamp get_current_timestamp()
 {
     struct timespec ts;
 
@@ -186,7 +215,7 @@ mip_timestamp get_current_timestamp()
 ///
 /// @return True if send was successful, false otherwise
 ///
-bool mip_interface_user_send_to_device(mip_interface* _device, const uint8_t* _data, size_t _length)
+static bool mip_interface_user_send_to_device(mip_interface* _device, const uint8_t* _data, size_t _length)
 {
     // Extract the serial port pointer that was used in the callback initialization
     serial_port* device_port = (serial_port*)mip_interface_user_pointer(_device);
@@ -223,8 +252,10 @@ bool mip_interface_user_send_to_device(mip_interface* _device, const uint8_t* _d
 ///
 /// @return True if receive was successful, false otherwise
 ///
-bool mip_interface_user_recv_from_device(mip_interface* _device, uint8_t* _buffer, size_t _max_length,
-    mip_timeout _wait_time, bool _from_cmd, size_t* _length_out, mip_timestamp* _timestamp_out)
+static bool mip_interface_user_recv_from_device(
+    mip_interface* _device, uint8_t* _buffer, size_t _max_length, mip_timeout _wait_time, bool _from_cmd,
+    size_t* _length_out, mip_timestamp* _timestamp_out
+)
 {
     // Unused parameter
     (void)_from_cmd;
@@ -260,7 +291,7 @@ bool mip_interface_user_recv_from_device(mip_interface* _device, uint8_t* _buffe
 ///                     communication
 /// @param _baudrate Serial communication baudrate for the device
 ///
-void initialize_device(mip_interface* _device, serial_port* _device_port, const uint32_t _baudrate)
+static void initialize_device(mip_interface* _device, serial_port* _device_port, const uint32_t _baudrate)
 {
     MICROSTRAIN_LOG_INFO("Initializing the device interface.\n");
     mip_interface_init(
@@ -277,27 +308,30 @@ void initialize_device(mip_interface* _device, serial_port* _device_port, const 
     // Note: This is a good first step to make sure the device is present
     MICROSTRAIN_LOG_INFO("Pinging the device.\n");
     mip_cmd_result cmd_result = mip_base_ping(_device);
+
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        command_failure_terminate(_device, cmd_result, "Could not ping the device!\n");
+        exit_from_command(_device, cmd_result, "Could not ping the device!\n");
     }
 
     // Set the device to Idle
     // Note: This is good to do during setup as high data traffic can cause commands to fail
     MICROSTRAIN_LOG_INFO("Setting the device to idle.\n");
     cmd_result = mip_base_set_idle(_device);
+
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        command_failure_terminate(_device, cmd_result, "Could not set the device to idle!\n");
+        exit_from_command(_device, cmd_result, "Could not set the device to idle!\n");
     }
 
     // Print device info to make sure the correct device is being used
     MICROSTRAIN_LOG_INFO("Getting the device information.\n");
     mip_base_device_info device_info;
     cmd_result = mip_base_get_device_info(_device, &device_info);
+
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        command_failure_terminate(_device, cmd_result, "Could not get the device information!\n");
+        exit_from_command(_device, cmd_result, "Could not get the device information!\n");
     }
 
     // Extract the major minor and patch values
@@ -306,20 +340,16 @@ void initialize_device(mip_interface* _device, serial_port* _device_port, const 
     const uint16_t patch = device_info.firmware_version % 100;
 
     // Firmware version format is x.x.xx
-    char firmwareVersion[16];
-    snprintf(firmwareVersion, sizeof(firmwareVersion) / sizeof(firmwareVersion[0]), "%d.%d.%02d",
-        major,
-        minor,
-        patch
-    );
+    char firmwareVersion[16] = {0};
+    snprintf(firmwareVersion, sizeof(firmwareVersion) / sizeof(firmwareVersion[0]), "%d.%d.%02d", major, minor, patch);
 
     MICROSTRAIN_LOG_INFO("-------- Device Information --------\n");
-    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Name",             device_info.model_name);
-    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Model Number",     device_info.model_number);
-    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Serial Number",    device_info.serial_number);
-    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Lot Number",       device_info.lot_number);
-    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Options",          device_info.device_options);
-    MICROSTRAIN_LOG_INFO("%-16s | %16s\n",  "Firmware Version", firmwareVersion);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Name", device_info.model_name);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Model Number", device_info.model_number);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Serial Number", device_info.serial_number);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Lot Number", device_info.lot_number);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Options", device_info.device_options);
+    MICROSTRAIN_LOG_INFO("%-16s | %16s\n", "Firmware Version", firmwareVersion);
     MICROSTRAIN_LOG_INFO("------------------------------------\n");
 }
 
@@ -335,9 +365,9 @@ void initialize_device(mip_interface* _device, serial_port* _device_port, const 
 /// @param _message Error message to display
 /// @param _successful Whether termination is due to success or failure
 ///
-void terminate(serial_port* _device_port, const char* _message, const bool _successful)
+static void terminate(serial_port* _device_port, const char* _message, const bool _successful)
 {
-    if (strlen(_message) != 0)
+    if (_message != NULL && strlen(_message) != 0)
     {
         if (_successful)
         {
@@ -367,12 +397,11 @@ void terminate(serial_port* _device_port, const char* _message, const bool _succ
         }
     }
 
-    MICROSTRAIN_LOG_INFO("Exiting the program.\n");
+    MICROSTRAIN_LOG_INFO("Press 'Enter' to exit the program.\n");
 
-#ifdef _WIN32
-    // Keep the console open on Windows
-    system("pause");
-#endif // _WIN32
+    // Make sure the console remains open
+    const int confirm_exit = getc(stdin);
+    (void)confirm_exit; // Unused
 
     if (!_successful)
     {
@@ -393,12 +422,15 @@ void terminate(serial_port* _device_port, const char* _message, const bool _succ
 /// @param _format Printf-style format string for error message
 /// @param ... Variable arguments for format string
 ///
-void command_failure_terminate(const mip_interface* _device, const mip_cmd_result _cmd_result, const char* _format, ...)
+static void exit_from_command(const mip_interface* _device, const mip_cmd_result _cmd_result, const char* _format, ...)
 {
-    va_list args;
-    va_start(args, _format);
-    MICROSTRAIN_LOG_ERROR_V(_format, args);
-    va_end(args);
+    if (_format != NULL && strlen(_format) != 0)
+    {
+        va_list args;
+        va_start(args, _format);
+        MICROSTRAIN_LOG_ERROR_V(_format, args);
+        va_end(args);
+    }
 
     MICROSTRAIN_LOG_ERROR("Command Result: (%d) %s.\n", _cmd_result, mip_cmd_result_to_string(_cmd_result));
 
@@ -414,3 +446,7 @@ void command_failure_terminate(const mip_interface* _device, const mip_cmd_resul
         terminate(device_port, "", false);
     }
 }
+
+///
+/// @} group device_info_example_c
+////////////////////////////////////////////////////////////////////////////////

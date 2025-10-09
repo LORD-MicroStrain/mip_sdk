@@ -81,3 +81,7 @@ endif()
 target_compile_options(${PROJECT_NAME} PRIVATE
     "${COMPILE_OPTIONS}"
 )
+
+target_compile_definitions(${PROJECT_NAME} PRIVATE
+    "MICROSTRAIN_LOGGING_MAX_LEVEL=MICROSTRAIN_LOGGING_LEVEL_INFO_" # Info logging level is required at a minimum
+)

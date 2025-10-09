@@ -138,7 +138,7 @@ bool serial_port_open(serial_port* port, const char* port_str, int baudrate)
 
     // Set the new timeouts
     timeouts.ReadIntervalTimeout         = 10;
-    timeouts.ReadTotalTimeoutMultiplier  = 1;
+    timeouts.ReadTotalTimeoutMultiplier  = 0;
     timeouts.ReadTotalTimeoutConstant    = 10;
     timeouts.WriteTotalTimeoutMultiplier = 1;
     timeouts.WriteTotalTimeoutConstant   = 10;

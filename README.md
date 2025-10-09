@@ -25,30 +25,9 @@ Features
   * MIP packet parsing and field iteration
   * Data field deserialization
 
-Examples
---------
+## Examples
 
-| Example                          |                                                                   |                                                              | Description                                                                                  |
-|----------------------------------|-------------------------------------------------------------------|--------------------------------------------------------------|----------------------------------------------------------------------------------------------|
-| <b>Generic Examples</b>          |                                                                   |                                                              |                                                                                              |
-| Get device information           | [C++](./examples/device_info.cpp)                                 |                                                              | Queries the device strings and prints them to stdout.                                        |
-| Watch IMU                        | [C++](./examples/watch_imu.cpp)                                   | [C](./examples/watch_imu.c)                                  | Configures the IMU for streaming and prints the data to stdout.                              |
-| Threading                        | [C++](./examples/threading.cpp)                                   |                                                              |                                                                                              |
-| Ping                             | [C++](./examples/ping.cpp)                                        |                                                              |                                                                                              |
-| <b>Product-specific examples</b> |                                                                   |                                                              |                                                                                              |
-| CV7 setup                        | [C++](./examples/CV7/CV7_example.cpp)                             | [C](./examples/CV7/CV7_example.c)                            | Configures a CV7 device for typical usage and includes an example of using the event system. |
-| CV7_INS setup                    | [C++](./examples/CV7_INS/CV7_INS_simple_example.cpp)              |                                                              | Configures a CV7_INS device for typical usage.                                               |
-| CV7_INS with UBlox setup         | [C++](./examples/CV7_INS/CV7_INS_simple_ublox_example.cpp)        |                                                              | Configures a CV7_INS device for typical usage with aiding data from a UBlox GNSS receiver.   |
-| GQ7 setup                        | [C++](./examples/GQ7/GQ7_example.cpp)                             | [C](./examples/GQ7/GQ7_example.c)                            | Configures a GQ7 device for typical usage in a wheeled-vehicle application.                  |
-| GX5-45 setup                     | [C++](./examples/GX5_45/GX5_45_example.cpp)                       | [C](./examples/GX5_45/GX5_45_example.c)                      | Configures a GX5-45 device for typical usage in a wheeled-vehicle application.               |
-| GX5/CX5/CV5 -15 or -25 setup     | [C++](./examples/CX5_GX5_CV5_15_25/CX5_GX5_CV5_15_25_example.cpp) | [C](./examples/CX5_GX5_CV5_15_25/CX5_GX5_CV5_15_25_example.c) | Configures a GX5-45 device for typical usage in a wheeled-vehicle application.               |
-
-You'll need to enable at least one of the [communications interfaces](#communications-interfaces) in the CMake configuration to use the examples.
-
-The examples take two parameters for the device connection:
-* For a serial connection: Port and baudrate. Port must start with `/dev/` on Linux or `COM` on Windows.
-* For a TCP connection: Hostname and port. Hostname can be either a hostname like `localhost` or an IPv4 address.
-
+See the [examples](examples) directory for more details
 
 Documentation
 -------------
@@ -63,7 +42,7 @@ The C++ API is implemented on top of the C API to provide additional features:
 * Better clarity / reduced verbosity (e.g. with `using namespace mip`)
 
 The C++ API uses `TitleCase` for types and `camelCase` for functions and variables, while the C api uses `snake_case` naming for
-everything. This makes it easy to tell which is being used when looking at the examples.
+everything. This makes it easy to tell which is being used.
 
 The C API can be accessed directly from C++ via the `mip::C` namespace.
 
@@ -71,16 +50,16 @@ The C API can be accessed directly from C++ via the `mip::C` namespace.
 
 MIP devices return an ack/nack field in response to commands to allow the user to determine if the command was
 successfully executed. These fields contain a "reply code" which is defined by the MIP protocol. This library
-additionally defines several "status codes" for situations where an ack/nack field is not applicable (i.e. if
-the device doesn't respond to the command, if the command couldn't be transmitted, etc).
+additionally defines several "status codes" for situations where an ack/nack field is not applicable (i.e., if
+the device doesn't respond to the command, if the command couldn't be transmitted, etc.).
 
 See the documentation page for [Command Results](https://lord-microstrain.github.io/mip_sdk_documentation/latest/command_results.html) for details.
 
 ### Timestamps
 
-In order to implement command timeouts and provide time of arrival information, this library requires applications to
-provide the time of received data. The time must be provided as an unsigned integral value with a reasonable precision,
-typically milliseconds since program startup. By default the timestamp type is set to `uint64_t`, but some embedded
+To implement command timeouts and provide time of arrival information, this library requires applications to
+provide the time of received data. The time must be provided as an unsigned integral value with reasonable precision,
+typically milliseconds since program start time. By default, the timestamp type is set to `uint64_t`, but some embedded
 applications may wish to change this to `uint32_t` via the `MICROSTRAIN_TIMESTAMP_TYPE` define. Note that wraparound is
 permissible if the wraparound period is longer than twice the longest timeout used by the application.
 
@@ -90,12 +69,12 @@ See the documentation page for [Timestamps](https://lord-microstrain.github.io/m
 Communications Interfaces
 -------------------------
 
-Two connection types are provided with the MIP SDK to make it easy to run the examples on both Windows and Linux systems.
+Two connection types are provided with the MIP SDK to make it easy to use on both Windows and Unix systems.
 
 ### Serial Port
 
-A basic serial port interface is provided in C and C++ for Linux, Mac, and Windows. These can be modified for other platforms by the user.
-The serial port connection will be used in most cases, when the MIP device is connected
+A basic serial port interface is provided in C and C++ for Linux, Mac, and Windows. The user can modify these for other platforms.
+The serial port connection will be used in most cases when the MIP device is connected
 via a serial or USB cable (the USB connection acts like a virtual serial port).
 
 [Enable it](#build-configuration) in the CMake configuration with `-DMICROSTRAIN_ENABLE_SERIAL=1`.
@@ -119,9 +98,9 @@ How to Build
   * Define `MICROSTRAIN_ENABLE_CPP=OFF` if you don't want to use any C++. Note that some features are only available in C++.
 * A working C++ compiler, if using any C++ features
   * C++14 or later is required.
-  * C++20 or later for metadata and associated examples
+  * C++20 or later for metadata
 * CMake version 3.10 or later (technically this is optional, see below)
-* Doxygen, if building documentation
+* Doxygen for building documentation
 
 ### CMake Build Configuration
 
@@ -195,24 +174,25 @@ different subdirectories, avoiding the conflict.
 
 Pass these to your compiler as appropriate, e.g. `arm-none-eabi-gcc -DMICROSTRAIN_TIMESTAMP_TYPE=uint32_t -DMICROSTRAIN_LOGGING_MAX_LEVEL=MICROSTRAIN_LOGGING_LEVEL_WARN_`
 
-These defines must be set when building the MIP SDK sources and for any code that includes
+These definitions must be set when building the MIP SDK sources and for any code that includes
 MIP SDK headers.
 
+| Name                          | Description                                                                                  | 
+|-------------------------------|----------------------------------------------------------------------------------------------|
 | MICROSTRAIN_LOGGING_MAX_LEVEL | Enables/Disables logging more detailed messages (e.g. debug tracing) to improve performance. |
 | MICROSTRAIN_TIMESTAMP_TYPE    | Type to use for mip::Timestamp / mip::Timeout. Defaults to uint64_t if not defined.          |
-| MICROSTRAIN_USE_STD_ENDIAN    | Define to 1 to enable the use of std::span from C++20.                                       |
+| MICROSTRAIN_USE_STD_ENDIAN    | Define to 1 to enable the use of std::endian from C++20.                                     |
 | MIP_LOGGING_MAX_LEVEL         | Enables/Disables logging more detailed messages (e.g. debug tracing) to improve performance. |
 | MIP_ENABLE_DIAGNOSTICS        | Enables diagnostic counters.                                                                 |
 
 These options affect the compiled code interface and sizes of various structs. They
-MUST be consistent between compiling the MIP SDK and any other code which includes
+MUST be consistent between compiling the MIP SDK and any other code that includes
 headers from the MIP SDK. (If you change them after building, make sure everything gets
-rebuilt properly. Normally CMake takes care of this for you).
+rebuilt properly. Normally, CMake takes care of this for you).
 
 #### Include directories
 * `src/c`
 * `src/cpp` (if using C++)
-* `examples` (if building/using example code)
 
 #### Other compiler settings
 * C++14 or later is required (if using C++)

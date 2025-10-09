@@ -2,7 +2,6 @@
 #include "mip_field.h"
 
 #include "mip_packet.h"
-#include "mip_offsets.h"
 #include "mip_descriptors.h"
 
 #include <microstrain/serialization.h>
@@ -141,7 +140,7 @@ mip_field_view mip_field_from_header_ptr(const uint8_t* header, uint8_t total_le
     if( total_length >= MIP_FIELD_HEADER_LENGTH )
     {
         // Field length is external input so it must be sanitized.
-        uint8_t field_length = header[MIP_INDEX_FIELD_LEN];
+        uint8_t field_length = header[MIP_FIELD_INDEX_LENGTH];
 
         // Ensure field length does not exceed total_length.
         if( field_length > total_length )
@@ -150,9 +149,9 @@ mip_field_view mip_field_from_header_ptr(const uint8_t* header, uint8_t total_le
         // Check for invalid field length.
         if( field_length >= MIP_FIELD_HEADER_LENGTH )
         {
-            field._field_descriptor = header[MIP_INDEX_FIELD_DESC];
+            field._field_descriptor = header[MIP_FIELD_INDEX_DESC];
             field._payload_length   = field_length - MIP_FIELD_HEADER_LENGTH;
-            field._payload          = header + MIP_INDEX_FIELD_PAYLOAD;
+            field._payload          = header + MIP_FIELD_INDEX_PAYLOAD;
             field._remaining_length = total_length - field_length;
         }
     }

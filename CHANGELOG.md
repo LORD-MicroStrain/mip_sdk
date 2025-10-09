@@ -33,6 +33,11 @@ Forthcoming
   * Setup test suite to be easily run locally
   * Setup framework-independent wrapper assertions with doctest backend
   * Converted string and formatting tests to new structure and use the new assertion wrappers
+* Examples
+  * Revamped all examples for better clarity and usage
+  * Made sure each example had a corresponding C and C++ version for completeness
+  * Added documentation generation for examples
+  * Fully tested as standalone applications
 ### Interface Changes
 * MIP parser callbacks must now return bool (return true to preserve existing behavior).
 * `microstrain::Span` has been renamed to `microstrain::ArrayView`.
@@ -46,6 +51,7 @@ Forthcoming
   * Added compiler definitions to check for supported logging levels based on the set max level
 ### Bug Fixes
 * Fixed possible infinite loop in MIP parser with timed-out packets.
+* Fixed incorrect timeouts for Windows serial connections
 
 V3.1.0
 -----------
