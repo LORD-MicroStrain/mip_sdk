@@ -11,18 +11,37 @@
 #ifdef MICROSTRAIN_TEST_USE_DOCTEST
     #include "doctest/doctest_wrappers.hpp"
 
+    /// @brief Displays a warning, but does not fail the test when the given C strings are not equal.
+    ///
+    /// This assertion is pseudo-safe if the expected string is passed as the second argument.
+    /// It will fail early if the actual string isn't null terminated at the same position as
+    /// the expected string.
+    ///
+    /// It is reasonable to assume that the expected string is null terminated, since it is
+    /// almost always hard-coded by a test.
     #define WARN_CSTR_EQ(actual, expected) CSTR_EQ_IMPL(actual, expected, WARN)
-    #define CHECK_CSTR_EQ(actual, expected) CSTR_EQ_IMPL(actual, expected, CHECK)
-    #define REQUIRE_CSTR_EQ(actual, expected) CSTR_EQ_IMPL(actual, expected, REQUIRE)
-#endif
 
-/// Registers a test in the given test suite.
-///
-/// Tests are defined as: TEST(suite_name, test_name)
-///
-/// Test suites are useful for grouping related behaviors. The test suite will be created automatically if it doesn't
-/// exist.
-#ifndef TEST
-#error "TEST is not implemented for the current backend")
+    /// @brief Fails the test when the given C strings are not equal, but allows the test to keep running.
+    ///
+    /// This assertion is pseudo-safe if the expected string is passed as the second argument.
+    /// It will fail early if the actual string isn't null terminated at the same position as
+    /// the expected string.
+    ///
+    /// It is reasonable to assume that the expected string is null terminated, since it is
+    /// almost always hard-coded by a test.
+    #define CHECK_CSTR_EQ(actual, expected) CSTR_EQ_IMPL(actual, expected, CHECK)
+
+    /// @brief Fails and exits the test immediately when the given C strings are not equal.
+    ///
+    /// This assertion is pseudo-safe if the expected string is passed as the second argument.
+    /// It will fail early if the actual string isn't null terminated at the same position as
+    /// the expected string.
+    ///
+    /// It is reasonable to assume that the expected string is null terminated, since it is
+    /// almost always hard-coded by a test.
+    #define REQUIRE_CSTR_EQ(actual, expected) CSTR_EQ_IMPL(actual, expected, REQUIRE)
+
+    /// @brief Registers a test in the given test suite.
+    #define TEST(suite_name, test_name) TEST_CASE("[" suite_name "] " test_name)
 #endif
 
