@@ -13,11 +13,23 @@
 
 /// Compares two C strings for equality.
 ///
-/// Not safe! Make sure both strings are null terminated first.
-#define CHECK_CSTR_EQ(actual, expected)               \
-    do                                                \
-    {                                                 \
-        INFO("Actual:   " << std::string(actual));    \
-        INFO("Expected: " << std::string(expected));  \
-        CHECK_EQ(strcmp(actual, expected), 0);        \
-    } while(0)                                        \
+/// This assertion is pseudo-safe if the expected string is passed as the second argument.
+/// It will fail early if the actual string isn't null terminated at the same position as
+/// the expected string.
+///
+/// It is reasonable to assume that the expected string is null terminated, since it is
+/// almost always hard-coded by a test.
+#define CHECK_CSTR_EQ(actual, expected)                                                     \
+    do                                                                                      \
+    {                                                                                       \
+        INFO("Actual:   " << std::string(actual));                                          \
+        INFO("Expected: " << std::string(expected));                                        \
+                                                                                            \
+        if (actual[strlen(expected)] != '\0')                                               \
+        {                                                                                   \
+            FAIL_CHECK("The actual string is not terminated when the expected string is");  \
+            break;                                                                          \
+        }                                                                                   \
+                                                                                            \
+        CHECK_EQ(strcmp(actual, expected), 0);                                              \
+    } while(0)                                                                              \
