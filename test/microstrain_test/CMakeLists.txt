@@ -50,7 +50,7 @@ target_compile_definitions(microstrain_test INTERFACE
 # ---------------------------------------------------------------
 
 if(MICROSTRAIN_TEST_USE_DOCTEST)
-    include(installation/InstallDoctest.cmake)
+    include(scripts/InstallDoctest.cmake)
 
     target_compile_definitions(microstrain_test INTERFACE
         "MICROSTRAIN_TEST_USE_DOCTEST"
