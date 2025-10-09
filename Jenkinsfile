@@ -34,7 +34,7 @@ def checkoutRepo() {
 // Utility function to build the MIP SDK on linux
 // This function requires BUILD_OS and BUILD_ARCH to have been set in the environment before it is called
 def buildMipSdkLinux() {
-    // Build the docker image 
+    // Build the docker image
     sh '''
         ./.devcontainer/docker_build_image.sh --os ${BUILD_OS} --arch ${BUILD_ARCH}
     '''
@@ -51,7 +51,7 @@ def buildMipSdkLinux() {
             cmake \
                 --build build_${BUILD_OS}_${BUILD_ARCH} \
                 --target package \
-                -j $(nproc);
+                --parallel $(nproc);
         "
     '''
 
@@ -64,11 +64,11 @@ def buildMipSdkLinux() {
                 --verbose \
                 --output-on-failure \
                 --output-junit unit_test_results.xml \
-                --parallel $(nproc); \
+                --parallel $(nproc);
         "
     '''
 
-    // Archive the artifacts and save the unit test results 
+    // Archive the artifacts and save the unit test results
     dir("build_${BUILD_OS}_${BUILD_ARCH}") {
         archiveArtifacts artifacts: "mipsdk_*"
         junit testResults: "unit_test_results.xml", allowEmptyResults: false
@@ -105,7 +105,7 @@ def buildMipSdkWindows() {
             --parallel \$env:NUMBER_OF_PROCESSORS
     """
 
-    // Archive the artifacts and save the unit test results 
+    // Archive the artifacts and save the unit test results
     dir("build_${BUILD_ARCH}") {
         archiveArtifacts artifacts: "mipsdk_*"
         junit testResults: "unit_test_results.xml", allowEmptyResults: false
@@ -141,7 +141,7 @@ pipeline {
                         script {
                             checkoutRepo()
 
-                            // Build the docker image 
+                            // Build the docker image
                             sh '''
                                 ./.devcontainer/docker_build_image.sh --os ${BUILD_OS} --arch ${BUILD_ARCH}
                             '''
@@ -157,7 +157,7 @@ pipeline {
                                     cmake \
                                         --build build_docs \
                                         --target package_docs \
-                                        -j $(nproc)
+                                        --parallel $(nproc)
                                 "
                             '''
                             archiveArtifacts artifacts: "build_docs/mipsdk_*"
@@ -356,7 +356,8 @@ pipeline {
                             }
                         }
                     }
-                } else if (BRANCH_NAME && BRANCH_NAME == 'master') {
+                }
+                else if (BRANCH_NAME && BRANCH_NAME == 'master') {
                     node("linux-amd64") {
                         dir("/tmp/mip_sdk_${env.BRANCH_NAME}_${currentBuild.number}") {
                             copyArtifacts(projectName: "${env.JOB_NAME}", selector: specific("${currentBuild.number}"));
@@ -364,8 +365,8 @@ pipeline {
                                 sh '''
                                     # Release to the latest version if the master commit matches up with the commit of that version
                                     if (cd "${WORKSPACE}" && git describe --exact-match --tags HEAD &> /dev/null); then
-                                        # Publish a release
-                                        ${WORKSPACE}/scripts/release.sh" \
+                                        # Release to github
+                                        "${WORKSPACE}/scripts/release.sh" \
                                             --artifacts "$(find "$(pwd)" -type f)" \
                                             --target "${BRANCH_NAME}" \
                                             --release "$(cd ${WORKSPACE} && git describe --exact-match --tags HEAD)" \
