@@ -364,12 +364,12 @@ pipeline {
                             withCredentials([string(credentialsId: 'Github_Token', variable: 'GH_TOKEN')]) {
                                 sh '''
                                     # Release to the latest version if the master commit matches up with the commit of that version
-                                    if (cd "${WORKSPACE}" && git describe --exact-match --tags HEAD &> /dev/null); then
+                                    if (cd "${WORKSPACE}" && git describe --exact-match --match "v*" --tags HEAD &> /dev/null); then
                                         # Release to github
                                         "${WORKSPACE}/scripts/release.sh" \
                                             --artifacts "$(find "$(pwd)" -type f)" \
                                             --target "${BRANCH_NAME}" \
-                                            --release "$(cd ${WORKSPACE} && git describe --exact-match --tags HEAD)" \
+                                            --release "$(cd ${WORKSPACE} && git describe --exact-match --match "v*" --tags HEAD)" \
                                             --docs-zip "$(find "$(pwd)" -type f -name "mipsdk_*_Documentation.zip" | sort | uniq)"
                                     else
                                         echo "Not releasing from ${BRANCH_NAME} since the current commit does not match the latest released version commit"
