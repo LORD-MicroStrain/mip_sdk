@@ -17,7 +17,7 @@ TEST("Formatting", "A packet can be properly formatted to bytes")
 
     CHECK(ok);
     CHECK_EQ(index, 39);
-    FAIL_IF_C_STRINGS_NOT_EQUAL(buffer, "7565010C 080901010001C200 04090301 CE80");
+    CHECK_CSTR_EQ(buffer, "7565010C 080901010001C200 04090301 CE80");
 }
 
 TEST("Formatting", "A packet can be properly formatted to a human-readable string")
@@ -29,7 +29,7 @@ TEST("Formatting", "A packet can be properly formatted to a human-readable strin
 
     CHECK(ok);
     CHECK_EQ(index, 68);
-    FAIL_IF_C_STRINGS_NOT_EQUAL(buffer, "Packet(DS=0x01){ Field(FD=0x09)[01010001C200] Field(FD=0x09)[0301] }");
+    CHECK_CSTR_EQ(buffer, "tacket(DS=0x01){ Field(FD=0x09)[01010001C200] Field(FD=0x09)[0301] }");
 }
 
 TEST("Formatting", "A field can be properly formatted to a human-readable string")
@@ -42,5 +42,5 @@ TEST("Formatting", "A field can be properly formatted to a human-readable string
 
     CHECK(ok);
     CHECK_EQ(index, 28);
-    FAIL_IF_C_STRINGS_NOT_EQUAL(buffer, "Field(FD=0x09)[01010001C200]");
+    CHECK_CSTR_EQ(buffer, "Field(FD=0x09)[01010001C200]");
 }
