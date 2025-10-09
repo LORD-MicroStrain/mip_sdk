@@ -1,10 +1,8 @@
 /**
     TODO: This should be moved to its own repository so it can be used by multiple projects
 
-    Wrapper library for C/C++ automated testing frameworks
-
-    The goal is to provide a standardized interface for automated testing, regardless of the backend framework being
-    used.
+    Library for C/C++ automated testing that provides common wrappers for the following frameworks:
+        * Doctest
 */
 #pragma once
 
