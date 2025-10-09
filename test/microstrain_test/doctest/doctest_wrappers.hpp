@@ -19,17 +19,18 @@
 ///
 /// It is reasonable to assume that the expected string is null terminated, since it is
 /// almost always hard-coded by a test.
-#define CHECK_CSTR_EQ(actual, expected)                                                     \
-    do                                                                                      \
-    {                                                                                       \
-        INFO("Actual:   " << std::string(actual));                                          \
-        INFO("Expected: " << std::string(expected));                                        \
-                                                                                            \
-        if (actual[strlen(expected)] != '\0')                                               \
-        {                                                                                   \
-            FAIL_CHECK("The actual string is not terminated when the expected string is");  \
-            break;                                                                          \
-        }                                                                                   \
-                                                                                            \
-        CHECK_EQ(strcmp(actual, expected), 0);                                              \
-    } while(0)                                                                              \
+#define CSTR_EQ_IMPL(actual, expected, level)                                                                 \
+    do                                                                                                        \
+    {                                                                                                         \
+        INFO("Actual:   " << std::string(actual));                                                            \
+        INFO("Expected: " << std::string(expected));                                                          \
+                                                                                                              \
+        bool terminated = actual[strlen(expected)] == '\0';                                                   \
+        if (!terminated)                                                                                      \
+        {                                                                                                     \
+            level##_MESSAGE(terminated, "The actual string is not terminated when the expected string is.");  \
+            break;                                                                                            \
+        }                                                                                                     \
+                                                                                                              \
+        level##_EQ(strcmp(actual, expected), 0);                                                              \
+    } while(0)

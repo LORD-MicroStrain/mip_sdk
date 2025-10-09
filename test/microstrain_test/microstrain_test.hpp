@@ -9,7 +9,11 @@
 #pragma once
 
 #ifdef MICROSTRAIN_TEST_USE_DOCTEST
-#include "doctest/doctest_wrappers.hpp"
+    #include "doctest/doctest_wrappers.hpp"
+
+    #define WARN_CSTR_EQ(actual, expected) CSTR_EQ_IMPL(actual, expected, WARN)
+    #define CHECK_CSTR_EQ(actual, expected) CSTR_EQ_IMPL(actual, expected, CHECK)
+    #define REQUIRE_CSTR_EQ(actual, expected) CSTR_EQ_IMPL(actual, expected, REQUIRE)
 #endif
 
 /// Registers a test in the given test suite.

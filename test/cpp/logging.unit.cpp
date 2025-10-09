@@ -29,7 +29,7 @@ TEST("Formatting", "A packet can be properly formatted to a human-readable strin
 
     CHECK(ok);
     CHECK_EQ(index, 68);
-    CHECK_CSTR_EQ(buffer, "tacket(DS=0x01){ Field(FD=0x09)[01010001C200] Field(FD=0x09)[0301] }");
+    CHECK_CSTR_EQ(buffer, "Packet(DS=0x01){ Field(FD=0x09)[01010001C200] Field(FD=0x09)[0301] }");
 }
 
 TEST("Formatting", "A field can be properly formatted to a human-readable string")
