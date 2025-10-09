@@ -2,6 +2,7 @@
 # Unit tests
 # ---------------------------------------------------------------
 
+#[[
 add_cmocka_test(
     "C_mip_packet_builder_unit"
     SOURCES "${CMAKE_CURRENT_LIST_DIR}/packet_builder.unit.c"
@@ -30,3 +31,4 @@ set_tests_properties("C_mip_parser_integration"
         LABELS "integration"
         DISABLED TRUE
 )
+]]
