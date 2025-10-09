@@ -4,7 +4,8 @@
 
 #include <doctest/doctest.h>
 
-
+// TODO: Can add wrapper macros for the doctest parts of this and make it framework-independent
+//     ---> In this case, we could rename the file common.hpp or implementation.hpp
 #define CSTR_EQ_IMPL(actual, expected, level)                                                                 \
     do                                                                                                        \
     {                                                                                                         \

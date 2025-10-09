@@ -7,9 +7,9 @@
 #pragma once
 
 #ifdef MICROSTRAIN_TEST_USE_DOCTEST
-    #include "doctest/doctest_wrappers.hpp"
+    #include "doctest_wrappers.hpp"
 
-    /// @brief Displays a warning, but does not fail the test when the given C strings are not equal.
+	/// @brief Displays a warning, but does not fail the test when the given C strings are not equal.
     ///
     /// This assertion is pseudo-safe if the expected string is passed as the second argument.
     /// It will fail early if the actual string isn't null terminated at the same position as

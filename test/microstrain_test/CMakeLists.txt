@@ -16,7 +16,7 @@ target_include_directories(microstrain_test INTERFACE
 )
 
 target_sources(microstrain_test INTERFACE
-    "${CMAKE_CURRENT_LIST_DIR}/microstrain_test.hpp"
+    "microstrain_test/microstrain_test.hpp"
 )
 
 # ---------------------------------------------------------------

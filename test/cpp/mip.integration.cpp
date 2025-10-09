@@ -3,7 +3,7 @@
 #include <iomanip>
 #include <random>
 
-#include <microstrain_test.hpp>
+#include <microstrain_test/microstrain_test.hpp>
 #include <mip/mip.hpp>
 
 using namespace mip;
