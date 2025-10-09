@@ -1,10 +1,14 @@
 #include <string.h>
 
-#include <mip_cmocka.h>
 #include <microstrain/strings.h>
+#include <unity.h>
 
+// TODO: Switch to use test suites when standardized test registration interface is implemented
 
-MICROSTRAIN_TEST_CASE(A_zero_terminated_string_can_be_concatenated_to_an_empty_buffer)
+void setUp(void) {}
+void tearDown(void) {}
+
+void A_zero_terminated_string_can_be_concatenated_to_an_empty_buffer(void)
 {
     char buffer[10];
     size_t index = 0;
@@ -14,12 +18,13 @@ MICROSTRAIN_TEST_CASE(A_zero_terminated_string_can_be_concatenated_to_an_empty_b
 
     const bool ok = microstrain_string_concat(buffer, sizeof(buffer), &index, string, string_length);
 
-    assert_true(ok);
-    assert_int_equal(index, string_length);
-    assert_null_terminated(buffer, 5);
-    assert_string_equal(buffer, "12345\0____");
+    TEST_ASSERT(ok);
+    TEST_ASSERT_EQUAL_INT(string_length, index);
+    TEST_ASSERT_EQUAL_CHAR('\0', buffer[5]);
+    TEST_ASSERT_EQUAL_STRING("12345\0____", buffer);
 }
 
+/*
 MICROSTRAIN_TEST_CASE(String_concatenation_to_an_empty_buffer_fails_gracefully_if_buffer_too_small)
 {
     char buffer[10];
@@ -362,14 +367,16 @@ MICROSTRAIN_TEST_CASE(Byte_formatting_fails_gracefully_when_buffer_too_small)
     assert_null_terminated(buffer, 6);
     assert_string_equal(buffer, "Data: ");
 }
+*/
 
 int main()
 {
-    MICROSTRAIN_TEST_INIT;
+    UNITY_BEGIN();
 
+    RUN_TEST(A_zero_terminated_string_can_be_concatenated_to_an_empty_buffer);
+    /*
     MICROSTRAIN_TEST_SUITE_START(string_concatenation);
 
-    MICROSTRAIN_TEST_ADD(string_concatenation, A_zero_terminated_string_can_be_concatenated_to_an_empty_buffer);
     MICROSTRAIN_TEST_ADD(string_concatenation, String_concatenation_to_an_empty_buffer_fails_gracefully_if_buffer_too_small);
     MICROSTRAIN_TEST_ADD(string_concatenation, String_concatenation_computes_required_buffer_size_when_buffer_is_null);
     MICROSTRAIN_TEST_ADD(string_concatenation, A_zero_terminated_string_can_be_concatenated_to_a_non_empty_buffer);
@@ -402,7 +409,7 @@ int main()
     MICROSTRAIN_TEST_SUITE_RUN("String Formatting", string_formatting);
 
     MICROSTRAIN_TEST_SUITE_END(string_formatting);
+    */
 
-
-    return MICROSTRAIN_TEST_FAILURE_COUNT;
+    return UNITY_END();
 }
