@@ -2,8 +2,11 @@
 # Framework backends
 # ---------------------------------------------------------------
 
+# C
+option(MICROSTRAIN_TEST_USE_UNITY "Use unity as the backend framework for C" OFF)
+
 # C++
-option(MICROSTRAIN_TEST_USE_DOCTEST "Use doctest as the backend framework" OFF)
+option(MICROSTRAIN_TEST_USE_DOCTEST "Use doctest as the backend framework for C++" OFF)
 
 # ---------------------------------------------------------------
 # Library setup
@@ -45,8 +48,25 @@ target_compile_definitions(microstrain_test INTERFACE
     "MICROSTRAIN_LOGGING_MAX_LEVEL=${MIP_LOGGING_MAX_LEVEL}"
 )
 
+
 # ---------------------------------------------------------------
-# Framework setup
+# Unity setup
+# ---------------------------------------------------------------
+
+if(MICROSTRAIN_TEST_USE_UNITY)
+    include(scripts/InstallUnity.cmake)
+
+    target_compile_definitions(microstrain_test INTERFACE
+        "MICROSTRAIN_TEST_USE_UNITY"
+    )
+
+    target_link_libraries(microstrain_test INTERFACE
+        unity
+    )
+endif()
+
+# ---------------------------------------------------------------
+# Doctest setup
 # ---------------------------------------------------------------
 
 if(MICROSTRAIN_TEST_USE_DOCTEST)
@@ -58,6 +78,6 @@ if(MICROSTRAIN_TEST_USE_DOCTEST)
 
     # TODO: Set up separate systems for parallel vs. sequential execution
     target_link_libraries(microstrain_test INTERFACE
-        "doctest_with_main"
+        doctest_with_main
     )
 endif()

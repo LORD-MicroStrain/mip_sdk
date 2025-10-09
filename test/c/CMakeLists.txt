@@ -22,12 +22,14 @@ target_link_libraries("${MIP_UNIT_TEST_TARGET_C}" INTERFACE
     "${MIP_LIBRARIES}"
     "${MICROSTRAIN_LIBRARIES}"
     cmocka
+    microstrain_test
 )
 
 target_link_libraries("${MIP_INTEGRATION_TEST_TARGET_C}" INTERFACE
     "${MIP_LIBRARIES}"
     "${MICROSTRAIN_LIBRARIES}"
     cmocka
+    microstrain_test
 )
 
 # ---------------------------------------------------------------
