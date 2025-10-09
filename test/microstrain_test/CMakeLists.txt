@@ -9,16 +9,14 @@ option(MICROSTRAIN_TEST_USE_DOCTEST "Use doctest as the backend framework" OFF)
 # Library setup
 # ---------------------------------------------------------------
 
-add_library(microstrain_test STATIC)
+add_library(microstrain_test INTERFACE)
 
-target_include_directories(microstrain_test PUBLIC
+target_include_directories(microstrain_test INTERFACE
     "${CMAKE_CURRENT_LIST_DIR}"
 )
 
-target_sources(microstrain_test PUBLIC
+target_sources(microstrain_test INTERFACE
     "${CMAKE_CURRENT_LIST_DIR}/microstrain_test.hpp"
-    "${CMAKE_CURRENT_LIST_DIR}/doctest/doctest_wrappers.hpp"
-    "${CMAKE_CURRENT_LIST_DIR}/doctest/doctest_wrappers.cpp"
 )
 
 # ---------------------------------------------------------------
@@ -39,11 +37,11 @@ else()
     )
 endif()
 
-target_compile_options(microstrain_test PUBLIC
+target_compile_options(microstrain_test INTERFACE
     "${COMPILE_OPTIONS}"
 )
 
-target_compile_definitions(microstrain_test PUBLIC
+target_compile_definitions(microstrain_test INTERFACE
     "MICROSTRAIN_LOGGING_MAX_LEVEL=${MIP_LOGGING_MAX_LEVEL}"
 )
 
@@ -54,12 +52,12 @@ target_compile_definitions(microstrain_test PUBLIC
 if(MICROSTRAIN_TEST_USE_DOCTEST)
     include(installation/InstallDoctest.cmake)
 
-    target_compile_definitions(microstrain_test PUBLIC
+    target_compile_definitions(microstrain_test INTERFACE
         "MICROSTRAIN_TEST_USE_DOCTEST"
     )
 
     # TODO: Set up separate systems for parallel vs. sequential execution
-    target_link_libraries(microstrain_test PUBLIC
+    target_link_libraries(microstrain_test INTERFACE
         "doctest_with_main"
     )
 endif()
