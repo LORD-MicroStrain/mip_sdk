@@ -5,7 +5,7 @@ set(CMAKE_C_STANDARD 11)
 
 project(
     "MIP_SDK"
-    VERSION "3.1.00"
+    VERSION "4.0.0"
     DESCRIPTION "MicroStrain Communications Library for embedded systems"
     LANGUAGES C CXX
 )
