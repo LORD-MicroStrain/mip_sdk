@@ -91,11 +91,16 @@ function(add_unity_test)
     cmake_parse_arguments(
         ARG
         ""
-        "NAME"
-        "SOURCES;TARGET"
+        "NAME;TARGET"
+        "SOURCES;LABELS"
         ${ARGN}
     )
+
     add_executable(${ARG_NAME} ${ARG_SOURCES})
     target_link_libraries(${ARG_NAME} PRIVATE ${ARG_TARGET})
     add_test(NAME ${ARG_NAME} COMMAND ${ARG_NAME})
+
+    if(${ARG_LABELS})
+        set_tests_properties(${ARG_NAME} PROPERTIES LABELS ${ARG_LABELS})
+    endif()
 endfunction()
