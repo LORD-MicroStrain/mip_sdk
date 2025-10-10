@@ -1,7 +1,7 @@
 #include <string.h>
 
 #include <microstrain/strings.h>
-#include <unity.h>
+#include <microstrain_test/unity_wrappers.h>
 
 // TODO: Switch to use test suites when standardized test registration interface is implemented
 // TODO: Switch assertions to flipped argument ones

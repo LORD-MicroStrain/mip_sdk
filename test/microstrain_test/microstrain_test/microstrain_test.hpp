@@ -1,8 +1,7 @@
 /**
     TODO: This should be moved to its own repository so it can be used by multiple projects
 
-    Library for C/C++ automated testing that provides common wrappers for the following frameworks:
-        * Doctest
+    C++ framework API
 */
 #pragma once
 

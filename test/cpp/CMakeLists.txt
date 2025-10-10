@@ -30,13 +30,13 @@ target_sources("${MIP_INTEGRATION_TEST_TARGET_CPP}" PRIVATE
 target_link_libraries("${MIP_UNIT_TEST_TARGET_CPP}" PRIVATE
     "${MIP_LIBRARIES}"
     "${MICROSTRAIN_LIBRARIES}"
-    microstrain_test
+    MicrostrainTest::cpp
 )
 
 target_link_libraries("${MIP_INTEGRATION_TEST_TARGET_CPP}" PRIVATE
     "${MIP_LIBRARIES}"
     "${MICROSTRAIN_LIBRARIES}"
-    microstrain_test
+    MicrostrainTest::cpp
 )
 
 # ---------------------------------------------------------------

@@ -1,4 +1,11 @@
 # ---------------------------------------------------------------
+# Project setup
+# ---------------------------------------------------------------
+
+cmake_minimum_required(VERSION 3.14)
+project(MicrostrainTest)
+
+# ---------------------------------------------------------------
 # Framework backends
 # ---------------------------------------------------------------
 
@@ -12,16 +19,27 @@ option(MICROSTRAIN_TEST_USE_DOCTEST "Use doctest as the backend framework for C+
 # Library setup
 # ---------------------------------------------------------------
 
-add_library(microstrain_test INTERFACE)
+add_library(microstrain_test_c INTERFACE)
+add_library(microstrain_test_cpp INTERFACE)
 
-target_include_directories(microstrain_test INTERFACE
+target_include_directories(microstrain_test_c INTERFACE
+    "${CMAKE_CURRENT_LIST_DIR}"
+)
+target_include_directories(microstrain_test_cpp INTERFACE
     "${CMAKE_CURRENT_LIST_DIR}"
 )
 
-target_sources(microstrain_test INTERFACE
-    "microstrain_test/microstrain_test.hpp"
-    "microstrain_test/unity_wrappers.h"
+target_sources(microstrain_test_c INTERFACE
+    "microstrain_test/microstrain_test.h"
+    "microstrain_test/unity_wrappers.h" # TODO: Remove
 )
+target_sources(microstrain_test_cpp INTERFACE
+    "microstrain_test/microstrain_test.hpp"
+)
+
+# Add namespace aliases
+add_library(MicrostrainTest::c ALIAS microstrain_test_c)
+add_library(MicrostrainTest::cpp ALIAS microstrain_test_cpp)
 
 # ---------------------------------------------------------------
 # Library compile settings
@@ -41,44 +59,49 @@ else()
     )
 endif()
 
-target_compile_options(microstrain_test INTERFACE
+target_compile_options(microstrain_test_c INTERFACE
+    "${COMPILE_OPTIONS}"
+)
+target_compile_options(microstrain_test_cpp INTERFACE
     "${COMPILE_OPTIONS}"
 )
 
-target_compile_definitions(microstrain_test INTERFACE
+target_compile_definitions(microstrain_test_c INTERFACE
+    "MICROSTRAIN_LOGGING_MAX_LEVEL=${MIP_LOGGING_MAX_LEVEL}"
+)
+target_compile_definitions(microstrain_test_cpp INTERFACE
     "MICROSTRAIN_LOGGING_MAX_LEVEL=${MIP_LOGGING_MAX_LEVEL}"
 )
 
-
 # ---------------------------------------------------------------
-# Unity setup
+# (C) Unity setup
 # ---------------------------------------------------------------
 
 if(MICROSTRAIN_TEST_USE_UNITY)
     include(scripts/InstallUnity.cmake)
 
-    target_compile_definitions(microstrain_test INTERFACE
+    target_compile_definitions(microstrain_test_c INTERFACE
         "MICROSTRAIN_TEST_USE_UNITY"
     )
 
-    target_link_libraries(microstrain_test INTERFACE
+    target_link_libraries(microstrain_test_c INTERFACE
         unity
     )
 endif()
 
 # ---------------------------------------------------------------
-# Doctest setup
+# (C++) Doctest setup
 # ---------------------------------------------------------------
 
 if(MICROSTRAIN_TEST_USE_DOCTEST)
     include(scripts/InstallDoctest.cmake)
 
-    target_compile_definitions(microstrain_test INTERFACE
+    target_compile_definitions(microstrain_test_cpp INTERFACE
         "MICROSTRAIN_TEST_USE_DOCTEST"
     )
 
     # TODO: Set up separate systems for parallel vs. sequential execution
-    target_link_libraries(microstrain_test INTERFACE
+    target_link_libraries(microstrain_test_cpp INTERFACE
         doctest_with_main
     )
 endif()
