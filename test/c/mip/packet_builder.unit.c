@@ -55,7 +55,7 @@ void A_pre_constructed_mip_field_can_be_added_to_a_mip_packet(void)
     ASSERT_TRUE(success);
     ASSERT_EQUAL_INT(mip_packet_payload(&packet)[MIP_INDEX_FIELD_DESC], field_descriptor);
     ASSERT_EQUAL_INT(mip_packet_payload(&packet)[MIP_INDEX_FIELD_LEN], 8);
-    ASSERT_EQUAL_INT_ARRAY(&mip_packet_payload(&packet)[MIP_INDEX_FIELD_PAYLOAD], payload, payload_length);
+    ASSERT_EQUAL_UINT8_ARRAY(&mip_packet_payload(&packet)[MIP_INDEX_FIELD_PAYLOAD], payload, payload_length);
 }
 
 void A_field_can_be_allocated_within_a_mip_packet(void)
@@ -76,7 +76,7 @@ void A_field_can_be_allocated_within_a_mip_packet(void)
     ASSERT_EQUAL_PTR(payload_pointer, &mip_packet_payload(&packet)[MIP_INDEX_FIELD_PAYLOAD]);
     ASSERT_EQUAL_INT(mip_packet_payload(&packet)[MIP_INDEX_FIELD_DESC], field_descriptor);
     ASSERT_EQUAL_INT(mip_packet_payload(&packet)[MIP_INDEX_FIELD_LEN], 10);
-    ASSERT_EQUAL_INT_ARRAY(&mip_packet_payload(&packet)[MIP_INDEX_FIELD_PAYLOAD], payload, payload_length);
+    ASSERT_EQUAL_UINT8_ARRAY(&mip_packet_payload(&packet)[MIP_INDEX_FIELD_PAYLOAD], payload, payload_length);
 }
 
 void A_mip_packet_can_be_properly_prepared_for_transmission(void)

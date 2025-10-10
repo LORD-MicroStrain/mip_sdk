@@ -8,6 +8,8 @@
  * frameworks. Assertion names remains the same, minus the "TEST_" part.
  */
 
+// TODO: Add code generation script to do these automatically
+
 /* Boolean assertions */
 #define ASSERT_TRUE(condition) \
     TEST_ASSERT_TRUE(condition)
@@ -161,36 +163,134 @@
 #define ASSERT_EQUAL_PTR_MESSAGE(actual, expected, message) \
     TEST_ASSERT_EQUAL_PTR_MESSAGE((expected), (actual), (message))
 
-/* Array assertions */
+/* INT array assertions */
 #define ASSERT_EQUAL_INT_ARRAY(actual, expected, num_elements) \
     TEST_ASSERT_EQUAL_INT_ARRAY((expected), (actual), (num_elements))
 
 #define ASSERT_EQUAL_INT_ARRAY_MESSAGE(actual, expected, num_elements, message) \
     TEST_ASSERT_EQUAL_INT_ARRAY_MESSAGE((expected), (actual), (num_elements), (message))
 
+/* INT8 array assertions */
+#define ASSERT_EQUAL_INT8_ARRAY(actual, expected, num_elements) \
+    TEST_ASSERT_EQUAL_INT8_ARRAY((expected), (actual), (num_elements))
+
+#define ASSERT_EQUAL_INT8_ARRAY_MESSAGE(actual, expected, num_elements, message) \
+    TEST_ASSERT_EQUAL_INT8_ARRAY_MESSAGE((expected), (actual), (num_elements), (message))
+
+/* INT16 array assertions */
+#define ASSERT_EQUAL_INT16_ARRAY(actual, expected, num_elements) \
+    TEST_ASSERT_EQUAL_INT16_ARRAY((expected), (actual), (num_elements))
+
+#define ASSERT_EQUAL_INT16_ARRAY_MESSAGE(actual, expected, num_elements, message) \
+    TEST_ASSERT_EQUAL_INT16_ARRAY_MESSAGE((expected), (actual), (num_elements), (message))
+
+/* INT32 array assertions */
+#define ASSERT_EQUAL_INT32_ARRAY(actual, expected, num_elements) \
+    TEST_ASSERT_EQUAL_INT32_ARRAY((expected), (actual), (num_elements))
+
+#define ASSERT_EQUAL_INT32_ARRAY_MESSAGE(actual, expected, num_elements, message) \
+    TEST_ASSERT_EQUAL_INT32_ARRAY_MESSAGE((expected), (actual), (num_elements), (message))
+
+/* INT64 array assertions */
+#define ASSERT_EQUAL_INT64_ARRAY(actual, expected, num_elements) \
+    TEST_ASSERT_EQUAL_INT64_ARRAY((expected), (actual), (num_elements))
+
+#define ASSERT_EQUAL_INT64_ARRAY_MESSAGE(actual, expected, num_elements, message) \
+    TEST_ASSERT_EQUAL_INT64_ARRAY_MESSAGE((expected), (actual), (num_elements), (message))
+
+/* UINT array assertions */
 #define ASSERT_EQUAL_UINT_ARRAY(actual, expected, num_elements) \
     TEST_ASSERT_EQUAL_UINT_ARRAY((expected), (actual), (num_elements))
 
 #define ASSERT_EQUAL_UINT_ARRAY_MESSAGE(actual, expected, num_elements, message) \
     TEST_ASSERT_EQUAL_UINT_ARRAY_MESSAGE((expected), (actual), (num_elements), (message))
 
+/* UINT8 array assertions */
+#define ASSERT_EQUAL_UINT8_ARRAY(actual, expected, num_elements) \
+    TEST_ASSERT_EQUAL_UINT8_ARRAY((expected), (actual), (num_elements))
+
+#define ASSERT_EQUAL_UINT8_ARRAY_MESSAGE(actual, expected, num_elements, message) \
+    TEST_ASSERT_EQUAL_UINT8_ARRAY_MESSAGE((expected), (actual), (num_elements), (message))
+
+/* UINT16 array assertions */
+#define ASSERT_EQUAL_UINT16_ARRAY(actual, expected, num_elements) \
+    TEST_ASSERT_EQUAL_UINT16_ARRAY((expected), (actual), (num_elements))
+
+#define ASSERT_EQUAL_UINT16_ARRAY_MESSAGE(actual, expected, num_elements, message) \
+    TEST_ASSERT_EQUAL_UINT16_ARRAY_MESSAGE((expected), (actual), (num_elements), (message))
+
+/* UINT32 array assertions */
+#define ASSERT_EQUAL_UINT32_ARRAY(actual, expected, num_elements) \
+    TEST_ASSERT_EQUAL_UINT32_ARRAY((expected), (actual), (num_elements))
+
+#define ASSERT_EQUAL_UINT32_ARRAY_MESSAGE(actual, expected, num_elements, message) \
+    TEST_ASSERT_EQUAL_UINT32_ARRAY_MESSAGE((expected), (actual), (num_elements), (message))
+
+/* UINT64 array assertions */
+#define ASSERT_EQUAL_UINT64_ARRAY(actual, expected, num_elements) \
+    TEST_ASSERT_EQUAL_UINT64_ARRAY((expected), (actual), (num_elements))
+
+#define ASSERT_EQUAL_UINT64_ARRAY_MESSAGE(actual, expected, num_elements, message) \
+    TEST_ASSERT_EQUAL_UINT64_ARRAY_MESSAGE((expected), (actual), (num_elements), (message))
+
+/* HEX array assertions */
 #define ASSERT_EQUAL_HEX_ARRAY(actual, expected, num_elements) \
     TEST_ASSERT_EQUAL_HEX_ARRAY((expected), (actual), (num_elements))
 
 #define ASSERT_EQUAL_HEX_ARRAY_MESSAGE(actual, expected, num_elements, message) \
     TEST_ASSERT_EQUAL_HEX_ARRAY_MESSAGE((expected), (actual), (num_elements), (message))
 
+#define ASSERT_EQUAL_HEX8_ARRAY(actual, expected, num_elements) \
+    TEST_ASSERT_EQUAL_HEX8_ARRAY((expected), (actual), (num_elements))
+
+#define ASSERT_EQUAL_HEX8_ARRAY_MESSAGE(actual, expected, num_elements, message) \
+    TEST_ASSERT_EQUAL_HEX8_ARRAY_MESSAGE((expected), (actual), (num_elements), (message))
+
+#define ASSERT_EQUAL_HEX16_ARRAY(actual, expected, num_elements) \
+    TEST_ASSERT_EQUAL_HEX16_ARRAY((expected), (actual), (num_elements))
+
+#define ASSERT_EQUAL_HEX16_ARRAY_MESSAGE(actual, expected, num_elements, message) \
+    TEST_ASSERT_EQUAL_HEX16_ARRAY_MESSAGE((expected), (actual), (num_elements), (message))
+
+#define ASSERT_EQUAL_HEX32_ARRAY(actual, expected, num_elements) \
+    TEST_ASSERT_EQUAL_HEX32_ARRAY((expected), (actual), (num_elements))
+
+#define ASSERT_EQUAL_HEX32_ARRAY_MESSAGE(actual, expected, num_elements, message) \
+    TEST_ASSERT_EQUAL_HEX32_ARRAY_MESSAGE((expected), (actual), (num_elements), (message))
+
+#define ASSERT_EQUAL_HEX64_ARRAY(actual, expected, num_elements) \
+    TEST_ASSERT_EQUAL_HEX64_ARRAY((expected), (actual), (num_elements))
+
+#define ASSERT_EQUAL_HEX64_ARRAY_MESSAGE(actual, expected, num_elements, message) \
+    TEST_ASSERT_EQUAL_HEX64_ARRAY_MESSAGE((expected), (actual), (num_elements), (message))
+
+/* FLOAT array assertions */
 #define ASSERT_EQUAL_FLOAT_ARRAY(actual, expected, num_elements) \
     TEST_ASSERT_EQUAL_FLOAT_ARRAY((expected), (actual), (num_elements))
 
 #define ASSERT_EQUAL_FLOAT_ARRAY_MESSAGE(actual, expected, num_elements, message) \
     TEST_ASSERT_EQUAL_FLOAT_ARRAY_MESSAGE((expected), (actual), (num_elements), (message))
 
+/* DOUBLE array assertions */
 #define ASSERT_EQUAL_DOUBLE_ARRAY(actual, expected, num_elements) \
     TEST_ASSERT_EQUAL_DOUBLE_ARRAY((expected), (actual), (num_elements))
 
 #define ASSERT_EQUAL_DOUBLE_ARRAY_MESSAGE(actual, expected, num_elements, message) \
     TEST_ASSERT_EQUAL_DOUBLE_ARRAY_MESSAGE((expected), (actual), (num_elements), (message))
+
+/* PTR (pointer) array assertions */
+#define ASSERT_EQUAL_PTR_ARRAY(actual, expected, num_elements) \
+    TEST_ASSERT_EQUAL_PTR_ARRAY((expected), (actual), (num_elements))
+
+#define ASSERT_EQUAL_PTR_ARRAY_MESSAGE(actual, expected, num_elements, message) \
+    TEST_ASSERT_EQUAL_PTR_ARRAY_MESSAGE((expected), (actual), (num_elements), (message))
+
+/* CHAR array assertions (if Unity supports them) */
+#define ASSERT_EQUAL_CHAR_ARRAY(actual, expected, num_elements) \
+    TEST_ASSERT_EQUAL_CHAR_ARRAY((expected), (actual), (num_elements))
+
+#define ASSERT_EQUAL_CHAR_ARRAY_MESSAGE(actual, expected, num_elements, message) \
+    TEST_ASSERT_EQUAL_CHAR_ARRAY_MESSAGE((expected), (actual), (num_elements), (message))
 
 /* Generic comparisons */
 #define ASSERT_GREATER_THAN(actual, threshold) \
