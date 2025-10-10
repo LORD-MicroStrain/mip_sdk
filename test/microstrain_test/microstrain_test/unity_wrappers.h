@@ -10,11 +10,17 @@
 
 // TODO: Add code generation script to do these automatically
 
-/* Boolean assertions */
+// -----------------------------------------------------------------------------------------------------------
+// Boolean assertions
+// -----------------------------------------------------------------------------------------------------------
+
 #define ASSERT_TRUE(condition) \
     TEST_ASSERT_TRUE(condition)
 
-/* Integer assertions */
+// -----------------------------------------------------------------------------------------------------------
+// Integer assertions
+// -----------------------------------------------------------------------------------------------------------
+
 #define ASSERT_EQUAL(actual, expected) \
     TEST_ASSERT_EQUAL_INT((expected), (actual))
 
@@ -111,7 +117,10 @@
 #define ASSERT_EQUAL_HEX64_MESSAGE(actual, expected, message) \
     TEST_ASSERT_EQUAL_HEX64_MESSAGE((expected), (actual), (message))
 
-/* Float/Double assertions */
+// -----------------------------------------------------------------------------------------------------------
+// Float/double assertions
+// -----------------------------------------------------------------------------------------------------------
+
 #define ASSERT_EQUAL_FLOAT(actual, expected) \
     TEST_ASSERT_EQUAL_FLOAT((expected), (actual))
 
@@ -136,7 +145,10 @@
 #define ASSERT_DOUBLE_WITHIN_MESSAGE(actual, delta, expected, message) \
     TEST_ASSERT_DOUBLE_WITHIN_MESSAGE((delta), (expected), (actual), (message))
 
-/* String assertions */
+// -----------------------------------------------------------------------------------------------------------
+// String assertions
+// -----------------------------------------------------------------------------------------------------------
+
 #define ASSERT_EQUAL_STRING(actual, expected) \
     TEST_ASSERT_EQUAL_STRING((expected), (actual))
 
@@ -149,91 +161,98 @@
 #define ASSERT_EQUAL_STRING_LEN_MESSAGE(actual, expected, len, message) \
     TEST_ASSERT_EQUAL_STRING_LEN_MESSAGE((expected), (actual), (len), (message))
 
-/* Memory assertions */
+// -----------------------------------------------------------------------------------------------------------
+// Memory assertions
+// -----------------------------------------------------------------------------------------------------------
+
 #define ASSERT_EQUAL_MEMORY(actual, expected, len) \
     TEST_ASSERT_EQUAL_MEMORY((expected), (actual), (len))
 
 #define ASSERT_EQUAL_MEMORY_MESSAGE(actual, expected, len, message) \
     TEST_ASSERT_EQUAL_MEMORY_MESSAGE((expected), (actual), (len), (message))
 
-/* Pointer assertions */
+// -----------------------------------------------------------------------------------------------------------
+// Pointer assertions
+// -----------------------------------------------------------------------------------------------------------
+
 #define ASSERT_EQUAL_PTR(actual, expected) \
     TEST_ASSERT_EQUAL_PTR((expected), (actual))
 
 #define ASSERT_EQUAL_PTR_MESSAGE(actual, expected, message) \
     TEST_ASSERT_EQUAL_PTR_MESSAGE((expected), (actual), (message))
 
-/* INT array assertions */
+// -----------------------------------------------------------------------------------------------------------
+// Int array assertions
+// -----------------------------------------------------------------------------------------------------------
+
 #define ASSERT_EQUAL_INT_ARRAY(actual, expected, num_elements) \
     TEST_ASSERT_EQUAL_INT_ARRAY((expected), (actual), (num_elements))
 
 #define ASSERT_EQUAL_INT_ARRAY_MESSAGE(actual, expected, num_elements, message) \
     TEST_ASSERT_EQUAL_INT_ARRAY_MESSAGE((expected), (actual), (num_elements), (message))
 
-/* INT8 array assertions */
 #define ASSERT_EQUAL_INT8_ARRAY(actual, expected, num_elements) \
     TEST_ASSERT_EQUAL_INT8_ARRAY((expected), (actual), (num_elements))
 
 #define ASSERT_EQUAL_INT8_ARRAY_MESSAGE(actual, expected, num_elements, message) \
     TEST_ASSERT_EQUAL_INT8_ARRAY_MESSAGE((expected), (actual), (num_elements), (message))
 
-/* INT16 array assertions */
 #define ASSERT_EQUAL_INT16_ARRAY(actual, expected, num_elements) \
     TEST_ASSERT_EQUAL_INT16_ARRAY((expected), (actual), (num_elements))
 
 #define ASSERT_EQUAL_INT16_ARRAY_MESSAGE(actual, expected, num_elements, message) \
     TEST_ASSERT_EQUAL_INT16_ARRAY_MESSAGE((expected), (actual), (num_elements), (message))
 
-/* INT32 array assertions */
 #define ASSERT_EQUAL_INT32_ARRAY(actual, expected, num_elements) \
     TEST_ASSERT_EQUAL_INT32_ARRAY((expected), (actual), (num_elements))
 
 #define ASSERT_EQUAL_INT32_ARRAY_MESSAGE(actual, expected, num_elements, message) \
     TEST_ASSERT_EQUAL_INT32_ARRAY_MESSAGE((expected), (actual), (num_elements), (message))
 
-/* INT64 array assertions */
 #define ASSERT_EQUAL_INT64_ARRAY(actual, expected, num_elements) \
     TEST_ASSERT_EQUAL_INT64_ARRAY((expected), (actual), (num_elements))
 
 #define ASSERT_EQUAL_INT64_ARRAY_MESSAGE(actual, expected, num_elements, message) \
     TEST_ASSERT_EQUAL_INT64_ARRAY_MESSAGE((expected), (actual), (num_elements), (message))
 
-/* UINT array assertions */
+// -----------------------------------------------------------------------------------------------------------
+// Unsigned int array assertions
+// -----------------------------------------------------------------------------------------------------------
+
 #define ASSERT_EQUAL_UINT_ARRAY(actual, expected, num_elements) \
     TEST_ASSERT_EQUAL_UINT_ARRAY((expected), (actual), (num_elements))
 
 #define ASSERT_EQUAL_UINT_ARRAY_MESSAGE(actual, expected, num_elements, message) \
     TEST_ASSERT_EQUAL_UINT_ARRAY_MESSAGE((expected), (actual), (num_elements), (message))
 
-/* UINT8 array assertions */
 #define ASSERT_EQUAL_UINT8_ARRAY(actual, expected, num_elements) \
     TEST_ASSERT_EQUAL_UINT8_ARRAY((expected), (actual), (num_elements))
 
 #define ASSERT_EQUAL_UINT8_ARRAY_MESSAGE(actual, expected, num_elements, message) \
     TEST_ASSERT_EQUAL_UINT8_ARRAY_MESSAGE((expected), (actual), (num_elements), (message))
 
-/* UINT16 array assertions */
 #define ASSERT_EQUAL_UINT16_ARRAY(actual, expected, num_elements) \
     TEST_ASSERT_EQUAL_UINT16_ARRAY((expected), (actual), (num_elements))
 
 #define ASSERT_EQUAL_UINT16_ARRAY_MESSAGE(actual, expected, num_elements, message) \
     TEST_ASSERT_EQUAL_UINT16_ARRAY_MESSAGE((expected), (actual), (num_elements), (message))
 
-/* UINT32 array assertions */
 #define ASSERT_EQUAL_UINT32_ARRAY(actual, expected, num_elements) \
     TEST_ASSERT_EQUAL_UINT32_ARRAY((expected), (actual), (num_elements))
 
 #define ASSERT_EQUAL_UINT32_ARRAY_MESSAGE(actual, expected, num_elements, message) \
     TEST_ASSERT_EQUAL_UINT32_ARRAY_MESSAGE((expected), (actual), (num_elements), (message))
 
-/* UINT64 array assertions */
 #define ASSERT_EQUAL_UINT64_ARRAY(actual, expected, num_elements) \
     TEST_ASSERT_EQUAL_UINT64_ARRAY((expected), (actual), (num_elements))
 
 #define ASSERT_EQUAL_UINT64_ARRAY_MESSAGE(actual, expected, num_elements, message) \
     TEST_ASSERT_EQUAL_UINT64_ARRAY_MESSAGE((expected), (actual), (num_elements), (message))
 
-/* HEX array assertions */
+// -----------------------------------------------------------------------------------------------------------
+// Hex array assertions
+// -----------------------------------------------------------------------------------------------------------
+
 #define ASSERT_EQUAL_HEX_ARRAY(actual, expected, num_elements) \
     TEST_ASSERT_EQUAL_HEX_ARRAY((expected), (actual), (num_elements))
 
@@ -264,21 +283,30 @@
 #define ASSERT_EQUAL_HEX64_ARRAY_MESSAGE(actual, expected, num_elements, message) \
     TEST_ASSERT_EQUAL_HEX64_ARRAY_MESSAGE((expected), (actual), (num_elements), (message))
 
-/* FLOAT array assertions */
+// -----------------------------------------------------------------------------------------------------------
+// Float array assertions
+// -----------------------------------------------------------------------------------------------------------
+
 #define ASSERT_EQUAL_FLOAT_ARRAY(actual, expected, num_elements) \
     TEST_ASSERT_EQUAL_FLOAT_ARRAY((expected), (actual), (num_elements))
 
 #define ASSERT_EQUAL_FLOAT_ARRAY_MESSAGE(actual, expected, num_elements, message) \
     TEST_ASSERT_EQUAL_FLOAT_ARRAY_MESSAGE((expected), (actual), (num_elements), (message))
 
-/* DOUBLE array assertions */
+// -----------------------------------------------------------------------------------------------------------
+// Double array assertions
+// -----------------------------------------------------------------------------------------------------------
+
 #define ASSERT_EQUAL_DOUBLE_ARRAY(actual, expected, num_elements) \
     TEST_ASSERT_EQUAL_DOUBLE_ARRAY((expected), (actual), (num_elements))
 
 #define ASSERT_EQUAL_DOUBLE_ARRAY_MESSAGE(actual, expected, num_elements, message) \
     TEST_ASSERT_EQUAL_DOUBLE_ARRAY_MESSAGE((expected), (actual), (num_elements), (message))
 
-/* PTR (pointer) array assertions */
+// -----------------------------------------------------------------------------------------------------------
+// Pointer array assertions
+// -----------------------------------------------------------------------------------------------------------
+
 #define ASSERT_EQUAL_PTR_ARRAY(actual, expected, num_elements) \
     TEST_ASSERT_EQUAL_PTR_ARRAY((expected), (actual), (num_elements))
 
@@ -292,7 +320,10 @@
 #define ASSERT_EQUAL_CHAR_ARRAY_MESSAGE(actual, expected, num_elements, message) \
     TEST_ASSERT_EQUAL_CHAR_ARRAY_MESSAGE((expected), (actual), (num_elements), (message))
 
-/* Generic comparisons */
+// -----------------------------------------------------------------------------------------------------------
+// Generic comparison assertions
+// -----------------------------------------------------------------------------------------------------------
+
 #define ASSERT_GREATER_THAN(actual, threshold) \
     TEST_ASSERT_GREATER_THAN((threshold), (actual))
 
@@ -317,7 +348,10 @@
 #define ASSERT_LESS_OR_EQUAL_MESSAGE(actual, threshold, message) \
     TEST_ASSERT_LESS_OR_EQUAL_MESSAGE((threshold), (actual), (message))
 
-/* INT comparisons */
+// -----------------------------------------------------------------------------------------------------------
+// Int comparison assertions
+// -----------------------------------------------------------------------------------------------------------
+
 #define ASSERT_GREATER_THAN_INT(actual, threshold) \
     TEST_ASSERT_GREATER_THAN_INT((threshold), (actual))
 
@@ -342,7 +376,6 @@
 #define ASSERT_LESS_OR_EQUAL_INT_MESSAGE(actual, threshold, message) \
     TEST_ASSERT_LESS_OR_EQUAL_INT_MESSAGE((threshold), (actual), (message))
 
-/* INT8 comparisons */
 #define ASSERT_GREATER_THAN_INT8(actual, threshold) \
     TEST_ASSERT_GREATER_THAN_INT8((threshold), (actual))
 
@@ -367,7 +400,6 @@
 #define ASSERT_LESS_OR_EQUAL_INT8_MESSAGE(actual, threshold, message) \
     TEST_ASSERT_LESS_OR_EQUAL_INT8_MESSAGE((threshold), (actual), (message))
 
-/* INT16 comparisons */
 #define ASSERT_GREATER_THAN_INT16(actual, threshold) \
     TEST_ASSERT_GREATER_THAN_INT16((threshold), (actual))
 
@@ -392,7 +424,6 @@
 #define ASSERT_LESS_OR_EQUAL_INT16_MESSAGE(actual, threshold, message) \
     TEST_ASSERT_LESS_OR_EQUAL_INT16_MESSAGE((threshold), (actual), (message))
 
-/* INT32 comparisons */
 #define ASSERT_GREATER_THAN_INT32(actual, threshold) \
     TEST_ASSERT_GREATER_THAN_INT32((threshold), (actual))
 
@@ -417,7 +448,6 @@
 #define ASSERT_LESS_OR_EQUAL_INT32_MESSAGE(actual, threshold, message) \
     TEST_ASSERT_LESS_OR_EQUAL_INT32_MESSAGE((threshold), (actual), (message))
 
-/* INT64 comparisons */
 #define ASSERT_GREATER_THAN_INT64(actual, threshold) \
     TEST_ASSERT_GREATER_THAN_INT64((threshold), (actual))
 
@@ -442,7 +472,10 @@
 #define ASSERT_LESS_OR_EQUAL_INT64_MESSAGE(actual, threshold, message) \
     TEST_ASSERT_LESS_OR_EQUAL_INT64_MESSAGE((threshold), (actual), (message))
 
-/* UINT comparisons */
+// -----------------------------------------------------------------------------------------------------------
+// Unsigned int comparison assertions
+// -----------------------------------------------------------------------------------------------------------
+
 #define ASSERT_GREATER_THAN_UINT(actual, threshold) \
     TEST_ASSERT_GREATER_THAN_UINT((threshold), (actual))
 
@@ -467,7 +500,6 @@
 #define ASSERT_LESS_OR_EQUAL_UINT_MESSAGE(actual, threshold, message) \
     TEST_ASSERT_LESS_OR_EQUAL_UINT_MESSAGE((threshold), (actual), (message))
 
-/* UINT8 comparisons */
 #define ASSERT_GREATER_THAN_UINT8(actual, threshold) \
     TEST_ASSERT_GREATER_THAN_UINT8((threshold), (actual))
 
@@ -492,7 +524,6 @@
 #define ASSERT_LESS_OR_EQUAL_UINT8_MESSAGE(actual, threshold, message) \
     TEST_ASSERT_LESS_OR_EQUAL_UINT8_MESSAGE((threshold), (actual), (message))
 
-/* UINT16 comparisons */
 #define ASSERT_GREATER_THAN_UINT16(actual, threshold) \
     TEST_ASSERT_GREATER_THAN_UINT16((threshold), (actual))
 
@@ -517,7 +548,6 @@
 #define ASSERT_LESS_OR_EQUAL_UINT16_MESSAGE(actual, threshold, message) \
     TEST_ASSERT_LESS_OR_EQUAL_UINT16_MESSAGE((threshold), (actual), (message))
 
-/* UINT32 comparisons */
 #define ASSERT_GREATER_THAN_UINT32(actual, threshold) \
     TEST_ASSERT_GREATER_THAN_UINT32((threshold), (actual))
 
@@ -542,7 +572,6 @@
 #define ASSERT_LESS_OR_EQUAL_UINT32_MESSAGE(actual, threshold, message) \
     TEST_ASSERT_LESS_OR_EQUAL_UINT32_MESSAGE((threshold), (actual), (message))
 
-/* UINT64 comparisons */
 #define ASSERT_GREATER_THAN_UINT64(actual, threshold) \
     TEST_ASSERT_GREATER_THAN_UINT64((threshold), (actual))
 
@@ -567,7 +596,6 @@
 #define ASSERT_LESS_OR_EQUAL_UINT64_MESSAGE(actual, threshold, message) \
     TEST_ASSERT_LESS_OR_EQUAL_UINT64_MESSAGE((threshold), (actual), (message))
 
-/* HEX comparisons */
 #define ASSERT_GREATER_THAN_HEX8(actual, threshold) \
     TEST_ASSERT_GREATER_THAN_HEX8((threshold), (actual))
 
@@ -661,7 +689,10 @@
 #define ASSERT_LESS_OR_EQUAL_HEX64_MESSAGE(actual, threshold, message) \
     TEST_ASSERT_LESS_OR_EQUAL_HEX64_MESSAGE((threshold), (actual), (message))
 
-/* FLOAT comparisons */
+// -----------------------------------------------------------------------------------------------------------
+// Float comparison assertions
+// -----------------------------------------------------------------------------------------------------------
+
 #define ASSERT_GREATER_THAN_FLOAT(actual, threshold) \
     TEST_ASSERT_GREATER_THAN_FLOAT((threshold), (actual))
 
@@ -686,7 +717,10 @@
 #define ASSERT_LESS_OR_EQUAL_FLOAT_MESSAGE(actual, threshold, message) \
     TEST_ASSERT_LESS_OR_EQUAL_FLOAT_MESSAGE((threshold), (actual), (message))
 
-/* DOUBLE comparisons */
+// -----------------------------------------------------------------------------------------------------------
+// Double comparison assertions
+// -----------------------------------------------------------------------------------------------------------
+
 #define ASSERT_GREATER_THAN_DOUBLE(actual, threshold) \
     TEST_ASSERT_GREATER_THAN_DOUBLE((threshold), (actual))
 

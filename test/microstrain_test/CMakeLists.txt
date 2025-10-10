@@ -38,7 +38,6 @@ target_include_directories(microstrain_test_cpp INTERFACE
 
 target_sources(microstrain_test_c INTERFACE
     "microstrain_test/microstrain_test.h"
-    "microstrain_test/unity_wrappers.h" # TODO: Remove
 )
 target_sources(microstrain_test_cpp INTERFACE
     "microstrain_test/microstrain_test.hpp"
