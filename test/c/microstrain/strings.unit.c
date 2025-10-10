@@ -1,15 +1,15 @@
 #include <string.h>
 
 #include <microstrain/strings.h>
-#include <microstrain_test/unity_wrappers.h>
+#include <microstrain_test/microstrain_test.h>
 
 // TODO: Switch to use test suites when standardized test registration interface is implemented
-// TODO: Switch assertions to flipped argument ones
 
 void setUp(void) {}
 void tearDown(void) {}
 
-void A_zero_terminated_string_can_be_concatenated_to_an_empty_buffer(void)
+
+TEST(String_concatenation, A_zero_terminated_string_can_be_concatenated_to_an_empty_buffer)
 {
     char buffer[10];
     size_t index = 0;
@@ -25,7 +25,7 @@ void A_zero_terminated_string_can_be_concatenated_to_an_empty_buffer(void)
     TEST_ASSERT_EQUAL_STRING(buffer, "12345\0____");
 }
 
-void String_concatenation_to_an_empty_buffer_fails_gracefully_if_buffer_too_small(void)
+TEST(String_concatenation, String_concatenation_to_an_empty_buffer_fails_gracefully_if_buffer_too_small)
 {
     char buffer[10];
     const size_t fake_buffer_size = 4;  // dummy so we can check if the buffer overran
@@ -42,7 +42,7 @@ void String_concatenation_to_an_empty_buffer_fails_gracefully_if_buffer_too_smal
     TEST_ASSERT_EQUAL_STRING(buffer, "123\0______");
 }
 
-void String_concatenation_computes_required_buffer_size_when_buffer_is_null(void)
+TEST(String_concatenation, String_concatenation_computes_required_buffer_size_when_buffer_is_null)
 {
     size_t index = 0;
     const char* const string = "12345";
@@ -54,7 +54,7 @@ void String_concatenation_computes_required_buffer_size_when_buffer_is_null(void
     TEST_ASSERT_EQUAL_INT(index, string_length);
 }
 
-void A_zero_terminated_string_can_be_concatenated_to_a_non_empty_buffer(void)
+TEST(String_concatenation, A_zero_terminated_string_can_be_concatenated_to_a_non_empty_buffer)
 {
     char buffer[10];
     memset(buffer, '_', sizeof(buffer));
@@ -69,7 +69,7 @@ void A_zero_terminated_string_can_be_concatenated_to_a_non_empty_buffer(void)
     TEST_ASSERT_EQUAL_STRING(buffer, "123456789\0");
 }
 
-void String_concatenation_to_a_non_empty_buffer_fails_gracefully_if_buffer_too_small(void)
+TEST(String_concatenation, String_concatenation_to_a_non_empty_buffer_fails_gracefully_if_buffer_too_small)
 {
     char buffer[20];
     const size_t fake_buffer_size = 10;
@@ -86,7 +86,7 @@ void String_concatenation_to_a_non_empty_buffer_fails_gracefully_if_buffer_too_s
 
 }
 
-void String_concatenation_to_a_non_empty_buffer_fails_gracefully_if_index_is_at_the_end(void)
+TEST(String_concatenation, String_concatenation_to_a_non_empty_buffer_fails_gracefully_if_index_is_at_the_end)
 {
     char buffer[20];
     memcpy(buffer, "012345678\0__________", 20);
@@ -103,7 +103,7 @@ void String_concatenation_to_a_non_empty_buffer_fails_gracefully_if_index_is_at_
     TEST_ASSERT_EQUAL_STRING(buffer, "012345678\0__________");
 }
 
-void Multiple_string_concatenations_work(void)
+TEST(String_concatenation, Multiple_string_concatenations_work)
 {
     char buffer[50];
     memset(buffer, '_', sizeof(buffer));
@@ -123,7 +123,7 @@ void Multiple_string_concatenations_work(void)
     TEST_ASSERT_EQUAL_STRING(buffer, "This is a very long test...");
 }
 
-void Multiple_string_concatenations_fail_gracefully_when_buffer_too_small(void)
+TEST(String_concatenation, Multiple_string_concatenations_fail_gracefully_when_buffer_too_small)
 {
     char buffer[50];
     const size_t fake_buffer_size = 10;
@@ -144,7 +144,7 @@ void Multiple_string_concatenations_fail_gracefully_when_buffer_too_small(void)
     TEST_ASSERT_EQUAL_STRING(buffer, "This is a");
 }
 
-void A_string_can_be_formatted_and_written_to_an_empty_buffer(void)
+TEST(String_formatting, A_string_can_be_formatted_and_written_to_an_empty_buffer)
 {
     char buffer[20];
     memset(buffer, '_', sizeof(buffer));
@@ -158,7 +158,7 @@ void A_string_can_be_formatted_and_written_to_an_empty_buffer(void)
     TEST_ASSERT_EQUAL_STRING(buffer, "4096==0x1000\0_______");
 }
 
-void String_formatting_fails_gracefully_when_buffer_is_too_small(void)
+TEST(String_formatting, String_formatting_fails_gracefully_when_buffer_is_too_small)
 {
     char buffer[20];
     size_t index = 0;
@@ -172,7 +172,7 @@ void String_formatting_fails_gracefully_when_buffer_is_too_small(void)
     TEST_ASSERT_EQUAL_STRING(buffer, "4096==0x1\0__________");
 }
 
-void String_formatting_calculates_required_buffer_size_if_buffer_is_null(void)
+TEST(String_formatting, String_formatting_calculates_required_buffer_size_if_buffer_is_null)
 {
     size_t index = 0;
 
@@ -182,7 +182,7 @@ void String_formatting_calculates_required_buffer_size_if_buffer_is_null(void)
     TEST_ASSERT_EQUAL_INT(index, 4+2+2+4);
 }
 
-void A_string_can_be_formatted_and_written_to_a_non_empty_buffer(void)
+TEST(String_formatting, A_string_can_be_formatted_and_written_to_a_non_empty_buffer)
 {
     char buffer[20];
     memset(buffer, '_', sizeof(buffer));
@@ -197,7 +197,7 @@ void A_string_can_be_formatted_and_written_to_a_non_empty_buffer(void)
     TEST_ASSERT_EQUAL_STRING(buffer, "Test: 4096==0x1000\0_");
 }
 
-void String_formatting_to_a_non_empty_buffer_fails_gracefully_if_buffer_too_small(void)
+TEST(String_formatting, String_formatting_to_a_non_empty_buffer_fails_gracefully_if_buffer_too_small)
 {
     char buffer[20];
     memset(buffer, '_', sizeof(buffer));
@@ -212,7 +212,7 @@ void String_formatting_to_a_non_empty_buffer_fails_gracefully_if_buffer_too_smal
     TEST_ASSERT_EQUAL_STRING(buffer, "Test: 409\0__________");
 }
 
-void Multiple_string_formattings_work(void)
+TEST(String_formatting, Multiple_string_formattings_work)
 {
     char buffer[100];
     memset(buffer, '_', sizeof(buffer));
@@ -231,7 +231,7 @@ void Multiple_string_formattings_work(void)
     TEST_ASSERT_EQUAL_STRING(buffer, "Values: [A=54321, B=0xABCD, C=abcdefg]");
 }
 
-void Multiple_string_formattings_fail_gracefully_when_buffer_too_small(void)
+TEST(String_formatting, Multiple_string_formattings_fail_gracefully_when_buffer_too_small)
 {
     char buffer[100];
     memset(buffer, '_', sizeof(buffer));
@@ -250,7 +250,7 @@ void Multiple_string_formattings_fail_gracefully_when_buffer_too_small(void)
     TEST_ASSERT_EQUAL_STRING(buffer, "Values: [A=54321, B=0xAB");
 }
 
-void A_byte_array_can_formatted_as_hexadecimal_and_written_to_a_string_buffer(void)
+TEST(String_formatting, A_byte_array_can_formatted_as_hexadecimal_and_written_to_a_string_buffer)
 {
     char buffer[50];
     memset(buffer, '_', sizeof(buffer));
@@ -265,7 +265,7 @@ void A_byte_array_can_formatted_as_hexadecimal_and_written_to_a_string_buffer(vo
     TEST_ASSERT_EQUAL_STRING(buffer, "A1B2C3D4");
 }
 
-void A_byte_array_can_formatted_as_hexadecimal_with_group1_and_written_to_a_string_buffer(void)
+TEST(String_formatting, A_byte_array_can_formatted_as_hexadecimal_with_group1_and_written_to_a_string_buffer)
 {
     char buffer[50];
     memset(buffer, '_', sizeof(buffer));
@@ -280,7 +280,7 @@ void A_byte_array_can_formatted_as_hexadecimal_with_group1_and_written_to_a_stri
     TEST_ASSERT_EQUAL_STRING(buffer, "A1 B2 C3 D4");
 }
 
-void A_byte_array_can_formatted_as_hexadecimal_with_group2_and_written_to_a_string_buffer(void)
+TEST(String_formatting, A_byte_array_can_formatted_as_hexadecimal_with_group2_and_written_to_a_string_buffer)
 {
     char buffer[50];
     memset(buffer, '_', sizeof(buffer));
@@ -295,7 +295,7 @@ void A_byte_array_can_formatted_as_hexadecimal_with_group2_and_written_to_a_stri
     TEST_ASSERT_EQUAL_STRING(buffer, "A1B2 C3D4");
 }
 
-void A_byte_array_can_formatted_as_hexadecimal_with_partial_group2_and_written_to_a_string_buffer(void)
+TEST(String_formatting, A_byte_array_can_formatted_as_hexadecimal_with_partial_group2_and_written_to_a_string_buffer)
 {
     char buffer[50];
     memset(buffer, '_', sizeof(buffer));
@@ -310,7 +310,7 @@ void A_byte_array_can_formatted_as_hexadecimal_with_partial_group2_and_written_t
     TEST_ASSERT_EQUAL_STRING(buffer, "A1B2 C3D4 E5");
 }
 
-void A_byte_array_can_formatted_as_hexadecimal_with_group4_and_written_to_a_string_buffer(void)
+TEST(String_formatting, A_byte_array_can_formatted_as_hexadecimal_with_group4_and_written_to_a_string_buffer)
 {
     char buffer[50];
     memset(buffer, '_', sizeof(buffer));
@@ -325,7 +325,7 @@ void A_byte_array_can_formatted_as_hexadecimal_with_group4_and_written_to_a_stri
     TEST_ASSERT_EQUAL_STRING(buffer, "A8B9CEDF 01234567");
 }
 
-void Byte_formatting_handles_no_data_properly(void)
+TEST(String_formatting, Byte_formatting_handles_no_data_properly)
 {
     char buffer[20];
     memset(buffer, '_', sizeof(buffer));
@@ -337,7 +337,7 @@ void Byte_formatting_handles_no_data_properly(void)
     TEST_ASSERT_EQUAL_INT(index, 0);
 }
 
-void A_byte_array_can_formatted_as_hexadecimal_and_written_to_a_non_empty_string_buffer(void)
+TEST(String_formatting, A_byte_array_can_formatted_as_hexadecimal_and_written_to_a_non_empty_string_buffer)
 {
     char buffer[50];
     memset(buffer, '_', sizeof(buffer));
@@ -353,7 +353,7 @@ void A_byte_array_can_formatted_as_hexadecimal_and_written_to_a_non_empty_string
     TEST_ASSERT_EQUAL_STRING(buffer, "Data: A1B2C3D4");
 }
 
-void Byte_formatting_fails_gracefully_when_buffer_too_small(void)
+TEST(String_formatting, Byte_formatting_fails_gracefully_when_buffer_too_small)
 {
     char buffer[50];
     memset(buffer, '_', sizeof(buffer));
@@ -369,6 +369,7 @@ void Byte_formatting_fails_gracefully_when_buffer_too_small(void)
     TEST_ASSERT_EQUAL_STRING(buffer, "Data: ");
 }
 
+// TODO: Remove main when automatic test discovery implemented
 int main()
 {
     UNITY_BEGIN();

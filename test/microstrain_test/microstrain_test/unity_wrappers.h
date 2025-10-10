@@ -8,11 +8,17 @@
  * frameworks. Assertion names remains the same, minus the "TEST_" part.
  */
 
-// TODO: Add code generation script to do these automatically
+// -----------------------------------------------------------------------------------------------------------
+// Test registration
+// -----------------------------------------------------------------------------------------------------------
+
+#define TEST_IMPLEMENTATION(suite_name, test_name) void test_name(void)
 
 // -----------------------------------------------------------------------------------------------------------
 // Boolean assertions
 // -----------------------------------------------------------------------------------------------------------
+
+// TODO: Add code generation script to do the assertion argument flipping automatically
 
 #define ASSERT_TRUE(condition) \
     TEST_ASSERT_TRUE(condition)
