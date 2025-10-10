@@ -3,11 +3,14 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <microstrain_test/unity_wrappers.h>
 #include <mip/mip_parser.h>
 
-/*
+void setUp(void) {}
+void tearDown(void) {}
+
 struct ParseResults
 {
     size_t length;
@@ -22,7 +25,9 @@ FILE* openFile(const char *filename)
 
     if (file == NULL)
     {
-        fail_msg("Could not open file: %s.", filename);
+        char msg[256];
+        sprintf_s(msg, sizeof(msg), "Failed to open file: %s.", filename);
+        TEST_FAIL_MESSAGE(msg);
     }
 
     return file;
@@ -47,7 +52,7 @@ bool handle_packet(void* p, const mip_packet_view* packet, mip_timestamp t)
 }
 
 
-MICROSTRAIN_TEST_CASE(Mip_packets_can_be_parsed_correctly)
+void Mip_packets_can_be_parsed_correctly(void)
 {
     // TODO: Copy files over during build + switch to build versions
     // Arrange
@@ -63,34 +68,27 @@ MICROSTRAIN_TEST_CASE(Mip_packets_can_be_parsed_correctly)
     mip_parser_parse(&parser, input_buffer, actual_element_count, 0);
 
     // Assert
-    assert_int_less_or_equal(parse_results.length, MIP_PACKET_LENGTH_MAX);
+    ASSERT_LESS_OR_EQUAL_INT(parse_results.length, MIP_PACKET_LENGTH_MAX);
 
     uint8_t check_buffer[MIP_PACKET_LENGTH_MAX];
     FILE *expected_data_file = openFile("C:/HBK/Dev/mip_sdk/test/c/mip/../../data/packet_example_cpp_check.txt");
     const size_t expected_element_count = fread(check_buffer, 1, parse_results.length, expected_data_file);
 
-    assert_int_equal(parse_results.length, expected_element_count);
-    assert_int_equal(parse_results.bytes_parsed, expected_element_count);
-    assert_memory_equal(check_buffer, parse_results.packet_buffer, parse_results.length);
+    ASSERT_EQUAL_INT(parse_results.length, expected_element_count);
+    ASSERT_EQUAL_UINT64(parse_results.bytes_parsed, expected_element_count);
+    ASSERT_EQUAL_UINT8_ARRAY(check_buffer, parse_results.packet_buffer, parse_results.length);
 
     fclose(actual_data_file);
     fclose(expected_data_file);
 }
-*/
+
 int main()
 {
-/*
-    MICROSTRAIN_TEST_INIT;
+    UNITY_BEGIN();
 
-    MICROSTRAIN_TEST_SUITE_START(mip_parser);
+    // Suite: Mip parser
+    RUN_TEST(Mip_packets_can_be_parsed_correctly);
 
-    MICROSTRAIN_TEST_ADD(mip_parser, Mip_packets_can_be_parsed_correctly);
-    MICROSTRAIN_TEST_SUITE_RUN("Mip parser", mip_parser);
-
-    MICROSTRAIN_TEST_SUITE_END(mip_parser);
-
-    return MICROSTRAIN_TEST_FAILURE_COUNT;
-*/
-    return true;
+    return UNITY_END();
 }
 

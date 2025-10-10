@@ -26,4 +26,5 @@ add_unity_test(
     SOURCES "parser.integration.c"
     TARGET ${MIP_UNIT_TEST_TARGET_C}
     LABELS "integration"
+    DISABLED
 )
