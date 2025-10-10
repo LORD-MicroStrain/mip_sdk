@@ -22,6 +22,13 @@ option(MICROSTRAIN_TEST_USE_DOCTEST "Use doctest as the backend framework for C+
 add_library(microstrain_test_c INTERFACE)
 add_library(microstrain_test_cpp INTERFACE)
 
+set_target_properties(microstrain_test_c PROPERTIES
+    LINKER_LANGUAGE C
+)
+set_target_properties(microstrain_test_cpp PROPERTIES
+    LINKER_LANGUAGE CXX
+)
+
 target_include_directories(microstrain_test_c INTERFACE
     "${CMAKE_CURRENT_LIST_DIR}"
 )
