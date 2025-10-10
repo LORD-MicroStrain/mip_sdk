@@ -101,7 +101,7 @@ function(add_unity_test)
     target_link_libraries(${ARG_NAME} PRIVATE ${ARG_TARGET})
     add_test(NAME ${ARG_NAME} COMMAND ${ARG_NAME})
 
-    if(${ARG_LABELS})
+    if(ARG_LABELS)
         set_tests_properties(${ARG_NAME} PROPERTIES LABELS ${ARG_LABELS})
     endif()
 endfunction()
