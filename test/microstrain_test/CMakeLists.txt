@@ -20,6 +20,7 @@ target_include_directories(microstrain_test INTERFACE
 
 target_sources(microstrain_test INTERFACE
     "microstrain_test/microstrain_test.hpp"
+    "microstrain_test/unity_wrappers.h"
 )
 
 # ---------------------------------------------------------------

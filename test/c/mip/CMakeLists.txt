@@ -2,13 +2,13 @@
 # Unit tests
 # ---------------------------------------------------------------
 
-#[[
-add_cmocka_test(
-    "C_mip_packet_builder_unit"
+add_unity_test(
+    NAME "C_mip_packet_builder_unit"
     SOURCES "${CMAKE_CURRENT_LIST_DIR}/packet_builder.unit.c"
-    LINK_LIBRARIES ${MIP_UNIT_TEST_TARGET_C}
+    TARGET ${MIP_UNIT_TEST_TARGET_C}
+    LABELS "unit"
 )
-set_tests_properties("C_mip_packet_builder_unit" PROPERTIES LABELS "unit")
+#[[
 
 add_cmocka_test(
     "C_mip_logging"
