@@ -4,6 +4,7 @@
 #include <unity.h>
 
 // TODO: Switch to use test suites when standardized test registration interface is implemented
+// TODO: Switch assertions to flipped argument ones
 
 void setUp(void) {}
 void tearDown(void) {}

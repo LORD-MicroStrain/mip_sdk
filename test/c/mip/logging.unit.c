@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 */
-#include <mip_cmocka.h>
+#include <microstrain_test/unity_wrappers.h>
 /*
 #include <microstrain/strings.h>
 #include <mip/mip_logging.h>
@@ -79,11 +79,11 @@ MICROSTRAIN_TEST_CASE(Bytes_can_be_logged_correctly)
     /*
     microstrain_logging_init(NULL, MICROSTRAIN_LOG_LEVEL_OFF, NULL);
     TEST_ASSERT_BUFFER_COMPARE(g_buffer, "Test: 7565 0102 0201 E0C6\n", 6+19+1+1, "");
-#1#
 }
 */
 int main()
 {
+/*
     MICROSTRAIN_TEST_INIT;
 
     MICROSTRAIN_TEST_SUITE_START(mip_logging);
@@ -94,6 +94,8 @@ int main()
     MICROSTRAIN_TEST_SUITE_END(mip_logging);
 
     return MICROSTRAIN_TEST_FAILURE_COUNT;
+*/
+    return 1; // Fail until implemented
 }
 
 /*
@@ -350,5 +352,4 @@ int main()
 
     return (int)g_fail_count;
 }
-#1#
 */

@@ -91,7 +91,7 @@ endif()
 function(add_unity_test)
     cmake_parse_arguments(
         ARG
-        ""
+        "DISABLED"
         "NAME;TARGET"
         "SOURCES;LABELS"
         ${ARGN}
@@ -103,5 +103,9 @@ function(add_unity_test)
 
     if(ARG_LABELS)
         set_tests_properties(${ARG_NAME} PROPERTIES LABELS ${ARG_LABELS})
+    endif()
+
+    if(ARG_DISABLED)
+        set_tests_properties(${ARG_NAME} PROPERTIES DISABLED TRUE)
     endif()
 endfunction()
