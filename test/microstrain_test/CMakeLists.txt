@@ -106,11 +106,40 @@ if(MICROSTRAIN_TEST_USE_DOCTEST)
         "MICROSTRAIN_TEST_USE_DOCTEST"
     )
 
-    # TODO: Set up separate systems for parallel vs. sequential execution
     target_link_libraries(microstrain_test_cpp INTERFACE
         doctest_with_main
     )
 endif()
+
+# TODO: Move to dedicated module
+function(microstrain_discover_tests)
+    cmake_parse_arguments(
+        ARG
+        "SEQUENTIAL"
+        "TARGET"
+        "LABELS"
+        ${ARGN}
+    )
+
+    if(MICROSTRAIN_TEST_USE_DOCTEST)
+        include(${doctest_SOURCE_DIR}/scripts/cmake/doctest.cmake)
+
+        if(ARG_SEQUENTIAL)
+            doctest_discover_tests(
+                ${ARG_TARGET}
+                PROPERTIES
+                    LABELS ${ARG_LABELS}
+                    RESOURCE_LOCK ${ARG_TARGET}
+            )
+        else()
+            doctest_discover_tests(
+                ${ARG_TARGET}
+                PROPERTIES
+                    LABELS ${ARG_LABELS}
+            )
+        endif()
+    endif()
+endfunction()
 
 # ---------------------------------------------------------------
 # Utilities

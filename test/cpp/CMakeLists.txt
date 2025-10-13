@@ -43,14 +43,13 @@ target_link_libraries("${MIP_INTEGRATION_TEST_TARGET_CPP}" PRIVATE
 # Automatic test discovery
 # ---------------------------------------------------------------
 
-include(${doctest_SOURCE_DIR}/scripts/cmake/doctest.cmake)
-
-doctest_discover_tests("${MIP_UNIT_TEST_TARGET_CPP}"
-    PROPERTIES
+microstrain_discover_tests(
+    TARGET "${MIP_UNIT_TEST_TARGET_CPP}"
     LABELS "unit"
 )
 
-doctest_discover_tests("${MIP_INTEGRATION_TEST_TARGET_CPP}"
-    PROPERTIES
+microstrain_discover_tests(
+    TARGET "${MIP_INTEGRATION_TEST_TARGET_CPP}"
     LABELS "integration"
+    SEQUENTIAL
 )
