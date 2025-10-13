@@ -44,7 +44,7 @@ namespace microstrain
             bool setBaudrate(uint32_t baud);
 
         private:
-            serial_port mPort;
+            C::serial_port mPort;
             std::string mPortName;
             uint32_t    mBaudrate;
 

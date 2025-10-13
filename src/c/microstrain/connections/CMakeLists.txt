@@ -1,3 +1,5 @@
+add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/recording")
+
 if(MICROSTRAIN_ENABLE_SERIAL)
     add_subdirectory(serial)
 endif()

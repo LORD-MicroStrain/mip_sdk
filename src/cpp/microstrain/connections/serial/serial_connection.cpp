@@ -24,7 +24,7 @@ namespace microstrain
             mBaudrate = baudrate;
             mType     = TYPE;
 
-            serial_port_init(&mPort);
+            serial_port_init(&mPort, portName.c_str(), baudrate);
         }
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -51,7 +51,8 @@ namespace microstrain
             if (serial_port_is_open(&mPort))
                 return true;
 
-           return serial_port_open(&mPort, mPortName.c_str(), mBaudrate);
+           // return serial_port_open(&mPort, mPortName.c_str(), mBaudrate);
+           return serial_port_open(&mPort/*, mPortName.c_str(), mBaudrate*/);
         }
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -70,7 +71,7 @@ namespace microstrain
         ///
         bool SerialConnection::setBaudrate(uint32_t baud)
         {
-            bool ok = serial_port_set_baudrate(&mPort, baud);
+            bool ok = serial_port_update_baudrate(&mPort, baud);
 
             if (ok)
                 mBaudrate = baud;
@@ -81,9 +82,9 @@ namespace microstrain
         ///@copydoc microstrain::Connection::recvFromDevice
         bool SerialConnection::recvFromDevice(uint8_t* buffer, size_t max_length, unsigned int wait_time_ms, size_t* length_out, EmbeddedTimestamp* timestamp_out)
         {
-            *timestamp_out = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
+            // *timestamp_out = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
 
-            return serial_port_read(&mPort, buffer, max_length, wait_time_ms, length_out);
+            return serial_port_read(&mPort, buffer, max_length, wait_time_ms, length_out, timestamp_out);
         }
 
         ///@copydoc microstrain::Connection::sendToDevice
