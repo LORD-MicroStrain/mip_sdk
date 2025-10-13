@@ -15,5 +15,5 @@
 // -----------------------------------------------------------------------------------------------------------
 
 /// @brief Registers a test in the given test suite.
-#define TEST(suite_name, test_name) ADD_TEST_IMPLEMENTATION(suite_name, test_name)
+#define UNIT_TEST(suite_name, test_name) UNIT_TEST_IMPLEMENTATION(suite_name, test_name)
 

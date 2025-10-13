@@ -7,7 +7,7 @@
 // -----------------------------------------------------------------------------------------------------------
 
 // TODO: Implement suite grouping when ready, currently doesn't do anything
-#define ADD_TEST_IMPLEMENTATION(suite_name, test_name) \
+#define UNIT_TEST_IMPLEMENTATION(suite_name, test_name) \
     void test_name(void)
 
 // -----------------------------------------------------------------------------------------------------------

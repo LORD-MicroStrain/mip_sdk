@@ -8,7 +8,7 @@
 // Test registration
 // -----------------------------------------------------------------------------------------------------------
 
-#define ADD_TEST_IMPLEMENTATION(suite_name, test_name) TEST_CASE("[" suite_name "] " test_name)
+#define UNIT_TEST_IMPLEMENTATION(suite_name, test_name) TEST_CASE("[" suite_name "] " test_name)
 
 // -----------------------------------------------------------------------------------------------------------
 // C-string assertions
