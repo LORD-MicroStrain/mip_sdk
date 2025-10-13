@@ -17,8 +17,7 @@
 // TODO: Figure out how best to implement test registration system
 
 // TODO: Implement suite grouping when ready, currently doesn't do anything
-// TODO: This should eventually be removed by all test code and only be used by the test discovery system
-#define RUN_TEST_IMPLEMENTATION(suite_name, test_name) \
+#define RUN_MICROSTRAIN_TEST_IMPLEMENTATION(suite_name, test_name) \
     RUN_TEST(test_name)
 
 
