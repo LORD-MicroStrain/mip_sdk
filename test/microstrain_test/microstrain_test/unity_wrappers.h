@@ -2,17 +2,31 @@
 
 #include <unity.h>
 
+// -----------------------------------------------------------------------------------------------------------
+// Test registration
+// -----------------------------------------------------------------------------------------------------------
+
+// TODO: Implement suite grouping when ready, currently doesn't do anything
+#define ADD_TEST_IMPLEMENTATION(suite_name, test_name) \
+    void test_name(void)
+
+// -----------------------------------------------------------------------------------------------------------
+// Test execution
+// -----------------------------------------------------------------------------------------------------------
+
+// TODO: Figure out how best to implement test registration system
+
+// TODO: Implement suite grouping when ready, currently doesn't do anything
+// TODO: This should eventually be removed by all test code and only be used by the test discovery system
+#define RUN_TEST_IMPLEMENTATION(suite_name, test_name) \
+    RUN_TEST(test_name)
+
+
 /* The following wrapper macros flip the argument order from (expected, actual) to (actual, expected).
  *
  * There is no added functionality to these macros. They are simply to maintain consistency with other
  * frameworks. Assertion names remains the same, minus the "TEST_" part.
  */
-
-// -----------------------------------------------------------------------------------------------------------
-// Test registration
-// -----------------------------------------------------------------------------------------------------------
-
-#define TEST_IMPLEMENTATION(suite_name, test_name) void test_name(void)
 
 // -----------------------------------------------------------------------------------------------------------
 // Boolean assertions
