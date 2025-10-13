@@ -10,6 +10,9 @@
 #define UNIT_TEST_IMPLEMENTATION(suite_name, test_name) \
     void test_name(void)
 
+#define INTEGRATION_TEST_IMPLEMENTATION(suite_name, test_name) \
+    void test_name(void)
+
 // -----------------------------------------------------------------------------------------------------------
 // Test execution
 // -----------------------------------------------------------------------------------------------------------
