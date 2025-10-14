@@ -8,8 +8,6 @@
 #include <microstrain_test/unity_wrappers.h>
 #include <mip/mip_parser.h>
 
-void setUp(void) {}
-void tearDown(void) {}
 
 struct ParseResults
 {
@@ -81,14 +79,3 @@ MICROSTRAIN_TEST_CASE(Mip_packets_can_be_parsed_correctly)
     fclose(actual_data_file);
     fclose(expected_data_file);
 }
-
-int main()
-{
-    UNITY_BEGIN();
-
-    // Suite: Mip parser
-    RUN_TEST(Mip_packets_can_be_parsed_correctly);
-
-    return UNITY_END();
-}
-

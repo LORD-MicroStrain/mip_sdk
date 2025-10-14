@@ -3,11 +3,6 @@
 #include <microstrain/strings.h>
 #include <microstrain_test/microstrain_test.h>
 
-// TODO: Switch to use test suites when standardized test registration interface is implemented
-
-void setUp(void) {}
-void tearDown(void) {}
-
 
 MICROSTRAIN_TEST_CASE(String_concatenation, A_zero_terminated_string_can_be_concatenated_to_an_empty_buffer)
 {
@@ -367,39 +362,4 @@ MICROSTRAIN_TEST_CASE(String_formatting, Byte_formatting_fails_gracefully_when_b
     TEST_ASSERT_EQUAL_INT(index, 6+2+2+2+2);
     TEST_ASSERT_EQUAL_CHAR(buffer[6], '\0');
     TEST_ASSERT_EQUAL_STRING(buffer, "Data: ");
-}
-
-// TODO: Remove main when automatic test discovery implemented
-int main()
-{
-    UNITY_BEGIN();
-
-    // Suite: string concatenation
-    RUN_TEST(A_zero_terminated_string_can_be_concatenated_to_an_empty_buffer);
-    RUN_TEST(String_concatenation_to_an_empty_buffer_fails_gracefully_if_buffer_too_small);
-    RUN_TEST(String_concatenation_computes_required_buffer_size_when_buffer_is_null);
-    RUN_TEST(A_zero_terminated_string_can_be_concatenated_to_a_non_empty_buffer);
-    RUN_TEST(String_concatenation_to_a_non_empty_buffer_fails_gracefully_if_buffer_too_small);
-    RUN_TEST(String_concatenation_to_a_non_empty_buffer_fails_gracefully_if_index_is_at_the_end);
-    RUN_TEST(Multiple_string_concatenations_work);
-    RUN_TEST(Multiple_string_concatenations_fail_gracefully_when_buffer_too_small);
-
-    // Suite: string formatting
-    RUN_TEST(A_string_can_be_formatted_and_written_to_an_empty_buffer);
-    RUN_TEST(String_formatting_fails_gracefully_when_buffer_is_too_small);
-    RUN_TEST(String_formatting_calculates_required_buffer_size_if_buffer_is_null);
-    RUN_TEST(A_string_can_be_formatted_and_written_to_a_non_empty_buffer);
-    RUN_TEST(String_formatting_to_a_non_empty_buffer_fails_gracefully_if_buffer_too_small);
-    RUN_TEST(Multiple_string_formattings_work);
-    RUN_TEST(Multiple_string_formattings_fail_gracefully_when_buffer_too_small);
-    RUN_TEST(A_byte_array_can_formatted_as_hexadecimal_and_written_to_a_string_buffer);
-    RUN_TEST(A_byte_array_can_formatted_as_hexadecimal_with_group1_and_written_to_a_string_buffer);
-    RUN_TEST(A_byte_array_can_formatted_as_hexadecimal_with_group2_and_written_to_a_string_buffer);
-    RUN_TEST(A_byte_array_can_formatted_as_hexadecimal_with_partial_group2_and_written_to_a_string_buffer);
-    RUN_TEST(A_byte_array_can_formatted_as_hexadecimal_with_group4_and_written_to_a_string_buffer);
-    RUN_TEST(Byte_formatting_handles_no_data_properly);
-    RUN_TEST(A_byte_array_can_formatted_as_hexadecimal_and_written_to_a_non_empty_string_buffer);
-    RUN_TEST(Byte_formatting_fails_gracefully_when_buffer_too_small);
-
-    return UNITY_END();
 }

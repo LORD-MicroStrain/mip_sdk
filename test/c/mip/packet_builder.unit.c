@@ -5,8 +5,6 @@
 #include <mip/mip_packet.h>
 #include <microstrain_test/unity_wrappers.h>
 
-void setUp(void) {}
-void tearDown(void) {}
 
 MICROSTRAIN_TEST_CASE(Creating_a_mip_packet_handles_when_the_buffer_size_is_too_large)
 {
@@ -90,18 +88,4 @@ MICROSTRAIN_TEST_CASE(A_mip_packet_can_be_properly_prepared_for_transmission)
     // TODO: Uncomment when proper values are determined
     //ASSERT_EQUAL_INT(mip_packet_checksum_value(&packet), 0x80F0);
     //MICROSTRAIN_ASSERT_MESSAGE(buffer[MIP_PACKET_LENGTH_MAX] == 0x00, "Extra byte at end of buffer got clobbered");
-}
-
-int main()
-{
-    UNITY_BEGIN();
-
-    // Test suite: Mip packet builder
-    RUN_TEST(Creating_a_mip_packet_handles_when_the_buffer_size_is_too_large);
-    RUN_TEST(A_field_with_an_empty_payload_can_be_added_to_a_mip_packet);
-    RUN_TEST(A_pre_constructed_mip_field_can_be_added_to_a_mip_packet);
-    RUN_TEST(A_field_can_be_allocated_within_a_mip_packet);
-    RUN_TEST(A_mip_packet_can_be_properly_prepared_for_transmission);
-
-    return UNITY_END();
 }
