@@ -8,7 +8,7 @@
 static constexpr char CHECK_STRING[] = "Test: \"quotes\" 'single' & <xml/> {json} [array] $100 €50 ¥200 @user #tag 🚀 \n\t\\ 100% café naïve";
 static constexpr size_t CHECK_STRING_LENGTH = sizeof(CHECK_STRING) - 1; // Length without null terminator
 
-UNIT_TEST("C++ string concatenation", "A char array view can be concatenated to a buffer")
+MICROSTRAIN_TEST_CASE("C++ string concatenation", "A char array view can be concatenated to a buffer")
 {
     char buffer[1024] = {};
     size_t index = 0;
@@ -19,7 +19,7 @@ UNIT_TEST("C++ string concatenation", "A char array view can be concatenated to 
     CHECK_CSTR_EQ(buffer, CHECK_STRING);
 }
 
-UNIT_TEST("C++ string concatenation", "A std::string_view can be concatenated to a buffer")
+MICROSTRAIN_TEST_CASE("C++ string concatenation", "A std::string_view can be concatenated to a buffer")
 {
     char buffer[1024] = {};
     size_t index = 0;
@@ -30,7 +30,7 @@ UNIT_TEST("C++ string concatenation", "A std::string_view can be concatenated to
     CHECK_CSTR_EQ(buffer, CHECK_STRING);
 }
 
-UNIT_TEST("C++ string concatenation", "A std::string can be concatenated to a buffer")
+MICROSTRAIN_TEST_CASE("C++ string concatenation", "A std::string can be concatenated to a buffer")
 {
     char buffer[1024] = {};
     size_t index = 0;
@@ -41,7 +41,7 @@ UNIT_TEST("C++ string concatenation", "A std::string can be concatenated to a bu
     CHECK_CSTR_EQ(buffer, CHECK_STRING);
 }
 
-UNIT_TEST("C++ string concatenation", "A zero-terminated C string can be concatenated to a buffer")
+MICROSTRAIN_TEST_CASE("C++ string concatenation", "A zero-terminated C string can be concatenated to a buffer")
 {
     char buffer[1024] = {};
     size_t index = 0;
@@ -52,7 +52,7 @@ UNIT_TEST("C++ string concatenation", "A zero-terminated C string can be concate
     CHECK_CSTR_EQ(buffer, CHECK_STRING);
 }
 
-UNIT_TEST("C++ string concatenation", "Up to N characters of a zero-terminated string can be concatenated to a buffer")
+MICROSTRAIN_TEST_CASE("C++ string concatenation", "Up to N characters of a zero-terminated string can be concatenated to a buffer")
 {
     char buffer[1024] = {};
     size_t index = 0;
@@ -65,7 +65,7 @@ UNIT_TEST("C++ string concatenation", "Up to N characters of a zero-terminated s
     CHECK_CSTR_EQ(buffer, "1234");
 }
 
-UNIT_TEST("C++ string concatenation", "A string literal can be concatenated to a buffer")
+MICROSTRAIN_TEST_CASE("C++ string concatenation", "A string literal can be concatenated to a buffer")
 {
     char buffer[1024] = {};
     size_t index = 0;

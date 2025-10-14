@@ -8,7 +8,7 @@ constexpr uint8_t SET_AND_SAVE_COMM_SPEED_PACKET[] = {
     0xCE, 0x80
 };
 
-UNIT_TEST("Formatting", "A packet can be properly formatted to bytes")
+MICROSTRAIN_TEST_CASE("Formatting", "A packet can be properly formatted to bytes")
 {
     char buffer[128];
     size_t index = 0;
@@ -20,7 +20,7 @@ UNIT_TEST("Formatting", "A packet can be properly formatted to bytes")
     CHECK_CSTR_EQ(buffer, "7565010C 080901010001C200 04090301 CE80");
 }
 
-UNIT_TEST("Formatting", "A packet can be properly formatted to a human-readable string")
+MICROSTRAIN_TEST_CASE("Formatting", "A packet can be properly formatted to a human-readable string")
 {
     char buffer[128];
     size_t index = 0;
@@ -32,7 +32,7 @@ UNIT_TEST("Formatting", "A packet can be properly formatted to a human-readable 
     CHECK_CSTR_EQ(buffer, "Packet(DS=0x01){ Field(FD=0x09)[01010001C200] Field(FD=0x09)[0301] }");
 }
 
-UNIT_TEST("Formatting", "A field can be properly formatted to a human-readable string")
+MICROSTRAIN_TEST_CASE("Formatting", "A field can be properly formatted to a human-readable string")
 {
     char buffer[128];
     size_t index = 0;

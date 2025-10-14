@@ -8,10 +8,7 @@
 // Test registration
 // -----------------------------------------------------------------------------------------------------------
 
-#define UNIT_TEST_IMPLEMENTATION(suite_name, test_name) \
-    TEST_CASE("[" suite_name "] " test_name)
-
-#define INTEGRATION_TEST_IMPLEMENTATION(suite_name, test_name) \
+#define MICROSTRAIN_TEST_CASE_IMPLEMENTATION(suite_name, test_name) \
     TEST_CASE("[" suite_name "] " test_name)
 
 // -----------------------------------------------------------------------------------------------------------
