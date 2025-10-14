@@ -10,12 +10,18 @@
 #define MICROSTRAIN_TEST_CASE_IMPLEMENTATION(suite_name, test_name) \
     void test_name(void)
 
+#define MICROSTRAIN_TEST_BEGIN_IMPLEMENTATION() \
+    UNITY_BEGIN()
+
+#define MICROSTRAIN_TEST_END_IMPLEMENTATION() \
+    UNITY_END()
+
 // -----------------------------------------------------------------------------------------------------------
 // Test execution
 // -----------------------------------------------------------------------------------------------------------
 
 // TODO: Implement suite grouping when ready, currently doesn't do anything
-#define RUN_MICROSTRAIN_TEST_IMPLEMENTATION(suite_name, test_name) \
+#define RUN_MICROSTRAIN_TEST_CASE_IMPLEMENTATION(suite_name, test_name) \
     RUN_TEST(test_name)
 
 
