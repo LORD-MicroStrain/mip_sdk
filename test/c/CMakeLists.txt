@@ -5,8 +5,8 @@
 set(MIP_UNIT_TEST_TARGET_C "${MIP_UNIT_TEST_TARGET}_c")
 set(MIP_INTEGRATION_TEST_TARGET_C "${MIP_INTEGRATION_TEST_TARGET}_c")
 
-add_library("${MIP_UNIT_TEST_TARGET_C}" INTERFACE)
-add_library("${MIP_INTEGRATION_TEST_TARGET_C}" INTERFACE)
+add_executable("${MIP_UNIT_TEST_TARGET_C}" INTERFACE)
+add_executable("${MIP_INTEGRATION_TEST_TARGET_C}" INTERFACE)
 
 # ---------------------------------------------------------------
 # Linking
