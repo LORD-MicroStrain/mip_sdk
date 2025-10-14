@@ -54,3 +54,20 @@ target_include_directories("${MIP_INTEGRATION_TEST_TARGET_C}" INTERFACE
 
 add_subdirectory("microstrain")
 add_subdirectory("mip")
+
+# ---------------------------------------------------------------
+# Automatic test discovery
+# ---------------------------------------------------------------
+
+include(${microstrain_test_SOURCE_DIR}/scripts/DiscoverTests.cmake)
+
+microstrain_discover_tests_c(
+    TARGET "${MIP_UNIT_TEST_TARGET_C}"
+    LABELS "unit"
+)
+
+microstrain_discover_tests_c(
+    TARGET "${MIP_INTEGRATION_TEST_TARGET_C}"
+    LABELS "integration"
+    SEQUENTIAL
+)
