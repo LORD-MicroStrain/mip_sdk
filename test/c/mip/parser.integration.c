@@ -52,7 +52,7 @@ bool handle_packet(void* p, const mip_packet_view* packet, mip_timestamp t)
 }
 
 
-void Mip_packets_can_be_parsed_correctly(void)
+MICROSTRAIN_TEST_CASE(Mip_packets_can_be_parsed_correctly)
 {
     // TODO: Copy files over during build + switch to build versions
     // Arrange

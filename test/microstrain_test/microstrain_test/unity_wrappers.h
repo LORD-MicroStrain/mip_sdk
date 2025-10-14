@@ -7,10 +7,7 @@
 // -----------------------------------------------------------------------------------------------------------
 
 // TODO: Implement suite grouping when ready, currently doesn't do anything
-#define UNIT_TEST_IMPLEMENTATION(suite_name, test_name) \
-    void test_name(void)
-
-#define INTEGRATION_TEST_IMPLEMENTATION(suite_name, test_name) \
+#define MICROSTRAIN_TEST_CASE_IMPLEMENTATION(suite_name, test_name) \
     void test_name(void)
 
 // -----------------------------------------------------------------------------------------------------------
