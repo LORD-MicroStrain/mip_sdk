@@ -15,13 +15,13 @@ add_library("${MIP_INTEGRATION_TEST_TARGET_C}" INTERFACE)
 target_link_libraries("${MIP_UNIT_TEST_TARGET_C}" INTERFACE
     "${MIP_LIBRARIES}"
     "${MICROSTRAIN_LIBRARIES}"
-    MicrostrainTest::c
+    microstrain_test::c
 )
 
 target_link_libraries("${MIP_INTEGRATION_TEST_TARGET_C}" INTERFACE
     "${MIP_LIBRARIES}"
     "${MICROSTRAIN_LIBRARIES}"
-    MicrostrainTest::cpp
+    microstrain_test::cpp
 )
 
 # ---------------------------------------------------------------

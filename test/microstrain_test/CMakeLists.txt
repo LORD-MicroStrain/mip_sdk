@@ -3,7 +3,7 @@
 # ---------------------------------------------------------------
 
 cmake_minimum_required(VERSION 3.14)
-project(MicrostrainTest)
+project(microstrain_test)
 
 # ---------------------------------------------------------------
 # Framework backends
@@ -44,8 +44,8 @@ target_sources(microstrain_test_cpp INTERFACE
 )
 
 # Add namespace aliases
-add_library(MicrostrainTest::c ALIAS microstrain_test_c)
-add_library(MicrostrainTest::cpp ALIAS microstrain_test_cpp)
+add_library(microstrain_test::c ALIAS microstrain_test_c)
+add_library(microstrain_test::cpp ALIAS microstrain_test_cpp)
 
 # ---------------------------------------------------------------
 # Library compile settings
@@ -110,36 +110,6 @@ if(MICROSTRAIN_TEST_USE_DOCTEST)
         doctest_with_main
     )
 endif()
-
-# TODO: Move to dedicated module
-function(microstrain_discover_tests)
-    cmake_parse_arguments(
-        ARG
-        "SEQUENTIAL"
-        "TARGET"
-        "LABELS"
-        ${ARGN}
-    )
-
-    if(MICROSTRAIN_TEST_USE_DOCTEST)
-        include(${doctest_SOURCE_DIR}/scripts/cmake/doctest.cmake)
-
-        if(ARG_SEQUENTIAL)
-            doctest_discover_tests(
-                ${ARG_TARGET}
-                PROPERTIES
-                    LABELS ${ARG_LABELS}
-                    RESOURCE_LOCK ${ARG_TARGET}
-            )
-        else()
-            doctest_discover_tests(
-                ${ARG_TARGET}
-                PROPERTIES
-                    LABELS ${ARG_LABELS}
-            )
-        endif()
-    endif()
-endfunction()
 
 # ---------------------------------------------------------------
 # Utilities

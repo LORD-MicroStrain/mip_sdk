@@ -30,18 +30,20 @@ target_sources("${MIP_INTEGRATION_TEST_TARGET_CPP}" PRIVATE
 target_link_libraries("${MIP_UNIT_TEST_TARGET_CPP}" PRIVATE
     "${MIP_LIBRARIES}"
     "${MICROSTRAIN_LIBRARIES}"
-    MicrostrainTest::cpp
+    microstrain_test::cpp
 )
 
 target_link_libraries("${MIP_INTEGRATION_TEST_TARGET_CPP}" PRIVATE
     "${MIP_LIBRARIES}"
     "${MICROSTRAIN_LIBRARIES}"
-    MicrostrainTest::cpp
+    microstrain_test::cpp
 )
 
 # ---------------------------------------------------------------
 # Automatic test discovery
 # ---------------------------------------------------------------
+
+include(${microstrain_test_SOURCE_DIR}/scripts/DiscoverTests.cmake)
 
 microstrain_discover_tests(
     TARGET "${MIP_UNIT_TEST_TARGET_CPP}"
