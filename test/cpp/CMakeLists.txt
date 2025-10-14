@@ -45,12 +45,12 @@ target_link_libraries("${MIP_INTEGRATION_TEST_TARGET_CPP}" PRIVATE
 
 include(${microstrain_test_SOURCE_DIR}/scripts/DiscoverTests.cmake)
 
-microstrain_discover_tests(
+microstrain_discover_tests_cpp(
     TARGET "${MIP_UNIT_TEST_TARGET_CPP}"
     LABELS "unit"
 )
 
-microstrain_discover_tests(
+microstrain_discover_tests_cpp(
     TARGET "${MIP_INTEGRATION_TEST_TARGET_CPP}"
     LABELS "integration"
     SEQUENTIAL

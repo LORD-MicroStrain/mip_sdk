@@ -1,4 +1,24 @@
-function(microstrain_discover_tests)
+# ---------------------------------------------------------------
+# C discovery
+# ---------------------------------------------------------------
+
+function(microstrain_discover_tests_c)
+    cmake_parse_arguments(
+        ARG
+        "SEQUENTIAL"
+        "TARGET"
+        "LABELS"
+        ${ARGN}
+    )
+
+    # TODO: Add test discovery here
+endfunction()
+
+# ---------------------------------------------------------------
+# C++ discovery
+# ---------------------------------------------------------------
+
+function(microstrain_discover_tests_cpp)
     cmake_parse_arguments(
         ARG
         "SEQUENTIAL"
