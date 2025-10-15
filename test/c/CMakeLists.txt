@@ -5,20 +5,20 @@
 set(MIP_UNIT_TEST_TARGET_C "${MIP_UNIT_TEST_TARGET}_c")
 set(MIP_INTEGRATION_TEST_TARGET_C "${MIP_INTEGRATION_TEST_TARGET}_c")
 
-add_executable("${MIP_UNIT_TEST_TARGET_C}" INTERFACE)
-add_executable("${MIP_INTEGRATION_TEST_TARGET_C}" INTERFACE)
+add_executable("${MIP_UNIT_TEST_TARGET_C}")
+add_executable("${MIP_INTEGRATION_TEST_TARGET_C}")
 
 # ---------------------------------------------------------------
 # Linking
 # ---------------------------------------------------------------
 
-target_link_libraries("${MIP_UNIT_TEST_TARGET_C}" INTERFACE
+target_link_libraries("${MIP_UNIT_TEST_TARGET_C}" PRIVATE
     "${MIP_LIBRARIES}"
     "${MICROSTRAIN_LIBRARIES}"
     microstrain_test::c
 )
 
-target_link_libraries("${MIP_INTEGRATION_TEST_TARGET_C}" INTERFACE
+target_link_libraries("${MIP_INTEGRATION_TEST_TARGET_C}" PRIVATE
     "${MIP_LIBRARIES}"
     "${MICROSTRAIN_LIBRARIES}"
     microstrain_test::cpp
@@ -28,11 +28,11 @@ target_link_libraries("${MIP_INTEGRATION_TEST_TARGET_C}" INTERFACE
 # Compile definitions
 # ---------------------------------------------------------------
 
-target_compile_definitions("${MIP_UNIT_TEST_TARGET_C}" INTERFACE
+target_compile_definitions("${MIP_UNIT_TEST_TARGET_C}" PRIVATE
     "MICROSTRAIN_LOGGING_MAX_LEVEL=MICROSTRAIN_LOGGING_LEVEL_WARN_"
 )
 
-target_compile_definitions("${MIP_INTEGRATION_TEST_TARGET_C}" INTERFACE
+target_compile_definitions("${MIP_INTEGRATION_TEST_TARGET_C}" PRIVATE
     "MICROSTRAIN_LOGGING_MAX_LEVEL=MICROSTRAIN_LOGGING_LEVEL_WARN_"
 )
 
@@ -40,11 +40,11 @@ target_compile_definitions("${MIP_INTEGRATION_TEST_TARGET_C}" INTERFACE
 # Include directories
 # ---------------------------------------------------------------
 
-target_include_directories("${MIP_UNIT_TEST_TARGET_C}" INTERFACE
+target_include_directories("${MIP_UNIT_TEST_TARGET_C}" PRIVATE
     "${CMAKE_CURRENT_LIST_DIR}"
 )
 
-target_include_directories("${MIP_INTEGRATION_TEST_TARGET_C}" INTERFACE
+target_include_directories("${MIP_INTEGRATION_TEST_TARGET_C}" PRIVATE
     "${CMAKE_CURRENT_LIST_DIR}"
 )
 
