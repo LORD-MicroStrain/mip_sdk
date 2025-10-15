@@ -24,6 +24,23 @@
 #define RUN_MICROSTRAIN_TEST_CASE_IMPLEMENTATION(test_name) \
     RUN_TEST(test_name)
 
+#define RUN_MICROSTRAIN_TEST_CASE_EXPLICIT_FILEPATH_IMPLEMENTATION(test_name, file_path) \
+    do { \
+        Unity.CurrentTestName = #test_name; \
+        Unity.NumberOfTests++; \
+        Unity.TestFile = file_path; \
+        UNITY_EXEC_TIME_START(); \
+        if (TEST_PROTECT()) { \
+            setUp(); \
+            test_name(); \
+        } \
+        if (TEST_PROTECT()) { \
+            tearDown(); \
+        } \
+        UNITY_EXEC_TIME_STOP(); \
+        UnityConcludeTest(); \
+    } while(0)
+
 /* The following wrapper macros flip the argument order from (expected, actual) to (actual, expected).
  *
  * There is no added functionality to these macros. They are simply to maintain consistency with other

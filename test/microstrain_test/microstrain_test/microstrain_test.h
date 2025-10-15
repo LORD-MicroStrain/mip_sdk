@@ -49,3 +49,7 @@
 ///
 #define RUN_MICROSTRAIN_TEST_CASE(test_name) \
     RUN_MICROSTRAIN_TEST_CASE_IMPLEMENTATION(test_name)
+
+// This is a modified version to work with automatic test discovery, don't use directly!
+#define RUN_MICROSTRAIN_TEST_CASE_EXPLICIT_FILEPATH(test_name, file_path) \
+    RUN_MICROSTRAIN_TEST_CASE_EXPLICIT_FILEPATH_IMPLEMENTATION(test_name, file_path)

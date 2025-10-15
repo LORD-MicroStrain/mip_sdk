@@ -31,6 +31,7 @@ function(microstrain_discover_tests_c)
     endif()
 
     set(DISCOVERED_TESTS "")
+    set(TEST_FILEPATHS "")
 
     foreach(SOURCE_FILE ${TARGET_SOURCES})
         get_filename_component(SOURCE_FILE_ABSOLUTE_PATH "${SOURCE_FILE}" ABSOLUTE)
@@ -93,6 +94,7 @@ function(microstrain_discover_tests_c)
                 # registration call (the test name).
                 string(REGEX REPLACE "MICROSTRAIN_TEST_CASE\\(([a-zA-Z0-9_]+)\\)" "\\1" TEST_NAME "${MATCH}")
                 list(APPEND DISCOVERED_TESTS ${TEST_NAME})
+                list(APPEND TEST_FILEPATHS "${SOURCE_FILE_ABSOLUTE_PATH}")
             endif()
         endforeach()
     endforeach()
@@ -101,8 +103,9 @@ function(microstrain_discover_tests_c)
         # Remove duplicate tests. Count the amount of tests before and after to see if any
         # were removed.
         list(LENGTH DISCOVERED_TESTS ORIGINAL_COUNT)
-        list(REMOVE_DUPLICATES DISCOVERED_TESTS)
-        list(LENGTH DISCOVERED_TESTS UNIQUE_COUNT)
+        set(TEMP_LIST ${DISCOVERED_TESTS})
+        list(REMOVE_DUPLICATES TEMP_LIST)
+        list(LENGTH TEMP_LIST UNIQUE_COUNT)
 
         # Warn if duplicate tests were found
         math(EXPR DUPLICATE_COUNT "${ORIGINAL_COUNT} - ${UNIQUE_COUNT}")
@@ -156,9 +159,19 @@ function(microstrain_discover_tests_c)
     set(MAIN_CONTENT "${MAIN_CONTENT}    \n")
 
     # Generate conditional execution logic for each test.
-    foreach(TEST_NAME ${DISCOVERED_TESTS})
+    list(LENGTH DISCOVERED_TESTS TEST_COUNT)
+    math(EXPR LAST_INDEX "${TEST_COUNT} - 1")
+    foreach(INDEX RANGE ${LAST_INDEX})
+        # We need to set the filepath explicitly (for Unity) since it points to the generated
+        # runner file instead.
+        list(GET TEST_FILEPATHS ${INDEX} TEST_FILEPATH)
+        list(GET DISCOVERED_TESTS ${INDEX} TEST_NAME)
+
+        # Escape backslashes for C string literal
+        string(REPLACE "\\" "\\\\" TEST_FILEPATH_ESCAPED "${TEST_FILEPATH}")
+
         set(MAIN_CONTENT "${MAIN_CONTENT}    if (!test_filter || strcmp(test_filter, \"${TEST_NAME}\") == 0) {\n")
-        set(MAIN_CONTENT "${MAIN_CONTENT}        RUN_MICROSTRAIN_TEST_CASE(${TEST_NAME});\n")
+        set(MAIN_CONTENT "${MAIN_CONTENT}        RUN_MICROSTRAIN_TEST_CASE_EXPLICIT_FILEPATH(${TEST_NAME}, \"${TEST_FILEPATH_ESCAPED}\");\n")
         set(MAIN_CONTENT "${MAIN_CONTENT}    }\n")
     endforeach()
 
