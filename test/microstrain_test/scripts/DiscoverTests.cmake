@@ -26,11 +26,6 @@ function(microstrain_discover_tests_c)
 
     get_target_property(TARGET_SOURCES ${ARG_TARGET} SOURCES)
 
-    if(NOT TARGET_SOURCES OR TARGET_SOURCES STREQUAL "TARGET_SOURCES-NOTFOUND")
-        message(WARNING "No sources found for target ${ARG_TARGET}, skipping test discovery")
-        return()
-    endif()
-
     set(DISCOVERED_TESTS "")
 
     foreach(SOURCE_FILE ${TARGET_SOURCES})
@@ -173,6 +168,7 @@ function(microstrain_discover_tests_c)
     # Register each test with CTest
     foreach(TEST_NAME ${DISCOVERED_TESTS})
         message(STATUS "  - Registering test: ${TEST_NAME}")
+        # TODO: Add test suite to avoid naming conflicts
         add_test(NAME ${TEST_NAME} COMMAND ${ARG_TARGET} --test=${TEST_NAME})
 
         set_tests_properties(${TEST_NAME} PROPERTIES

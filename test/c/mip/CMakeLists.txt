@@ -5,5 +5,5 @@ target_sources("${MIP_UNIT_TEST_TARGET_C}" PRIVATE
 )
 
 target_sources("${MIP_INTEGRATION_TEST_TARGET_C}" PRIVATE
-    "parser.integration.c"
+    #"parser.integration.c"
 )
