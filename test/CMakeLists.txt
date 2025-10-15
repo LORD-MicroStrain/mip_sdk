@@ -2,9 +2,9 @@
 # Dependencies
 # ---------------------------------------------------------------
 
-# TODO: Will be moved to separate repo
 set(MICROSTRAIN_TEST_USE_UNITY ON CACHE BOOL "" FORCE)
 set(MICROSTRAIN_TEST_USE_DOCTEST ON CACHE BOOL "" FORCE)
+# TODO: Will be moved to separate repo
 add_subdirectory("microstrain_test")
 
 # ---------------------------------------------------------------

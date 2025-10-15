@@ -21,7 +21,7 @@ target_link_libraries("${MIP_UNIT_TEST_TARGET_C}" PRIVATE
 target_link_libraries("${MIP_INTEGRATION_TEST_TARGET_C}" PRIVATE
     "${MIP_LIBRARIES}"
     "${MICROSTRAIN_LIBRARIES}"
-    microstrain_test::cpp
+    microstrain_test::c
 )
 
 # ---------------------------------------------------------------

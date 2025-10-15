@@ -1,13 +1,14 @@
 #pragma once
 
+// TODO: Figure out why this isn't being detected anymore
 #include <unity.h>
 
 // -----------------------------------------------------------------------------------------------------------
 // Test registration
 // -----------------------------------------------------------------------------------------------------------
 
-// TODO: Implement suite grouping when ready, currently doesn't do anything
-#define MICROSTRAIN_TEST_CASE_IMPLEMENTATION(suite_name, test_name) \
+// TODO: Implement suite grouping when ready
+#define MICROSTRAIN_TEST_CASE_IMPLEMENTATION(test_name) \
     void test_name(void)
 
 #define MICROSTRAIN_TEST_BEGIN_IMPLEMENTATION() \
@@ -20,8 +21,8 @@
 // Test execution
 // -----------------------------------------------------------------------------------------------------------
 
-// TODO: Implement suite grouping when ready, currently doesn't do anything
-#define RUN_MICROSTRAIN_TEST_CASE_IMPLEMENTATION(suite_name, test_name) \
+// TODO: Implement suite grouping when ready
+#define RUN_MICROSTRAIN_TEST_CASE_IMPLEMENTATION(test_name) \
     RUN_TEST(test_name)
 
 
