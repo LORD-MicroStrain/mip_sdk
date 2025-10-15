@@ -110,30 +110,3 @@ if(MICROSTRAIN_TEST_USE_DOCTEST)
         doctest_with_main
     )
 endif()
-
-# ---------------------------------------------------------------
-# Utilities
-# ---------------------------------------------------------------
-
-# Temporary function that adds a CTest test
-function(add_unity_test)
-    cmake_parse_arguments(
-        ARG
-        "DISABLED"
-        "NAME;TARGET"
-        "SOURCES;LABELS"
-        ${ARGN}
-    )
-
-    add_executable(${ARG_NAME} ${ARG_SOURCES})
-    target_link_libraries(${ARG_NAME} PRIVATE ${ARG_TARGET})
-    add_test(NAME ${ARG_NAME} COMMAND ${ARG_NAME})
-
-    if(ARG_LABELS)
-        set_tests_properties(${ARG_NAME} PROPERTIES LABELS ${ARG_LABELS})
-    endif()
-
-    if(ARG_DISABLED)
-        set_tests_properties(${ARG_NAME} PROPERTIES DISABLED TRUE)
-    endif()
-endfunction()
