@@ -1,6 +1,5 @@
 #pragma once
 
-// TODO: Figure out why this isn't being detected anymore
 #include <unity.h>
 
 // -----------------------------------------------------------------------------------------------------------
@@ -24,7 +23,6 @@
 // TODO: Implement suite grouping when ready
 #define RUN_MICROSTRAIN_TEST_CASE_IMPLEMENTATION(test_name) \
     RUN_TEST(test_name)
-
 
 /* The following wrapper macros flip the argument order from (expected, actual) to (actual, expected).
  *

@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <microstrain_test/unity_wrappers.h>
+#include <microstrain_test/microstrain_test.h>
 #include <mip/mip_parser.h>
 
 

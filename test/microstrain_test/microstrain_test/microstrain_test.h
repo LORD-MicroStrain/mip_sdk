@@ -12,12 +12,13 @@
 // Test registration
 // -----------------------------------------------------------------------------------------------------------
 
+// TODO: Add test suite
 /// @brief Registers a test case in the given test suite.
 ///
 /// The test suite will be created if it doesn't already exist.
 ///
-#define MICROSTRAIN_TEST_CASE(suite_name, test_name) \
-    MICROSTRAIN_TEST_CASE_IMPLEMENTATION(suite_name, test_name)
+#define MICROSTRAIN_TEST_CASE(test_name) \
+    MICROSTRAIN_TEST_CASE_IMPLEMENTATION(test_name)
 
 /// @brief Call this to begin the test registration process.
 ///
@@ -41,9 +42,10 @@
 // Test execution
 // -----------------------------------------------------------------------------------------------------------
 
+// TODO: Add test suite
 /// @brief Runs a MicrostrainTest-defined test case.
 ///
 /// Don't use this directly if using automatic test discovery.
 ///
-#define RUN_MICROSTRAIN_TEST_CASE(suite_name, test_name) \
-    RUN_MICROSTRAIN_TEST_CASE_IMPLEMENTATION(suite_name, test_name)
+#define RUN_MICROSTRAIN_TEST_CASE(test_name) \
+    RUN_MICROSTRAIN_TEST_CASE_IMPLEMENTATION(test_name)

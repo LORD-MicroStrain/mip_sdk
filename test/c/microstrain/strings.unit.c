@@ -4,7 +4,9 @@
 #include <microstrain_test/microstrain_test.h>
 
 
-MICROSTRAIN_TEST_CASE(String_concatenation, A_zero_terminated_string_can_be_concatenated_to_an_empty_buffer)
+// TODO: String_concatenation start
+
+MICROSTRAIN_TEST_CASE(A_zero_terminated_string_can_be_concatenated_to_an_empty_buffer)
 {
     char buffer[10];
     size_t index = 0;
@@ -20,7 +22,7 @@ MICROSTRAIN_TEST_CASE(String_concatenation, A_zero_terminated_string_can_be_conc
     TEST_ASSERT_EQUAL_STRING(buffer, "12345\0____");
 }
 
-MICROSTRAIN_TEST_CASE(String_concatenation, String_concatenation_to_an_empty_buffer_fails_gracefully_if_buffer_too_small)
+MICROSTRAIN_TEST_CASE(String_concatenation_to_an_empty_buffer_fails_gracefully_if_buffer_too_small)
 {
     char buffer[10];
     const size_t fake_buffer_size = 4;  // dummy so we can check if the buffer overran
@@ -37,7 +39,7 @@ MICROSTRAIN_TEST_CASE(String_concatenation, String_concatenation_to_an_empty_buf
     TEST_ASSERT_EQUAL_STRING(buffer, "123\0______");
 }
 
-MICROSTRAIN_TEST_CASE(String_concatenation, String_concatenation_computes_required_buffer_size_when_buffer_is_null)
+MICROSTRAIN_TEST_CASE(String_concatenation_computes_required_buffer_size_when_buffer_is_null)
 {
     size_t index = 0;
     const char* const string = "12345";
@@ -49,7 +51,7 @@ MICROSTRAIN_TEST_CASE(String_concatenation, String_concatenation_computes_requir
     TEST_ASSERT_EQUAL_INT(index, string_length);
 }
 
-MICROSTRAIN_TEST_CASE(String_concatenation, A_zero_terminated_string_can_be_concatenated_to_a_non_empty_buffer)
+MICROSTRAIN_TEST_CASE(A_zero_terminated_string_can_be_concatenated_to_a_non_empty_buffer)
 {
     char buffer[10];
     memset(buffer, '_', sizeof(buffer));
@@ -64,7 +66,7 @@ MICROSTRAIN_TEST_CASE(String_concatenation, A_zero_terminated_string_can_be_conc
     TEST_ASSERT_EQUAL_STRING(buffer, "123456789\0");
 }
 
-MICROSTRAIN_TEST_CASE(String_concatenation, String_concatenation_to_a_non_empty_buffer_fails_gracefully_if_buffer_too_small)
+MICROSTRAIN_TEST_CASE(String_concatenation_to_a_non_empty_buffer_fails_gracefully_if_buffer_too_small)
 {
     char buffer[20];
     const size_t fake_buffer_size = 10;
@@ -81,7 +83,7 @@ MICROSTRAIN_TEST_CASE(String_concatenation, String_concatenation_to_a_non_empty_
 
 }
 
-MICROSTRAIN_TEST_CASE(String_concatenation, String_concatenation_to_a_non_empty_buffer_fails_gracefully_if_index_is_at_the_end)
+MICROSTRAIN_TEST_CASE(String_concatenation_to_a_non_empty_buffer_fails_gracefully_if_index_is_at_the_end)
 {
     char buffer[20];
     memcpy(buffer, "012345678\0__________", 20);
@@ -98,7 +100,7 @@ MICROSTRAIN_TEST_CASE(String_concatenation, String_concatenation_to_a_non_empty_
     TEST_ASSERT_EQUAL_STRING(buffer, "012345678\0__________");
 }
 
-MICROSTRAIN_TEST_CASE(String_concatenation, Multiple_string_concatenations_work)
+MICROSTRAIN_TEST_CASE(Multiple_string_concatenations_work)
 {
     char buffer[50];
     memset(buffer, '_', sizeof(buffer));
@@ -118,7 +120,7 @@ MICROSTRAIN_TEST_CASE(String_concatenation, Multiple_string_concatenations_work)
     TEST_ASSERT_EQUAL_STRING(buffer, "This is a very long test...");
 }
 
-MICROSTRAIN_TEST_CASE(String_concatenation, Multiple_string_concatenations_fail_gracefully_when_buffer_too_small)
+MICROSTRAIN_TEST_CASE(Multiple_string_concatenations_fail_gracefully_when_buffer_too_small)
 {
     char buffer[50];
     const size_t fake_buffer_size = 10;
@@ -139,7 +141,9 @@ MICROSTRAIN_TEST_CASE(String_concatenation, Multiple_string_concatenations_fail_
     TEST_ASSERT_EQUAL_STRING(buffer, "This is a");
 }
 
-MICROSTRAIN_TEST_CASE(String_formatting, A_string_can_be_formatted_and_written_to_an_empty_buffer)
+// TODO: String_formatting start
+
+MICROSTRAIN_TEST_CASE(A_string_can_be_formatted_and_written_to_an_empty_buffer)
 {
     char buffer[20];
     memset(buffer, '_', sizeof(buffer));
@@ -153,7 +157,7 @@ MICROSTRAIN_TEST_CASE(String_formatting, A_string_can_be_formatted_and_written_t
     TEST_ASSERT_EQUAL_STRING(buffer, "4096==0x1000\0_______");
 }
 
-MICROSTRAIN_TEST_CASE(String_formatting, String_formatting_fails_gracefully_when_buffer_is_too_small)
+MICROSTRAIN_TEST_CASE(String_formatting_fails_gracefully_when_buffer_is_too_small)
 {
     char buffer[20];
     size_t index = 0;
@@ -167,7 +171,7 @@ MICROSTRAIN_TEST_CASE(String_formatting, String_formatting_fails_gracefully_when
     TEST_ASSERT_EQUAL_STRING(buffer, "4096==0x1\0__________");
 }
 
-MICROSTRAIN_TEST_CASE(String_formatting, String_formatting_calculates_required_buffer_size_if_buffer_is_null)
+MICROSTRAIN_TEST_CASE(String_formatting_calculates_required_buffer_size_if_buffer_is_null)
 {
     size_t index = 0;
 
@@ -177,7 +181,7 @@ MICROSTRAIN_TEST_CASE(String_formatting, String_formatting_calculates_required_b
     TEST_ASSERT_EQUAL_INT(index, 4+2+2+4);
 }
 
-MICROSTRAIN_TEST_CASE(String_formatting, A_string_can_be_formatted_and_written_to_a_non_empty_buffer)
+MICROSTRAIN_TEST_CASE(A_string_can_be_formatted_and_written_to_a_non_empty_buffer)
 {
     char buffer[20];
     memset(buffer, '_', sizeof(buffer));
@@ -192,7 +196,7 @@ MICROSTRAIN_TEST_CASE(String_formatting, A_string_can_be_formatted_and_written_t
     TEST_ASSERT_EQUAL_STRING(buffer, "Test: 4096==0x1000\0_");
 }
 
-MICROSTRAIN_TEST_CASE(String_formatting, String_formatting_to_a_non_empty_buffer_fails_gracefully_if_buffer_too_small)
+MICROSTRAIN_TEST_CASE(String_formatting_to_a_non_empty_buffer_fails_gracefully_if_buffer_too_small)
 {
     char buffer[20];
     memset(buffer, '_', sizeof(buffer));
@@ -207,7 +211,7 @@ MICROSTRAIN_TEST_CASE(String_formatting, String_formatting_to_a_non_empty_buffer
     TEST_ASSERT_EQUAL_STRING(buffer, "Test: 409\0__________");
 }
 
-MICROSTRAIN_TEST_CASE(String_formatting, Multiple_string_formattings_work)
+MICROSTRAIN_TEST_CASE(Multiple_string_formattings_work)
 {
     char buffer[100];
     memset(buffer, '_', sizeof(buffer));
@@ -226,7 +230,7 @@ MICROSTRAIN_TEST_CASE(String_formatting, Multiple_string_formattings_work)
     TEST_ASSERT_EQUAL_STRING(buffer, "Values: [A=54321, B=0xABCD, C=abcdefg]");
 }
 
-MICROSTRAIN_TEST_CASE(String_formatting, Multiple_string_formattings_fail_gracefully_when_buffer_too_small)
+MICROSTRAIN_TEST_CASE(Multiple_string_formattings_fail_gracefully_when_buffer_too_small)
 {
     char buffer[100];
     memset(buffer, '_', sizeof(buffer));
@@ -245,7 +249,7 @@ MICROSTRAIN_TEST_CASE(String_formatting, Multiple_string_formattings_fail_gracef
     TEST_ASSERT_EQUAL_STRING(buffer, "Values: [A=54321, B=0xAB");
 }
 
-MICROSTRAIN_TEST_CASE(String_formatting, A_byte_array_can_formatted_as_hexadecimal_and_written_to_a_string_buffer)
+MICROSTRAIN_TEST_CASE(A_byte_array_can_formatted_as_hexadecimal_and_written_to_a_string_buffer)
 {
     char buffer[50];
     memset(buffer, '_', sizeof(buffer));
@@ -260,7 +264,7 @@ MICROSTRAIN_TEST_CASE(String_formatting, A_byte_array_can_formatted_as_hexadecim
     TEST_ASSERT_EQUAL_STRING(buffer, "A1B2C3D4");
 }
 
-MICROSTRAIN_TEST_CASE(String_formatting, A_byte_array_can_formatted_as_hexadecimal_with_group1_and_written_to_a_string_buffer)
+MICROSTRAIN_TEST_CASE(A_byte_array_can_formatted_as_hexadecimal_with_group1_and_written_to_a_string_buffer)
 {
     char buffer[50];
     memset(buffer, '_', sizeof(buffer));
@@ -275,7 +279,7 @@ MICROSTRAIN_TEST_CASE(String_formatting, A_byte_array_can_formatted_as_hexadecim
     TEST_ASSERT_EQUAL_STRING(buffer, "A1 B2 C3 D4");
 }
 
-MICROSTRAIN_TEST_CASE(String_formatting, A_byte_array_can_formatted_as_hexadecimal_with_group2_and_written_to_a_string_buffer)
+MICROSTRAIN_TEST_CASE(A_byte_array_can_formatted_as_hexadecimal_with_group2_and_written_to_a_string_buffer)
 {
     char buffer[50];
     memset(buffer, '_', sizeof(buffer));
@@ -290,7 +294,7 @@ MICROSTRAIN_TEST_CASE(String_formatting, A_byte_array_can_formatted_as_hexadecim
     TEST_ASSERT_EQUAL_STRING(buffer, "A1B2 C3D4");
 }
 
-MICROSTRAIN_TEST_CASE(String_formatting, A_byte_array_can_formatted_as_hexadecimal_with_partial_group2_and_written_to_a_string_buffer)
+MICROSTRAIN_TEST_CASE(A_byte_array_can_formatted_as_hexadecimal_with_partial_group2_and_written_to_a_string_buffer)
 {
     char buffer[50];
     memset(buffer, '_', sizeof(buffer));
@@ -305,7 +309,7 @@ MICROSTRAIN_TEST_CASE(String_formatting, A_byte_array_can_formatted_as_hexadecim
     TEST_ASSERT_EQUAL_STRING(buffer, "A1B2 C3D4 E5");
 }
 
-MICROSTRAIN_TEST_CASE(String_formatting, A_byte_array_can_formatted_as_hexadecimal_with_group4_and_written_to_a_string_buffer)
+MICROSTRAIN_TEST_CASE(A_byte_array_can_formatted_as_hexadecimal_with_group4_and_written_to_a_string_buffer)
 {
     char buffer[50];
     memset(buffer, '_', sizeof(buffer));
@@ -320,7 +324,7 @@ MICROSTRAIN_TEST_CASE(String_formatting, A_byte_array_can_formatted_as_hexadecim
     TEST_ASSERT_EQUAL_STRING(buffer, "A8B9CEDF 01234567");
 }
 
-MICROSTRAIN_TEST_CASE(String_formatting, Byte_formatting_handles_no_data_properly)
+MICROSTRAIN_TEST_CASE(Byte_formatting_handles_no_data_properly)
 {
     char buffer[20];
     memset(buffer, '_', sizeof(buffer));
@@ -332,7 +336,7 @@ MICROSTRAIN_TEST_CASE(String_formatting, Byte_formatting_handles_no_data_properl
     TEST_ASSERT_EQUAL_INT(index, 0);
 }
 
-MICROSTRAIN_TEST_CASE(String_formatting, A_byte_array_can_formatted_as_hexadecimal_and_written_to_a_non_empty_string_buffer)
+MICROSTRAIN_TEST_CASE(A_byte_array_can_formatted_as_hexadecimal_and_written_to_a_non_empty_string_buffer)
 {
     char buffer[50];
     memset(buffer, '_', sizeof(buffer));
@@ -348,7 +352,7 @@ MICROSTRAIN_TEST_CASE(String_formatting, A_byte_array_can_formatted_as_hexadecim
     TEST_ASSERT_EQUAL_STRING(buffer, "Data: A1B2C3D4");
 }
 
-MICROSTRAIN_TEST_CASE(String_formatting, Byte_formatting_fails_gracefully_when_buffer_too_small)
+MICROSTRAIN_TEST_CASE(Byte_formatting_fails_gracefully_when_buffer_too_small)
 {
     char buffer[50];
     memset(buffer, '_', sizeof(buffer));
