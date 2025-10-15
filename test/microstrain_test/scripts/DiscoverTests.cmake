@@ -11,7 +11,21 @@ function(microstrain_discover_tests_c)
         ${ARGN}
     )
 
-    # TODO: Add test discovery here
+    # TODO: Maybe split script part into separate utility functions
+    # -------------------------------------------------
+
+    # Verify target exists
+    if(NOT TARGET ${ARG_TARGET})
+        message(FATAL_ERROR "Target ${ARG_TARGET} does not exist")
+    endif()
+
+    # Verify target is an executable
+    get_target_property(TARGET_TYPE ${ARG_TARGET} TYPE)
+    if(NOT TARGET_TYPE STREQUAL "EXECUTABLE")
+        message(FATAL_ERROR "Target ${ARG_TARGET} must be an executable, but is ${TARGET_TYPE}")
+    endif()
+
+    # -------------------------------------------------
 endfunction()
 
 # ---------------------------------------------------------------

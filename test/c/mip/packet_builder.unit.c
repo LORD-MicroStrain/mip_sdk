@@ -1,9 +1,9 @@
 #include <stdarg.h>
 #include <string.h>
 
+#include <microstrain_test/microstrain_test.h>
 #include <mip/mip_offsets.h>
 #include <mip/mip_packet.h>
-#include <microstrain_test/unity_wrappers.h>
 
 
 MICROSTRAIN_TEST_CASE(Creating_a_mip_packet_handles_when_the_buffer_size_is_too_large)
