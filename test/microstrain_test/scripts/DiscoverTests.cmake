@@ -36,6 +36,9 @@ function(microstrain_discover_tests_c)
     foreach(SOURCE_FILE ${TARGET_SOURCES})
         get_filename_component(SOURCE_FILE_ABSOLUTE_PATH "${SOURCE_FILE}" ABSOLUTE)
 
+        # Set CMake to reload when source changes to discover newly added tests.
+        set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${SOURCE_FILE_ABSOLUTE_PATH}")
+
         if(NOT EXISTS "${SOURCE_FILE_ABSOLUTE_PATH}")
             message(WARNING "Source file does not exist: ${SOURCE_FILE_ABSOLUTE_PATH}")
             continue()

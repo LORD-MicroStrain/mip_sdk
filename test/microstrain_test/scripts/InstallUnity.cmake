@@ -7,7 +7,7 @@ FetchContent_Declare(unity
 
 FetchContent_MakeAvailable(unity)
 
-# Unity doesn't have native CMake support, so we have to build it manually
+# Unity doesn't have native CMake support, so we have to build it manually.
 if (NOT TARGET unity)
     add_library(unity STATIC ${unity_SOURCE_DIR}/src/unity.c)
     target_include_directories(unity PUBLIC ${unity_SOURCE_DIR}/src)
