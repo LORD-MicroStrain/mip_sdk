@@ -29,23 +29,41 @@
 //
 //       Unity's core appears to be very stable though and hasn't been changed in years, so the
 //       maintenance cost should hopefully be low.
-#define INTERNAL_RUN_MICROSTRAIN_TEST_CASE_AUTO_DISCOVER_IMPL(test_name, file_path) \
-    do { \
-        Unity.CurrentTestName = #test_name; \
-        Unity.NumberOfTests++; \
-        Unity.TestFile = file_path; \
-        UNITY_CLR_DETAILS(); \
-        UNITY_EXEC_TIME_START(); \
-        if (TEST_PROTECT()) { \
-            setUp(); \
-            test_name(); \
-        } \
-        if (TEST_PROTECT()) { \
-            tearDown(); \
-        } \
-        UNITY_EXEC_TIME_STOP(); \
-        UnityConcludeTest(); \
+#define INTERNAL_RUN_MICROSTRAIN_TEST_CASE_AUTO_DISCOVER_IMPL(test_name, file_path)  \
+    do                                                                               \
+    {                                                                                \
+        Unity.CurrentTestName = #test_name;                                          \
+        /* Gets the line of the calling test in the generated runner file. If the */ \
+        /* test passes, this will be used for the link. If the test fails, the    */ \
+        /* line number will be updated by the failing assertion and used for the  */ \
+        /* link instead.                                                          */ \
+        Unity.CurrentTestLineNumber = (UNITY_LINE_TYPE)__LINE__;                     \
+        Unity.NumberOfTests++;                                                       \
+        Unity.TestFile = file_path;                                                  \
+                                                                                     \
+        UNITY_CLR_DETAILS();                                                         \
+        UNITY_EXEC_TIME_START();                                                     \
+        UNITY_LINE_TYPE previous_failures = Unity.TestFailures;                      \
+                                                                                     \
+        if (TEST_PROTECT()) {                                                        \
+            setUp();                                                                 \
+            test_name();                                                             \
+        }                                                                            \
+        if (TEST_PROTECT()) {                                                        \
+            tearDown();                                                              \
+        }                                                                            \
+                                                                                     \
+        UNITY_EXEC_TIME_STOP();                                                      \
+        /* If the test passes, then the line number will be for the calling test */  \
+        /* in the generated runner file. We want to set it as the file in this   */  \
+        /* case.                                                                 */  \
+        if (Unity.TestFailures == previous_failures)                                 \
+        {                                                                            \
+            Unity.TestFile = __FILE__;                                               \
+        }                                                                            \
+        UnityConcludeTest();                                                         \
     } while(0)
+
 
 /* The following wrapper macros flip the argument order from (expected, actual) to (actual, expected).
  *
