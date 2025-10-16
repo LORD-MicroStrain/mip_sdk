@@ -24,6 +24,7 @@
 #define RUN_MICROSTRAIN_TEST_CASE_IMPLEMENTATION(test_name) \
     RUN_TEST(test_name)
 
+// TODO: Rename
 // NOTE: Unfortunately have to reimplement Unity's internals here instead of using RUN_TEST since
 //       there's no other way to update the file path without it being overridden.
 //
@@ -34,6 +35,7 @@
         Unity.CurrentTestName = #test_name; \
         Unity.NumberOfTests++; \
         Unity.TestFile = file_path; \
+        UNITY_CLR_DETAILS(); \
         UNITY_EXEC_TIME_START(); \
         if (TEST_PROTECT()) { \
             setUp(); \
