@@ -24,11 +24,12 @@
 #define RUN_MICROSTRAIN_TEST_CASE_IMPLEMENTATION(test_name) \
     RUN_TEST(test_name)
 
-// NOTE: Unfortunately have to reimplement Unity's internals here instead of using RUN_TEST since
-//       there's no other way to update the file path without it being overridden.
+// NOTE: Unfortunately have to reimplement and modify Unity's internals here instead
+//       of using RUN_TEST/UnityDefaultTestRun since there's no other way to update
+//       the file path without it being overridden.
 //
-//       Unity's core appears to be very stable though and hasn't been changed in years, so the
-//       maintenance cost should hopefully be low.
+//       Make sure this is up to date when updating Unity. Luckily, it doesn't look
+//       like it changes often.
 #define INTERNAL_RUN_MICROSTRAIN_TEST_CASE_AUTO_DISCOVER_IMPL(test_name, file_path)  \
     do                                                                               \
     {                                                                                \
