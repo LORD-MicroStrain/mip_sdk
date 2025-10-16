@@ -45,11 +45,12 @@
 // TODO: Add test suite
 /// @brief Runs a MicrostrainTest-defined test case.
 ///
-/// Don't use this directly if using automatic test discovery.
+/// Call this in a main function if not using automatic test discovery. This only needs to be
+/// called if not using automatic test discovery.
 ///
 #define RUN_MICROSTRAIN_TEST_CASE(test_name) \
     RUN_MICROSTRAIN_TEST_CASE_IMPLEMENTATION(test_name)
 
-// This is a modified version to work with automatic test discovery, don't use directly!
-#define RUN_MICROSTRAIN_TEST_CASE_EXPLICIT_FILEPATH(test_name, file_path) \
-    RUN_MICROSTRAIN_TEST_CASE_EXPLICIT_FILEPATH_IMPLEMENTATION(test_name, file_path)
+/// @brief This is a modified version to work with automatic test discovery, don't use directly!
+#define INTERNAL_RUN_MICROSTRAIN_TEST_CASE_AUTO_DISCOVER(test_name, file_path) \
+    INTERNAL_RUN_MICROSTRAIN_TEST_CASE_AUTO_DISCOVER_IMPL(test_name, file_path)
