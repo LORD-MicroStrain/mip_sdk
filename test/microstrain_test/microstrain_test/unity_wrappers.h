@@ -6,11 +6,8 @@
 // Test registration
 // -----------------------------------------------------------------------------------------------------------
 
-#define INTERNAL_MICROSTRAIN_BUILD_TEST_CALLABLE_NAME(suite_name, test_name) \
-    MICROSTRAIN_TEST_SUITE##suite_name##_MICROSTRAIN_TEST_CASE##test_name
-
 #define MICROSTRAIN_TEST_CASE_IMPLEMENTATION(suite_name, test_name) \
-    void INTERNAL_MICROSTRAIN_BUILD_TEST_CALLABLE_NAME(suite_name, test_name)(void)
+    void suite_name##_##test_name(void)
 
 #define MICROSTRAIN_TEST_DEFAULT_SETUP_IMPLEMENTATION()                                                      \
     void setUp(void) {}                                                                                      \
@@ -27,7 +24,7 @@
 // -----------------------------------------------------------------------------------------------------------
 
 #define RUN_MICROSTRAIN_TEST_CASE_IMPLEMENTATION(suite_name, test_name) \
-    RUN_TEST(INTERNAL_MICROSTRAIN_BUILD_TEST_CALLABLE_NAME(suite_name, test_name))
+    RUN_TEST(suite_name##_##test_name)
 
 // NOTE: Unfortunately have to reimplement and modify Unity's internals here instead
 //       of using RUN_TEST/UnityDefaultTestRun since there's no other way to update
@@ -36,38 +33,38 @@
 //       Make sure this is up to date when updating Unity. Luckily, it doesn't look
 //       like it changes often.
 #define INTERNAL_RUN_MICROSTRAIN_TEST_CASE_AUTO_DISCOVER_IMPL(suite_name, test_name, file_path)  \
-    do                                                                               \
-    {                                                                                \
-        Unity.CurrentTestName = "[TEST SUITE] " #test_name;                            \
-        /* Gets the line of the calling test in the generated runner file. If the */ \
-        /* test passes, this will be used for the link. If the test fails, the    */ \
-        /* line number will be updated by the failing assertion and used for the  */ \
-        /* link instead.                                                          */ \
-        Unity.CurrentTestLineNumber = (UNITY_LINE_TYPE)__LINE__;                     \
-        Unity.NumberOfTests++;                                                       \
-        Unity.TestFile = file_path;                                                  \
-                                                                                     \
-        UNITY_CLR_DETAILS();                                                         \
-        UNITY_EXEC_TIME_START();                                                     \
-        UNITY_LINE_TYPE previous_failures = Unity.TestFailures;                      \
-                                                                                     \
-        if (TEST_PROTECT()) {                                                        \
-            setUp();                                                                 \
-            INTERNAL_MICROSTRAIN_BUILD_TEST_CALLABLE_NAME(suite_name, test_name)();  \
-        }                                                                            \
-        if (TEST_PROTECT()) {                                                        \
-            tearDown();                                                              \
-        }                                                                            \
-                                                                                     \
-        UNITY_EXEC_TIME_STOP();                                                      \
-        /* If the test passes, then the line number will be for the calling test */  \
-        /* in the generated runner file. We want to set it as the file in this   */  \
-        /* case.                                                                 */  \
-        if (Unity.TestFailures == previous_failures)                                 \
-        {                                                                            \
-            Unity.TestFile = __FILE__;                                               \
-        }                                                                            \
-        UnityConcludeTest();                                                         \
+    do                                                                                           \
+    {                                                                                            \
+        Unity.CurrentTestName = "["#suite_name"] "#test_name;                                    \
+        /* Gets the line of the calling test in the generated runner file. If the */             \
+        /* test passes, this will be used for the link. If the test fails, the    */             \
+        /* line number will be updated by the failing assertion and used for the  */             \
+        /* link instead.                                                          */             \
+        Unity.CurrentTestLineNumber = (UNITY_LINE_TYPE)__LINE__;                                 \
+        Unity.NumberOfTests++;                                                                   \
+        Unity.TestFile = file_path;                                                              \
+                                                                                                 \
+        UNITY_CLR_DETAILS();                                                                     \
+        UNITY_EXEC_TIME_START();                                                                 \
+        UNITY_LINE_TYPE previous_failures = Unity.TestFailures;                                  \
+                                                                                                 \
+        if (TEST_PROTECT()) {                                                                    \
+            setUp();                                                                             \
+            suite_name##_##test_name();                                                          \
+        }                                                                                        \
+        if (TEST_PROTECT()) {                                                                    \
+            tearDown();                                                                          \
+        }                                                                                        \
+                                                                                                 \
+        UNITY_EXEC_TIME_STOP();                                                                  \
+        /* If the test passes, then the line number will be for the calling test */              \
+        /* in the generated runner file. We want to set it as the file in this   */              \
+        /* case.                                                                 */              \
+        if (Unity.TestFailures == previous_failures)                                             \
+        {                                                                                        \
+            Unity.TestFile = __FILE__;                                                           \
+        }                                                                                        \
+        UnityConcludeTest();                                                                     \
     } while(0)
 
 
