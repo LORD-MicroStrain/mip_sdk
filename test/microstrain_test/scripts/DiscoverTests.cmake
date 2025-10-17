@@ -3,6 +3,11 @@
 # ---------------------------------------------------------------
 
 function(microstrain_discover_tests_c)
+    # Set policy to allow for test names with special characters
+    if(POLICY CMP0110)
+        cmake_policy(SET CMP0110 NEW)
+    endif()
+
     cmake_parse_arguments(
         ARG
         "SEQUENTIAL"
@@ -152,26 +157,32 @@ function(microstrain_discover_tests_c)
     target_sources(${ARG_TARGET} PRIVATE ${GENERATED_MAIN})
 
     # Register each test with CTest
-    foreach(TEST_NAME ${DISCOVERED_TESTS})
-        message(STATUS "  - Registering test: ${TEST_NAME}")
-        # TODO: Add test suite to avoid naming conflicts
-        add_test(NAME ${TEST_NAME} COMMAND ${ARG_TARGET} --test=${TEST_NAME})
+    list(LENGTH DISCOVERED_TESTS TEST_COUNT)
+    math(EXPR LAST_INDEX "${TEST_COUNT} - 1")
+    foreach(INDEX RANGE ${LAST_INDEX})
+        list(GET DISCOVERED_SUITES ${INDEX} SUITE_NAME)
+        list(GET DISCOVERED_TESTS ${INDEX} TEST_NAME)
 
-        set_tests_properties(${TEST_NAME} PROPERTIES
+        set(TEST_DISPLAY "[${SUITE_NAME}] ${TEST_NAME}")
+
+        message(STATUS "  - Registering test: ${TEST_DISPLAY}")
+        add_test(NAME ${TEST_DISPLAY} COMMAND ${ARG_TARGET} --test=${TEST_DISPLAY})
+
+        set_tests_properties(${TEST_DISPLAY} PROPERTIES
             TIMEOUT 30
             LABELS "${TARGET_NAME}"
         )
 
         if(ARG_LABELS)
-            set_tests_properties(${TEST_NAME} PROPERTIES LABELS ${ARG_LABELS})
+            set_tests_properties(${TEST_DISPLAY} PROPERTIES LABELS ${ARG_LABELS})
         endif()
 
         if(ARG_DISABLED)
-            set_tests_properties(${TEST_NAME} PROPERTIES DISABLED TRUE)
+            set_tests_properties(${TEST_DISPLAY} PROPERTIES DISABLED TRUE)
         endif()
 
         if(ARG_SEQUENTIAL)
-            set_tests_properties(${TEST_NAME} PROPERTIES RESOURCE_LOCK ${ARG_TARGET})
+            set_tests_properties(${TEST_DISPLAY} PROPERTIES RESOURCE_LOCK ${ARG_TARGET})
         endif()
     endforeach()
 endfunction()
