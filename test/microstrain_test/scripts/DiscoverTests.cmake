@@ -77,23 +77,7 @@ function(microstrain_discover_tests_c)
         endforeach()
     endforeach()
 
-    if(DISCOVERED_TESTS)
-        # Remove duplicate tests. Count the amount of tests before and after to see if any
-        # were removed.
-        list(LENGTH DISCOVERED_TESTS ORIGINAL_COUNT)
-        set(TEMP_LIST ${DISCOVERED_TESTS})
-        list(REMOVE_DUPLICATES TEMP_LIST)
-        list(LENGTH TEMP_LIST UNIQUE_COUNT)
-
-        # Warn if duplicate tests were found
-        math(EXPR DUPLICATE_COUNT "${ORIGINAL_COUNT} - ${UNIQUE_COUNT}")
-        if(DUPLICATE_COUNT GREATER 0)
-            message(WARNING "Found ${DUPLICATE_COUNT} duplicate test name(s) in target ${ARG_TARGET}. Each test will only be registered once.")
-        endif()
-
-        message(STATUS "Discovered ${UNIQUE_COUNT} test(s) in target ${ARG_TARGET}")
-    else()
-        message(STATUS "No tests discovered in target ${ARG_TARGET}")
+    if(NOT DISCOVERED_TESTS)
         return()
     endif()
 
