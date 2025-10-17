@@ -96,10 +96,13 @@ function(microstrain_discover_tests_c)
     # Generate any required setup
     set(MAIN_CONTENT "${MAIN_CONTENT}MICROSTRAIN_TEST_DEFAULT_SETUP();\n")
 
-    # TODO: Update with test suite
     # Generate test case declarations
-    foreach(TEST_NAME ${DISCOVERED_TESTS})
-        set(MAIN_CONTENT "${MAIN_CONTENT}extern MICROSTRAIN_TEST_CASE(${TEST_NAME});\n")
+    list(LENGTH DISCOVERED_TESTS TEST_COUNT)
+    math(EXPR LAST_INDEX "${TEST_COUNT} - 1")
+    foreach(INDEX RANGE ${LAST_INDEX})
+        list(GET DISCOVERED_SUITES ${INDEX} SUITE_NAME)
+        list(GET DISCOVERED_TESTS ${INDEX} TEST_NAME)
+        set(MAIN_CONTENT "${MAIN_CONTENT}extern MICROSTRAIN_TEST_CASE(${SUITE_NAME}, ${TEST_NAME});\n")
     endforeach()
 
     # Generate main function with commandline argument parsing for test filtering.
