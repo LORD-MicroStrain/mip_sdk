@@ -6,7 +6,7 @@
 #include <mip/mip_packet.h>
 
 
-MICROSTRAIN_TEST_CASE(Creating_a_mip_packet_handles_when_the_buffer_size_is_too_large)
+MICROSTRAIN_TEST_CASE(C_mip_packet_building, Creating_a_mip_packet_handles_when_the_buffer_size_is_too_large)
 {
     mip_packet_view packet;
     uint8_t buffer[MIP_PACKET_LENGTH_MAX + 12345];
@@ -20,7 +20,7 @@ MICROSTRAIN_TEST_CASE(Creating_a_mip_packet_handles_when_the_buffer_size_is_too_
     ASSERT_TRUE(mip_packet_is_sane(&packet));
 }
 
-MICROSTRAIN_TEST_CASE(A_field_with_an_empty_payload_can_be_added_to_a_mip_packet)
+MICROSTRAIN_TEST_CASE(C_mip_packet_building, A_field_with_an_empty_payload_can_be_added_to_a_mip_packet)
 {
     mip_packet_view packet;
     uint8_t buffer[MIP_PACKET_LENGTH_MAX];
@@ -39,7 +39,7 @@ MICROSTRAIN_TEST_CASE(A_field_with_an_empty_payload_can_be_added_to_a_mip_packet
     mip_packet_finalize(&packet);
 }
 
-MICROSTRAIN_TEST_CASE(A_pre_constructed_mip_field_can_be_added_to_a_mip_packet)
+MICROSTRAIN_TEST_CASE(C_mip_packet_building, A_pre_constructed_mip_field_can_be_added_to_a_mip_packet)
 {
     mip_packet_view packet;
     uint8_t buffer[MIP_PACKET_LENGTH_MAX];
@@ -56,7 +56,7 @@ MICROSTRAIN_TEST_CASE(A_pre_constructed_mip_field_can_be_added_to_a_mip_packet)
     ASSERT_EQUAL_UINT8_ARRAY(&mip_packet_payload(&packet)[MIP_INDEX_FIELD_PAYLOAD], payload, payload_length);
 }
 
-MICROSTRAIN_TEST_CASE(A_field_can_be_allocated_within_a_mip_packet)
+MICROSTRAIN_TEST_CASE(C_mip_packet_building, A_field_can_be_allocated_within_a_mip_packet)
 {
 
     mip_packet_view packet;
@@ -77,7 +77,7 @@ MICROSTRAIN_TEST_CASE(A_field_can_be_allocated_within_a_mip_packet)
     ASSERT_EQUAL_UINT8_ARRAY(&mip_packet_payload(&packet)[MIP_INDEX_FIELD_PAYLOAD], payload, payload_length);
 }
 
-MICROSTRAIN_TEST_CASE(A_mip_packet_can_be_properly_prepared_for_transmission)
+MICROSTRAIN_TEST_CASE(C_mip_packet_building, A_mip_packet_can_be_properly_prepared_for_transmission)
 {
     mip_packet_view packet;
     uint8_t buffer[MIP_PACKET_LENGTH_MAX];

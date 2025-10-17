@@ -6,9 +6,8 @@
 // Test registration
 // -----------------------------------------------------------------------------------------------------------
 
-// TODO: Implement suite grouping when ready
-#define MICROSTRAIN_TEST_CASE_IMPLEMENTATION(test_name) \
-    void test_name(void)
+#define MICROSTRAIN_TEST_CASE_IMPLEMENTATION(test_suite, test_name) \
+    void MICROSTRAIN_TEST_SUITE##test_suite##_MICROSTRAIN_TEST_CASE##test_name(void)
 
 #define MICROSTRAIN_TEST_BEGIN_IMPLEMENTATION() \
     UNITY_BEGIN()
@@ -33,7 +32,7 @@
 #define INTERNAL_RUN_MICROSTRAIN_TEST_CASE_AUTO_DISCOVER_IMPL(test_name, file_path)  \
     do                                                                               \
     {                                                                                \
-        Unity.CurrentTestName = #test_name;                                          \
+        Unity.CurrentTestName = "[TEST SUITE] " #test_name;                            \
         /* Gets the line of the calling test in the generated runner file. If the */ \
         /* test passes, this will be used for the link. If the test fails, the    */ \
         /* line number will be updated by the failing assertion and used for the  */ \
