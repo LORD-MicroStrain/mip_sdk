@@ -168,9 +168,10 @@ function(microstrain_discover_tests_c)
         message(STATUS "  - Registering test: ${TEST_DISPLAY}")
         add_test(NAME ${TEST_DISPLAY} COMMAND ${ARG_TARGET} --test=${TEST_DISPLAY})
 
-        set_tests_properties(${TEST_DISPLAY} PROPERTIES
-            TIMEOUT 30
-            LABELS "${TARGET_NAME}"
+        set_tests_properties(${TEST_DISPLAY}
+            PROPERTIES
+                TIMEOUT 30
+                LABELS "${TARGET_NAME};${SUITE_NAME}"
         )
 
         if(ARG_LABELS)

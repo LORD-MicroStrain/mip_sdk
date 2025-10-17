@@ -83,6 +83,9 @@
 #define ASSERT_TRUE(condition) \
     TEST_ASSERT_TRUE(condition)
 
+#define ASSERT_FALSE(condition) \
+    TEST_ASSERT_FALSE(condition)
+
 // -----------------------------------------------------------------------------------------------------------
 // Integer assertions
 // -----------------------------------------------------------------------------------------------------------
