@@ -9,6 +9,13 @@
 #define MICROSTRAIN_TEST_CASE_IMPLEMENTATION(suite_name, test_name) \
     void MICROSTRAIN_TEST_SUITE##suite_name##_MICROSTRAIN_TEST_CASE##test_name(void)
 
+#define MICROSTRAIN_TEST_DEFAULT_SETUP_IMPLEMENTATION()                                                      \
+    do                                                                                                       \
+    {                                                                                                        \
+        void setUp(void) {}                                                                                  \
+        void tearDown(void) {}                                                                               \
+    } while(0)
+
 #define MICROSTRAIN_TEST_BEGIN_IMPLEMENTATION() \
     UNITY_BEGIN()
 

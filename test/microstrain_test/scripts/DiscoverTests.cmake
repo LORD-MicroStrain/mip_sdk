@@ -93,12 +93,10 @@ function(microstrain_discover_tests_c)
     set(MAIN_CONTENT "${MAIN_CONTENT}#include <string.h>\n\n")
     set(MAIN_CONTENT "${MAIN_CONTENT}#include <microstrain_test/microstrain_test.h>\n\n")
 
-    # Generate all required default definitions
-    if(MICROSTRAIN_TEST_USE_UNITY)
-        set(MAIN_CONTENT "${MAIN_CONTENT}void setUp(void) {}\n")
-        set(MAIN_CONTENT "${MAIN_CONTENT}void tearDown(void) {}\n\n")
-    endif()
+    # Generate any required setup
+    set(MAIN_CONTENT "${MAIN_CONTENT}MICROSTRAIN_TEST_DEFAULT_SETUP();\n")
 
+    # TODO: Update with test suite
     # Generate test case declarations
     foreach(TEST_NAME ${DISCOVERED_TESTS})
         set(MAIN_CONTENT "${MAIN_CONTENT}extern MICROSTRAIN_TEST_CASE(${TEST_NAME});\n")

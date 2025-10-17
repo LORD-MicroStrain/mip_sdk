@@ -8,16 +8,15 @@
 #endif
 
 
-// -----------------------------------------------------------------------------------------------------------
-// Test registration
-// -----------------------------------------------------------------------------------------------------------
-
 /// @brief Registers a test case in the given test suite.
 ///
 /// The test suite will be created if it doesn't already exist.
 ///
 #define MICROSTRAIN_TEST_CASE(suite_name, test_name) \
     MICROSTRAIN_TEST_CASE_IMPLEMENTATION(suite_name, test_name)
+
+#define MICROSTRAIN_TEST_DEFAULT_SETUP() \
+    MICROSTRAIN_TEST_DEFAULT_SETUP_IMPLEMENTATION()
 
 /// @brief Call this to begin the test registration process.
 ///
@@ -37,10 +36,6 @@
 #define MICROSTRAIN_TEST_END() \
     MICROSTRAIN_TEST_END_IMPLEMENTATION()
 
-// -----------------------------------------------------------------------------------------------------------
-// Test execution
-// -----------------------------------------------------------------------------------------------------------
-
 // TODO: Add test suite
 /// @brief Runs a MicrostrainTest-defined test case.
 ///
@@ -49,6 +44,10 @@
 ///
 #define RUN_MICROSTRAIN_TEST_CASE(test_name) \
     RUN_MICROSTRAIN_TEST_CASE_IMPLEMENTATION(test_name)
+
+// -----------------------------------------------------------------------------------------------------------
+// Internals
+// -----------------------------------------------------------------------------------------------------------
 
 /// @brief This is a modified version to work with automatic test discovery, don't use directly!
 #define INTERNAL_RUN_MICROSTRAIN_TEST_CASE_AUTO_DISCOVER(test_name, file_path) \
