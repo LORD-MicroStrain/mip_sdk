@@ -3,6 +3,7 @@
 #include <microstrain/strings.h>
 #include <microstrain_test/microstrain_test.h>
 
+
 MICROSTRAIN_TEST_CASE(C_string_concatentation, A_zero_terminated_string_can_be_concatenated_to_an_empty_buffer)
 {
     char buffer[10];

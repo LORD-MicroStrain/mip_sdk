@@ -40,7 +40,6 @@ function(microstrain_discover_tests_c)
         set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${SOURCE_FILE_ABSOLUTE_PATH}")
 
         if(NOT EXISTS "${SOURCE_FILE_ABSOLUTE_PATH}")
-            message(WARNING "Source file does not exist: ${SOURCE_FILE_ABSOLUTE_PATH}")
             continue()
         endif()
 
@@ -147,7 +146,6 @@ function(microstrain_discover_tests_c)
     file(WRITE "${GENERATED_MAIN}" "${MAIN_CONTENT}")
 
     # Add generated main to existing executable
-    message(STATUS "Adding generated main to executable ${ARG_TARGET}")
     target_sources(${ARG_TARGET} PRIVATE ${GENERATED_MAIN})
 
     # Register each test with CTest
@@ -156,10 +154,8 @@ function(microstrain_discover_tests_c)
     foreach(INDEX RANGE ${LAST_INDEX})
         list(GET DISCOVERED_SUITES ${INDEX} SUITE_NAME)
         list(GET DISCOVERED_TESTS ${INDEX} TEST_NAME)
-
         set(TEST_DISPLAY "[${SUITE_NAME}] ${TEST_NAME}")
 
-        message(STATUS "  - Registering test: ${TEST_DISPLAY}")
         add_test(NAME ${TEST_DISPLAY} COMMAND ${ARG_TARGET} --test=${TEST_DISPLAY})
 
         set_tests_properties(${TEST_DISPLAY}
