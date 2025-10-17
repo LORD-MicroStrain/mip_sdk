@@ -20,17 +20,11 @@ function(microstrain_discover_tests_c)
 
     # Verify the target exists
     if(NOT TARGET ${ARG_TARGET})
-        message(FATAL_ERROR "Target ${ARG_TARGET} does not exist")
+        return()
     endif()
 
-    # Verify the target is an executable
-    get_target_property(TARGET_TYPE ${ARG_TARGET} TYPE)
-    if(NOT TARGET_TYPE STREQUAL "EXECUTABLE")
-        message(FATAL_ERROR "Target ${ARG_TARGET} must be an executable, but is ${TARGET_TYPE}")
-    endif()
-
+    # Verify the target has source files set
     get_target_property(TARGET_SOURCES ${ARG_TARGET} SOURCES)
-
     if(NOT TARGET_SOURCES OR TARGET_SOURCES STREQUAL "TARGET_SOURCES-NOTFOUND")
         return()
     endif()
