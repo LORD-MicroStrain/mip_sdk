@@ -134,7 +134,7 @@ function(microstrain_discover_tests_c)
         # Escape backslashes for C string literal
         string(REPLACE "\\" "\\\\" TEST_FILEPATH_ESCAPED "${TEST_FILEPATH}")
 
-        set(MAIN_CONTENT "${MAIN_CONTENT}    if (!test_filter || strcmp(test_filter, \"${TEST_NAME}\") == 0) {\n")
+        set(MAIN_CONTENT "${MAIN_CONTENT}    if (!test_filter || strcmp(test_filter, \"[${SUITE_NAME}] ${TEST_NAME}\") == 0) {\n")
         set(MAIN_CONTENT "${MAIN_CONTENT}        INTERNAL_RUN_MICROSTRAIN_TEST_CASE_AUTO_DISCOVER(${SUITE_NAME}, ${TEST_NAME}, \"${TEST_FILEPATH_ESCAPED}\");\n")
         set(MAIN_CONTENT "${MAIN_CONTENT}    }\n")
     endforeach()
