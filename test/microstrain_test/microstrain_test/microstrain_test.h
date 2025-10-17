@@ -16,8 +16,8 @@
 ///
 /// The test suite will be created if it doesn't already exist.
 ///
-#define MICROSTRAIN_TEST_CASE(test_suite, test_name) \
-    MICROSTRAIN_TEST_CASE_IMPLEMENTATION(test_suite, test_name)
+#define MICROSTRAIN_TEST_CASE(suite_name, test_name) \
+    MICROSTRAIN_TEST_CASE_IMPLEMENTATION(suite_name, test_name)
 
 /// @brief Call this to begin the test registration process.
 ///

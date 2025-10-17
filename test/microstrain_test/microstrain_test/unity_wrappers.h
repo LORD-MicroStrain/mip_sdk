@@ -6,8 +6,8 @@
 // Test registration
 // -----------------------------------------------------------------------------------------------------------
 
-#define MICROSTRAIN_TEST_CASE_IMPLEMENTATION(test_suite, test_name) \
-    void MICROSTRAIN_TEST_SUITE##test_suite##_MICROSTRAIN_TEST_CASE##test_name(void)
+#define MICROSTRAIN_TEST_CASE_IMPLEMENTATION(suite_name, test_name) \
+    void MICROSTRAIN_TEST_SUITE##suite_name##_MICROSTRAIN_TEST_CASE##test_name(void)
 
 #define MICROSTRAIN_TEST_BEGIN_IMPLEMENTATION() \
     UNITY_BEGIN()
