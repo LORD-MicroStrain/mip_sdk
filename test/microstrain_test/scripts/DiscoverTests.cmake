@@ -30,6 +30,7 @@ function(microstrain_discover_tests_c)
         return()
     endif()
 
+    set(DISCOVERED_SUITES "")
     set(DISCOVERED_TESTS "")
     set(TEST_FILEPATHS "")
 
@@ -47,23 +48,11 @@ function(microstrain_discover_tests_c)
         file(READ "${SOURCE_FILE_ABSOLUTE_PATH}" FILE_CONTENT)
 
         # Remove block comments /* ... */
-        # This regex handles multiline block comments.
-        #
-        # Reference:
-        # ----------
-        # 1)   /\\* ---> Match "/*"
-        # 2) (...)* ---> Capture group
-        #     2a)      [^*] ---> Any character that's not "*"
-        #     2b)         | ---> OR
-        #     2c) \\*+[^*/] ---> One or more "*" followed by something that's not "*" or "/"
-        #     2d)         * ---> Repeat the whole group zero or more times
-        # 3)  \\*+/ ---> Match one or more "*" followed by "/"
-        #
-        # This handles complex cases such as if asterisks are inside the comment, etc.
+        # This regex handles multiline block comments. It also handles complex cases such as if
+        # asterisks are inside the comment, etc.
         string(REGEX REPLACE "/\\*([^*]|\\*+[^*/])*\\*+/" "" FILE_CONTENT "${FILE_CONTENT}")
 
         # Split file into lines to check for line comments.
-        #
         # Replaces every ";" with "\\;" (so they aren't interpreted as the CMake list separator).
         string(REGEX REPLACE ";" "\\\\;" FILE_CONTENT "${FILE_CONTENT}")
         # Converts the file to a CMake list where each element is one line by replacing newlines
@@ -72,30 +61,16 @@ function(microstrain_discover_tests_c)
 
         foreach(LINE ${FILE_LINES})
             # Remove everything after // (line comments)
-            #
-            # Reference:
-            # ----------
-            # 1) // ---> Match "//"
-            # 2) .* ---> Match any character zero or more times
-            # 3)  $ ---> Match the end of the line (position after the last character)
             string(REGEX REPLACE "//.*$" "" LINE_WITHOUT_COMMENT "${LINE}")
 
             # Check if the line contains a test registration (after comment removal)
-            #
-            # Reference:
-            # ----------
-            # 1) Literal text to match
-            # 2)   \\( ---> Match "("
-            # 3) (...) ---> Capture group
-            #    3a) [a-zA-Z0-9_]+ ---> Match one or more characters that are valid qualifiers
-            # 4)   \\) ---> Match ")"
-            string(REGEX MATCH "MICROSTRAIN_TEST_CASE\\(([a-zA-Z0-9_]+)\\)" MATCH "${LINE_WITHOUT_COMMENT}")
+            string(REGEX MATCH "MICROSTRAIN_TEST_CASE\\([^)]+\\)" MATCH "${LINE_WITHOUT_COMMENT}")
             if(MATCH)
-                # Extracts the test name from the test registration.
-                #
-                # \\1 is the first capture group, which in this case is the argument passed to the test
-                # registration call (the test name).
-                string(REGEX REPLACE "MICROSTRAIN_TEST_CASE\\(([a-zA-Z0-9_]+)\\)" "\\1" TEST_NAME "${MATCH}")
+                # Extract the test name and test suite.
+                string(REGEX REPLACE "MICROSTRAIN_TEST_CASE\\(([a-zA-Z0-9_]+)[ \t]*,[ \t]*([a-zA-Z0-9_]+)\\)" "\\1" SUITE_NAME "${MATCH}")
+                string(REGEX REPLACE "MICROSTRAIN_TEST_CASE\\(([a-zA-Z0-9_]+)[ \t]*,[ \t]*([a-zA-Z0-9_]+)\\)" "\\2" TEST_NAME "${MATCH}")
+
+                list(APPEND DISCOVERED_SUITES ${SUITE_NAME})
                 list(APPEND DISCOVERED_TESTS ${TEST_NAME})
                 list(APPEND TEST_FILEPATHS "${SOURCE_FILE_ABSOLUTE_PATH}")
             endif()
