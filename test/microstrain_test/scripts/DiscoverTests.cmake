@@ -128,13 +128,14 @@ function(microstrain_discover_tests_c)
         # We need to set the filepath explicitly (for Unity) since it points to the generated
         # runner file instead.
         list(GET TEST_FILEPATHS ${INDEX} TEST_FILEPATH)
+        list(GET DISCOVERED_SUITES ${INDEX} SUITE_NAME)
         list(GET DISCOVERED_TESTS ${INDEX} TEST_NAME)
 
         # Escape backslashes for C string literal
         string(REPLACE "\\" "\\\\" TEST_FILEPATH_ESCAPED "${TEST_FILEPATH}")
 
         set(MAIN_CONTENT "${MAIN_CONTENT}    if (!test_filter || strcmp(test_filter, \"${TEST_NAME}\") == 0) {\n")
-        set(MAIN_CONTENT "${MAIN_CONTENT}        INTERNAL_RUN_MICROSTRAIN_TEST_CASE_AUTO_DISCOVER(${TEST_NAME}, \"${TEST_FILEPATH_ESCAPED}\");\n")
+        set(MAIN_CONTENT "${MAIN_CONTENT}        INTERNAL_RUN_MICROSTRAIN_TEST_CASE_AUTO_DISCOVER(${SUITE_NAME}, ${TEST_NAME}, \"${TEST_FILEPATH_ESCAPED}\");\n")
         set(MAIN_CONTENT "${MAIN_CONTENT}    }\n")
     endforeach()
 

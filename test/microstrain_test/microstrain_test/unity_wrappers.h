@@ -6,8 +6,11 @@
 // Test registration
 // -----------------------------------------------------------------------------------------------------------
 
+#define INTERNAL_MICROSTRAIN_BUILD_TEST_CALLABLE_NAME(suite_name, test_name) \
+    MICROSTRAIN_TEST_SUITE##suite_name##_MICROSTRAIN_TEST_CASE##test_name
+
 #define MICROSTRAIN_TEST_CASE_IMPLEMENTATION(suite_name, test_name) \
-    void MICROSTRAIN_TEST_SUITE##suite_name##_MICROSTRAIN_TEST_CASE##test_name(void)
+    void INTERNAL_MICROSTRAIN_BUILD_TEST_CALLABLE_NAME(suite_name, test_name)(void)
 
 #define MICROSTRAIN_TEST_DEFAULT_SETUP_IMPLEMENTATION()                                                      \
     void setUp(void) {}                                                                                      \
@@ -23,9 +26,8 @@
 // Test execution
 // -----------------------------------------------------------------------------------------------------------
 
-// TODO: Implement suite grouping when ready
-#define RUN_MICROSTRAIN_TEST_CASE_IMPLEMENTATION(test_name) \
-    RUN_TEST(test_name)
+#define RUN_MICROSTRAIN_TEST_CASE_IMPLEMENTATION(suite_name, test_name) \
+    RUN_TEST(INTERNAL_MICROSTRAIN_BUILD_TEST_CALLABLE_NAME(suite_name, test_name))
 
 // NOTE: Unfortunately have to reimplement and modify Unity's internals here instead
 //       of using RUN_TEST/UnityDefaultTestRun since there's no other way to update
@@ -33,7 +35,7 @@
 //
 //       Make sure this is up to date when updating Unity. Luckily, it doesn't look
 //       like it changes often.
-#define INTERNAL_RUN_MICROSTRAIN_TEST_CASE_AUTO_DISCOVER_IMPL(test_name, file_path)  \
+#define INTERNAL_RUN_MICROSTRAIN_TEST_CASE_AUTO_DISCOVER_IMPL(suite_name, test_name, file_path)  \
     do                                                                               \
     {                                                                                \
         Unity.CurrentTestName = "[TEST SUITE] " #test_name;                            \
@@ -51,7 +53,7 @@
                                                                                      \
         if (TEST_PROTECT()) {                                                        \
             setUp();                                                                 \
-            test_name();                                                             \
+            INTERNAL_MICROSTRAIN_BUILD_TEST_CALLABLE_NAME(suite_name, test_name)();  \
         }                                                                            \
         if (TEST_PROTECT()) {                                                        \
             tearDown();                                                              \
