@@ -61,6 +61,35 @@ function(internal_parse_tests_from_sources
 endfunction()
 
 
+# Generate logic to conditionally run each test (based on commandline filtering).
+function(internal_generate_test_execution_logic_with_commandline_filtering
+    DISCOVERED_SUITES
+    DISCOVERED_TESTS
+    TEST_FILEPATHS
+    OUT_MAIN_CONTENT
+)
+    # Get current content
+    set(MAIN_CONTENT "${${OUT_MAIN_CONTENT}}")
+
+    list(LENGTH DISCOVERED_TESTS TEST_COUNT)
+    math(EXPR LAST_INDEX "${TEST_COUNT} - 1")
+
+    foreach(INDEX RANGE ${LAST_INDEX})
+        # We need to set the filepath explicitly (for Unity) since it points to the generated
+        # runner file instead.
+        list(GET TEST_FILEPATHS ${INDEX} TEST_FILEPATH)
+        list(GET DISCOVERED_SUITES ${INDEX} SUITE_NAME)
+        list(GET DISCOVERED_TESTS ${INDEX} TEST_NAME)
+
+        # Escape backslashes in filepaths for C string literal
+        string(REPLACE "\\" "\\\\" TEST_FILEPATH_ESCAPED "${TEST_FILEPATH}")
+
+        set(MAIN_CONTENT "${MAIN_CONTENT}    if (!test_filter || strcmp(test_filter, \"[${SUITE_NAME}] ${TEST_NAME}\") == 0) {\n")
+        set(MAIN_CONTENT "${MAIN_CONTENT}        INTERNAL_RUN_MICROSTRAIN_TEST_CASE_AUTO_DISCOVER(${SUITE_NAME}, ${TEST_NAME}, \"${TEST_FILEPATH_ESCAPED}\");\n")
+        set(MAIN_CONTENT "${MAIN_CONTENT}    }\n")
+    endforeach()
+endfunction()
+
 # Generate a main runner file for all tests. Allows all tests to be run at once, or filtered
 # through the command-line.
 function(internal_generate_test_runner_file
@@ -109,23 +138,12 @@ function(internal_generate_test_runner_file
     set(MAIN_CONTENT "${MAIN_CONTENT}    MICROSTRAIN_TEST_BEGIN();\n")
     set(MAIN_CONTENT "${MAIN_CONTENT}    \n")
 
-    # Generate logic to conditionally run each test (based on commandline filtering).
-    list(LENGTH DISCOVERED_TESTS TEST_COUNT)
-    math(EXPR LAST_INDEX "${TEST_COUNT} - 1")
-    foreach(INDEX RANGE ${LAST_INDEX})
-        # We need to set the filepath explicitly (for Unity) since it points to the generated
-        # runner file instead.
-        list(GET TEST_FILEPATHS ${INDEX} TEST_FILEPATH)
-        list(GET DISCOVERED_SUITES ${INDEX} SUITE_NAME)
-        list(GET DISCOVERED_TESTS ${INDEX} TEST_NAME)
-
-        # Escape backslashes for C string literal
-        string(REPLACE "\\" "\\\\" TEST_FILEPATH_ESCAPED "${TEST_FILEPATH}")
-
-        set(MAIN_CONTENT "${MAIN_CONTENT}    if (!test_filter || strcmp(test_filter, \"[${SUITE_NAME}] ${TEST_NAME}\") == 0) {\n")
-        set(MAIN_CONTENT "${MAIN_CONTENT}        INTERNAL_RUN_MICROSTRAIN_TEST_CASE_AUTO_DISCOVER(${SUITE_NAME}, ${TEST_NAME}, \"${TEST_FILEPATH_ESCAPED}\");\n")
-        set(MAIN_CONTENT "${MAIN_CONTENT}    }\n")
-    endforeach()
+    internal_generate_test_execution_logic_with_commandline_filtering(
+        "${DISCOVERED_SUITES}"
+        "${DISCOVERED_TESTS}"
+        "${TEST_FILEPATHS}"
+        MAIN_CONTENT
+    )
 
     # Generate the end of the main function.
     set(MAIN_CONTENT "${MAIN_CONTENT}    \n")
