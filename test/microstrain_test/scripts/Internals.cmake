@@ -59,3 +59,46 @@ function(internal_parse_tests_from_sources
     set(${OUT_TESTS} ${DISCOVERED_TESTS} PARENT_SCOPE)
     set(${OUT_FILEPATHS} ${TEST_FILEPATHS} PARENT_SCOPE)
 endfunction()
+
+
+# Register each test with CTest
+function(internal_register_individual_tests_with_ctest
+    TARGET_NAME
+    DISCOVERED_SUITES
+    DISCOVERED_TESTS
+    LABELS
+    DISABLED
+    SEQUENTIAL
+)
+    list(LENGTH DISCOVERED_TESTS TEST_COUNT)
+    math(EXPR LAST_INDEX "${TEST_COUNT} - 1")
+
+    foreach(INDEX RANGE ${LAST_INDEX})
+        list(GET DISCOVERED_SUITES ${INDEX} SUITE_NAME)
+        list(GET DISCOVERED_TESTS  ${INDEX} TEST_NAME)
+
+        # Set how the test name should be displayed in the console when running tests.
+        # Currently in this format: "[Example_suite] Example_test"
+        set(TEST_DISPLAY "[${SUITE_NAME}] ${TEST_NAME}")
+
+        add_test(NAME ${TEST_DISPLAY} COMMAND ${TARGET_NAME} --test=${TEST_DISPLAY})
+
+        set_tests_properties(${TEST_DISPLAY}
+            PROPERTIES
+                TIMEOUT 30
+                LABELS "${TARGET_NAME};${SUITE_NAME}"
+        )
+
+        if(LABELS)
+            set_tests_properties(${TEST_DISPLAY} PROPERTIES LABELS ${LABELS})
+        endif()
+
+        if(DISABLED)
+            set_tests_properties(${TEST_DISPLAY} PROPERTIES DISABLED TRUE)
+        endif()
+
+        if(SEQUENTIAL)
+            set_tests_properties(${TEST_DISPLAY} PROPERTIES RESOURCE_LOCK ${TARGET_NAME})
+        endif()
+    endforeach()
+endfunction()

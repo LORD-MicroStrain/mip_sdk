@@ -36,7 +36,7 @@ function(microstrain_discover_tests_c)
         TEST_FILEPATHS
     )
 
-    if(NOT DISCOVERED_TESTS)
+    if(NOT DISCOVERED_SUITES OR NOT DISCOVERED_TESTS)
         return()
     endif()
 
@@ -109,34 +109,14 @@ function(microstrain_discover_tests_c)
     # Add generated main to existing executable
     target_sources(${ARG_TARGET} PRIVATE ${GENERATED_MAIN})
 
-    # Register each test with CTest
-    list(LENGTH DISCOVERED_TESTS TEST_COUNT)
-    math(EXPR LAST_INDEX "${TEST_COUNT} - 1")
-    foreach(INDEX RANGE ${LAST_INDEX})
-        list(GET DISCOVERED_SUITES ${INDEX} SUITE_NAME)
-        list(GET DISCOVERED_TESTS ${INDEX} TEST_NAME)
-        set(TEST_DISPLAY "[${SUITE_NAME}] ${TEST_NAME}")
-
-        add_test(NAME ${TEST_DISPLAY} COMMAND ${ARG_TARGET} --test=${TEST_DISPLAY})
-
-        set_tests_properties(${TEST_DISPLAY}
-            PROPERTIES
-                TIMEOUT 30
-                LABELS "${TARGET_NAME};${SUITE_NAME}"
-        )
-
-        if(ARG_LABELS)
-            set_tests_properties(${TEST_DISPLAY} PROPERTIES LABELS ${ARG_LABELS})
-        endif()
-
-        if(ARG_DISABLED)
-            set_tests_properties(${TEST_DISPLAY} PROPERTIES DISABLED TRUE)
-        endif()
-
-        if(ARG_SEQUENTIAL)
-            set_tests_properties(${TEST_DISPLAY} PROPERTIES RESOURCE_LOCK ${ARG_TARGET})
-        endif()
-    endforeach()
+    internal_register_individual_tests_with_ctest(
+        "${ARG_TARGET}"
+        "${DISCOVERED_SUITES}"
+        "${DISCOVERED_TESTS}"
+        "${ARG_LABELS}"
+        "${ARG_DISABLED}"
+        "${ARG_SEQUENTIAL}"
+    )
 endfunction()
 
 # ---------------------------------------------------------------
