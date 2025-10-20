@@ -16,4 +16,4 @@
 ///
 /// The test suite will be created if it doesn't already exist.
 #define MICROSTRAIN_TEST_CASE(suite_name, test_name) \
-    MICROSTRAIN_TEST_CASE_IMPLEMENTATION(suite_name, test_name)
+    MICROSTRAIN_TEST_CASE_IMPL(suite_name, test_name)

@@ -6,24 +6,24 @@
 // Test registration
 // -----------------------------------------------------------------------------------------------------------
 
-#define MICROSTRAIN_TEST_CASE_IMPLEMENTATION(suite_name, test_name) \
+#define MICROSTRAIN_TEST_CASE_IMPL(suite_name, test_name) \
     void suite_name##_##test_name(void)
 
-#define MICROSTRAIN_TEST_DEFAULT_SETUP_IMPLEMENTATION()                                                      \
-    void setUp(void) {}                                                                                      \
-    void tearDown(void) {}                                                                                   \
+#define MICROSTRAIN_TEST_DEFAULT_SETUP_IMPL() \
+    void setUp(void) {} \
+    void tearDown(void) {} \
 
-#define MICROSTRAIN_TEST_BEGIN_IMPLEMENTATION() \
+#define MICROSTRAIN_TEST_BEGIN_IMPL() \
     UNITY_BEGIN()
 
-#define MICROSTRAIN_TEST_END_IMPLEMENTATION() \
+#define MICROSTRAIN_TEST_END_IMPL() \
     UNITY_END()
 
 // -----------------------------------------------------------------------------------------------------------
 // Test execution
 // -----------------------------------------------------------------------------------------------------------
 
-#define RUN_MICROSTRAIN_TEST_CASE_IMPLEMENTATION(suite_name, test_name) \
+#define RUN_MICROSTRAIN_TEST_CASE_IMPL(suite_name, test_name) \
     RUN_TEST(suite_name##_##test_name)
 
 // NOTE: Unfortunately have to reimplement and modify Unity's internals here instead

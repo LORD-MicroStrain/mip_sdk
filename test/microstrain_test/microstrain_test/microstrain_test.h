@@ -13,10 +13,10 @@
 /// The test suite will be created if it doesn't already exist.
 ///
 #define MICROSTRAIN_TEST_CASE(suite_name, test_name) \
-    MICROSTRAIN_TEST_CASE_IMPLEMENTATION(suite_name, test_name)
+    MICROSTRAIN_TEST_CASE_IMPL(suite_name, test_name)
 
 #define MICROSTRAIN_TEST_DEFAULT_SETUP() \
-    MICROSTRAIN_TEST_DEFAULT_SETUP_IMPLEMENTATION()
+    MICROSTRAIN_TEST_DEFAULT_SETUP_IMPL()
 
 /// @brief Call this to begin the test registration process.
 ///
@@ -25,7 +25,7 @@
 /// Register tests after this call. When done, call the END function.
 ///
 #define MICROSTRAIN_TEST_BEGIN() \
-    MICROSTRAIN_TEST_BEGIN_IMPLEMENTATION()
+    MICROSTRAIN_TEST_BEGIN_IMPL()
 
 /// @brief Call this to end the test registration process.
 ///
@@ -34,7 +34,7 @@
 /// No tests will be registered after this call. The result should be returned from the main function.
 ///
 #define MICROSTRAIN_TEST_END() \
-    MICROSTRAIN_TEST_END_IMPLEMENTATION()
+    MICROSTRAIN_TEST_END_IMPL()
 
 /// @brief Runs a MicrostrainTest-defined test case.
 ///
@@ -42,7 +42,7 @@
 /// called if not using automatic test discovery.
 ///
 #define RUN_MICROSTRAIN_TEST_CASE(suite_name, test_name) \
-    RUN_MICROSTRAIN_TEST_CASE_IMPLEMENTATION(suite_name, test_name)
+    RUN_MICROSTRAIN_TEST_CASE_IMPL(suite_name, test_name)
 
 // -----------------------------------------------------------------------------------------------------------
 // Internals
