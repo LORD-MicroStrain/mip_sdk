@@ -1,7 +1,7 @@
 # TODO: Add doc/note for this file
 # TODO: Add docs for functions
 
-function(internal_parse_tests_from_sources
+function(internal_parse_test_registrations_from_sources
     TARGET_SOURCES
     OUT_SUITES
     OUT_TESTS

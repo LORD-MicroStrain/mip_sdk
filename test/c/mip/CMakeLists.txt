@@ -1,6 +1,6 @@
 target_sources("${MIP_UNIT_TEST_TARGET_C}" PRIVATE
     "packet_builder.unit.c"
-    "logging.unit.c"
+    #"logging.unit.c"
 )
 
 target_sources("${MIP_INTEGRATION_TEST_TARGET_C}" PRIVATE

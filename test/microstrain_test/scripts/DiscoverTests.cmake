@@ -29,8 +29,7 @@ function(microstrain_discover_tests_c)
         return()
     endif()
 
-    # TODO: Rename to parse test registrations from sources
-    internal_parse_tests_from_sources(
+    internal_parse_test_registrations_from_sources(
         "${TARGET_SOURCES}"
         DISCOVERED_SUITES
         DISCOVERED_TESTS
