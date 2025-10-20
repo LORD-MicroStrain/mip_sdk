@@ -72,12 +72,14 @@ target_compile_options(microstrain_test_cpp INTERFACE
     "${COMPILE_OPTIONS}"
 )
 
+#[[
 target_compile_definitions(microstrain_test_c INTERFACE
     "MICROSTRAIN_LOGGING_MAX_LEVEL=${MIP_LOGGING_MAX_LEVEL}"
 )
 target_compile_definitions(microstrain_test_cpp INTERFACE
     "MICROSTRAIN_LOGGING_MAX_LEVEL=${MIP_LOGGING_MAX_LEVEL}"
 )
+]]
 
 # ---------------------------------------------------------------
 # (C) Unity setup

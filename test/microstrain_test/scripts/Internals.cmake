@@ -135,6 +135,8 @@ function(internal_generate_test_runner_file
     set(MAIN_CONTENT "${MAIN_CONTENT}        }\n")
     set(MAIN_CONTENT "${MAIN_CONTENT}    }\n")
     set(MAIN_CONTENT "${MAIN_CONTENT}    \n")
+    set(MAIN_CONTENT "${MAIN_CONTENT}    (void)test_filter; /* Suppress unused variable warning if only one test */\n")
+    set(MAIN_CONTENT "${MAIN_CONTENT}    \n")
     set(MAIN_CONTENT "${MAIN_CONTENT}    MICROSTRAIN_TEST_BEGIN();\n")
     set(MAIN_CONTENT "${MAIN_CONTENT}    \n")
 
