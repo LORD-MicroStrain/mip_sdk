@@ -61,6 +61,86 @@ function(internal_parse_tests_from_sources
 endfunction()
 
 
+# Generate a main runner file for all tests. Allows all tests to be run at once, or filtered
+# through the command-line.
+function(internal_generate_test_runner_file
+   TARGET_NAME
+   DISCOVERED_SUITES
+   DISCOVERED_TESTS
+   TEST_FILEPATHS
+   OUT_GENERATED_MAIN
+)
+    # Create directory for the generated file
+    set(GENERATED_DIR "${CMAKE_CURRENT_BINARY_DIR}/generated_tests/${TARGET_NAME}")
+    file(MAKE_DIRECTORY "${GENERATED_DIR}")
+
+    # Create the file
+    set(GENERATED_MAIN "${GENERATED_DIR}/run_tests.c")
+
+    # Generate includes
+    set(MAIN_CONTENT "/* Auto-generated test main for ${TARGET_NAME}*/\n")
+    set(MAIN_CONTENT "${MAIN_CONTENT}#include <string.h>\n\n")
+    set(MAIN_CONTENT "${MAIN_CONTENT}#include <microstrain_test/microstrain_test.h>\n\n")
+
+    # Generate any required setup
+    set(MAIN_CONTENT "${MAIN_CONTENT}MICROSTRAIN_TEST_DEFAULT_SETUP();\n")
+
+    # Generate test case declarations
+    list(LENGTH DISCOVERED_TESTS TEST_COUNT)
+    math(EXPR LAST_INDEX "${TEST_COUNT} - 1")
+    foreach(INDEX RANGE ${LAST_INDEX})
+        list(GET DISCOVERED_SUITES ${INDEX} SUITE_NAME)
+        list(GET DISCOVERED_TESTS ${INDEX} TEST_NAME)
+        set(MAIN_CONTENT "${MAIN_CONTENT}extern MICROSTRAIN_TEST_CASE(${SUITE_NAME}, ${TEST_NAME});\n")
+    endforeach()
+
+    # Generate the main function with commandline argument parsing for test filtering.
+    set(MAIN_CONTENT "${MAIN_CONTENT}\n")
+    set(MAIN_CONTENT "${MAIN_CONTENT}int main(int argc, char** argv) {\n")
+    set(MAIN_CONTENT "${MAIN_CONTENT}    const char* test_filter = NULL;\n")
+    set(MAIN_CONTENT "${MAIN_CONTENT}    \n")
+    set(MAIN_CONTENT "${MAIN_CONTENT}    // Parse command line for --test=name\n")
+    set(MAIN_CONTENT "${MAIN_CONTENT}    for (int i = 1; i < argc; ++i) {\n")
+    set(MAIN_CONTENT "${MAIN_CONTENT}        if (strncmp(argv[i], \"--test=\", 7) == 0) {\n")
+    set(MAIN_CONTENT "${MAIN_CONTENT}            test_filter = argv[i] + 7;\n")
+    set(MAIN_CONTENT "${MAIN_CONTENT}            break;\n")
+    set(MAIN_CONTENT "${MAIN_CONTENT}        }\n")
+    set(MAIN_CONTENT "${MAIN_CONTENT}    }\n")
+    set(MAIN_CONTENT "${MAIN_CONTENT}    \n")
+    set(MAIN_CONTENT "${MAIN_CONTENT}    MICROSTRAIN_TEST_BEGIN();\n")
+    set(MAIN_CONTENT "${MAIN_CONTENT}    \n")
+
+    # Generate conditional execution logic for each test.
+    list(LENGTH DISCOVERED_TESTS TEST_COUNT)
+    math(EXPR LAST_INDEX "${TEST_COUNT} - 1")
+    foreach(INDEX RANGE ${LAST_INDEX})
+        # We need to set the filepath explicitly (for Unity) since it points to the generated
+        # runner file instead.
+        list(GET TEST_FILEPATHS ${INDEX} TEST_FILEPATH)
+        list(GET DISCOVERED_SUITES ${INDEX} SUITE_NAME)
+        list(GET DISCOVERED_TESTS ${INDEX} TEST_NAME)
+
+        # Escape backslashes for C string literal
+        string(REPLACE "\\" "\\\\" TEST_FILEPATH_ESCAPED "${TEST_FILEPATH}")
+
+        set(MAIN_CONTENT "${MAIN_CONTENT}    if (!test_filter || strcmp(test_filter, \"[${SUITE_NAME}] ${TEST_NAME}\") == 0) {\n")
+        set(MAIN_CONTENT "${MAIN_CONTENT}        INTERNAL_RUN_MICROSTRAIN_TEST_CASE_AUTO_DISCOVER(${SUITE_NAME}, ${TEST_NAME}, \"${TEST_FILEPATH_ESCAPED}\");\n")
+        set(MAIN_CONTENT "${MAIN_CONTENT}    }\n")
+    endforeach()
+
+    # Generate the end of the main function.
+    set(MAIN_CONTENT "${MAIN_CONTENT}    \n")
+    set(MAIN_CONTENT "${MAIN_CONTENT}    return MICROSTRAIN_TEST_END();\n")
+    set(MAIN_CONTENT "${MAIN_CONTENT}}\n")
+
+    # Write the generated contents to the main file.
+    file(WRITE "${GENERATED_MAIN}" "${MAIN_CONTENT}")
+
+    # Return the generated file path to parent scope
+    set(${OUT_GENERATED_MAIN} "${GENERATED_MAIN}" PARENT_SCOPE)
+endfunction()
+
+
 # Register each test with CTest
 function(internal_register_individual_tests_with_ctest
     TARGET_NAME
