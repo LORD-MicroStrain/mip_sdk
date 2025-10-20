@@ -77,12 +77,11 @@ function(internal_generate_test_runner_file
     # Create the file
     set(GENERATED_MAIN "${GENERATED_DIR}/run_tests.c")
 
-    # Generate includes
+    # Generate includes and definitions
     set(MAIN_CONTENT "/* Auto-generated test main for ${TARGET_NAME}*/\n")
     set(MAIN_CONTENT "${MAIN_CONTENT}#include <string.h>\n\n")
-    set(MAIN_CONTENT "${MAIN_CONTENT}#include <microstrain_test/microstrain_test.h>\n\n")
-
-    # Generate any required setup
+    set(MAIN_CONTENT "${MAIN_CONTENT}#include <microstrain_test/microstrain_test.h>\n")
+    set(MAIN_CONTENT "${MAIN_CONTENT}\n")
     set(MAIN_CONTENT "${MAIN_CONTENT}MICROSTRAIN_TEST_DEFAULT_SETUP();\n")
 
     # Generate test case declarations
@@ -94,7 +93,7 @@ function(internal_generate_test_runner_file
         set(MAIN_CONTENT "${MAIN_CONTENT}extern MICROSTRAIN_TEST_CASE(${SUITE_NAME}, ${TEST_NAME});\n")
     endforeach()
 
-    # Generate the main function with commandline argument parsing for test filtering.
+    # Generate main function with commandline argument parsing for test filtering.
     set(MAIN_CONTENT "${MAIN_CONTENT}\n")
     set(MAIN_CONTENT "${MAIN_CONTENT}int main(int argc, char** argv) {\n")
     set(MAIN_CONTENT "${MAIN_CONTENT}    const char* test_filter = NULL;\n")
@@ -110,7 +109,7 @@ function(internal_generate_test_runner_file
     set(MAIN_CONTENT "${MAIN_CONTENT}    MICROSTRAIN_TEST_BEGIN();\n")
     set(MAIN_CONTENT "${MAIN_CONTENT}    \n")
 
-    # Generate conditional execution logic for each test.
+    # Generate logic to conditionally run each test (based on commandline filtering).
     list(LENGTH DISCOVERED_TESTS TEST_COUNT)
     math(EXPR LAST_INDEX "${TEST_COUNT} - 1")
     foreach(INDEX RANGE ${LAST_INDEX})
@@ -133,10 +132,8 @@ function(internal_generate_test_runner_file
     set(MAIN_CONTENT "${MAIN_CONTENT}    return MICROSTRAIN_TEST_END();\n")
     set(MAIN_CONTENT "${MAIN_CONTENT}}\n")
 
-    # Write the generated contents to the main file.
+    # Write the generated contents to the main file and return the filepath to the parent scope.
     file(WRITE "${GENERATED_MAIN}" "${MAIN_CONTENT}")
-
-    # Return the generated file path to parent scope
     set(${OUT_GENERATED_MAIN} "${GENERATED_MAIN}" PARENT_SCOPE)
 endfunction()
 
