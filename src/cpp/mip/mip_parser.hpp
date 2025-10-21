@@ -29,7 +29,7 @@ public:
     void setCallback(C::mip_packet_callback callback, void* callbackObject) { C::mip_parser_set_callback(this, callback, callbackObject); }
 
     template<class Lambda>
-    void setCallback(Lambda lambda);
+    void setCallback(const Lambda& lambda);
 
     template<class T, bool (T::*Callback)(const PacketView&, Timestamp)>
     void setCallback(T& object);
@@ -61,16 +61,16 @@ public:
 };
 
 
-template<class FunctionOrLambda>
-void Parser::setCallback(FunctionOrLambda function)
+template<class Lambda>
+void Parser::setCallback(const Lambda& function)
 {
     C::mip_packet_callback callback = [](void* obj, const C::mip_packet_view* packet, Timestamp timestamp)->bool
     {
-        FunctionOrLambda& func = *(static_cast<FunctionOrLambda*>(obj));
+        Lambda& func = *(static_cast<Lambda*>(obj));
         return func( mip::PacketView(*packet), timestamp );
     };
 
-    C::mip_parser_set_callback(this, callback, &function);
+    C::mip_parser_set_callback(this, callback, (void*)&function);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
