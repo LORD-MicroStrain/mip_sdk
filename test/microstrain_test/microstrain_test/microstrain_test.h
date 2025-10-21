@@ -8,7 +8,7 @@
 #endif
 
 // -----------------------------------------------------------------------------------------------------------
-// Automatic test registration
+// Automatic test registration and discovery
 // -----------------------------------------------------------------------------------------------------------
 
 /// @brief Registers a test case in the given test suite.
@@ -24,7 +24,7 @@
     MICROSTRAIN_TEST_CASE_IMPL(suite_name, test_name)
 
 // -----------------------------------------------------------------------------------------------------------
-// Manual test registration
+// Manual test registration and discovery
 // -----------------------------------------------------------------------------------------------------------
 
 /// @brief Completes any required setup before tests can be run.

@@ -3,11 +3,15 @@
 #include <unity.h>
 
 // -----------------------------------------------------------------------------------------------------------
-// Test registration
+// Automatic test registration and discovery
 // -----------------------------------------------------------------------------------------------------------
 
 #define MICROSTRAIN_TEST_CASE_IMPL(suite_name, test_name) \
     void suite_name##_##test_name(void)
+
+// -----------------------------------------------------------------------------------------------------------
+// Manual test registration and discovery
+// -----------------------------------------------------------------------------------------------------------
 
 #define MICROSTRAIN_TEST_DEFAULT_SETUP_IMPL() \
     void setUp(void) {} \
@@ -19,12 +23,12 @@
 #define MICROSTRAIN_TEST_END_IMPL() \
     UNITY_END()
 
-// -----------------------------------------------------------------------------------------------------------
-// Test execution
-// -----------------------------------------------------------------------------------------------------------
-
 #define RUN_MICROSTRAIN_TEST_CASE_IMPL(suite_name, test_name) \
     RUN_TEST(suite_name##_##test_name)
+
+// -----------------------------------------------------------------------------------------------------------
+// Internals
+// -----------------------------------------------------------------------------------------------------------
 
 // NOTE: Unfortunately have to reimplement and modify Unity's internals here instead
 //       of using RUN_TEST/UnityDefaultTestRun since there's no other way to update
@@ -68,17 +72,20 @@
     } while(0)
 
 
+/*
+ * Assertion wrappers
+ */
+
 /* The following wrapper macros flip the argument order from (expected, actual) to (actual, expected).
  *
  * There is no added functionality to these macros. They are simply to maintain consistency with other
  * frameworks. Assertion names remains the same, minus the "TEST_" part.
  */
-
-// -----------------------------------------------------------------------------------------------------------
-// Boolean assertions
-// -----------------------------------------------------------------------------------------------------------
-
 // TODO: Add code generation script to do the assertion argument flipping automatically
+
+/*
+ * Conditional assertions
+ */
 
 #define ASSERT_TRUE(condition) \
     TEST_ASSERT_TRUE(condition)
@@ -86,9 +93,9 @@
 #define ASSERT_FALSE(condition) \
     TEST_ASSERT_FALSE(condition)
 
-// -----------------------------------------------------------------------------------------------------------
-// Integer assertions
-// -----------------------------------------------------------------------------------------------------------
+/*
+ * Integer assertions
+ */
 
 #define ASSERT_EQUAL(actual, expected) \
     TEST_ASSERT_EQUAL_INT((expected), (actual))
@@ -186,9 +193,9 @@
 #define ASSERT_EQUAL_HEX64_MESSAGE(actual, expected, message) \
     TEST_ASSERT_EQUAL_HEX64_MESSAGE((expected), (actual), (message))
 
-// -----------------------------------------------------------------------------------------------------------
-// Float/double assertions
-// -----------------------------------------------------------------------------------------------------------
+/*
+ * Float/double assertions
+ */
 
 #define ASSERT_EQUAL_FLOAT(actual, expected) \
     TEST_ASSERT_EQUAL_FLOAT((expected), (actual))
@@ -214,9 +221,9 @@
 #define ASSERT_DOUBLE_WITHIN_MESSAGE(actual, delta, expected, message) \
     TEST_ASSERT_DOUBLE_WITHIN_MESSAGE((delta), (expected), (actual), (message))
 
-// -----------------------------------------------------------------------------------------------------------
-// String assertions
-// -----------------------------------------------------------------------------------------------------------
+/*
+ * String assertions
+ */
 
 #define ASSERT_EQUAL_STRING(actual, expected) \
     TEST_ASSERT_EQUAL_STRING((expected), (actual))
@@ -230,9 +237,9 @@
 #define ASSERT_EQUAL_STRING_LEN_MESSAGE(actual, expected, len, message) \
     TEST_ASSERT_EQUAL_STRING_LEN_MESSAGE((expected), (actual), (len), (message))
 
-// -----------------------------------------------------------------------------------------------------------
-// Memory assertions
-// -----------------------------------------------------------------------------------------------------------
+/*
+ * Memory assertions
+ */
 
 #define ASSERT_EQUAL_MEMORY(actual, expected, len) \
     TEST_ASSERT_EQUAL_MEMORY((expected), (actual), (len))
@@ -240,9 +247,9 @@
 #define ASSERT_EQUAL_MEMORY_MESSAGE(actual, expected, len, message) \
     TEST_ASSERT_EQUAL_MEMORY_MESSAGE((expected), (actual), (len), (message))
 
-// -----------------------------------------------------------------------------------------------------------
-// Pointer assertions
-// -----------------------------------------------------------------------------------------------------------
+/*
+ * Pointer assertions
+ */
 
 #define ASSERT_EQUAL_PTR(actual, expected) \
     TEST_ASSERT_EQUAL_PTR((expected), (actual))
@@ -250,9 +257,9 @@
 #define ASSERT_EQUAL_PTR_MESSAGE(actual, expected, message) \
     TEST_ASSERT_EQUAL_PTR_MESSAGE((expected), (actual), (message))
 
-// -----------------------------------------------------------------------------------------------------------
-// Int array assertions
-// -----------------------------------------------------------------------------------------------------------
+/*
+ * Int array assertions
+ */
 
 #define ASSERT_EQUAL_INT_ARRAY(actual, expected, num_elements) \
     TEST_ASSERT_EQUAL_INT_ARRAY((expected), (actual), (num_elements))
@@ -284,9 +291,9 @@
 #define ASSERT_EQUAL_INT64_ARRAY_MESSAGE(actual, expected, num_elements, message) \
     TEST_ASSERT_EQUAL_INT64_ARRAY_MESSAGE((expected), (actual), (num_elements), (message))
 
-// -----------------------------------------------------------------------------------------------------------
-// Unsigned int array assertions
-// -----------------------------------------------------------------------------------------------------------
+/*
+ * Unsigned int array assertions
+ */
 
 #define ASSERT_EQUAL_UINT_ARRAY(actual, expected, num_elements) \
     TEST_ASSERT_EQUAL_UINT_ARRAY((expected), (actual), (num_elements))
@@ -318,9 +325,9 @@
 #define ASSERT_EQUAL_UINT64_ARRAY_MESSAGE(actual, expected, num_elements, message) \
     TEST_ASSERT_EQUAL_UINT64_ARRAY_MESSAGE((expected), (actual), (num_elements), (message))
 
-// -----------------------------------------------------------------------------------------------------------
-// Hex array assertions
-// -----------------------------------------------------------------------------------------------------------
+/*
+ * Hex array assertions
+ */
 
 #define ASSERT_EQUAL_HEX_ARRAY(actual, expected, num_elements) \
     TEST_ASSERT_EQUAL_HEX_ARRAY((expected), (actual), (num_elements))
@@ -352,9 +359,9 @@
 #define ASSERT_EQUAL_HEX64_ARRAY_MESSAGE(actual, expected, num_elements, message) \
     TEST_ASSERT_EQUAL_HEX64_ARRAY_MESSAGE((expected), (actual), (num_elements), (message))
 
-// -----------------------------------------------------------------------------------------------------------
-// Float array assertions
-// -----------------------------------------------------------------------------------------------------------
+/*
+ * Float array assertions
+ */
 
 #define ASSERT_EQUAL_FLOAT_ARRAY(actual, expected, num_elements) \
     TEST_ASSERT_EQUAL_FLOAT_ARRAY((expected), (actual), (num_elements))
@@ -362,9 +369,9 @@
 #define ASSERT_EQUAL_FLOAT_ARRAY_MESSAGE(actual, expected, num_elements, message) \
     TEST_ASSERT_EQUAL_FLOAT_ARRAY_MESSAGE((expected), (actual), (num_elements), (message))
 
-// -----------------------------------------------------------------------------------------------------------
-// Double array assertions
-// -----------------------------------------------------------------------------------------------------------
+/*
+ * Double array assertions
+ */
 
 #define ASSERT_EQUAL_DOUBLE_ARRAY(actual, expected, num_elements) \
     TEST_ASSERT_EQUAL_DOUBLE_ARRAY((expected), (actual), (num_elements))
@@ -372,9 +379,9 @@
 #define ASSERT_EQUAL_DOUBLE_ARRAY_MESSAGE(actual, expected, num_elements, message) \
     TEST_ASSERT_EQUAL_DOUBLE_ARRAY_MESSAGE((expected), (actual), (num_elements), (message))
 
-// -----------------------------------------------------------------------------------------------------------
-// Pointer array assertions
-// -----------------------------------------------------------------------------------------------------------
+/*
+ * Pointer array assertions
+ */
 
 #define ASSERT_EQUAL_PTR_ARRAY(actual, expected, num_elements) \
     TEST_ASSERT_EQUAL_PTR_ARRAY((expected), (actual), (num_elements))
@@ -389,9 +396,9 @@
 #define ASSERT_EQUAL_CHAR_ARRAY_MESSAGE(actual, expected, num_elements, message) \
     TEST_ASSERT_EQUAL_CHAR_ARRAY_MESSAGE((expected), (actual), (num_elements), (message))
 
-// -----------------------------------------------------------------------------------------------------------
-// Generic comparison assertions
-// -----------------------------------------------------------------------------------------------------------
+/*
+ * Generic comparison assertions
+ */
 
 #define ASSERT_GREATER_THAN(actual, threshold) \
     TEST_ASSERT_GREATER_THAN((threshold), (actual))
@@ -417,9 +424,9 @@
 #define ASSERT_LESS_OR_EQUAL_MESSAGE(actual, threshold, message) \
     TEST_ASSERT_LESS_OR_EQUAL_MESSAGE((threshold), (actual), (message))
 
-// -----------------------------------------------------------------------------------------------------------
-// Int comparison assertions
-// -----------------------------------------------------------------------------------------------------------
+/*
+ * Int comparison assertions
+ */
 
 #define ASSERT_GREATER_THAN_INT(actual, threshold) \
     TEST_ASSERT_GREATER_THAN_INT((threshold), (actual))
@@ -541,9 +548,9 @@
 #define ASSERT_LESS_OR_EQUAL_INT64_MESSAGE(actual, threshold, message) \
     TEST_ASSERT_LESS_OR_EQUAL_INT64_MESSAGE((threshold), (actual), (message))
 
-// -----------------------------------------------------------------------------------------------------------
-// Unsigned int comparison assertions
-// -----------------------------------------------------------------------------------------------------------
+/*
+ * Unsigned int comparison assertions
+ */
 
 #define ASSERT_GREATER_THAN_UINT(actual, threshold) \
     TEST_ASSERT_GREATER_THAN_UINT((threshold), (actual))
@@ -758,9 +765,9 @@
 #define ASSERT_LESS_OR_EQUAL_HEX64_MESSAGE(actual, threshold, message) \
     TEST_ASSERT_LESS_OR_EQUAL_HEX64_MESSAGE((threshold), (actual), (message))
 
-// -----------------------------------------------------------------------------------------------------------
-// Float comparison assertions
-// -----------------------------------------------------------------------------------------------------------
+/*
+ * Float comparison assertions
+ */
 
 #define ASSERT_GREATER_THAN_FLOAT(actual, threshold) \
     TEST_ASSERT_GREATER_THAN_FLOAT((threshold), (actual))
@@ -786,9 +793,9 @@
 #define ASSERT_LESS_OR_EQUAL_FLOAT_MESSAGE(actual, threshold, message) \
     TEST_ASSERT_LESS_OR_EQUAL_FLOAT_MESSAGE((threshold), (actual), (message))
 
-// -----------------------------------------------------------------------------------------------------------
-// Double comparison assertions
-// -----------------------------------------------------------------------------------------------------------
+/*
+ * Double comparison assertions
+ */
 
 #define ASSERT_GREATER_THAN_DOUBLE(actual, threshold) \
     TEST_ASSERT_GREATER_THAN_DOUBLE((threshold), (actual))
