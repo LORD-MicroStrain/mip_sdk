@@ -1,6 +1,9 @@
-# TODO: Add doc/note for this file
-# TODO: Add docs for functions
-
+# Searches through all source files linked to the target and parses test registration
+# calls from them.
+#
+# The test suites and names are extracted from the registration calls and returned in
+# lists for reference, along with the paths to the files where the calls were made.
+# The paths are needed so that links point to the correct file when an assertion fails.
 function(internal_parse_test_registrations_from_sources
     TARGET_SOURCES
     OUT_SUITES
@@ -61,7 +64,11 @@ function(internal_parse_test_registrations_from_sources
 endfunction()
 
 
-# Generate logic to conditionally run each test (based on commandline filtering).
+# Generates logic to conditionally run each test (based on commandline filtering).
+#
+# This allows automatic test discovery to use a single executable (run with different
+# arguments for each CTest test) instead of building separate executables for each
+# test.
 function(internal_generate_test_execution_logic_with_commandline_filtering
     DISCOVERED_SUITES
     DISCOVERED_TESTS
@@ -91,7 +98,7 @@ function(internal_generate_test_execution_logic_with_commandline_filtering
 endfunction()
 
 
-# Creates an empty test runner file (populate this file later).
+# Creates an empty test runner file (this file should be populated later).
 function(internal_create_test_runner_file TARGET_NAME OUT_GENERATED_FILEPATH)
     # Create directory for the generated file
     set(GENERATED_DIR "${CMAKE_CURRENT_BINARY_DIR}/generated_tests/${TARGET_NAME}")
@@ -105,7 +112,11 @@ function(internal_create_test_runner_file TARGET_NAME OUT_GENERATED_FILEPATH)
 endfunction()
 
 
-# Used when no tests are discovered to avoid a failing build.
+# Generates a main runner file with a dummy main to avoid a failing build if no tests are
+# discovered.
+#
+# This should only be used if no tests are available after discovery. Otherwise, the
+# actual main generator should be used.
 function(internal_generate_test_runner_file_with_dummy_main TARGET_NAME)
     internal_create_test_runner_file("${TARGET_NAME}" GENERATED_MAIN)
 
@@ -117,8 +128,10 @@ function(internal_generate_test_runner_file_with_dummy_main TARGET_NAME)
 endfunction()
 
 
-# Generate a main runner file for all tests. Allows all tests to be run at once, or filtered
-# through the command-line.
+# Generates a main runner file for all tests, with a main function to handle to handle
+# test execution.
+#
+# Allows all tests to be run at once, or filtered through the command-line.
 function(internal_generate_test_runner_file_with_main
    TARGET_NAME
    DISCOVERED_SUITES
@@ -180,7 +193,7 @@ function(internal_generate_test_runner_file_with_main
 endfunction()
 
 
-# Register each test with CTest
+# Registers each individual test with CTest.
 function(internal_register_individual_tests_with_ctest
     TARGET_NAME
     DISCOVERED_SUITES
