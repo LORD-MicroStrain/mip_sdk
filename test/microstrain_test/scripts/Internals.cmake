@@ -90,6 +90,21 @@ function(internal_generate_test_execution_logic_with_commandline_filtering
     endforeach()
 endfunction()
 
+
+# Creates an empty test runner file (populate this file later).
+function(internal_create_test_runner_file TARGET_NAME OUT_GENERATED_FILEPATH)
+    # Create directory for the generated file
+    set(GENERATED_DIR "${CMAKE_CURRENT_BINARY_DIR}/generated_tests/${TARGET_NAME}")
+    file(MAKE_DIRECTORY "${GENERATED_DIR}")
+
+    # Create the file
+    set(GENERATED_MAIN "${GENERATED_DIR}/run_tests.c")
+
+    # Return the filepath to parent scope
+    set(${OUT_GENERATED_FILEPATH} "${GENERATED_MAIN}" PARENT_SCOPE)
+endfunction()
+
+
 # Generate a main runner file for all tests. Allows all tests to be run at once, or filtered
 # through the command-line.
 function(internal_generate_test_runner_file
@@ -99,12 +114,7 @@ function(internal_generate_test_runner_file
    TEST_FILEPATHS
    OUT_GENERATED_MAIN
 )
-    # Create directory for the generated file
-    set(GENERATED_DIR "${CMAKE_CURRENT_BINARY_DIR}/generated_tests/${TARGET_NAME}")
-    file(MAKE_DIRECTORY "${GENERATED_DIR}")
-
-    # Create the file
-    set(GENERATED_MAIN "${GENERATED_DIR}/run_tests.c")
+    internal_create_test_runner_file("${TARGET_NAME}" GENERATED_MAIN)
 
     # Generate includes and definitions
     set(MAIN_CONTENT "/* Auto-generated test main for ${TARGET_NAME}*/\n")
