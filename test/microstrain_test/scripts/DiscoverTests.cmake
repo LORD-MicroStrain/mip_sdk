@@ -1,9 +1,14 @@
 include(${microstrain_test_SOURCE_DIR}/scripts/Internals.cmake)
 
-# ---------------------------------------------------------------
-# C discovery
-# ---------------------------------------------------------------
-
+# Automatically discovers and sets tests to run (C framework API).
+#
+# Arguments:
+#     TARGET - An executable with the source files for all tests to run linked to it.
+#              A main function will be generated for this executable to run the tests.
+#     LABELS - Additional CTest labels for the tests discovered. Example use cases:
+#              "unit" or "integration" to allow all tests of each type to be run.
+#     SEQUENTIAL - A boolean switch to run all tests discovered one at a time, instead
+#                  of in parallel. If this isn't passed, the tests will run in parallel.
 function(microstrain_discover_tests_c)
     # Set policy to allow for test names with special characters
     if(POLICY CMP0110)
@@ -65,10 +70,16 @@ function(microstrain_discover_tests_c)
     )
 endfunction()
 
-# ---------------------------------------------------------------
-# C++ discovery
-# ---------------------------------------------------------------
 
+# Automatically discovers and sets tests to run (C++ framework API).
+#
+# Arguments:
+#     TARGET - An executable with the source files for all tests to run linked to it.
+#              A main function will be generated for this executable to run the tests.
+#     LABELS - Additional CTest labels for the tests discovered. Example use cases:
+#              "unit" or "integration" to allow all tests of each type to be run.
+#     SEQUENTIAL - A boolean switch to run all tests discovered one at a time, instead
+#                  of in parallel. If this isn't passed, the tests will run in parallel.
 function(microstrain_discover_tests_cpp)
     cmake_parse_arguments(
         ARG
