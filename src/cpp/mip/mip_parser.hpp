@@ -66,7 +66,8 @@ void Parser::setCallback(FunctionOrLambda function)
 {
     C::mip_packet_callback callback = [](void* obj, const C::mip_packet_view* packet, Timestamp timestamp)->bool
     {
-        return *(static_cast<FunctionOrLambda*>(obj))( mip::PacketView(*packet), timestamp );
+        FunctionOrLambda& func = *(static_cast<FunctionOrLambda*>(obj));
+        return func( mip::PacketView(*packet), timestamp );
     };
 
     C::mip_parser_set_callback(this, callback, &function);
