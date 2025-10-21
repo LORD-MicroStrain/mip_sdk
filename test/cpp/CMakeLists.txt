@@ -1,16 +1,8 @@
-# ---------------------------------------------------------------
-# Targets
-# ---------------------------------------------------------------
-
 set(MIP_UNIT_TEST_TARGET_CPP "${MIP_UNIT_TEST_TARGET}_cpp")
 set(MIP_INTEGRATION_TEST_TARGET_CPP "${MIP_INTEGRATION_TEST_TARGET}_cpp")
 
 add_executable("${MIP_UNIT_TEST_TARGET_CPP}")
 add_executable("${MIP_INTEGRATION_TEST_TARGET_CPP}")
-
-# ---------------------------------------------------------------
-# Target sources
-# ---------------------------------------------------------------
 
 target_sources("${MIP_UNIT_TEST_TARGET_CPP}" PRIVATE
     "logging.unit.cpp"
@@ -23,10 +15,6 @@ target_sources("${MIP_INTEGRATION_TEST_TARGET_CPP}" PRIVATE
     # "packet_interface.integration.cpp"
 )
 
-# ---------------------------------------------------------------
-# Linking
-# ---------------------------------------------------------------
-
 target_link_libraries("${MIP_UNIT_TEST_TARGET_CPP}" PRIVATE
     "${MIP_LIBRARIES}"
     "${MICROSTRAIN_LIBRARIES}"
@@ -37,6 +25,14 @@ target_link_libraries("${MIP_INTEGRATION_TEST_TARGET_CPP}" PRIVATE
     "${MIP_LIBRARIES}"
     "${MICROSTRAIN_LIBRARIES}"
     microstrain_test::cpp
+)
+
+target_compile_definitions("${MIP_UNIT_TEST_TARGET_CPP}" PRIVATE
+    "MICROSTRAIN_LOGGING_MAX_LEVEL=MICROSTRAIN_LOGGING_LEVEL_WARN_"
+)
+
+target_compile_definitions("${MIP_INTEGRATION_TEST_TARGET_CPP}" PRIVATE
+    "MICROSTRAIN_LOGGING_MAX_LEVEL=MICROSTRAIN_LOGGING_LEVEL_WARN_"
 )
 
 # ---------------------------------------------------------------
