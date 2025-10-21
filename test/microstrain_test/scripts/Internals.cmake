@@ -105,9 +105,21 @@ function(internal_create_test_runner_file TARGET_NAME OUT_GENERATED_FILEPATH)
 endfunction()
 
 
+# Used when no tests are discovered to avoid a failing build.
+function(internal_generate_test_runner_file_with_dummy_main TARGET_NAME)
+    internal_create_test_runner_file("${TARGET_NAME}" GENERATED_MAIN)
+
+    # Write empty main
+    file(WRITE "${GENERATED_MAIN}" "int main(void) { return 0; }\n")
+
+    # Add to target
+    target_sources(${TARGET_NAME} PRIVATE "${GENERATED_MAIN}")
+endfunction()
+
+
 # Generate a main runner file for all tests. Allows all tests to be run at once, or filtered
 # through the command-line.
-function(internal_generate_test_runner_file
+function(internal_generate_test_runner_file_with_main
    TARGET_NAME
    DISCOVERED_SUITES
    DISCOVERED_TESTS

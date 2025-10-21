@@ -20,14 +20,14 @@ function(microstrain_discover_tests_c)
 
     # Verify the target exists
     if(NOT TARGET ${ARG_TARGET})
-        message(WARNING "Target ${ARG_TARGET} does not exist")
+        message(FATAL_ERROR "Target ${ARG_TARGET} does not exist")
         return()
     endif()
 
     # Verify the target has source files set
     get_target_property(TARGET_SOURCES ${ARG_TARGET} SOURCES)
     if(NOT TARGET_SOURCES OR TARGET_SOURCES STREQUAL "TARGET_SOURCES-NOTFOUND")
-        message(WARNING "Target ${ARG_TARGET} does not contain any sources")
+        internal_generate_test_runner_file_with_dummy_main("${ARG_TARGET}")
         return()
     endif()
 
@@ -40,18 +40,11 @@ function(microstrain_discover_tests_c)
 
     # Exit early if no test registrations are found
     if(NOT DISCOVERED_SUITES OR NOT DISCOVERED_TESTS)
-        message(WARNING "EXIT EARLY FOR: ${ARG_TARGET}")
-        internal_create_test_runner_file("${ARG_TARGET}" GENERATED_MAIN)
-
-        # Generate a dummy main
-        # TODO: Convert to function
-        file(WRITE "${GENERATED_MAIN}" "int main(void) { return 0; }\n")
-        target_sources(${ARG_TARGET} PRIVATE "${GENERATED_MAIN}")
-
+        internal_generate_test_runner_file_with_dummy_main("${ARG_TARGET}")
         return()
     endif()
 
-    internal_generate_test_runner_file(
+    internal_generate_test_runner_file_with_main(
         "${ARG_TARGET}"
         "${DISCOVERED_SUITES}"
         "${DISCOVERED_TESTS}"
