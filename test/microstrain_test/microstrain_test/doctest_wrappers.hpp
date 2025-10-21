@@ -5,18 +5,19 @@
 #include <doctest/doctest.h>
 
 // -----------------------------------------------------------------------------------------------------------
-// Test registration
+// Automatic test registration and discovery
 // -----------------------------------------------------------------------------------------------------------
 
 #define MICROSTRAIN_TEST_CASE_IMPL(suite_name, test_name) \
     TEST_CASE("[" suite_name "] " test_name)
 
 // -----------------------------------------------------------------------------------------------------------
-// C-string assertions
+// Assertions
 // -----------------------------------------------------------------------------------------------------------
 
 // TODO: Can add wrapper macros for the doctest parts of this and make it framework-independent
 //     ---> In this case, we could rename the file common.hpp or implementation.hpp
+/// @brief Internal, DON'T USE DIRECTLY!
 #define CSTR_EQ_IMPL(actual, expected, level)                                                       \
     do                                                                                                        \
     {                                                                                                         \
