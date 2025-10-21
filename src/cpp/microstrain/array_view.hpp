@@ -84,6 +84,8 @@ struct ArrayView
     template<size_t Count>
     [[nodiscard]] constexpr ArrayView<T, Count> last() const { static_assert(Count<=Extent, "Count out of range"); return {m_ptr+(Extent-Count)}; }
 
+    operator ArrayView<const T, Extent>() const { return {m_ptr, Extent}; }
+
 private:
     pointer m_ptr = nullptr;
 };
@@ -133,6 +135,8 @@ struct ArrayView<T, DYNAMIC_EXTENT>
     [[nodiscard]] constexpr ArrayView<T, DYNAMIC_EXTENT> last(size_t count) const { return {m_ptr+(size()-count), count};}
     template<size_t Count>
     [[nodiscard]] constexpr ArrayView<T, Count> last() const { return {m_ptr+(size()-Count)}; }
+
+    operator ArrayView<const T, DYNAMIC_EXTENT>() const { return {m_ptr, m_cnt}; }
 
 private:
     pointer m_ptr   = nullptr;
