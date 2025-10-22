@@ -31,16 +31,13 @@ def checkoutRepo() {
   env.setProperty('BRANCH_NAME', branchName())
 }
 
-// Utility function to build the MIP SDK on linux
-// This function requires BUILD_OS and BUILD_ARCH to have been set in the environment before it is called
+// Build steps for Linux. Requires BUILD_OS and BUILD_ARCH to be set.
 def buildMipSdkLinux() {
-    // Build the docker image
-    sh '''
+    sh(label: 'Build docker image', script: '''
         ./.devcontainer/docker_build_image.sh --os ${BUILD_OS} --arch ${BUILD_ARCH}
-    '''
+    ''')
 
-    // Build the MIP packages
-    sh '''
+    sh(label: 'Build MIP SDK', script: '''
         ./.devcontainer/docker_shell.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
             cmake \
                 -B build_${BUILD_OS}_${BUILD_ARCH} \
@@ -53,33 +50,51 @@ def buildMipSdkLinux() {
                 --target package \
                 --parallel $(nproc);
         "
-    '''
-
-    // Run the tests
-    sh '''
-        ./.devcontainer/docker_shell.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
-            ctest \
-                --test-dir build_${BUILD_OS}_${BUILD_ARCH} \
-                -C Release \
-                --verbose \
-                --output-on-failure \
-                --output-junit unit_test_results.xml \
-                --parallel $(nproc);
-        "
-    '''
-
-    // Archive the artifacts and save the unit test results
+    ''')
     dir("build_${BUILD_OS}_${BUILD_ARCH}") {
         archiveArtifacts artifacts: "mipsdk_*"
+    }
+
+    catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', catchInterruptions: false) {
+        sh(label: 'Run unit tests', script: '''
+            ./.devcontainer/docker_shell.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
+                ctest \
+                    --test-dir build_${BUILD_OS}_${BUILD_ARCH} \
+                    -C Release \
+                    -L unit \
+                    --verbose \
+                    --output-on-failure \
+                    --output-junit unit_test_results.xml \
+                    --parallel $(nproc); \
+            "
+        ''')
+    }
+    dir("build_${BUILD_OS}_${BUILD_ARCH}") {
         junit testResults: "unit_test_results.xml", allowEmptyResults: false
+    }
+
+    catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', catchInterruptions: false) {
+        sh(label: 'Run integration tests', script: '''
+            ./.devcontainer/docker_shell.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
+                ctest \
+                    --test-dir build_${BUILD_OS}_${BUILD_ARCH} \
+                    -C Release \
+                    -L integration \
+                    --verbose \
+                    --output-on-failure \
+                    --output-junit integration_test_results.xml \
+                    --parallel $(nproc); \
+            "
+        ''')
+    }
+    dir("build_${BUILD_OS}_${BUILD_ARCH}") {
+        junit testResults: "integration_test_results.xml", allowEmptyResults: false
     }
 }
 
-// Utility function to build the MIP SDK on windows
-// This functions requires BUILD_ARCH to have been set in the environment before it is called
+// Build steps for Windows. Requires BUILD_ARCH to be set.
 def buildMipSdkWindows() {
-    // Build the MIP packages
-    powershell """
+    powershell(label: 'Build MIP SDK', script: """
         cmake `
             -B "build_${BUILD_ARCH}" `
             -A "${BUILD_ARCH}" `
@@ -92,24 +107,66 @@ def buildMipSdkWindows() {
             --parallel \$env:NUMBER_OF_PROCESSORS `
             --target package
 
-    """
-
-    // Run the tests
-    powershell """
-        ctest `
-            --test-dir "build_${BUILD_ARCH}" `
-            -C Release `
-            --verbose `
-            --output-on-failure `
-            --output-junit unit_test_results.xml `
-            --parallel \$env:NUMBER_OF_PROCESSORS
-    """
-
-    // Archive the artifacts and save the unit test results
+    """)
     dir("build_${BUILD_ARCH}") {
         archiveArtifacts artifacts: "mipsdk_*"
+    }
+
+    catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', catchInterruptions: false) {
+        powershell(label: 'Run unit tests', script: """
+            ctest `
+                --test-dir "build_${BUILD_ARCH}" `
+                -C Release `
+                -L unit `
+                --verbose `
+                --output-on-failure `
+                --output-junit unit_test_results.xml `
+                --parallel \$env:NUMBER_OF_PROCESSORS
+        """)
+    }
+    dir("build_${BUILD_ARCH}") {
         junit testResults: "unit_test_results.xml", allowEmptyResults: false
     }
+
+    catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE', catchInterruptions: false) {
+        powershell(label: 'Run integration tests', script: """
+            ctest `
+                --test-dir "build_${BUILD_ARCH}" `
+                -C Release `
+                -L integration `
+                --verbose `
+                --output-on-failure `
+                --output-junit integration_test_results.xml `
+                --parallel \$env:NUMBER_OF_PROCESSORS
+        """)
+    }
+    dir("build_${BUILD_ARCH}") {
+        junit testResults: "integration_test_results.xml", allowEmptyResults: false
+    }
+}
+
+def buildDocumentation() {
+    // Build the docker image
+    sh '''
+        ./.devcontainer/docker_build_image.sh --os ${BUILD_OS} --arch ${BUILD_ARCH}
+    '''
+
+    // Build the documentation
+    sh '''
+        ./.devcontainer/docker_shell.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
+            cmake \
+                -B build_docs \
+                -DMICROSTRAIN_BUILD_DOCUMENTATION=ON \
+                -DMICROSTRAIN_BUILD_DOCUMENTATION_QUIET=OFF \
+                -DCMAKE_BUILD_TYPE=RELEASE; \
+            cmake \
+                --build build_docs \
+                --target package_docs \
+                -j $(nproc)
+        "
+    '''
+
+    archiveArtifacts artifacts: "build_docs/mipsdk_*"
 }
 
 pipeline {
@@ -140,27 +197,7 @@ pipeline {
                     steps {
                         script {
                             checkoutRepo()
-
-                            // Build the docker image
-                            sh '''
-                                ./.devcontainer/docker_build_image.sh --os ${BUILD_OS} --arch ${BUILD_ARCH}
-                            '''
-
-                            // Build the documentation
-                            sh '''
-                                ./.devcontainer/docker_shell.sh --os ${BUILD_OS} --arch ${BUILD_ARCH} " \
-                                    cmake \
-                                        -B build_docs \
-                                        -DMICROSTRAIN_BUILD_DOCUMENTATION=ON \
-                                        -DMICROSTRAIN_BUILD_DOCUMENTATION_QUIET=OFF \
-                                        -DCMAKE_BUILD_TYPE=RELEASE; \
-                                    cmake \
-                                        --build build_docs \
-                                        --target package_docs \
-                                        --parallel $(nproc)
-                                "
-                            '''
-                            archiveArtifacts artifacts: "build_docs/mipsdk_*"
+                            buildDocumentation()
                         }
                     }
                 }

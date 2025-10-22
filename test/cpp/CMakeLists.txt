@@ -1,18 +1,30 @@
+include(${doctest_SOURCE_DIR}/scripts/cmake/doctest.cmake)
 
-add_executable(CppUnitTestRunner
-    # TODO: Commented tests are disabled as they are either broken or integration tests
-    # mip_parser_performance.cpp
-    # test_mip.cpp
-    # test_packet_interface.cpp
-    # test_serial.cpp
+add_executable(UnitTests
     "logging.unit.cpp"
     "strings.unit.cpp"
 )
 
-target_link_libraries(CppUnitTestRunner
+target_link_libraries(UnitTests
     ${MIP_LIBRARY}
     microstrain_test
 )
 
-include(${doctest_SOURCE_DIR}/scripts/cmake/doctest.cmake)
-doctest_discover_tests(CppUnitTestRunner)
+doctest_discover_tests(UnitTests
+    PROPERTIES LABELS "unit"
+)
+
+add_executable(IntegrationTests
+    "mip.integration.cpp"
+    # TODO: Broken, can't be fixed until naming conventions decided
+    #"packet_interface.integration.cpp"
+)
+
+target_link_libraries(IntegrationTests
+    ${MIP_LIBRARY}
+    microstrain_test
+)
+
+doctest_discover_tests(IntegrationTests
+    PROPERTIES LABELS "integration"
+)
