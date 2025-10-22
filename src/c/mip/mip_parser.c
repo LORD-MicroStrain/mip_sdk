@@ -1,8 +1,6 @@
 
 #include "mip_parser.h"
 
-#include "mip_offsets.h"
-
 #include <assert.h>
 #include <string.h>
 
@@ -96,7 +94,7 @@ static size_t mip_find_sop(const uint8_t* buffer, size_t buffer_len, size_t* off
     size_t offset = *offset_ptr;
     for(;;)
     {
-        ptr = memchr(ptr, MIP_SYNC1, buffer_len - offset);
+        ptr = memchr(ptr, MIP_SYNC_1, buffer_len - offset);
 
         if(!ptr)
         {
@@ -111,8 +109,8 @@ static size_t mip_find_sop(const uint8_t* buffer, size_t buffer_len, size_t* off
         if(offset+1 == buffer_len)
             return 2;
 
-        if((offset+MIP_INDEX_SYNC2 < buffer_len) && buffer[offset+MIP_INDEX_SYNC2] == MIP_SYNC2)
-            return MIP_HEADER_LENGTH;
+        if((offset+MIP_PACKET_INDEX_SYNC_2 < buffer_len) && buffer[offset+MIP_PACKET_INDEX_SYNC_2] == MIP_SYNC_2)
+            return MIP_PACKET_HEADER_LENGTH;
 
         ++ptr;
         ++offset;
@@ -206,9 +204,9 @@ size_t mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t 
 
     // Expected length of the packet or current header byte being parsed. 1, 2, 4 or >= 6.
     size_t expected_packet_length =
-        (parser->_buffered_length < MIP_HEADER_LENGTH) ?
+        (parser->_buffered_length < MIP_PACKET_HEADER_LENGTH) ?
         (parser->_buffered_length + 1) :
-        (MIP_HEADER_LENGTH + parser->_buffer[MIP_INDEX_LENGTH] + MIP_CHECKSUM_LENGTH)
+        (MIP_PACKET_HEADER_LENGTH + parser->_buffer[MIP_PACKET_INDEX_LENGTH] + MIP_PACKET_CHECKSUM_LENGTH)
     ;
 
     for(;;)
@@ -261,7 +259,7 @@ size_t mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t 
         switch(expected_packet_length)
         {
         // Nothing parsed yet (expecting 1 sync byte)
-        case MIP_INDEX_SYNC1+1:
+        case MIP_PACKET_INDEX_SYNC_1+1:
             assert(!reparsing);
             assert(parser->_buffered_length == 0);
             // Optimization: use memchr to find the SOP, it's way faster than iterating this loop one byte at a time.
@@ -275,13 +273,13 @@ size_t mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t 
             break;
 
         // Got single byte of 0x75 in the parse buffer.
-        case MIP_INDEX_SYNC2+1:
+        case MIP_PACKET_INDEX_SYNC_2+1:
             // mip_find_sop() always tries to find both 0x75 and 0x65, so this
             // case only happens when 0x75 is left at the end of the parse buffer.
             assert(!reparsing);
 
-            if(input_buffer[unparsed_input_offset + (MIP_INDEX_SYNC2 - parser->_buffered_length)] == MIP_SYNC2)
-                expected_packet_length = MIP_HEADER_LENGTH;
+            if(input_buffer[unparsed_input_offset + (MIP_PACKET_INDEX_SYNC_2 - parser->_buffered_length)] == MIP_SYNC_2)
+                expected_packet_length = MIP_PACKET_HEADER_LENGTH;
             else  // Next byte is not 0x65 --> not a mip packet, reset parser
             {
                 // Don't advance the input offset if the SYNC1 was in the packet buffer.
@@ -296,24 +294,24 @@ size_t mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t 
 
         // Nothing special to do for the descriptor set.
         // This case can only happen when leftover_length == 2.
-        case MIP_INDEX_DESCSET+1:
+        case MIP_PACKET_INDEX_DESC_SET+1:
             expected_packet_length = 4;
             break;
 
         // Got the expected 4 bytes for the header - read packet's length field.
-        case MIP_HEADER_LENGTH:
+        case MIP_PACKET_HEADER_LENGTH:
             if(reparsing)
             {
-                assert(parser->_buffered_length >= MIP_HEADER_LENGTH);
-                expected_packet_length = parser->_buffer[MIP_INDEX_LENGTH];
+                assert(parser->_buffered_length >= MIP_PACKET_HEADER_LENGTH);
+                expected_packet_length = parser->_buffer[MIP_PACKET_INDEX_LENGTH];
             }
-            else // parser->_buffered_length >= MIP_HEADER_LENGTH
+            else // parser->_buffered_length >= MIP_PACKET_HEADER_LENGTH
             {
-                assert(parser->_buffered_length < MIP_HEADER_LENGTH);
-                expected_packet_length = input_buffer[unparsed_input_offset + MIP_INDEX_LENGTH - parser->_buffered_length];
+                assert(parser->_buffered_length < MIP_PACKET_HEADER_LENGTH);
+                expected_packet_length = input_buffer[unparsed_input_offset + MIP_PACKET_INDEX_LENGTH - parser->_buffered_length];
             }
 
-            expected_packet_length += MIP_HEADER_LENGTH + MIP_CHECKSUM_LENGTH;
+            expected_packet_length += MIP_PACKET_HEADER_LENGTH + MIP_PACKET_CHECKSUM_LENGTH;
             break;
 
         // All packet data is available, check checksum

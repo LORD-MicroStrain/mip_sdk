@@ -1,22 +1,23 @@
 ////////////////////////////////////////////////////////////////////////////////
-/// mip_packet_example.c
+/// @file mip_packet_example.c
 ///
-/// Example program to create raw and buffered MIP packets using C
+/// @defgroup mip_packet_example_c MIP Packet Example [C]
 ///
-/// For this example, we have broken down each piece into separate functions
-/// for easier documentation and is not necessary in practice.
+/// @ingroup examples_c
 ///
-/// If this example does not meet your specific setup needs, please consult the
-/// MIP SDK API documentation for the proper commands.
+/// @brief Example program to create raw and buffered MIP packets using C
 ///
-/// @section LICENSE
+/// @details For this example, we have broken down each piece into separate
+///          functions for easier documentation and is not necessary in
+///          practice. This is not an exhaustive example of all MIP packet
+///          features. If this example does not meet your specific setup needs,
+///          please consult the MIP SDK API documentation for the proper
+///          commands.
 ///
-/// THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
-/// WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
-/// TIME. AS A RESULT, MICROSTRAIN BY HBK SHALL NOT BE HELD LIABLE FOR ANY
-/// DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
-/// FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
-/// CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+/// @section mip_packet_example_c_license License
+///
+/// @copyright Copyright (c) 2025 MicroStrain by HBK
+///            Licensed under MIT License
 ///
 
 // Include all necessary MIP headers
@@ -34,42 +35,42 @@
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include <stdlib.h>
 
 // Print the state of a packet
-void print_packet(const mip_packet_view* _packet_view);
+static void print_packet(const mip_packet_view* _packet_view);
 
 // Initialize an empty packet for a given descriptor set
-void initialize_empty_packet(mip_packet_view* _packet_view, uint8_t* _buffer, const size_t _buffer_size,
-    const uint8_t _descriptor_set);
+static void initialize_empty_packet(
+    mip_packet_view* _packet_view, uint8_t* _buffer, const size_t _buffer_size, const uint8_t _descriptor_set
+);
 
 // Compute and add the checksum to a packet
-void add_checksum_to_packet(mip_packet_view* _packet_view);
+static void add_checksum_to_packet(mip_packet_view* _packet_view);
 
 // Fields added to packet 1
-void add_ping_command_to_packet(mip_packet_view* _packet_view);
-void add_comm_speed_bytes_to_packet(mip_packet_view* _packet_view);
-void add_comm_speed_field_to_packet(mip_packet_view* _packet_view);
-void add_comm_speed_serializer_bytes_to_packet(mip_packet_view* _packet_view);
+static void add_ping_command_to_packet(mip_packet_view* _packet_view);
+static void add_comm_speed_bytes_to_packet(mip_packet_view* _packet_view);
+static void add_comm_speed_field_to_packet(mip_packet_view* _packet_view);
+static void add_comm_speed_serializer_bytes_to_packet(mip_packet_view* _packet_view);
 
 // Fields added to packet 2
-void add_message_format_field_to_packet(mip_packet_view* _packet_view);
+static void add_message_format_field_to_packet(mip_packet_view* _packet_view);
 
 // Fields added to packet 3
-void add_poll_data_field_to_packet(mip_packet_view* _packet_view);
+static void add_poll_data_field_to_packet(mip_packet_view* _packet_view);
 
 // Fields extracted from packet 4
-void extract_shared_reference_time_field(microstrain_serializer* _serializer);
-void extract_shared_reference_time_delta_field(microstrain_serializer* _serializer);
-void extract_sensor_accel_scaled_field(microstrain_serializer* _serializer);
-void extract_sensor_gyro_scaled_field(microstrain_serializer* _serializer);
-void extract_sensor_delta_theta_field(microstrain_serializer* _serializer);
-void extract_sensor_delta_velocity_field(const mip_field_view* _field_view);
+static void extract_shared_reference_time_field(microstrain_serializer* _serializer);
+static void extract_shared_reference_time_delta_field(microstrain_serializer* _serializer);
+static void extract_sensor_accel_scaled_field(microstrain_serializer* _serializer);
+static void extract_sensor_gyro_scaled_field(microstrain_serializer* _serializer);
+static void extract_sensor_delta_theta_field(microstrain_serializer* _serializer);
+static void extract_sensor_delta_velocity_field(const mip_field_view* _field_view);
 
 // Packet creation
-void create_packet_1_from_scratch();
-void create_packet_2_and_3_from_scratch();
-void create_packet_4_from_raw_buffer();
+static void create_from_scratch_packet_1();
+static void create_from_scratch_packet_2_and_3();
+static void create_from_raw_buffer_packet_4();
 
 int main(const int argc, const char* argv[])
 {
@@ -77,24 +78,33 @@ int main(const int argc, const char* argv[])
     (void)argc;
     (void)argv;
 
+    // Mark printf operations as unbuffered to flush with every operation
+    setvbuf(stdout, NULL, _IONBF, 0);
+
     // Create packet 1 with multiple fields
-    create_packet_1_from_scratch();
+    create_from_scratch_packet_1();
 
     // Create packet 2 with a single field, then reset the packet and create packet 3 with a single field
-    create_packet_2_and_3_from_scratch();
+    create_from_scratch_packet_2_and_3();
 
     // Create packet 4 with a raw buffer and extract each field from the packet
-    create_packet_4_from_raw_buffer();
+    create_from_raw_buffer_packet_4();
 
     printf("Example Completed Successfully.\n");
 
-#ifdef _WIN32
-    // Keep the console open on Windows
-    system("pause");
-#endif // _WIN32
+    printf("Press 'Enter' to exit the program.\n");
+
+    // Make sure the console remains open
+    const int confirm_exit = getc(stdin);
+    (void)confirm_exit; // Unused
 
     return 0;
 }
+
+////////////////////////////////////////////////////////////////////////////////
+/// @addtogroup mip_packet_example_c
+/// @{
+///
 
 ////////////////////////////////////////////////////////////////////////////////
 /// @brief Prints detailed information about a MIP packet's structure and
@@ -111,7 +121,7 @@ int main(const int argc, const char* argv[])
 ///
 /// @param _packet_view Pointer to the MIP packet view to inspect
 ///
-void print_packet(const mip_packet_view* _packet_view)
+static void print_packet(const mip_packet_view* _packet_view)
 {
     printf("Packet information:\n");
 
@@ -127,10 +137,10 @@ void print_packet(const mip_packet_view* _packet_view)
     // this as an inexpensive validation step
     assert(mip_packet_is_sane(_packet_view));
 
-    const uint8_t* packet_pointer = mip_packet_pointer(_packet_view);
+    const uint8_t* packet_data = mip_packet_data(_packet_view);
 
     // Create a buffer for printing purposes
-    char packet_byte_buffer[MIP_PACKET_PAYLOAD_LENGTH_MAX] = { 0 };
+    char packet_byte_buffer[MIP_PACKET_PAYLOAD_LENGTH_MAX] = {0};
     int  buffer_offset                                     = 0;
 
     // Get each byte in the packet, including header and checksum
@@ -140,17 +150,17 @@ void print_packet(const mip_packet_view* _packet_view)
             &packet_byte_buffer[buffer_offset],
             sizeof(packet_byte_buffer) / sizeof(packet_byte_buffer[0]) - buffer_offset,
             "%02X",
-            packet_pointer[i]
+            packet_data[i]
         );
     }
 
     const uint8_t payload_length = mip_packet_payload_length(_packet_view);
 
     // Print the packet details before the fields
-    printf("%4s%-20s = %u\n", " ", "Total Length", mip_packet_total_length(_packet_view));
+    printf("%4s%-20s = %u\n", " ", "Packet Length", mip_packet_total_length(_packet_view));
     printf("%4s%-20s = %s\n", " ", "Raw Packet", packet_byte_buffer);
-    printf("%4s%-20s = 0x%02X\n", " ", "MIP SYNC1", packet_pointer[0]);
-    printf("%4s%-20s = 0x%02X\n", " ", "MIP SYNC2", packet_pointer[1]);
+    printf("%4s%-20s = 0x%02X\n", " ", "MIP SYNC 1", packet_data[MIP_PACKET_INDEX_SYNC_1]);
+    printf("%4s%-20s = 0x%02X\n", " ", "MIP SYNC 2", packet_data[MIP_PACKET_INDEX_SYNC_2]);
     printf("%4s%-20s = 0x%02X\n", " ", "Descriptor Set", mip_packet_descriptor_set(_packet_view));
     printf("%4s%-20s = 0x%02X\n", " ", "Payload Length", payload_length);
 
@@ -171,7 +181,7 @@ void print_packet(const mip_packet_view* _packet_view)
 
         // Print descriptors (the descriptor set always matches the packet)
         // Include the size of the length byte
-        printf("%8s%-16s = 0x%02X\n", " ", "Field Length", mip_field_payload_length(&field_view) + 2);
+        printf("%8s%-16s = 0x%02X\n", " ", "Field Length", mip_field_total_length(&field_view));
         printf("%8s%-16s = 0x%02X\n", " ", "Field Descriptor", mip_field_field_descriptor(&field_view));
         printf("%8s%-16s = ", " ", "Raw Payload");
 
@@ -188,7 +198,7 @@ void print_packet(const mip_packet_view* _packet_view)
     const uint16_t checksum_value = mip_packet_checksum_value(_packet_view);
     printf("%4sChecksum (%s):\n", " ", mip_packet_is_valid(_packet_view) ? "Valid" : "Invalid");
     printf("%8s%-16s = 0x%02X\n", " ", "MSB", checksum_value >> 0x08);
-    printf("%8s%-16s = 0x%02X\n\n", " ", "LSB", checksum_value &  0xFF);
+    printf("%8s%-16s = 0x%02X\n\n", " ", "LSB", checksum_value & 0xFF);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -203,8 +213,9 @@ void print_packet(const mip_packet_view* _packet_view)
 /// @param _buffer_size Size of the buffer in bytes
 /// @param _descriptor_set Descriptor set to use for the packet
 ///
-void initialize_empty_packet(mip_packet_view* _packet_view, uint8_t* _buffer, const size_t _buffer_size,
-    const uint8_t _descriptor_set)
+static void initialize_empty_packet(
+    mip_packet_view* _packet_view, uint8_t* _buffer, const size_t _buffer_size, const uint8_t _descriptor_set
+)
 {
     // If the descriptor set is specified, even if it's invalid, i.e., 0x00,
     // the constructor initializes a new MIP packet in the buffer.
@@ -227,7 +238,7 @@ void initialize_empty_packet(mip_packet_view* _packet_view, uint8_t* _buffer, co
 ///
 /// @param _packet_view Pointer to the packet to finalize with checksum
 ///
-void add_checksum_to_packet(mip_packet_view* _packet_view)
+static void add_checksum_to_packet(mip_packet_view* _packet_view)
 {
     mip_packet_finalize(_packet_view);
 
@@ -248,7 +259,7 @@ void add_checksum_to_packet(mip_packet_view* _packet_view)
 ///
 /// @param _packet_view Pointer to the packet to add the field to
 ///
-void add_ping_command_to_packet(mip_packet_view* _packet_view)
+static void add_ping_command_to_packet(mip_packet_view* _packet_view)
 {
     mip_packet_add_field(
         _packet_view,
@@ -274,13 +285,19 @@ void add_ping_command_to_packet(mip_packet_view* _packet_view)
 ///
 /// @param _packet_view Pointer to the packet to add the field to
 ///
-void add_comm_speed_bytes_to_packet(mip_packet_view* _packet_view)
+static void add_comm_speed_bytes_to_packet(mip_packet_view* _packet_view)
 {
     // Build the raw payload for the packet
     const uint8_t comm_speed_payload[] = {
-        0x01,                  // Function selector
-        0x01,                  // Port
-        0x00, 0x01, 0xC2, 0x00 // Baudrate
+        // Function selector
+        0x01,
+        // Port
+        0x01,
+        // Baudrate
+        0x00,
+        0x01,
+        0xC2,
+        0x00
     };
 
     mip_packet_add_field(
@@ -307,12 +324,9 @@ void add_comm_speed_bytes_to_packet(mip_packet_view* _packet_view)
 ///
 /// @param _packet_view Pointer to the packet to add the field to
 ///
-void add_comm_speed_field_to_packet(mip_packet_view* _packet_view)
+static void add_comm_speed_field_to_packet(mip_packet_view* _packet_view)
 {
-    mip_base_comm_speed_command comm_speed_command;
-    comm_speed_command.function = MIP_FUNCTION_WRITE;
-    comm_speed_command.port     = 0x01;
-    comm_speed_command.baud     = 115200;
+    const mip_base_comm_speed_command comm_speed_command = {.function = MIP_FUNCTION_WRITE, .port = 0x01, .baud = 115200};
 
     // Create a new field with a serializer.
     mip_serializer serializer;
@@ -339,13 +353,12 @@ void add_comm_speed_field_to_packet(mip_packet_view* _packet_view)
 ///
 /// @remark Field 4
 ///
-/// @note This is exactly the same as field 3 but without the
-///       mip_serializer_*_field helper functions.
+/// @note This is exactly the same as field 3 but without the helper functions.
 ///       This is intended to show what happens "behind the scenes".
 ///
 /// @param _packet_view Pointer to the packet to add the field to
 ///
-void add_comm_speed_serializer_bytes_to_packet(mip_packet_view* _packet_view)
+static void add_comm_speed_serializer_bytes_to_packet(mip_packet_view* _packet_view)
 {
     // This part is analogous to 'mip_serializer_init_new_field' from field 3
     uint8_t*      payload        = NULL;
@@ -355,12 +368,8 @@ void add_comm_speed_serializer_bytes_to_packet(mip_packet_view* _packet_view)
     // The return value is the number of bytes remaining after allocating this field
     // Note: We know the field length will be 6 bytes, allowing us to not have to update
     // the field length after initialization as field 6 does
-    const int remaining_bytes = mip_packet_create_field(
-        _packet_view,
-        MIP_CMD_DESC_BASE_COMM_SPEED,
-        payload_length,
-        &payload
-    );
+    const int remaining_bytes =
+        mip_packet_create_field(_packet_view, MIP_CMD_DESC_BASE_COMM_SPEED, payload_length, &payload);
     (void)remaining_bytes; // Remaining size of the packet (unused value)
 
     // If less than 0 bytes are left over, then allocation failed by this many bytes
@@ -407,7 +416,7 @@ void add_comm_speed_serializer_bytes_to_packet(mip_packet_view* _packet_view)
 ///
 /// @param _packet_view Pointer to the packet to add the field to
 ///
-void add_message_format_field_to_packet(mip_packet_view* _packet_view)
+static void add_message_format_field_to_packet(mip_packet_view* _packet_view)
 {
     mip_3dm_message_format_command message_format;
 
@@ -463,7 +472,7 @@ void add_message_format_field_to_packet(mip_packet_view* _packet_view)
 ///
 /// @param _packet_view Pointer to the packet to add the field to
 ///
-void add_poll_data_field_to_packet(mip_packet_view* _packet_view)
+static void add_poll_data_field_to_packet(mip_packet_view* _packet_view)
 {
     // This part is analogous to 'mip_serializer_init_new_field' from field 3
     // It's almost the same as in field 4, except we use a zero-length field
@@ -472,12 +481,7 @@ void add_poll_data_field_to_packet(mip_packet_view* _packet_view)
 
     // Start by creating a zero-payload-length field and determining the remaining space
     uint8_t*  payload   = NULL;
-    const int available = mip_packet_create_field(
-        _packet_view,
-        MIP_CMD_DESC_3DM_POLL_DATA,
-        0,
-        &payload
-    );
+    const int available = mip_packet_create_field(_packet_view, MIP_CMD_DESC_3DM_POLL_DATA, 0, &payload);
 
     // If less than 0 bytes are available, then there wasn't even space for the field header
     assert(available > 0 && payload != NULL);
@@ -542,19 +546,16 @@ void add_poll_data_field_to_packet(mip_packet_view* _packet_view)
 ///          and displays it if successfully extracted. This represents the
 ///          device's reference time.
 ///
-/// @param _serializer Pointer to serializer containing field data
+/// @param _serializer Pointer to the serializer containing the field data
 ///
-void extract_shared_reference_time_field(microstrain_serializer* _serializer)
+static void extract_shared_reference_time_field(microstrain_serializer* _serializer)
 {
     uint64_t nanoseconds;
     microstrain_extract_u64(_serializer, &nanoseconds);
 
     if (microstrain_serializer_is_complete(_serializer))
     {
-        printf("    %-20s = %" PRIu64 "\n",
-            "Reference Time",
-            nanoseconds
-        );
+        printf("    %-20s = %" PRIu64 "\n", "Reference Time", nanoseconds);
     }
 }
 
@@ -565,9 +566,9 @@ void extract_shared_reference_time_field(microstrain_serializer* _serializer)
 ///          payload and displays it if successfully extracted. This represents
 ///          the time elapsed since the last reference time.
 ///
-/// @param _serializer Pointer to serializer containing field data
+/// @param _serializer Pointer to the serializer containing the field data
 ///
-void extract_shared_reference_time_delta_field(microstrain_serializer* _serializer)
+static void extract_shared_reference_time_delta_field(microstrain_serializer* _serializer)
 {
     uint64_t dt_nanoseconds;
 
@@ -577,10 +578,7 @@ void extract_shared_reference_time_delta_field(microstrain_serializer* _serializ
     // Check if the entire field was deserialized (validity check)
     if (microstrain_serializer_is_complete(_serializer))
     {
-        printf("    %-20s = %" PRIu64 "\n",
-            "Reference Time Delta",
-            dt_nanoseconds
-        );
+        printf("    %-20s = %" PRIu64 "\n", "Reference Time Delta", dt_nanoseconds);
     }
 }
 
@@ -591,9 +589,9 @@ void extract_shared_reference_time_delta_field(microstrain_serializer* _serializ
 ///          accelerometer measurements in m/s^2 and displays them if
 ///          successfully extracted.
 ///
-/// @param _serializer Pointer to serializer containing field data
+/// @param _serializer Pointer to the serializer containing the field data
 ///
-void extract_sensor_accel_scaled_field(microstrain_serializer* _serializer)
+static void extract_sensor_accel_scaled_field(microstrain_serializer* _serializer)
 {
     // Note: This is not one of the recommended methods
     mip_vector3f scaled_accel_data;
@@ -606,7 +604,8 @@ void extract_sensor_accel_scaled_field(microstrain_serializer* _serializer)
     // Check if the entire field was deserialized (validity check)
     if (microstrain_serializer_is_complete(_serializer))
     {
-        printf("    %-20s = [%9.6f, %9.6f, %9.6f]\n",
+        printf(
+            "    %-20s = [%9.6f, %9.6f, %9.6f]\n",
             "Scaled Accel",
             scaled_accel_data[0],
             scaled_accel_data[1],
@@ -622,9 +621,9 @@ void extract_sensor_accel_scaled_field(microstrain_serializer* _serializer)
 ///          gyroscope measurements in rad/s using the field structure. Displays
 ///          the values if successfully extracted.
 ///
-/// @param _serializer Pointer to serializer containing field data
+/// @param _serializer Pointer to the serializer containing the field data
 ///
-void extract_sensor_gyro_scaled_field(microstrain_serializer* _serializer)
+static void extract_sensor_gyro_scaled_field(microstrain_serializer* _serializer)
 {
     // Same as scaled accel except using the field data structure
     // Note: This is one of the recommended methods
@@ -636,7 +635,8 @@ void extract_sensor_gyro_scaled_field(microstrain_serializer* _serializer)
     // Check if the entire field was deserialized (validity check)
     if (microstrain_serializer_is_complete(_serializer))
     {
-        printf("    %-20s = [%9.6f, %9.6f, %9.6f]\n",
+        printf(
+            "    %-20s = [%9.6f, %9.6f, %9.6f]\n",
             "Scaled Gyro",
             scaled_gyro_data.scaled_gyro[0],
             scaled_gyro_data.scaled_gyro[1],
@@ -652,9 +652,9 @@ void extract_sensor_gyro_scaled_field(microstrain_serializer* _serializer)
 ///          displacement measurements in radians using the field structure.
 ///          Displays the values if successfully extracted.
 ///
-/// @param _serializer Pointer to serializer containing field data
+/// @param _serializer Pointer to the serializer containing the field data
 ///
-void extract_sensor_delta_theta_field(microstrain_serializer* _serializer)
+static void extract_sensor_delta_theta_field(microstrain_serializer* _serializer)
 {
     // Same as scaled accel except using the field data structure
     // Note: This is one of the recommended methods
@@ -666,7 +666,8 @@ void extract_sensor_delta_theta_field(microstrain_serializer* _serializer)
     // Check if the entire field was deserialized (validity check)
     if (microstrain_serializer_is_complete(_serializer))
     {
-        printf("    %-20s = [%9.6f, %9.6f, %9.6f]\n",
+        printf(
+            "    %-20s = [%9.6f, %9.6f, %9.6f]\n",
             "Delta Theta",
             delta_theta_data.delta_theta[0],
             delta_theta_data.delta_theta[1],
@@ -684,7 +685,7 @@ void extract_sensor_delta_theta_field(microstrain_serializer* _serializer)
 ///
 /// @param _field_view Pointer to the field view containing the data
 ///
-void extract_sensor_delta_velocity_field(const mip_field_view* _field_view)
+static void extract_sensor_delta_velocity_field(const mip_field_view* _field_view)
 {
     // Same as scaled accel except using the field data structure
     // Note: This is the recommended method
@@ -693,7 +694,8 @@ void extract_sensor_delta_velocity_field(const mip_field_view* _field_view)
     // Extract the entire data field and check that it was deserialized (validity check)
     if (extract_mip_sensor_delta_velocity_data_from_field(_field_view, &delta_velocity_data))
     {
-        printf("    %-20s = [%9.6f, %9.6f, %9.6f]\n",
+        printf(
+            "    %-20s = [%9.6f, %9.6f, %9.6f]\n",
             "Delta Velocity",
             delta_velocity_data.delta_velocity[0],
             delta_velocity_data.delta_velocity[1],
@@ -732,13 +734,13 @@ void extract_sensor_delta_velocity_field(const mip_field_view* _field_view)
 /// @see add_comm_speed_field_to_packet
 /// @see add_comm_speed_serializer_bytes_to_packet
 ///
-void create_packet_1_from_scratch()
+static void create_from_scratch_packet_1()
 {
     printf("Creating packet 1 from scratch.\n\n");
 
     // Create a packet and an empty storage buffer for the packet
     mip_packet_view packet_view;
-    uint8_t         buffer[MIP_PACKET_LENGTH_MAX] = { 0 };
+    uint8_t         buffer[MIP_PACKET_LENGTH_MAX] = {0};
 
     // Initialize the packet with the buffer
     initialize_empty_packet(&packet_view, buffer, sizeof(buffer) / sizeof(buffer[0]), MIP_BASE_CMD_DESC_SET);
@@ -789,16 +791,16 @@ void create_packet_1_from_scratch()
 /// @see mip_packet_reset
 /// @see print_packet
 ///
-void create_packet_2_and_3_from_scratch()
+static void create_from_scratch_packet_2_and_3()
 {
     printf("\nCreating packet 2 (3DM Message Format command) from scratch.\n\n");
 
     // Create a packet and an empty storage buffer for the packet
     // Note: Declared here to demonstrate resetting packets for reuse
     mip_packet_view packet_view;
-    uint8_t         buffer[MIP_PACKET_LENGTH_MAX] = { 0 };
+    uint8_t         buffer[MIP_PACKET_LENGTH_MAX] = {0};
 
-    initialize_empty_packet(&packet_view, buffer, sizeof(buffer) / sizeof(buffer[0]), MIP_BASE_CMD_DESC_SET);
+    initialize_empty_packet(&packet_view, buffer, sizeof(buffer) / sizeof(buffer[0]), MIP_3DM_CMD_DESC_SET);
 
     // Field 5
     add_message_format_field_to_packet(&packet_view);
@@ -808,7 +810,7 @@ void create_packet_2_and_3_from_scratch()
     add_checksum_to_packet(&packet_view);
 
     // Note: This would be the time to send the packet to the device
-    printf("Packet 2 (3DM Message Format command) is complete.\n\n");
+    printf("Packet 2 (Message Format command) is complete.\n\n");
 
     const uint8_t packet_descriptor_set = MIP_3DM_CMD_DESC_SET;
 
@@ -820,7 +822,7 @@ void create_packet_2_and_3_from_scratch()
     // Packet is now empty and invalid again
     print_packet(&packet_view);
 
-    printf("\nCreating packet 3 (3DM Poll Data command) from scratch.\n\n");
+    printf("\nCreating packet 3 (Poll Data command) from scratch.\n\n");
 
     // Field 6
     add_poll_data_field_to_packet(&packet_view);
@@ -830,7 +832,7 @@ void create_packet_2_and_3_from_scratch()
     add_checksum_to_packet(&packet_view);
 
     // Note: This would be the time to send the packet to the device
-    printf("Packet 3 (3DM Poll Data command) is complete.\n\n");
+    printf("Packet 3 (Poll Data command) is complete.\n\n");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -857,49 +859,44 @@ void create_packet_2_and_3_from_scratch()
 /// @see extract_sensor_delta_theta_field
 /// @see extract_sensor_delta_velocity_field
 ///
-void create_packet_4_from_raw_buffer()
+static void create_from_raw_buffer_packet_4()
 {
     printf("\nCreating packet 4 from a raw byte buffer.\n\n");
 
-    mip_packet_view packet_view;
     const uint8_t raw_buffer[] = {
         0x75, 0x65, // MIP SYNC bytes
 
         0x80, // Packet descriptor set
         0x4C, // Packet payload length
 
-        // Field 1
-        0x0A,                                           // Field length
-        0xD5,                                           // Field descriptor set
-        0x00, 0x00, 0x00, 0x05, 0x5E, 0xE6, 0x7C, 0xC0, // Field raw payload
+        0x0A,                                           // Field 1 length
+        0xD5,                                           // Field 1 descriptor set
+        0x00, 0x00, 0x00, 0x05, 0x5E, 0xE6, 0x7C, 0xC0, // Field 1 raw payload
 
-        // Field 2
-        0x0A,                                           // Field length
-        0xD6,                                           // Field descriptor set
-        0x00, 0x00, 0x00, 0x01, 0x4E, 0x43, 0x4A, 0x00, // Field raw payload
+        0x0A,                                           // Field 2 length
+        0xD6,                                           // Field 2 descriptor set
+        0x00, 0x00, 0x00, 0x01, 0x4E, 0x43, 0x4A, 0x00, // Field 2 raw payload
 
-        // Field 3
-        0x0E,                                                                   // Field length
-        0x04,                                                                   // Field descriptor set
-        0x3D, 0x9E, 0xE8, 0x8D, 0x38, 0x7F, 0xDB, 0x00, 0xBF, 0x7A, 0xAF, 0x03, // Field raw payload
+        0x0E,                                                                   // Field 3 length
+        0x04,                                                                   // Field 3 descriptor set
+        0x3D, 0x9E, 0xE8, 0x8D, 0x38, 0x7F, 0xDB, 0x00, 0xBF, 0x7A, 0xAF, 0x03, // Field 3 raw payload
 
-        // Field 4
-        0x0E,                                                                   // Field length
-        0x05,                                                                   // Field descriptor set
-        0xBB, 0x0C, 0x1E, 0x30, 0xBB, 0x57, 0x2E, 0x68, 0xBB, 0xAA, 0x24, 0xAE, // Field raw payload
+        0x0E,                                                                   // Field 4 length
+        0x05,                                                                   // Field 4 descriptor set
+        0xBB, 0x0C, 0x1E, 0x30, 0xBB, 0x57, 0x2E, 0x68, 0xBB, 0xAA, 0x24, 0xAE, // Field 4 raw payload
 
-        // Field 5
-        0x0E,                                                                   // Field length
-        0x07,                                                                   // Field descriptor set
-        0xBC, 0x8A, 0xAC, 0x80, 0xBC, 0x72, 0xC5, 0x0E, 0xBC, 0xC4, 0xE2, 0xC1, // Field raw payload
+        0x0E,                                                                   // Field 5 length
+        0x07,                                                                   // Field 5 descriptor set
+        0xBC, 0x8A, 0xAC, 0x80, 0xBC, 0x72, 0xC5, 0x0E, 0xBC, 0xC4, 0xE2, 0xC1, // Field 5 raw payload
 
-        // Field 6
-        0x0E,                                                                   // Field length
-        0x08,                                                                   // Field descriptor set
-        0x3E, 0xEE, 0x3D, 0x9F, 0xBD, 0x66, 0xDA, 0xDD, 0xC0, 0xAF, 0xDE, 0xF5, // Field raw payload
+        0x0E,                                                                   // Field 6 length
+        0x08,                                                                   // Field 6 descriptor set
+        0x3E, 0xEE, 0x3D, 0x9F, 0xBD, 0x66, 0xDA, 0xDD, 0xC0, 0xAF, 0xDE, 0xF5, // Field 6 raw payload
 
         0x91, 0x96 // Packet checksum
     };
+
+    mip_packet_view packet_view;
 
     // Create a view of the packet in the buffer.
     // Note: The buffer must not be modified, so do not call functions that manipulate the packet.
@@ -940,8 +937,11 @@ void create_packet_4_from_raw_buffer()
     {
         // Create a deserializer for the field.
         mip_serializer serializer;
-        microstrain_serializer_init_extraction(&serializer, mip_field_payload(&field_view),
-            mip_field_payload_length(&field_view));
+        microstrain_serializer_init_extraction(
+            &serializer,
+            mip_field_payload(&field_view),
+            mip_field_payload_length(&field_view)
+        );
 
         // Check what data the field contains
         switch (mip_field_field_descriptor(&field_view))
@@ -985,3 +985,7 @@ void create_packet_4_from_raw_buffer()
 
     printf("\n");
 }
+
+///
+/// @} group mip_packet_example_c
+////////////////////////////////////////////////////////////////////////////////

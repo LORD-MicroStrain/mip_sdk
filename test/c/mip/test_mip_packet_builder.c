@@ -2,7 +2,7 @@
 #include "test.h"
 
 #include <mip/mip_packet.h>
-#include <mip/mip_offsets.h>
+#include <mip/mip_field.h>
 
 
 #include <stdio.h>
@@ -32,7 +32,7 @@ void test_create()
         mip_packet_create(&packet, buffer, sizeof(buffer), descriptors[i]);
 
         check(packet._buffer == buffer && packet._buffer_length == sizeof(buffer)-EXTRA, "mip_packet_create sets wrong buffer info");
-        check(packet._buffer[MIP_INDEX_DESCSET] == descriptors[i], "mip_packet_create sets wrong descriptor set (%02X != %02X)", packet._buffer[MIP_INDEX_DESCSET], descriptors[i]);
+        check(packet._buffer[MIP_PACKET_INDEX_DESC_SET] == descriptors[i], "mip_packet_create sets wrong descriptor set (%02X != %02X)", packet._buffer[MIP_PACKET_INDEX_DESC_SET], descriptors[i]);
     }
 }
 
@@ -42,7 +42,7 @@ void test_add_fields()
 
     mip_packet_create(&packet, buffer, sizeof(buffer), 0x80);
 
-    check(packet._buffer[MIP_INDEX_DESCSET] == 0x80, "Packet has wrong descriptor set (%02X != %02X)", packet._buffer[MIP_INDEX_DESCSET], 0x80);
+    check(packet._buffer[MIP_PACKET_INDEX_DESC_SET] == 0x80, "Packet has wrong descriptor set (%02X != %02X)", packet._buffer[MIP_PACKET_INDEX_DESC_SET], 0x80);
     check_equal( mip_packet_total_length(&packet), MIP_PACKET_LENGTH_MIN, "Empty packet has wrong size" );
     check_equal( mip_packet_payload_length(&packet), 0, "Packet has nonzero empty payload");
     check(mip_packet_is_sane(&packet), "Packet is not sane");
@@ -52,8 +52,8 @@ void test_add_fields()
     check( mip_packet_add_field(&packet, 0x04, NULL, 0), "Could not add an empty field" );
     check_equal( mip_packet_total_length(&packet), MIP_PACKET_LENGTH_MIN + MIP_FIELD_HEADER_LENGTH, "Empty field - Total length is wrong" );
     check_equal( mip_packet_payload_length(&packet), MIP_FIELD_HEADER_LENGTH, "Empty field - Packet payload length is wrong" );
-    check_equal( mip_packet_payload(&packet)[MIP_INDEX_FIELD_DESC], 0x04, "Empty field - Field descriptor is wrong" );
-    check_equal( mip_packet_payload(&packet)[MIP_INDEX_FIELD_LEN], 2, "Empty field - Field length is wrong" );
+    check_equal( mip_packet_payload(&packet)[MIP_FIELD_INDEX_DESC], 0x04, "Empty field - Field descriptor is wrong" );
+    check_equal( mip_packet_payload(&packet)[MIP_FIELD_INDEX_LENGTH], 2, "Empty field - Field length is wrong" );
 
     payload_size += 2;
 
@@ -63,11 +63,11 @@ void test_add_fields()
     // 7565 800A 0204 0805 010203040506 00...
     check_equal( mip_packet_total_length(&packet), MIP_PACKET_LENGTH_MIN + payload_size + MIP_FIELD_HEADER_LENGTH + sizeof(payload1), "Field 1 - Total length is wrong" );
     check_equal( mip_packet_payload_length(&packet), payload_size + MIP_FIELD_HEADER_LENGTH + sizeof(payload1), "Field 1 - Packet payload length is wrong" );
-    check_equal( mip_packet_payload(&packet)[payload_size + MIP_INDEX_FIELD_DESC], 0x05, "Field 1 - Field descriptor is wrong" );
-    check_equal( mip_packet_payload(&packet)[payload_size + MIP_INDEX_FIELD_LEN], 2+sizeof(payload1), "Field 1 - Field length is wrong" );
+    check_equal( mip_packet_payload(&packet)[payload_size + MIP_FIELD_INDEX_DESC], 0x05, "Field 1 - Field descriptor is wrong" );
+    check_equal( mip_packet_payload(&packet)[payload_size + MIP_FIELD_INDEX_LENGTH], 2+sizeof(payload1), "Field 1 - Field length is wrong" );
     for(unsigned int j=0; j<sizeof(payload1); j++)
     {
-        check_equal( mip_packet_payload(&packet)[payload_size + MIP_INDEX_FIELD_PAYLOAD + j], payload1[j], "Field 1 - Field payload is wrong at index %d", j);
+        check_equal( mip_packet_payload(&packet)[payload_size + MIP_FIELD_INDEX_PAYLOAD + j], payload1[j], "Field 1 - Field payload is wrong at index %d", j);
     }
     payload_size += 2+sizeof(payload1);
 
@@ -76,11 +76,11 @@ void test_add_fields()
 
     check_equal( mip_packet_remaining_space(&packet), 245, "Field 2 - Remaining count is wrong beforehand");
     check_equal(mip_packet_create_field(&packet, 0x06, sizeof(payload2), &p2), 245-2-sizeof(payload2), "Field 2 - Remaining count is wrong after allocation");
-    const uint8_t* expected_p2 = &mip_packet_payload(&packet)[payload_size + MIP_INDEX_FIELD_PAYLOAD];
+    const uint8_t* expected_p2 = &mip_packet_payload(&packet)[payload_size + MIP_FIELD_INDEX_PAYLOAD];
     check( p2 == expected_p2, "Field 2 - payload ptr is wrong (%p != %p)", p2, expected_p2 );
     memcpy(p2, payload2, sizeof(payload2));
-    check_equal( mip_packet_payload(&packet)[payload_size + MIP_INDEX_FIELD_DESC], 0x06, "Field 2 - Field descriptor is wrong" );
-    check_equal( mip_packet_payload(&packet)[payload_size + MIP_INDEX_FIELD_LEN], 2+sizeof(payload2), "Field 2 - Field length is wrong" );
+    check_equal( mip_packet_payload(&packet)[payload_size + MIP_FIELD_INDEX_DESC], 0x06, "Field 2 - Field descriptor is wrong" );
+    check_equal( mip_packet_payload(&packet)[payload_size + MIP_FIELD_INDEX_LENGTH], 2+sizeof(payload2), "Field 2 - Field length is wrong" );
     check_equal( mip_packet_total_length(&packet), 26, "Field 2 - Total length is wrong" );
     check_equal( mip_packet_payload_length(&packet), 20, "Field 2 - Packet payload length is wrong" );
 
