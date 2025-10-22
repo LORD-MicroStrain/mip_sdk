@@ -243,6 +243,88 @@ struct MetadataFor<commands_gnss::SignalConfiguration>
 };
 
 template<>
+struct MetadataFor<commands_gnss::GnssReceiverId>
+{
+    using type = commands_gnss::GnssReceiverId;
+
+    static constexpr inline EnumInfo::Entry entries[] = {
+        { uint32_t(0), "ALL", "All receivers (for commands which support this)" },
+        { uint32_t(1), "INTERNAL_RECV_1", "" },
+        { uint32_t(2), "INTERNAL_RECV_2", "" },
+        { uint32_t(4), "USER_RECV_1", "" },
+        { uint32_t(5), "USER_RECV_2", "" },
+    };
+
+    static constexpr inline EnumInfo value = {
+        /* .name    = */ "GnssReceiverId",
+        /* .docs    = */ "",
+        /* .type    = */ Type::U8,
+        /* .entries = */ entries,
+    };
+
+};
+
+template<>
+struct MetadataFor<commands_gnss::ReceiverReset::ResetType>
+{
+    using type = commands_gnss::ReceiverReset::ResetType;
+
+    static constexpr inline EnumInfo::Entry entries[] = {
+        { uint32_t(1), "HARDWARE", "Hardware-level reset of the gnss receiver." },
+        { uint32_t(2), "COLD", "Full gnss receiver software reset." },
+        { uint32_t(3), "HOT", "Only restarts receiver positioning engine." },
+        { uint32_t(4), "WARM", "Restarts receiver positioning and clears satellite data (ephemeris/almanac)." },
+    };
+
+    static constexpr inline EnumInfo value = {
+        /* .name    = */ "ResetType",
+        /* .docs    = */ "",
+        /* .type    = */ Type::U8,
+        /* .entries = */ entries,
+    };
+
+};
+
+template<>
+struct MetadataFor<commands_gnss::ReceiverReset>
+{
+    using type = commands_gnss::ReceiverReset;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "receiver_id",
+            /* .docs          = */ "Receiver ID - Only internal receivers are supported.",
+            /* .type          = */ {Type::ENUM, &MetadataFor<commands_gnss::GnssReceiverId>::value},
+            /* .accessor      = */ nullptr, //utils::access<type, commands_gnss::GnssReceiverId, &type::receiver_id>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "reset_type",
+            /* .docs          = */ "Reset level - Some devices may not support certain ResetType options.",
+            /* .type          = */ {Type::ENUM, &MetadataFor<commands_gnss::ReceiverReset::ResetType>::value},
+            /* .accessor      = */ nullptr, //utils::access<type, commands_gnss::ReceiverReset::ResetType, &type::reset_type>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        {
+            /* .name        = */ "commands_gnss::ReceiverReset",
+            /* .title       = */ "receiver_reset",
+            /* .docs        = */ "Reset GNSS receiver(s).\n",
+            /* .parameters  = */ parameters,
+        },
+            /* .descriptor  = */ type::DESCRIPTOR,
+            /* .functions   = */ NO_FUNCTIONS,
+            /* .response    = */ nullptr,
+    };
+};
+
+template<>
 struct MetadataFor<commands_gnss::SpartnConfiguration::Response>
 {
     using type = commands_gnss::SpartnConfiguration::Response;
@@ -512,6 +594,7 @@ struct MetadataFor<commands_gnss::RtkDongleConfiguration>
 static constexpr inline const FieldInfo* COMMANDS_GNSS_FIELDS[] = {
     &MetadataFor<commands_gnss::ReceiverInfo>::value,
     &MetadataFor<commands_gnss::SignalConfiguration>::value,
+    &MetadataFor<commands_gnss::ReceiverReset>::value,
     &MetadataFor<commands_gnss::RtkDongleConfiguration>::value,
     &MetadataFor<commands_gnss::SpartnConfiguration>::value,
     &MetadataFor<commands_gnss::ReceiverInfo::Response>::value,

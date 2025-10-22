@@ -33,13 +33,14 @@ enum
     
     MIP_CMD_DESC_GNSS_LIST_RECEIVERS             = 0x01,
     MIP_CMD_DESC_GNSS_SIGNAL_CONFIGURATION       = 0x02,
+    MIP_CMD_DESC_GNSS_RECEIVER_RESET             = 0x03,
     MIP_CMD_DESC_GNSS_RTK_DONGLE_CONFIGURATION   = 0x10,
     MIP_CMD_DESC_GNSS_SPARTN_CONFIGURATION       = 0x20,
     
     MIP_REPLY_DESC_GNSS_LIST_RECEIVERS           = 0x81,
     MIP_REPLY_DESC_GNSS_SIGNAL_CONFIGURATION     = 0x82,
-    MIP_REPLY_DESC_GNSS_RTK_DONGLE_CONFIGURATION = 0x90,
     MIP_REPLY_DESC_GNSS_SPARTN_CONFIGURATION     = 0xA0,
+    MIP_REPLY_DESC_GNSS_RTK_DONGLE_CONFIGURATION = 0x90,
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -57,6 +58,27 @@ enum { MIP_GNSS_GALILEO_ENABLE_E5A = 0x0004 };
 enum { MIP_GNSS_BEIDOU_ENABLE_B1 = 0x0001 };
 enum { MIP_GNSS_BEIDOU_ENABLE_B2 = 0x0002 };
 enum { MIP_GNSS_BEIDOU_ENABLE_B2A = 0x0004 };
+enum mip_gnss_receiver_id
+{
+    MIP_GNSS_RECEIVER_ID_ALL             = 0,  ///<  All receivers (for commands which support this)
+    MIP_GNSS_RECEIVER_ID_INTERNAL_RECV_1 = 1,  ///<  
+    MIP_GNSS_RECEIVER_ID_INTERNAL_RECV_2 = 2,  ///<  
+    MIP_GNSS_RECEIVER_ID_USER_RECV_1     = 4,  ///<  
+    MIP_GNSS_RECEIVER_ID_USER_RECV_2     = 5,  ///<  
+};
+typedef enum mip_gnss_receiver_id mip_gnss_receiver_id;
+
+static inline void insert_mip_gnss_receiver_id(microstrain_serializer* serializer, const mip_gnss_receiver_id self)
+{
+    microstrain_insert_u8(serializer, (uint8_t)(self));
+}
+static inline void extract_mip_gnss_receiver_id(microstrain_serializer* serializer, mip_gnss_receiver_id* self)
+{
+    uint8_t tmp = 0;
+    microstrain_extract_u8(serializer, &tmp);
+    *self = (mip_gnss_receiver_id)tmp;
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Mip Fields
@@ -136,6 +158,48 @@ mip_cmd_result mip_gnss_read_signal_configuration(mip_interface* device, uint8_t
 mip_cmd_result mip_gnss_save_signal_configuration(mip_interface* device);
 mip_cmd_result mip_gnss_load_signal_configuration(mip_interface* device);
 mip_cmd_result mip_gnss_default_signal_configuration(mip_interface* device);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup gnss_receiver_reset_c  (0x0E,0x03) Receiver Reset
+/// Reset GNSS receiver(s).
+/// 
+///
+///@{
+
+enum mip_gnss_receiver_reset_command_reset_type
+{
+    MIP_GNSS_RECEIVER_RESET_COMMAND_RESET_TYPE_HARDWARE = 1,  ///<  Hardware-level reset of the gnss receiver.
+    MIP_GNSS_RECEIVER_RESET_COMMAND_RESET_TYPE_COLD     = 2,  ///<  Full gnss receiver software reset.
+    MIP_GNSS_RECEIVER_RESET_COMMAND_RESET_TYPE_HOT      = 3,  ///<  Only restarts receiver positioning engine.
+    MIP_GNSS_RECEIVER_RESET_COMMAND_RESET_TYPE_WARM     = 4,  ///<  Restarts receiver positioning and clears satellite data (ephemeris/almanac).
+};
+typedef enum mip_gnss_receiver_reset_command_reset_type mip_gnss_receiver_reset_command_reset_type;
+
+static inline void insert_mip_gnss_receiver_reset_command_reset_type(microstrain_serializer* serializer, const mip_gnss_receiver_reset_command_reset_type self)
+{
+    microstrain_insert_u8(serializer, (uint8_t)(self));
+}
+static inline void extract_mip_gnss_receiver_reset_command_reset_type(microstrain_serializer* serializer, mip_gnss_receiver_reset_command_reset_type* self)
+{
+    uint8_t tmp = 0;
+    microstrain_extract_u8(serializer, &tmp);
+    *self = (mip_gnss_receiver_reset_command_reset_type)tmp;
+}
+
+
+struct mip_gnss_receiver_reset_command
+{
+    mip_gnss_receiver_id receiver_id; ///< Receiver ID - Only internal receivers are supported.
+    mip_gnss_receiver_reset_command_reset_type reset_type; ///< Reset level - Some devices may not support certain ResetType options.
+};
+typedef struct mip_gnss_receiver_reset_command mip_gnss_receiver_reset_command;
+
+void insert_mip_gnss_receiver_reset_command(microstrain_serializer* serializer, const mip_gnss_receiver_reset_command* self);
+void extract_mip_gnss_receiver_reset_command(microstrain_serializer* serializer, mip_gnss_receiver_reset_command* self);
+
+mip_cmd_result mip_gnss_receiver_reset(mip_interface* device, mip_gnss_receiver_id receiver_id, mip_gnss_receiver_reset_command_reset_type reset_type);
 
 ///@}
 ///
