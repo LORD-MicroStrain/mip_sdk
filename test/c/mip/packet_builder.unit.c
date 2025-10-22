@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include <mip_cmocka.h>
-#include <mip/mip_offsets.h>
+#include <mip/mip_field.h>
 #include <mip/mip_packet.h>
 
 
@@ -34,8 +34,8 @@ MICROSTRAIN_TEST_CASE(A_field_with_an_empty_payload_can_be_added_to_a_mip_packet
 
     assert_true(success);
     assert_int_equal(mip_packet_payload_length(&packet), MIP_FIELD_HEADER_LENGTH);
-    assert_int_equal(mip_packet_payload(&packet)[MIP_INDEX_FIELD_DESC], field_descriptor);
-    assert_int_equal(mip_packet_payload(&packet)[MIP_INDEX_FIELD_LEN], 2);
+    assert_int_equal(mip_packet_payload(&packet)[MIP_FIELD_INDEX_DESC], field_descriptor);
+    assert_int_equal(mip_packet_payload(&packet)[MIP_FIELD_INDEX_LENGTH], 2);
 
     mip_packet_finalize(&packet);
 }
@@ -52,9 +52,9 @@ MICROSTRAIN_TEST_CASE(A_pre_constructed_mip_field_can_be_added_to_a_mip_packet)
     const bool success = mip_packet_add_field(&packet, field_descriptor, payload, payload_length);
 
     assert_true(success);
-    assert_int_equal(mip_packet_payload(&packet)[MIP_INDEX_FIELD_DESC], field_descriptor);
-    assert_int_equal(mip_packet_payload(&packet)[MIP_INDEX_FIELD_LEN], 8);
-    assert_memory_equal(&mip_packet_payload(&packet)[MIP_INDEX_FIELD_PAYLOAD], payload, payload_length);
+    assert_int_equal(mip_packet_payload(&packet)[MIP_FIELD_INDEX_DESC], field_descriptor);
+    assert_int_equal(mip_packet_payload(&packet)[MIP_FIELD_INDEX_LENGTH], 8);
+    assert_memory_equal(&mip_packet_payload(&packet)[MIP_FIELD_INDEX_PAYLOAD], payload, payload_length);
 }
 
 MICROSTRAIN_TEST_CASE(A_field_can_be_allocated_within_a_mip_packet)
@@ -72,10 +72,10 @@ MICROSTRAIN_TEST_CASE(A_field_can_be_allocated_within_a_mip_packet)
     memcpy(payload_pointer, payload, payload_length);
 
     MICROSTRAIN_TEST_ASSERT_MESSAGE(result >= 0, "Space couldn't be allocated for the field");
-    assert_ptr_equal(payload_pointer, &mip_packet_payload(&packet)[MIP_INDEX_FIELD_PAYLOAD]);
-    assert_int_equal(mip_packet_payload(&packet)[MIP_INDEX_FIELD_DESC], field_descriptor);
-    assert_int_equal(mip_packet_payload(&packet)[MIP_INDEX_FIELD_LEN], 10);
-    assert_memory_equal(&mip_packet_payload(&packet)[MIP_INDEX_FIELD_PAYLOAD], payload, payload_length);
+    assert_ptr_equal(payload_pointer, &mip_packet_payload(&packet)[MIP_FIELD_INDEX_PAYLOAD]);
+    assert_int_equal(mip_packet_payload(&packet)[MIP_FIELD_INDEX_DESC], field_descriptor);
+    assert_int_equal(mip_packet_payload(&packet)[MIP_FIELD_INDEX_LENGTH], 10);
+    assert_memory_equal(&mip_packet_payload(&packet)[MIP_FIELD_INDEX_PAYLOAD], payload, payload_length);
 }
 
 MICROSTRAIN_TEST_CASE(A_mip_packet_can_be_properly_prepared_for_transmission)

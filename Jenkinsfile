@@ -48,7 +48,7 @@ def buildMipSdkLinux() {
             cmake \
                 --build build_${BUILD_OS}_${BUILD_ARCH} \
                 --target package \
-                -j $(nproc);
+                --parallel $(nproc);
         "
     ''')
     dir("build_${BUILD_OS}_${BUILD_ARCH}") {
@@ -393,19 +393,20 @@ pipeline {
                             }
                         }
                     }
-                } else if (BRANCH_NAME && BRANCH_NAME == 'master') {
+                }
+                else if (BRANCH_NAME && BRANCH_NAME == 'master') {
                     node("linux-amd64") {
                         dir("/tmp/mip_sdk_${env.BRANCH_NAME}_${currentBuild.number}") {
                             copyArtifacts(projectName: "${env.JOB_NAME}", selector: specific("${currentBuild.number}"));
                             withCredentials([string(credentialsId: 'Github_Token', variable: 'GH_TOKEN')]) {
                                 sh '''
                                     # Release to the latest version if the master commit matches up with the commit of that version
-                                    if (cd "${WORKSPACE}" && git describe --exact-match --tags HEAD &> /dev/null); then
-                                        # Publish a release
-                                        ${WORKSPACE}/scripts/release.sh" \
+                                    if (cd "${WORKSPACE}" && git describe --exact-match --match "v*" --tags HEAD &> /dev/null); then
+                                        # Release to github
+                                        "${WORKSPACE}/scripts/release.sh" \
                                             --artifacts "$(find "$(pwd)" -type f)" \
                                             --target "${BRANCH_NAME}" \
-                                            --release "$(cd ${WORKSPACE} && git describe --exact-match --tags HEAD)" \
+                                            --release "$(cd ${WORKSPACE} && git describe --exact-match --match "v*" --tags HEAD)" \
                                             --docs-zip "$(find "$(pwd)" -type f -name "mipsdk_*_Documentation.zip" | sort | uniq)"
                                     else
                                         echo "Not releasing from ${BRANCH_NAME} since the current commit does not match the latest released version commit"

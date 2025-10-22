@@ -1,0 +1,22 @@
+////////////////////////////////////////////////////////////////////////////////
+/// @defgroup examples_c Examples [C]
+///
+/// @ingroup mip
+///
+/// @brief C language examples demonstrating MIP SDK usage and functionality.
+///
+/// @details This group contains comprehensive C examples that demonstrate how
+///          to use the MIP SDK to communicate with and control MicroStrain
+///          devices. The examples cover various device and fundamental
+///          operations including:
+///          - Device discovery and connection establishment
+///          - MIP packet creation, parsing, and handling
+///          - Device information retrieval and configuration
+///          - Series-specific functionality for 5 and 7 series devices
+///          - Error handling and best practices
+///
+///          These examples serve as practical tutorials for developers
+///          integrating MicroStrain sensors into C-based applications,
+///          providing clear implementations of common use cases and SDK
+///          patterns.
+///

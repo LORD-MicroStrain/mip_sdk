@@ -24,7 +24,7 @@
 /// Test suites are useful for grouping related behaviors. The test suite will be created automatically if it doesn't
 /// exist.
 #ifndef TEST
-#error "TEST is not implemented for the current backend")
+#error "TEST is not implemented for the current backend"
 #endif
 
 
@@ -55,7 +55,7 @@
 /// -------------------------------------------------------------------------------------------- ///
 
 #ifndef WARN_IF_NOT_TRUE
-#error "WARN_IF_NOT_TRUE is not implemented for the current backend.")
+#error "WARN_IF_NOT_TRUE is not implemented for the current backend."
 #endif
 
 #ifndef FAIL_IF_NOT_TRUE
@@ -131,15 +131,15 @@
 /// -------------------------------------------------------------------------------------------- ///
 
 #ifndef WARN_AND_LOG_IF_NOT_TRUE
-#error "WARN_AND_LOG_IF_NOT_TRUE is not implemented for the current backend.")
+#error "WARN_AND_LOG_IF_NOT_TRUE is not implemented for the current backend."
 #endif
 
 #ifndef FAIL_AND_LOG_IF_NOT_TRUE
-#error "FAIL_AND_LOG_IF_NOT_TRUE is not implemented for the current backend.")
+#error "FAIL_AND_LOG_IF_NOT_TRUE is not implemented for the current backend."
 #endif
 
 #ifndef FATAL_AND_LOG_IF_NOT_TRUE
-#error "FATAL_AND_LOG_IF_NOT_TRUE is not implemented for the current backend.")
+#error "FATAL_AND_LOG_IF_NOT_TRUE is not implemented for the current backend."
 #endif
 
 #ifndef WARN_AND_LOG_IF_NOT_EQUAL

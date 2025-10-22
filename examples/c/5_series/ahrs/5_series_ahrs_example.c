@@ -1,23 +1,26 @@
 ////////////////////////////////////////////////////////////////////////////////
-/// 5_series_ahrs_example.c
+/// @file 5_series_ahrs_example.c
 ///
-/// Example setup program for the 3DM-CX5-AHRS, 3DM-CV5-AHRS, and 3DM-GX5-AHRS
-/// using C
+/// @defgroup _5_series_ahrs_example_c 5-Series AHRS Example [C]
 ///
-/// This example shows a typical setup for the 3DM-CX5-AHRS, 3DM-CV5-AHRS, and
-/// 3DM-GX5-AHRS in a wheeled-vehicle application using C.
-/// It is not an exhaustive example of all settings for those devices.
-/// If this example does not meet your specific setup needs, please consult the
-/// MIP SDK API documentation for the proper commands.
+/// @ingroup examples_c
 ///
-/// @section LICENSE
+/// @brief Example setup program for the 3DM-CX5-AHRS, 3DM-CV5-AHRS, and
+///        3DM-GX5-AHRS using C
 ///
-/// THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
-/// WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
-/// TIME. AS A RESULT, MICROSTRAIN BY HBK SHALL NOT BE HELD LIABLE FOR ANY
-/// DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
-/// FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
-/// CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+/// @details This example shows a basic setup to configure the attitude filter
+///          with magnetometer as the heading source to stream filter data for
+///          the 3DM-CX5-AHRS, 3DM-CV5-AHRS, and 3DM-GX5-AHRS using C. This is
+///          not an exhaustive example of all settings for those devices. If
+///          this example does not meet your specific setup needs, please
+///          consult the MIP SDK API documentation for the proper commands.
+///
+/// @section _5_series_ahrs_example_c_license License
+///
+/// @copyright Copyright (c) 2025 MicroStrain by HBK
+///            Licensed under MIT License
+///
+/// @{
 ///
 
 // Include the MicroStrain Serial connection header
@@ -47,55 +50,63 @@
 // NOTE: Setting these globally for example purposes
 
 // TODO: Update to the correct port name and baudrate
-// Set the port name for the connection (Serial/USB)
+/// @brief  Set the port name for the connection (Serial/USB)
 #ifdef _WIN32
 static const char* PORT_NAME = "COM1";
-#else // Unix
-static const char* PORT_NAME = "/dev/ttyUSB0";
+#else  // Unix
+static const char* PORT_NAME = "/dev/ttyACM0";
 #endif // _WIN32
 
-// Set the baudrate for the connection (Serial/USB)
+/// @brief  Set the baudrate for the connection (Serial/USB)
+/// @note For native serial connections this needs to be 115200 due to the device default settings command
+/// Use mip_3dm_*_uart_baudrate() to write and save the baudrate on the device
 static const uint32_t BAUDRATE = 115200;
 
 // TODO: Update to the desired streaming rate. Setting low for readability purposes
-// Streaming rate in Hz
+/// @brief Streaming rate in Hz
 static const uint16_t SAMPLE_RATE_HZ = 1;
 
 // TODO: Update to change the example run time
-// Example run time
+/// @brief Example run time
 static const uint32_t RUN_TIME_SECONDS = 30;
 ////////////////////////////////////////////////////////////////////////////////
 
+///
+/// @} group _5_series_ahrs_example_c
+////////////////////////////////////////////////////////////////////////////////
+
 // Custom logging handler callback
-void log_callback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args);
+static void log_callback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args);
 
 // Capture gyro bias
-void capture_gyro_bias(mip_interface* _device);
+static void capture_gyro_bias(mip_interface* _device);
 
 // Filter message format configuration
-void configure_filter_message_format(mip_interface* _device);
+static void configure_filter_message_format(mip_interface* _device);
 
 // Filter initialization
-void initialize_filter(mip_interface* _device);
+static void initialize_filter(mip_interface* _device);
 
 // Utility to display filter state changes
-void display_filter_state(const mip_filter_mode _filter_state);
+static void display_filter_state(const mip_filter_mode _filter_state);
 
 // Used for basic timestamping (since epoch in milliseconds)
 // TODO: Update this to whatever timestamping method is desired
-mip_timestamp get_current_timestamp();
+static mip_timestamp get_current_timestamp();
 
 // Device callbacks used for reading and writing packets
-bool mip_interface_user_send_to_device(mip_interface* _device, const uint8_t* _data, size_t _length);
-bool mip_interface_user_recv_from_device(mip_interface* _device, uint8_t* _buffer, size_t _max_length,
-    mip_timeout _wait_time, bool _from_cmd, size_t* _length_out, mip_timestamp* _timestamp_out);
+static bool mip_interface_user_send_to_device(mip_interface* _device, const uint8_t* _data, size_t _length);
+static bool mip_interface_user_recv_from_device(
+    mip_interface* _device, uint8_t* _buffer, size_t _max_length, mip_timeout _wait_time, bool _from_cmd,
+    size_t* _length_out, mip_timestamp* _timestamp_out
+);
 
 // Common device initialization procedure
-void initialize_device(mip_interface* _device, serial_port* _device_port, const uint32_t _baudrate);
+static void initialize_device(mip_interface* _device, serial_port* _device_port, const uint32_t _baudrate);
 
 // Utility functions the handle application closing and printing error messages
-void terminate(serial_port* _device_port, const char* _message, const bool _successful);
-void command_failure_terminate(const mip_interface* _device, const mip_cmd_result _cmd_result, const char* _format, ...);
+static void terminate(serial_port* _device_port, const char* _message, const bool _successful);
+static void exit_from_command(const mip_interface* _device, const mip_cmd_result _cmd_result, const char* _format, ...);
 
 int main(const int argc, const char* argv[])
 {
@@ -103,7 +114,15 @@ int main(const int argc, const char* argv[])
     (void)argc;
     (void)argv;
 
+// Note: This is a compile-time way of checking that the proper logging level is enabled
+// Note: The max available logging level may differ in pre-packaged installations of the MIP SDK
+#ifndef MICROSTRAIN_LOGGING_ENABLED_INFO
+#error This example requires a logging level of at least MICROSTRAIN_LOGGING_LEVEL_INFO_ to work properly
+#endif // !MICROSTRAIN_LOGGING_ENABLED_INFO
+
     // Initialize the custom logger to print messages/errors as they occur
+    // Note: The logging level parameter doesn't need to match the max logging level.
+    // If the parameter is higher than the max level, higher-level logging functions will be ignored
     MICROSTRAIN_LOG_INIT(&log_callback, MICROSTRAIN_LOG_LEVEL_INFO, NULL);
 
     // Initialize the connection
@@ -139,7 +158,7 @@ int main(const int argc, const char* argv[])
 
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        command_failure_terminate(&device, cmd_result, "Could not set sensor-to-vehicle rotation!\n");
+        exit_from_command(&device, cmd_result, "Could not configure sensor-to-vehicle rotation!\n");
     }
 
     // Initialize the navigation filter
@@ -151,9 +170,9 @@ int main(const int argc, const char* argv[])
     mip_dispatch_handler filter_data_handlers[3];
 
     // Data stores for filter data
-    mip_filter_timestamp_data    filter_timestamp;
-    mip_filter_status_data       filter_status;
-    mip_filter_euler_angles_data filter_euler_angles;
+    mip_filter_timestamp_data    filter_timestamp    = {0};
+    mip_filter_status_data       filter_status       = {0};
+    mip_filter_euler_angles_data filter_euler_angles = {0};
 
     // Register the callbacks for the filter fields
 
@@ -188,17 +207,18 @@ int main(const int argc, const char* argv[])
     // Note: Since the device was idled for configuration, it needs to be resumed to output the data streams
     MICROSTRAIN_LOG_INFO("Resuming the device.\n");
     cmd_result = mip_base_resume(&device);
+
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        command_failure_terminate(&device, cmd_result, "Could not resume the device!\n");
+        exit_from_command(&device, cmd_result, "Could not resume the device!\n");
     }
 
-    MICROSTRAIN_LOG_INFO("Sensor is configured... waiting for filter to initialize.\n");
+    MICROSTRAIN_LOG_INFO("The device is configured... waiting for a valid filter solution.\n");
 
     mip_filter_mode current_state = filter_status.filter_state;
 
     // Wait for the device to initialize
-    while (filter_status.filter_state != MIP_FILTER_MODE_GX5_INIT)
+    while (filter_status.filter_state != MIP_FILTER_MODE_GX5_RUN_SOLUTION_VALID)
     {
         // Update the device state
         // Note: This will update the device callbacks to trigger the filter state change
@@ -217,13 +237,15 @@ int main(const int argc, const char* argv[])
         }
     }
 
+    MICROSTRAIN_LOG_INFO("This example will now output data for %ds.\n", RUN_TIME_SECONDS);
+
     // Get the start time of the device update loop to handle exiting the application
     const mip_timestamp loop_start_time = get_current_timestamp();
 
     mip_timestamp previous_print_timestamp = 0;
 
-    // Device loop
-    // Exit after predetermined time in seconds
+    // Running loop
+    // Exit after a predetermined time in seconds
     while (get_current_timestamp() - loop_start_time <= RUN_TIME_SECONDS * 1000)
     {
         // Update the device state
@@ -247,10 +269,13 @@ int main(const int argc, const char* argv[])
         // Print out data based on the sample rate (1000 ms / SAMPLE_RATE_HZ)
         if (current_timestamp - previous_print_timestamp >= 1000 / SAMPLE_RATE_HZ)
         {
-            if (filter_status.filter_state == MIP_FILTER_MODE_GX5_RUN_SOLUTION_VALID)
+            if (filter_status.filter_state >= MIP_FILTER_MODE_GX5_RUN_SOLUTION_VALID)
             {
-                MICROSTRAIN_LOG_INFO("TOW = %10.3f    Euler Angles = [%9.6f, %9.6f, %9.6f]\n",
+                MICROSTRAIN_LOG_INFO(
+                    "%s = %10.3f%16s = [%9.6f, %9.6f, %9.6f]\n",
+                    "TOW",
                     filter_timestamp.tow,
+                    "Euler Angles",
                     filter_euler_angles.roll,
                     filter_euler_angles.pitch,
                     filter_euler_angles.yaw
@@ -267,6 +292,11 @@ int main(const int argc, const char* argv[])
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+/// @addtogroup _5_series_ahrs_example_c
+/// @{
+///
+
+////////////////////////////////////////////////////////////////////////////////
 /// @brief Custom logging callback for MIP SDK message formatting and output
 ///
 /// @details Processes and formats log messages from the MIP SDK based on
@@ -279,7 +309,7 @@ int main(const int argc, const char* argv[])
 /// @param _format Printf-style format string for the message
 /// @param _args Variable argument list containing message parameters
 ///
-void log_callback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args)
+static void log_callback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args)
 {
     // Unused parameter
     (void)_user;
@@ -291,6 +321,7 @@ void log_callback(void* _user, const microstrain_log_level _level, const char* _
         {
             fprintf(stderr, "%s: ", microstrain_logging_level_name(_level));
             vfprintf(stderr, _format, _args);
+            fflush(stderr);
             break;
         }
         case MICROSTRAIN_LOG_LEVEL_WARN:
@@ -300,6 +331,7 @@ void log_callback(void* _user, const microstrain_log_level _level, const char* _
         {
             fprintf(stdout, "%s: ", microstrain_logging_level_name(_level));
             vfprintf(stdout, _format, _args);
+            fflush(stdout);
             break;
         }
         case MICROSTRAIN_LOG_LEVEL_OFF:
@@ -315,7 +347,7 @@ void log_callback(void* _user, const microstrain_log_level _level, const char* _
 ///
 /// @param _device Pointer to the initialized MIP device interface
 ///
-void capture_gyro_bias(mip_interface* _device)
+static void capture_gyro_bias(mip_interface* _device)
 {
     // Get the command queue so we can increase the reply timeout during the capture duration,
     // then reset it afterward
@@ -327,9 +359,7 @@ void capture_gyro_bias(mip_interface* _device)
     const uint16_t capture_duration            = 15000;
     const uint16_t increased_cmd_reply_timeout = capture_duration + 1000;
 
-    MICROSTRAIN_LOG_INFO("Increasing command reply timeout to %dms for capture gyro bias.\n",
-        increased_cmd_reply_timeout
-    );
+    MICROSTRAIN_LOG_INFO("Increasing command reply timeout to %dms for capture gyro bias.\n", increased_cmd_reply_timeout);
     mip_cmd_queue_set_base_reply_timeout(cmd_queue, increased_cmd_reply_timeout);
 
     mip_vector3f gyro_bias = {
@@ -356,14 +386,10 @@ void capture_gyro_bias(mip_interface* _device)
 
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        command_failure_terminate(_device, cmd_result, "Failed to capture gyro bias!\n");
+        exit_from_command(_device, cmd_result, "Failed to capture gyro bias!\n");
     }
 
-    MICROSTRAIN_LOG_INFO("Capture gyro bias completed with result: [%f, %f, %f]\n",
-        gyro_bias[0],
-        gyro_bias[1],
-        gyro_bias[2]
-    );
+    MICROSTRAIN_LOG_INFO("Capture gyro bias completed with result: [%f, %f, %f]\n", gyro_bias[0], gyro_bias[1], gyro_bias[2]);
 
     MICROSTRAIN_LOG_INFO("Reverting command reply timeout to %dms.\n", previous_timeout);
     mip_cmd_queue_set_base_reply_timeout(cmd_queue, previous_timeout);
@@ -377,19 +403,19 @@ void capture_gyro_bias(mip_interface* _device)
 ///          2. Validating desired sample rate against base rate
 ///          3. Calculating proper decimation
 ///          4. Configuring message format with:
-///             - GPS time
+///             - Filter timestamp
 ///             - Filter status
 ///             - Euler angles
 ///
 /// @param _device Pointer to the initialized MIP device interface
 ///
-void configure_filter_message_format(mip_interface* _device)
+static void configure_filter_message_format(mip_interface* _device)
 {
     // Note: Querying the device base rate is only one way to calculate the descriptor decimation
     // We could have also set it directly with information from the datasheet
 
     MICROSTRAIN_LOG_INFO("Getting the base rate for filter data.\n");
-    uint16_t filter_base_rate;
+    uint16_t       filter_base_rate;
     mip_cmd_result cmd_result = mip_3dm_filter_get_base_rate(
         _device,
         &filter_base_rate // Base rate out
@@ -397,14 +423,14 @@ void configure_filter_message_format(mip_interface* _device)
 
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        command_failure_terminate(_device, cmd_result, "Could not get filter base rate!\n");
+        exit_from_command(_device, cmd_result, "Could not get the base rate for filter data!\n");
     }
 
     // Supported sample rates can be any value from 1 up to the base rate
     // Note: Decimation can be anything from 1 to 65,565 (uint16_t::max)
     if (SAMPLE_RATE_HZ == 0 || SAMPLE_RATE_HZ > filter_base_rate)
     {
-        command_failure_terminate(
+        exit_from_command(
             _device,
             MIP_NACK_INVALID_PARAM,
             "Invalid sample rate of %dHz! Supported rates are [1, %d].\n",
@@ -414,8 +440,9 @@ void configure_filter_message_format(mip_interface* _device)
     }
 
     // Calculate the decimation (stream rate) for the device based on its base rate
-    const uint16_t filter_decimation  = filter_base_rate / SAMPLE_RATE_HZ;
-    MICROSTRAIN_LOG_INFO("Decimating filter base rate %d by %d to stream data at %dHz.\n",
+    const uint16_t filter_decimation = filter_base_rate / SAMPLE_RATE_HZ;
+    MICROSTRAIN_LOG_INFO(
+        "Decimating filter base rate %d by %d to stream data at %dHz.\n",
         filter_base_rate,
         filter_decimation,
         SAMPLE_RATE_HZ
@@ -423,9 +450,9 @@ void configure_filter_message_format(mip_interface* _device)
 
     // Descriptor rate is a pair of data descriptor set and decimation
     const mip_descriptor_rate filter_descriptors[3] = {
-        { MIP_DATA_DESC_FILTER_FILTER_TIMESTAMP, filter_decimation },
-        { MIP_DATA_DESC_FILTER_FILTER_STATUS,    filter_decimation },
-        { MIP_DATA_DESC_FILTER_ATT_EULER_ANGLES, filter_decimation }
+        {MIP_DATA_DESC_FILTER_FILTER_TIMESTAMP, filter_decimation},
+        {MIP_DATA_DESC_FILTER_FILTER_STATUS,    filter_decimation},
+        {MIP_DATA_DESC_FILTER_ATT_EULER_ANGLES, filter_decimation}
     };
 
     MICROSTRAIN_LOG_INFO("Configuring message format for filter data.\n");
@@ -437,7 +464,7 @@ void configure_filter_message_format(mip_interface* _device)
 
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        command_failure_terminate(_device, cmd_result, "Could not set message format for filter data!\n");
+        exit_from_command(_device, cmd_result, "Could not configure message format for filter data!\n");
     }
 }
 
@@ -451,7 +478,7 @@ void configure_filter_message_format(mip_interface* _device)
 ///
 /// @param _device Pointer to the initialized MIP device interface
 ///
-void initialize_filter(mip_interface* _device)
+static void initialize_filter(mip_interface* _device)
 {
     // Configure filter heading source
     MICROSTRAIN_LOG_INFO("Configuring filter heading source to magnetometer.\n");
@@ -462,7 +489,7 @@ void initialize_filter(mip_interface* _device)
 
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        command_failure_terminate(_device, cmd_result, "Could not configure filter heading source!\n");
+        exit_from_command(_device, cmd_result, "Could not configure filter heading source to magnetometer!\n");
     }
 
     // Enable filter auto initialization control
@@ -474,16 +501,17 @@ void initialize_filter(mip_interface* _device)
 
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        command_failure_terminate(_device, cmd_result, "Could not enable filter auto initialization!\n");
+        exit_from_command(_device, cmd_result, "Could not enable filter auto initialization!\n");
     }
 
     // Reset the filter
     // Note: This is good to do after filter setup is complete
     MICROSTRAIN_LOG_INFO("Attempting to reset the navigation filter.\n");
     cmd_result = mip_filter_reset(_device);
+
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        command_failure_terminate(_device, cmd_result, "Could not reset the navigation filter!\n");
+        exit_from_command(_device, cmd_result, "Could not reset the navigation filter!\n");
     }
 }
 
@@ -497,50 +525,38 @@ void initialize_filter(mip_interface* _device)
 ///
 /// @param _filter_state Current filter mode from the MIP device interface
 ///
-void display_filter_state(const mip_filter_mode _filter_state)
+static void display_filter_state(const mip_filter_mode _filter_state)
 {
-    const char*   header_message     = "The filter has entered";
-    const uint8_t filter_state_value = (uint8_t)_filter_state;
+    const char* mode_description = "startup";
+    const char* mode_type        = "MIP_FILTER_MODE_GX5_STARTUP";
 
     switch (_filter_state)
     {
         case MIP_FILTER_MODE_GX5_INIT:
         {
-            MICROSTRAIN_LOG_INFO("%s initialization mode. (%d) MIP_FILTER_MODE_GX5_INIT\n",
-                header_message,
-                filter_state_value
-            );
-
+            mode_description = "initialization";
+            mode_type        = "MIP_FILTER_MODE_GX5_INIT";
             break;
         }
         case MIP_FILTER_MODE_GX5_RUN_SOLUTION_VALID:
         {
-            MICROSTRAIN_LOG_INFO("%s run solution valid mode. (%d) MIP_FILTER_MODE_GX5_RUN_SOLUTION_VALID\n",
-                header_message,
-                filter_state_value
-            );
-
+            mode_description = "run solution valid";
+            mode_type        = "MIP_FILTER_MODE_GX5_RUN_SOLUTION_VALID";
             break;
         }
         case MIP_FILTER_MODE_GX5_RUN_SOLUTION_ERROR:
         {
-            MICROSTRAIN_LOG_INFO("%s run solution error mode. (%d) MIP_FILTER_MODE_GX5_RUN_SOLUTION_ERROR\n",
-                header_message,
-                filter_state_value
-            );
-
+            mode_description = "run solution error";
+            mode_type        = "MIP_FILTER_MODE_GX5_RUN_SOLUTION_ERROR";
             break;
         }
         default:
         {
-            MICROSTRAIN_LOG_INFO("%s startup mode. (%d) MIP_FILTER_MODE_GX5_STARTUP\n",
-                header_message,
-                filter_state_value
-            );
-
             break;
         }
     }
+
+    MICROSTRAIN_LOG_INFO("The filter has entered %s mode. (%d) %s\n", mode_description, (uint8_t)_filter_state, mode_type);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -556,7 +572,7 @@ void display_filter_state(const mip_filter_mode _filter_state)
 ///
 /// @return Current system time in milliseconds since epoch
 ///
-mip_timestamp get_current_timestamp()
+static mip_timestamp get_current_timestamp()
 {
     struct timespec ts;
 
@@ -584,7 +600,7 @@ mip_timestamp get_current_timestamp()
 ///
 /// @return True if send was successful, false otherwise
 ///
-bool mip_interface_user_send_to_device(mip_interface* _device, const uint8_t* _data, size_t _length)
+static bool mip_interface_user_send_to_device(mip_interface* _device, const uint8_t* _data, size_t _length)
 {
     // Extract the serial port pointer that was used in the callback initialization
     serial_port* device_port = (serial_port*)mip_interface_user_pointer(_device);
@@ -621,8 +637,10 @@ bool mip_interface_user_send_to_device(mip_interface* _device, const uint8_t* _d
 ///
 /// @return True if receive was successful, false otherwise
 ///
-bool mip_interface_user_recv_from_device(mip_interface* _device, uint8_t* _buffer, size_t _max_length,
-    mip_timeout _wait_time, bool _from_cmd, size_t* _length_out, mip_timestamp* _timestamp_out)
+static bool mip_interface_user_recv_from_device(
+    mip_interface* _device, uint8_t* _buffer, size_t _max_length, mip_timeout _wait_time, bool _from_cmd,
+    size_t* _length_out, mip_timestamp* _timestamp_out
+)
 {
     // Unused parameter
     (void)_from_cmd;
@@ -659,7 +677,7 @@ bool mip_interface_user_recv_from_device(mip_interface* _device, uint8_t* _buffe
 ///                     communication
 /// @param _baudrate Serial communication baudrate for the device
 ///
-void initialize_device(mip_interface* _device, serial_port* _device_port, const uint32_t _baudrate)
+static void initialize_device(mip_interface* _device, serial_port* _device_port, const uint32_t _baudrate)
 {
     MICROSTRAIN_LOG_INFO("Initializing the device interface.\n");
     mip_interface_init(
@@ -676,27 +694,30 @@ void initialize_device(mip_interface* _device, serial_port* _device_port, const 
     // Note: This is a good first step to make sure the device is present
     MICROSTRAIN_LOG_INFO("Pinging the device.\n");
     mip_cmd_result cmd_result = mip_base_ping(_device);
+
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        command_failure_terminate(_device, cmd_result, "Could not ping the device!\n");
+        exit_from_command(_device, cmd_result, "Could not ping the device!\n");
     }
 
     // Set the device to Idle
     // Note: This is good to do during setup as high data traffic can cause commands to fail
     MICROSTRAIN_LOG_INFO("Setting the device to idle.\n");
     cmd_result = mip_base_set_idle(_device);
+
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        command_failure_terminate(_device, cmd_result, "Could not set the device to idle!\n");
+        exit_from_command(_device, cmd_result, "Could not set the device to idle!\n");
     }
 
     // Print device info to make sure the correct device is being used
     MICROSTRAIN_LOG_INFO("Getting the device information.\n");
     mip_base_device_info device_info;
     cmd_result = mip_base_get_device_info(_device, &device_info);
+
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        command_failure_terminate(_device, cmd_result, "Could not get the device information!\n");
+        exit_from_command(_device, cmd_result, "Could not get the device information!\n");
     }
 
     // Extract the major minor and patch values
@@ -705,29 +726,32 @@ void initialize_device(mip_interface* _device, serial_port* _device_port, const 
     const uint16_t patch = device_info.firmware_version % 100;
 
     // Firmware version format is x.x.xx
-    char firmwareVersion[16];
-    snprintf(firmwareVersion, sizeof(firmwareVersion) / sizeof(firmwareVersion[0]), "%d.%d.%02d",
-        major,
-        minor,
-        patch
-    );
+    char firmwareVersion[16] = {0};
+    snprintf(firmwareVersion, sizeof(firmwareVersion) / sizeof(firmwareVersion[0]), "%d.%d.%02d", major, minor, patch);
 
     MICROSTRAIN_LOG_INFO("-------- Device Information --------\n");
-    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Name",             device_info.model_name);
-    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Model Number",     device_info.model_number);
-    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Serial Number",    device_info.serial_number);
-    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Lot Number",       device_info.lot_number);
-    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Options",          device_info.device_options);
-    MICROSTRAIN_LOG_INFO("%-16s | %16s\n",  "Firmware Version", firmwareVersion);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Name", device_info.model_name);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Model Number", device_info.model_number);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Serial Number", device_info.serial_number);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Lot Number", device_info.lot_number);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Options", device_info.device_options);
+    MICROSTRAIN_LOG_INFO("%-16s | %16s\n", "Firmware Version", firmwareVersion);
     MICROSTRAIN_LOG_INFO("------------------------------------\n");
 
     // Load the default settings on the device
     // Note: This guarantees the device is in a known state
-    MICROSTRAIN_LOG_INFO("Loading default settings.\n");
+    MICROSTRAIN_LOG_INFO("Loading device default settings.\n");
     cmd_result = mip_3dm_default_device_settings(_device);
+
     if (!mip_cmd_result_is_ack(cmd_result))
     {
-        command_failure_terminate(_device, cmd_result, "Could not load device default settings!\n");
+        // Note: Default settings will reset the baudrate to 115200 and may cause connection issues
+        if (cmd_result == MIP_STATUS_TIMEDOUT && BAUDRATE != 115200)
+        {
+            MICROSTRAIN_LOG_WARN("On a native serial connections the baudrate needs to be 115200 for this example to run.\n");
+        }
+
+        exit_from_command(_device, cmd_result, "Could not load device default settings!\n");
     }
 }
 
@@ -743,9 +767,9 @@ void initialize_device(mip_interface* _device, serial_port* _device_port, const 
 /// @param _message Error message to display
 /// @param _successful Whether termination is due to success or failure
 ///
-void terminate(serial_port* _device_port, const char* _message, const bool _successful)
+static void terminate(serial_port* _device_port, const char* _message, const bool _successful)
 {
-    if (strlen(_message) != 0)
+    if (_message != NULL && strlen(_message) != 0)
     {
         if (_successful)
         {
@@ -775,12 +799,11 @@ void terminate(serial_port* _device_port, const char* _message, const bool _succ
         }
     }
 
-    MICROSTRAIN_LOG_INFO("Exiting the program.\n");
+    MICROSTRAIN_LOG_INFO("Press 'Enter' to exit the program.\n");
 
-#ifdef _WIN32
-    // Keep the console open on Windows
-    system("pause");
-#endif // _WIN32
+    // Make sure the console remains open
+    const int confirm_exit = getc(stdin);
+    (void)confirm_exit; // Unused
 
     if (!_successful)
     {
@@ -801,12 +824,15 @@ void terminate(serial_port* _device_port, const char* _message, const bool _succ
 /// @param _format Printf-style format string for error message
 /// @param ... Variable arguments for format string
 ///
-void command_failure_terminate(const mip_interface* _device, const mip_cmd_result _cmd_result, const char* _format, ...)
+static void exit_from_command(const mip_interface* _device, const mip_cmd_result _cmd_result, const char* _format, ...)
 {
-    va_list args;
-    va_start(args, _format);
-    MICROSTRAIN_LOG_ERROR_V(_format, args);
-    va_end(args);
+    if (_format != NULL && strlen(_format) != 0)
+    {
+        va_list args;
+        va_start(args, _format);
+        MICROSTRAIN_LOG_ERROR_V(_format, args);
+        va_end(args);
+    }
 
     MICROSTRAIN_LOG_ERROR("Command Result: (%d) %s.\n", _cmd_result, mip_cmd_result_to_string(_cmd_result));
 
@@ -822,3 +848,7 @@ void command_failure_terminate(const mip_interface* _device, const mip_cmd_resul
         terminate(device_port, "", false);
     }
 }
+
+///
+/// @} group _5_series_ahrs_example_c
+////////////////////////////////////////////////////////////////////////////////

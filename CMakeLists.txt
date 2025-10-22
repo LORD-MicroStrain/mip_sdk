@@ -5,7 +5,7 @@ set(CMAKE_C_STANDARD 11)
 
 project(
     "MIP_SDK"
-    VERSION "3.1.00"
+    VERSION "4.0.0"
     DESCRIPTION "MicroStrain Communications Library for embedded systems"
     LANGUAGES C CXX
 )
@@ -206,7 +206,11 @@ if(MICROSTRAIN_BUILD_DOCUMENTATION)
         list(APPEND DOXYGEN_PREDEFINED "MICROSTRAIN_LOGGING_MAX_LEVEL=${MIP_LOGGING_MAX_LEVEL}")
     endif()
 
+    set(DOXYGEN_CASE_SENSE_NAMES YES)
     set(DOXYGEN_EXTRACT_ALL YES)
+    set(DOXYGEN_EXTRACT_STATIC YES)
+    set(DOXYGEN_SORT_MEMBER_DOCS NO) # Keep the order that things are defined instead of alphabetical
+    set(DOXYGEN_REPEAT_BRIEF NO) # Don't copy the brief in the details
 
     if(MICROSTRAIN_BUILD_DOCUMENTATION_FULL)
         set(DOXYGEN_INTERNAL_DOCS YES)
@@ -222,9 +226,46 @@ if(MICROSTRAIN_BUILD_DOCUMENTATION)
 
     set(DOXYGEN_HTML_EXTRA_STYLESHEET "${CMAKE_CURRENT_LIST_DIR}/docs/style.css")
 
+    set(MICROSTRAIN_EXAMPLES_DIR "${CMAKE_CURRENT_LIST_DIR}/examples")
+
     doxygen_add_docs(docs
-        "${MICROSTRAIN_SRC_DIR}" "${CMAKE_CURRENT_LIST_DIR}/docs"
+        "${MICROSTRAIN_SRC_DIR}"
+        "${CMAKE_CURRENT_LIST_DIR}/docs"
+        "${MICROSTRAIN_EXAMPLES_DIR}"
         COMMENT "Generating documentation."
+    )
+
+    # Fix Doxygen inline HTML parsing within the examples README.md file
+    # This is needed to tell Doxygen to treat the HTML table as HTML and not convert it to a Doxygen table
+    set(EXAMPLES_README_FILE "${MICROSTRAIN_EXAMPLES_DIR}/README")
+    set(EXAMPLES_README_CONFIG_FILE "${CMAKE_CURRENT_BINARY_DIR}/examples_readme.cmake")
+
+    file(CONFIGURE OUTPUT "${EXAMPLES_README_CONFIG_FILE}" CONTENT
+        "file(READ \"${EXAMPLES_README_FILE}.md\" CONTENT)\n
+# Wrap all <table> blocks with @htmlonly/@endhtmlonly
+string(REGEX REPLACE \"(<table)\" \"@htmlonly\\n\\\\1\" CONTENT \"\${CONTENT}\")\n
+string(REGEX REPLACE \"(</table>)\" \"\\\\1\\n@endhtmlonly\" CONTENT \"\${CONTENT}\")\n
+# Update the example page references
+string(REGEX REPLACE \"(<a href=\\\")([a-z]+)/([57]+)_([a-z]+)/([a-z]+)_([a-z]+)(\\\">)\" \"\\\\1group____\\\\3__\\\\4__\\\\5__\\\\6__example__\\\\2.html\\\\7\" CONTENT \"\${CONTENT}\")\n
+string(REGEX REPLACE \"(<a href=\\\")([a-z]+)/([57]+)_([a-z]+)/([a-z]+)(\\\">)\" \"\\\\1group____\\\\3__\\\\4__\\\\5__example__\\\\2.html\\\\6\" CONTENT \"\${CONTENT}\")\n
+string(REGEX REPLACE \"(<a href=\\\")([a-z]+)/([a-z]+)_([a-z]+)(\\\">)\" \"\\\\1group__\\\\3__\\\\4__example__\\\\2.html\\\\5\" CONTENT \"\${CONTENT}\")\n
+file(WRITE \"${EXAMPLES_README_FILE}.md\" \"\${CONTENT}\")"
+        @ONLY
+    )
+
+    set(MIP_PREPARE_EXAMPLES_README_TARGET "doxygen_prepare_examples_readme")
+
+    add_custom_target("${MIP_PREPARE_EXAMPLES_README_TARGET}"
+        COMMAND ${CMAKE_COMMAND} -E copy "${EXAMPLES_README_FILE}.md" "${EXAMPLES_README_FILE}.bak"
+        COMMAND ${CMAKE_COMMAND} -P "${EXAMPLES_README_CONFIG_FILE}"
+        COMMENT "Preparing examples README.md for Doxygen"
+    )
+    add_dependencies(docs "${MIP_PREPARE_EXAMPLES_README_TARGET}")
+
+    add_custom_command(TARGET docs POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different "${EXAMPLES_README_FILE}.bak" "${EXAMPLES_README_FILE}.md"
+        COMMAND ${CMAKE_COMMAND} -E remove "${EXAMPLES_README_FILE}.bak"
+        COMMENT "Restoring original examples README.md"
     )
 
     # Add a target to enable users to zip up the docs

@@ -21,6 +21,12 @@ REMOVED - A function/class has been removed.
 Forthcoming
 -----------
 ### New Features
+### Interface Changes
+### Bug Fixes
+
+V4.0.0
+-----------
+### New Features
 * CMake find_package config files
   * Added CMake find_package config files for each module
   * Each module supports the components feature of find_package
@@ -32,18 +38,26 @@ Forthcoming
   * Set CI/CD pipeline to run test suite on all platforms
   * Setup test suite to be easily run locally
   * Setup framework-independent wrapper assertions with doctest backend
-  * Converted string and formatting tests to new structure
-  * Converted old C++ integration tests to new structure
+  * Converted string and formatting tests to new structure and use the new assertion wrappers
+* Examples
+  * Revamped all examples for better clarity and usage
+  * Made sure each example had a corresponding C and C++ version for completeness
+  * Added documentation generation for examples
+  * Fully tested as standalone applications
 ### Interface Changes
 * MIP parser callbacks must now return bool (return true to preserve existing behavior).
-* microstrain::Span has been renamed to microstrain::ArrayView.
+* `microstrain::Span` has been renamed to `microstrain::ArrayView`.
+  * ArrayViews decay to the base pointer type.
 * Certain PacketView and FieldView accessors have been renamed for clarity and consistency.
+* Offset parameter in Serializer constructor has been removed to avoid silent bug due to accessor type changes.
+  * Use `setOffset` as a workaround if needed.
 * MicroStrain logging fixes
   * Renamed logging level compiler definitions
   * Fixed issues where not defining logging compiler definitions would integrate logging support incorrectly
   * Added compiler definitions to check for supported logging levels based on the set max level
 ### Bug Fixes
 * Fixed possible infinite loop in MIP parser with timed-out packets.
+* Fixed incorrect timeouts for Windows serial connections
 
 V3.1.0
 -----------

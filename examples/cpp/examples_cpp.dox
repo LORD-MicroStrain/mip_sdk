@@ -1,0 +1,23 @@
+////////////////////////////////////////////////////////////////////////////////
+/// @defgroup examples_cpp Examples [CPP]
+///
+/// @ingroup mip
+///
+/// @brief C++ language examples demonstrating MIP SDK usage and functionality.
+///
+/// @details This group contains comprehensive C++ examples that demonstrate how
+///          to use the MIP SDK to communicate with and control MicroStrain
+///          devices. The examples leverage C++ features and object-oriented
+///          programming paradigms to provide elegant solutions for:
+///          - Device discovery and connection management using RAII principles
+///          - Type-safe MIP packet creation and parsing with C++ templates
+///          - Device information retrieval and configuration with exception
+///            handling
+///          - Series-specific functionality for 5th and 7th generation devices
+///          - Modern C++ best practices and STL container usage
+///
+///          These examples serve as practical tutorials for developers
+///          integrating MicroStrain sensors into C++ applications, showcasing
+///          both basic SDK usage and advanced C++ techniques for robust sensor
+///          integration.
+///
