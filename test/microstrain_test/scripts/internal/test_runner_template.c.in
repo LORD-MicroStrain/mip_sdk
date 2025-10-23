@@ -1,0 +1,28 @@
+/* Template file used to generate the test runner for a test executable */
+#include <string.h>
+
+#include <microstrain_test/microstrain_test.h>
+
+MICROSTRAIN_TEST_DEFAULT_SETUP();
+
+@TEST_DECLARATIONS@
+
+int main(int argc, char** argv) {
+    const char* test_filter = NULL;
+
+    // Parse command line for --test=name
+    for (int i = 1; i < argc; ++i) {
+        if (strncmp(argv[i], "--test=", 7) == 0) {
+            test_filter = argv[i] + 7;
+            break;
+        }
+    }
+
+    (void)test_filter; /* Suppress unused variable warning if only one test */
+
+    MICROSTRAIN_TEST_BEGIN();
+
+    @TEST_REGISTRATIONS@
+
+    return MICROSTRAIN_TEST_END();
+}
