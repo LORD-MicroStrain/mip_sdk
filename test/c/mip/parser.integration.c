@@ -44,7 +44,7 @@ bool handle_packet(void* p, const mip_packet_view* packet, mip_timestamp t)
 
     parse_results->bytes_parsed += parse_results->length;
 
-    memcpy(parse_results->packet_buffer, mip_packet_pointer(packet), parse_results->length);
+    memcpy(parse_results->packet_buffer, mip_packet_data(packet), parse_results->length);
 
     return true;
 }

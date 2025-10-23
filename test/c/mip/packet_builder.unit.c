@@ -2,7 +2,7 @@
 #include <string.h>
 
 #include <microstrain_test/microstrain_test.h>
-#include <mip/mip_offsets.h>
+#include <mip/mip_field.h>
 #include <mip/mip_packet.h>
 
 
@@ -33,8 +33,8 @@ MICROSTRAIN_TEST_CASE(C_mip_packet_building, A_field_with_an_empty_payload_can_b
 
     ASSERT_TRUE(success);
     ASSERT_EQUAL_INT(mip_packet_payload_length(&packet), MIP_FIELD_HEADER_LENGTH);
-    ASSERT_EQUAL_INT(mip_packet_payload(&packet)[MIP_INDEX_FIELD_DESC], field_descriptor);
-    ASSERT_EQUAL_INT(mip_packet_payload(&packet)[MIP_INDEX_FIELD_LEN], 2);
+    ASSERT_EQUAL_INT(mip_packet_payload(&packet)[MIP_FIELD_INDEX_DESC], field_descriptor);
+    ASSERT_EQUAL_INT(mip_packet_payload(&packet)[MIP_FIELD_INDEX_LENGTH], 2);
 
     mip_packet_finalize(&packet);
 }
@@ -51,9 +51,9 @@ MICROSTRAIN_TEST_CASE(C_mip_packet_building, A_pre_constructed_mip_field_can_be_
     const bool success = mip_packet_add_field(&packet, field_descriptor, payload, payload_length);
 
     ASSERT_TRUE(success);
-    ASSERT_EQUAL_INT(mip_packet_payload(&packet)[MIP_INDEX_FIELD_DESC], field_descriptor);
-    ASSERT_EQUAL_INT(mip_packet_payload(&packet)[MIP_INDEX_FIELD_LEN], 8);
-    ASSERT_EQUAL_UINT8_ARRAY(&mip_packet_payload(&packet)[MIP_INDEX_FIELD_PAYLOAD], payload, payload_length);
+    ASSERT_EQUAL_INT(mip_packet_payload(&packet)[MIP_FIELD_INDEX_DESC], field_descriptor);
+    ASSERT_EQUAL_INT(mip_packet_payload(&packet)[MIP_FIELD_INDEX_LENGTH], 8);
+    ASSERT_EQUAL_UINT8_ARRAY(&mip_packet_payload(&packet)[MIP_FIELD_INDEX_PAYLOAD], payload, payload_length);
 }
 
 MICROSTRAIN_TEST_CASE(C_mip_packet_building, A_field_can_be_allocated_within_a_mip_packet)
@@ -71,10 +71,10 @@ MICROSTRAIN_TEST_CASE(C_mip_packet_building, A_field_can_be_allocated_within_a_m
     memcpy(payload_pointer, payload, payload_length);
 
     ASSERT_GREATER_OR_EQUAL_INT_MESSAGE(result, 0, "Space couldn't be allocated for the field");
-    ASSERT_EQUAL_PTR(payload_pointer, &mip_packet_payload(&packet)[MIP_INDEX_FIELD_PAYLOAD]);
-    ASSERT_EQUAL_INT(mip_packet_payload(&packet)[MIP_INDEX_FIELD_DESC], field_descriptor);
-    ASSERT_EQUAL_INT(mip_packet_payload(&packet)[MIP_INDEX_FIELD_LEN], 10);
-    ASSERT_EQUAL_UINT8_ARRAY(&mip_packet_payload(&packet)[MIP_INDEX_FIELD_PAYLOAD], payload, payload_length);
+    ASSERT_EQUAL_PTR(payload_pointer, &mip_packet_payload(&packet)[MIP_FIELD_INDEX_PAYLOAD]);
+    ASSERT_EQUAL_INT(mip_packet_payload(&packet)[MIP_FIELD_INDEX_DESC], field_descriptor);
+    ASSERT_EQUAL_INT(mip_packet_payload(&packet)[MIP_FIELD_INDEX_LENGTH], 10);
+    ASSERT_EQUAL_UINT8_ARRAY(&mip_packet_payload(&packet)[MIP_FIELD_INDEX_PAYLOAD], payload, payload_length);
 }
 
 MICROSTRAIN_TEST_CASE(C_mip_packet_building, A_mip_packet_can_be_properly_prepared_for_transmission)
