@@ -1,4 +1,4 @@
-include(${microstrain_test_SOURCE_DIR}/scripts/Internals.cmake)
+include(${microstrain_test_SOURCE_DIR}/scripts/internal/Internals.cmake)
 
 # Automatically discovers and sets tests to run (C framework API).
 #
