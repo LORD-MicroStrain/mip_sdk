@@ -129,9 +129,7 @@ function(internal_generate_test_runner_file_with_main
         # Escape backslashes in filepaths for C string literal
         string(REPLACE "\\" "\\\\" TEST_FILEPATH_ESCAPED "${TEST_FILEPATH}")
 
-        string(APPEND TEST_FILTERING "    if (!test_filter || strcmp(test_filter, \"[${SUITE_NAME}] ${TEST_NAME}\") == 0) {\n")
-        string(APPEND TEST_FILTERING "        INTERNAL_RUN_MICROSTRAIN_TEST_CASE_AUTO_DISCOVER(${SUITE_NAME}, ${TEST_NAME}, \"${TEST_FILEPATH_ESCAPED}\");\n")
-        string(APPEND TEST_FILTERING "    }\n")
+        string(APPEND TEST_FILTERING "INTERNAL_MICROSTRAIN_TEST_CASE_FILTER(test_filter, ${SUITE_NAME}, ${TEST_NAME}, \"${TEST_FILEPATH_ESCAPED}\")\n")
     endforeach()
 
     # Write the generated contents to the main file and return the filepath to the parent scope.

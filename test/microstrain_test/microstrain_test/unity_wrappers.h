@@ -36,7 +36,7 @@
 //
 //       Make sure this is up to date when updating Unity. Luckily, it doesn't look
 //       like it changes often.
-#define INTERNAL_RUN_MICROSTRAIN_TEST_CASE_AUTO_DISCOVER_IMPL(suite_name, test_name, file_path)  \
+#define INTERNAL_RUN_MICROSTRAIN_TEST_CASE_IMPL(suite_name, test_name, file_path)  \
     do                                                                                           \
     {                                                                                            \
         Unity.CurrentTestName = "["#suite_name"] "#test_name;                                    \

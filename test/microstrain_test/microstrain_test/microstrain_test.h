@@ -68,6 +68,13 @@
 // Internals
 // -----------------------------------------------------------------------------------------------------------
 
-/// @brief DON'T use directly! This is a modified version to work with automatic test discovery.
-#define INTERNAL_RUN_MICROSTRAIN_TEST_CASE_AUTO_DISCOVER(suite_name, test_name, file_path) \
-    INTERNAL_RUN_MICROSTRAIN_TEST_CASE_AUTO_DISCOVER_IMPL(suite_name, test_name, file_path)
+/// @brief DON'T use directly!
+#define INTERNAL_RUN_MICROSTRAIN_TEST_CASE(suite_name, test_name, file_path) \
+    INTERNAL_RUN_MICROSTRAIN_TEST_CASE_IMPL(suite_name, test_name, file_path)
+
+/// @brief DON'T use directly!
+#define INTERNAL_MICROSTRAIN_TEST_CASE_FILTER(test_filter, suite_name, test_name, filepath) \
+    if (!test_filter || strcmp(test_filter, "[" #suite_name "] " #test_name) == 0) \
+    { \
+        INTERNAL_RUN_MICROSTRAIN_TEST_CASE(suite_name, test_name, filepath); \
+    }
