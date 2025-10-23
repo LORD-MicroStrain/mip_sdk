@@ -8,6 +8,8 @@ MICROSTRAIN_TEST_DEFAULT_SETUP();
 @TEST_DECLARATIONS@
 
 int main(int argc, char** argv) {
+    MICROSTRAIN_TEST_BEGIN();
+
     const char* test_filter = NULL;
 
     // Parse command line for --test=name
@@ -20,9 +22,6 @@ int main(int argc, char** argv) {
 
     (void)test_filter; /* Suppress unused variable warning if only one test */
 
-    MICROSTRAIN_TEST_BEGIN();
-
 @TEST_FILTERING@
-
     return MICROSTRAIN_TEST_END();
 }
