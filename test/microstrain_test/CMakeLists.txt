@@ -1,25 +1,55 @@
-option(MICROSTRAIN_TEST_USE_DOCTEST "Use doctest as the backend framework" ON)
+# ---------------------------------------------------------------
+# Project setup
+# ---------------------------------------------------------------
 
-if(MICROSTRAIN_TEST_USE_DOCTEST)
-    include(FetchContent)
-    FetchContent_Declare(doctest
-        GIT_REPOSITORY "https://github.com/doctest/doctest.git"
-        GIT_TAG "v2.4.12"
-    )
-    FetchContent_MakeAvailable(doctest)
-endif()
+cmake_minimum_required(VERSION 3.19)
+project(microstrain_test)
 
-set(MICROSTRAIN_TEST_LIBRARY "microstrain_test")
+# ---------------------------------------------------------------
+# Framework backends
+# ---------------------------------------------------------------
 
-add_library("${MICROSTRAIN_TEST_LIBRARY}" STATIC)
+# C
+option(MICROSTRAIN_TEST_USE_UNITY "Use unity as the backend framework for C" OFF)
 
-target_include_directories("${MICROSTRAIN_TEST_LIBRARY}" PUBLIC
+# C++
+option(MICROSTRAIN_TEST_USE_DOCTEST "Use doctest as the backend framework for C++" OFF)
+
+# ---------------------------------------------------------------
+# Library setup
+# ---------------------------------------------------------------
+
+add_library(microstrain_test_c INTERFACE)
+add_library(microstrain_test_cpp INTERFACE)
+
+set_target_properties(microstrain_test_c PROPERTIES
+    LINKER_LANGUAGE C
+)
+set_target_properties(microstrain_test_cpp PROPERTIES
+    LINKER_LANGUAGE CXX
+)
+
+target_include_directories(microstrain_test_c INTERFACE
+    "${CMAKE_CURRENT_LIST_DIR}"
+)
+target_include_directories(microstrain_test_cpp INTERFACE
     "${CMAKE_CURRENT_LIST_DIR}"
 )
 
-target_sources("${MICROSTRAIN_TEST_LIBRARY}" PUBLIC
-    "${CMAKE_CURRENT_LIST_DIR}/microstrain_test.hpp"
+target_sources(microstrain_test_c INTERFACE
+    "microstrain_test/microstrain_test.h"
 )
+target_sources(microstrain_test_cpp INTERFACE
+    "microstrain_test/microstrain_test.hpp"
+)
+
+# Add namespace aliases
+add_library(microstrain_test::c ALIAS microstrain_test_c)
+add_library(microstrain_test::cpp ALIAS microstrain_test_cpp)
+
+# ---------------------------------------------------------------
+# Library compile settings
+# ---------------------------------------------------------------
 
 if(MSVC)
     set(COMPILE_OPTIONS
@@ -35,25 +65,41 @@ else()
     )
 endif()
 
-target_compile_options(${MICROSTRAIN_TEST_LIBRARY} PUBLIC
+target_compile_options(microstrain_test_c INTERFACE
+    "${COMPILE_OPTIONS}"
+)
+target_compile_options(microstrain_test_cpp INTERFACE
     "${COMPILE_OPTIONS}"
 )
 
-target_compile_definitions("${MICROSTRAIN_TEST_LIBRARY}" PUBLIC
-    "MICROSTRAIN_LOGGING_MAX_LEVEL=${MIP_LOGGING_MAX_LEVEL}"
-)
+# ---------------------------------------------------------------
+# (C) Unity setup
+# ---------------------------------------------------------------
 
-if(MICROSTRAIN_TEST_USE_DOCTEST)
-    target_sources("${MICROSTRAIN_TEST_LIBRARY}" PRIVATE
-        "${CMAKE_CURRENT_LIST_DIR}/doctest/doctest_wrappers.hpp"
-        "${CMAKE_CURRENT_LIST_DIR}/doctest/doctest_wrappers.cpp"
+if(MICROSTRAIN_TEST_USE_UNITY)
+    include(scripts/internal/InstallUnity.cmake)
+
+    target_compile_definitions(microstrain_test_c INTERFACE
+        "MICROSTRAIN_TEST_USE_UNITY"
     )
 
-    target_compile_definitions("${MICROSTRAIN_TEST_LIBRARY}" PUBLIC
+    target_link_libraries(microstrain_test_c INTERFACE
+        unity
+    )
+endif()
+
+# ---------------------------------------------------------------
+# (C++) Doctest setup
+# ---------------------------------------------------------------
+
+if(MICROSTRAIN_TEST_USE_DOCTEST)
+    include(scripts/internal/InstallDoctest.cmake)
+
+    target_compile_definitions(microstrain_test_cpp INTERFACE
         "MICROSTRAIN_TEST_USE_DOCTEST"
     )
 
-    target_link_libraries("${MICROSTRAIN_TEST_LIBRARY}" PUBLIC
-        "doctest_with_main"
+    target_link_libraries(microstrain_test_cpp INTERFACE
+        doctest_with_main
     )
 endif()

@@ -1,4 +1,4 @@
-#include <microstrain_test.hpp>
+#include <microstrain_test/microstrain_test.hpp>
 #include <mip/mip_logging.hpp>
 
 constexpr uint8_t SET_AND_SAVE_COMM_SPEED_PACKET[] = {
@@ -8,31 +8,31 @@ constexpr uint8_t SET_AND_SAVE_COMM_SPEED_PACKET[] = {
     0xCE, 0x80
 };
 
-TEST("Formatting", "A packet can be properly formatted to bytes")
+MICROSTRAIN_TEST_CASE("Formatting", "A packet can be properly formatted to bytes")
 {
     char buffer[128];
     size_t index = 0;
 
     const bool ok = mip::formatPacketBytes(buffer, &index, {SET_AND_SAVE_COMM_SPEED_PACKET});
 
-    FAIL_IF_NOT_TRUE(ok);
-    FAIL_IF_NOT_EQUAL(index, 39);
-    FAIL_IF_C_STRINGS_NOT_EQUAL(buffer, "7565010C 080901010001C200 04090301 CE80");
+    CHECK(ok);
+    CHECK_EQ(index, 39);
+    CHECK_CSTR_EQ(buffer, "7565010C 080901010001C200 04090301 CE80");
 }
 
-TEST("Formatting", "A packet can be properly formatted to a human-readable string")
+MICROSTRAIN_TEST_CASE("Formatting", "A packet can be properly formatted to a human-readable string")
 {
     char buffer[128];
     size_t index = 0;
 
     const bool ok = mip::formatPacket(buffer, &index, {SET_AND_SAVE_COMM_SPEED_PACKET});
 
-    FAIL_IF_NOT_TRUE(ok);
-    FAIL_IF_NOT_EQUAL(index, 68);
-    FAIL_IF_C_STRINGS_NOT_EQUAL(buffer, "Packet(DS=0x01){ Field(FD=0x09)[01010001C200] Field(FD=0x09)[0301] }");
+    CHECK(ok);
+    CHECK_EQ(index, 68);
+    CHECK_CSTR_EQ(buffer, "Packet(DS=0x01){ Field(FD=0x09)[01010001C200] Field(FD=0x09)[0301] }");
 }
 
-TEST("Formatting", "A field can be properly formatted to a human-readable string")
+MICROSTRAIN_TEST_CASE("Formatting", "A field can be properly formatted to a human-readable string")
 {
     char buffer[128];
     size_t index = 0;
@@ -40,7 +40,7 @@ TEST("Formatting", "A field can be properly formatted to a human-readable string
 
     const bool ok = mip::formatField(buffer, &index, field);
 
-    FAIL_IF_NOT_TRUE(ok);
-    FAIL_IF_NOT_EQUAL(index, 28);
-    FAIL_IF_C_STRINGS_NOT_EQUAL(buffer, "Field(FD=0x09)[01010001C200]");
+    CHECK(ok);
+    CHECK_EQ(index, 28);
+    CHECK_CSTR_EQ(buffer, "Field(FD=0x09)[01010001C200]");
 }

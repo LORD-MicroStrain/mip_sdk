@@ -1,40 +1,8 @@
-add_mip_test(
-    NAME test_mip_fields
-    SOURCES "${CMAKE_CURRENT_LIST_DIR}/test_mip_fields.c"
-    COMMAND test_mip_fields
+target_sources("${MIP_UNIT_TEST_TARGET_C}" PRIVATE
+    "packet_builder.unit.c"
+    #"logging.unit.c"
 )
 
-add_mip_test(
-    NAME test_mip_packet_builder
-    SOURCES "${CMAKE_CURRENT_LIST_DIR}/test_mip_packet_builder.c"
-    COMMAND test_mip_packet_builder
+target_sources("${MIP_INTEGRATION_TEST_TARGET_C}" PRIVATE
+    #"parser.integration.c"
 )
-
-# TODO: Disabled test compiles, but is failing. This looks like it might be a false positive.
-#[[
-add_mip_test(
-    NAME test_mip_parsing
-    SOURCES "${CMAKE_CURRENT_LIST_DIR}/test_mip_parser.c"
-    COMMAND test_mip_parsing
-    ARGS "${MIP_TEST_DATA_BIN}"
-)
-]]
-
-# TODO: Disabled tests compile but take a long time to run.
-#     ---> Move to an integration test suite
-#[[
-add_mip_test(
-    NAME test_mip_random
-    SOURCES "${CMAKE_CURRENT_LIST_DIR}/test_mip_random.c"
-    COMMAND test_mip_random
-)
-
-add_mip_test(
-    NAME test_mip_packet_formatting
-    SOURCES
-        "${CMAKE_CURRENT_LIST_DIR}/../microstrain/testutil_strings.c"
-        "${CMAKE_CURRENT_LIST_DIR}/../microstrain/testutil_strings.h"
-        "${CMAKE_CURRENT_LIST_DIR}/test_mip_format.c"
-    COMMAND test_mip_packet_formatting
-)
-]]
