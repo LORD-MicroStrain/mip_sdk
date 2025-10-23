@@ -22,7 +22,7 @@ int main(int argc, char** argv) {
 
     MICROSTRAIN_TEST_BEGIN();
 
-    @TEST_REGISTRATIONS@
+@TEST_FILTERING@
 
     return MICROSTRAIN_TEST_END();
 }
