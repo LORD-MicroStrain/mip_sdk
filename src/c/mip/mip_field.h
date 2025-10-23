@@ -21,6 +21,7 @@ extern "C" {
 ///@brief Functions for processing received MIP fields.
 ///
 ///~~~
+/// The MIP Packet
 /// ---------------+------------+------------+-----/ /-----+------------+
 ///  ...   Header  |   Field    |   Field    |     ...     |  Checksum  |
 /// ---------------+------------+------------+-----/ /-----+------------+
@@ -58,6 +59,21 @@ typedef struct mip_field_view
     uint8_t _remaining_length;  ///<@private Remaining space after this field.
 } mip_field_view;
 
+typedef enum mip_field_index
+{
+    MIP_FIELD_INDEX_LENGTH  = 0,
+    MIP_FIELD_INDEX_DESC    = 1,
+    MIP_FIELD_INDEX_PAYLOAD = 2
+} mip_field_index;
+
+typedef enum mip_field_index_length
+{
+    MIP_FIELD_HEADER_LENGTH      = MIP_FIELD_INDEX_PAYLOAD,
+    MIP_FIELD_LENGTH_MIN         = MIP_FIELD_HEADER_LENGTH,
+    MIP_FIELD_LENGTH_MAX         = 255,
+    MIP_FIELD_PAYLOAD_LENGTH_MIN = 0,
+    MIP_FIELD_PAYLOAD_LENGTH_MAX = MIP_FIELD_LENGTH_MAX - MIP_FIELD_HEADER_LENGTH
+} mip_field_index_length;
 
 void mip_field_init(mip_field_view* field, uint8_t descriptor_set, uint8_t field_descriptor, const uint8_t* payload, uint8_t payload_length);
 

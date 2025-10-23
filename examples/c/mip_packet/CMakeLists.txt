@@ -24,11 +24,7 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_LIST_DIR})
 
     find_package(mip REQUIRED CONFIG)
 
-    # This example uses a serial connection and requires the microstrain_serial component
-    find_package(microstrain REQUIRED COMPONENTS microstrain_serial CONFIG)
-elseif(NOT MICROSTRAIN_ENABLE_SERIAL)
-    # microstrain_serial library is needed for source built projects
-    message(FATAL_ERROR "The serial connections library is required for this example")
+    find_package(microstrain REQUIRED CONFIG)
 endif()
 
 # Make sure the MIP libraries are found

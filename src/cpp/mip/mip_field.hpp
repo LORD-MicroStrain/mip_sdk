@@ -6,7 +6,6 @@
 #include <microstrain/array_view.hpp>
 
 #include <mip/mip_field.h>
-#include <mip/mip_offsets.h>
 
 #include <cstring>
 
@@ -25,7 +24,18 @@ namespace mip
 class FieldView : public C::mip_field_view
 {
 public:
-    static constexpr size_t MAX_PAYLOAD_LENGTH = C::MIP_FIELD_PAYLOAD_LENGTH_MAX;
+    enum class Index : uint8_t
+    {
+        LENGTH   = C::MIP_FIELD_INDEX_LENGTH,
+        DESC     = C::MIP_FIELD_INDEX_DESC,
+        PAYLOAD  = C::MIP_FIELD_INDEX_PAYLOAD
+    };
+
+    static constexpr size_t HEADER_LENGTH      = C::MIP_FIELD_HEADER_LENGTH;
+    static constexpr size_t LENGTH_MIN         = C::MIP_FIELD_LENGTH_MIN;
+    static constexpr size_t LENGTH_MAX         = C::MIP_FIELD_LENGTH_MAX;
+    static constexpr size_t PAYLOAD_LENGTH_MIN = C::MIP_FIELD_PAYLOAD_LENGTH_MIN;
+    static constexpr size_t PAYLOAD_LENGTH_MAX = C::MIP_FIELD_PAYLOAD_LENGTH_MAX;
 
     /// Construct an empty MIP field.
     FieldView() { C::mip_field_view::_payload=nullptr; C::mip_field_view::_payload_length=0; C::mip_field_view::_field_descriptor=0x00; C::mip_field_view::_descriptor_set=0x00; C::mip_field_view::_remaining_length=0; }
@@ -49,24 +59,27 @@ public:
     uint8_t fieldDescriptor() const { return C::mip_field_field_descriptor(this); }
     ///@brief Returns the descriptor set and field descriptor.
     CompositeDescriptor descriptor() const { return {descriptorSet(), fieldDescriptor()}; }
-    ///@copydoc mip::C::mip_field_payload_length
-    uint8_t payloadLength() const { return C::mip_field_payload_length(this); }
+
     ///@copydoc mip::C::mip_field_total_length
     uint8_t totalLength() const { return C::mip_field_total_length(this); }
-    ///@copydoc mip::C::mip_field_payload
-    const uint8_t* payloadPointer() const { return C::mip_field_payload(this); }
+
+    ///@copydoc mip::C::mip_field_payload_length
+    uint8_t payloadLength() const { return C::mip_field_payload_length(this); }
+
+    ///@brief Get a const view of the payload data.
+    microstrain::ConstU8ArrayView payload() const { return {C::mip_field_payload(this), C::mip_field_payload_length(this)}; }
 
     ///@brief Index the payload at the given location.
     ///@param index Byte index into payload. 0 <= index < payloadLength().
     ///@returns payload byte
-    uint8_t payload(size_t index) const { assert(index < payloadLength()); return payloadPointer()[index]; }
+    uint8_t payload(size_t index) const { assert(index < payloadLength()); return payload()[index]; }
 
     uint8_t operator[](size_t index) const { return payload(index); }
 
-    ///@brief Get a const view of the payload data.
-    microstrain::ConstU8ArrayView payload() const { return {payloadPointer(), payloadLength()}; }
-
     ///@brief Gets a view of the entire field, including the header.
+    ///
+    ///@note You want to use payload() instead if you're trying to extract
+    ///      parameters/data contained within a field.
     ///
     ///@warning FieldView contains a descriptor and payload pointer. It does not
     ///         guarantee the descriptors are also stored in the same buffer as
@@ -82,7 +95,7 @@ public:
     ///         payload array may not have header bytes and this function isn't
     ///         safe in that case.
     ///
-    microstrain::ConstU8ArrayView data() const { return {payloadPointer()-C::MIP_HEADER_LENGTH, size_t(payloadLength()+C::MIP_HEADER_LENGTH)}; }
+    microstrain::ConstU8ArrayView bytes() const { return {payload() - HEADER_LENGTH, static_cast<size_t>(payloadLength() + HEADER_LENGTH)}; }
 
     ///@copydoc mip::C::mip_field_is_valid
     bool isValid() const { return C::mip_field_is_valid(this); }

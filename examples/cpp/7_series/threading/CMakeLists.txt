@@ -56,7 +56,7 @@ if(NOT ${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_LIST_DIR})
     )
 endif()
 
-if(UNIX AND NOT APPLE)
+if(NOT MSVC)
     find_package(Threads REQUIRED)
 
     target_link_libraries(${PROJECT_NAME} PRIVATE
@@ -91,4 +91,8 @@ endif()
 
 target_compile_options(${PROJECT_NAME} PRIVATE
     "${COMPILE_OPTIONS}"
+)
+
+target_compile_definitions(${PROJECT_NAME} PRIVATE
+    "MICROSTRAIN_LOGGING_MAX_LEVEL=MICROSTRAIN_LOGGING_LEVEL_INFO_" # Info logging level is required at a minimum
 )

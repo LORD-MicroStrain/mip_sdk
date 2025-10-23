@@ -1,20 +1,25 @@
 ////////////////////////////////////////////////////////////////////////////////
-/// 5_series_threading_example.cpp
+/// @file 5_series_threading_example.cpp
 ///
-/// Example program to demonstrate multithreading for data collection and
-/// command updates on 5-series devices using C++
+/// @defgroup _5_series_threading_example_cpp 5-Series Threading Example [CPP]
 ///
-/// If this example does not meet your specific setup needs, please consult the
-/// MIP SDK API documentation for the proper commands.
+/// @ingroup examples_cpp
 ///
-/// @section LICENSE
+/// @brief Example multithreading program for 5-series devices using C++
 ///
-/// THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
-/// WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
-/// TIME. AS A RESULT, MICROSTRAIN BY HBK SHALL NOT BE HELD LIABLE FOR ANY
-/// DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
-/// FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
-/// CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+/// @details This example shows a basic setup for 5-series devices to
+///          demonstrate multithreading for data collection and command updates
+///          using C++. This is not an exhaustive example of all settings for
+///          those devices. If this example does not meet your specific setup
+///          needs, please consult the MIP SDK API documentation for the proper
+///          commands.
+///
+/// @section _5_series_threading_example_cpp_license License
+///
+/// @copyright Copyright (c) 2025 MicroStrain by HBK
+///            Licensed under MIT License
+///
+/// @{
 ///
 
 // Include the MicroStrain Serial connection header
@@ -37,60 +42,67 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <mutex>
 #include <thread>
 
 ////////////////////////////////////////////////////////////////////////////////
 // NOTE: Setting these globally for example purposes
 
 // TODO: Update to the correct port name and baudrate
-// Set the port name for the connection (Serial/USB)
+/// @brief Set the port name for the connection (Serial/USB)
 #ifdef _WIN32
 static constexpr const char* PORT_NAME = "COM1";
-#else // Unix
-static constexpr const char* PORT_NAME = "/dev/ttyUSB0";
+#else  // Unix
+static constexpr const char* PORT_NAME = "/dev/ttyACM0";
 #endif // _WIN32
 
-// Set the baudrate for the connection (Serial/USB)
+/// @brief Set the baudrate for the connection (Serial/USB)
+/// @note For native serial connections this needs to be 115200 due to the device default settings command
+/// Use mip::commands_3dm::*UartBaudrate() to write and save the baudrate on the device
 static constexpr uint32_t BAUDRATE = 115200;
 
 // TODO: Update to the desired streaming rate. Setting low for readability purposes
-// Streaming rate in Hz
+/// @brief Streaming rate in Hz
 static constexpr uint16_t SAMPLE_RATE_HZ = 1;
 
 // TODO: Update to change the example run time
-// Example run time
+/// @brief Example run time
 static constexpr uint32_t RUN_TIME_SECONDS = 30;
 
 // TODO: Enable/disable data collection threading
-// Use this to test the behaviors of threading
-#define USE_THREADS 1
+/// @brief Use this to test the behaviors of threading
+#define USE_THREADS true
+////////////////////////////////////////////////////////////////////////////////
+
+///
+/// @} group _5_series_threading_example_cpp
 ////////////////////////////////////////////////////////////////////////////////
 
 // Custom logging handler callback
-void logCallback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args);
+static void logCallback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args);
 
 // Used for basic timestamping (since epoch in milliseconds)
 // TODO: Update this to whatever timestamping method is desired
-mip::Timestamp getCurrentTimestamp();
+static mip::Timestamp getCurrentTimestamp();
 
 // Common device initialization procedure
-void initializeDevice(mip::Interface& _device);
+static void initializeDevice(mip::Interface& _device);
 
 // Message format configuration
-void configureSensorMessageFormat(mip::Interface& _device);
+static void configureSensorMessageFormat(mip::Interface& _device);
 
 // Packet callback handler
-void packetCallback(void* _user, const mip::PacketView& _packetView, mip::Timestamp _timestamp);
+static void packetCallback(void* _user, const mip::PacketView& _packetView, mip::Timestamp _timestamp);
 
 #if USE_THREADS
 // Threaded functions
-bool updateDevice(mip::Interface& _device, mip::Timeout _waitTime, bool _fromCmd);
-void dataCollectionThread(mip::Interface& _device, const volatile bool& _running);
+static bool updateDevice(mip::Interface& _device, mip::Timeout _waitTime, bool _fromCmd);
+static void dataCollectionThread(mip::Interface& _device, const volatile bool& _running);
 #endif // USE_THREADS
 
 // Utility functions the handle application closing and printing error messages
-void terminate(microstrain::Connection* _connection, const char* _message, const bool _successful = false);
-void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const char* _format, ...);
+static void terminate(microstrain::Connection* _connection, const char* _message, const bool _successful = false);
+static void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const char* _format, ...);
 
 int main(const int argc, const char* argv[])
 {
@@ -98,8 +110,26 @@ int main(const int argc, const char* argv[])
     (void)argc;
     (void)argv;
 
+// Note: This is a compile-time way of checking that the proper logging level is enabled
+// Note: The max available logging level may differ in pre-packaged installations of the MIP SDK
+#ifndef MICROSTRAIN_LOGGING_ENABLED_INFO
+#error This example requires a logging level of at least MICROSTRAIN_LOGGING_LEVEL_INFO_ to work properly
+#endif // !MICROSTRAIN_LOGGING_ENABLED_INFO
+
+#if USE_THREADS
+    // Create a mutex for the logging callbacks when multi-threading
+    fprintf(stdout, "Initializing the threading mutex.\n");
+    std::mutex mutex;
+#endif // USE_THREADS
+
     // Initialize the custom logger to print messages/errors as they occur
+    // Note: The logging level parameter doesn't need to match the max logging level.
+    // If the parameter is higher than the max level, higher-level logging functions will be ignored
+#if USE_THREADS
+    MICROSTRAIN_LOG_INIT(&logCallback, MICROSTRAIN_LOG_LEVEL_INFO, static_cast<void*>(&mutex));
+#else
     MICROSTRAIN_LOG_INIT(&logCallback, MICROSTRAIN_LOG_LEVEL_INFO, nullptr);
+#endif // USE_THREADS
 
     // Initialize the connection
     MICROSTRAIN_LOG_INFO("Initializing the connection.\n");
@@ -132,7 +162,7 @@ int main(const int argc, const char* argv[])
     // Register the callback for packets
     device.registerPacketCallback<&packetCallback>(
         packetHandler,
-        mip::data_sensor::DESCRIPTOR_SET, // Data field descriptor set
+        mip::data_sensor::DESCRIPTOR_SET, // Data descriptor set
         false,                            // Process after field callback
         nullptr                           // User data
     );
@@ -153,12 +183,14 @@ int main(const int argc, const char* argv[])
     // Note: Since the device was idled for configuration, it needs to be resumed to output the data streams
     MICROSTRAIN_LOG_INFO("Resuming the device.\n");
     const mip::CmdResult cmdResult = mip::commands_base::resume(device);
+
     if (!cmdResult.isAck())
     {
         terminate(device, cmdResult, "Could not resume the device!\n");
     }
 
-    MICROSTRAIN_LOG_INFO("Sensor is configured... waiting for data.\n");
+    MICROSTRAIN_LOG_INFO("The device is configured... waiting for data.\n");
+    MICROSTRAIN_LOG_INFO("This example will now output data for %ds.\n", RUN_TIME_SECONDS);
 
     // Get the start time of the device update loop to handle exiting the application
     const mip::Timestamp loopStartTime = getCurrentTimestamp();
@@ -193,6 +225,11 @@ int main(const int argc, const char* argv[])
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+/// @addtogroup _5_series_threading_example_cpp
+/// @{
+///
+
+////////////////////////////////////////////////////////////////////////////////
 /// @brief Custom logging callback for MIP SDK message formatting and output
 ///
 /// @details Processes and formats log messages from the MIP SDK based on
@@ -200,15 +237,23 @@ int main(const int argc, const char* argv[])
 ///          errors and fatal messages go to stderr while other levels go to
 ///          stdout. Each message is prefixed with its severity level name.
 ///
-/// @param _user Pointer to user data (unused in this implementation)
+/// @param _user Pointer to the threading mutex (if threading is enabled)
 /// @param _level Log message severity level from microstrain_log_level enum
 /// @param _format Printf-style format string for the message
 /// @param _args Variable argument list containing message parameters
 ///
-void logCallback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args)
+static void logCallback(void* _user, const microstrain_log_level _level, const char* _format, va_list _args)
 {
+#if USE_THREADS
+    std::mutex* mutex = static_cast<std::mutex*>(_user);
+    assert(mutex);
+
+    // Lock the mutex since the callbacks can happen across threads
+    mutex->lock();
+#else
     // Unused parameter
     (void)_user;
+#endif // USE_THREADS
 
     switch (_level)
     {
@@ -217,6 +262,7 @@ void logCallback(void* _user, const microstrain_log_level _level, const char* _f
         {
             fprintf(stderr, "%s: ", microstrain_logging_level_name(_level));
             vfprintf(stderr, _format, _args);
+            fflush(stderr);
             break;
         }
         case MICROSTRAIN_LOG_LEVEL_WARN:
@@ -226,6 +272,7 @@ void logCallback(void* _user, const microstrain_log_level _level, const char* _f
         {
             fprintf(stdout, "%s: ", microstrain_logging_level_name(_level));
             vfprintf(stdout, _format, _args);
+            fflush(stdout);
             break;
         }
         case MICROSTRAIN_LOG_LEVEL_OFF:
@@ -234,23 +281,29 @@ void logCallback(void* _user, const microstrain_log_level _level, const char* _f
             break;
         }
     }
+
+#if USE_THREADS
+    // Release the logging callback for other threads
+    mutex->unlock();
+#endif // USE_THREADS
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 /// @brief Gets the current system timestamp in milliseconds
 ///
 /// @details Provides system time measurement using std::chrono for milliseconds
-///          since steady clock epoch. Uses steady_clock to ensure monotonic
-///          time that won't be affected by system time changes.
+///          since epoch. Uses system_clock to get wall-clock time that
+///          corresponds to calendar time and can be synchronized with external
+///          time sources.
 ///
 /// @note Update this function to use a different time source if needed for
 ///       your specific application requirements
 ///
 /// @return Current timestamp in milliseconds since epoch
 ///
-mip::Timestamp getCurrentTimestamp()
+static mip::Timestamp getCurrentTimestamp()
 {
-    const std::chrono::nanoseconds timeSinceEpoch = std::chrono::steady_clock::now().time_since_epoch();
+    const std::chrono::nanoseconds timeSinceEpoch = std::chrono::system_clock::now().time_since_epoch();
     return static_cast<mip::Timestamp>(std::chrono::duration_cast<std::chrono::milliseconds>(timeSinceEpoch).count());
 }
 
@@ -265,12 +318,13 @@ mip::Timestamp getCurrentTimestamp()
 ///
 /// @param _device Reference to a MIP device interface to initialize
 ///
-void initializeDevice(mip::Interface& _device)
+static void initializeDevice(mip::Interface& _device)
 {
     // Ping the device
     // Note: This is a good first step to make sure the device is present
     MICROSTRAIN_LOG_INFO("Pinging the device.\n");
     mip::CmdResult cmdResult = mip::commands_base::ping(_device);
+
     if (!cmdResult.isAck())
     {
         terminate(_device, cmdResult, "Could not ping the device!\n");
@@ -280,6 +334,7 @@ void initializeDevice(mip::Interface& _device)
     // Note: This is good to do during setup as high data traffic can cause commands to fail
     MICROSTRAIN_LOG_INFO("Setting the device to idle.\n");
     cmdResult = mip::commands_base::setIdle(_device);
+
     if (!cmdResult.isAck())
     {
         terminate(_device, cmdResult, "Could not set the device to idle!\n");
@@ -289,6 +344,7 @@ void initializeDevice(mip::Interface& _device)
     MICROSTRAIN_LOG_INFO("Getting the device information.\n");
     mip::commands_base::BaseDeviceInfo deviceInfo;
     cmdResult = mip::commands_base::getDeviceInfo(_device, &deviceInfo);
+
     if (!cmdResult.isAck())
     {
         terminate(_device, cmdResult, "Could not get the device information!\n");
@@ -300,28 +356,31 @@ void initializeDevice(mip::Interface& _device)
     const uint16_t patch = deviceInfo.firmware_version % 100;
 
     // Firmware version format is x.x.xx
-    char firmwareVersion[16];
-    snprintf(firmwareVersion, sizeof(firmwareVersion) / sizeof(firmwareVersion[0]), "%d.%d.%02d",
-        major,
-        minor,
-        patch
-    );
+    char firmwareVersion[16] = {0};
+    snprintf(firmwareVersion, sizeof(firmwareVersion) / sizeof(firmwareVersion[0]), "%d.%d.%02d", major, minor, patch);
 
     MICROSTRAIN_LOG_INFO("-------- Device Information --------\n");
-    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Name",             deviceInfo.model_name);
-    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Model Number",     deviceInfo.model_number);
-    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Serial Number",    deviceInfo.serial_number);
-    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Lot Number",       deviceInfo.lot_number);
-    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Options",          deviceInfo.device_options);
-    MICROSTRAIN_LOG_INFO("%-16s | %16s\n",  "Firmware Version", firmwareVersion);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Name", deviceInfo.model_name);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Model Number", deviceInfo.model_number);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Serial Number", deviceInfo.serial_number);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Lot Number", deviceInfo.lot_number);
+    MICROSTRAIN_LOG_INFO("%-16s | %.16s\n", "Options", deviceInfo.device_options);
+    MICROSTRAIN_LOG_INFO("%-16s | %16s\n", "Firmware Version", firmwareVersion);
     MICROSTRAIN_LOG_INFO("------------------------------------\n");
 
     // Load the default settings on the device
     // Note: This guarantees the device is in a known state
-    MICROSTRAIN_LOG_INFO("Loading default settings.\n");
+    MICROSTRAIN_LOG_INFO("Loading %s.\n", mip::commands_3dm::DeviceSettings::DOC_NAME);
     cmdResult = mip::commands_3dm::defaultDeviceSettings(_device);
+
     if (!cmdResult.isAck())
     {
+        // Note: Default settings will reset the baudrate to 115200 and may cause connection issues
+        if (cmdResult == mip::CmdResult::STATUS_TIMEDOUT && BAUDRATE != 115200)
+        {
+            MICROSTRAIN_LOG_WARN("On a native serial connections the baudrate needs to be 115200 for this example to run.\n");
+        }
+
         terminate(_device, cmdResult, "Could not load %s!\n", mip::commands_3dm::DeviceSettings::DOC_NAME);
     }
 }
@@ -338,13 +397,13 @@ void initializeDevice(mip::Interface& _device)
 ///
 /// @param _device Reference to the initialized MIP device interface
 ///
-void configureSensorMessageFormat(mip::Interface& _device)
+static void configureSensorMessageFormat(mip::Interface& _device)
 {
     // Note: Querying the device base rate is only one way to calculate the descriptor decimation
     // We could have also set it directly with information from the datasheet
 
     MICROSTRAIN_LOG_INFO("Getting the base rate for sensor data.\n");
-    uint16_t sensorBaseRate;
+    uint16_t       sensorBaseRate;
     mip::CmdResult cmdResult = mip::commands_3dm::imuGetBaseRate(
         _device,
         &sensorBaseRate // Base rate out
@@ -352,7 +411,7 @@ void configureSensorMessageFormat(mip::Interface& _device)
 
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not get sensor base rate!\n");
+        terminate(_device, cmdResult, "Could not get the base rate for sensor data!\n");
     }
 
     // Supported sample rates can be any value from 1 up to the base rate
@@ -369,8 +428,9 @@ void configureSensorMessageFormat(mip::Interface& _device)
     }
 
     // Calculate the decimation (stream rate) for the device based on its base rate
-    const uint16_t sensorDecimation  = sensorBaseRate / SAMPLE_RATE_HZ;
-    MICROSTRAIN_LOG_INFO("Decimating sensor base rate %d by %d to stream data at %dHz.\n",
+    const uint16_t sensorDecimation = sensorBaseRate / SAMPLE_RATE_HZ;
+    MICROSTRAIN_LOG_INFO(
+        "Decimating sensor base rate %d by %d to stream data at %dHz.\n",
         sensorBaseRate,
         sensorDecimation,
         SAMPLE_RATE_HZ
@@ -378,7 +438,7 @@ void configureSensorMessageFormat(mip::Interface& _device)
 
     // Descriptor rate is a pair of data descriptor set and decimation
     const mip::DescriptorRate sensorDescriptors[1] = {
-        { mip::data_sensor::ScaledAccel::FIELD_DESCRIPTOR, sensorDecimation }
+        {mip::data_sensor::ScaledAccel::FIELD_DESCRIPTOR, sensorDecimation}
     };
 
     MICROSTRAIN_LOG_INFO("Configuring %s for sensor data.\n", mip::commands_3dm::ImuMessageFormat::DOC_NAME);
@@ -390,7 +450,10 @@ void configureSensorMessageFormat(mip::Interface& _device)
 
     if (!cmdResult.isAck())
     {
-        terminate(_device, cmdResult, "Could not set %s for sensor data!\n",
+        terminate(
+            _device,
+            cmdResult,
+            "Could not configure %s for sensor data!\n",
             mip::commands_3dm::ImuMessageFormat::DOC_NAME
         );
     }
@@ -411,13 +474,13 @@ void configureSensorMessageFormat(mip::Interface& _device)
 /// @param _packetView Reference to the received MIP packet
 /// @param _timestamp Timestamp when the packet was received
 ///
-void packetCallback(void* _user, const mip::PacketView& _packetView, mip::Timestamp _timestamp)
+static void packetCallback(void* _user, const mip::PacketView& _packetView, mip::Timestamp _timestamp)
 {
     // Unused parameter
     (void)_user;
 
     // Create a buffer for printing purposes
-    char fieldDescriptorsBuffer[255] = { 0 };
+    char fieldDescriptorsBuffer[255] = {0};
     int  bufferOffset                = 0;
 
     // Iterate the packet and extract each field
@@ -437,7 +500,8 @@ void packetCallback(void* _user, const mip::PacketView& _packetView, mip::Timest
         fieldDescriptorsBuffer[bufferOffset - 1] = '\0';
     }
 
-    MICROSTRAIN_LOG_INFO("Received a packet at %" PRIu64 " with descriptor set 0x%02X:%s\n",
+    MICROSTRAIN_LOG_INFO(
+        "Received a packet at %" PRIu64 " with descriptor set 0x%02X:%s\n",
         _timestamp,
         _packetView.descriptorSet(),
         fieldDescriptorsBuffer
@@ -465,7 +529,7 @@ void packetCallback(void* _user, const mip::PacketView& _packetView, mip::Timest
 ///          Always returns true when called from commands to avoid race
 ///          conditions.
 ///
-bool updateDevice(mip::Interface& _device, mip::Timeout _waitTime, bool _fromCmd)
+static bool updateDevice(mip::Interface& _device, mip::Timeout _waitTime, bool _fromCmd)
 {
     // Do normal updates only if not called from a command handler
     // Note: This is the separation between the main/other thread and the data collection thread
@@ -497,7 +561,7 @@ bool updateDevice(mip::Interface& _device, mip::Timeout _waitTime, bool _fromCmd
 /// @param _device Reference to the MIP device interface
 /// @param _running Reference to volatile boolean controlling thread execution
 ///
-void dataCollectionThread(mip::Interface& _device, const volatile bool& _running)
+static void dataCollectionThread(mip::Interface& _device, const volatile bool& _running)
 {
     MICROSTRAIN_LOG_INFO("Data collection thread created!\n");
 
@@ -505,12 +569,17 @@ void dataCollectionThread(mip::Interface& _device, const volatile bool& _running
     {
         // Update the device for data collection
         // Note: The recommended default wait time is 10 ms, but could be 0 for non-blocking read operations
-        if (!_device.update(
-            10, // Time to wait
-            false)) // From a command (Note: This update is for data handling, not from a command)
+        const bool updated = _device.update(
+            10,   // Time to wait
+            false // From command
+        );
+
+        // Clean up and exit the thread on failed device updates
+        if (!updated)
         {
             // Avoid deadlocks if the connection is closed
             _device.cmdQueue().clear();
+
             break;
         }
 
@@ -531,9 +600,9 @@ void dataCollectionThread(mip::Interface& _device, const volatile bool& _running
 /// @param _message Error message to display
 /// @param _successful Whether termination is due to success or failure
 ///
-void terminate(microstrain::Connection* _connection, const char* _message, const bool _successful /* = false */)
+static void terminate(microstrain::Connection* _connection, const char* _message, const bool _successful /* = false */)
 {
-    if (strlen(_message) != 0)
+    if (_message && strlen(_message) != 0)
     {
         if (_successful)
         {
@@ -563,12 +632,11 @@ void terminate(microstrain::Connection* _connection, const char* _message, const
         }
     }
 
-    MICROSTRAIN_LOG_INFO("Exiting the program.\n");
+    MICROSTRAIN_LOG_INFO("Press 'Enter' to exit the program.\n");
 
-#ifdef _WIN32
-    // Keep the console open on Windows
-    system("pause");
-#endif // _WIN32
+    // Make sure the console remains open
+    const int confirmExit = getc(stdin);
+    (void)confirmExit; // Unused
 
     if (!_successful)
     {
@@ -589,12 +657,15 @@ void terminate(microstrain::Connection* _connection, const char* _message, const
 /// @param _format Printf-style format string for error message
 /// @param ... Variable arguments for format string
 ///
-void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const char* _format, ...)
+static void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const char* _format, ...)
 {
-    va_list args;
-    va_start(args, _format);
-    MICROSTRAIN_LOG_ERROR_V(_format, args);
-    va_end(args);
+    if (_format && strlen(_format) != 0)
+    {
+        va_list args;
+        va_start(args, _format);
+        MICROSTRAIN_LOG_ERROR_V(_format, args);
+        va_end(args);
+    }
 
     MICROSTRAIN_LOG_ERROR("Command Result: (%d) %s.\n", _cmdResult.value, _cmdResult.name());
 
@@ -603,3 +674,7 @@ void terminate(mip::Interface& _device, const mip::CmdResult _cmdResult, const c
 
     terminate(connection, "");
 }
+
+///
+/// @} group _5_series_threading_example_cpp
+////////////////////////////////////////////////////////////////////////////////

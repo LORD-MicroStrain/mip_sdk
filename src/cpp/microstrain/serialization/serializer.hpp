@@ -61,14 +61,14 @@ class SerializerBase
 {
 public:
     SerializerBase() = default;
-    SerializerBase(uint8_t* ptr, size_t capacity, size_t offset=0) : m_ptr(ptr), m_size(capacity), m_offset(offset) {}
-    SerializerBase(const uint8_t* ptr, size_t size, size_t offset=0) : m_ptr(const_cast<uint8_t*>(ptr)), m_size(size), m_offset(offset) {}
-    SerializerBase(microstrain::ConstU8ArrayView buffer, size_t offset=0) : m_ptr(const_cast<uint8_t*>(buffer.data())), m_size(buffer.size()), m_offset(offset) {}
+    SerializerBase(uint8_t* ptr, size_t capacity) : m_ptr(ptr), m_size(capacity), m_offset(0) {}
+    SerializerBase(const uint8_t* ptr, size_t size) : m_ptr(const_cast<uint8_t*>(ptr)), m_size(size), m_offset(0) {}
+    SerializerBase(microstrain::ConstU8ArrayView buffer) : m_ptr(const_cast<uint8_t*>(buffer.data())), m_size(buffer.size()), m_offset(0) {}
 
     size_t capacity()   const { return m_size;                 }  ///< Returns the total size of the buffer.
     size_t offset()     const { return m_offset;               }  ///< Returns the current read or write offset.
     size_t usedLength() const { return offset();               }  ///< Returns the number of bytes read/written.
-    int remaining()     const { return int(m_size - m_offset); }  ///< Returns the number of byte remaining (negative if overflowed).
+    int    remaining()  const { return int(m_size - m_offset); }  ///< Returns the number of byte remaining (negative if overflowed).
 
     bool isOverrun()                  const { return m_offset > m_size;        }  ///< Returns true if offset has exceeded the size/capacity.
     bool isOk()                       const { return !isOverrun();             }  ///< Returns true if not overrun, i.e. !isOverrun().
@@ -731,7 +731,8 @@ size_t extract(Serializer<E>& serializer, T0& value0, T1& value1, Ts&... values)
 template<serialization::Endian E, class T>
 bool insert(const T& value, uint8_t* buffer, size_t buffer_length, size_t offset=0, bool exact_size=false)
 {
-    Serializer<E> serializer(buffer, buffer_length, offset);
+    Serializer<E> serializer(buffer, buffer_length);
+    serializer.setOffset(offset);
     serializer.insert(value);
     return exact_size ? serializer.isFinished() : serializer.isOk();
 }
@@ -769,7 +770,8 @@ bool insert(const T& value, uint8_t* buffer, size_t buffer_length, size_t offset
 template<serialization::Endian E, class T>
 bool extract(T& value, const uint8_t* buffer, size_t buffer_length, size_t offset=0, bool exact_size=false)
 {
-    Serializer<E> serializer(buffer, buffer_length, offset);
+    Serializer<E> serializer(buffer, buffer_length);
+    serializer.setOffset(offset);
     extract(serializer, value);
     return exact_size ? serializer.isFinished() : serializer.isOk();
 }

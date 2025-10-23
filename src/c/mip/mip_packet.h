@@ -33,6 +33,19 @@ struct microstrain_serializer;
 /// +-------+-------+------+------+------------+-----/ /----+------------+----
 /// | SYNC1 | SYNC2 | DESC | PLEN |   Field    |     ...    |  Checksum  |  remaining buffer space...
 /// +-------+-------+------+------+------------+-----/ /----+------------+----
+/// |            ,_______________/                         /            /
+/// |           /                   ,_____________________/            /
+/// |          /                   /     ,____________________________/
+/// |         /                   /     /
+/// +--------+-------------------+-----+----------------+
+/// | Header | Payload (Fields)  | Chk | / / unused / / |
+/// +--------+-------------------+-----+----------------+
+/// |        |___________________|     |                |
+/// |             Payload              |                |
+/// |__________________________________|                |
+/// |            Packet Data                            |
+/// |___________________________________________________|
+///                  Buffer
 ///~~~
 ///
 ///@{
@@ -53,6 +66,30 @@ typedef struct mip_packet_view
     uint_least16_t _buffer_length;  ///<@private Length of the buffer (not necessarily the packet length!).
 } mip_packet_view;
 
+typedef enum mip_packet_index
+{
+    MIP_PACKET_INDEX_SYNC_1   = 0,
+    MIP_PACKET_INDEX_SYNC_2   = 1,
+    MIP_PACKET_INDEX_DESC_SET = 2,
+    MIP_PACKET_INDEX_LENGTH   = 3,
+    MIP_PACKET_INDEX_PAYLOAD  = 4
+} mip_packet_index;
+
+typedef enum mip_packet_index_length
+{
+    MIP_PACKET_HEADER_LENGTH      = 4,
+    MIP_PACKET_CHECKSUM_LENGTH    = 2,
+    MIP_PACKET_PAYLOAD_LENGTH_MIN = 0,
+    MIP_PACKET_PAYLOAD_LENGTH_MAX = 255,
+    MIP_PACKET_LENGTH_MIN         = MIP_PACKET_HEADER_LENGTH + MIP_PACKET_CHECKSUM_LENGTH + MIP_PACKET_PAYLOAD_LENGTH_MIN,
+    MIP_PACKET_LENGTH_MAX         = MIP_PACKET_HEADER_LENGTH + MIP_PACKET_CHECKSUM_LENGTH + MIP_PACKET_PAYLOAD_LENGTH_MAX
+} mip_packet_index_length;
+
+typedef enum mip_packet_sync_byte
+{
+    MIP_SYNC_1 = 0x75,
+    MIP_SYNC_2 = 0x65
+} mip_packet_sync_byte;
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup MipPacketBuilding_c  Packet Building
@@ -100,9 +137,11 @@ void mip_packet_from_buffer(mip_packet_view* packet, const uint8_t* buffer, size
 uint8_t         mip_packet_descriptor_set(const mip_packet_view* packet);
 uint_least16_t  mip_packet_total_length(const mip_packet_view* packet);
 uint8_t         mip_packet_payload_length(const mip_packet_view* packet);
-uint8_t*        mip_packet_buffer(mip_packet_view* packet);
-const uint8_t*  mip_packet_pointer(const mip_packet_view* packet);
+const uint8_t*  mip_packet_buffer(const mip_packet_view* packet);
+uint8_t*        mip_packet_buffer_w(mip_packet_view* packet);
+const uint8_t*  mip_packet_data(const mip_packet_view* packet);
 const uint8_t*  mip_packet_payload(const mip_packet_view* packet);
+uint8_t*        mip_packet_payload_w(mip_packet_view* packet);
 uint16_t        mip_packet_checksum_value(const mip_packet_view* packet);
 uint16_t        mip_packet_compute_checksum(const mip_packet_view* packet);
 
@@ -111,7 +150,7 @@ bool            mip_packet_is_sane(const mip_packet_view* packet);
 bool            mip_packet_is_valid(const mip_packet_view* packet);
 bool            mip_packet_is_empty(const mip_packet_view* packet);
 
-uint_least16_t  mip_packet_buffer_size(const mip_packet_view* packet);
+uint_least16_t  mip_packet_buffer_length(const mip_packet_view* packet);
 int             mip_packet_remaining_space(const mip_packet_view* packet);
 
 bool            mip_packet_is_data(const mip_packet_view* packet);

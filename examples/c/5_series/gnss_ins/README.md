@@ -1,21 +1,21 @@
 # 5 Series GNSS/INS Example (C)
 
-This example demonstrates how to configure and use a MicroStrain 5-series GNSS/INS device with the MIP SDK using the 
-C API.
+This example demonstrates how to configure the navigation filter with GNSS velocity and magnetometer as the heading
+source to stream filter data on a MicroStrain 5-series GNSS/INS device with the MIP SDK using the C API.
 
 ## Overview
 
-The example showcases the basic setup and operation of a 5-series device, including:
+The example showcases the basic setup and operation of a 5-series GNSS/INS device, including:
 - Device initialization and communication
-- GNSS and filter message configuration
+- GNSS and filter message format configuration
 - Gyro bias capture
 - Antenna offset configuration
-- Filter initialization
+- Filter initialization and heading source configuration
 - Real-time data streaming and display
 
-## Configuration
+## Configurable Options
 
-The example uses the following default settings:
+The example uses the following default settings, which should be adjusted based on application requirements:
 
 | Setting            | Value                                         | Description                          |
 |--------------------|-----------------------------------------------|--------------------------------------|
@@ -24,29 +24,104 @@ The example uses the following default settings:
 | `SAMPLE_RATE_HZ`   | `1`                                           | Data output rate in Hz               |
 | `RUN_TIME_SECONDS` | `30`                                          | Example runtime duration             |
 
+## GNSS Antenna Configuration
+
+***Please consult the device's user manual for more information on proper configuration of the antenna***<br>
+This example requires a connected antenna with proper configuration and a clear sky view.<br>
+The example configures antenna GNSS setup for enhanced navigation accuracy:
+
+| Translation     | Description                                             |
+|-----------------|---------------------------------------------------------|
+| [-0.25, 0, 0] m | GNSS receiver positioned 0.25m behind the device center |
+
+## Usage
+
+1. Connect your 5-series GNSS/INS device to the specified serial port
+2. Update the [configuration options](#configurable-options) and the [antenna offset](#gnss-antenna-configuration) based
+   on your application needs
+3. Compile and run the example
+4. Follow the gyro bias capture prompt (keep the device stationary)
+5. The program will:
+    - Initialize the device
+    - Configure data streaming
+    - Wait for the filter to initialize
+    - Stream data for the specified runtime
+    - Display filter state and GNSS fix transitions
+    - Display real-time filter data
+    - Clean up and exit
+
+## Building
+
+### With CMake (Recommended)
+
+The project can be configured on its own using the supplied [CMakeLists.txt](CMakeLists.txt).
+The file is configured to work directly in the MIP SDK project or as a standalone project.
+If building outside the MIP SDK project, all that's needed is to define `MIP_SDK_ROOT_DIR`.
+When building within the MIP SDK project, make sure to enable the examples using the `MICROSTRAIN_BUILD_EXAMPLES`
+CMake option.
+
+#### Standalone Command Line
+```shell
+mkdir build
+cd build
+cmake .. -DMIP_SDK_ROOT_DIR:PATH=<path_to_mip_sdk>
+```
+
+### Without CMake
+
+ If the project cannot be configured using CMake, then the following project configurations are required:
+
+#### Required Libraries
+
+Link against these libraries:
+- `mip` - Core MIP SDK library
+- `microstrain` - Core MicroStrain SDK library
+- `microstrain_serial` - MicroStrain serial communication library
+
+Make sure to include those library paths as additional link directories if needed
+
+#### Include Directories
+
+Add these include directories:
+- `[path_to_mip_sdk_include]/c`
+- `[path_to_project_root]`
+
+`path_to_mip_sdk_include` can be installed paths or source paths:
+- Unix - `/usr/include/microstrain`
+- Windows - `C:/Program Files/MIP_SDK/include/microstrain`
+- Source: `[mip_sdk_project_root]/src`
+
+#### Compiler Definitions
+Add these compiler definitions:
+- `MICROSTRAIN_LOGGING_MAX_LEVEL=MICROSTRAIN_LOGGING_LEVEL_INFO_` Sets the logging level to info which is the minimum required for this example
+
 ## Key Functions
 
 ### Device Setup
-- `initialize_device()` - Establishes serial communication and validates device connection
+- `initialize_device()` - Establishes communication, validates device connection, and loads defaults
 - `capture_gyro_bias()` - Captures and applies gyroscope bias compensation
-- `configure_antenna_offset()` - Sets GNSS antenna position relative to device
-- `initialize_filter()` - Initializes the navigation filter
+- `configure_antenna_offset()` - Sets GNSS antenna position relative to the device
+- `initialize_filter()` - Initializes the navigation filter with GNSS velocity and magnetometer as the heading source
 
 ### Message Configuration
-- `configure_gnss_message_format()` - Sets up GNSS data output messages
-- `configure_filter_message_format()` - Configures filter/navigation data output
+- `configure_filter_message_format()` - Configures filter/navigation data output including:
+    - Filter timestamp
+    - Filter status
+    - LLH position coordinates
+    - NED velocity vectors
+    - Euler angles (roll, pitch, yaw)
 
 ### Data Display
+- `display_filter_state()` - Displays navigation filter operating mode changes
 - `display_gnss_fix_state()` - Shows current GNSS fix status and quality
-- `display_filter_state()` - Displays navigation filter operating mode
 
 ### Communication Interface
-- `mip_interface_user_send_to_device()` - Sends commands to the device
-- `mip_interface_user_recv_from_device()` - Receives data from the device
+- Uses the `mip_interface` struct for device communication
+- Serial connection handled by `serial_port`
 
 ## Data Handling
 
-The C version demonstrates traditional C programming patterns:
+This example demonstrates traditional C programming patterns:
 - **Manual Parsing**: Direct parsing of incoming MIP packets using the MIP parser
 - **Callback Functions**: Function pointer-based callbacks for data processing
 - **Explicit Memory Management**: Manual buffer and resource management
@@ -69,22 +144,62 @@ The example implements custom communication handlers:
 - **Receive Function**: `mip_interface_user_recv_from_device()` manages incoming data
 - **Timeout Handling**: Configurable timeouts for reliable communication
 
-## Usage
+## Filter Data Output
 
-1. Connect your 5-series device to the specified serial port
-2. Update the `PORT_NAME` constant if using a different port
-3. Compile and run the example
-4. The program will:
-    - Initialize the device
-    - Configure data output
-    - Stream data for the specified runtime
-    - Display GNSS fix status and filter state
-    - Clean up and exit
+The example streams the following filter data:
+
+### TOW Data
+- **Units**: seconds
+- **Description**: Time of Week - GPS time reference
+- **Format**: Floating-point timestamp value
+
+### Position LLH Data
+- **Units**:
+    - Latitude: degrees
+    - Longitude: degrees
+    - Ellipsoid Height: meters
+- **Description**: Position in Latitude, Longitude, Height coordinate system
+- **Format**: [Latitude, Longitude, Height] vector
+
+### Velocity NED Data
+- **Units**: m/s (meters per second)
+- **Description**: Velocity in North, East, Down coordinate frame
+- **Format**: [North, East, Down] velocity vector
+
+### Euler Angles Data
+- **Units**: radians
+- **Description**: Orientation expressed as Euler angles
+- **Format**: [Roll, Pitch, Yaw] angle vector
+
+## Streaming Output Format
+
+The example displays filter data in the following format:
+```
+TOW = 123456.789    Position LLH = [ 4.123456, -83.54321,  123.4567]    Velocity NED = [ 1.234567, -0.987654,  0.123456]     Euler Angles = [ 0.012345, -0.067890,  1.234567]
+```
+
+## Filter State Progression
+
+The example monitors and displays filter state transitions:
+1. **Startup** - Filter startup
+2. **Initialization** - Filter initialization
+3. **Run Solution Valid** - Valid filter solution
+4. **Run Solution Invalid** - Invalid filter solution
+
+## GNSS Fix State Progression
+
+The example monitors and displays GNSS fix state transitions:
+1. **No Fix** - Initial state with no satellite positioning
+2. **Invalid** - Fix data is present but flagged as unreliable or corrupted
+3. **Time Only** - Time synchronization established but no positioning
+4. **2D Fix** - Horizontal positioning available (latitude/longitude)
+5. **3D Fix** - Full positioning with altitude information
 
 ## Error Handling
 
 The example includes comprehensive error handling with:
 - Command result checking using `mip_cmd_result`
+- Connection failure detection and recovery
 - Graceful termination functions for different error types
 - Detailed error messages with context
 
@@ -99,7 +214,7 @@ This example demonstrates:
 
 ## Requirements
 
-- MicroStrain 5-series GNSS/INS device
+- MicroStrain 5-series GNSS/INS device (3DM-CX5-GNSS/INS, or 3DM-GX5-GNSS/INS)
 - Serial connection (USB or RS-232)
 - MIP SDK library with C support
 - C11 or later compiler
@@ -108,4 +223,4 @@ This example demonstrates:
 
 - C++ version: `5_series_gnss_ins_example.cpp`
 - Other examples in the `examples/` directory
-- MIP SDK documentation
+- [MIP SDK documentation](https://lord-microstrain.github.io/mip_sdk_documentation/)

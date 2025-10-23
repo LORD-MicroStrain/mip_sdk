@@ -1,7 +1,6 @@
 #pragma once
 
 #include "mip_packet.h"
-#include "mip_offsets.h"
 
 #include "mip_types.h"
 
