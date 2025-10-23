@@ -77,7 +77,7 @@ target_compile_options(microstrain_test_cpp INTERFACE
 # ---------------------------------------------------------------
 
 if(MICROSTRAIN_TEST_USE_UNITY)
-    include(scripts/InstallUnity.cmake)
+    include(scripts/internal/InstallUnity.cmake)
 
     target_compile_definitions(microstrain_test_c INTERFACE
         "MICROSTRAIN_TEST_USE_UNITY"
@@ -93,7 +93,7 @@ endif()
 # ---------------------------------------------------------------
 
 if(MICROSTRAIN_TEST_USE_DOCTEST)
-    include(scripts/InstallDoctest.cmake)
+    include(scripts/internal/InstallDoctest.cmake)
 
     target_compile_definitions(microstrain_test_cpp INTERFACE
         "MICROSTRAIN_TEST_USE_DOCTEST"
