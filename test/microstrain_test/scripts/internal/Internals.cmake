@@ -95,6 +95,9 @@ function(internal_generate_test_execution_logic_with_commandline_filtering
         set(MAIN_CONTENT "${MAIN_CONTENT}        INTERNAL_RUN_MICROSTRAIN_TEST_CASE_AUTO_DISCOVER(${SUITE_NAME}, ${TEST_NAME}, \"${TEST_FILEPATH_ESCAPED}\");\n")
         set(MAIN_CONTENT "${MAIN_CONTENT}    }\n")
     endforeach()
+
+    # Return the content to parent scope
+    set(${OUT_MAIN_CONTENT} "${MAIN_CONTENT}" PARENT_SCOPE)
 endfunction()
 
 
