@@ -2,10 +2,17 @@
 # Dependencies
 # ---------------------------------------------------------------
 
+include(FetchContent)
+
 set(MICROSTRAIN_TEST_USE_UNITY ON CACHE BOOL "" FORCE)
 set(MICROSTRAIN_TEST_USE_DOCTEST ON CACHE BOOL "" FORCE)
-# TODO: Will be moved to separate repo
-add_subdirectory("microstrain_test")
+
+FetchContent_Declare(microstrain_test
+    GIT_REPOSITORY https://github.com/LORD-MicroStrain/microstrain_test.git
+    GIT_TAG v0.1.0
+)
+
+FetchContent_MakeAvailable(microstrain_test)
 
 # ---------------------------------------------------------------
 # Target templates
