@@ -21,7 +21,6 @@ REMOVED - A function/class has been removed.
 Forthcoming
 -----------
 ### New Features
-* Added MicrostrainTest test wrapper framework
 ### Interface Changes
 ### Bug Fixes
 

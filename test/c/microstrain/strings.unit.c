@@ -14,10 +14,10 @@ MICROSTRAIN_TEST_CASE(C_string_concatentation, A_zero_terminated_string_can_be_c
 
     const bool ok = microstrain_string_concat(buffer, sizeof(buffer), &index, string, string_length);
 
-    TEST_ASSERT_TRUE(ok);
-    TEST_ASSERT_EQUAL_INT(index, string_length);
-    TEST_ASSERT_EQUAL_CHAR(buffer[5], '\0');
-    TEST_ASSERT_EQUAL_STRING(buffer, "12345\0____");
+    ASSERT_TRUE(ok);
+    ASSERT_EQUAL_INT(index, string_length);
+    ASSERT_EQUAL_CHAR(buffer[5], '\0');
+    ASSERT_EQUAL_STRING(buffer, "12345\0____");
 }
 
 MICROSTRAIN_TEST_CASE(C_string_concatenation, String_concatenation_to_an_empty_buffer_fails_gracefully_if_buffer_too_small)
@@ -31,10 +31,10 @@ MICROSTRAIN_TEST_CASE(C_string_concatenation, String_concatenation_to_an_empty_b
 
     const bool ok = microstrain_string_concat(buffer, fake_buffer_size, &index, string, string_length);
 
-    TEST_ASSERT_FALSE(ok);
-    TEST_ASSERT_EQUAL_INT(index, string_length);
-    TEST_ASSERT_EQUAL_CHAR(buffer[3], '\0');
-    TEST_ASSERT_EQUAL_STRING(buffer, "123\0______");
+    ASSERT_FALSE(ok);
+    ASSERT_EQUAL_INT(index, string_length);
+    ASSERT_EQUAL_CHAR(buffer[3], '\0');
+    ASSERT_EQUAL_STRING(buffer, "123\0______");
 }
 
 MICROSTRAIN_TEST_CASE(C_string_concatenation, String_concatenation_computes_required_buffer_size_when_buffer_is_null)
@@ -45,8 +45,8 @@ MICROSTRAIN_TEST_CASE(C_string_concatenation, String_concatenation_computes_requ
 
     const bool ok = microstrain_string_concat(NULL, 0, &index, string, string_length);
 
-    TEST_ASSERT_TRUE(ok);
-    TEST_ASSERT_EQUAL_INT(index, string_length);
+    ASSERT_TRUE(ok);
+    ASSERT_EQUAL_INT(index, string_length);
 }
 
 MICROSTRAIN_TEST_CASE(C_string_concatenation, A_zero_terminated_string_can_be_concatenated_to_a_non_empty_buffer)
@@ -58,10 +58,10 @@ MICROSTRAIN_TEST_CASE(C_string_concatenation, A_zero_terminated_string_can_be_co
 
     const bool ok = microstrain_string_concat(buffer, sizeof(buffer), &index, "6789", 4);
 
-    TEST_ASSERT_TRUE(ok);
-    TEST_ASSERT_EQUAL_INT(index, 9);
-    TEST_ASSERT_EQUAL_CHAR(buffer[9], '\0');
-    TEST_ASSERT_EQUAL_STRING(buffer, "123456789\0");
+    ASSERT_TRUE(ok);
+    ASSERT_EQUAL_INT(index, 9);
+    ASSERT_EQUAL_CHAR(buffer[9], '\0');
+    ASSERT_EQUAL_STRING(buffer, "123456789\0");
 }
 
 MICROSTRAIN_TEST_CASE(C_string_concatenation, String_concatenation_to_a_non_empty_buffer_fails_gracefully_if_buffer_too_small)
@@ -73,10 +73,10 @@ MICROSTRAIN_TEST_CASE(C_string_concatenation, String_concatenation_to_a_non_empt
 
     const bool ok = microstrain_string_concat(buffer, fake_buffer_size, &index, "89ABCDEF", 8);
 
-    TEST_ASSERT_FALSE(ok);
-    TEST_ASSERT_EQUAL_INT(index, 16);
-    TEST_ASSERT_EQUAL_CHAR(buffer[9], '\0');
-    TEST_ASSERT_EQUAL_STRING(buffer, "012345678\0##########"); // TODO: I don't think characters after the null terminator are compared.
+    ASSERT_FALSE(ok);
+    ASSERT_EQUAL_INT(index, 16);
+    ASSERT_EQUAL_CHAR(buffer[9], '\0');
+    ASSERT_EQUAL_STRING(buffer, "012345678\0##########"); // TODO: I don't think characters after the null terminator are compared.
                                                                //       Should they be?
 
 }
@@ -92,10 +92,10 @@ MICROSTRAIN_TEST_CASE(C_string_concatenation, String_concatenation_to_a_non_empt
 
     const bool ok = microstrain_string_concat(buffer, fake_buffer_size, &index, msg, msg_size);
 
-    TEST_ASSERT_FALSE(ok);
-    TEST_ASSERT_EQUAL_INT(index, 18);
-    TEST_ASSERT_EQUAL_CHAR(buffer[9], '\0');
-    TEST_ASSERT_EQUAL_STRING(buffer, "012345678\0__________");
+    ASSERT_FALSE(ok);
+    ASSERT_EQUAL_INT(index, 18);
+    ASSERT_EQUAL_CHAR(buffer[9], '\0');
+    ASSERT_EQUAL_STRING(buffer, "012345678\0__________");
 }
 
 MICROSTRAIN_TEST_CASE(C_string_concatenation, Multiple_string_concatenations_work)
@@ -112,10 +112,10 @@ MICROSTRAIN_TEST_CASE(C_string_concatenation, Multiple_string_concatenations_wor
     ok &= microstrain_string_concat_l(buffer, sizeof(buffer), &index, "long ");
     ok &= microstrain_string_concat_l(buffer, sizeof(buffer), &index, "test...");
 
-    TEST_ASSERT_TRUE(ok);
-    TEST_ASSERT_EQUAL_INT(index, 27);
-    TEST_ASSERT_EQUAL_CHAR(buffer[27], '\0');
-    TEST_ASSERT_EQUAL_STRING(buffer, "This is a very long test...");
+    ASSERT_TRUE(ok);
+    ASSERT_EQUAL_INT(index, 27);
+    ASSERT_EQUAL_CHAR(buffer[27], '\0');
+    ASSERT_EQUAL_STRING(buffer, "This is a very long test...");
 }
 
 MICROSTRAIN_TEST_CASE(C_string_concatenation, Multiple_string_concatenations_fail_gracefully_when_buffer_too_small)
@@ -133,10 +133,10 @@ MICROSTRAIN_TEST_CASE(C_string_concatenation, Multiple_string_concatenations_fai
     ok &= microstrain_string_concat_l(buffer, fake_buffer_size, &index, "long ");
     ok &= microstrain_string_concat_l(buffer, fake_buffer_size, &index, "test...");
 
-    TEST_ASSERT_FALSE(ok);
-    TEST_ASSERT_EQUAL_INT(index, 27);
-    TEST_ASSERT_EQUAL_CHAR(buffer[9], '\0');
-    TEST_ASSERT_EQUAL_STRING(buffer, "This is a");
+    ASSERT_FALSE(ok);
+    ASSERT_EQUAL_INT(index, 27);
+    ASSERT_EQUAL_CHAR(buffer[9], '\0');
+    ASSERT_EQUAL_STRING(buffer, "This is a");
 }
 
 MICROSTRAIN_TEST_CASE(C_string_formatting, A_string_can_be_formatted_and_written_to_an_empty_buffer)
@@ -147,10 +147,10 @@ MICROSTRAIN_TEST_CASE(C_string_formatting, A_string_can_be_formatted_and_written
 
     const bool ok = microstrain_string_format(buffer, sizeof(buffer), &index, "%d==0x%x", 4096, 0x1000);
 
-    TEST_ASSERT_TRUE(ok);
-    TEST_ASSERT_EQUAL_INT(index, 4+2+2+4);
-    TEST_ASSERT_EQUAL_CHAR(buffer[12], '\0');
-    TEST_ASSERT_EQUAL_STRING(buffer, "4096==0x1000\0_______");
+    ASSERT_TRUE(ok);
+    ASSERT_EQUAL_INT(index, 4+2+2+4);
+    ASSERT_EQUAL_CHAR(buffer[12], '\0');
+    ASSERT_EQUAL_STRING(buffer, "4096==0x1000\0_______");
 }
 
 MICROSTRAIN_TEST_CASE(C_string_formatting, String_formatting_fails_gracefully_when_buffer_is_too_small)
@@ -161,10 +161,10 @@ MICROSTRAIN_TEST_CASE(C_string_formatting, String_formatting_fails_gracefully_wh
 
     const bool ok = microstrain_string_format(buffer, 10, &index, "%d==0x%x", 4096, 0x1000);
 
-    TEST_ASSERT_FALSE(ok);
-    TEST_ASSERT_EQUAL_INT(index, 4+2+2+4);
-    TEST_ASSERT_EQUAL_CHAR(buffer[9], '\0');
-    TEST_ASSERT_EQUAL_STRING(buffer, "4096==0x1\0__________");
+    ASSERT_FALSE(ok);
+    ASSERT_EQUAL_INT(index, 4+2+2+4);
+    ASSERT_EQUAL_CHAR(buffer[9], '\0');
+    ASSERT_EQUAL_STRING(buffer, "4096==0x1\0__________");
 }
 
 MICROSTRAIN_TEST_CASE(C_string_formatting, String_formatting_calculates_required_buffer_size_if_buffer_is_null)
@@ -173,8 +173,8 @@ MICROSTRAIN_TEST_CASE(C_string_formatting, String_formatting_calculates_required
 
     const bool ok = microstrain_string_format(NULL, 0, &index, "%d==0x%x", 4096, 0x1000);
 
-    TEST_ASSERT_TRUE(ok);
-    TEST_ASSERT_EQUAL_INT(index, 4+2+2+4);
+    ASSERT_TRUE(ok);
+    ASSERT_EQUAL_INT(index, 4+2+2+4);
 }
 
 MICROSTRAIN_TEST_CASE(C_string_formatting, A_string_can_be_formatted_and_written_to_a_non_empty_buffer)
@@ -186,10 +186,10 @@ MICROSTRAIN_TEST_CASE(C_string_formatting, A_string_can_be_formatted_and_written
 
     const bool ok = microstrain_string_format(buffer, sizeof(buffer), &index, "%d==0x%x", 4096, 0x1000);
 
-    TEST_ASSERT_TRUE(ok);
-    TEST_ASSERT_EQUAL_INT(index, 6+4+2+2+4);
-    TEST_ASSERT_EQUAL_CHAR(buffer[18], '\0');
-    TEST_ASSERT_EQUAL_STRING(buffer, "Test: 4096==0x1000\0_");
+    ASSERT_TRUE(ok);
+    ASSERT_EQUAL_INT(index, 6+4+2+2+4);
+    ASSERT_EQUAL_CHAR(buffer[18], '\0');
+    ASSERT_EQUAL_STRING(buffer, "Test: 4096==0x1000\0_");
 }
 
 MICROSTRAIN_TEST_CASE(C_string_formatting, String_formatting_to_a_non_empty_buffer_fails_gracefully_if_buffer_too_small)
@@ -201,10 +201,10 @@ MICROSTRAIN_TEST_CASE(C_string_formatting, String_formatting_to_a_non_empty_buff
 
     const bool ok = microstrain_string_format(buffer, 10, &index, "%d==0x%x", 4096, 0x1000);
 
-    TEST_ASSERT_FALSE(ok);
-    TEST_ASSERT_EQUAL_INT(index, 6+4+2+2+4);
-    TEST_ASSERT_EQUAL_CHAR(buffer[9], '\0');
-    TEST_ASSERT_EQUAL_STRING(buffer, "Test: 409\0__________");
+    ASSERT_FALSE(ok);
+    ASSERT_EQUAL_INT(index, 6+4+2+2+4);
+    ASSERT_EQUAL_CHAR(buffer[9], '\0');
+    ASSERT_EQUAL_STRING(buffer, "Test: 409\0__________");
 }
 
 MICROSTRAIN_TEST_CASE(C_string_formatting, Multiple_string_formattings_work)
@@ -220,10 +220,10 @@ MICROSTRAIN_TEST_CASE(C_string_formatting, Multiple_string_formattings_work)
     ok &= microstrain_string_format(buffer, 50, &index, "C=%s", "abcdefg");
     ok &= microstrain_string_format(buffer, 50, &index, "]");
 
-    TEST_ASSERT_TRUE(ok);
-    TEST_ASSERT_EQUAL_INT(index, 9+2+5+2+4+4+2+2+7+1);
-    TEST_ASSERT_EQUAL_CHAR(buffer[38], '\0');
-    TEST_ASSERT_EQUAL_STRING(buffer, "Values: [A=54321, B=0xABCD, C=abcdefg]");
+    ASSERT_TRUE(ok);
+    ASSERT_EQUAL_INT(index, 9+2+5+2+4+4+2+2+7+1);
+    ASSERT_EQUAL_CHAR(buffer[38], '\0');
+    ASSERT_EQUAL_STRING(buffer, "Values: [A=54321, B=0xABCD, C=abcdefg]");
 }
 
 MICROSTRAIN_TEST_CASE(C_string_formatting, Multiple_string_formattings_fail_gracefully_when_buffer_too_small)
@@ -239,10 +239,10 @@ MICROSTRAIN_TEST_CASE(C_string_formatting, Multiple_string_formattings_fail_grac
     ok &= microstrain_string_format(buffer, 25, &index, "C=%s", "abcdefg");
     ok &= microstrain_string_format(buffer, 25, &index, "]");
 
-    TEST_ASSERT_FALSE(ok);
-    TEST_ASSERT_EQUAL_INT(index, 9+2+5+2+4+4+2+2+7+1);
-    TEST_ASSERT_EQUAL_CHAR(buffer[24], '\0');
-    TEST_ASSERT_EQUAL_STRING(buffer, "Values: [A=54321, B=0xAB");
+    ASSERT_FALSE(ok);
+    ASSERT_EQUAL_INT(index, 9+2+5+2+4+4+2+2+7+1);
+    ASSERT_EQUAL_CHAR(buffer[24], '\0');
+    ASSERT_EQUAL_STRING(buffer, "Values: [A=54321, B=0xAB");
 }
 
 MICROSTRAIN_TEST_CASE(C_string_formatting, A_byte_array_can_formatted_as_hexadecimal_and_written_to_a_string_buffer)
@@ -254,10 +254,10 @@ MICROSTRAIN_TEST_CASE(C_string_formatting, A_byte_array_can_formatted_as_hexadec
 
     const bool ok = microstrain_string_bytes_to_hex_str(buffer, 25, &index, data, sizeof(data), 0);
 
-    TEST_ASSERT_TRUE(ok);
-    TEST_ASSERT_EQUAL_INT(index, 2+2+2+2);
-    TEST_ASSERT_EQUAL_CHAR(buffer[8], '\0');
-    TEST_ASSERT_EQUAL_STRING(buffer, "A1B2C3D4");
+    ASSERT_TRUE(ok);
+    ASSERT_EQUAL_INT(index, 2+2+2+2);
+    ASSERT_EQUAL_CHAR(buffer[8], '\0');
+    ASSERT_EQUAL_STRING(buffer, "A1B2C3D4");
 }
 
 MICROSTRAIN_TEST_CASE(C_string_formatting, A_byte_array_can_formatted_as_hexadecimal_with_group1_and_written_to_a_string_buffer)
@@ -269,10 +269,10 @@ MICROSTRAIN_TEST_CASE(C_string_formatting, A_byte_array_can_formatted_as_hexadec
 
     const bool ok = microstrain_string_bytes_to_hex_str(buffer, 25, &index, data, sizeof(data), 1);
 
-    TEST_ASSERT_TRUE(ok);
-    TEST_ASSERT_EQUAL_INT(index, 2+1+2+1+2+1+2);
-    TEST_ASSERT_EQUAL_CHAR(buffer[11], '\0');
-    TEST_ASSERT_EQUAL_STRING(buffer, "A1 B2 C3 D4");
+    ASSERT_TRUE(ok);
+    ASSERT_EQUAL_INT(index, 2+1+2+1+2+1+2);
+    ASSERT_EQUAL_CHAR(buffer[11], '\0');
+    ASSERT_EQUAL_STRING(buffer, "A1 B2 C3 D4");
 }
 
 MICROSTRAIN_TEST_CASE(C_string_formatting, A_byte_array_can_formatted_as_hexadecimal_with_group2_and_written_to_a_string_buffer)
@@ -284,10 +284,10 @@ MICROSTRAIN_TEST_CASE(C_string_formatting, A_byte_array_can_formatted_as_hexadec
 
     const bool ok = microstrain_string_bytes_to_hex_str(buffer, 25, &index, data, sizeof(data), 2);
 
-    TEST_ASSERT_TRUE(ok);
-    TEST_ASSERT_EQUAL_INT(index, 2+2+1+2+2);
-    TEST_ASSERT_EQUAL_CHAR(buffer[9], '\0');
-    TEST_ASSERT_EQUAL_STRING(buffer, "A1B2 C3D4");
+    ASSERT_TRUE(ok);
+    ASSERT_EQUAL_INT(index, 2+2+1+2+2);
+    ASSERT_EQUAL_CHAR(buffer[9], '\0');
+    ASSERT_EQUAL_STRING(buffer, "A1B2 C3D4");
 }
 
 MICROSTRAIN_TEST_CASE(C_string_formatting, A_byte_array_can_formatted_as_hexadecimal_with_partial_group2_and_written_to_a_string_buffer)
@@ -299,10 +299,10 @@ MICROSTRAIN_TEST_CASE(C_string_formatting, A_byte_array_can_formatted_as_hexadec
 
     const bool ok = microstrain_string_bytes_to_hex_str(buffer, 25, &index, data, sizeof(data), 2);
 
-    TEST_ASSERT_TRUE(ok);
-    TEST_ASSERT_EQUAL_INT(index, 2+2+1+2+2+1+2);
-    TEST_ASSERT_EQUAL_CHAR(buffer[12], '\0');
-    TEST_ASSERT_EQUAL_STRING(buffer, "A1B2 C3D4 E5");
+    ASSERT_TRUE(ok);
+    ASSERT_EQUAL_INT(index, 2+2+1+2+2+1+2);
+    ASSERT_EQUAL_CHAR(buffer[12], '\0');
+    ASSERT_EQUAL_STRING(buffer, "A1B2 C3D4 E5");
 }
 
 MICROSTRAIN_TEST_CASE(C_string_formatting, A_byte_array_can_formatted_as_hexadecimal_with_group4_and_written_to_a_string_buffer)
@@ -314,10 +314,10 @@ MICROSTRAIN_TEST_CASE(C_string_formatting, A_byte_array_can_formatted_as_hexadec
 
     const bool ok = microstrain_string_bytes_to_hex_str(buffer, 25, &index, data, sizeof(data), 4);
 
-    TEST_ASSERT_TRUE(ok);
-    TEST_ASSERT_EQUAL_INT(index, 2+2+2+2+1+2+2+2+2);
-    TEST_ASSERT_EQUAL_CHAR(buffer[17], '\0');
-    TEST_ASSERT_EQUAL_STRING(buffer, "A8B9CEDF 01234567");
+    ASSERT_TRUE(ok);
+    ASSERT_EQUAL_INT(index, 2+2+2+2+1+2+2+2+2);
+    ASSERT_EQUAL_CHAR(buffer[17], '\0');
+    ASSERT_EQUAL_STRING(buffer, "A8B9CEDF 01234567");
 }
 
 MICROSTRAIN_TEST_CASE(C_string_formatting, Byte_formatting_handles_no_data_properly)
@@ -328,8 +328,8 @@ MICROSTRAIN_TEST_CASE(C_string_formatting, Byte_formatting_handles_no_data_prope
 
     const bool ok = microstrain_string_bytes_to_hex_str(buffer, 10, &index, NULL, 0, 0);
 
-    TEST_ASSERT_TRUE(ok);
-    TEST_ASSERT_EQUAL_INT(index, 0);
+    ASSERT_TRUE(ok);
+    ASSERT_EQUAL_INT(index, 0);
 }
 
 MICROSTRAIN_TEST_CASE(C_string_formatting, A_byte_array_can_formatted_as_hexadecimal_and_written_to_a_non_empty_string_buffer)
@@ -342,10 +342,10 @@ MICROSTRAIN_TEST_CASE(C_string_formatting, A_byte_array_can_formatted_as_hexadec
 
     const bool ok = microstrain_string_bytes_to_hex_str(buffer, 25, &index, data, sizeof(data), 0);
 
-    TEST_ASSERT_TRUE(ok);
-    TEST_ASSERT_EQUAL_INT(index, 6+2+2+2+2);
-    TEST_ASSERT_EQUAL_CHAR(buffer[14], '\0');
-    TEST_ASSERT_EQUAL_STRING(buffer, "Data: A1B2C3D4");
+    ASSERT_TRUE(ok);
+    ASSERT_EQUAL_INT(index, 6+2+2+2+2);
+    ASSERT_EQUAL_CHAR(buffer[14], '\0');
+    ASSERT_EQUAL_STRING(buffer, "Data: A1B2C3D4");
 }
 
 MICROSTRAIN_TEST_CASE(C_string_formatting, Byte_formatting_fails_gracefully_when_buffer_too_small)
@@ -358,8 +358,8 @@ MICROSTRAIN_TEST_CASE(C_string_formatting, Byte_formatting_fails_gracefully_when
 
     const bool ok = microstrain_string_bytes_to_hex_str(buffer, 10, &index, data, sizeof(data), 0);
 
-    TEST_ASSERT_FALSE(ok);
-    TEST_ASSERT_EQUAL_INT(index, 6+2+2+2+2);
-    TEST_ASSERT_EQUAL_CHAR(buffer[6], '\0');
-    TEST_ASSERT_EQUAL_STRING(buffer, "Data: ");
+    ASSERT_FALSE(ok);
+    ASSERT_EQUAL_INT(index, 6+2+2+2+2);
+    ASSERT_EQUAL_CHAR(buffer[6], '\0');
+    ASSERT_EQUAL_STRING(buffer, "Data: ");
 }

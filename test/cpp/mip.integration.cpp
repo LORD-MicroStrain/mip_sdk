@@ -54,7 +54,7 @@ bool packetCallback(void*, const PacketView *parsedPacket, Timestamp timestamp)
     return true;
 }
 
-MICROSTRAIN_TEST_CASE("Packet Builder", "Packets can be built and parsed correctly")
+MICROSTRAIN_TEST_CASE("C++ Packet Builder", "Packets can be built and parsed correctly")
 {
     std::random_device random_device;
     std::mt19937 random_generator(random_device());
