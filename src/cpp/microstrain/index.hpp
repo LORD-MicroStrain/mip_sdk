@@ -48,10 +48,10 @@ namespace microstrain
 
         constexpr void clear() { m_index = INVALID; }
 
-        Index& operator++() { m_index++; return *this; }
-        Index& operator--() { m_index--; return *this; }
-        Index operator++(int) { Index tmp(*this); m_index++; return tmp; }
-        Index operator--(int) { Index tmp(*this); m_index--; return tmp; }
+        constexpr Index& operator++() { m_index++; return *this; }
+        constexpr Index& operator--() { m_index--; return *this; }
+        constexpr Index operator++(int) { Index tmp(*this); m_index++; return tmp; }
+        constexpr Index operator--(int) { Index tmp(*this); m_index--; return tmp; }
 
         constexpr Index(const Id& other);
         constexpr Index& operator=(const Id& other);
@@ -95,10 +95,10 @@ namespace microstrain
 
         constexpr void clear() { m_id = INVALID; }
 
-        Id& operator++() { m_id++; return *this; }
-        Id& operator--() { m_id--; return *this; }
-        Id operator++(int) { Id tmp(*this); m_id++; return tmp; }
-        Id operator--(int) { Id tmp(*this); m_id--; return tmp; }
+        constexpr Id& operator++() { m_id++; return *this; }
+        constexpr Id& operator--() { m_id--; return *this; }
+        constexpr Id operator++(int) { Id tmp(*this); m_id++; return tmp; }
+        constexpr Id operator--(int) { Id tmp(*this); m_id--; return tmp; }
 
         constexpr Id(const Index& other) : m_id(other.id()) {}
         constexpr Id& operator=(const Index& other) { return setFromIndex(other.index()); }
