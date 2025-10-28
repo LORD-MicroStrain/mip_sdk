@@ -23,6 +23,7 @@ Forthcoming
 ### New Features
 ### Interface Changes
 ### Bug Fixes
+* Fixes names of matrix types in metadata to have the right type specifier
 
 V4.0.0
 -----------
