@@ -309,14 +309,14 @@ namespace mip::metadata
             },
         };
 
-        static constexpr inline StructInfo matrix_f = {
+        static constexpr inline StructInfo matrix_d = {
             /* .name       = */ "Matrix3d",
             /* .title      = */ "3x3 Double Matrix",
             /* .docs       = */ "Represents a 3D matrix of doubles.",
             /* .parameters = */ parameters_m,
         };
 
-        static constexpr inline StructInfo matrix_d = {
+        static constexpr inline StructInfo matrix_f = {
             /* .name       = */ "Matrix3f",
             /* .title      = */ "3x3 Float Matrix",
             /* .docs       = */ "Represents a 3D matrix of floats.",
