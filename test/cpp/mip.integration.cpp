@@ -3,13 +3,13 @@
 #include <iomanip>
 #include <random>
 
-#include <microstrain_test.hpp>
+#include <microstrain_test/microstrain_test.hpp>
 #include <mip/mip.hpp>
 
 using namespace mip;
 using namespace mip::C;
 
-uint8_t packetBuffer[mip::C::mip_packet_index_length::MIP_PACKET_LENGTH_MAX];
+uint8_t packetBuffer[MIP_PACKET_LENGTH_MAX];
 uint8_t parseBuffer[1024];
 
 FieldView fields[(unsigned int)MIP_PACKET_PAYLOAD_LENGTH_MAX / (unsigned int)MIP_FIELD_LENGTH_MIN];
@@ -23,18 +23,18 @@ bool packetCallback(void*, const PacketView *parsedPacket, Timestamp timestamp)
 
     for(FieldView field : *parsedPacket)
     {
-        LOG_ON_FAIL("\tFrom field " << numParsedFields << "/" << numFields);
-        LOG_ON_FAIL("\tDescriptor set: " << std::fixed << std::setprecision(2) << field.descriptorSet() << "/" << fields[numParsedFields].descriptorSet());
-        LOG_ON_FAIL("\tField Descriptor: " << std::fixed << std::setprecision(2) << field.fieldDescriptor() << "/" << fields[numParsedFields].fieldDescriptor());
-        LOG_ON_FAIL("\tPayload Length: " << std::fixed << std::setprecision(2) << field.payloadLength() << "/" << fields[numParsedFields].payloadLength());
+        INFO("\tFrom field " << numParsedFields << "/" << numFields);
+        INFO("\tDescriptor set: " << std::fixed << std::setprecision(2) << field.descriptorSet() << "/" << fields[numParsedFields].descriptorSet());
+        INFO("\tField Descriptor: " << std::fixed << std::setprecision(2) << field.fieldDescriptor() << "/" << fields[numParsedFields].fieldDescriptor());
+        INFO("\tPayload Length: " << std::fixed << std::setprecision(2) << field.payloadLength() << "/" << fields[numParsedFields].payloadLength());
 
-        FAIL_AND_LOG_IF_NOT_EQUAL(field.descriptorSet(), fields[numParsedFields].descriptorSet(),
+        CHECK_MESSAGE(field.descriptorSet() == fields[numParsedFields].descriptorSet(),
             "Descriptor set does not match.");
 
-        FAIL_AND_LOG_IF_NOT_EQUAL(field.fieldDescriptor(), fields[numParsedFields].fieldDescriptor(),
+        CHECK_MESSAGE(field.fieldDescriptor() == fields[numParsedFields].fieldDescriptor(),
             "Field descriptor does not match.");
 
-        FAIL_AND_LOG_IF_NOT_EQUAL(field.payloadLength(), fields[numParsedFields].payloadLength(),
+        CHECK_MESSAGE(field.payloadLength() == fields[numParsedFields].payloadLength(),
             "Payload length does not match.");
 
         int result = std::memcmp(
@@ -42,19 +42,19 @@ bool packetCallback(void*, const PacketView *parsedPacket, Timestamp timestamp)
             fields[numParsedFields].payload().data(),
             std::min(field.payloadLength(), fields[numParsedFields].payloadLength())
         );
-        FAIL_AND_LOG_IF_NOT_EQUAL(result, 0,
+        CHECK_MESSAGE(result == 0,
             "Payloads do not match.");
 
         numParsedFields++;
     }
 
-    FAIL_AND_LOG_IF_NOT_EQUAL(numParsedFields, numFields,
+    CHECK_MESSAGE(numParsedFields == numFields,
         "Field count mismatch: " << numParsedFields << " != " << numFields);
 
     return true;
 }
 
-TEST("Packet Builder", "Packets can be built and parsed correctly")
+MICROSTRAIN_TEST_CASE("C++ Packet Builder", "Packets can be built and parsed correctly")
 {
     std::random_device random_device;
     std::mt19937 random_generator(random_device());
@@ -82,7 +82,7 @@ TEST("Packet Builder", "Packets can be built and parsed correctly")
             for(unsigned int p=0; p<payloadLength; p++)
                 payload.insert<uint8_t>(rand_max_distribution(random_generator) & 0xFF);
 
-            FAIL_AND_LOG_IF_NOT_TRUE(payload.isFinished(),
+            CHECK_MESSAGE(payload.isFinished(),
                 "Field " << numFields << " did not have the right size (wrote " << payload.offset() << ", expected " << payloadLength << ", max " << payload.capacity() << ").";
             );
 

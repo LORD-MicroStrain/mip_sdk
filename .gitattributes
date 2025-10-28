@@ -1,3 +1,13 @@
 # Denote all files that are truly binary and should not be modified.
 *.bin binary
 *.svg binary
+
+# Auto detect text files and normalize line endings to LF
+* text=auto
+
+# Explicitly set shell scripts to LF
+*.sh text eol=lf
+
+# Ensure Windows batch files stay CRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf

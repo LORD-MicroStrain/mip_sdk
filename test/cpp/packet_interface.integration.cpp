@@ -73,7 +73,7 @@ void checkPacketBuf(mip::SizedPacketBuf<Size>& packet, microstrain::ConstU8Array
     FAIL_AND_LOG_IF_NOT_EQUAL(packet.buffer().size(), Size, "Buffer size doesn't match Size");
 }
 
-TEST("Packet view", "Packet view construction works as expected")
+INTEGRATION_TEST("Packet view", "Packet view construction works as expected")
 {
     uint8_t buffer[mip::PACKET_LENGTH_MAX];
 
@@ -110,7 +110,7 @@ TEST("Packet view", "Packet view construction works as expected")
     checkPacketView(packet5, PING, "PacketView existing constructor (U8ArrayView version)");
 }
 
-TEST("Packet buffer", "Packet buffer construction works as expected")
+INTEGRATION_TEST("Packet buffer", "Packet buffer construction works as expected")
 {
     // Default constructor
     const mip::PacketBuf packet1;
