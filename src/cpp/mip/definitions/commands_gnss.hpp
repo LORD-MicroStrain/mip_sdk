@@ -32,13 +32,14 @@ enum
     
     CMD_LIST_RECEIVERS             = 0x01,
     CMD_SIGNAL_CONFIGURATION       = 0x02,
+    CMD_RECEIVER_RESET             = 0x03,
     CMD_RTK_DONGLE_CONFIGURATION   = 0x10,
     CMD_SPARTN_CONFIGURATION       = 0x20,
     
     REPLY_LIST_RECEIVERS           = 0x81,
     REPLY_SIGNAL_CONFIGURATION     = 0x82,
-    REPLY_RTK_DONGLE_CONFIGURATION = 0x90,
     REPLY_SPARTN_CONFIGURATION     = 0xA0,
+    REPLY_RTK_DONGLE_CONFIGURATION = 0x90,
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -56,6 +57,15 @@ static constexpr const uint16_t GNSS_GALILEO_ENABLE_E5A = 0x0004;
 static constexpr const uint16_t GNSS_BEIDOU_ENABLE_B1 = 0x0001;
 static constexpr const uint16_t GNSS_BEIDOU_ENABLE_B2 = 0x0002;
 static constexpr const uint16_t GNSS_BEIDOU_ENABLE_B2A = 0x0004;
+enum class GnssReceiverId : uint8_t
+{
+    ALL             = 0,  ///<  All receivers (for commands which support this)
+    INTERNAL_RECV_1 = 1,  ///<  
+    INTERNAL_RECV_2 = 2,  ///<  
+    USER_RECV_1     = 4,  ///<  
+    USER_RECV_2     = 5,  ///<  
+};
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Mip Fields
@@ -222,6 +232,55 @@ TypedResult<SignalConfiguration> readSignalConfiguration(C::mip_interface& devic
 TypedResult<SignalConfiguration> saveSignalConfiguration(C::mip_interface& device);
 TypedResult<SignalConfiguration> loadSignalConfiguration(C::mip_interface& device);
 TypedResult<SignalConfiguration> defaultSignalConfiguration(C::mip_interface& device);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup gnss_receiver_reset_cpp  (0x0E,0x03) Receiver Reset
+/// Reset GNSS receiver(s).
+/// 
+///
+///@{
+
+struct ReceiverReset
+{
+    enum class ResetType : uint8_t
+    {
+        HARDWARE = 1,  ///<  Hardware-level reset of the gnss receiver.
+        COLD     = 2,  ///<  Full gnss receiver software reset.
+        HOT      = 3,  ///<  Only restarts receiver positioning engine.
+        WARM     = 4,  ///<  Restarts receiver positioning and clears satellite data (ephemeris/almanac).
+    };
+    
+    /// Parameters
+    GnssReceiverId receiver_id = static_cast<GnssReceiverId>(0); ///< Receiver ID - Only internal receivers are supported.
+    ResetType reset_type = static_cast<ResetType>(0); ///< Reset level - Some devices may not support certain ResetType options.
+    
+    /// Descriptors
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::CMD_RECEIVER_RESET;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "ReceiverReset";
+    static constexpr const char* DOC_NAME = "ReceiverReset";
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto asTuple() const
+    {
+        return std::make_tuple(receiver_id,reset_type);
+    }
+    
+    auto asTuple()
+    {
+        return std::make_tuple(std::ref(receiver_id),std::ref(reset_type));
+    }
+    
+    /// Serialization
+    void insert(Serializer& serializer) const;
+    void extract(Serializer& serializer);
+    
+    typedef void Response;
+};
+TypedResult<ReceiverReset> receiverReset(C::mip_interface& device, GnssReceiverId receiverId, ReceiverReset::ResetType resetType);
 
 ///@}
 ///

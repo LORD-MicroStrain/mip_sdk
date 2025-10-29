@@ -243,6 +243,34 @@ TypedResult<SignalConfiguration> defaultSignalConfiguration(C::mip_interface& de
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SIGNAL_CONFIGURATION, buffer, (uint8_t)serializer.usedLength());
 }
+void ReceiverReset::insert(Serializer& serializer) const
+{
+    serializer.insert(receiver_id);
+    
+    serializer.insert(reset_type);
+    
+}
+void ReceiverReset::extract(Serializer& serializer)
+{
+    serializer.extract(receiver_id);
+    
+    serializer.extract(reset_type);
+    
+}
+
+TypedResult<ReceiverReset> receiverReset(C::mip_interface& device, GnssReceiverId receiverId, ReceiverReset::ResetType resetType)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    serializer.insert(receiverId);
+    
+    serializer.insert(resetType);
+    
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_RECEIVER_RESET, buffer, (uint8_t)serializer.usedLength());
+}
 void SpartnConfiguration::insert(Serializer& serializer) const
 {
     serializer.insert(function);
