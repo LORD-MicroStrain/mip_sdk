@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <type_traits>
 #include <stdint.h>
 #include <stddef.h>
@@ -56,6 +57,7 @@ struct ArrayView
     using const_iterator = const T*;
 
     constexpr ArrayView(pointer ptr, size_t count) : m_ptr(ptr) { assert(count==extent); }
+    constexpr ArrayView(const std::array<T, Extent>& data) : m_ptr(data) {}
 
     constexpr pointer begin() const noexcept { return m_ptr; }
     constexpr pointer end() const noexcept { return m_ptr+extent; }
@@ -106,8 +108,12 @@ struct ArrayView<T, DYNAMIC_EXTENT>
 
     constexpr ArrayView() = default;
     constexpr ArrayView(pointer ptr, size_t cnt) : m_ptr(ptr), m_cnt(cnt) {}
+
     template<size_t N>
     constexpr ArrayView(T (&arr)[N]) : m_ptr(arr), m_cnt(N) {}
+
+    template<size_t N>
+    constexpr ArrayView(const std::array<T,N>& data) : m_ptr(data.data()), m_cnt(N) {}
 
     constexpr pointer begin() const noexcept { return m_ptr; }
     constexpr pointer end() const noexcept { return m_ptr+m_cnt; }
