@@ -229,4 +229,13 @@ namespace mip::metadata
         //    return (it != fields.end()) && ((*it)->descriptor.fieldDescriptor==field_desc) ? *it : nullptr;
         //}
     };
+
+    template<class... Fields>
+    using DescriptorSetType = std::tuple<Fields...>;
+    // struct DescriptorSetFields
+    // {
+    //     template<size_t I>
+    //     using FieldI = typename std::tuple_element<I, std::tuple<Fields...>>::type;
+    // };
+
 } // namespace mip::metadata

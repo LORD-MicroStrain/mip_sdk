@@ -8,6 +8,9 @@
 
 namespace mip::metadata
 {
+    template<uint32_t DS>  // Upper bits are reserved.
+    struct TypeForDescriptor;
+
     // Type trait class to be specialized for each field/struct/etc.
     template<class FieldType>
     struct MetadataFor;
@@ -78,6 +81,28 @@ namespace mip::metadata
     //
     //
     //}
+
+    // template<class... Types>
+    // struct TypeList {};
+    //
+    // template<size_t Index, class TypeListT>
+    // struct GetTypeAt;
+    //
+    // template<size_t Index, class First, class... Rest>
+    // struct GetTypeAt<Index, TypeList<First, Rest...>>
+    // {
+    //     using Type = std::conditional<
+    //         Index == 0,
+    //         First,
+    //         typename GetTypeAt<Index-1, TypeList<Rest...>>::Type
+    //     >::type;
+    // };
+
+    // template<class First, class... Rest>
+    // struct GetTypeAt<0, TypeList<First, Rest...>>
+    // {
+    //     using Type = First;
+    // };
 
     //class Analyzer
     //{

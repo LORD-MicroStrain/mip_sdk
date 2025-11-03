@@ -147,7 +147,6 @@ struct MetadataFor<data_system::GpioAnalogValue>
     };
 };
 
-
 static constexpr inline const FieldInfo* DATA_SYSTEM_FIELDS[] = {
     &MetadataFor<data_system::BuiltInTest>::value,
     &MetadataFor<data_system::TimeSyncStatus>::value,
@@ -155,11 +154,44 @@ static constexpr inline const FieldInfo* DATA_SYSTEM_FIELDS[] = {
     &MetadataFor<data_system::GpioAnalogValue>::value,
 };
 
+struct SharedDataSet
+{
+    static constexpr inline const uint8_t             DESCRIPTOR_SET = data_system::DESCRIPTOR_SET;
+    static constexpr inline const CompositeDescriptor DESCRIPTOR     = {DESCRIPTOR_SET, INVALID_FIELD_DESCRIPTOR};
+
+    using Fields = std::tuple<
+        data_system::BuiltInTest,
+        data_system::TimeSyncStatus,
+        data_system::GpioState,
+        data_system::GpioAnalogValue
+    >;
+};
+
+// template<>
+// struct MetadataFor<SharedDataSet>
+// {
+// };
+
+template<>
+struct MetadataFor<SharedDataSet>
+{
+    static constexpr inline DescriptorSetInfo value = {
+        /* .descriptor = */ mip::data_system::DESCRIPTOR_SET,
+        /* .name       = */ "System Data",
+        /* .fields     = */ DATA_SYSTEM_FIELDS,
+    };
+};
+
+template<> struct TypeForDescriptor< SharedDataSet::DESCRIPTOR.as_u16() > { using type = SharedDataSet; };
+
+
+
 static constexpr DescriptorSetInfo DATA_SYSTEM = {
     /* .descriptor = */ mip::data_system::DESCRIPTOR_SET,
     /* .name       = */ "System Data",
     /* .fields     = */ DATA_SYSTEM_FIELDS,
 };
+
 
 } // namespace mip::metadata
 
