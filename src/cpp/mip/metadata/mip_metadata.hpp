@@ -11,6 +11,9 @@ namespace mip::metadata
     template<uint32_t DS>  // Upper bits are reserved.
     struct TypeForDescriptor;
 
+    template<class FieldType>
+    using DescriptorSetTypeForField = TypeForDescriptor< FieldType::DESCRIPTOR_SET << 8 >::type;
+
     // Type trait class to be specialized for each field/struct/etc.
     template<class FieldType>
     struct MetadataFor;

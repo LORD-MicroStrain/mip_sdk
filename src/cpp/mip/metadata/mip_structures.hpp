@@ -230,8 +230,8 @@ namespace mip::metadata
         //}
     };
 
-    template<class... Fields>
-    using DescriptorSetType = std::tuple<Fields...>;
+//    template<class... Fields>
+//    using DescriptorSetType = std::tuple<Fields...>;
     // struct DescriptorSetFields
     // {
     //     template<size_t I>

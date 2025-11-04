@@ -154,7 +154,7 @@ static constexpr inline const FieldInfo* DATA_SYSTEM_FIELDS[] = {
     &MetadataFor<data_system::GpioAnalogValue>::value,
 };
 
-struct SharedDataSet
+struct SystemDataSet
 {
     static constexpr inline const uint8_t             DESCRIPTOR_SET = data_system::DESCRIPTOR_SET;
     static constexpr inline const CompositeDescriptor DESCRIPTOR     = {DESCRIPTOR_SET, INVALID_FIELD_DESCRIPTOR};
@@ -168,13 +168,15 @@ struct SharedDataSet
 };
 
 // template<>
-// struct MetadataFor<SharedDataSet>
+// struct MetadataFor<SystemDataSet>
 // {
 // };
 
 template<>
-struct MetadataFor<SharedDataSet>
+struct MetadataFor<SystemDataSet>
 {
+    using type = SystemDataSet;
+
     static constexpr inline DescriptorSetInfo value = {
         /* .descriptor = */ mip::data_system::DESCRIPTOR_SET,
         /* .name       = */ "System Data",
@@ -182,7 +184,7 @@ struct MetadataFor<SharedDataSet>
     };
 };
 
-template<> struct TypeForDescriptor< SharedDataSet::DESCRIPTOR.as_u16() > { using type = SharedDataSet; };
+template<> struct TypeForDescriptor< SystemDataSet::DESCRIPTOR.as_u16() > { using type = SystemDataSet; };
 
 
 
