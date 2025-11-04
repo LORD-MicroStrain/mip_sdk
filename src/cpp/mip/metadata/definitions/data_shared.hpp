@@ -371,7 +371,6 @@ struct MetadataFor<data_shared::ExternalTimeDelta>
     };
 };
 
-
 static constexpr inline const FieldInfo* DATA_SHARED_FIELDS[] = {
     &MetadataFor<data_shared::EventSource>::value,
     &MetadataFor<data_shared::Ticks>::value,
@@ -383,6 +382,38 @@ static constexpr inline const FieldInfo* DATA_SHARED_FIELDS[] = {
     &MetadataFor<data_shared::ExternalTimestamp>::value,
     &MetadataFor<data_shared::ExternalTimeDelta>::value,
 };
+
+struct SharedDataSet
+{
+    static constexpr inline const uint8_t DESCRIPTOR_SET = data_shared::DESCRIPTOR_SET;
+    static constexpr inline const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, INVALID_FIELD_DESCRIPTOR};
+
+    using Fields = std::tuple<
+        data_shared::EventSource,
+        data_shared::Ticks,
+        data_shared::DeltaTicks,
+        data_shared::GpsTimestamp,
+        data_shared::DeltaTime,
+        data_shared::ReferenceTimestamp,
+        data_shared::ReferenceTimeDelta,
+        data_shared::ExternalTimestamp,
+        data_shared::ExternalTimeDelta
+    >;
+};
+
+template<>
+struct MetadataFor<SharedDataSet>
+{
+    using type = SharedDataSet;
+
+    static constexpr inline DescriptorSetInfo value = {
+        /* .descriptor = */ mip::data_shared::DESCRIPTOR_SET,
+        /* .name       = */ "Shared Data",
+        /* .fields     = */ DATA_SHARED_FIELDS,
+    };
+};
+template<> struct TypeForDescriptor< SharedDataSet::DESCRIPTOR.as_u16() > { using type = SharedDataSet; };
+
 
 static constexpr DescriptorSetInfo DATA_SHARED = {
     /* .descriptor = */ mip::data_shared::DESCRIPTOR_SET,

@@ -39,6 +39,10 @@ namespace mip::metadata
         };
     };
 
+    template<const StructInfo* SI>
+    struct TypeForStructInfo;
+
+
     inline void* accessFunctionSelector(void* p) { return static_cast<FunctionSelector*>(p); }
 
     static constexpr inline ParameterInfo FUNCTION_SELECTOR_PARAM = {
@@ -71,6 +75,9 @@ namespace mip::metadata
         using T = typename utils::ParamEnum<paramInfo.type.type>::type;
         return *static_cast<T*>(paramInfo.accessor(&field));
     }
+
+    // template<class FieldType, size_t ParamIndex>
+    // using ParamType = std::tuple_element<ParamIndex, typename std::invoke_result<decltype(FieldType::asTuple), FieldType>::type>::type;
 
     //template<class FieldType, size_t ParamIndex, class ParamType>
     //ParamType get(FieldType& field)

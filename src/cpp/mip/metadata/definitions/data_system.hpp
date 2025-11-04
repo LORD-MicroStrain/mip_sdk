@@ -113,6 +113,10 @@ struct MetadataFor<data_system::GpioAnalogValue>
 {
     using type = data_system::GpioAnalogValue;
 
+    // using ParameterTuple = std::tuple<
+    //     uint8_t, float
+    // >;
+
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "gpio_id",
@@ -146,6 +150,9 @@ struct MetadataFor<data_system::GpioAnalogValue>
             /* .response    = */ nullptr,
     };
 };
+template<>
+struct TypeForStructInfo<static_cast<const StructInfo*>(&MetadataFor<data_system::GpioAnalogValue>::value)> { using type = MetadataFor<data_system::GpioAnalogValue>; };
+
 
 static constexpr inline const FieldInfo* DATA_SYSTEM_FIELDS[] = {
     &MetadataFor<data_system::BuiltInTest>::value,
