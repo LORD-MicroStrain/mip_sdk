@@ -39,6 +39,9 @@ struct MetadataFor<data_sensor::RawAccel>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_sensor::RawAccel>::value > { using type = data_sensor::RawAccel; };
+template<> struct TypeForDescriptor<data_sensor::RawAccel::DESCRIPTOR.as_u16()> { using type = data_sensor::RawAccel; };
+
 template<>
 struct MetadataFor<data_sensor::RawGyro>
 {
@@ -68,6 +71,9 @@ struct MetadataFor<data_sensor::RawGyro>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<data_sensor::RawGyro>::value > { using type = data_sensor::RawGyro; };
+template<> struct TypeForDescriptor<data_sensor::RawGyro::DESCRIPTOR.as_u16()> { using type = data_sensor::RawGyro; };
 
 template<>
 struct MetadataFor<data_sensor::RawMag>
@@ -99,6 +105,9 @@ struct MetadataFor<data_sensor::RawMag>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_sensor::RawMag>::value > { using type = data_sensor::RawMag; };
+template<> struct TypeForDescriptor<data_sensor::RawMag::DESCRIPTOR.as_u16()> { using type = data_sensor::RawMag; };
+
 template<>
 struct MetadataFor<data_sensor::RawPressure>
 {
@@ -128,6 +137,9 @@ struct MetadataFor<data_sensor::RawPressure>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<data_sensor::RawPressure>::value > { using type = data_sensor::RawPressure; };
+template<> struct TypeForDescriptor<data_sensor::RawPressure::DESCRIPTOR.as_u16()> { using type = data_sensor::RawPressure; };
 
 template<>
 struct MetadataFor<data_sensor::ScaledAccel>
@@ -159,6 +171,9 @@ struct MetadataFor<data_sensor::ScaledAccel>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_sensor::ScaledAccel>::value > { using type = data_sensor::ScaledAccel; };
+template<> struct TypeForDescriptor<data_sensor::ScaledAccel::DESCRIPTOR.as_u16()> { using type = data_sensor::ScaledAccel; };
+
 template<>
 struct MetadataFor<data_sensor::ScaledGyro>
 {
@@ -188,6 +203,9 @@ struct MetadataFor<data_sensor::ScaledGyro>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<data_sensor::ScaledGyro>::value > { using type = data_sensor::ScaledGyro; };
+template<> struct TypeForDescriptor<data_sensor::ScaledGyro::DESCRIPTOR.as_u16()> { using type = data_sensor::ScaledGyro; };
 
 template<>
 struct MetadataFor<data_sensor::ScaledMag>
@@ -219,6 +237,9 @@ struct MetadataFor<data_sensor::ScaledMag>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_sensor::ScaledMag>::value > { using type = data_sensor::ScaledMag; };
+template<> struct TypeForDescriptor<data_sensor::ScaledMag::DESCRIPTOR.as_u16()> { using type = data_sensor::ScaledMag; };
+
 template<>
 struct MetadataFor<data_sensor::ScaledPressure>
 {
@@ -248,6 +269,9 @@ struct MetadataFor<data_sensor::ScaledPressure>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<data_sensor::ScaledPressure>::value > { using type = data_sensor::ScaledPressure; };
+template<> struct TypeForDescriptor<data_sensor::ScaledPressure::DESCRIPTOR.as_u16()> { using type = data_sensor::ScaledPressure; };
 
 template<>
 struct MetadataFor<data_sensor::DeltaTheta>
@@ -279,6 +303,9 @@ struct MetadataFor<data_sensor::DeltaTheta>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_sensor::DeltaTheta>::value > { using type = data_sensor::DeltaTheta; };
+template<> struct TypeForDescriptor<data_sensor::DeltaTheta::DESCRIPTOR.as_u16()> { using type = data_sensor::DeltaTheta; };
+
 template<>
 struct MetadataFor<data_sensor::DeltaVelocity>
 {
@@ -308,6 +335,9 @@ struct MetadataFor<data_sensor::DeltaVelocity>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<data_sensor::DeltaVelocity>::value > { using type = data_sensor::DeltaVelocity; };
+template<> struct TypeForDescriptor<data_sensor::DeltaVelocity::DESCRIPTOR.as_u16()> { using type = data_sensor::DeltaVelocity; };
 
 template<>
 struct MetadataFor<data_sensor::CompOrientationMatrix>
@@ -339,6 +369,9 @@ struct MetadataFor<data_sensor::CompOrientationMatrix>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_sensor::CompOrientationMatrix>::value > { using type = data_sensor::CompOrientationMatrix; };
+template<> struct TypeForDescriptor<data_sensor::CompOrientationMatrix::DESCRIPTOR.as_u16()> { using type = data_sensor::CompOrientationMatrix; };
+
 template<>
 struct MetadataFor<data_sensor::CompQuaternion>
 {
@@ -368,6 +401,9 @@ struct MetadataFor<data_sensor::CompQuaternion>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<data_sensor::CompQuaternion>::value > { using type = data_sensor::CompQuaternion; };
+template<> struct TypeForDescriptor<data_sensor::CompQuaternion::DESCRIPTOR.as_u16()> { using type = data_sensor::CompQuaternion; };
 
 template<>
 struct MetadataFor<data_sensor::CompEulerAngles>
@@ -417,6 +453,9 @@ struct MetadataFor<data_sensor::CompEulerAngles>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_sensor::CompEulerAngles>::value > { using type = data_sensor::CompEulerAngles; };
+template<> struct TypeForDescriptor<data_sensor::CompEulerAngles::DESCRIPTOR.as_u16()> { using type = data_sensor::CompEulerAngles; };
+
 template<>
 struct MetadataFor<data_sensor::CompOrientationUpdateMatrix>
 {
@@ -446,6 +485,9 @@ struct MetadataFor<data_sensor::CompOrientationUpdateMatrix>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<data_sensor::CompOrientationUpdateMatrix>::value > { using type = data_sensor::CompOrientationUpdateMatrix; };
+template<> struct TypeForDescriptor<data_sensor::CompOrientationUpdateMatrix::DESCRIPTOR.as_u16()> { using type = data_sensor::CompOrientationUpdateMatrix; };
 
 template<>
 struct MetadataFor<data_sensor::OrientationRawTemp>
@@ -477,6 +519,9 @@ struct MetadataFor<data_sensor::OrientationRawTemp>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_sensor::OrientationRawTemp>::value > { using type = data_sensor::OrientationRawTemp; };
+template<> struct TypeForDescriptor<data_sensor::OrientationRawTemp::DESCRIPTOR.as_u16()> { using type = data_sensor::OrientationRawTemp; };
+
 template<>
 struct MetadataFor<data_sensor::InternalTimestamp>
 {
@@ -506,6 +551,9 @@ struct MetadataFor<data_sensor::InternalTimestamp>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<data_sensor::InternalTimestamp>::value > { using type = data_sensor::InternalTimestamp; };
+template<> struct TypeForDescriptor<data_sensor::InternalTimestamp::DESCRIPTOR.as_u16()> { using type = data_sensor::InternalTimestamp; };
 
 template<>
 struct MetadataFor<data_sensor::PpsTimestamp>
@@ -546,6 +594,9 @@ struct MetadataFor<data_sensor::PpsTimestamp>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_sensor::PpsTimestamp>::value > { using type = data_sensor::PpsTimestamp; };
+template<> struct TypeForDescriptor<data_sensor::PpsTimestamp::DESCRIPTOR.as_u16()> { using type = data_sensor::PpsTimestamp; };
+
 template<>
 struct MetadataFor<data_sensor::GpsTimestamp::ValidFlags>
 {
@@ -567,6 +618,8 @@ struct MetadataFor<data_sensor::GpsTimestamp::ValidFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<data_sensor::GpsTimestamp::ValidFlags>::value > { using type = data_sensor::GpsTimestamp::ValidFlags; };
 
 template<>
 struct MetadataFor<data_sensor::GpsTimestamp>
@@ -616,6 +669,9 @@ struct MetadataFor<data_sensor::GpsTimestamp>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_sensor::GpsTimestamp>::value > { using type = data_sensor::GpsTimestamp; };
+template<> struct TypeForDescriptor<data_sensor::GpsTimestamp::DESCRIPTOR.as_u16()> { using type = data_sensor::GpsTimestamp; };
+
 template<>
 struct MetadataFor<data_sensor::TemperatureAbs>
 {
@@ -664,6 +720,9 @@ struct MetadataFor<data_sensor::TemperatureAbs>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_sensor::TemperatureAbs>::value > { using type = data_sensor::TemperatureAbs; };
+template<> struct TypeForDescriptor<data_sensor::TemperatureAbs::DESCRIPTOR.as_u16()> { using type = data_sensor::TemperatureAbs; };
+
 template<>
 struct MetadataFor<data_sensor::UpVector>
 {
@@ -693,6 +752,9 @@ struct MetadataFor<data_sensor::UpVector>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<data_sensor::UpVector>::value > { using type = data_sensor::UpVector; };
+template<> struct TypeForDescriptor<data_sensor::UpVector::DESCRIPTOR.as_u16()> { using type = data_sensor::UpVector; };
 
 template<>
 struct MetadataFor<data_sensor::NorthVector>
@@ -724,6 +786,9 @@ struct MetadataFor<data_sensor::NorthVector>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_sensor::NorthVector>::value > { using type = data_sensor::NorthVector; };
+template<> struct TypeForDescriptor<data_sensor::NorthVector::DESCRIPTOR.as_u16()> { using type = data_sensor::NorthVector; };
+
 template<>
 struct MetadataFor<data_sensor::OverrangeStatus::Status>
 {
@@ -750,6 +815,8 @@ struct MetadataFor<data_sensor::OverrangeStatus::Status>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<data_sensor::OverrangeStatus::Status>::value > { using type = data_sensor::OverrangeStatus::Status; };
 
 template<>
 struct MetadataFor<data_sensor::OverrangeStatus>
@@ -780,6 +847,9 @@ struct MetadataFor<data_sensor::OverrangeStatus>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<data_sensor::OverrangeStatus>::value > { using type = data_sensor::OverrangeStatus; };
+template<> struct TypeForDescriptor<data_sensor::OverrangeStatus::DESCRIPTOR.as_u16()> { using type = data_sensor::OverrangeStatus; };
 
 template<>
 struct MetadataFor<data_sensor::OdometerData>
@@ -829,6 +899,9 @@ struct MetadataFor<data_sensor::OdometerData>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_sensor::OdometerData>::value > { using type = data_sensor::OdometerData; };
+template<> struct TypeForDescriptor<data_sensor::OdometerData::DESCRIPTOR.as_u16()> { using type = data_sensor::OdometerData; };
+
 
 static constexpr inline const FieldInfo* DATA_SENSOR_FIELDS[] = {
     &MetadataFor<data_sensor::RawAccel>::value,
@@ -855,6 +928,55 @@ static constexpr inline const FieldInfo* DATA_SENSOR_FIELDS[] = {
     &MetadataFor<data_sensor::OverrangeStatus>::value,
     &MetadataFor<data_sensor::OdometerData>::value,
 };
+
+//namespace data_sensor
+//{
+struct DataSetSensor
+{
+    static inline constexpr uint8_t DESCRIPTOR_SET = data_sensor::DESCRIPTOR_SET;
+    static inline constexpr CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, INVALID_FIELD_DESCRIPTOR};
+
+    using Fields = std::tuple<
+        ::mip::data_sensor::RawAccel,
+        ::mip::data_sensor::RawGyro,
+        ::mip::data_sensor::RawMag,
+        ::mip::data_sensor::ScaledAccel,
+        ::mip::data_sensor::ScaledGyro,
+        ::mip::data_sensor::ScaledMag,
+        ::mip::data_sensor::DeltaTheta,
+        ::mip::data_sensor::DeltaVelocity,
+        ::mip::data_sensor::CompOrientationMatrix,
+        ::mip::data_sensor::CompQuaternion,
+        ::mip::data_sensor::CompOrientationUpdateMatrix,
+        ::mip::data_sensor::CompEulerAngles,
+        ::mip::data_sensor::OrientationRawTemp,
+        ::mip::data_sensor::InternalTimestamp,
+        ::mip::data_sensor::PpsTimestamp,
+        ::mip::data_sensor::NorthVector,
+        ::mip::data_sensor::UpVector,
+        ::mip::data_sensor::GpsTimestamp,
+        ::mip::data_sensor::TemperatureAbs,
+        ::mip::data_sensor::RawPressure,
+        ::mip::data_sensor::ScaledPressure,
+        ::mip::data_sensor::OverrangeStatus,
+        ::mip::data_sensor::OdometerData
+    >;
+};
+
+//} // namespace data_sensor
+
+template<>
+struct MetadataFor<DataSetSensor>
+{
+    using type = DataSetSensor;
+    
+    static inline constexpr DescriptorSetInfo value = {
+        /* .descriptor = */ data_sensor::DESCRIPTOR_SET,
+        /* .name       = */ "Sensor Data",
+        /* .fields     = */ DATA_SENSOR_FIELDS,
+    };
+};
+template<> struct TypeForDescriptor< (data_sensor::DESCRIPTOR_SET << 8) > { using type = DataSetSensor; };
 
 static constexpr DescriptorSetInfo DATA_SENSOR = {
     /* .descriptor = */ mip::data_sensor::DESCRIPTOR_SET,

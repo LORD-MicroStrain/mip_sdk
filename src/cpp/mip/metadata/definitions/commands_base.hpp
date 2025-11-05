@@ -27,6 +27,9 @@ struct MetadataFor<commands_base::Ping>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_base::Ping>::value > { using type = commands_base::Ping; };
+template<> struct TypeForDescriptor<commands_base::Ping::DESCRIPTOR.as_u16()> { using type = commands_base::Ping; };
+
 template<>
 struct MetadataFor<commands_base::SetIdle>
 {
@@ -44,6 +47,9 @@ struct MetadataFor<commands_base::SetIdle>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_base::SetIdle>::value > { using type = commands_base::SetIdle; };
+template<> struct TypeForDescriptor<commands_base::SetIdle::DESCRIPTOR.as_u16()> { using type = commands_base::SetIdle; };
 
 template<>
 struct MetadataFor<commands_base::BaseDeviceInfo>
@@ -115,6 +121,8 @@ struct MetadataFor<commands_base::BaseDeviceInfo>
     };
 };
 
+template<> struct TypeForStructInfo< &MetadataFor<commands_base::BaseDeviceInfo>::value > { using type = commands_base::BaseDeviceInfo; };
+
 template<>
 struct MetadataFor<commands_base::GetDeviceInfo::Response>
 {
@@ -145,6 +153,8 @@ struct MetadataFor<commands_base::GetDeviceInfo::Response>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_base::GetDeviceInfo::Response>::value > { using type = commands_base::GetDeviceInfo::Response; };
+
 template<>
 struct MetadataFor<commands_base::GetDeviceInfo>
 {
@@ -162,6 +172,9 @@ struct MetadataFor<commands_base::GetDeviceInfo>
             /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_base::GetDeviceInfo>::value > { using type = commands_base::GetDeviceInfo; };
+template<> struct TypeForDescriptor<commands_base::GetDeviceInfo::DESCRIPTOR.as_u16()> { using type = commands_base::GetDeviceInfo; };
 
 template<>
 struct MetadataFor<commands_base::GetDeviceDescriptors::Response>
@@ -202,6 +215,8 @@ struct MetadataFor<commands_base::GetDeviceDescriptors::Response>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_base::GetDeviceDescriptors::Response>::value > { using type = commands_base::GetDeviceDescriptors::Response; };
+
 template<>
 struct MetadataFor<commands_base::GetDeviceDescriptors>
 {
@@ -219,6 +234,9 @@ struct MetadataFor<commands_base::GetDeviceDescriptors>
             /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_base::GetDeviceDescriptors>::value > { using type = commands_base::GetDeviceDescriptors; };
+template<> struct TypeForDescriptor<commands_base::GetDeviceDescriptors::DESCRIPTOR.as_u16()> { using type = commands_base::GetDeviceDescriptors; };
 
 template<>
 struct MetadataFor<commands_base::BuiltInTest::Response>
@@ -250,6 +268,8 @@ struct MetadataFor<commands_base::BuiltInTest::Response>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_base::BuiltInTest::Response>::value > { using type = commands_base::BuiltInTest::Response; };
+
 template<>
 struct MetadataFor<commands_base::BuiltInTest>
 {
@@ -268,6 +288,9 @@ struct MetadataFor<commands_base::BuiltInTest>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_base::BuiltInTest>::value > { using type = commands_base::BuiltInTest; };
+template<> struct TypeForDescriptor<commands_base::BuiltInTest::DESCRIPTOR.as_u16()> { using type = commands_base::BuiltInTest; };
+
 template<>
 struct MetadataFor<commands_base::Resume>
 {
@@ -285,6 +308,9 @@ struct MetadataFor<commands_base::Resume>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_base::Resume>::value > { using type = commands_base::Resume; };
+template<> struct TypeForDescriptor<commands_base::Resume::DESCRIPTOR.as_u16()> { using type = commands_base::Resume; };
 
 template<>
 struct MetadataFor<commands_base::GetExtendedDescriptors::Response>
@@ -325,6 +351,8 @@ struct MetadataFor<commands_base::GetExtendedDescriptors::Response>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_base::GetExtendedDescriptors::Response>::value > { using type = commands_base::GetExtendedDescriptors::Response; };
+
 template<>
 struct MetadataFor<commands_base::GetExtendedDescriptors>
 {
@@ -342,6 +370,9 @@ struct MetadataFor<commands_base::GetExtendedDescriptors>
             /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_base::GetExtendedDescriptors>::value > { using type = commands_base::GetExtendedDescriptors; };
+template<> struct TypeForDescriptor<commands_base::GetExtendedDescriptors::DESCRIPTOR.as_u16()> { using type = commands_base::GetExtendedDescriptors; };
 
 template<>
 struct MetadataFor<commands_base::ContinuousBit::Response>
@@ -373,6 +404,8 @@ struct MetadataFor<commands_base::ContinuousBit::Response>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_base::ContinuousBit::Response>::value > { using type = commands_base::ContinuousBit::Response; };
+
 template<>
 struct MetadataFor<commands_base::ContinuousBit>
 {
@@ -390,6 +423,9 @@ struct MetadataFor<commands_base::ContinuousBit>
             /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_base::ContinuousBit>::value > { using type = commands_base::ContinuousBit; };
+template<> struct TypeForDescriptor<commands_base::ContinuousBit::DESCRIPTOR.as_u16()> { using type = commands_base::ContinuousBit; };
 
 template<>
 struct MetadataFor<commands_base::CommSpeed::Response>
@@ -429,6 +465,8 @@ struct MetadataFor<commands_base::CommSpeed::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_base::CommSpeed::Response>::value > { using type = commands_base::CommSpeed::Response; };
 
 template<>
 struct MetadataFor<commands_base::CommSpeed>
@@ -470,6 +508,9 @@ struct MetadataFor<commands_base::CommSpeed>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_base::CommSpeed>::value > { using type = commands_base::CommSpeed; };
+template<> struct TypeForDescriptor<commands_base::CommSpeed::DESCRIPTOR.as_u16()> { using type = commands_base::CommSpeed; };
+
 template<>
 struct MetadataFor<commands_base::GpsTimeUpdate::FieldId>
 {
@@ -488,6 +529,8 @@ struct MetadataFor<commands_base::GpsTimeUpdate::FieldId>
     };
 
 };
+
+template<> struct TypeForEnumInfo< &MetadataFor<commands_base::GpsTimeUpdate::FieldId>::value > { using type = commands_base::GpsTimeUpdate::FieldId; };
 
 template<>
 struct MetadataFor<commands_base::GpsTimeUpdate>
@@ -529,6 +572,9 @@ struct MetadataFor<commands_base::GpsTimeUpdate>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_base::GpsTimeUpdate>::value > { using type = commands_base::GpsTimeUpdate; };
+template<> struct TypeForDescriptor<commands_base::GpsTimeUpdate::DESCRIPTOR.as_u16()> { using type = commands_base::GpsTimeUpdate; };
+
 template<>
 struct MetadataFor<commands_base::SoftReset>
 {
@@ -546,6 +592,9 @@ struct MetadataFor<commands_base::SoftReset>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_base::SoftReset>::value > { using type = commands_base::SoftReset; };
+template<> struct TypeForDescriptor<commands_base::SoftReset::DESCRIPTOR.as_u16()> { using type = commands_base::SoftReset; };
 
 
 static constexpr inline const FieldInfo* COMMANDS_BASE_FIELDS[] = {
@@ -567,6 +616,49 @@ static constexpr inline const FieldInfo* COMMANDS_BASE_FIELDS[] = {
     &MetadataFor<commands_base::ContinuousBit::Response>::value,
     &MetadataFor<commands_base::CommSpeed::Response>::value,
 };
+
+//namespace commands_base
+//{
+struct CommandSetBase
+{
+    static inline constexpr uint8_t DESCRIPTOR_SET = commands_base::DESCRIPTOR_SET;
+    static inline constexpr CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, INVALID_FIELD_DESCRIPTOR};
+
+    using Fields = std::tuple<
+        ::mip::commands_base::Ping,
+        ::mip::commands_base::SetIdle,
+        ::mip::commands_base::GetDeviceInfo,
+        ::mip::commands_base::GetDeviceDescriptors,
+        ::mip::commands_base::BuiltInTest,
+        ::mip::commands_base::Resume,
+        ::mip::commands_base::GetExtendedDescriptors,
+        ::mip::commands_base::ContinuousBit,
+        ::mip::commands_base::CommSpeed,
+        ::mip::commands_base::GpsTimeUpdate,
+        ::mip::commands_base::SoftReset,
+        ::mip::commands_base::GetDeviceInfo::Response,
+        ::mip::commands_base::GetDeviceDescriptors::Response,
+        ::mip::commands_base::BuiltInTest::Response,
+        ::mip::commands_base::GetExtendedDescriptors::Response,
+        ::mip::commands_base::ContinuousBit::Response,
+        ::mip::commands_base::CommSpeed::Response
+    >;
+};
+
+//} // namespace commands_base
+
+template<>
+struct MetadataFor<CommandSetBase>
+{
+    using type = CommandSetBase;
+    
+    static inline constexpr DescriptorSetInfo value = {
+        /* .descriptor = */ commands_base::DESCRIPTOR_SET,
+        /* .name       = */ "Base Commands",
+        /* .fields     = */ COMMANDS_BASE_FIELDS,
+    };
+};
+template<> struct TypeForDescriptor< (commands_base::DESCRIPTOR_SET << 8) > { using type = CommandSetBase; };
 
 static constexpr DescriptorSetInfo COMMANDS_BASE = {
     /* .descriptor = */ mip::commands_base::DESCRIPTOR_SET,

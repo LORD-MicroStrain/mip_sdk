@@ -39,6 +39,9 @@ struct MetadataFor<data_system::BuiltInTest>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_system::BuiltInTest>::value > { using type = data_system::BuiltInTest; };
+template<> struct TypeForDescriptor<data_system::BuiltInTest::DESCRIPTOR.as_u16()> { using type = data_system::BuiltInTest; };
+
 template<>
 struct MetadataFor<data_system::TimeSyncStatus>
 {
@@ -78,6 +81,9 @@ struct MetadataFor<data_system::TimeSyncStatus>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_system::TimeSyncStatus>::value > { using type = data_system::TimeSyncStatus; };
+template<> struct TypeForDescriptor<data_system::TimeSyncStatus::DESCRIPTOR.as_u16()> { using type = data_system::TimeSyncStatus; };
+
 template<>
 struct MetadataFor<data_system::GpioState>
 {
@@ -108,14 +114,13 @@ struct MetadataFor<data_system::GpioState>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_system::GpioState>::value > { using type = data_system::GpioState; };
+template<> struct TypeForDescriptor<data_system::GpioState::DESCRIPTOR.as_u16()> { using type = data_system::GpioState; };
+
 template<>
 struct MetadataFor<data_system::GpioAnalogValue>
 {
     using type = data_system::GpioAnalogValue;
-
-    // using ParameterTuple = std::tuple<
-    //     uint8_t, float
-    // >;
 
     static constexpr inline ParameterInfo parameters[] = {
         {
@@ -150,8 +155,9 @@ struct MetadataFor<data_system::GpioAnalogValue>
             /* .response    = */ nullptr,
     };
 };
-template<>
-struct TypeForStructInfo<static_cast<const StructInfo*>(&MetadataFor<data_system::GpioAnalogValue>::value)> { using type = MetadataFor<data_system::GpioAnalogValue>; };
+
+template<> struct TypeForFieldInfo< &MetadataFor<data_system::GpioAnalogValue>::value > { using type = data_system::GpioAnalogValue; };
+template<> struct TypeForDescriptor<data_system::GpioAnalogValue::DESCRIPTOR.as_u16()> { using type = data_system::GpioAnalogValue; };
 
 
 static constexpr inline const FieldInfo* DATA_SYSTEM_FIELDS[] = {
@@ -161,46 +167,41 @@ static constexpr inline const FieldInfo* DATA_SYSTEM_FIELDS[] = {
     &MetadataFor<data_system::GpioAnalogValue>::value,
 };
 
-struct SystemDataSet
+//namespace data_system
+//{
+struct DataSetSystem
 {
-    static constexpr inline const uint8_t             DESCRIPTOR_SET = data_system::DESCRIPTOR_SET;
-    static constexpr inline const CompositeDescriptor DESCRIPTOR     = {DESCRIPTOR_SET, INVALID_FIELD_DESCRIPTOR};
+    static inline constexpr uint8_t DESCRIPTOR_SET = data_system::DESCRIPTOR_SET;
+    static inline constexpr CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, INVALID_FIELD_DESCRIPTOR};
 
     using Fields = std::tuple<
-        data_system::BuiltInTest,
-        data_system::TimeSyncStatus,
-        data_system::GpioState,
-        data_system::GpioAnalogValue
+        ::mip::data_system::BuiltInTest,
+        ::mip::data_system::TimeSyncStatus,
+        ::mip::data_system::GpioState,
+        ::mip::data_system::GpioAnalogValue
     >;
 };
 
-// template<>
-// struct MetadataFor<SystemDataSet>
-// {
-// };
+//} // namespace data_system
 
 template<>
-struct MetadataFor<SystemDataSet>
+struct MetadataFor<DataSetSystem>
 {
-    using type = SystemDataSet;
-
-    static constexpr inline DescriptorSetInfo value = {
-        /* .descriptor = */ mip::data_system::DESCRIPTOR_SET,
+    using type = DataSetSystem;
+    
+    static inline constexpr DescriptorSetInfo value = {
+        /* .descriptor = */ data_system::DESCRIPTOR_SET,
         /* .name       = */ "System Data",
         /* .fields     = */ DATA_SYSTEM_FIELDS,
     };
 };
-
-template<> struct TypeForDescriptor< SystemDataSet::DESCRIPTOR.as_u16() > { using type = SystemDataSet; };
-
-
+template<> struct TypeForDescriptor< (data_system::DESCRIPTOR_SET << 8) > { using type = DataSetSystem; };
 
 static constexpr DescriptorSetInfo DATA_SYSTEM = {
     /* .descriptor = */ mip::data_system::DESCRIPTOR_SET,
     /* .name       = */ "System Data",
     /* .fields     = */ DATA_SYSTEM_FIELDS,
 };
-
 
 } // namespace mip::metadata
 

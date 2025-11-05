@@ -39,6 +39,8 @@ struct MetadataFor<commands_system::CommMode::Response>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_system::CommMode::Response>::value > { using type = commands_system::CommMode::Response; };
+
 template<>
 struct MetadataFor<commands_system::CommMode>
 {
@@ -70,6 +72,9 @@ struct MetadataFor<commands_system::CommMode>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_system::CommMode>::value > { using type = commands_system::CommMode; };
+template<> struct TypeForDescriptor<commands_system::CommMode::DESCRIPTOR.as_u16()> { using type = commands_system::CommMode; };
+
 template<>
 struct MetadataFor<commands_system::CommsInterface>
 {
@@ -94,6 +99,8 @@ struct MetadataFor<commands_system::CommsInterface>
 
 };
 
+template<> struct TypeForEnumInfo< &MetadataFor<commands_system::CommsInterface>::value > { using type = commands_system::CommsInterface; };
+
 template<>
 struct MetadataFor<commands_system::CommsProtocol>
 {
@@ -114,6 +121,8 @@ struct MetadataFor<commands_system::CommsProtocol>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<commands_system::CommsProtocol>::value > { using type = commands_system::CommsProtocol; };
 
 template<>
 struct MetadataFor<commands_system::InterfaceControl::Response>
@@ -162,6 +171,8 @@ struct MetadataFor<commands_system::InterfaceControl::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_system::InterfaceControl::Response>::value > { using type = commands_system::InterfaceControl::Response; };
 
 template<>
 struct MetadataFor<commands_system::InterfaceControl>
@@ -212,6 +223,9 @@ struct MetadataFor<commands_system::InterfaceControl>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_system::InterfaceControl>::value > { using type = commands_system::InterfaceControl; };
+template<> struct TypeForDescriptor<commands_system::InterfaceControl::DESCRIPTOR.as_u16()> { using type = commands_system::InterfaceControl; };
+
 
 static constexpr inline const FieldInfo* COMMANDS_SYSTEM_FIELDS[] = {
     &MetadataFor<commands_system::InterfaceControl>::value,
@@ -219,6 +233,36 @@ static constexpr inline const FieldInfo* COMMANDS_SYSTEM_FIELDS[] = {
     &MetadataFor<commands_system::InterfaceControl::Response>::value,
     &MetadataFor<commands_system::CommMode::Response>::value,
 };
+
+//namespace commands_system
+//{
+struct CommandSetSystem
+{
+    static inline constexpr uint8_t DESCRIPTOR_SET = commands_system::DESCRIPTOR_SET;
+    static inline constexpr CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, INVALID_FIELD_DESCRIPTOR};
+
+    using Fields = std::tuple<
+        ::mip::commands_system::InterfaceControl,
+        ::mip::commands_system::CommMode,
+        ::mip::commands_system::InterfaceControl::Response,
+        ::mip::commands_system::CommMode::Response
+    >;
+};
+
+//} // namespace commands_system
+
+template<>
+struct MetadataFor<CommandSetSystem>
+{
+    using type = CommandSetSystem;
+    
+    static inline constexpr DescriptorSetInfo value = {
+        /* .descriptor = */ commands_system::DESCRIPTOR_SET,
+        /* .name       = */ "System Commands",
+        /* .fields     = */ COMMANDS_SYSTEM_FIELDS,
+    };
+};
+template<> struct TypeForDescriptor< (commands_system::DESCRIPTOR_SET << 8) > { using type = CommandSetSystem; };
 
 static constexpr DescriptorSetInfo COMMANDS_SYSTEM = {
     /* .descriptor = */ mip::commands_system::DESCRIPTOR_SET,

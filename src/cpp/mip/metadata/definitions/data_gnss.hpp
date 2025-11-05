@@ -32,6 +32,8 @@ struct MetadataFor<data_gnss::PosLlh::ValidFlags>
 
 };
 
+template<> struct TypeForBitsInfo< &MetadataFor<data_gnss::PosLlh::ValidFlags>::value > { using type = data_gnss::PosLlh::ValidFlags; };
+
 template<>
 struct MetadataFor<data_gnss::PosLlh>
 {
@@ -116,6 +118,9 @@ struct MetadataFor<data_gnss::PosLlh>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_gnss::PosLlh>::value > { using type = data_gnss::PosLlh; };
+template<> struct TypeForDescriptor<data_gnss::PosLlh::DESCRIPTOR.as_u16()> { using type = data_gnss::PosLlh; };
+
 template<>
 struct MetadataFor<data_gnss::PosEcef::ValidFlags>
 {
@@ -135,6 +140,8 @@ struct MetadataFor<data_gnss::PosEcef::ValidFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<data_gnss::PosEcef::ValidFlags>::value > { using type = data_gnss::PosEcef::ValidFlags; };
 
 template<>
 struct MetadataFor<data_gnss::PosEcef>
@@ -184,6 +191,9 @@ struct MetadataFor<data_gnss::PosEcef>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_gnss::PosEcef>::value > { using type = data_gnss::PosEcef; };
+template<> struct TypeForDescriptor<data_gnss::PosEcef::DESCRIPTOR.as_u16()> { using type = data_gnss::PosEcef; };
+
 template<>
 struct MetadataFor<data_gnss::VelNed::ValidFlags>
 {
@@ -207,6 +217,8 @@ struct MetadataFor<data_gnss::VelNed::ValidFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<data_gnss::VelNed::ValidFlags>::value > { using type = data_gnss::VelNed::ValidFlags; };
 
 template<>
 struct MetadataFor<data_gnss::VelNed>
@@ -292,6 +304,9 @@ struct MetadataFor<data_gnss::VelNed>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_gnss::VelNed>::value > { using type = data_gnss::VelNed; };
+template<> struct TypeForDescriptor<data_gnss::VelNed::DESCRIPTOR.as_u16()> { using type = data_gnss::VelNed; };
+
 template<>
 struct MetadataFor<data_gnss::VelEcef::ValidFlags>
 {
@@ -311,6 +326,8 @@ struct MetadataFor<data_gnss::VelEcef::ValidFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<data_gnss::VelEcef::ValidFlags>::value > { using type = data_gnss::VelEcef::ValidFlags; };
 
 template<>
 struct MetadataFor<data_gnss::VelEcef>
@@ -360,6 +377,9 @@ struct MetadataFor<data_gnss::VelEcef>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_gnss::VelEcef>::value > { using type = data_gnss::VelEcef; };
+template<> struct TypeForDescriptor<data_gnss::VelEcef::DESCRIPTOR.as_u16()> { using type = data_gnss::VelEcef; };
+
 template<>
 struct MetadataFor<data_gnss::Dop::ValidFlags>
 {
@@ -384,6 +404,8 @@ struct MetadataFor<data_gnss::Dop::ValidFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<data_gnss::Dop::ValidFlags>::value > { using type = data_gnss::Dop::ValidFlags; };
 
 template<>
 struct MetadataFor<data_gnss::Dop>
@@ -478,6 +500,9 @@ struct MetadataFor<data_gnss::Dop>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_gnss::Dop>::value > { using type = data_gnss::Dop; };
+template<> struct TypeForDescriptor<data_gnss::Dop::DESCRIPTOR.as_u16()> { using type = data_gnss::Dop; };
+
 template<>
 struct MetadataFor<data_gnss::UtcTime::ValidFlags>
 {
@@ -497,6 +522,8 @@ struct MetadataFor<data_gnss::UtcTime::ValidFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<data_gnss::UtcTime::ValidFlags>::value > { using type = data_gnss::UtcTime::ValidFlags; };
 
 template<>
 struct MetadataFor<data_gnss::UtcTime>
@@ -591,6 +618,9 @@ struct MetadataFor<data_gnss::UtcTime>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_gnss::UtcTime>::value > { using type = data_gnss::UtcTime; };
+template<> struct TypeForDescriptor<data_gnss::UtcTime::DESCRIPTOR.as_u16()> { using type = data_gnss::UtcTime; };
+
 template<>
 struct MetadataFor<data_gnss::GpsTime::ValidFlags>
 {
@@ -610,6 +640,8 @@ struct MetadataFor<data_gnss::GpsTime::ValidFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<data_gnss::GpsTime::ValidFlags>::value > { using type = data_gnss::GpsTime::ValidFlags; };
 
 template<>
 struct MetadataFor<data_gnss::GpsTime>
@@ -659,6 +691,9 @@ struct MetadataFor<data_gnss::GpsTime>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_gnss::GpsTime>::value > { using type = data_gnss::GpsTime; };
+template<> struct TypeForDescriptor<data_gnss::GpsTime::DESCRIPTOR.as_u16()> { using type = data_gnss::GpsTime; };
+
 template<>
 struct MetadataFor<data_gnss::ClockInfo::ValidFlags>
 {
@@ -679,6 +714,8 @@ struct MetadataFor<data_gnss::ClockInfo::ValidFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<data_gnss::ClockInfo::ValidFlags>::value > { using type = data_gnss::ClockInfo::ValidFlags; };
 
 template<>
 struct MetadataFor<data_gnss::ClockInfo>
@@ -737,6 +774,9 @@ struct MetadataFor<data_gnss::ClockInfo>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_gnss::ClockInfo>::value > { using type = data_gnss::ClockInfo; };
+template<> struct TypeForDescriptor<data_gnss::ClockInfo::DESCRIPTOR.as_u16()> { using type = data_gnss::ClockInfo; };
+
 template<>
 struct MetadataFor<data_gnss::FixInfo::FixType>
 {
@@ -762,6 +802,8 @@ struct MetadataFor<data_gnss::FixInfo::FixType>
 
 };
 
+template<> struct TypeForEnumInfo< &MetadataFor<data_gnss::FixInfo::FixType>::value > { using type = data_gnss::FixInfo::FixType; };
+
 template<>
 struct MetadataFor<data_gnss::FixInfo::FixFlags>
 {
@@ -780,6 +822,8 @@ struct MetadataFor<data_gnss::FixInfo::FixFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<data_gnss::FixInfo::FixFlags>::value > { using type = data_gnss::FixInfo::FixFlags; };
 
 template<>
 struct MetadataFor<data_gnss::FixInfo::ValidFlags>
@@ -801,6 +845,8 @@ struct MetadataFor<data_gnss::FixInfo::ValidFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<data_gnss::FixInfo::ValidFlags>::value > { using type = data_gnss::FixInfo::ValidFlags; };
 
 template<>
 struct MetadataFor<data_gnss::FixInfo>
@@ -859,6 +905,9 @@ struct MetadataFor<data_gnss::FixInfo>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_gnss::FixInfo>::value > { using type = data_gnss::FixInfo; };
+template<> struct TypeForDescriptor<data_gnss::FixInfo::DESCRIPTOR.as_u16()> { using type = data_gnss::FixInfo; };
+
 template<>
 struct MetadataFor<data_gnss::SvInfo::SVFlags>
 {
@@ -877,6 +926,8 @@ struct MetadataFor<data_gnss::SvInfo::SVFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<data_gnss::SvInfo::SVFlags>::value > { using type = data_gnss::SvInfo::SVFlags; };
 
 template<>
 struct MetadataFor<data_gnss::SvInfo::ValidFlags>
@@ -901,6 +952,8 @@ struct MetadataFor<data_gnss::SvInfo::ValidFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<data_gnss::SvInfo::ValidFlags>::value > { using type = data_gnss::SvInfo::ValidFlags; };
 
 template<>
 struct MetadataFor<data_gnss::SvInfo>
@@ -986,6 +1039,9 @@ struct MetadataFor<data_gnss::SvInfo>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_gnss::SvInfo>::value > { using type = data_gnss::SvInfo; };
+template<> struct TypeForDescriptor<data_gnss::SvInfo::DESCRIPTOR.as_u16()> { using type = data_gnss::SvInfo; };
+
 template<>
 struct MetadataFor<data_gnss::HwStatus::ReceiverState>
 {
@@ -1005,6 +1061,8 @@ struct MetadataFor<data_gnss::HwStatus::ReceiverState>
     };
 
 };
+
+template<> struct TypeForEnumInfo< &MetadataFor<data_gnss::HwStatus::ReceiverState>::value > { using type = data_gnss::HwStatus::ReceiverState; };
 
 template<>
 struct MetadataFor<data_gnss::HwStatus::AntennaState>
@@ -1028,6 +1086,8 @@ struct MetadataFor<data_gnss::HwStatus::AntennaState>
 
 };
 
+template<> struct TypeForEnumInfo< &MetadataFor<data_gnss::HwStatus::AntennaState>::value > { using type = data_gnss::HwStatus::AntennaState; };
+
 template<>
 struct MetadataFor<data_gnss::HwStatus::AntennaPower>
 {
@@ -1047,6 +1107,8 @@ struct MetadataFor<data_gnss::HwStatus::AntennaPower>
     };
 
 };
+
+template<> struct TypeForEnumInfo< &MetadataFor<data_gnss::HwStatus::AntennaPower>::value > { using type = data_gnss::HwStatus::AntennaPower; };
 
 template<>
 struct MetadataFor<data_gnss::HwStatus::ValidFlags>
@@ -1068,6 +1130,8 @@ struct MetadataFor<data_gnss::HwStatus::ValidFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<data_gnss::HwStatus::ValidFlags>::value > { using type = data_gnss::HwStatus::ValidFlags; };
 
 template<>
 struct MetadataFor<data_gnss::HwStatus>
@@ -1126,6 +1190,9 @@ struct MetadataFor<data_gnss::HwStatus>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_gnss::HwStatus>::value > { using type = data_gnss::HwStatus; };
+template<> struct TypeForDescriptor<data_gnss::HwStatus::DESCRIPTOR.as_u16()> { using type = data_gnss::HwStatus; };
+
 template<>
 struct MetadataFor<data_gnss::DgpsInfo::ValidFlags>
 {
@@ -1147,6 +1214,8 @@ struct MetadataFor<data_gnss::DgpsInfo::ValidFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<data_gnss::DgpsInfo::ValidFlags>::value > { using type = data_gnss::DgpsInfo::ValidFlags; };
 
 template<>
 struct MetadataFor<data_gnss::DgpsInfo>
@@ -1214,6 +1283,9 @@ struct MetadataFor<data_gnss::DgpsInfo>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_gnss::DgpsInfo>::value > { using type = data_gnss::DgpsInfo; };
+template<> struct TypeForDescriptor<data_gnss::DgpsInfo::DESCRIPTOR.as_u16()> { using type = data_gnss::DgpsInfo; };
+
 template<>
 struct MetadataFor<data_gnss::DgpsChannel::ValidFlags>
 {
@@ -1235,6 +1307,8 @@ struct MetadataFor<data_gnss::DgpsChannel::ValidFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<data_gnss::DgpsChannel::ValidFlags>::value > { using type = data_gnss::DgpsChannel::ValidFlags; };
 
 template<>
 struct MetadataFor<data_gnss::DgpsChannel>
@@ -1302,6 +1376,9 @@ struct MetadataFor<data_gnss::DgpsChannel>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_gnss::DgpsChannel>::value > { using type = data_gnss::DgpsChannel; };
+template<> struct TypeForDescriptor<data_gnss::DgpsChannel::DESCRIPTOR.as_u16()> { using type = data_gnss::DgpsChannel; };
+
 template<>
 struct MetadataFor<data_gnss::ClockInfo2::ValidFlags>
 {
@@ -1323,6 +1400,8 @@ struct MetadataFor<data_gnss::ClockInfo2::ValidFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<data_gnss::ClockInfo2::ValidFlags>::value > { using type = data_gnss::ClockInfo2::ValidFlags; };
 
 template<>
 struct MetadataFor<data_gnss::ClockInfo2>
@@ -1390,6 +1469,9 @@ struct MetadataFor<data_gnss::ClockInfo2>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_gnss::ClockInfo2>::value > { using type = data_gnss::ClockInfo2; };
+template<> struct TypeForDescriptor<data_gnss::ClockInfo2::DESCRIPTOR.as_u16()> { using type = data_gnss::ClockInfo2; };
+
 template<>
 struct MetadataFor<data_gnss::GpsLeapSeconds::ValidFlags>
 {
@@ -1407,6 +1489,8 @@ struct MetadataFor<data_gnss::GpsLeapSeconds::ValidFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<data_gnss::GpsLeapSeconds::ValidFlags>::value > { using type = data_gnss::GpsLeapSeconds::ValidFlags; };
 
 template<>
 struct MetadataFor<data_gnss::GpsLeapSeconds>
@@ -1447,6 +1531,9 @@ struct MetadataFor<data_gnss::GpsLeapSeconds>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_gnss::GpsLeapSeconds>::value > { using type = data_gnss::GpsLeapSeconds; };
+template<> struct TypeForDescriptor<data_gnss::GpsLeapSeconds::DESCRIPTOR.as_u16()> { using type = data_gnss::GpsLeapSeconds; };
+
 template<>
 struct MetadataFor<data_gnss::SbasSystem>
 {
@@ -1469,6 +1556,8 @@ struct MetadataFor<data_gnss::SbasSystem>
 
 };
 
+template<> struct TypeForEnumInfo< &MetadataFor<data_gnss::SbasSystem>::value > { using type = data_gnss::SbasSystem; };
+
 template<>
 struct MetadataFor<data_gnss::SbasInfo::SbasStatus>
 {
@@ -1489,6 +1578,8 @@ struct MetadataFor<data_gnss::SbasInfo::SbasStatus>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<data_gnss::SbasInfo::SbasStatus>::value > { using type = data_gnss::SbasInfo::SbasStatus; };
 
 template<>
 struct MetadataFor<data_gnss::SbasInfo::ValidFlags>
@@ -1513,6 +1604,8 @@ struct MetadataFor<data_gnss::SbasInfo::ValidFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<data_gnss::SbasInfo::ValidFlags>::value > { using type = data_gnss::SbasInfo::ValidFlags; };
 
 template<>
 struct MetadataFor<data_gnss::SbasInfo>
@@ -1598,6 +1691,9 @@ struct MetadataFor<data_gnss::SbasInfo>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_gnss::SbasInfo>::value > { using type = data_gnss::SbasInfo; };
+template<> struct TypeForDescriptor<data_gnss::SbasInfo::DESCRIPTOR.as_u16()> { using type = data_gnss::SbasInfo; };
+
 template<>
 struct MetadataFor<data_gnss::GnssConstellationId>
 {
@@ -1621,6 +1717,8 @@ struct MetadataFor<data_gnss::GnssConstellationId>
 
 };
 
+template<> struct TypeForEnumInfo< &MetadataFor<data_gnss::GnssConstellationId>::value > { using type = data_gnss::GnssConstellationId; };
+
 template<>
 struct MetadataFor<data_gnss::SbasCorrection::ValidFlags>
 {
@@ -1641,6 +1739,8 @@ struct MetadataFor<data_gnss::SbasCorrection::ValidFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<data_gnss::SbasCorrection::ValidFlags>::value > { using type = data_gnss::SbasCorrection::ValidFlags; };
 
 template<>
 struct MetadataFor<data_gnss::SbasCorrection>
@@ -1753,6 +1853,9 @@ struct MetadataFor<data_gnss::SbasCorrection>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_gnss::SbasCorrection>::value > { using type = data_gnss::SbasCorrection; };
+template<> struct TypeForDescriptor<data_gnss::SbasCorrection::DESCRIPTOR.as_u16()> { using type = data_gnss::SbasCorrection; };
+
 template<>
 struct MetadataFor<data_gnss::RfErrorDetection::RFBand>
 {
@@ -1773,6 +1876,8 @@ struct MetadataFor<data_gnss::RfErrorDetection::RFBand>
     };
 
 };
+
+template<> struct TypeForEnumInfo< &MetadataFor<data_gnss::RfErrorDetection::RFBand>::value > { using type = data_gnss::RfErrorDetection::RFBand; };
 
 template<>
 struct MetadataFor<data_gnss::RfErrorDetection::JammingState>
@@ -1795,6 +1900,8 @@ struct MetadataFor<data_gnss::RfErrorDetection::JammingState>
 
 };
 
+template<> struct TypeForEnumInfo< &MetadataFor<data_gnss::RfErrorDetection::JammingState>::value > { using type = data_gnss::RfErrorDetection::JammingState; };
+
 template<>
 struct MetadataFor<data_gnss::RfErrorDetection::SpoofingState>
 {
@@ -1816,6 +1923,8 @@ struct MetadataFor<data_gnss::RfErrorDetection::SpoofingState>
 
 };
 
+template<> struct TypeForEnumInfo< &MetadataFor<data_gnss::RfErrorDetection::SpoofingState>::value > { using type = data_gnss::RfErrorDetection::SpoofingState; };
+
 template<>
 struct MetadataFor<data_gnss::RfErrorDetection::ValidFlags>
 {
@@ -1836,6 +1945,8 @@ struct MetadataFor<data_gnss::RfErrorDetection::ValidFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<data_gnss::RfErrorDetection::ValidFlags>::value > { using type = data_gnss::RfErrorDetection::ValidFlags; };
 
 template<>
 struct MetadataFor<data_gnss::RfErrorDetection>
@@ -1903,6 +2014,9 @@ struct MetadataFor<data_gnss::RfErrorDetection>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_gnss::RfErrorDetection>::value > { using type = data_gnss::RfErrorDetection; };
+template<> struct TypeForDescriptor<data_gnss::RfErrorDetection::DESCRIPTOR.as_u16()> { using type = data_gnss::RfErrorDetection; };
+
 template<>
 struct MetadataFor<data_gnss::BaseStationInfo::IndicatorFlags>
 {
@@ -1929,6 +2043,8 @@ struct MetadataFor<data_gnss::BaseStationInfo::IndicatorFlags>
 
 };
 
+template<> struct TypeForBitsInfo< &MetadataFor<data_gnss::BaseStationInfo::IndicatorFlags>::value > { using type = data_gnss::BaseStationInfo::IndicatorFlags; };
+
 template<>
 struct MetadataFor<data_gnss::BaseStationInfo::ValidFlags>
 {
@@ -1952,6 +2068,8 @@ struct MetadataFor<data_gnss::BaseStationInfo::ValidFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<data_gnss::BaseStationInfo::ValidFlags>::value > { using type = data_gnss::BaseStationInfo::ValidFlags; };
 
 template<>
 struct MetadataFor<data_gnss::BaseStationInfo>
@@ -2037,6 +2155,9 @@ struct MetadataFor<data_gnss::BaseStationInfo>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_gnss::BaseStationInfo>::value > { using type = data_gnss::BaseStationInfo; };
+template<> struct TypeForDescriptor<data_gnss::BaseStationInfo::DESCRIPTOR.as_u16()> { using type = data_gnss::BaseStationInfo; };
+
 template<>
 struct MetadataFor<data_gnss::RtkCorrectionsStatus::ValidFlags>
 {
@@ -2063,6 +2184,8 @@ struct MetadataFor<data_gnss::RtkCorrectionsStatus::ValidFlags>
 
 };
 
+template<> struct TypeForBitsInfo< &MetadataFor<data_gnss::RtkCorrectionsStatus::ValidFlags>::value > { using type = data_gnss::RtkCorrectionsStatus::ValidFlags; };
+
 template<>
 struct MetadataFor<data_gnss::RtkCorrectionsStatus::EpochStatus>
 {
@@ -2088,6 +2211,8 @@ struct MetadataFor<data_gnss::RtkCorrectionsStatus::EpochStatus>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<data_gnss::RtkCorrectionsStatus::EpochStatus>::value > { using type = data_gnss::RtkCorrectionsStatus::EpochStatus; };
 
 template<>
 struct MetadataFor<data_gnss::RtkCorrectionsStatus>
@@ -2200,6 +2325,9 @@ struct MetadataFor<data_gnss::RtkCorrectionsStatus>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_gnss::RtkCorrectionsStatus>::value > { using type = data_gnss::RtkCorrectionsStatus; };
+template<> struct TypeForDescriptor<data_gnss::RtkCorrectionsStatus::DESCRIPTOR.as_u16()> { using type = data_gnss::RtkCorrectionsStatus; };
+
 template<>
 struct MetadataFor<data_gnss::SatelliteStatus::ValidFlags>
 {
@@ -2224,6 +2352,8 @@ struct MetadataFor<data_gnss::SatelliteStatus::ValidFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<data_gnss::SatelliteStatus::ValidFlags>::value > { using type = data_gnss::SatelliteStatus::ValidFlags; };
 
 template<>
 struct MetadataFor<data_gnss::SatelliteStatus>
@@ -2336,6 +2466,9 @@ struct MetadataFor<data_gnss::SatelliteStatus>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_gnss::SatelliteStatus>::value > { using type = data_gnss::SatelliteStatus; };
+template<> struct TypeForDescriptor<data_gnss::SatelliteStatus::DESCRIPTOR.as_u16()> { using type = data_gnss::SatelliteStatus; };
+
 template<>
 struct MetadataFor<data_gnss::GnssSignalId>
 {
@@ -2419,6 +2552,8 @@ struct MetadataFor<data_gnss::GnssSignalId>
 
 };
 
+template<> struct TypeForEnumInfo< &MetadataFor<data_gnss::GnssSignalId>::value > { using type = data_gnss::GnssSignalId; };
+
 template<>
 struct MetadataFor<data_gnss::Raw::GnssSignalQuality>
 {
@@ -2441,6 +2576,8 @@ struct MetadataFor<data_gnss::Raw::GnssSignalQuality>
     };
 
 };
+
+template<> struct TypeForEnumInfo< &MetadataFor<data_gnss::Raw::GnssSignalQuality>::value > { using type = data_gnss::Raw::GnssSignalQuality; };
 
 template<>
 struct MetadataFor<data_gnss::Raw::ValidFlags>
@@ -2475,6 +2612,8 @@ struct MetadataFor<data_gnss::Raw::ValidFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<data_gnss::Raw::ValidFlags>::value > { using type = data_gnss::Raw::ValidFlags; };
 
 template<>
 struct MetadataFor<data_gnss::Raw>
@@ -2668,6 +2807,9 @@ struct MetadataFor<data_gnss::Raw>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_gnss::Raw>::value > { using type = data_gnss::Raw; };
+template<> struct TypeForDescriptor<data_gnss::Raw::DESCRIPTOR.as_u16()> { using type = data_gnss::Raw; };
+
 template<>
 struct MetadataFor<data_gnss::GpsEphemeris::ValidFlags>
 {
@@ -2688,6 +2830,8 @@ struct MetadataFor<data_gnss::GpsEphemeris::ValidFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<data_gnss::GpsEphemeris::ValidFlags>::value > { using type = data_gnss::GpsEphemeris::ValidFlags; };
 
 template<>
 struct MetadataFor<data_gnss::GpsEphemeris>
@@ -3016,6 +3160,9 @@ struct MetadataFor<data_gnss::GpsEphemeris>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_gnss::GpsEphemeris>::value > { using type = data_gnss::GpsEphemeris; };
+template<> struct TypeForDescriptor<data_gnss::GpsEphemeris::DESCRIPTOR.as_u16()> { using type = data_gnss::GpsEphemeris; };
+
 template<>
 struct MetadataFor<data_gnss::GalileoEphemeris::ValidFlags>
 {
@@ -3036,6 +3183,8 @@ struct MetadataFor<data_gnss::GalileoEphemeris::ValidFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<data_gnss::GalileoEphemeris::ValidFlags>::value > { using type = data_gnss::GalileoEphemeris::ValidFlags; };
 
 template<>
 struct MetadataFor<data_gnss::GalileoEphemeris>
@@ -3364,6 +3513,9 @@ struct MetadataFor<data_gnss::GalileoEphemeris>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_gnss::GalileoEphemeris>::value > { using type = data_gnss::GalileoEphemeris; };
+template<> struct TypeForDescriptor<data_gnss::GalileoEphemeris::DESCRIPTOR.as_u16()> { using type = data_gnss::GalileoEphemeris; };
+
 template<>
 struct MetadataFor<data_gnss::GloEphemeris::ValidFlags>
 {
@@ -3382,6 +3534,8 @@ struct MetadataFor<data_gnss::GloEphemeris::ValidFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<data_gnss::GloEphemeris::ValidFlags>::value > { using type = data_gnss::GloEphemeris::ValidFlags; };
 
 template<>
 struct MetadataFor<data_gnss::GloEphemeris>
@@ -3629,6 +3783,9 @@ struct MetadataFor<data_gnss::GloEphemeris>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_gnss::GloEphemeris>::value > { using type = data_gnss::GloEphemeris; };
+template<> struct TypeForDescriptor<data_gnss::GloEphemeris::DESCRIPTOR.as_u16()> { using type = data_gnss::GloEphemeris; };
+
 template<>
 struct MetadataFor<data_gnss::BeidouEphemeris::ValidFlags>
 {
@@ -3649,6 +3806,8 @@ struct MetadataFor<data_gnss::BeidouEphemeris::ValidFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<data_gnss::BeidouEphemeris::ValidFlags>::value > { using type = data_gnss::BeidouEphemeris::ValidFlags; };
 
 template<>
 struct MetadataFor<data_gnss::BeidouEphemeris>
@@ -3977,6 +4136,9 @@ struct MetadataFor<data_gnss::BeidouEphemeris>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_gnss::BeidouEphemeris>::value > { using type = data_gnss::BeidouEphemeris; };
+template<> struct TypeForDescriptor<data_gnss::BeidouEphemeris::DESCRIPTOR.as_u16()> { using type = data_gnss::BeidouEphemeris; };
+
 template<>
 struct MetadataFor<data_gnss::GpsIonoCorr::ValidFlags>
 {
@@ -3998,6 +4160,8 @@ struct MetadataFor<data_gnss::GpsIonoCorr::ValidFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<data_gnss::GpsIonoCorr::ValidFlags>::value > { using type = data_gnss::GpsIonoCorr::ValidFlags; };
 
 template<>
 struct MetadataFor<data_gnss::GpsIonoCorr>
@@ -4065,6 +4229,9 @@ struct MetadataFor<data_gnss::GpsIonoCorr>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_gnss::GpsIonoCorr>::value > { using type = data_gnss::GpsIonoCorr; };
+template<> struct TypeForDescriptor<data_gnss::GpsIonoCorr::DESCRIPTOR.as_u16()> { using type = data_gnss::GpsIonoCorr; };
+
 template<>
 struct MetadataFor<data_gnss::GalileoIonoCorr::ValidFlags>
 {
@@ -4086,6 +4253,8 @@ struct MetadataFor<data_gnss::GalileoIonoCorr::ValidFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<data_gnss::GalileoIonoCorr::ValidFlags>::value > { using type = data_gnss::GalileoIonoCorr::ValidFlags; };
 
 template<>
 struct MetadataFor<data_gnss::GalileoIonoCorr>
@@ -4153,6 +4322,9 @@ struct MetadataFor<data_gnss::GalileoIonoCorr>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_gnss::GalileoIonoCorr>::value > { using type = data_gnss::GalileoIonoCorr; };
+template<> struct TypeForDescriptor<data_gnss::GalileoIonoCorr::DESCRIPTOR.as_u16()> { using type = data_gnss::GalileoIonoCorr; };
+
 template<>
 struct MetadataFor<data_gnss::BeidouIonoCorr::ValidFlags>
 {
@@ -4175,6 +4347,8 @@ struct MetadataFor<data_gnss::BeidouIonoCorr::ValidFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<data_gnss::BeidouIonoCorr::ValidFlags>::value > { using type = data_gnss::BeidouIonoCorr::ValidFlags; };
 
 template<>
 struct MetadataFor<data_gnss::BeidouIonoCorr>
@@ -4251,6 +4425,9 @@ struct MetadataFor<data_gnss::BeidouIonoCorr>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_gnss::BeidouIonoCorr>::value > { using type = data_gnss::BeidouIonoCorr; };
+template<> struct TypeForDescriptor<data_gnss::BeidouIonoCorr::DESCRIPTOR.as_u16()> { using type = data_gnss::BeidouIonoCorr; };
+
 
 static constexpr inline const FieldInfo* DATA_GNSS_FIELDS[] = {
     &MetadataFor<data_gnss::PosLlh>::value,
@@ -4283,6 +4460,61 @@ static constexpr inline const FieldInfo* DATA_GNSS_FIELDS[] = {
     &MetadataFor<data_gnss::GalileoIonoCorr>::value,
     &MetadataFor<data_gnss::BeidouIonoCorr>::value,
 };
+
+//namespace data_gnss
+//{
+struct DataSetGnss
+{
+    static inline constexpr uint8_t DESCRIPTOR_SET = data_gnss::DESCRIPTOR_SET;
+    static inline constexpr CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, INVALID_FIELD_DESCRIPTOR};
+
+    using Fields = std::tuple<
+        ::mip::data_gnss::PosLlh,
+        ::mip::data_gnss::PosEcef,
+        ::mip::data_gnss::VelNed,
+        ::mip::data_gnss::VelEcef,
+        ::mip::data_gnss::Dop,
+        ::mip::data_gnss::UtcTime,
+        ::mip::data_gnss::GpsTime,
+        ::mip::data_gnss::ClockInfo,
+        ::mip::data_gnss::FixInfo,
+        ::mip::data_gnss::SvInfo,
+        ::mip::data_gnss::HwStatus,
+        ::mip::data_gnss::DgpsInfo,
+        ::mip::data_gnss::DgpsChannel,
+        ::mip::data_gnss::ClockInfo2,
+        ::mip::data_gnss::GpsLeapSeconds,
+        ::mip::data_gnss::SbasInfo,
+        ::mip::data_gnss::SbasCorrection,
+        ::mip::data_gnss::RfErrorDetection,
+        ::mip::data_gnss::SatelliteStatus,
+        ::mip::data_gnss::Raw,
+        ::mip::data_gnss::BaseStationInfo,
+        ::mip::data_gnss::RtkCorrectionsStatus,
+        ::mip::data_gnss::GpsEphemeris,
+        ::mip::data_gnss::GloEphemeris,
+        ::mip::data_gnss::GalileoEphemeris,
+        ::mip::data_gnss::BeidouEphemeris,
+        ::mip::data_gnss::GpsIonoCorr,
+        ::mip::data_gnss::GalileoIonoCorr,
+        ::mip::data_gnss::BeidouIonoCorr
+    >;
+};
+
+//} // namespace data_gnss
+
+template<>
+struct MetadataFor<DataSetGnss>
+{
+    using type = DataSetGnss;
+    
+    static inline constexpr DescriptorSetInfo value = {
+        /* .descriptor = */ data_gnss::DESCRIPTOR_SET,
+        /* .name       = */ "Gnss Data",
+        /* .fields     = */ DATA_GNSS_FIELDS,
+    };
+};
+template<> struct TypeForDescriptor< (data_gnss::DESCRIPTOR_SET << 8) > { using type = DataSetGnss; };
 
 static constexpr DescriptorSetInfo DATA_GNSS = {
     /* .descriptor = */ mip::data_gnss::DESCRIPTOR_SET,

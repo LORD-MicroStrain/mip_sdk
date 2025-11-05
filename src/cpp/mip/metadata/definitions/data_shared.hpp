@@ -39,6 +39,9 @@ struct MetadataFor<data_shared::EventSource>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_shared::EventSource>::value > { using type = data_shared::EventSource; };
+template<> struct TypeForDescriptor<data_shared::EventSource::DESCRIPTOR.as_u16()> { using type = data_shared::EventSource; };
+
 template<>
 struct MetadataFor<data_shared::Ticks>
 {
@@ -68,6 +71,9 @@ struct MetadataFor<data_shared::Ticks>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<data_shared::Ticks>::value > { using type = data_shared::Ticks; };
+template<> struct TypeForDescriptor<data_shared::Ticks::DESCRIPTOR.as_u16()> { using type = data_shared::Ticks; };
 
 template<>
 struct MetadataFor<data_shared::DeltaTicks>
@@ -99,6 +105,9 @@ struct MetadataFor<data_shared::DeltaTicks>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_shared::DeltaTicks>::value > { using type = data_shared::DeltaTicks; };
+template<> struct TypeForDescriptor<data_shared::DeltaTicks::DESCRIPTOR.as_u16()> { using type = data_shared::DeltaTicks; };
+
 template<>
 struct MetadataFor<data_shared::GpsTimestamp::ValidFlags>
 {
@@ -118,6 +127,8 @@ struct MetadataFor<data_shared::GpsTimestamp::ValidFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<data_shared::GpsTimestamp::ValidFlags>::value > { using type = data_shared::GpsTimestamp::ValidFlags; };
 
 template<>
 struct MetadataFor<data_shared::GpsTimestamp>
@@ -167,6 +178,9 @@ struct MetadataFor<data_shared::GpsTimestamp>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_shared::GpsTimestamp>::value > { using type = data_shared::GpsTimestamp; };
+template<> struct TypeForDescriptor<data_shared::GpsTimestamp::DESCRIPTOR.as_u16()> { using type = data_shared::GpsTimestamp; };
+
 template<>
 struct MetadataFor<data_shared::DeltaTime>
 {
@@ -196,6 +210,9 @@ struct MetadataFor<data_shared::DeltaTime>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<data_shared::DeltaTime>::value > { using type = data_shared::DeltaTime; };
+template<> struct TypeForDescriptor<data_shared::DeltaTime::DESCRIPTOR.as_u16()> { using type = data_shared::DeltaTime; };
 
 template<>
 struct MetadataFor<data_shared::ReferenceTimestamp>
@@ -227,6 +244,9 @@ struct MetadataFor<data_shared::ReferenceTimestamp>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_shared::ReferenceTimestamp>::value > { using type = data_shared::ReferenceTimestamp; };
+template<> struct TypeForDescriptor<data_shared::ReferenceTimestamp::DESCRIPTOR.as_u16()> { using type = data_shared::ReferenceTimestamp; };
+
 template<>
 struct MetadataFor<data_shared::ReferenceTimeDelta>
 {
@@ -257,6 +277,9 @@ struct MetadataFor<data_shared::ReferenceTimeDelta>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_shared::ReferenceTimeDelta>::value > { using type = data_shared::ReferenceTimeDelta; };
+template<> struct TypeForDescriptor<data_shared::ReferenceTimeDelta::DESCRIPTOR.as_u16()> { using type = data_shared::ReferenceTimeDelta; };
+
 template<>
 struct MetadataFor<data_shared::ExternalTimestamp::ValidFlags>
 {
@@ -274,6 +297,8 @@ struct MetadataFor<data_shared::ExternalTimestamp::ValidFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<data_shared::ExternalTimestamp::ValidFlags>::value > { using type = data_shared::ExternalTimestamp::ValidFlags; };
 
 template<>
 struct MetadataFor<data_shared::ExternalTimestamp>
@@ -314,6 +339,9 @@ struct MetadataFor<data_shared::ExternalTimestamp>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_shared::ExternalTimestamp>::value > { using type = data_shared::ExternalTimestamp; };
+template<> struct TypeForDescriptor<data_shared::ExternalTimestamp::DESCRIPTOR.as_u16()> { using type = data_shared::ExternalTimestamp; };
+
 template<>
 struct MetadataFor<data_shared::ExternalTimeDelta::ValidFlags>
 {
@@ -331,6 +359,8 @@ struct MetadataFor<data_shared::ExternalTimeDelta::ValidFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<data_shared::ExternalTimeDelta::ValidFlags>::value > { using type = data_shared::ExternalTimeDelta::ValidFlags; };
 
 template<>
 struct MetadataFor<data_shared::ExternalTimeDelta>
@@ -371,6 +401,10 @@ struct MetadataFor<data_shared::ExternalTimeDelta>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_shared::ExternalTimeDelta>::value > { using type = data_shared::ExternalTimeDelta; };
+template<> struct TypeForDescriptor<data_shared::ExternalTimeDelta::DESCRIPTOR.as_u16()> { using type = data_shared::ExternalTimeDelta; };
+
+
 static constexpr inline const FieldInfo* DATA_SHARED_FIELDS[] = {
     &MetadataFor<data_shared::EventSource>::value,
     &MetadataFor<data_shared::Ticks>::value,
@@ -383,37 +417,40 @@ static constexpr inline const FieldInfo* DATA_SHARED_FIELDS[] = {
     &MetadataFor<data_shared::ExternalTimeDelta>::value,
 };
 
-struct SharedDataSet
+//namespace data_shared
+//{
+struct DataSetShared
 {
-    static constexpr inline const uint8_t DESCRIPTOR_SET = data_shared::DESCRIPTOR_SET;
-    static constexpr inline const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, INVALID_FIELD_DESCRIPTOR};
+    static inline constexpr uint8_t DESCRIPTOR_SET = data_shared::DESCRIPTOR_SET;
+    static inline constexpr CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, INVALID_FIELD_DESCRIPTOR};
 
     using Fields = std::tuple<
-        data_shared::EventSource,
-        data_shared::Ticks,
-        data_shared::DeltaTicks,
-        data_shared::GpsTimestamp,
-        data_shared::DeltaTime,
-        data_shared::ReferenceTimestamp,
-        data_shared::ReferenceTimeDelta,
-        data_shared::ExternalTimestamp,
-        data_shared::ExternalTimeDelta
+        ::mip::data_shared::EventSource,
+        ::mip::data_shared::Ticks,
+        ::mip::data_shared::DeltaTicks,
+        ::mip::data_shared::GpsTimestamp,
+        ::mip::data_shared::DeltaTime,
+        ::mip::data_shared::ReferenceTimestamp,
+        ::mip::data_shared::ReferenceTimeDelta,
+        ::mip::data_shared::ExternalTimestamp,
+        ::mip::data_shared::ExternalTimeDelta
     >;
 };
 
-template<>
-struct MetadataFor<SharedDataSet>
-{
-    using type = SharedDataSet;
+//} // namespace data_shared
 
-    static constexpr inline DescriptorSetInfo value = {
-        /* .descriptor = */ mip::data_shared::DESCRIPTOR_SET,
+template<>
+struct MetadataFor<DataSetShared>
+{
+    using type = DataSetShared;
+    
+    static inline constexpr DescriptorSetInfo value = {
+        /* .descriptor = */ data_shared::DESCRIPTOR_SET,
         /* .name       = */ "Shared Data",
         /* .fields     = */ DATA_SHARED_FIELDS,
     };
 };
-template<> struct TypeForDescriptor< SharedDataSet::DESCRIPTOR.as_u16() > { using type = SharedDataSet; };
-
+template<> struct TypeForDescriptor< (data_shared::DESCRIPTOR_SET << 8) > { using type = DataSetShared; };
 
 static constexpr DescriptorSetInfo DATA_SHARED = {
     /* .descriptor = */ mip::data_shared::DESCRIPTOR_SET,

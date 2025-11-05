@@ -27,6 +27,9 @@ struct MetadataFor<commands_filter::Reset>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::Reset>::value > { using type = commands_filter::Reset; };
+template<> struct TypeForDescriptor<commands_filter::Reset::DESCRIPTOR.as_u16()> { using type = commands_filter::Reset; };
+
 template<>
 struct MetadataFor<commands_filter::SetInitialAttitude>
 {
@@ -75,6 +78,9 @@ struct MetadataFor<commands_filter::SetInitialAttitude>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::SetInitialAttitude>::value > { using type = commands_filter::SetInitialAttitude; };
+template<> struct TypeForDescriptor<commands_filter::SetInitialAttitude::DESCRIPTOR.as_u16()> { using type = commands_filter::SetInitialAttitude; };
+
 template<>
 struct MetadataFor<commands_filter::EstimationControl::EnableFlags>
 {
@@ -98,6 +104,8 @@ struct MetadataFor<commands_filter::EstimationControl::EnableFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<commands_filter::EstimationControl::EnableFlags>::value > { using type = commands_filter::EstimationControl::EnableFlags; };
 
 template<>
 struct MetadataFor<commands_filter::EstimationControl::Response>
@@ -129,6 +137,8 @@ struct MetadataFor<commands_filter::EstimationControl::Response>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::EstimationControl::Response>::value > { using type = commands_filter::EstimationControl::Response; };
+
 template<>
 struct MetadataFor<commands_filter::EstimationControl>
 {
@@ -159,6 +169,9 @@ struct MetadataFor<commands_filter::EstimationControl>
             /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::EstimationControl>::value > { using type = commands_filter::EstimationControl; };
+template<> struct TypeForDescriptor<commands_filter::EstimationControl::DESCRIPTOR.as_u16()> { using type = commands_filter::EstimationControl; };
 
 template<>
 struct MetadataFor<commands_filter::ExternalGnssUpdate>
@@ -253,6 +266,9 @@ struct MetadataFor<commands_filter::ExternalGnssUpdate>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::ExternalGnssUpdate>::value > { using type = commands_filter::ExternalGnssUpdate; };
+template<> struct TypeForDescriptor<commands_filter::ExternalGnssUpdate::DESCRIPTOR.as_u16()> { using type = commands_filter::ExternalGnssUpdate; };
+
 template<>
 struct MetadataFor<commands_filter::ExternalHeadingUpdate>
 {
@@ -300,6 +316,9 @@ struct MetadataFor<commands_filter::ExternalHeadingUpdate>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::ExternalHeadingUpdate>::value > { using type = commands_filter::ExternalHeadingUpdate; };
+template<> struct TypeForDescriptor<commands_filter::ExternalHeadingUpdate::DESCRIPTOR.as_u16()> { using type = commands_filter::ExternalHeadingUpdate; };
 
 template<>
 struct MetadataFor<commands_filter::ExternalHeadingUpdateWithTime>
@@ -367,6 +386,9 @@ struct MetadataFor<commands_filter::ExternalHeadingUpdateWithTime>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::ExternalHeadingUpdateWithTime>::value > { using type = commands_filter::ExternalHeadingUpdateWithTime; };
+template<> struct TypeForDescriptor<commands_filter::ExternalHeadingUpdateWithTime::DESCRIPTOR.as_u16()> { using type = commands_filter::ExternalHeadingUpdateWithTime; };
+
 template<>
 struct MetadataFor<commands_filter::TareOrientation::MipTareAxes>
 {
@@ -386,6 +408,8 @@ struct MetadataFor<commands_filter::TareOrientation::MipTareAxes>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<commands_filter::TareOrientation::MipTareAxes>::value > { using type = commands_filter::TareOrientation::MipTareAxes; };
 
 template<>
 struct MetadataFor<commands_filter::TareOrientation::Response>
@@ -416,6 +440,8 @@ struct MetadataFor<commands_filter::TareOrientation::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::TareOrientation::Response>::value > { using type = commands_filter::TareOrientation::Response; };
 
 template<>
 struct MetadataFor<commands_filter::TareOrientation>
@@ -448,6 +474,9 @@ struct MetadataFor<commands_filter::TareOrientation>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::TareOrientation>::value > { using type = commands_filter::TareOrientation; };
+template<> struct TypeForDescriptor<commands_filter::TareOrientation::DESCRIPTOR.as_u16()> { using type = commands_filter::TareOrientation; };
+
 template<>
 struct MetadataFor<commands_filter::VehicleDynamicsMode::DynamicsMode>
 {
@@ -468,6 +497,8 @@ struct MetadataFor<commands_filter::VehicleDynamicsMode::DynamicsMode>
     };
 
 };
+
+template<> struct TypeForEnumInfo< &MetadataFor<commands_filter::VehicleDynamicsMode::DynamicsMode>::value > { using type = commands_filter::VehicleDynamicsMode::DynamicsMode; };
 
 template<>
 struct MetadataFor<commands_filter::VehicleDynamicsMode::Response>
@@ -499,6 +530,8 @@ struct MetadataFor<commands_filter::VehicleDynamicsMode::Response>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::VehicleDynamicsMode::Response>::value > { using type = commands_filter::VehicleDynamicsMode::Response; };
+
 template<>
 struct MetadataFor<commands_filter::VehicleDynamicsMode>
 {
@@ -529,6 +562,9 @@ struct MetadataFor<commands_filter::VehicleDynamicsMode>
             /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::VehicleDynamicsMode>::value > { using type = commands_filter::VehicleDynamicsMode; };
+template<> struct TypeForDescriptor<commands_filter::VehicleDynamicsMode::DESCRIPTOR.as_u16()> { using type = commands_filter::VehicleDynamicsMode; };
 
 template<>
 struct MetadataFor<commands_filter::SensorToVehicleRotationEuler::Response>
@@ -577,6 +613,8 @@ struct MetadataFor<commands_filter::SensorToVehicleRotationEuler::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::SensorToVehicleRotationEuler::Response>::value > { using type = commands_filter::SensorToVehicleRotationEuler::Response; };
 
 template<>
 struct MetadataFor<commands_filter::SensorToVehicleRotationEuler>
@@ -627,6 +665,9 @@ struct MetadataFor<commands_filter::SensorToVehicleRotationEuler>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::SensorToVehicleRotationEuler>::value > { using type = commands_filter::SensorToVehicleRotationEuler; };
+template<> struct TypeForDescriptor<commands_filter::SensorToVehicleRotationEuler::DESCRIPTOR.as_u16()> { using type = commands_filter::SensorToVehicleRotationEuler; };
+
 template<>
 struct MetadataFor<commands_filter::SensorToVehicleRotationDcm::Response>
 {
@@ -656,6 +697,8 @@ struct MetadataFor<commands_filter::SensorToVehicleRotationDcm::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::SensorToVehicleRotationDcm::Response>::value > { using type = commands_filter::SensorToVehicleRotationDcm::Response; };
 
 template<>
 struct MetadataFor<commands_filter::SensorToVehicleRotationDcm>
@@ -688,6 +731,9 @@ struct MetadataFor<commands_filter::SensorToVehicleRotationDcm>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::SensorToVehicleRotationDcm>::value > { using type = commands_filter::SensorToVehicleRotationDcm; };
+template<> struct TypeForDescriptor<commands_filter::SensorToVehicleRotationDcm::DESCRIPTOR.as_u16()> { using type = commands_filter::SensorToVehicleRotationDcm; };
+
 template<>
 struct MetadataFor<commands_filter::SensorToVehicleRotationQuaternion::Response>
 {
@@ -717,6 +763,8 @@ struct MetadataFor<commands_filter::SensorToVehicleRotationQuaternion::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::SensorToVehicleRotationQuaternion::Response>::value > { using type = commands_filter::SensorToVehicleRotationQuaternion::Response; };
 
 template<>
 struct MetadataFor<commands_filter::SensorToVehicleRotationQuaternion>
@@ -749,6 +797,9 @@ struct MetadataFor<commands_filter::SensorToVehicleRotationQuaternion>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::SensorToVehicleRotationQuaternion>::value > { using type = commands_filter::SensorToVehicleRotationQuaternion; };
+template<> struct TypeForDescriptor<commands_filter::SensorToVehicleRotationQuaternion::DESCRIPTOR.as_u16()> { using type = commands_filter::SensorToVehicleRotationQuaternion; };
+
 template<>
 struct MetadataFor<commands_filter::SensorToVehicleOffset::Response>
 {
@@ -778,6 +829,8 @@ struct MetadataFor<commands_filter::SensorToVehicleOffset::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::SensorToVehicleOffset::Response>::value > { using type = commands_filter::SensorToVehicleOffset::Response; };
 
 template<>
 struct MetadataFor<commands_filter::SensorToVehicleOffset>
@@ -810,6 +863,9 @@ struct MetadataFor<commands_filter::SensorToVehicleOffset>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::SensorToVehicleOffset>::value > { using type = commands_filter::SensorToVehicleOffset; };
+template<> struct TypeForDescriptor<commands_filter::SensorToVehicleOffset::DESCRIPTOR.as_u16()> { using type = commands_filter::SensorToVehicleOffset; };
+
 template<>
 struct MetadataFor<commands_filter::AntennaOffset::Response>
 {
@@ -839,6 +895,8 @@ struct MetadataFor<commands_filter::AntennaOffset::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::AntennaOffset::Response>::value > { using type = commands_filter::AntennaOffset::Response; };
 
 template<>
 struct MetadataFor<commands_filter::AntennaOffset>
@@ -871,6 +929,9 @@ struct MetadataFor<commands_filter::AntennaOffset>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::AntennaOffset>::value > { using type = commands_filter::AntennaOffset; };
+template<> struct TypeForDescriptor<commands_filter::AntennaOffset::DESCRIPTOR.as_u16()> { using type = commands_filter::AntennaOffset; };
+
 template<>
 struct MetadataFor<commands_filter::GnssSource::Source>
 {
@@ -891,6 +952,8 @@ struct MetadataFor<commands_filter::GnssSource::Source>
     };
 
 };
+
+template<> struct TypeForEnumInfo< &MetadataFor<commands_filter::GnssSource::Source>::value > { using type = commands_filter::GnssSource::Source; };
 
 template<>
 struct MetadataFor<commands_filter::GnssSource::Response>
@@ -921,6 +984,8 @@ struct MetadataFor<commands_filter::GnssSource::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::GnssSource::Response>::value > { using type = commands_filter::GnssSource::Response; };
 
 template<>
 struct MetadataFor<commands_filter::GnssSource>
@@ -953,6 +1018,9 @@ struct MetadataFor<commands_filter::GnssSource>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::GnssSource>::value > { using type = commands_filter::GnssSource; };
+template<> struct TypeForDescriptor<commands_filter::GnssSource::DESCRIPTOR.as_u16()> { using type = commands_filter::GnssSource; };
+
 template<>
 struct MetadataFor<commands_filter::HeadingSource::Source>
 {
@@ -977,6 +1045,8 @@ struct MetadataFor<commands_filter::HeadingSource::Source>
     };
 
 };
+
+template<> struct TypeForEnumInfo< &MetadataFor<commands_filter::HeadingSource::Source>::value > { using type = commands_filter::HeadingSource::Source; };
 
 template<>
 struct MetadataFor<commands_filter::HeadingSource::Response>
@@ -1007,6 +1077,8 @@ struct MetadataFor<commands_filter::HeadingSource::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::HeadingSource::Response>::value > { using type = commands_filter::HeadingSource::Response; };
 
 template<>
 struct MetadataFor<commands_filter::HeadingSource>
@@ -1039,6 +1111,9 @@ struct MetadataFor<commands_filter::HeadingSource>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::HeadingSource>::value > { using type = commands_filter::HeadingSource; };
+template<> struct TypeForDescriptor<commands_filter::HeadingSource::DESCRIPTOR.as_u16()> { using type = commands_filter::HeadingSource; };
+
 template<>
 struct MetadataFor<commands_filter::AutoInitControl::Response>
 {
@@ -1068,6 +1143,8 @@ struct MetadataFor<commands_filter::AutoInitControl::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::AutoInitControl::Response>::value > { using type = commands_filter::AutoInitControl::Response; };
 
 template<>
 struct MetadataFor<commands_filter::AutoInitControl>
@@ -1100,6 +1177,9 @@ struct MetadataFor<commands_filter::AutoInitControl>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::AutoInitControl>::value > { using type = commands_filter::AutoInitControl; };
+template<> struct TypeForDescriptor<commands_filter::AutoInitControl::DESCRIPTOR.as_u16()> { using type = commands_filter::AutoInitControl; };
+
 template<>
 struct MetadataFor<commands_filter::AccelNoise::Response>
 {
@@ -1129,6 +1209,8 @@ struct MetadataFor<commands_filter::AccelNoise::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::AccelNoise::Response>::value > { using type = commands_filter::AccelNoise::Response; };
 
 template<>
 struct MetadataFor<commands_filter::AccelNoise>
@@ -1161,6 +1243,9 @@ struct MetadataFor<commands_filter::AccelNoise>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::AccelNoise>::value > { using type = commands_filter::AccelNoise; };
+template<> struct TypeForDescriptor<commands_filter::AccelNoise::DESCRIPTOR.as_u16()> { using type = commands_filter::AccelNoise; };
+
 template<>
 struct MetadataFor<commands_filter::GyroNoise::Response>
 {
@@ -1190,6 +1275,8 @@ struct MetadataFor<commands_filter::GyroNoise::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::GyroNoise::Response>::value > { using type = commands_filter::GyroNoise::Response; };
 
 template<>
 struct MetadataFor<commands_filter::GyroNoise>
@@ -1221,6 +1308,9 @@ struct MetadataFor<commands_filter::GyroNoise>
             /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::GyroNoise>::value > { using type = commands_filter::GyroNoise; };
+template<> struct TypeForDescriptor<commands_filter::GyroNoise::DESCRIPTOR.as_u16()> { using type = commands_filter::GyroNoise; };
 
 template<>
 struct MetadataFor<commands_filter::AccelBiasModel::Response>
@@ -1260,6 +1350,8 @@ struct MetadataFor<commands_filter::AccelBiasModel::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::AccelBiasModel::Response>::value > { using type = commands_filter::AccelBiasModel::Response; };
 
 template<>
 struct MetadataFor<commands_filter::AccelBiasModel>
@@ -1301,6 +1393,9 @@ struct MetadataFor<commands_filter::AccelBiasModel>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::AccelBiasModel>::value > { using type = commands_filter::AccelBiasModel; };
+template<> struct TypeForDescriptor<commands_filter::AccelBiasModel::DESCRIPTOR.as_u16()> { using type = commands_filter::AccelBiasModel; };
+
 template<>
 struct MetadataFor<commands_filter::GyroBiasModel::Response>
 {
@@ -1339,6 +1434,8 @@ struct MetadataFor<commands_filter::GyroBiasModel::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::GyroBiasModel::Response>::value > { using type = commands_filter::GyroBiasModel::Response; };
 
 template<>
 struct MetadataFor<commands_filter::GyroBiasModel>
@@ -1380,6 +1477,9 @@ struct MetadataFor<commands_filter::GyroBiasModel>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::GyroBiasModel>::value > { using type = commands_filter::GyroBiasModel; };
+template<> struct TypeForDescriptor<commands_filter::GyroBiasModel::DESCRIPTOR.as_u16()> { using type = commands_filter::GyroBiasModel; };
+
 template<>
 struct MetadataFor<commands_filter::AltitudeAiding::AidingSelector>
 {
@@ -1398,6 +1498,8 @@ struct MetadataFor<commands_filter::AltitudeAiding::AidingSelector>
     };
 
 };
+
+template<> struct TypeForEnumInfo< &MetadataFor<commands_filter::AltitudeAiding::AidingSelector>::value > { using type = commands_filter::AltitudeAiding::AidingSelector; };
 
 template<>
 struct MetadataFor<commands_filter::AltitudeAiding::Response>
@@ -1428,6 +1530,8 @@ struct MetadataFor<commands_filter::AltitudeAiding::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::AltitudeAiding::Response>::value > { using type = commands_filter::AltitudeAiding::Response; };
 
 template<>
 struct MetadataFor<commands_filter::AltitudeAiding>
@@ -1460,6 +1564,9 @@ struct MetadataFor<commands_filter::AltitudeAiding>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::AltitudeAiding>::value > { using type = commands_filter::AltitudeAiding; };
+template<> struct TypeForDescriptor<commands_filter::AltitudeAiding::DESCRIPTOR.as_u16()> { using type = commands_filter::AltitudeAiding; };
+
 template<>
 struct MetadataFor<commands_filter::PitchRollAiding::AidingSource>
 {
@@ -1478,6 +1585,8 @@ struct MetadataFor<commands_filter::PitchRollAiding::AidingSource>
     };
 
 };
+
+template<> struct TypeForEnumInfo< &MetadataFor<commands_filter::PitchRollAiding::AidingSource>::value > { using type = commands_filter::PitchRollAiding::AidingSource; };
 
 template<>
 struct MetadataFor<commands_filter::PitchRollAiding::Response>
@@ -1509,6 +1618,8 @@ struct MetadataFor<commands_filter::PitchRollAiding::Response>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::PitchRollAiding::Response>::value > { using type = commands_filter::PitchRollAiding::Response; };
+
 template<>
 struct MetadataFor<commands_filter::PitchRollAiding>
 {
@@ -1539,6 +1650,9 @@ struct MetadataFor<commands_filter::PitchRollAiding>
             /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::PitchRollAiding>::value > { using type = commands_filter::PitchRollAiding; };
+template<> struct TypeForDescriptor<commands_filter::PitchRollAiding::DESCRIPTOR.as_u16()> { using type = commands_filter::PitchRollAiding; };
 
 template<>
 struct MetadataFor<commands_filter::AutoZupt::Response>
@@ -1578,6 +1692,8 @@ struct MetadataFor<commands_filter::AutoZupt::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::AutoZupt::Response>::value > { using type = commands_filter::AutoZupt::Response; };
 
 template<>
 struct MetadataFor<commands_filter::AutoZupt>
@@ -1619,6 +1735,9 @@ struct MetadataFor<commands_filter::AutoZupt>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::AutoZupt>::value > { using type = commands_filter::AutoZupt; };
+template<> struct TypeForDescriptor<commands_filter::AutoZupt::DESCRIPTOR.as_u16()> { using type = commands_filter::AutoZupt; };
+
 template<>
 struct MetadataFor<commands_filter::AutoAngularZupt::Response>
 {
@@ -1657,6 +1776,8 @@ struct MetadataFor<commands_filter::AutoAngularZupt::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::AutoAngularZupt::Response>::value > { using type = commands_filter::AutoAngularZupt::Response; };
 
 template<>
 struct MetadataFor<commands_filter::AutoAngularZupt>
@@ -1698,6 +1819,9 @@ struct MetadataFor<commands_filter::AutoAngularZupt>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::AutoAngularZupt>::value > { using type = commands_filter::AutoAngularZupt; };
+template<> struct TypeForDescriptor<commands_filter::AutoAngularZupt::DESCRIPTOR.as_u16()> { using type = commands_filter::AutoAngularZupt; };
+
 template<>
 struct MetadataFor<commands_filter::CommandedZupt>
 {
@@ -1716,6 +1840,9 @@ struct MetadataFor<commands_filter::CommandedZupt>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::CommandedZupt>::value > { using type = commands_filter::CommandedZupt; };
+template<> struct TypeForDescriptor<commands_filter::CommandedZupt::DESCRIPTOR.as_u16()> { using type = commands_filter::CommandedZupt; };
+
 template<>
 struct MetadataFor<commands_filter::CommandedAngularZupt>
 {
@@ -1733,6 +1860,9 @@ struct MetadataFor<commands_filter::CommandedAngularZupt>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::CommandedAngularZupt>::value > { using type = commands_filter::CommandedAngularZupt; };
+template<> struct TypeForDescriptor<commands_filter::CommandedAngularZupt::DESCRIPTOR.as_u16()> { using type = commands_filter::CommandedAngularZupt; };
 
 template<>
 struct MetadataFor<commands_filter::MagCaptureAutoCal>
@@ -1756,6 +1886,9 @@ struct MetadataFor<commands_filter::MagCaptureAutoCal>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::MagCaptureAutoCal>::value > { using type = commands_filter::MagCaptureAutoCal; };
+template<> struct TypeForDescriptor<commands_filter::MagCaptureAutoCal::DESCRIPTOR.as_u16()> { using type = commands_filter::MagCaptureAutoCal; };
 
 template<>
 struct MetadataFor<commands_filter::GravityNoise::Response>
@@ -1786,6 +1919,8 @@ struct MetadataFor<commands_filter::GravityNoise::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::GravityNoise::Response>::value > { using type = commands_filter::GravityNoise::Response; };
 
 template<>
 struct MetadataFor<commands_filter::GravityNoise>
@@ -1818,6 +1953,9 @@ struct MetadataFor<commands_filter::GravityNoise>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::GravityNoise>::value > { using type = commands_filter::GravityNoise; };
+template<> struct TypeForDescriptor<commands_filter::GravityNoise::DESCRIPTOR.as_u16()> { using type = commands_filter::GravityNoise; };
+
 template<>
 struct MetadataFor<commands_filter::PressureAltitudeNoise::Response>
 {
@@ -1847,6 +1985,8 @@ struct MetadataFor<commands_filter::PressureAltitudeNoise::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::PressureAltitudeNoise::Response>::value > { using type = commands_filter::PressureAltitudeNoise::Response; };
 
 template<>
 struct MetadataFor<commands_filter::PressureAltitudeNoise>
@@ -1879,6 +2019,9 @@ struct MetadataFor<commands_filter::PressureAltitudeNoise>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::PressureAltitudeNoise>::value > { using type = commands_filter::PressureAltitudeNoise; };
+template<> struct TypeForDescriptor<commands_filter::PressureAltitudeNoise::DESCRIPTOR.as_u16()> { using type = commands_filter::PressureAltitudeNoise; };
+
 template<>
 struct MetadataFor<commands_filter::HardIronOffsetNoise::Response>
 {
@@ -1908,6 +2051,8 @@ struct MetadataFor<commands_filter::HardIronOffsetNoise::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::HardIronOffsetNoise::Response>::value > { using type = commands_filter::HardIronOffsetNoise::Response; };
 
 template<>
 struct MetadataFor<commands_filter::HardIronOffsetNoise>
@@ -1940,6 +2085,9 @@ struct MetadataFor<commands_filter::HardIronOffsetNoise>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::HardIronOffsetNoise>::value > { using type = commands_filter::HardIronOffsetNoise; };
+template<> struct TypeForDescriptor<commands_filter::HardIronOffsetNoise::DESCRIPTOR.as_u16()> { using type = commands_filter::HardIronOffsetNoise; };
+
 template<>
 struct MetadataFor<commands_filter::SoftIronMatrixNoise::Response>
 {
@@ -1969,6 +2117,8 @@ struct MetadataFor<commands_filter::SoftIronMatrixNoise::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::SoftIronMatrixNoise::Response>::value > { using type = commands_filter::SoftIronMatrixNoise::Response; };
 
 template<>
 struct MetadataFor<commands_filter::SoftIronMatrixNoise>
@@ -2001,6 +2151,9 @@ struct MetadataFor<commands_filter::SoftIronMatrixNoise>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::SoftIronMatrixNoise>::value > { using type = commands_filter::SoftIronMatrixNoise; };
+template<> struct TypeForDescriptor<commands_filter::SoftIronMatrixNoise::DESCRIPTOR.as_u16()> { using type = commands_filter::SoftIronMatrixNoise; };
+
 template<>
 struct MetadataFor<commands_filter::MagNoise::Response>
 {
@@ -2030,6 +2183,8 @@ struct MetadataFor<commands_filter::MagNoise::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::MagNoise::Response>::value > { using type = commands_filter::MagNoise::Response; };
 
 template<>
 struct MetadataFor<commands_filter::MagNoise>
@@ -2062,6 +2217,9 @@ struct MetadataFor<commands_filter::MagNoise>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::MagNoise>::value > { using type = commands_filter::MagNoise; };
+template<> struct TypeForDescriptor<commands_filter::MagNoise::DESCRIPTOR.as_u16()> { using type = commands_filter::MagNoise; };
+
 template<>
 struct MetadataFor<commands_filter::FilterMagParamSource>
 {
@@ -2081,6 +2239,8 @@ struct MetadataFor<commands_filter::FilterMagParamSource>
     };
 
 };
+
+template<> struct TypeForEnumInfo< &MetadataFor<commands_filter::FilterMagParamSource>::value > { using type = commands_filter::FilterMagParamSource; };
 
 template<>
 struct MetadataFor<commands_filter::InclinationSource::Response>
@@ -2120,6 +2280,8 @@ struct MetadataFor<commands_filter::InclinationSource::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::InclinationSource::Response>::value > { using type = commands_filter::InclinationSource::Response; };
 
 template<>
 struct MetadataFor<commands_filter::InclinationSource>
@@ -2161,6 +2323,9 @@ struct MetadataFor<commands_filter::InclinationSource>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::InclinationSource>::value > { using type = commands_filter::InclinationSource; };
+template<> struct TypeForDescriptor<commands_filter::InclinationSource::DESCRIPTOR.as_u16()> { using type = commands_filter::InclinationSource; };
+
 template<>
 struct MetadataFor<commands_filter::MagneticDeclinationSource::Response>
 {
@@ -2199,6 +2364,8 @@ struct MetadataFor<commands_filter::MagneticDeclinationSource::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::MagneticDeclinationSource::Response>::value > { using type = commands_filter::MagneticDeclinationSource::Response; };
 
 template<>
 struct MetadataFor<commands_filter::MagneticDeclinationSource>
@@ -2240,6 +2407,9 @@ struct MetadataFor<commands_filter::MagneticDeclinationSource>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::MagneticDeclinationSource>::value > { using type = commands_filter::MagneticDeclinationSource; };
+template<> struct TypeForDescriptor<commands_filter::MagneticDeclinationSource::DESCRIPTOR.as_u16()> { using type = commands_filter::MagneticDeclinationSource; };
+
 template<>
 struct MetadataFor<commands_filter::MagFieldMagnitudeSource::Response>
 {
@@ -2278,6 +2448,8 @@ struct MetadataFor<commands_filter::MagFieldMagnitudeSource::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::MagFieldMagnitudeSource::Response>::value > { using type = commands_filter::MagFieldMagnitudeSource::Response; };
 
 template<>
 struct MetadataFor<commands_filter::MagFieldMagnitudeSource>
@@ -2318,6 +2490,9 @@ struct MetadataFor<commands_filter::MagFieldMagnitudeSource>
             /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::MagFieldMagnitudeSource>::value > { using type = commands_filter::MagFieldMagnitudeSource; };
+template<> struct TypeForDescriptor<commands_filter::MagFieldMagnitudeSource::DESCRIPTOR.as_u16()> { using type = commands_filter::MagFieldMagnitudeSource; };
 
 template<>
 struct MetadataFor<commands_filter::ReferencePosition::Response>
@@ -2375,6 +2550,8 @@ struct MetadataFor<commands_filter::ReferencePosition::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::ReferencePosition::Response>::value > { using type = commands_filter::ReferencePosition::Response; };
 
 template<>
 struct MetadataFor<commands_filter::ReferencePosition>
@@ -2434,6 +2611,9 @@ struct MetadataFor<commands_filter::ReferencePosition>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::ReferencePosition>::value > { using type = commands_filter::ReferencePosition; };
+template<> struct TypeForDescriptor<commands_filter::ReferencePosition::DESCRIPTOR.as_u16()> { using type = commands_filter::ReferencePosition; };
+
 template<>
 struct MetadataFor<commands_filter::FilterAdaptiveMeasurement>
 {
@@ -2453,6 +2633,8 @@ struct MetadataFor<commands_filter::FilterAdaptiveMeasurement>
     };
 
 };
+
+template<> struct TypeForEnumInfo< &MetadataFor<commands_filter::FilterAdaptiveMeasurement>::value > { using type = commands_filter::FilterAdaptiveMeasurement; };
 
 template<>
 struct MetadataFor<commands_filter::AccelMagnitudeErrorAdaptiveMeasurement::Response>
@@ -2537,6 +2719,8 @@ struct MetadataFor<commands_filter::AccelMagnitudeErrorAdaptiveMeasurement::Resp
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::AccelMagnitudeErrorAdaptiveMeasurement::Response>::value > { using type = commands_filter::AccelMagnitudeErrorAdaptiveMeasurement::Response; };
 
 template<>
 struct MetadataFor<commands_filter::AccelMagnitudeErrorAdaptiveMeasurement>
@@ -2623,6 +2807,9 @@ struct MetadataFor<commands_filter::AccelMagnitudeErrorAdaptiveMeasurement>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::AccelMagnitudeErrorAdaptiveMeasurement>::value > { using type = commands_filter::AccelMagnitudeErrorAdaptiveMeasurement; };
+template<> struct TypeForDescriptor<commands_filter::AccelMagnitudeErrorAdaptiveMeasurement::DESCRIPTOR.as_u16()> { using type = commands_filter::AccelMagnitudeErrorAdaptiveMeasurement; };
+
 template<>
 struct MetadataFor<commands_filter::MagMagnitudeErrorAdaptiveMeasurement::Response>
 {
@@ -2706,6 +2893,8 @@ struct MetadataFor<commands_filter::MagMagnitudeErrorAdaptiveMeasurement::Respon
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::MagMagnitudeErrorAdaptiveMeasurement::Response>::value > { using type = commands_filter::MagMagnitudeErrorAdaptiveMeasurement::Response; };
 
 template<>
 struct MetadataFor<commands_filter::MagMagnitudeErrorAdaptiveMeasurement>
@@ -2792,6 +2981,9 @@ struct MetadataFor<commands_filter::MagMagnitudeErrorAdaptiveMeasurement>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::MagMagnitudeErrorAdaptiveMeasurement>::value > { using type = commands_filter::MagMagnitudeErrorAdaptiveMeasurement; };
+template<> struct TypeForDescriptor<commands_filter::MagMagnitudeErrorAdaptiveMeasurement::DESCRIPTOR.as_u16()> { using type = commands_filter::MagMagnitudeErrorAdaptiveMeasurement; };
+
 template<>
 struct MetadataFor<commands_filter::MagDipAngleErrorAdaptiveMeasurement::Response>
 {
@@ -2857,6 +3049,8 @@ struct MetadataFor<commands_filter::MagDipAngleErrorAdaptiveMeasurement::Respons
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::MagDipAngleErrorAdaptiveMeasurement::Response>::value > { using type = commands_filter::MagDipAngleErrorAdaptiveMeasurement::Response; };
 
 template<>
 struct MetadataFor<commands_filter::MagDipAngleErrorAdaptiveMeasurement>
@@ -2925,6 +3119,9 @@ struct MetadataFor<commands_filter::MagDipAngleErrorAdaptiveMeasurement>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::MagDipAngleErrorAdaptiveMeasurement>::value > { using type = commands_filter::MagDipAngleErrorAdaptiveMeasurement; };
+template<> struct TypeForDescriptor<commands_filter::MagDipAngleErrorAdaptiveMeasurement::DESCRIPTOR.as_u16()> { using type = commands_filter::MagDipAngleErrorAdaptiveMeasurement; };
+
 template<>
 struct MetadataFor<commands_filter::AidingMeasurementEnable::AidingSource>
 {
@@ -2951,6 +3148,8 @@ struct MetadataFor<commands_filter::AidingMeasurementEnable::AidingSource>
     };
 
 };
+
+template<> struct TypeForEnumInfo< &MetadataFor<commands_filter::AidingMeasurementEnable::AidingSource>::value > { using type = commands_filter::AidingMeasurementEnable::AidingSource; };
 
 template<>
 struct MetadataFor<commands_filter::AidingMeasurementEnable::Response>
@@ -2990,6 +3189,8 @@ struct MetadataFor<commands_filter::AidingMeasurementEnable::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::AidingMeasurementEnable::Response>::value > { using type = commands_filter::AidingMeasurementEnable::Response; };
 
 template<>
 struct MetadataFor<commands_filter::AidingMeasurementEnable>
@@ -3031,6 +3232,9 @@ struct MetadataFor<commands_filter::AidingMeasurementEnable>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::AidingMeasurementEnable>::value > { using type = commands_filter::AidingMeasurementEnable; };
+template<> struct TypeForDescriptor<commands_filter::AidingMeasurementEnable::DESCRIPTOR.as_u16()> { using type = commands_filter::AidingMeasurementEnable; };
+
 template<>
 struct MetadataFor<commands_filter::Run>
 {
@@ -3048,6 +3252,9 @@ struct MetadataFor<commands_filter::Run>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::Run>::value > { using type = commands_filter::Run; };
+template<> struct TypeForDescriptor<commands_filter::Run::DESCRIPTOR.as_u16()> { using type = commands_filter::Run; };
 
 template<>
 struct MetadataFor<commands_filter::KinematicConstraint::Response>
@@ -3096,6 +3303,8 @@ struct MetadataFor<commands_filter::KinematicConstraint::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::KinematicConstraint::Response>::value > { using type = commands_filter::KinematicConstraint::Response; };
 
 template<>
 struct MetadataFor<commands_filter::KinematicConstraint>
@@ -3146,6 +3355,9 @@ struct MetadataFor<commands_filter::KinematicConstraint>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::KinematicConstraint>::value > { using type = commands_filter::KinematicConstraint; };
+template<> struct TypeForDescriptor<commands_filter::KinematicConstraint::DESCRIPTOR.as_u16()> { using type = commands_filter::KinematicConstraint; };
+
 template<>
 struct MetadataFor<commands_filter::FilterReferenceFrame>
 {
@@ -3164,6 +3376,8 @@ struct MetadataFor<commands_filter::FilterReferenceFrame>
     };
 
 };
+
+template<> struct TypeForEnumInfo< &MetadataFor<commands_filter::FilterReferenceFrame>::value > { using type = commands_filter::FilterReferenceFrame; };
 
 template<>
 struct MetadataFor<commands_filter::InitializationConfiguration::AlignmentSelector>
@@ -3186,6 +3400,8 @@ struct MetadataFor<commands_filter::InitializationConfiguration::AlignmentSelect
 
 };
 
+template<> struct TypeForBitsInfo< &MetadataFor<commands_filter::InitializationConfiguration::AlignmentSelector>::value > { using type = commands_filter::InitializationConfiguration::AlignmentSelector; };
+
 template<>
 struct MetadataFor<commands_filter::InitializationConfiguration::InitialConditionSource>
 {
@@ -3206,6 +3422,8 @@ struct MetadataFor<commands_filter::InitializationConfiguration::InitialConditio
     };
 
 };
+
+template<> struct TypeForEnumInfo< &MetadataFor<commands_filter::InitializationConfiguration::InitialConditionSource>::value > { using type = commands_filter::InitializationConfiguration::InitialConditionSource; };
 
 template<>
 struct MetadataFor<commands_filter::InitializationConfiguration::Response>
@@ -3308,6 +3526,8 @@ struct MetadataFor<commands_filter::InitializationConfiguration::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::InitializationConfiguration::Response>::value > { using type = commands_filter::InitializationConfiguration::Response; };
 
 template<>
 struct MetadataFor<commands_filter::InitializationConfiguration>
@@ -3412,6 +3632,9 @@ struct MetadataFor<commands_filter::InitializationConfiguration>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::InitializationConfiguration>::value > { using type = commands_filter::InitializationConfiguration; };
+template<> struct TypeForDescriptor<commands_filter::InitializationConfiguration::DESCRIPTOR.as_u16()> { using type = commands_filter::InitializationConfiguration; };
+
 template<>
 struct MetadataFor<commands_filter::AdaptiveFilterOptions::Response>
 {
@@ -3450,6 +3673,8 @@ struct MetadataFor<commands_filter::AdaptiveFilterOptions::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::AdaptiveFilterOptions::Response>::value > { using type = commands_filter::AdaptiveFilterOptions::Response; };
 
 template<>
 struct MetadataFor<commands_filter::AdaptiveFilterOptions>
@@ -3491,6 +3716,9 @@ struct MetadataFor<commands_filter::AdaptiveFilterOptions>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::AdaptiveFilterOptions>::value > { using type = commands_filter::AdaptiveFilterOptions; };
+template<> struct TypeForDescriptor<commands_filter::AdaptiveFilterOptions::DESCRIPTOR.as_u16()> { using type = commands_filter::AdaptiveFilterOptions; };
+
 template<>
 struct MetadataFor<commands_filter::MultiAntennaOffset::Response>
 {
@@ -3529,6 +3757,8 @@ struct MetadataFor<commands_filter::MultiAntennaOffset::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::MultiAntennaOffset::Response>::value > { using type = commands_filter::MultiAntennaOffset::Response; };
 
 template<>
 struct MetadataFor<commands_filter::MultiAntennaOffset>
@@ -3569,6 +3799,9 @@ struct MetadataFor<commands_filter::MultiAntennaOffset>
             /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::MultiAntennaOffset>::value > { using type = commands_filter::MultiAntennaOffset; };
+template<> struct TypeForDescriptor<commands_filter::MultiAntennaOffset::DESCRIPTOR.as_u16()> { using type = commands_filter::MultiAntennaOffset; };
 
 template<>
 struct MetadataFor<commands_filter::RelPosConfiguration::Response>
@@ -3617,6 +3850,8 @@ struct MetadataFor<commands_filter::RelPosConfiguration::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::RelPosConfiguration::Response>::value > { using type = commands_filter::RelPosConfiguration::Response; };
 
 template<>
 struct MetadataFor<commands_filter::RelPosConfiguration>
@@ -3667,6 +3902,9 @@ struct MetadataFor<commands_filter::RelPosConfiguration>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::RelPosConfiguration>::value > { using type = commands_filter::RelPosConfiguration; };
+template<> struct TypeForDescriptor<commands_filter::RelPosConfiguration::DESCRIPTOR.as_u16()> { using type = commands_filter::RelPosConfiguration; };
+
 template<>
 struct MetadataFor<commands_filter::RefPointLeverArm::ReferencePointSelector>
 {
@@ -3684,6 +3922,8 @@ struct MetadataFor<commands_filter::RefPointLeverArm::ReferencePointSelector>
     };
 
 };
+
+template<> struct TypeForEnumInfo< &MetadataFor<commands_filter::RefPointLeverArm::ReferencePointSelector>::value > { using type = commands_filter::RefPointLeverArm::ReferencePointSelector; };
 
 template<>
 struct MetadataFor<commands_filter::RefPointLeverArm::Response>
@@ -3724,6 +3964,8 @@ struct MetadataFor<commands_filter::RefPointLeverArm::Response>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::RefPointLeverArm::Response>::value > { using type = commands_filter::RefPointLeverArm::Response; };
+
 template<>
 struct MetadataFor<commands_filter::RefPointLeverArm>
 {
@@ -3763,6 +4005,9 @@ struct MetadataFor<commands_filter::RefPointLeverArm>
             /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::RefPointLeverArm>::value > { using type = commands_filter::RefPointLeverArm; };
+template<> struct TypeForDescriptor<commands_filter::RefPointLeverArm::DESCRIPTOR.as_u16()> { using type = commands_filter::RefPointLeverArm; };
 
 template<>
 struct MetadataFor<commands_filter::SpeedMeasurement>
@@ -3821,6 +4066,9 @@ struct MetadataFor<commands_filter::SpeedMeasurement>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::SpeedMeasurement>::value > { using type = commands_filter::SpeedMeasurement; };
+template<> struct TypeForDescriptor<commands_filter::SpeedMeasurement::DESCRIPTOR.as_u16()> { using type = commands_filter::SpeedMeasurement; };
+
 template<>
 struct MetadataFor<commands_filter::SpeedLeverArm::Response>
 {
@@ -3859,6 +4107,8 @@ struct MetadataFor<commands_filter::SpeedLeverArm::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::SpeedLeverArm::Response>::value > { using type = commands_filter::SpeedLeverArm::Response; };
 
 template<>
 struct MetadataFor<commands_filter::SpeedLeverArm>
@@ -3900,6 +4150,9 @@ struct MetadataFor<commands_filter::SpeedLeverArm>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::SpeedLeverArm>::value > { using type = commands_filter::SpeedLeverArm; };
+template<> struct TypeForDescriptor<commands_filter::SpeedLeverArm::DESCRIPTOR.as_u16()> { using type = commands_filter::SpeedLeverArm; };
+
 template<>
 struct MetadataFor<commands_filter::WheeledVehicleConstraintControl::Response>
 {
@@ -3929,6 +4182,8 @@ struct MetadataFor<commands_filter::WheeledVehicleConstraintControl::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::WheeledVehicleConstraintControl::Response>::value > { using type = commands_filter::WheeledVehicleConstraintControl::Response; };
 
 template<>
 struct MetadataFor<commands_filter::WheeledVehicleConstraintControl>
@@ -3961,6 +4216,9 @@ struct MetadataFor<commands_filter::WheeledVehicleConstraintControl>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::WheeledVehicleConstraintControl>::value > { using type = commands_filter::WheeledVehicleConstraintControl; };
+template<> struct TypeForDescriptor<commands_filter::WheeledVehicleConstraintControl::DESCRIPTOR.as_u16()> { using type = commands_filter::WheeledVehicleConstraintControl; };
+
 template<>
 struct MetadataFor<commands_filter::VerticalGyroConstraintControl::Response>
 {
@@ -3990,6 +4248,8 @@ struct MetadataFor<commands_filter::VerticalGyroConstraintControl::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::VerticalGyroConstraintControl::Response>::value > { using type = commands_filter::VerticalGyroConstraintControl::Response; };
 
 template<>
 struct MetadataFor<commands_filter::VerticalGyroConstraintControl>
@@ -4021,6 +4281,9 @@ struct MetadataFor<commands_filter::VerticalGyroConstraintControl>
             /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::VerticalGyroConstraintControl>::value > { using type = commands_filter::VerticalGyroConstraintControl; };
+template<> struct TypeForDescriptor<commands_filter::VerticalGyroConstraintControl::DESCRIPTOR.as_u16()> { using type = commands_filter::VerticalGyroConstraintControl; };
 
 template<>
 struct MetadataFor<commands_filter::GnssAntennaCalControl::Response>
@@ -4060,6 +4323,8 @@ struct MetadataFor<commands_filter::GnssAntennaCalControl::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::GnssAntennaCalControl::Response>::value > { using type = commands_filter::GnssAntennaCalControl::Response; };
 
 template<>
 struct MetadataFor<commands_filter::GnssAntennaCalControl>
@@ -4101,6 +4366,9 @@ struct MetadataFor<commands_filter::GnssAntennaCalControl>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::GnssAntennaCalControl>::value > { using type = commands_filter::GnssAntennaCalControl; };
+template<> struct TypeForDescriptor<commands_filter::GnssAntennaCalControl::DESCRIPTOR.as_u16()> { using type = commands_filter::GnssAntennaCalControl; };
+
 template<>
 struct MetadataFor<commands_filter::SetInitialHeading>
 {
@@ -4130,6 +4398,9 @@ struct MetadataFor<commands_filter::SetInitialHeading>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_filter::SetInitialHeading>::value > { using type = commands_filter::SetInitialHeading; };
+template<> struct TypeForDescriptor<commands_filter::SetInitialHeading::DESCRIPTOR.as_u16()> { using type = commands_filter::SetInitialHeading; };
 
 
 static constexpr inline const FieldInfo* COMMANDS_FILTER_FIELDS[] = {
@@ -4229,6 +4500,127 @@ static constexpr inline const FieldInfo* COMMANDS_FILTER_FIELDS[] = {
     &MetadataFor<commands_filter::WheeledVehicleConstraintControl::Response>::value,
     &MetadataFor<commands_filter::GnssAntennaCalControl::Response>::value,
 };
+
+//namespace commands_filter
+//{
+struct CommandSetFilter
+{
+    static inline constexpr uint8_t DESCRIPTOR_SET = commands_filter::DESCRIPTOR_SET;
+    static inline constexpr CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, INVALID_FIELD_DESCRIPTOR};
+
+    using Fields = std::tuple<
+        ::mip::commands_filter::Reset,
+        ::mip::commands_filter::SetInitialAttitude,
+        ::mip::commands_filter::SetInitialHeading,
+        ::mip::commands_filter::Run,
+        ::mip::commands_filter::VehicleDynamicsMode,
+        ::mip::commands_filter::SensorToVehicleRotationEuler,
+        ::mip::commands_filter::SensorToVehicleOffset,
+        ::mip::commands_filter::AntennaOffset,
+        ::mip::commands_filter::EstimationControl,
+        ::mip::commands_filter::GnssSource,
+        ::mip::commands_filter::ExternalGnssUpdate,
+        ::mip::commands_filter::ExternalHeadingUpdate,
+        ::mip::commands_filter::HeadingSource,
+        ::mip::commands_filter::AutoInitControl,
+        ::mip::commands_filter::AccelNoise,
+        ::mip::commands_filter::GyroNoise,
+        ::mip::commands_filter::AccelBiasModel,
+        ::mip::commands_filter::GyroBiasModel,
+        ::mip::commands_filter::AutoZupt,
+        ::mip::commands_filter::ExternalHeadingUpdateWithTime,
+        ::mip::commands_filter::AutoAngularZupt,
+        ::mip::commands_filter::TareOrientation,
+        ::mip::commands_filter::CommandedZupt,
+        ::mip::commands_filter::CommandedAngularZupt,
+        ::mip::commands_filter::ReferencePosition,
+        ::mip::commands_filter::MagCaptureAutoCal,
+        ::mip::commands_filter::GravityNoise,
+        ::mip::commands_filter::PressureAltitudeNoise,
+        ::mip::commands_filter::HardIronOffsetNoise,
+        ::mip::commands_filter::SoftIronMatrixNoise,
+        ::mip::commands_filter::MagNoise,
+        ::mip::commands_filter::MagneticDeclinationSource,
+        ::mip::commands_filter::AccelMagnitudeErrorAdaptiveMeasurement,
+        ::mip::commands_filter::MagMagnitudeErrorAdaptiveMeasurement,
+        ::mip::commands_filter::MagDipAngleErrorAdaptiveMeasurement,
+        ::mip::commands_filter::AltitudeAiding,
+        ::mip::commands_filter::PitchRollAiding,
+        ::mip::commands_filter::InclinationSource,
+        ::mip::commands_filter::MagFieldMagnitudeSource,
+        ::mip::commands_filter::SensorToVehicleRotationDcm,
+        ::mip::commands_filter::SensorToVehicleRotationQuaternion,
+        ::mip::commands_filter::AidingMeasurementEnable,
+        ::mip::commands_filter::KinematicConstraint,
+        ::mip::commands_filter::InitializationConfiguration,
+        ::mip::commands_filter::AdaptiveFilterOptions,
+        ::mip::commands_filter::MultiAntennaOffset,
+        ::mip::commands_filter::RelPosConfiguration,
+        ::mip::commands_filter::RefPointLeverArm,
+        ::mip::commands_filter::SpeedMeasurement,
+        ::mip::commands_filter::SpeedLeverArm,
+        ::mip::commands_filter::VerticalGyroConstraintControl,
+        ::mip::commands_filter::WheeledVehicleConstraintControl,
+        ::mip::commands_filter::GnssAntennaCalControl,
+        ::mip::commands_filter::VehicleDynamicsMode::Response,
+        ::mip::commands_filter::SensorToVehicleRotationEuler::Response,
+        ::mip::commands_filter::SensorToVehicleOffset::Response,
+        ::mip::commands_filter::AntennaOffset::Response,
+        ::mip::commands_filter::EstimationControl::Response,
+        ::mip::commands_filter::GnssSource::Response,
+        ::mip::commands_filter::HeadingSource::Response,
+        ::mip::commands_filter::AutoInitControl::Response,
+        ::mip::commands_filter::AccelNoise::Response,
+        ::mip::commands_filter::GyroNoise::Response,
+        ::mip::commands_filter::AccelBiasModel::Response,
+        ::mip::commands_filter::GyroBiasModel::Response,
+        ::mip::commands_filter::AutoZupt::Response,
+        ::mip::commands_filter::AutoAngularZupt::Response,
+        ::mip::commands_filter::ReferencePosition::Response,
+        ::mip::commands_filter::GravityNoise::Response,
+        ::mip::commands_filter::PressureAltitudeNoise::Response,
+        ::mip::commands_filter::HardIronOffsetNoise::Response,
+        ::mip::commands_filter::SoftIronMatrixNoise::Response,
+        ::mip::commands_filter::TareOrientation::Response,
+        ::mip::commands_filter::MagNoise::Response,
+        ::mip::commands_filter::MagneticDeclinationSource::Response,
+        ::mip::commands_filter::AccelMagnitudeErrorAdaptiveMeasurement::Response,
+        ::mip::commands_filter::MagMagnitudeErrorAdaptiveMeasurement::Response,
+        ::mip::commands_filter::MagDipAngleErrorAdaptiveMeasurement::Response,
+        ::mip::commands_filter::AltitudeAiding::Response,
+        ::mip::commands_filter::PitchRollAiding::Response,
+        ::mip::commands_filter::InclinationSource::Response,
+        ::mip::commands_filter::MagFieldMagnitudeSource::Response,
+        ::mip::commands_filter::SensorToVehicleRotationDcm::Response,
+        ::mip::commands_filter::SensorToVehicleRotationQuaternion::Response,
+        ::mip::commands_filter::AidingMeasurementEnable::Response,
+        ::mip::commands_filter::KinematicConstraint::Response,
+        ::mip::commands_filter::InitializationConfiguration::Response,
+        ::mip::commands_filter::AdaptiveFilterOptions::Response,
+        ::mip::commands_filter::MultiAntennaOffset::Response,
+        ::mip::commands_filter::RelPosConfiguration::Response,
+        ::mip::commands_filter::RefPointLeverArm::Response,
+        ::mip::commands_filter::SpeedLeverArm::Response,
+        ::mip::commands_filter::VerticalGyroConstraintControl::Response,
+        ::mip::commands_filter::WheeledVehicleConstraintControl::Response,
+        ::mip::commands_filter::GnssAntennaCalControl::Response
+    >;
+};
+
+//} // namespace commands_filter
+
+template<>
+struct MetadataFor<CommandSetFilter>
+{
+    using type = CommandSetFilter;
+    
+    static inline constexpr DescriptorSetInfo value = {
+        /* .descriptor = */ commands_filter::DESCRIPTOR_SET,
+        /* .name       = */ "Filter Commands",
+        /* .fields     = */ COMMANDS_FILTER_FIELDS,
+    };
+};
+template<> struct TypeForDescriptor< (commands_filter::DESCRIPTOR_SET << 8) > { using type = CommandSetFilter; };
 
 static constexpr DescriptorSetInfo COMMANDS_FILTER = {
     /* .descriptor = */ mip::commands_filter::DESCRIPTOR_SET,

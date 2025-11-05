@@ -39,8 +39,10 @@ namespace mip::metadata
         };
     };
 
-    template<const StructInfo* SI>
-    struct TypeForStructInfo;
+    template<const FieldInfo*>    struct TypeForFieldInfo;
+    template<const StructInfo*>   struct TypeForStructInfo;
+    template<const EnumInfo*>     struct TypeForEnumInfo;
+    template<const BitfieldInfo*> struct TypeForBitsInfo;
 
 
     inline void* accessFunctionSelector(void* p) { return static_cast<FunctionSelector*>(p); }

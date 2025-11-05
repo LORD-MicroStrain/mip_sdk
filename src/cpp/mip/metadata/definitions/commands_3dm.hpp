@@ -57,6 +57,9 @@ struct MetadataFor<commands_3dm::PollImuMessage>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::PollImuMessage>::value > { using type = commands_3dm::PollImuMessage; };
+template<> struct TypeForDescriptor<commands_3dm::PollImuMessage::DESCRIPTOR.as_u16()> { using type = commands_3dm::PollImuMessage; };
+
 template<>
 struct MetadataFor<commands_3dm::PollGnssMessage>
 {
@@ -104,6 +107,9 @@ struct MetadataFor<commands_3dm::PollGnssMessage>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::PollGnssMessage>::value > { using type = commands_3dm::PollGnssMessage; };
+template<> struct TypeForDescriptor<commands_3dm::PollGnssMessage::DESCRIPTOR.as_u16()> { using type = commands_3dm::PollGnssMessage; };
 
 template<>
 struct MetadataFor<commands_3dm::PollFilterMessage>
@@ -153,6 +159,9 @@ struct MetadataFor<commands_3dm::PollFilterMessage>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::PollFilterMessage>::value > { using type = commands_3dm::PollFilterMessage; };
+template<> struct TypeForDescriptor<commands_3dm::PollFilterMessage::DESCRIPTOR.as_u16()> { using type = commands_3dm::PollFilterMessage; };
+
 template<>
 struct MetadataFor<commands_3dm::NmeaMessage::MessageID>
 {
@@ -180,6 +189,8 @@ struct MetadataFor<commands_3dm::NmeaMessage::MessageID>
 
 };
 
+template<> struct TypeForEnumInfo< &MetadataFor<commands_3dm::NmeaMessage::MessageID>::value > { using type = commands_3dm::NmeaMessage::MessageID; };
+
 template<>
 struct MetadataFor<commands_3dm::NmeaMessage::TalkerID>
 {
@@ -201,6 +212,8 @@ struct MetadataFor<commands_3dm::NmeaMessage::TalkerID>
     };
 
 };
+
+template<> struct TypeForEnumInfo< &MetadataFor<commands_3dm::NmeaMessage::TalkerID>::value > { using type = commands_3dm::NmeaMessage::TalkerID; };
 
 template<>
 struct MetadataFor<commands_3dm::NmeaMessage>
@@ -254,6 +267,8 @@ struct MetadataFor<commands_3dm::NmeaMessage>
     };
 };
 
+template<> struct TypeForStructInfo< &MetadataFor<commands_3dm::NmeaMessage>::value > { using type = commands_3dm::NmeaMessage; };
+
 template<>
 struct MetadataFor<commands_3dm::NmeaPollData>
 {
@@ -302,6 +317,9 @@ struct MetadataFor<commands_3dm::NmeaPollData>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::NmeaPollData>::value > { using type = commands_3dm::NmeaPollData; };
+template<> struct TypeForDescriptor<commands_3dm::NmeaPollData::DESCRIPTOR.as_u16()> { using type = commands_3dm::NmeaPollData; };
+
 template<>
 struct MetadataFor<commands_3dm::ImuGetBaseRate::Response>
 {
@@ -332,6 +350,8 @@ struct MetadataFor<commands_3dm::ImuGetBaseRate::Response>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::ImuGetBaseRate::Response>::value > { using type = commands_3dm::ImuGetBaseRate::Response; };
+
 template<>
 struct MetadataFor<commands_3dm::ImuGetBaseRate>
 {
@@ -349,6 +369,9 @@ struct MetadataFor<commands_3dm::ImuGetBaseRate>
             /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::ImuGetBaseRate>::value > { using type = commands_3dm::ImuGetBaseRate; };
+template<> struct TypeForDescriptor<commands_3dm::ImuGetBaseRate::DESCRIPTOR.as_u16()> { using type = commands_3dm::ImuGetBaseRate; };
 
 template<>
 struct MetadataFor<commands_3dm::GnssGetBaseRate::Response>
@@ -380,6 +403,8 @@ struct MetadataFor<commands_3dm::GnssGetBaseRate::Response>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::GnssGetBaseRate::Response>::value > { using type = commands_3dm::GnssGetBaseRate::Response; };
+
 template<>
 struct MetadataFor<commands_3dm::GnssGetBaseRate>
 {
@@ -397,6 +422,9 @@ struct MetadataFor<commands_3dm::GnssGetBaseRate>
             /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::GnssGetBaseRate>::value > { using type = commands_3dm::GnssGetBaseRate; };
+template<> struct TypeForDescriptor<commands_3dm::GnssGetBaseRate::DESCRIPTOR.as_u16()> { using type = commands_3dm::GnssGetBaseRate; };
 
 template<>
 struct MetadataFor<commands_3dm::ImuMessageFormat::Response>
@@ -436,6 +464,8 @@ struct MetadataFor<commands_3dm::ImuMessageFormat::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::ImuMessageFormat::Response>::value > { using type = commands_3dm::ImuMessageFormat::Response; };
 
 template<>
 struct MetadataFor<commands_3dm::ImuMessageFormat>
@@ -477,6 +507,9 @@ struct MetadataFor<commands_3dm::ImuMessageFormat>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::ImuMessageFormat>::value > { using type = commands_3dm::ImuMessageFormat; };
+template<> struct TypeForDescriptor<commands_3dm::ImuMessageFormat::DESCRIPTOR.as_u16()> { using type = commands_3dm::ImuMessageFormat; };
+
 template<>
 struct MetadataFor<commands_3dm::GnssMessageFormat::Response>
 {
@@ -515,6 +548,8 @@ struct MetadataFor<commands_3dm::GnssMessageFormat::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::GnssMessageFormat::Response>::value > { using type = commands_3dm::GnssMessageFormat::Response; };
 
 template<>
 struct MetadataFor<commands_3dm::GnssMessageFormat>
@@ -556,6 +591,9 @@ struct MetadataFor<commands_3dm::GnssMessageFormat>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::GnssMessageFormat>::value > { using type = commands_3dm::GnssMessageFormat; };
+template<> struct TypeForDescriptor<commands_3dm::GnssMessageFormat::DESCRIPTOR.as_u16()> { using type = commands_3dm::GnssMessageFormat; };
+
 template<>
 struct MetadataFor<commands_3dm::FilterMessageFormat::Response>
 {
@@ -594,6 +632,8 @@ struct MetadataFor<commands_3dm::FilterMessageFormat::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::FilterMessageFormat::Response>::value > { using type = commands_3dm::FilterMessageFormat::Response; };
 
 template<>
 struct MetadataFor<commands_3dm::FilterMessageFormat>
@@ -635,6 +675,9 @@ struct MetadataFor<commands_3dm::FilterMessageFormat>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::FilterMessageFormat>::value > { using type = commands_3dm::FilterMessageFormat; };
+template<> struct TypeForDescriptor<commands_3dm::FilterMessageFormat::DESCRIPTOR.as_u16()> { using type = commands_3dm::FilterMessageFormat; };
+
 template<>
 struct MetadataFor<commands_3dm::FilterGetBaseRate::Response>
 {
@@ -665,6 +708,8 @@ struct MetadataFor<commands_3dm::FilterGetBaseRate::Response>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::FilterGetBaseRate::Response>::value > { using type = commands_3dm::FilterGetBaseRate::Response; };
+
 template<>
 struct MetadataFor<commands_3dm::FilterGetBaseRate>
 {
@@ -682,6 +727,9 @@ struct MetadataFor<commands_3dm::FilterGetBaseRate>
             /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::FilterGetBaseRate>::value > { using type = commands_3dm::FilterGetBaseRate; };
+template<> struct TypeForDescriptor<commands_3dm::FilterGetBaseRate::DESCRIPTOR.as_u16()> { using type = commands_3dm::FilterGetBaseRate; };
 
 template<>
 struct MetadataFor<commands_3dm::NmeaMessageFormat::Response>
@@ -722,6 +770,8 @@ struct MetadataFor<commands_3dm::NmeaMessageFormat::Response>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::NmeaMessageFormat::Response>::value > { using type = commands_3dm::NmeaMessageFormat::Response; };
+
 template<>
 struct MetadataFor<commands_3dm::NmeaMessageFormat>
 {
@@ -761,6 +811,9 @@ struct MetadataFor<commands_3dm::NmeaMessageFormat>
             /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::NmeaMessageFormat>::value > { using type = commands_3dm::NmeaMessageFormat; };
+template<> struct TypeForDescriptor<commands_3dm::NmeaMessageFormat::DESCRIPTOR.as_u16()> { using type = commands_3dm::NmeaMessageFormat; };
 
 template<>
 struct MetadataFor<commands_3dm::PollData>
@@ -819,6 +872,9 @@ struct MetadataFor<commands_3dm::PollData>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::PollData>::value > { using type = commands_3dm::PollData; };
+template<> struct TypeForDescriptor<commands_3dm::PollData::DESCRIPTOR.as_u16()> { using type = commands_3dm::PollData; };
+
 template<>
 struct MetadataFor<commands_3dm::GetBaseRate::Response>
 {
@@ -858,6 +914,8 @@ struct MetadataFor<commands_3dm::GetBaseRate::Response>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::GetBaseRate::Response>::value > { using type = commands_3dm::GetBaseRate::Response; };
+
 template<>
 struct MetadataFor<commands_3dm::GetBaseRate>
 {
@@ -887,6 +945,9 @@ struct MetadataFor<commands_3dm::GetBaseRate>
             /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::GetBaseRate>::value > { using type = commands_3dm::GetBaseRate; };
+template<> struct TypeForDescriptor<commands_3dm::GetBaseRate::DESCRIPTOR.as_u16()> { using type = commands_3dm::GetBaseRate; };
 
 template<>
 struct MetadataFor<commands_3dm::MessageFormat::Response>
@@ -935,6 +996,8 @@ struct MetadataFor<commands_3dm::MessageFormat::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::MessageFormat::Response>::value > { using type = commands_3dm::MessageFormat::Response; };
 
 template<>
 struct MetadataFor<commands_3dm::MessageFormat>
@@ -985,6 +1048,9 @@ struct MetadataFor<commands_3dm::MessageFormat>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::MessageFormat>::value > { using type = commands_3dm::MessageFormat; };
+template<> struct TypeForDescriptor<commands_3dm::MessageFormat::DESCRIPTOR.as_u16()> { using type = commands_3dm::MessageFormat; };
+
 template<>
 struct MetadataFor<commands_3dm::FactoryStreaming::Action>
 {
@@ -1004,6 +1070,8 @@ struct MetadataFor<commands_3dm::FactoryStreaming::Action>
     };
 
 };
+
+template<> struct TypeForEnumInfo< &MetadataFor<commands_3dm::FactoryStreaming::Action>::value > { using type = commands_3dm::FactoryStreaming::Action; };
 
 template<>
 struct MetadataFor<commands_3dm::FactoryStreaming>
@@ -1044,6 +1112,9 @@ struct MetadataFor<commands_3dm::FactoryStreaming>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::FactoryStreaming>::value > { using type = commands_3dm::FactoryStreaming; };
+template<> struct TypeForDescriptor<commands_3dm::FactoryStreaming::DESCRIPTOR.as_u16()> { using type = commands_3dm::FactoryStreaming; };
+
 template<>
 struct MetadataFor<commands_3dm::DatastreamControl::Response>
 {
@@ -1082,6 +1153,8 @@ struct MetadataFor<commands_3dm::DatastreamControl::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::DatastreamControl::Response>::value > { using type = commands_3dm::DatastreamControl::Response; };
 
 template<>
 struct MetadataFor<commands_3dm::DatastreamControl>
@@ -1123,6 +1196,9 @@ struct MetadataFor<commands_3dm::DatastreamControl>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::DatastreamControl>::value > { using type = commands_3dm::DatastreamControl; };
+template<> struct TypeForDescriptor<commands_3dm::DatastreamControl::DESCRIPTOR.as_u16()> { using type = commands_3dm::DatastreamControl; };
+
 template<>
 struct MetadataFor<commands_3dm::ConstellationSettings::ConstellationId>
 {
@@ -1146,6 +1222,8 @@ struct MetadataFor<commands_3dm::ConstellationSettings::ConstellationId>
 
 };
 
+template<> struct TypeForEnumInfo< &MetadataFor<commands_3dm::ConstellationSettings::ConstellationId>::value > { using type = commands_3dm::ConstellationSettings::ConstellationId; };
+
 template<>
 struct MetadataFor<commands_3dm::ConstellationSettings::OptionFlags>
 {
@@ -1163,6 +1241,8 @@ struct MetadataFor<commands_3dm::ConstellationSettings::OptionFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<commands_3dm::ConstellationSettings::OptionFlags>::value > { using type = commands_3dm::ConstellationSettings::OptionFlags; };
 
 template<>
 struct MetadataFor<commands_3dm::ConstellationSettings::Settings>
@@ -1225,6 +1305,8 @@ struct MetadataFor<commands_3dm::ConstellationSettings::Settings>
     };
 };
 
+template<> struct TypeForStructInfo< &MetadataFor<commands_3dm::ConstellationSettings::Settings>::value > { using type = commands_3dm::ConstellationSettings::Settings; };
+
 template<>
 struct MetadataFor<commands_3dm::ConstellationSettings::Response>
 {
@@ -1282,6 +1364,8 @@ struct MetadataFor<commands_3dm::ConstellationSettings::Response>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::ConstellationSettings::Response>::value > { using type = commands_3dm::ConstellationSettings::Response; };
+
 template<>
 struct MetadataFor<commands_3dm::ConstellationSettings>
 {
@@ -1331,6 +1415,9 @@ struct MetadataFor<commands_3dm::ConstellationSettings>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::ConstellationSettings>::value > { using type = commands_3dm::ConstellationSettings; };
+template<> struct TypeForDescriptor<commands_3dm::ConstellationSettings::DESCRIPTOR.as_u16()> { using type = commands_3dm::ConstellationSettings; };
+
 template<>
 struct MetadataFor<commands_3dm::GnssSbasSettings::SBASOptions>
 {
@@ -1350,6 +1437,8 @@ struct MetadataFor<commands_3dm::GnssSbasSettings::SBASOptions>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<commands_3dm::GnssSbasSettings::SBASOptions>::value > { using type = commands_3dm::GnssSbasSettings::SBASOptions; };
 
 template<>
 struct MetadataFor<commands_3dm::GnssSbasSettings::Response>
@@ -1407,6 +1496,8 @@ struct MetadataFor<commands_3dm::GnssSbasSettings::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::GnssSbasSettings::Response>::value > { using type = commands_3dm::GnssSbasSettings::Response; };
 
 template<>
 struct MetadataFor<commands_3dm::GnssSbasSettings>
@@ -1466,6 +1557,9 @@ struct MetadataFor<commands_3dm::GnssSbasSettings>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::GnssSbasSettings>::value > { using type = commands_3dm::GnssSbasSettings; };
+template<> struct TypeForDescriptor<commands_3dm::GnssSbasSettings::DESCRIPTOR.as_u16()> { using type = commands_3dm::GnssSbasSettings; };
+
 template<>
 struct MetadataFor<commands_3dm::GnssAssistedFix::AssistedFixOption>
 {
@@ -1484,6 +1578,8 @@ struct MetadataFor<commands_3dm::GnssAssistedFix::AssistedFixOption>
     };
 
 };
+
+template<> struct TypeForEnumInfo< &MetadataFor<commands_3dm::GnssAssistedFix::AssistedFixOption>::value > { using type = commands_3dm::GnssAssistedFix::AssistedFixOption; };
 
 template<>
 struct MetadataFor<commands_3dm::GnssAssistedFix::Response>
@@ -1524,6 +1620,8 @@ struct MetadataFor<commands_3dm::GnssAssistedFix::Response>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::GnssAssistedFix::Response>::value > { using type = commands_3dm::GnssAssistedFix::Response; };
+
 template<>
 struct MetadataFor<commands_3dm::GnssAssistedFix>
 {
@@ -1563,6 +1661,9 @@ struct MetadataFor<commands_3dm::GnssAssistedFix>
             /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::GnssAssistedFix>::value > { using type = commands_3dm::GnssAssistedFix; };
+template<> struct TypeForDescriptor<commands_3dm::GnssAssistedFix::DESCRIPTOR.as_u16()> { using type = commands_3dm::GnssAssistedFix; };
 
 template<>
 struct MetadataFor<commands_3dm::GnssTimeAssistance::Response>
@@ -1611,6 +1712,8 @@ struct MetadataFor<commands_3dm::GnssTimeAssistance::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::GnssTimeAssistance::Response>::value > { using type = commands_3dm::GnssTimeAssistance::Response; };
 
 template<>
 struct MetadataFor<commands_3dm::GnssTimeAssistance>
@@ -1661,6 +1764,9 @@ struct MetadataFor<commands_3dm::GnssTimeAssistance>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::GnssTimeAssistance>::value > { using type = commands_3dm::GnssTimeAssistance; };
+template<> struct TypeForDescriptor<commands_3dm::GnssTimeAssistance::DESCRIPTOR.as_u16()> { using type = commands_3dm::GnssTimeAssistance; };
+
 template<>
 struct MetadataFor<commands_3dm::PpsSource::Source>
 {
@@ -1682,6 +1788,8 @@ struct MetadataFor<commands_3dm::PpsSource::Source>
     };
 
 };
+
+template<> struct TypeForEnumInfo< &MetadataFor<commands_3dm::PpsSource::Source>::value > { using type = commands_3dm::PpsSource::Source; };
 
 template<>
 struct MetadataFor<commands_3dm::PpsSource::Response>
@@ -1712,6 +1820,8 @@ struct MetadataFor<commands_3dm::PpsSource::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::PpsSource::Response>::value > { using type = commands_3dm::PpsSource::Response; };
 
 template<>
 struct MetadataFor<commands_3dm::PpsSource>
@@ -1744,6 +1854,9 @@ struct MetadataFor<commands_3dm::PpsSource>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::PpsSource>::value > { using type = commands_3dm::PpsSource; };
+template<> struct TypeForDescriptor<commands_3dm::PpsSource::DESCRIPTOR.as_u16()> { using type = commands_3dm::PpsSource; };
+
 template<>
 struct MetadataFor<commands_3dm::GetEventSupport::Query>
 {
@@ -1762,6 +1875,8 @@ struct MetadataFor<commands_3dm::GetEventSupport::Query>
     };
 
 };
+
+template<> struct TypeForEnumInfo< &MetadataFor<commands_3dm::GetEventSupport::Query>::value > { using type = commands_3dm::GetEventSupport::Query; };
 
 template<>
 struct MetadataFor<commands_3dm::GetEventSupport::Info>
@@ -1796,6 +1911,8 @@ struct MetadataFor<commands_3dm::GetEventSupport::Info>
         /* .parameters  = */ parameters,
     };
 };
+
+template<> struct TypeForStructInfo< &MetadataFor<commands_3dm::GetEventSupport::Info>::value > { using type = commands_3dm::GetEventSupport::Info; };
 
 template<>
 struct MetadataFor<commands_3dm::GetEventSupport::Response>
@@ -1854,6 +1971,8 @@ struct MetadataFor<commands_3dm::GetEventSupport::Response>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::GetEventSupport::Response>::value > { using type = commands_3dm::GetEventSupport::Response; };
+
 template<>
 struct MetadataFor<commands_3dm::GetEventSupport>
 {
@@ -1884,6 +2003,9 @@ struct MetadataFor<commands_3dm::GetEventSupport>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::GetEventSupport>::value > { using type = commands_3dm::GetEventSupport; };
+template<> struct TypeForDescriptor<commands_3dm::GetEventSupport::DESCRIPTOR.as_u16()> { using type = commands_3dm::GetEventSupport; };
+
 template<>
 struct MetadataFor<commands_3dm::EventControl::Mode>
 {
@@ -1904,6 +2026,8 @@ struct MetadataFor<commands_3dm::EventControl::Mode>
     };
 
 };
+
+template<> struct TypeForEnumInfo< &MetadataFor<commands_3dm::EventControl::Mode>::value > { using type = commands_3dm::EventControl::Mode; };
 
 template<>
 struct MetadataFor<commands_3dm::EventControl::Response>
@@ -1943,6 +2067,8 @@ struct MetadataFor<commands_3dm::EventControl::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::EventControl::Response>::value > { using type = commands_3dm::EventControl::Response; };
 
 template<>
 struct MetadataFor<commands_3dm::EventControl>
@@ -1984,6 +2110,9 @@ struct MetadataFor<commands_3dm::EventControl>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::EventControl>::value > { using type = commands_3dm::EventControl; };
+template<> struct TypeForDescriptor<commands_3dm::EventControl::DESCRIPTOR.as_u16()> { using type = commands_3dm::EventControl; };
+
 template<>
 struct MetadataFor<commands_3dm::GetEventTriggerStatus::Status>
 {
@@ -2003,6 +2132,8 @@ struct MetadataFor<commands_3dm::GetEventTriggerStatus::Status>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<commands_3dm::GetEventTriggerStatus::Status>::value > { using type = commands_3dm::GetEventTriggerStatus::Status; };
 
 template<>
 struct MetadataFor<commands_3dm::GetEventTriggerStatus::Entry>
@@ -2037,6 +2168,8 @@ struct MetadataFor<commands_3dm::GetEventTriggerStatus::Entry>
         /* .parameters  = */ parameters,
     };
 };
+
+template<> struct TypeForStructInfo< &MetadataFor<commands_3dm::GetEventTriggerStatus::Entry>::value > { using type = commands_3dm::GetEventTriggerStatus::Entry; };
 
 template<>
 struct MetadataFor<commands_3dm::GetEventTriggerStatus::Response>
@@ -2077,6 +2210,8 @@ struct MetadataFor<commands_3dm::GetEventTriggerStatus::Response>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::GetEventTriggerStatus::Response>::value > { using type = commands_3dm::GetEventTriggerStatus::Response; };
+
 template<>
 struct MetadataFor<commands_3dm::GetEventTriggerStatus>
 {
@@ -2116,6 +2251,9 @@ struct MetadataFor<commands_3dm::GetEventTriggerStatus>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::GetEventTriggerStatus>::value > { using type = commands_3dm::GetEventTriggerStatus; };
+template<> struct TypeForDescriptor<commands_3dm::GetEventTriggerStatus::DESCRIPTOR.as_u16()> { using type = commands_3dm::GetEventTriggerStatus; };
+
 template<>
 struct MetadataFor<commands_3dm::GetEventActionStatus::Entry>
 {
@@ -2149,6 +2287,8 @@ struct MetadataFor<commands_3dm::GetEventActionStatus::Entry>
         /* .parameters  = */ parameters,
     };
 };
+
+template<> struct TypeForStructInfo< &MetadataFor<commands_3dm::GetEventActionStatus::Entry>::value > { using type = commands_3dm::GetEventActionStatus::Entry; };
 
 template<>
 struct MetadataFor<commands_3dm::GetEventActionStatus::Response>
@@ -2189,6 +2329,8 @@ struct MetadataFor<commands_3dm::GetEventActionStatus::Response>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::GetEventActionStatus::Response>::value > { using type = commands_3dm::GetEventActionStatus::Response; };
+
 template<>
 struct MetadataFor<commands_3dm::GetEventActionStatus>
 {
@@ -2228,6 +2370,9 @@ struct MetadataFor<commands_3dm::GetEventActionStatus>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::GetEventActionStatus>::value > { using type = commands_3dm::GetEventActionStatus; };
+template<> struct TypeForDescriptor<commands_3dm::GetEventActionStatus::DESCRIPTOR.as_u16()> { using type = commands_3dm::GetEventActionStatus; };
+
 template<>
 struct MetadataFor<commands_3dm::EventTrigger::GpioParams::Mode>
 {
@@ -2248,6 +2393,8 @@ struct MetadataFor<commands_3dm::EventTrigger::GpioParams::Mode>
     };
 
 };
+
+template<> struct TypeForEnumInfo< &MetadataFor<commands_3dm::EventTrigger::GpioParams::Mode>::value > { using type = commands_3dm::EventTrigger::GpioParams::Mode; };
 
 template<>
 struct MetadataFor<commands_3dm::EventTrigger::GpioParams>
@@ -2283,6 +2430,8 @@ struct MetadataFor<commands_3dm::EventTrigger::GpioParams>
     };
 };
 
+template<> struct TypeForStructInfo< &MetadataFor<commands_3dm::EventTrigger::GpioParams>::value > { using type = commands_3dm::EventTrigger::GpioParams; };
+
 template<>
 struct MetadataFor<commands_3dm::EventTrigger::ThresholdParams::Type>
 {
@@ -2301,6 +2450,8 @@ struct MetadataFor<commands_3dm::EventTrigger::ThresholdParams::Type>
     };
 
 };
+
+template<> struct TypeForEnumInfo< &MetadataFor<commands_3dm::EventTrigger::ThresholdParams::Type>::value > { using type = commands_3dm::EventTrigger::ThresholdParams::Type; };
 
 template<>
 struct MetadataFor<commands_3dm::EventTrigger::ThresholdParams>
@@ -2390,6 +2541,8 @@ struct MetadataFor<commands_3dm::EventTrigger::ThresholdParams>
     };
 };
 
+template<> struct TypeForStructInfo< &MetadataFor<commands_3dm::EventTrigger::ThresholdParams>::value > { using type = commands_3dm::EventTrigger::ThresholdParams; };
+
 template<>
 struct MetadataFor<commands_3dm::EventTrigger::CombinationParams>
 {
@@ -2424,6 +2577,8 @@ struct MetadataFor<commands_3dm::EventTrigger::CombinationParams>
     };
 };
 
+template<> struct TypeForStructInfo< &MetadataFor<commands_3dm::EventTrigger::CombinationParams>::value > { using type = commands_3dm::EventTrigger::CombinationParams; };
+
 template<>
 struct MetadataFor<commands_3dm::EventTrigger::Type>
 {
@@ -2444,6 +2599,8 @@ struct MetadataFor<commands_3dm::EventTrigger::Type>
     };
 
 };
+
+template<> struct TypeForEnumInfo< &MetadataFor<commands_3dm::EventTrigger::Type>::value > { using type = commands_3dm::EventTrigger::Type; };
 
 template<>
 struct MetadataFor<commands_3dm::EventTrigger::Parameters>
@@ -2487,6 +2644,8 @@ struct MetadataFor<commands_3dm::EventTrigger::Parameters>
         /* .parameters  = */ parameters,
     };
 };
+
+template<> struct TypeForStructInfo< &MetadataFor<commands_3dm::EventTrigger::Parameters>::value > { using type = commands_3dm::EventTrigger::Parameters; };
 
 template<>
 struct MetadataFor<commands_3dm::EventTrigger::Response>
@@ -2535,6 +2694,8 @@ struct MetadataFor<commands_3dm::EventTrigger::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::EventTrigger::Response>::value > { using type = commands_3dm::EventTrigger::Response; };
 
 template<>
 struct MetadataFor<commands_3dm::EventTrigger>
@@ -2585,6 +2746,9 @@ struct MetadataFor<commands_3dm::EventTrigger>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::EventTrigger>::value > { using type = commands_3dm::EventTrigger; };
+template<> struct TypeForDescriptor<commands_3dm::EventTrigger::DESCRIPTOR.as_u16()> { using type = commands_3dm::EventTrigger; };
+
 template<>
 struct MetadataFor<commands_3dm::EventAction::GpioParams::Mode>
 {
@@ -2607,6 +2771,8 @@ struct MetadataFor<commands_3dm::EventAction::GpioParams::Mode>
     };
 
 };
+
+template<> struct TypeForEnumInfo< &MetadataFor<commands_3dm::EventAction::GpioParams::Mode>::value > { using type = commands_3dm::EventAction::GpioParams::Mode; };
 
 template<>
 struct MetadataFor<commands_3dm::EventAction::GpioParams>
@@ -2641,6 +2807,8 @@ struct MetadataFor<commands_3dm::EventAction::GpioParams>
         /* .parameters  = */ parameters,
     };
 };
+
+template<> struct TypeForStructInfo< &MetadataFor<commands_3dm::EventAction::GpioParams>::value > { using type = commands_3dm::EventAction::GpioParams; };
 
 template<>
 struct MetadataFor<commands_3dm::EventAction::MessageParams>
@@ -2694,6 +2862,8 @@ struct MetadataFor<commands_3dm::EventAction::MessageParams>
     };
 };
 
+template<> struct TypeForStructInfo< &MetadataFor<commands_3dm::EventAction::MessageParams>::value > { using type = commands_3dm::EventAction::MessageParams; };
+
 template<>
 struct MetadataFor<commands_3dm::EventAction::Type>
 {
@@ -2713,6 +2883,8 @@ struct MetadataFor<commands_3dm::EventAction::Type>
     };
 
 };
+
+template<> struct TypeForEnumInfo< &MetadataFor<commands_3dm::EventAction::Type>::value > { using type = commands_3dm::EventAction::Type; };
 
 template<>
 struct MetadataFor<commands_3dm::EventAction::Parameters>
@@ -2747,6 +2919,8 @@ struct MetadataFor<commands_3dm::EventAction::Parameters>
         /* .parameters  = */ parameters,
     };
 };
+
+template<> struct TypeForStructInfo< &MetadataFor<commands_3dm::EventAction::Parameters>::value > { using type = commands_3dm::EventAction::Parameters; };
 
 template<>
 struct MetadataFor<commands_3dm::EventAction::Response>
@@ -2804,6 +2978,8 @@ struct MetadataFor<commands_3dm::EventAction::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::EventAction::Response>::value > { using type = commands_3dm::EventAction::Response; };
 
 template<>
 struct MetadataFor<commands_3dm::EventAction>
@@ -2863,6 +3039,9 @@ struct MetadataFor<commands_3dm::EventAction>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::EventAction>::value > { using type = commands_3dm::EventAction; };
+template<> struct TypeForDescriptor<commands_3dm::EventAction::DESCRIPTOR.as_u16()> { using type = commands_3dm::EventAction; };
+
 template<>
 struct MetadataFor<commands_3dm::DeviceSettings>
 {
@@ -2885,6 +3064,9 @@ struct MetadataFor<commands_3dm::DeviceSettings>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::DeviceSettings>::value > { using type = commands_3dm::DeviceSettings; };
+template<> struct TypeForDescriptor<commands_3dm::DeviceSettings::DESCRIPTOR.as_u16()> { using type = commands_3dm::DeviceSettings; };
 
 template<>
 struct MetadataFor<commands_3dm::Sensor2VehicleTransformEuler::Response>
@@ -2933,6 +3115,8 @@ struct MetadataFor<commands_3dm::Sensor2VehicleTransformEuler::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::Sensor2VehicleTransformEuler::Response>::value > { using type = commands_3dm::Sensor2VehicleTransformEuler::Response; };
 
 template<>
 struct MetadataFor<commands_3dm::Sensor2VehicleTransformEuler>
@@ -2983,6 +3167,9 @@ struct MetadataFor<commands_3dm::Sensor2VehicleTransformEuler>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::Sensor2VehicleTransformEuler>::value > { using type = commands_3dm::Sensor2VehicleTransformEuler; };
+template<> struct TypeForDescriptor<commands_3dm::Sensor2VehicleTransformEuler::DESCRIPTOR.as_u16()> { using type = commands_3dm::Sensor2VehicleTransformEuler; };
+
 template<>
 struct MetadataFor<commands_3dm::Sensor2VehicleTransformQuaternion::Response>
 {
@@ -3012,6 +3199,8 @@ struct MetadataFor<commands_3dm::Sensor2VehicleTransformQuaternion::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::Sensor2VehicleTransformQuaternion::Response>::value > { using type = commands_3dm::Sensor2VehicleTransformQuaternion::Response; };
 
 template<>
 struct MetadataFor<commands_3dm::Sensor2VehicleTransformQuaternion>
@@ -3044,6 +3233,9 @@ struct MetadataFor<commands_3dm::Sensor2VehicleTransformQuaternion>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::Sensor2VehicleTransformQuaternion>::value > { using type = commands_3dm::Sensor2VehicleTransformQuaternion; };
+template<> struct TypeForDescriptor<commands_3dm::Sensor2VehicleTransformQuaternion::DESCRIPTOR.as_u16()> { using type = commands_3dm::Sensor2VehicleTransformQuaternion; };
+
 template<>
 struct MetadataFor<commands_3dm::Sensor2VehicleTransformDcm::Response>
 {
@@ -3073,6 +3265,8 @@ struct MetadataFor<commands_3dm::Sensor2VehicleTransformDcm::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::Sensor2VehicleTransformDcm::Response>::value > { using type = commands_3dm::Sensor2VehicleTransformDcm::Response; };
 
 template<>
 struct MetadataFor<commands_3dm::Sensor2VehicleTransformDcm>
@@ -3105,6 +3299,9 @@ struct MetadataFor<commands_3dm::Sensor2VehicleTransformDcm>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::Sensor2VehicleTransformDcm>::value > { using type = commands_3dm::Sensor2VehicleTransformDcm; };
+template<> struct TypeForDescriptor<commands_3dm::Sensor2VehicleTransformDcm::DESCRIPTOR.as_u16()> { using type = commands_3dm::Sensor2VehicleTransformDcm; };
+
 template<>
 struct MetadataFor<commands_3dm::AccelBias::Response>
 {
@@ -3134,6 +3331,8 @@ struct MetadataFor<commands_3dm::AccelBias::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::AccelBias::Response>::value > { using type = commands_3dm::AccelBias::Response; };
 
 template<>
 struct MetadataFor<commands_3dm::AccelBias>
@@ -3166,6 +3365,9 @@ struct MetadataFor<commands_3dm::AccelBias>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::AccelBias>::value > { using type = commands_3dm::AccelBias; };
+template<> struct TypeForDescriptor<commands_3dm::AccelBias::DESCRIPTOR.as_u16()> { using type = commands_3dm::AccelBias; };
+
 template<>
 struct MetadataFor<commands_3dm::GyroBias::Response>
 {
@@ -3195,6 +3397,8 @@ struct MetadataFor<commands_3dm::GyroBias::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::GyroBias::Response>::value > { using type = commands_3dm::GyroBias::Response; };
 
 template<>
 struct MetadataFor<commands_3dm::GyroBias>
@@ -3227,6 +3431,9 @@ struct MetadataFor<commands_3dm::GyroBias>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::GyroBias>::value > { using type = commands_3dm::GyroBias; };
+template<> struct TypeForDescriptor<commands_3dm::GyroBias::DESCRIPTOR.as_u16()> { using type = commands_3dm::GyroBias; };
+
 template<>
 struct MetadataFor<commands_3dm::CaptureGyroBias::Response>
 {
@@ -3256,6 +3463,8 @@ struct MetadataFor<commands_3dm::CaptureGyroBias::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::CaptureGyroBias::Response>::value > { using type = commands_3dm::CaptureGyroBias::Response; };
 
 template<>
 struct MetadataFor<commands_3dm::CaptureGyroBias>
@@ -3287,6 +3496,9 @@ struct MetadataFor<commands_3dm::CaptureGyroBias>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::CaptureGyroBias>::value > { using type = commands_3dm::CaptureGyroBias; };
+template<> struct TypeForDescriptor<commands_3dm::CaptureGyroBias::DESCRIPTOR.as_u16()> { using type = commands_3dm::CaptureGyroBias; };
+
 template<>
 struct MetadataFor<commands_3dm::MagHardIronOffset::Response>
 {
@@ -3316,6 +3528,8 @@ struct MetadataFor<commands_3dm::MagHardIronOffset::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::MagHardIronOffset::Response>::value > { using type = commands_3dm::MagHardIronOffset::Response; };
 
 template<>
 struct MetadataFor<commands_3dm::MagHardIronOffset>
@@ -3348,6 +3562,9 @@ struct MetadataFor<commands_3dm::MagHardIronOffset>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::MagHardIronOffset>::value > { using type = commands_3dm::MagHardIronOffset; };
+template<> struct TypeForDescriptor<commands_3dm::MagHardIronOffset::DESCRIPTOR.as_u16()> { using type = commands_3dm::MagHardIronOffset; };
+
 template<>
 struct MetadataFor<commands_3dm::MagSoftIronMatrix::Response>
 {
@@ -3377,6 +3594,8 @@ struct MetadataFor<commands_3dm::MagSoftIronMatrix::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::MagSoftIronMatrix::Response>::value > { using type = commands_3dm::MagSoftIronMatrix::Response; };
 
 template<>
 struct MetadataFor<commands_3dm::MagSoftIronMatrix>
@@ -3409,6 +3628,9 @@ struct MetadataFor<commands_3dm::MagSoftIronMatrix>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::MagSoftIronMatrix>::value > { using type = commands_3dm::MagSoftIronMatrix; };
+template<> struct TypeForDescriptor<commands_3dm::MagSoftIronMatrix::DESCRIPTOR.as_u16()> { using type = commands_3dm::MagSoftIronMatrix; };
+
 template<>
 struct MetadataFor<commands_3dm::ConingScullingEnable::Response>
 {
@@ -3438,6 +3660,8 @@ struct MetadataFor<commands_3dm::ConingScullingEnable::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::ConingScullingEnable::Response>::value > { using type = commands_3dm::ConingScullingEnable::Response; };
 
 template<>
 struct MetadataFor<commands_3dm::ConingScullingEnable>
@@ -3470,6 +3694,9 @@ struct MetadataFor<commands_3dm::ConingScullingEnable>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::ConingScullingEnable>::value > { using type = commands_3dm::ConingScullingEnable; };
+template<> struct TypeForDescriptor<commands_3dm::ConingScullingEnable::DESCRIPTOR.as_u16()> { using type = commands_3dm::ConingScullingEnable; };
+
 template<>
 struct MetadataFor<commands_3dm::UartBaudrate::Response>
 {
@@ -3499,6 +3726,8 @@ struct MetadataFor<commands_3dm::UartBaudrate::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::UartBaudrate::Response>::value > { using type = commands_3dm::UartBaudrate::Response; };
 
 template<>
 struct MetadataFor<commands_3dm::UartBaudrate>
@@ -3531,6 +3760,9 @@ struct MetadataFor<commands_3dm::UartBaudrate>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::UartBaudrate>::value > { using type = commands_3dm::UartBaudrate; };
+template<> struct TypeForDescriptor<commands_3dm::UartBaudrate::DESCRIPTOR.as_u16()> { using type = commands_3dm::UartBaudrate; };
+
 template<>
 struct MetadataFor<commands_3dm::GpioConfig::Feature>
 {
@@ -3553,6 +3785,8 @@ struct MetadataFor<commands_3dm::GpioConfig::Feature>
     };
 
 };
+
+template<> struct TypeForEnumInfo< &MetadataFor<commands_3dm::GpioConfig::Feature>::value > { using type = commands_3dm::GpioConfig::Feature; };
 
 template<>
 struct MetadataFor<commands_3dm::GpioConfig::Behavior>
@@ -3586,6 +3820,8 @@ struct MetadataFor<commands_3dm::GpioConfig::Behavior>
 
 };
 
+template<> struct TypeForEnumInfo< &MetadataFor<commands_3dm::GpioConfig::Behavior>::value > { using type = commands_3dm::GpioConfig::Behavior; };
+
 template<>
 struct MetadataFor<commands_3dm::GpioConfig::PinMode>
 {
@@ -3605,6 +3841,8 @@ struct MetadataFor<commands_3dm::GpioConfig::PinMode>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<commands_3dm::GpioConfig::PinMode>::value > { using type = commands_3dm::GpioConfig::PinMode; };
 
 template<>
 struct MetadataFor<commands_3dm::GpioConfig::Response>
@@ -3662,6 +3900,8 @@ struct MetadataFor<commands_3dm::GpioConfig::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::GpioConfig::Response>::value > { using type = commands_3dm::GpioConfig::Response; };
 
 template<>
 struct MetadataFor<commands_3dm::GpioConfig>
@@ -3721,6 +3961,9 @@ struct MetadataFor<commands_3dm::GpioConfig>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::GpioConfig>::value > { using type = commands_3dm::GpioConfig; };
+template<> struct TypeForDescriptor<commands_3dm::GpioConfig::DESCRIPTOR.as_u16()> { using type = commands_3dm::GpioConfig; };
+
 template<>
 struct MetadataFor<commands_3dm::GpioState::Response>
 {
@@ -3759,6 +4002,8 @@ struct MetadataFor<commands_3dm::GpioState::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::GpioState::Response>::value > { using type = commands_3dm::GpioState::Response; };
 
 template<>
 struct MetadataFor<commands_3dm::GpioState>
@@ -3800,6 +4045,9 @@ struct MetadataFor<commands_3dm::GpioState>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::GpioState>::value > { using type = commands_3dm::GpioState; };
+template<> struct TypeForDescriptor<commands_3dm::GpioState::DESCRIPTOR.as_u16()> { using type = commands_3dm::GpioState; };
+
 template<>
 struct MetadataFor<commands_3dm::Odometer::Mode>
 {
@@ -3818,6 +4066,8 @@ struct MetadataFor<commands_3dm::Odometer::Mode>
     };
 
 };
+
+template<> struct TypeForEnumInfo< &MetadataFor<commands_3dm::Odometer::Mode>::value > { using type = commands_3dm::Odometer::Mode; };
 
 template<>
 struct MetadataFor<commands_3dm::Odometer::Response>
@@ -3867,6 +4117,8 @@ struct MetadataFor<commands_3dm::Odometer::Response>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::Odometer::Response>::value > { using type = commands_3dm::Odometer::Response; };
+
 template<>
 struct MetadataFor<commands_3dm::Odometer>
 {
@@ -3915,6 +4167,9 @@ struct MetadataFor<commands_3dm::Odometer>
             /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::Odometer>::value > { using type = commands_3dm::Odometer; };
+template<> struct TypeForDescriptor<commands_3dm::Odometer::DESCRIPTOR.as_u16()> { using type = commands_3dm::Odometer; };
 
 template<>
 struct MetadataFor<commands_3dm::ImuLowpassFilter::Response>
@@ -3981,6 +4236,8 @@ struct MetadataFor<commands_3dm::ImuLowpassFilter::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::ImuLowpassFilter::Response>::value > { using type = commands_3dm::ImuLowpassFilter::Response; };
 
 template<>
 struct MetadataFor<commands_3dm::ImuLowpassFilter>
@@ -4049,6 +4306,9 @@ struct MetadataFor<commands_3dm::ImuLowpassFilter>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::ImuLowpassFilter>::value > { using type = commands_3dm::ImuLowpassFilter; };
+template<> struct TypeForDescriptor<commands_3dm::ImuLowpassFilter::DESCRIPTOR.as_u16()> { using type = commands_3dm::ImuLowpassFilter; };
+
 template<>
 struct MetadataFor<commands_3dm::ComplementaryFilter::Response>
 {
@@ -4105,6 +4365,8 @@ struct MetadataFor<commands_3dm::ComplementaryFilter::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::ComplementaryFilter::Response>::value > { using type = commands_3dm::ComplementaryFilter::Response; };
 
 template<>
 struct MetadataFor<commands_3dm::ComplementaryFilter>
@@ -4164,6 +4426,9 @@ struct MetadataFor<commands_3dm::ComplementaryFilter>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::ComplementaryFilter>::value > { using type = commands_3dm::ComplementaryFilter; };
+template<> struct TypeForDescriptor<commands_3dm::ComplementaryFilter::DESCRIPTOR.as_u16()> { using type = commands_3dm::ComplementaryFilter; };
+
 template<>
 struct MetadataFor<commands_3dm::SensorRangeType>
 {
@@ -4185,6 +4450,8 @@ struct MetadataFor<commands_3dm::SensorRangeType>
     };
 
 };
+
+template<> struct TypeForEnumInfo< &MetadataFor<commands_3dm::SensorRangeType>::value > { using type = commands_3dm::SensorRangeType; };
 
 template<>
 struct MetadataFor<commands_3dm::SensorRange::Response>
@@ -4224,6 +4491,8 @@ struct MetadataFor<commands_3dm::SensorRange::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::SensorRange::Response>::value > { using type = commands_3dm::SensorRange::Response; };
 
 template<>
 struct MetadataFor<commands_3dm::SensorRange>
@@ -4265,6 +4534,9 @@ struct MetadataFor<commands_3dm::SensorRange>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::SensorRange>::value > { using type = commands_3dm::SensorRange; };
+template<> struct TypeForDescriptor<commands_3dm::SensorRange::DESCRIPTOR.as_u16()> { using type = commands_3dm::SensorRange; };
+
 template<>
 struct MetadataFor<commands_3dm::CalibratedSensorRanges::Entry>
 {
@@ -4298,6 +4570,8 @@ struct MetadataFor<commands_3dm::CalibratedSensorRanges::Entry>
         /* .parameters  = */ parameters,
     };
 };
+
+template<> struct TypeForStructInfo< &MetadataFor<commands_3dm::CalibratedSensorRanges::Entry>::value > { using type = commands_3dm::CalibratedSensorRanges::Entry; };
 
 template<>
 struct MetadataFor<commands_3dm::CalibratedSensorRanges::Response>
@@ -4347,6 +4621,8 @@ struct MetadataFor<commands_3dm::CalibratedSensorRanges::Response>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::CalibratedSensorRanges::Response>::value > { using type = commands_3dm::CalibratedSensorRanges::Response; };
+
 template<>
 struct MetadataFor<commands_3dm::CalibratedSensorRanges>
 {
@@ -4376,6 +4652,9 @@ struct MetadataFor<commands_3dm::CalibratedSensorRanges>
             /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::CalibratedSensorRanges>::value > { using type = commands_3dm::CalibratedSensorRanges; };
+template<> struct TypeForDescriptor<commands_3dm::CalibratedSensorRanges::DESCRIPTOR.as_u16()> { using type = commands_3dm::CalibratedSensorRanges; };
 
 template<>
 struct MetadataFor<commands_3dm::LowpassFilter::Response>
@@ -4443,6 +4722,8 @@ struct MetadataFor<commands_3dm::LowpassFilter::Response>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::LowpassFilter::Response>::value > { using type = commands_3dm::LowpassFilter::Response; };
+
 template<>
 struct MetadataFor<commands_3dm::LowpassFilter>
 {
@@ -4509,6 +4790,9 @@ struct MetadataFor<commands_3dm::LowpassFilter>
             /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_3dm::LowpassFilter>::value > { using type = commands_3dm::LowpassFilter; };
+template<> struct TypeForDescriptor<commands_3dm::LowpassFilter::DESCRIPTOR.as_u16()> { using type = commands_3dm::LowpassFilter; };
 
 
 static constexpr inline const FieldInfo* COMMANDS_3DM_FIELDS[] = {
@@ -4598,6 +4882,117 @@ static constexpr inline const FieldInfo* COMMANDS_3DM_FIELDS[] = {
     &MetadataFor<commands_3dm::CalibratedSensorRanges::Response>::value,
     &MetadataFor<commands_3dm::LowpassFilter::Response>::value,
 };
+
+//namespace commands_3dm
+//{
+struct CommandSet3dm
+{
+    static inline constexpr uint8_t DESCRIPTOR_SET = commands_3dm::DESCRIPTOR_SET;
+    static inline constexpr CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, INVALID_FIELD_DESCRIPTOR};
+
+    using Fields = std::tuple<
+        ::mip::commands_3dm::PollImuMessage,
+        ::mip::commands_3dm::PollGnssMessage,
+        ::mip::commands_3dm::PollFilterMessage,
+        ::mip::commands_3dm::NmeaPollData,
+        ::mip::commands_3dm::ImuGetBaseRate,
+        ::mip::commands_3dm::GnssGetBaseRate,
+        ::mip::commands_3dm::ImuMessageFormat,
+        ::mip::commands_3dm::GnssMessageFormat,
+        ::mip::commands_3dm::FilterMessageFormat,
+        ::mip::commands_3dm::FilterGetBaseRate,
+        ::mip::commands_3dm::NmeaMessageFormat,
+        ::mip::commands_3dm::PollData,
+        ::mip::commands_3dm::GetBaseRate,
+        ::mip::commands_3dm::MessageFormat,
+        ::mip::commands_3dm::FactoryStreaming,
+        ::mip::commands_3dm::DatastreamControl,
+        ::mip::commands_3dm::ConstellationSettings,
+        ::mip::commands_3dm::GnssSbasSettings,
+        ::mip::commands_3dm::GnssAssistedFix,
+        ::mip::commands_3dm::GnssTimeAssistance,
+        ::mip::commands_3dm::PpsSource,
+        ::mip::commands_3dm::GetEventSupport,
+        ::mip::commands_3dm::EventControl,
+        ::mip::commands_3dm::GetEventTriggerStatus,
+        ::mip::commands_3dm::GetEventActionStatus,
+        ::mip::commands_3dm::EventTrigger,
+        ::mip::commands_3dm::EventAction,
+        ::mip::commands_3dm::DeviceSettings,
+        ::mip::commands_3dm::Sensor2VehicleTransformEuler,
+        ::mip::commands_3dm::Sensor2VehicleTransformQuaternion,
+        ::mip::commands_3dm::Sensor2VehicleTransformDcm,
+        ::mip::commands_3dm::AccelBias,
+        ::mip::commands_3dm::GyroBias,
+        ::mip::commands_3dm::CaptureGyroBias,
+        ::mip::commands_3dm::MagHardIronOffset,
+        ::mip::commands_3dm::MagSoftIronMatrix,
+        ::mip::commands_3dm::ConingScullingEnable,
+        ::mip::commands_3dm::UartBaudrate,
+        ::mip::commands_3dm::GpioConfig,
+        ::mip::commands_3dm::GpioState,
+        ::mip::commands_3dm::Odometer,
+        ::mip::commands_3dm::ImuLowpassFilter,
+        ::mip::commands_3dm::ComplementaryFilter,
+        ::mip::commands_3dm::SensorRange,
+        ::mip::commands_3dm::CalibratedSensorRanges,
+        ::mip::commands_3dm::LowpassFilter,
+        ::mip::commands_3dm::ImuMessageFormat::Response,
+        ::mip::commands_3dm::GnssMessageFormat::Response,
+        ::mip::commands_3dm::FilterMessageFormat::Response,
+        ::mip::commands_3dm::ImuGetBaseRate::Response,
+        ::mip::commands_3dm::GnssGetBaseRate::Response,
+        ::mip::commands_3dm::DatastreamControl::Response,
+        ::mip::commands_3dm::UartBaudrate::Response,
+        ::mip::commands_3dm::FilterGetBaseRate::Response,
+        ::mip::commands_3dm::ImuLowpassFilter::Response,
+        ::mip::commands_3dm::NmeaMessageFormat::Response,
+        ::mip::commands_3dm::GetBaseRate::Response,
+        ::mip::commands_3dm::MessageFormat::Response,
+        ::mip::commands_3dm::ComplementaryFilter::Response,
+        ::mip::commands_3dm::AccelBias::Response,
+        ::mip::commands_3dm::GyroBias::Response,
+        ::mip::commands_3dm::CaptureGyroBias::Response,
+        ::mip::commands_3dm::MagHardIronOffset::Response,
+        ::mip::commands_3dm::MagSoftIronMatrix::Response,
+        ::mip::commands_3dm::ConingScullingEnable::Response,
+        ::mip::commands_3dm::ConstellationSettings::Response,
+        ::mip::commands_3dm::GnssSbasSettings::Response,
+        ::mip::commands_3dm::GnssAssistedFix::Response,
+        ::mip::commands_3dm::GnssTimeAssistance::Response,
+        ::mip::commands_3dm::PpsSource::Response,
+        ::mip::commands_3dm::Sensor2VehicleTransformEuler::Response,
+        ::mip::commands_3dm::Sensor2VehicleTransformQuaternion::Response,
+        ::mip::commands_3dm::Sensor2VehicleTransformDcm::Response,
+        ::mip::commands_3dm::GetEventSupport::Response,
+        ::mip::commands_3dm::EventControl::Response,
+        ::mip::commands_3dm::GetEventTriggerStatus::Response,
+        ::mip::commands_3dm::GetEventActionStatus::Response,
+        ::mip::commands_3dm::EventTrigger::Response,
+        ::mip::commands_3dm::EventAction::Response,
+        ::mip::commands_3dm::GpioConfig::Response,
+        ::mip::commands_3dm::GpioState::Response,
+        ::mip::commands_3dm::Odometer::Response,
+        ::mip::commands_3dm::SensorRange::Response,
+        ::mip::commands_3dm::CalibratedSensorRanges::Response,
+        ::mip::commands_3dm::LowpassFilter::Response
+    >;
+};
+
+//} // namespace commands_3dm
+
+template<>
+struct MetadataFor<CommandSet3dm>
+{
+    using type = CommandSet3dm;
+    
+    static inline constexpr DescriptorSetInfo value = {
+        /* .descriptor = */ commands_3dm::DESCRIPTOR_SET,
+        /* .name       = */ "3dm Commands",
+        /* .fields     = */ COMMANDS_3DM_FIELDS,
+    };
+};
+template<> struct TypeForDescriptor< (commands_3dm::DESCRIPTOR_SET << 8) > { using type = CommandSet3dm; };
 
 static constexpr DescriptorSetInfo COMMANDS_3DM = {
     /* .descriptor = */ mip::commands_3dm::DESCRIPTOR_SET,

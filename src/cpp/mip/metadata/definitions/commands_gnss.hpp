@@ -52,6 +52,8 @@ struct MetadataFor<commands_gnss::ReceiverInfo::Info>
     };
 };
 
+template<> struct TypeForStructInfo< &MetadataFor<commands_gnss::ReceiverInfo::Info>::value > { using type = commands_gnss::ReceiverInfo::Info; };
+
 template<>
 struct MetadataFor<commands_gnss::ReceiverInfo::Response>
 {
@@ -91,6 +93,8 @@ struct MetadataFor<commands_gnss::ReceiverInfo::Response>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_gnss::ReceiverInfo::Response>::value > { using type = commands_gnss::ReceiverInfo::Response; };
+
 template<>
 struct MetadataFor<commands_gnss::ReceiverInfo>
 {
@@ -108,6 +112,9 @@ struct MetadataFor<commands_gnss::ReceiverInfo>
             /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_gnss::ReceiverInfo>::value > { using type = commands_gnss::ReceiverInfo; };
+template<> struct TypeForDescriptor<commands_gnss::ReceiverInfo::DESCRIPTOR.as_u16()> { using type = commands_gnss::ReceiverInfo; };
 
 template<>
 struct MetadataFor<commands_gnss::SignalConfiguration::Response>
@@ -175,6 +182,8 @@ struct MetadataFor<commands_gnss::SignalConfiguration::Response>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_gnss::SignalConfiguration::Response>::value > { using type = commands_gnss::SignalConfiguration::Response; };
+
 template<>
 struct MetadataFor<commands_gnss::SignalConfiguration>
 {
@@ -241,6 +250,9 @@ struct MetadataFor<commands_gnss::SignalConfiguration>
             /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_gnss::SignalConfiguration>::value > { using type = commands_gnss::SignalConfiguration; };
+template<> struct TypeForDescriptor<commands_gnss::SignalConfiguration::DESCRIPTOR.as_u16()> { using type = commands_gnss::SignalConfiguration; };
 
 template<>
 struct MetadataFor<commands_gnss::SpartnConfiguration::Response>
@@ -334,6 +346,8 @@ struct MetadataFor<commands_gnss::SpartnConfiguration::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_gnss::SpartnConfiguration::Response>::value > { using type = commands_gnss::SpartnConfiguration::Response; };
 
 template<>
 struct MetadataFor<commands_gnss::SpartnConfiguration>
@@ -429,6 +443,9 @@ struct MetadataFor<commands_gnss::SpartnConfiguration>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_gnss::SpartnConfiguration>::value > { using type = commands_gnss::SpartnConfiguration; };
+template<> struct TypeForDescriptor<commands_gnss::SpartnConfiguration::DESCRIPTOR.as_u16()> { using type = commands_gnss::SpartnConfiguration; };
+
 template<>
 struct MetadataFor<commands_gnss::RtkDongleConfiguration::Response>
 {
@@ -467,6 +484,8 @@ struct MetadataFor<commands_gnss::RtkDongleConfiguration::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_gnss::RtkDongleConfiguration::Response>::value > { using type = commands_gnss::RtkDongleConfiguration::Response; };
 
 template<>
 struct MetadataFor<commands_gnss::RtkDongleConfiguration>
@@ -508,6 +527,9 @@ struct MetadataFor<commands_gnss::RtkDongleConfiguration>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_gnss::RtkDongleConfiguration>::value > { using type = commands_gnss::RtkDongleConfiguration; };
+template<> struct TypeForDescriptor<commands_gnss::RtkDongleConfiguration::DESCRIPTOR.as_u16()> { using type = commands_gnss::RtkDongleConfiguration; };
+
 
 static constexpr inline const FieldInfo* COMMANDS_GNSS_FIELDS[] = {
     &MetadataFor<commands_gnss::ReceiverInfo>::value,
@@ -519,6 +541,40 @@ static constexpr inline const FieldInfo* COMMANDS_GNSS_FIELDS[] = {
     &MetadataFor<commands_gnss::RtkDongleConfiguration::Response>::value,
     &MetadataFor<commands_gnss::SpartnConfiguration::Response>::value,
 };
+
+//namespace commands_gnss
+//{
+struct CommandSetGnss
+{
+    static inline constexpr uint8_t DESCRIPTOR_SET = commands_gnss::DESCRIPTOR_SET;
+    static inline constexpr CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, INVALID_FIELD_DESCRIPTOR};
+
+    using Fields = std::tuple<
+        ::mip::commands_gnss::ReceiverInfo,
+        ::mip::commands_gnss::SignalConfiguration,
+        ::mip::commands_gnss::RtkDongleConfiguration,
+        ::mip::commands_gnss::SpartnConfiguration,
+        ::mip::commands_gnss::ReceiverInfo::Response,
+        ::mip::commands_gnss::SignalConfiguration::Response,
+        ::mip::commands_gnss::RtkDongleConfiguration::Response,
+        ::mip::commands_gnss::SpartnConfiguration::Response
+    >;
+};
+
+//} // namespace commands_gnss
+
+template<>
+struct MetadataFor<CommandSetGnss>
+{
+    using type = CommandSetGnss;
+    
+    static inline constexpr DescriptorSetInfo value = {
+        /* .descriptor = */ commands_gnss::DESCRIPTOR_SET,
+        /* .name       = */ "Gnss Commands",
+        /* .fields     = */ COMMANDS_GNSS_FIELDS,
+    };
+};
+template<> struct TypeForDescriptor< (commands_gnss::DESCRIPTOR_SET << 8) > { using type = CommandSetGnss; };
 
 static constexpr DescriptorSetInfo COMMANDS_GNSS = {
     /* .descriptor = */ mip::commands_gnss::DESCRIPTOR_SET,

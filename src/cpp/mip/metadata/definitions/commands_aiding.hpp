@@ -28,6 +28,8 @@ struct MetadataFor<commands_aiding::FrameConfig::Format>
 
 };
 
+template<> struct TypeForEnumInfo< &MetadataFor<commands_aiding::FrameConfig::Format>::value > { using type = commands_aiding::FrameConfig::Format; };
+
 template<>
 struct MetadataFor<commands_aiding::FrameConfig::Rotation>
 {
@@ -61,6 +63,8 @@ struct MetadataFor<commands_aiding::FrameConfig::Rotation>
         /* .parameters  = */ parameters,
     };
 };
+
+template<> struct TypeForStructInfo< &MetadataFor<commands_aiding::FrameConfig::Rotation>::value > { using type = commands_aiding::FrameConfig::Rotation; };
 
 template<>
 struct MetadataFor<commands_aiding::FrameConfig::Response>
@@ -127,6 +131,8 @@ struct MetadataFor<commands_aiding::FrameConfig::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_aiding::FrameConfig::Response>::value > { using type = commands_aiding::FrameConfig::Response; };
 
 template<>
 struct MetadataFor<commands_aiding::FrameConfig>
@@ -195,6 +201,9 @@ struct MetadataFor<commands_aiding::FrameConfig>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_aiding::FrameConfig>::value > { using type = commands_aiding::FrameConfig; };
+template<> struct TypeForDescriptor<commands_aiding::FrameConfig::DESCRIPTOR.as_u16()> { using type = commands_aiding::FrameConfig; };
+
 template<>
 struct MetadataFor<commands_aiding::EchoControl::Mode>
 {
@@ -214,6 +223,8 @@ struct MetadataFor<commands_aiding::EchoControl::Mode>
     };
 
 };
+
+template<> struct TypeForEnumInfo< &MetadataFor<commands_aiding::EchoControl::Mode>::value > { using type = commands_aiding::EchoControl::Mode; };
 
 template<>
 struct MetadataFor<commands_aiding::EchoControl::Response>
@@ -244,6 +255,8 @@ struct MetadataFor<commands_aiding::EchoControl::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_aiding::EchoControl::Response>::value > { using type = commands_aiding::EchoControl::Response; };
 
 template<>
 struct MetadataFor<commands_aiding::EchoControl>
@@ -276,6 +289,9 @@ struct MetadataFor<commands_aiding::EchoControl>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_aiding::EchoControl>::value > { using type = commands_aiding::EchoControl; };
+template<> struct TypeForDescriptor<commands_aiding::EchoControl::DESCRIPTOR.as_u16()> { using type = commands_aiding::EchoControl; };
+
 template<>
 struct MetadataFor<commands_aiding::Time::Timebase>
 {
@@ -295,6 +311,8 @@ struct MetadataFor<commands_aiding::Time::Timebase>
     };
 
 };
+
+template<> struct TypeForEnumInfo< &MetadataFor<commands_aiding::Time::Timebase>::value > { using type = commands_aiding::Time::Timebase; };
 
 template<>
 struct MetadataFor<commands_aiding::Time>
@@ -339,6 +357,8 @@ struct MetadataFor<commands_aiding::Time>
     };
 };
 
+template<> struct TypeForStructInfo< &MetadataFor<commands_aiding::Time>::value > { using type = commands_aiding::Time; };
+
 template<>
 struct MetadataFor<commands_aiding::PosEcef::ValidFlags>
 {
@@ -358,6 +378,8 @@ struct MetadataFor<commands_aiding::PosEcef::ValidFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<commands_aiding::PosEcef::ValidFlags>::value > { using type = commands_aiding::PosEcef::ValidFlags; };
 
 template<>
 struct MetadataFor<commands_aiding::PosEcef>
@@ -425,6 +447,9 @@ struct MetadataFor<commands_aiding::PosEcef>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_aiding::PosEcef>::value > { using type = commands_aiding::PosEcef; };
+template<> struct TypeForDescriptor<commands_aiding::PosEcef::DESCRIPTOR.as_u16()> { using type = commands_aiding::PosEcef; };
+
 template<>
 struct MetadataFor<commands_aiding::PosLlh::ValidFlags>
 {
@@ -444,6 +469,8 @@ struct MetadataFor<commands_aiding::PosLlh::ValidFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<commands_aiding::PosLlh::ValidFlags>::value > { using type = commands_aiding::PosLlh::ValidFlags; };
 
 template<>
 struct MetadataFor<commands_aiding::PosLlh>
@@ -529,6 +556,9 @@ struct MetadataFor<commands_aiding::PosLlh>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_aiding::PosLlh>::value > { using type = commands_aiding::PosLlh; };
+template<> struct TypeForDescriptor<commands_aiding::PosLlh::DESCRIPTOR.as_u16()> { using type = commands_aiding::PosLlh; };
+
 template<>
 struct MetadataFor<commands_aiding::HeightAboveEllipsoid>
 {
@@ -595,6 +625,9 @@ struct MetadataFor<commands_aiding::HeightAboveEllipsoid>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_aiding::HeightAboveEllipsoid>::value > { using type = commands_aiding::HeightAboveEllipsoid; };
+template<> struct TypeForDescriptor<commands_aiding::HeightAboveEllipsoid::DESCRIPTOR.as_u16()> { using type = commands_aiding::HeightAboveEllipsoid; };
+
 template<>
 struct MetadataFor<commands_aiding::VelEcef::ValidFlags>
 {
@@ -614,6 +647,8 @@ struct MetadataFor<commands_aiding::VelEcef::ValidFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<commands_aiding::VelEcef::ValidFlags>::value > { using type = commands_aiding::VelEcef::ValidFlags; };
 
 template<>
 struct MetadataFor<commands_aiding::VelEcef>
@@ -681,6 +716,9 @@ struct MetadataFor<commands_aiding::VelEcef>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_aiding::VelEcef>::value > { using type = commands_aiding::VelEcef; };
+template<> struct TypeForDescriptor<commands_aiding::VelEcef::DESCRIPTOR.as_u16()> { using type = commands_aiding::VelEcef; };
+
 template<>
 struct MetadataFor<commands_aiding::VelNed::ValidFlags>
 {
@@ -700,6 +738,8 @@ struct MetadataFor<commands_aiding::VelNed::ValidFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<commands_aiding::VelNed::ValidFlags>::value > { using type = commands_aiding::VelNed::ValidFlags; };
 
 template<>
 struct MetadataFor<commands_aiding::VelNed>
@@ -767,6 +807,9 @@ struct MetadataFor<commands_aiding::VelNed>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_aiding::VelNed>::value > { using type = commands_aiding::VelNed; };
+template<> struct TypeForDescriptor<commands_aiding::VelNed::DESCRIPTOR.as_u16()> { using type = commands_aiding::VelNed; };
+
 template<>
 struct MetadataFor<commands_aiding::VelBodyFrame::ValidFlags>
 {
@@ -786,6 +829,8 @@ struct MetadataFor<commands_aiding::VelBodyFrame::ValidFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<commands_aiding::VelBodyFrame::ValidFlags>::value > { using type = commands_aiding::VelBodyFrame::ValidFlags; };
 
 template<>
 struct MetadataFor<commands_aiding::VelBodyFrame>
@@ -853,6 +898,9 @@ struct MetadataFor<commands_aiding::VelBodyFrame>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_aiding::VelBodyFrame>::value > { using type = commands_aiding::VelBodyFrame; };
+template<> struct TypeForDescriptor<commands_aiding::VelBodyFrame::DESCRIPTOR.as_u16()> { using type = commands_aiding::VelBodyFrame; };
+
 template<>
 struct MetadataFor<commands_aiding::HeadingTrue>
 {
@@ -919,6 +967,9 @@ struct MetadataFor<commands_aiding::HeadingTrue>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_aiding::HeadingTrue>::value > { using type = commands_aiding::HeadingTrue; };
+template<> struct TypeForDescriptor<commands_aiding::HeadingTrue::DESCRIPTOR.as_u16()> { using type = commands_aiding::HeadingTrue; };
+
 template<>
 struct MetadataFor<commands_aiding::MagneticField::ValidFlags>
 {
@@ -938,6 +989,8 @@ struct MetadataFor<commands_aiding::MagneticField::ValidFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<commands_aiding::MagneticField::ValidFlags>::value > { using type = commands_aiding::MagneticField::ValidFlags; };
 
 template<>
 struct MetadataFor<commands_aiding::MagneticField>
@@ -1005,6 +1058,9 @@ struct MetadataFor<commands_aiding::MagneticField>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_aiding::MagneticField>::value > { using type = commands_aiding::MagneticField; };
+template<> struct TypeForDescriptor<commands_aiding::MagneticField::DESCRIPTOR.as_u16()> { using type = commands_aiding::MagneticField; };
+
 template<>
 struct MetadataFor<commands_aiding::Pressure>
 {
@@ -1071,6 +1127,9 @@ struct MetadataFor<commands_aiding::Pressure>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_aiding::Pressure>::value > { using type = commands_aiding::Pressure; };
+template<> struct TypeForDescriptor<commands_aiding::Pressure::DESCRIPTOR.as_u16()> { using type = commands_aiding::Pressure; };
+
 
 static constexpr inline const FieldInfo* COMMANDS_AIDING_FIELDS[] = {
     &MetadataFor<commands_aiding::FrameConfig>::value,
@@ -1087,6 +1146,45 @@ static constexpr inline const FieldInfo* COMMANDS_AIDING_FIELDS[] = {
     &MetadataFor<commands_aiding::FrameConfig::Response>::value,
     &MetadataFor<commands_aiding::EchoControl::Response>::value,
 };
+
+//namespace commands_aiding
+//{
+struct CommandSetAiding
+{
+    static inline constexpr uint8_t DESCRIPTOR_SET = commands_aiding::DESCRIPTOR_SET;
+    static inline constexpr CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, INVALID_FIELD_DESCRIPTOR};
+
+    using Fields = std::tuple<
+        ::mip::commands_aiding::FrameConfig,
+        ::mip::commands_aiding::EchoControl,
+        ::mip::commands_aiding::PosEcef,
+        ::mip::commands_aiding::PosLlh,
+        ::mip::commands_aiding::HeightAboveEllipsoid,
+        ::mip::commands_aiding::VelEcef,
+        ::mip::commands_aiding::VelNed,
+        ::mip::commands_aiding::VelBodyFrame,
+        ::mip::commands_aiding::HeadingTrue,
+        ::mip::commands_aiding::MagneticField,
+        ::mip::commands_aiding::Pressure,
+        ::mip::commands_aiding::FrameConfig::Response,
+        ::mip::commands_aiding::EchoControl::Response
+    >;
+};
+
+//} // namespace commands_aiding
+
+template<>
+struct MetadataFor<CommandSetAiding>
+{
+    using type = CommandSetAiding;
+    
+    static inline constexpr DescriptorSetInfo value = {
+        /* .descriptor = */ commands_aiding::DESCRIPTOR_SET,
+        /* .name       = */ "Aiding Commands",
+        /* .fields     = */ COMMANDS_AIDING_FIELDS,
+    };
+};
+template<> struct TypeForDescriptor< (commands_aiding::DESCRIPTOR_SET << 8) > { using type = CommandSetAiding; };
 
 static constexpr DescriptorSetInfo COMMANDS_AIDING = {
     /* .descriptor = */ mip::commands_aiding::DESCRIPTOR_SET,

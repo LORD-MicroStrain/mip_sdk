@@ -37,6 +37,8 @@ struct MetadataFor<commands_rtk::GetStatusFlags::StatusFlagsLegacy>
 
 };
 
+template<> struct TypeForBitsInfo< &MetadataFor<commands_rtk::GetStatusFlags::StatusFlagsLegacy>::value > { using type = commands_rtk::GetStatusFlags::StatusFlagsLegacy; };
+
 template<>
 struct MetadataFor<commands_rtk::GetStatusFlags::StatusFlags>
 {
@@ -65,6 +67,8 @@ struct MetadataFor<commands_rtk::GetStatusFlags::StatusFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<commands_rtk::GetStatusFlags::StatusFlags>::value > { using type = commands_rtk::GetStatusFlags::StatusFlags; };
 
 template<>
 struct MetadataFor<commands_rtk::GetStatusFlags::Response>
@@ -96,6 +100,8 @@ struct MetadataFor<commands_rtk::GetStatusFlags::Response>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_rtk::GetStatusFlags::Response>::value > { using type = commands_rtk::GetStatusFlags::Response; };
+
 template<>
 struct MetadataFor<commands_rtk::GetStatusFlags>
 {
@@ -113,6 +119,9 @@ struct MetadataFor<commands_rtk::GetStatusFlags>
             /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_rtk::GetStatusFlags>::value > { using type = commands_rtk::GetStatusFlags; };
+template<> struct TypeForDescriptor<commands_rtk::GetStatusFlags::DESCRIPTOR.as_u16()> { using type = commands_rtk::GetStatusFlags; };
 
 template<>
 struct MetadataFor<commands_rtk::GetImei::Response>
@@ -144,6 +153,8 @@ struct MetadataFor<commands_rtk::GetImei::Response>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_rtk::GetImei::Response>::value > { using type = commands_rtk::GetImei::Response; };
+
 template<>
 struct MetadataFor<commands_rtk::GetImei>
 {
@@ -161,6 +172,9 @@ struct MetadataFor<commands_rtk::GetImei>
             /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_rtk::GetImei>::value > { using type = commands_rtk::GetImei; };
+template<> struct TypeForDescriptor<commands_rtk::GetImei::DESCRIPTOR.as_u16()> { using type = commands_rtk::GetImei; };
 
 template<>
 struct MetadataFor<commands_rtk::GetImsi::Response>
@@ -192,6 +206,8 @@ struct MetadataFor<commands_rtk::GetImsi::Response>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_rtk::GetImsi::Response>::value > { using type = commands_rtk::GetImsi::Response; };
+
 template<>
 struct MetadataFor<commands_rtk::GetImsi>
 {
@@ -209,6 +225,9 @@ struct MetadataFor<commands_rtk::GetImsi>
             /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_rtk::GetImsi>::value > { using type = commands_rtk::GetImsi; };
+template<> struct TypeForDescriptor<commands_rtk::GetImsi::DESCRIPTOR.as_u16()> { using type = commands_rtk::GetImsi; };
 
 template<>
 struct MetadataFor<commands_rtk::GetIccid::Response>
@@ -240,6 +259,8 @@ struct MetadataFor<commands_rtk::GetIccid::Response>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_rtk::GetIccid::Response>::value > { using type = commands_rtk::GetIccid::Response; };
+
 template<>
 struct MetadataFor<commands_rtk::GetIccid>
 {
@@ -257,6 +278,9 @@ struct MetadataFor<commands_rtk::GetIccid>
             /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_rtk::GetIccid>::value > { using type = commands_rtk::GetIccid; };
+template<> struct TypeForDescriptor<commands_rtk::GetIccid::DESCRIPTOR.as_u16()> { using type = commands_rtk::GetIccid; };
 
 template<>
 struct MetadataFor<commands_rtk::ConnectedDeviceType::Type>
@@ -276,6 +300,8 @@ struct MetadataFor<commands_rtk::ConnectedDeviceType::Type>
     };
 
 };
+
+template<> struct TypeForEnumInfo< &MetadataFor<commands_rtk::ConnectedDeviceType::Type>::value > { using type = commands_rtk::ConnectedDeviceType::Type; };
 
 template<>
 struct MetadataFor<commands_rtk::ConnectedDeviceType::Response>
@@ -306,6 +332,8 @@ struct MetadataFor<commands_rtk::ConnectedDeviceType::Response>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_rtk::ConnectedDeviceType::Response>::value > { using type = commands_rtk::ConnectedDeviceType::Response; };
 
 template<>
 struct MetadataFor<commands_rtk::ConnectedDeviceType>
@@ -338,6 +366,9 @@ struct MetadataFor<commands_rtk::ConnectedDeviceType>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_rtk::ConnectedDeviceType>::value > { using type = commands_rtk::ConnectedDeviceType; };
+template<> struct TypeForDescriptor<commands_rtk::ConnectedDeviceType::DESCRIPTOR.as_u16()> { using type = commands_rtk::ConnectedDeviceType; };
+
 template<>
 struct MetadataFor<commands_rtk::GetActCode::Response>
 {
@@ -368,6 +399,8 @@ struct MetadataFor<commands_rtk::GetActCode::Response>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_rtk::GetActCode::Response>::value > { using type = commands_rtk::GetActCode::Response; };
+
 template<>
 struct MetadataFor<commands_rtk::GetActCode>
 {
@@ -385,6 +418,9 @@ struct MetadataFor<commands_rtk::GetActCode>
             /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_rtk::GetActCode>::value > { using type = commands_rtk::GetActCode; };
+template<> struct TypeForDescriptor<commands_rtk::GetActCode::DESCRIPTOR.as_u16()> { using type = commands_rtk::GetActCode; };
 
 template<>
 struct MetadataFor<commands_rtk::GetModemFirmwareVersion::Response>
@@ -416,6 +452,8 @@ struct MetadataFor<commands_rtk::GetModemFirmwareVersion::Response>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_rtk::GetModemFirmwareVersion::Response>::value > { using type = commands_rtk::GetModemFirmwareVersion::Response; };
+
 template<>
 struct MetadataFor<commands_rtk::GetModemFirmwareVersion>
 {
@@ -433,6 +471,9 @@ struct MetadataFor<commands_rtk::GetModemFirmwareVersion>
             /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_rtk::GetModemFirmwareVersion>::value > { using type = commands_rtk::GetModemFirmwareVersion; };
+template<> struct TypeForDescriptor<commands_rtk::GetModemFirmwareVersion::DESCRIPTOR.as_u16()> { using type = commands_rtk::GetModemFirmwareVersion; };
 
 template<>
 struct MetadataFor<commands_rtk::GetRssi::Response>
@@ -482,6 +523,8 @@ struct MetadataFor<commands_rtk::GetRssi::Response>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_rtk::GetRssi::Response>::value > { using type = commands_rtk::GetRssi::Response; };
+
 template<>
 struct MetadataFor<commands_rtk::GetRssi>
 {
@@ -499,6 +542,9 @@ struct MetadataFor<commands_rtk::GetRssi>
             /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_rtk::GetRssi>::value > { using type = commands_rtk::GetRssi; };
+template<> struct TypeForDescriptor<commands_rtk::GetRssi::DESCRIPTOR.as_u16()> { using type = commands_rtk::GetRssi; };
 
 template<>
 struct MetadataFor<commands_rtk::ServiceStatus::ServiceFlags>
@@ -519,6 +565,8 @@ struct MetadataFor<commands_rtk::ServiceStatus::ServiceFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<commands_rtk::ServiceStatus::ServiceFlags>::value > { using type = commands_rtk::ServiceStatus::ServiceFlags; };
 
 template<>
 struct MetadataFor<commands_rtk::ServiceStatus::Response>
@@ -577,6 +625,8 @@ struct MetadataFor<commands_rtk::ServiceStatus::Response>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_rtk::ServiceStatus::Response>::value > { using type = commands_rtk::ServiceStatus::Response; };
+
 template<>
 struct MetadataFor<commands_rtk::ServiceStatus>
 {
@@ -616,6 +666,9 @@ struct MetadataFor<commands_rtk::ServiceStatus>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_rtk::ServiceStatus>::value > { using type = commands_rtk::ServiceStatus; };
+template<> struct TypeForDescriptor<commands_rtk::ServiceStatus::DESCRIPTOR.as_u16()> { using type = commands_rtk::ServiceStatus; };
+
 template<>
 struct MetadataFor<commands_rtk::MediaSelector>
 {
@@ -634,6 +687,8 @@ struct MetadataFor<commands_rtk::MediaSelector>
     };
 
 };
+
+template<> struct TypeForEnumInfo< &MetadataFor<commands_rtk::MediaSelector>::value > { using type = commands_rtk::MediaSelector; };
 
 template<>
 struct MetadataFor<commands_rtk::ProdEraseStorage>
@@ -665,6 +720,9 @@ struct MetadataFor<commands_rtk::ProdEraseStorage>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_rtk::ProdEraseStorage>::value > { using type = commands_rtk::ProdEraseStorage; };
+template<> struct TypeForDescriptor<commands_rtk::ProdEraseStorage::DESCRIPTOR.as_u16()> { using type = commands_rtk::ProdEraseStorage; };
+
 template<>
 struct MetadataFor<commands_rtk::LedAction>
 {
@@ -684,6 +742,8 @@ struct MetadataFor<commands_rtk::LedAction>
     };
 
 };
+
+template<> struct TypeForEnumInfo< &MetadataFor<commands_rtk::LedAction>::value > { using type = commands_rtk::LedAction; };
 
 template<>
 struct MetadataFor<commands_rtk::LedControl>
@@ -742,6 +802,9 @@ struct MetadataFor<commands_rtk::LedControl>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<commands_rtk::LedControl>::value > { using type = commands_rtk::LedControl; };
+template<> struct TypeForDescriptor<commands_rtk::LedControl::DESCRIPTOR.as_u16()> { using type = commands_rtk::LedControl; };
+
 template<>
 struct MetadataFor<commands_rtk::ModemHardReset>
 {
@@ -759,6 +822,9 @@ struct MetadataFor<commands_rtk::ModemHardReset>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<commands_rtk::ModemHardReset>::value > { using type = commands_rtk::ModemHardReset; };
+template<> struct TypeForDescriptor<commands_rtk::ModemHardReset::DESCRIPTOR.as_u16()> { using type = commands_rtk::ModemHardReset; };
 
 
 static constexpr inline const FieldInfo* COMMANDS_RTK_FIELDS[] = {
@@ -784,6 +850,53 @@ static constexpr inline const FieldInfo* COMMANDS_RTK_FIELDS[] = {
     &MetadataFor<commands_rtk::GetModemFirmwareVersion::Response>::value,
     &MetadataFor<commands_rtk::ServiceStatus::Response>::value,
 };
+
+//namespace commands_rtk
+//{
+struct CommandSetRtk
+{
+    static inline constexpr uint8_t DESCRIPTOR_SET = commands_rtk::DESCRIPTOR_SET;
+    static inline constexpr CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, INVALID_FIELD_DESCRIPTOR};
+
+    using Fields = std::tuple<
+        ::mip::commands_rtk::GetStatusFlags,
+        ::mip::commands_rtk::GetImei,
+        ::mip::commands_rtk::GetImsi,
+        ::mip::commands_rtk::GetIccid,
+        ::mip::commands_rtk::GetRssi,
+        ::mip::commands_rtk::ConnectedDeviceType,
+        ::mip::commands_rtk::GetActCode,
+        ::mip::commands_rtk::GetModemFirmwareVersion,
+        ::mip::commands_rtk::ServiceStatus,
+        ::mip::commands_rtk::ProdEraseStorage,
+        ::mip::commands_rtk::LedControl,
+        ::mip::commands_rtk::ModemHardReset,
+        ::mip::commands_rtk::GetStatusFlags::Response,
+        ::mip::commands_rtk::GetImei::Response,
+        ::mip::commands_rtk::GetImsi::Response,
+        ::mip::commands_rtk::GetIccid::Response,
+        ::mip::commands_rtk::GetRssi::Response,
+        ::mip::commands_rtk::ConnectedDeviceType::Response,
+        ::mip::commands_rtk::GetActCode::Response,
+        ::mip::commands_rtk::GetModemFirmwareVersion::Response,
+        ::mip::commands_rtk::ServiceStatus::Response
+    >;
+};
+
+//} // namespace commands_rtk
+
+template<>
+struct MetadataFor<CommandSetRtk>
+{
+    using type = CommandSetRtk;
+    
+    static inline constexpr DescriptorSetInfo value = {
+        /* .descriptor = */ commands_rtk::DESCRIPTOR_SET,
+        /* .name       = */ "Rtk Commands",
+        /* .fields     = */ COMMANDS_RTK_FIELDS,
+    };
+};
+template<> struct TypeForDescriptor< (commands_rtk::DESCRIPTOR_SET << 8) > { using type = CommandSetRtk; };
 
 static constexpr DescriptorSetInfo COMMANDS_RTK = {
     /* .descriptor = */ mip::commands_rtk::DESCRIPTOR_SET,

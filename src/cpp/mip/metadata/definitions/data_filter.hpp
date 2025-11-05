@@ -66,6 +66,9 @@ struct MetadataFor<data_filter::PositionLlh>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::PositionLlh>::value > { using type = data_filter::PositionLlh; };
+template<> struct TypeForDescriptor<data_filter::PositionLlh::DESCRIPTOR.as_u16()> { using type = data_filter::PositionLlh; };
+
 template<>
 struct MetadataFor<data_filter::VelocityNed>
 {
@@ -123,6 +126,9 @@ struct MetadataFor<data_filter::VelocityNed>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::VelocityNed>::value > { using type = data_filter::VelocityNed; };
+template<> struct TypeForDescriptor<data_filter::VelocityNed::DESCRIPTOR.as_u16()> { using type = data_filter::VelocityNed; };
+
 template<>
 struct MetadataFor<data_filter::AttitudeQuaternion>
 {
@@ -162,6 +168,9 @@ struct MetadataFor<data_filter::AttitudeQuaternion>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::AttitudeQuaternion>::value > { using type = data_filter::AttitudeQuaternion; };
+template<> struct TypeForDescriptor<data_filter::AttitudeQuaternion::DESCRIPTOR.as_u16()> { using type = data_filter::AttitudeQuaternion; };
+
 template<>
 struct MetadataFor<data_filter::AttitudeDcm>
 {
@@ -200,6 +209,9 @@ struct MetadataFor<data_filter::AttitudeDcm>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::AttitudeDcm>::value > { using type = data_filter::AttitudeDcm; };
+template<> struct TypeForDescriptor<data_filter::AttitudeDcm::DESCRIPTOR.as_u16()> { using type = data_filter::AttitudeDcm; };
 
 template<>
 struct MetadataFor<data_filter::EulerAngles>
@@ -258,6 +270,9 @@ struct MetadataFor<data_filter::EulerAngles>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::EulerAngles>::value > { using type = data_filter::EulerAngles; };
+template<> struct TypeForDescriptor<data_filter::EulerAngles::DESCRIPTOR.as_u16()> { using type = data_filter::EulerAngles; };
+
 template<>
 struct MetadataFor<data_filter::GyroBias>
 {
@@ -297,6 +312,9 @@ struct MetadataFor<data_filter::GyroBias>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::GyroBias>::value > { using type = data_filter::GyroBias; };
+template<> struct TypeForDescriptor<data_filter::GyroBias::DESCRIPTOR.as_u16()> { using type = data_filter::GyroBias; };
+
 template<>
 struct MetadataFor<data_filter::AccelBias>
 {
@@ -335,6 +353,9 @@ struct MetadataFor<data_filter::AccelBias>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::AccelBias>::value > { using type = data_filter::AccelBias; };
+template<> struct TypeForDescriptor<data_filter::AccelBias::DESCRIPTOR.as_u16()> { using type = data_filter::AccelBias; };
 
 template<>
 struct MetadataFor<data_filter::PositionLlhUncertainty>
@@ -393,6 +414,9 @@ struct MetadataFor<data_filter::PositionLlhUncertainty>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::PositionLlhUncertainty>::value > { using type = data_filter::PositionLlhUncertainty; };
+template<> struct TypeForDescriptor<data_filter::PositionLlhUncertainty::DESCRIPTOR.as_u16()> { using type = data_filter::PositionLlhUncertainty; };
+
 template<>
 struct MetadataFor<data_filter::VelocityNedUncertainty>
 {
@@ -449,6 +473,9 @@ struct MetadataFor<data_filter::VelocityNedUncertainty>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::VelocityNedUncertainty>::value > { using type = data_filter::VelocityNedUncertainty; };
+template<> struct TypeForDescriptor<data_filter::VelocityNedUncertainty::DESCRIPTOR.as_u16()> { using type = data_filter::VelocityNedUncertainty; };
 
 template<>
 struct MetadataFor<data_filter::EulerAnglesUncertainty>
@@ -507,6 +534,9 @@ struct MetadataFor<data_filter::EulerAnglesUncertainty>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::EulerAnglesUncertainty>::value > { using type = data_filter::EulerAnglesUncertainty; };
+template<> struct TypeForDescriptor<data_filter::EulerAnglesUncertainty::DESCRIPTOR.as_u16()> { using type = data_filter::EulerAnglesUncertainty; };
+
 template<>
 struct MetadataFor<data_filter::GyroBiasUncertainty>
 {
@@ -546,6 +576,9 @@ struct MetadataFor<data_filter::GyroBiasUncertainty>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::GyroBiasUncertainty>::value > { using type = data_filter::GyroBiasUncertainty; };
+template<> struct TypeForDescriptor<data_filter::GyroBiasUncertainty::DESCRIPTOR.as_u16()> { using type = data_filter::GyroBiasUncertainty; };
+
 template<>
 struct MetadataFor<data_filter::AccelBiasUncertainty>
 {
@@ -584,6 +617,9 @@ struct MetadataFor<data_filter::AccelBiasUncertainty>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::AccelBiasUncertainty>::value > { using type = data_filter::AccelBiasUncertainty; };
+template<> struct TypeForDescriptor<data_filter::AccelBiasUncertainty::DESCRIPTOR.as_u16()> { using type = data_filter::AccelBiasUncertainty; };
 
 template<>
 struct MetadataFor<data_filter::Timestamp>
@@ -633,6 +669,9 @@ struct MetadataFor<data_filter::Timestamp>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::Timestamp>::value > { using type = data_filter::Timestamp; };
+template<> struct TypeForDescriptor<data_filter::Timestamp::DESCRIPTOR.as_u16()> { using type = data_filter::Timestamp; };
+
 template<>
 struct MetadataFor<data_filter::FilterMode>
 {
@@ -658,6 +697,8 @@ struct MetadataFor<data_filter::FilterMode>
 
 };
 
+template<> struct TypeForEnumInfo< &MetadataFor<data_filter::FilterMode>::value > { using type = data_filter::FilterMode; };
+
 template<>
 struct MetadataFor<data_filter::FilterDynamicsMode>
 {
@@ -678,6 +719,8 @@ struct MetadataFor<data_filter::FilterDynamicsMode>
     };
 
 };
+
+template<> struct TypeForEnumInfo< &MetadataFor<data_filter::FilterDynamicsMode>::value > { using type = data_filter::FilterDynamicsMode; };
 
 template<>
 struct MetadataFor<data_filter::FilterStatusFlags>
@@ -723,6 +766,8 @@ struct MetadataFor<data_filter::FilterStatusFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<data_filter::FilterStatusFlags>::value > { using type = data_filter::FilterStatusFlags; };
 
 template<>
 struct MetadataFor<data_filter::Status>
@@ -772,6 +817,9 @@ struct MetadataFor<data_filter::Status>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::Status>::value > { using type = data_filter::Status; };
+template<> struct TypeForDescriptor<data_filter::Status::DESCRIPTOR.as_u16()> { using type = data_filter::Status; };
+
 template<>
 struct MetadataFor<data_filter::LinearAccel>
 {
@@ -810,6 +858,9 @@ struct MetadataFor<data_filter::LinearAccel>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::LinearAccel>::value > { using type = data_filter::LinearAccel; };
+template<> struct TypeForDescriptor<data_filter::LinearAccel::DESCRIPTOR.as_u16()> { using type = data_filter::LinearAccel; };
 
 template<>
 struct MetadataFor<data_filter::GravityVector>
@@ -850,6 +901,9 @@ struct MetadataFor<data_filter::GravityVector>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::GravityVector>::value > { using type = data_filter::GravityVector; };
+template<> struct TypeForDescriptor<data_filter::GravityVector::DESCRIPTOR.as_u16()> { using type = data_filter::GravityVector; };
+
 template<>
 struct MetadataFor<data_filter::CompAccel>
 {
@@ -888,6 +942,9 @@ struct MetadataFor<data_filter::CompAccel>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::CompAccel>::value > { using type = data_filter::CompAccel; };
+template<> struct TypeForDescriptor<data_filter::CompAccel::DESCRIPTOR.as_u16()> { using type = data_filter::CompAccel; };
 
 template<>
 struct MetadataFor<data_filter::CompAngularRate>
@@ -928,6 +985,9 @@ struct MetadataFor<data_filter::CompAngularRate>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::CompAngularRate>::value > { using type = data_filter::CompAngularRate; };
+template<> struct TypeForDescriptor<data_filter::CompAngularRate::DESCRIPTOR.as_u16()> { using type = data_filter::CompAngularRate; };
+
 template<>
 struct MetadataFor<data_filter::QuaternionAttitudeUncertainty>
 {
@@ -966,6 +1026,9 @@ struct MetadataFor<data_filter::QuaternionAttitudeUncertainty>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::QuaternionAttitudeUncertainty>::value > { using type = data_filter::QuaternionAttitudeUncertainty; };
+template<> struct TypeForDescriptor<data_filter::QuaternionAttitudeUncertainty::DESCRIPTOR.as_u16()> { using type = data_filter::QuaternionAttitudeUncertainty; };
 
 template<>
 struct MetadataFor<data_filter::Wgs84GravityMag>
@@ -1006,6 +1069,9 @@ struct MetadataFor<data_filter::Wgs84GravityMag>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::Wgs84GravityMag>::value > { using type = data_filter::Wgs84GravityMag; };
+template<> struct TypeForDescriptor<data_filter::Wgs84GravityMag::DESCRIPTOR.as_u16()> { using type = data_filter::Wgs84GravityMag; };
+
 template<>
 struct MetadataFor<data_filter::HeadingUpdateState::HeadingSource>
 {
@@ -1027,6 +1093,8 @@ struct MetadataFor<data_filter::HeadingUpdateState::HeadingSource>
     };
 
 };
+
+template<> struct TypeForEnumInfo< &MetadataFor<data_filter::HeadingUpdateState::HeadingSource>::value > { using type = data_filter::HeadingUpdateState::HeadingSource; };
 
 template<>
 struct MetadataFor<data_filter::HeadingUpdateState>
@@ -1084,6 +1152,9 @@ struct MetadataFor<data_filter::HeadingUpdateState>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::HeadingUpdateState>::value > { using type = data_filter::HeadingUpdateState; };
+template<> struct TypeForDescriptor<data_filter::HeadingUpdateState::DESCRIPTOR.as_u16()> { using type = data_filter::HeadingUpdateState; };
 
 template<>
 struct MetadataFor<data_filter::MagneticModel>
@@ -1160,6 +1231,9 @@ struct MetadataFor<data_filter::MagneticModel>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::MagneticModel>::value > { using type = data_filter::MagneticModel; };
+template<> struct TypeForDescriptor<data_filter::MagneticModel::DESCRIPTOR.as_u16()> { using type = data_filter::MagneticModel; };
+
 template<>
 struct MetadataFor<data_filter::AccelScaleFactor>
 {
@@ -1198,6 +1272,9 @@ struct MetadataFor<data_filter::AccelScaleFactor>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::AccelScaleFactor>::value > { using type = data_filter::AccelScaleFactor; };
+template<> struct TypeForDescriptor<data_filter::AccelScaleFactor::DESCRIPTOR.as_u16()> { using type = data_filter::AccelScaleFactor; };
 
 template<>
 struct MetadataFor<data_filter::AccelScaleFactorUncertainty>
@@ -1238,6 +1315,9 @@ struct MetadataFor<data_filter::AccelScaleFactorUncertainty>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::AccelScaleFactorUncertainty>::value > { using type = data_filter::AccelScaleFactorUncertainty; };
+template<> struct TypeForDescriptor<data_filter::AccelScaleFactorUncertainty::DESCRIPTOR.as_u16()> { using type = data_filter::AccelScaleFactorUncertainty; };
+
 template<>
 struct MetadataFor<data_filter::GyroScaleFactor>
 {
@@ -1276,6 +1356,9 @@ struct MetadataFor<data_filter::GyroScaleFactor>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::GyroScaleFactor>::value > { using type = data_filter::GyroScaleFactor; };
+template<> struct TypeForDescriptor<data_filter::GyroScaleFactor::DESCRIPTOR.as_u16()> { using type = data_filter::GyroScaleFactor; };
 
 template<>
 struct MetadataFor<data_filter::GyroScaleFactorUncertainty>
@@ -1316,6 +1399,9 @@ struct MetadataFor<data_filter::GyroScaleFactorUncertainty>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::GyroScaleFactorUncertainty>::value > { using type = data_filter::GyroScaleFactorUncertainty; };
+template<> struct TypeForDescriptor<data_filter::GyroScaleFactorUncertainty::DESCRIPTOR.as_u16()> { using type = data_filter::GyroScaleFactorUncertainty; };
+
 template<>
 struct MetadataFor<data_filter::MagBias>
 {
@@ -1355,6 +1441,9 @@ struct MetadataFor<data_filter::MagBias>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::MagBias>::value > { using type = data_filter::MagBias; };
+template<> struct TypeForDescriptor<data_filter::MagBias::DESCRIPTOR.as_u16()> { using type = data_filter::MagBias; };
+
 template<>
 struct MetadataFor<data_filter::MagBiasUncertainty>
 {
@@ -1393,6 +1482,9 @@ struct MetadataFor<data_filter::MagBiasUncertainty>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::MagBiasUncertainty>::value > { using type = data_filter::MagBiasUncertainty; };
+template<> struct TypeForDescriptor<data_filter::MagBiasUncertainty::DESCRIPTOR.as_u16()> { using type = data_filter::MagBiasUncertainty; };
 
 template<>
 struct MetadataFor<data_filter::StandardAtmosphere>
@@ -1469,6 +1561,9 @@ struct MetadataFor<data_filter::StandardAtmosphere>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::StandardAtmosphere>::value > { using type = data_filter::StandardAtmosphere; };
+template<> struct TypeForDescriptor<data_filter::StandardAtmosphere::DESCRIPTOR.as_u16()> { using type = data_filter::StandardAtmosphere; };
+
 template<>
 struct MetadataFor<data_filter::PressureAltitude>
 {
@@ -1507,6 +1602,9 @@ struct MetadataFor<data_filter::PressureAltitude>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::PressureAltitude>::value > { using type = data_filter::PressureAltitude; };
+template<> struct TypeForDescriptor<data_filter::PressureAltitude::DESCRIPTOR.as_u16()> { using type = data_filter::PressureAltitude; };
 
 template<>
 struct MetadataFor<data_filter::DensityAltitude>
@@ -1547,6 +1645,9 @@ struct MetadataFor<data_filter::DensityAltitude>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::DensityAltitude>::value > { using type = data_filter::DensityAltitude; };
+template<> struct TypeForDescriptor<data_filter::DensityAltitude::DESCRIPTOR.as_u16()> { using type = data_filter::DensityAltitude; };
+
 template<>
 struct MetadataFor<data_filter::AntennaOffsetCorrection>
 {
@@ -1586,6 +1687,9 @@ struct MetadataFor<data_filter::AntennaOffsetCorrection>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::AntennaOffsetCorrection>::value > { using type = data_filter::AntennaOffsetCorrection; };
+template<> struct TypeForDescriptor<data_filter::AntennaOffsetCorrection::DESCRIPTOR.as_u16()> { using type = data_filter::AntennaOffsetCorrection; };
+
 template<>
 struct MetadataFor<data_filter::AntennaOffsetCorrectionUncertainty>
 {
@@ -1624,6 +1728,9 @@ struct MetadataFor<data_filter::AntennaOffsetCorrectionUncertainty>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::AntennaOffsetCorrectionUncertainty>::value > { using type = data_filter::AntennaOffsetCorrectionUncertainty; };
+template<> struct TypeForDescriptor<data_filter::AntennaOffsetCorrectionUncertainty::DESCRIPTOR.as_u16()> { using type = data_filter::AntennaOffsetCorrectionUncertainty; };
 
 template<>
 struct MetadataFor<data_filter::MultiAntennaOffsetCorrection>
@@ -1673,6 +1780,9 @@ struct MetadataFor<data_filter::MultiAntennaOffsetCorrection>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::MultiAntennaOffsetCorrection>::value > { using type = data_filter::MultiAntennaOffsetCorrection; };
+template<> struct TypeForDescriptor<data_filter::MultiAntennaOffsetCorrection::DESCRIPTOR.as_u16()> { using type = data_filter::MultiAntennaOffsetCorrection; };
+
 template<>
 struct MetadataFor<data_filter::MultiAntennaOffsetCorrectionUncertainty>
 {
@@ -1721,6 +1831,9 @@ struct MetadataFor<data_filter::MultiAntennaOffsetCorrectionUncertainty>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::MultiAntennaOffsetCorrectionUncertainty>::value > { using type = data_filter::MultiAntennaOffsetCorrectionUncertainty; };
+template<> struct TypeForDescriptor<data_filter::MultiAntennaOffsetCorrectionUncertainty::DESCRIPTOR.as_u16()> { using type = data_filter::MultiAntennaOffsetCorrectionUncertainty; };
+
 template<>
 struct MetadataFor<data_filter::MagnetometerOffset>
 {
@@ -1759,6 +1872,9 @@ struct MetadataFor<data_filter::MagnetometerOffset>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::MagnetometerOffset>::value > { using type = data_filter::MagnetometerOffset; };
+template<> struct TypeForDescriptor<data_filter::MagnetometerOffset::DESCRIPTOR.as_u16()> { using type = data_filter::MagnetometerOffset; };
 
 template<>
 struct MetadataFor<data_filter::MagnetometerMatrix>
@@ -1799,6 +1915,9 @@ struct MetadataFor<data_filter::MagnetometerMatrix>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::MagnetometerMatrix>::value > { using type = data_filter::MagnetometerMatrix; };
+template<> struct TypeForDescriptor<data_filter::MagnetometerMatrix::DESCRIPTOR.as_u16()> { using type = data_filter::MagnetometerMatrix; };
+
 template<>
 struct MetadataFor<data_filter::MagnetometerOffsetUncertainty>
 {
@@ -1837,6 +1956,9 @@ struct MetadataFor<data_filter::MagnetometerOffsetUncertainty>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::MagnetometerOffsetUncertainty>::value > { using type = data_filter::MagnetometerOffsetUncertainty; };
+template<> struct TypeForDescriptor<data_filter::MagnetometerOffsetUncertainty::DESCRIPTOR.as_u16()> { using type = data_filter::MagnetometerOffsetUncertainty; };
 
 template<>
 struct MetadataFor<data_filter::MagnetometerMatrixUncertainty>
@@ -1877,6 +1999,9 @@ struct MetadataFor<data_filter::MagnetometerMatrixUncertainty>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::MagnetometerMatrixUncertainty>::value > { using type = data_filter::MagnetometerMatrixUncertainty; };
+template<> struct TypeForDescriptor<data_filter::MagnetometerMatrixUncertainty::DESCRIPTOR.as_u16()> { using type = data_filter::MagnetometerMatrixUncertainty; };
+
 template<>
 struct MetadataFor<data_filter::MagnetometerCovarianceMatrix>
 {
@@ -1916,6 +2041,9 @@ struct MetadataFor<data_filter::MagnetometerCovarianceMatrix>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::MagnetometerCovarianceMatrix>::value > { using type = data_filter::MagnetometerCovarianceMatrix; };
+template<> struct TypeForDescriptor<data_filter::MagnetometerCovarianceMatrix::DESCRIPTOR.as_u16()> { using type = data_filter::MagnetometerCovarianceMatrix; };
+
 template<>
 struct MetadataFor<data_filter::MagnetometerResidualVector>
 {
@@ -1954,6 +2082,9 @@ struct MetadataFor<data_filter::MagnetometerResidualVector>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::MagnetometerResidualVector>::value > { using type = data_filter::MagnetometerResidualVector; };
+template<> struct TypeForDescriptor<data_filter::MagnetometerResidualVector::DESCRIPTOR.as_u16()> { using type = data_filter::MagnetometerResidualVector; };
 
 template<>
 struct MetadataFor<data_filter::ClockCorrection>
@@ -2012,6 +2143,9 @@ struct MetadataFor<data_filter::ClockCorrection>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::ClockCorrection>::value > { using type = data_filter::ClockCorrection; };
+template<> struct TypeForDescriptor<data_filter::ClockCorrection::DESCRIPTOR.as_u16()> { using type = data_filter::ClockCorrection; };
+
 template<>
 struct MetadataFor<data_filter::ClockCorrectionUncertainty>
 {
@@ -2069,6 +2203,9 @@ struct MetadataFor<data_filter::ClockCorrectionUncertainty>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::ClockCorrectionUncertainty>::value > { using type = data_filter::ClockCorrectionUncertainty; };
+template<> struct TypeForDescriptor<data_filter::ClockCorrectionUncertainty::DESCRIPTOR.as_u16()> { using type = data_filter::ClockCorrectionUncertainty; };
+
 template<>
 struct MetadataFor<data_filter::GnssAidStatusFlags>
 {
@@ -2101,6 +2238,8 @@ struct MetadataFor<data_filter::GnssAidStatusFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<data_filter::GnssAidStatusFlags>::value > { using type = data_filter::GnssAidStatusFlags; };
 
 template<>
 struct MetadataFor<data_filter::GnssPosAidStatus>
@@ -2159,6 +2298,9 @@ struct MetadataFor<data_filter::GnssPosAidStatus>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::GnssPosAidStatus>::value > { using type = data_filter::GnssPosAidStatus; };
+template<> struct TypeForDescriptor<data_filter::GnssPosAidStatus::DESCRIPTOR.as_u16()> { using type = data_filter::GnssPosAidStatus; };
+
 template<>
 struct MetadataFor<data_filter::GnssAttAidStatus>
 {
@@ -2207,6 +2349,9 @@ struct MetadataFor<data_filter::GnssAttAidStatus>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::GnssAttAidStatus>::value > { using type = data_filter::GnssAttAidStatus; };
+template<> struct TypeForDescriptor<data_filter::GnssAttAidStatus::DESCRIPTOR.as_u16()> { using type = data_filter::GnssAttAidStatus; };
+
 template<>
 struct MetadataFor<data_filter::HeadAidStatus::HeadingAidType>
 {
@@ -2225,6 +2370,8 @@ struct MetadataFor<data_filter::HeadAidStatus::HeadingAidType>
     };
 
 };
+
+template<> struct TypeForEnumInfo< &MetadataFor<data_filter::HeadAidStatus::HeadingAidType>::value > { using type = data_filter::HeadAidStatus::HeadingAidType; };
 
 template<>
 struct MetadataFor<data_filter::HeadAidStatus>
@@ -2274,6 +2421,9 @@ struct MetadataFor<data_filter::HeadAidStatus>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::HeadAidStatus>::value > { using type = data_filter::HeadAidStatus; };
+template<> struct TypeForDescriptor<data_filter::HeadAidStatus::DESCRIPTOR.as_u16()> { using type = data_filter::HeadAidStatus; };
+
 template<>
 struct MetadataFor<data_filter::RelPosNed>
 {
@@ -2312,6 +2462,9 @@ struct MetadataFor<data_filter::RelPosNed>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::RelPosNed>::value > { using type = data_filter::RelPosNed; };
+template<> struct TypeForDescriptor<data_filter::RelPosNed::DESCRIPTOR.as_u16()> { using type = data_filter::RelPosNed; };
 
 template<>
 struct MetadataFor<data_filter::EcefPos>
@@ -2352,6 +2505,9 @@ struct MetadataFor<data_filter::EcefPos>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::EcefPos>::value > { using type = data_filter::EcefPos; };
+template<> struct TypeForDescriptor<data_filter::EcefPos::DESCRIPTOR.as_u16()> { using type = data_filter::EcefPos; };
+
 template<>
 struct MetadataFor<data_filter::EcefVel>
 {
@@ -2390,6 +2546,9 @@ struct MetadataFor<data_filter::EcefVel>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::EcefVel>::value > { using type = data_filter::EcefVel; };
+template<> struct TypeForDescriptor<data_filter::EcefVel::DESCRIPTOR.as_u16()> { using type = data_filter::EcefVel; };
 
 template<>
 struct MetadataFor<data_filter::EcefPosUncertainty>
@@ -2430,6 +2589,9 @@ struct MetadataFor<data_filter::EcefPosUncertainty>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::EcefPosUncertainty>::value > { using type = data_filter::EcefPosUncertainty; };
+template<> struct TypeForDescriptor<data_filter::EcefPosUncertainty::DESCRIPTOR.as_u16()> { using type = data_filter::EcefPosUncertainty; };
+
 template<>
 struct MetadataFor<data_filter::EcefVelUncertainty>
 {
@@ -2469,6 +2631,9 @@ struct MetadataFor<data_filter::EcefVelUncertainty>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::EcefVelUncertainty>::value > { using type = data_filter::EcefVelUncertainty; };
+template<> struct TypeForDescriptor<data_filter::EcefVelUncertainty::DESCRIPTOR.as_u16()> { using type = data_filter::EcefVelUncertainty; };
+
 template<>
 struct MetadataFor<data_filter::FilterAidingMeasurementType>
 {
@@ -2501,6 +2666,8 @@ struct MetadataFor<data_filter::FilterAidingMeasurementType>
 
 };
 
+template<> struct TypeForEnumInfo< &MetadataFor<data_filter::FilterAidingMeasurementType>::value > { using type = data_filter::FilterAidingMeasurementType; };
+
 template<>
 struct MetadataFor<data_filter::FilterMeasurementIndicator>
 {
@@ -2523,6 +2690,8 @@ struct MetadataFor<data_filter::FilterMeasurementIndicator>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<data_filter::FilterMeasurementIndicator>::value > { using type = data_filter::FilterMeasurementIndicator; };
 
 template<>
 struct MetadataFor<data_filter::AidingMeasurementSummary>
@@ -2581,6 +2750,9 @@ struct MetadataFor<data_filter::AidingMeasurementSummary>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::AidingMeasurementSummary>::value > { using type = data_filter::AidingMeasurementSummary; };
+template<> struct TypeForDescriptor<data_filter::AidingMeasurementSummary::DESCRIPTOR.as_u16()> { using type = data_filter::AidingMeasurementSummary; };
+
 template<>
 struct MetadataFor<data_filter::OdometerScaleFactorError>
 {
@@ -2619,6 +2791,9 @@ struct MetadataFor<data_filter::OdometerScaleFactorError>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::OdometerScaleFactorError>::value > { using type = data_filter::OdometerScaleFactorError; };
+template<> struct TypeForDescriptor<data_filter::OdometerScaleFactorError::DESCRIPTOR.as_u16()> { using type = data_filter::OdometerScaleFactorError; };
 
 template<>
 struct MetadataFor<data_filter::OdometerScaleFactorErrorUncertainty>
@@ -2659,6 +2834,9 @@ struct MetadataFor<data_filter::OdometerScaleFactorErrorUncertainty>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::OdometerScaleFactorErrorUncertainty>::value > { using type = data_filter::OdometerScaleFactorErrorUncertainty; };
+template<> struct TypeForDescriptor<data_filter::OdometerScaleFactorErrorUncertainty::DESCRIPTOR.as_u16()> { using type = data_filter::OdometerScaleFactorErrorUncertainty; };
+
 template<>
 struct MetadataFor<data_filter::GnssDualAntennaStatus::FixType>
 {
@@ -2679,6 +2857,8 @@ struct MetadataFor<data_filter::GnssDualAntennaStatus::FixType>
 
 };
 
+template<> struct TypeForEnumInfo< &MetadataFor<data_filter::GnssDualAntennaStatus::FixType>::value > { using type = data_filter::GnssDualAntennaStatus::FixType; };
+
 template<>
 struct MetadataFor<data_filter::GnssDualAntennaStatus::DualAntennaStatusFlags>
 {
@@ -2698,6 +2878,8 @@ struct MetadataFor<data_filter::GnssDualAntennaStatus::DualAntennaStatusFlags>
     };
 
 };
+
+template<> struct TypeForBitsInfo< &MetadataFor<data_filter::GnssDualAntennaStatus::DualAntennaStatusFlags>::value > { using type = data_filter::GnssDualAntennaStatus::DualAntennaStatusFlags; };
 
 template<>
 struct MetadataFor<data_filter::GnssDualAntennaStatus>
@@ -2774,6 +2956,9 @@ struct MetadataFor<data_filter::GnssDualAntennaStatus>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::GnssDualAntennaStatus>::value > { using type = data_filter::GnssDualAntennaStatus; };
+template<> struct TypeForDescriptor<data_filter::GnssDualAntennaStatus::DESCRIPTOR.as_u16()> { using type = data_filter::GnssDualAntennaStatus; };
+
 template<>
 struct MetadataFor<data_filter::AidingFrameConfigError>
 {
@@ -2822,6 +3007,9 @@ struct MetadataFor<data_filter::AidingFrameConfigError>
     };
 };
 
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::AidingFrameConfigError>::value > { using type = data_filter::AidingFrameConfigError; };
+template<> struct TypeForDescriptor<data_filter::AidingFrameConfigError::DESCRIPTOR.as_u16()> { using type = data_filter::AidingFrameConfigError; };
+
 template<>
 struct MetadataFor<data_filter::AidingFrameConfigErrorUncertainty>
 {
@@ -2869,6 +3057,9 @@ struct MetadataFor<data_filter::AidingFrameConfigErrorUncertainty>
             /* .response    = */ nullptr,
     };
 };
+
+template<> struct TypeForFieldInfo< &MetadataFor<data_filter::AidingFrameConfigErrorUncertainty>::value > { using type = data_filter::AidingFrameConfigErrorUncertainty; };
+template<> struct TypeForDescriptor<data_filter::AidingFrameConfigErrorUncertainty::DESCRIPTOR.as_u16()> { using type = data_filter::AidingFrameConfigErrorUncertainty; };
 
 
 static constexpr inline const FieldInfo* DATA_FILTER_FIELDS[] = {
@@ -2930,6 +3121,89 @@ static constexpr inline const FieldInfo* DATA_FILTER_FIELDS[] = {
     &MetadataFor<data_filter::AidingFrameConfigError>::value,
     &MetadataFor<data_filter::AidingFrameConfigErrorUncertainty>::value,
 };
+
+//namespace data_filter
+//{
+struct DataSetFilter
+{
+    static inline constexpr uint8_t DESCRIPTOR_SET = data_filter::DESCRIPTOR_SET;
+    static inline constexpr CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, INVALID_FIELD_DESCRIPTOR};
+
+    using Fields = std::tuple<
+        ::mip::data_filter::PositionLlh,
+        ::mip::data_filter::VelocityNed,
+        ::mip::data_filter::AttitudeQuaternion,
+        ::mip::data_filter::AttitudeDcm,
+        ::mip::data_filter::EulerAngles,
+        ::mip::data_filter::GyroBias,
+        ::mip::data_filter::AccelBias,
+        ::mip::data_filter::PositionLlhUncertainty,
+        ::mip::data_filter::VelocityNedUncertainty,
+        ::mip::data_filter::EulerAnglesUncertainty,
+        ::mip::data_filter::GyroBiasUncertainty,
+        ::mip::data_filter::AccelBiasUncertainty,
+        ::mip::data_filter::LinearAccel,
+        ::mip::data_filter::CompAngularRate,
+        ::mip::data_filter::Wgs84GravityMag,
+        ::mip::data_filter::Status,
+        ::mip::data_filter::Timestamp,
+        ::mip::data_filter::QuaternionAttitudeUncertainty,
+        ::mip::data_filter::GravityVector,
+        ::mip::data_filter::HeadingUpdateState,
+        ::mip::data_filter::MagneticModel,
+        ::mip::data_filter::GyroScaleFactor,
+        ::mip::data_filter::AccelScaleFactor,
+        ::mip::data_filter::GyroScaleFactorUncertainty,
+        ::mip::data_filter::AccelScaleFactorUncertainty,
+        ::mip::data_filter::MagBias,
+        ::mip::data_filter::MagBiasUncertainty,
+        ::mip::data_filter::CompAccel,
+        ::mip::data_filter::StandardAtmosphere,
+        ::mip::data_filter::PressureAltitude,
+        ::mip::data_filter::DensityAltitude,
+        ::mip::data_filter::MagnetometerOffset,
+        ::mip::data_filter::MagnetometerMatrix,
+        ::mip::data_filter::MagnetometerOffsetUncertainty,
+        ::mip::data_filter::MagnetometerMatrixUncertainty,
+        ::mip::data_filter::MagnetometerCovarianceMatrix,
+        ::mip::data_filter::MagnetometerResidualVector,
+        ::mip::data_filter::AntennaOffsetCorrection,
+        ::mip::data_filter::AntennaOffsetCorrectionUncertainty,
+        ::mip::data_filter::ClockCorrection,
+        ::mip::data_filter::ClockCorrectionUncertainty,
+        ::mip::data_filter::MultiAntennaOffsetCorrection,
+        ::mip::data_filter::MultiAntennaOffsetCorrectionUncertainty,
+        ::mip::data_filter::EcefPosUncertainty,
+        ::mip::data_filter::EcefVelUncertainty,
+        ::mip::data_filter::EcefPos,
+        ::mip::data_filter::EcefVel,
+        ::mip::data_filter::RelPosNed,
+        ::mip::data_filter::GnssPosAidStatus,
+        ::mip::data_filter::GnssAttAidStatus,
+        ::mip::data_filter::HeadAidStatus,
+        ::mip::data_filter::AidingMeasurementSummary,
+        ::mip::data_filter::OdometerScaleFactorError,
+        ::mip::data_filter::OdometerScaleFactorErrorUncertainty,
+        ::mip::data_filter::GnssDualAntennaStatus,
+        ::mip::data_filter::AidingFrameConfigError,
+        ::mip::data_filter::AidingFrameConfigErrorUncertainty
+    >;
+};
+
+//} // namespace data_filter
+
+template<>
+struct MetadataFor<DataSetFilter>
+{
+    using type = DataSetFilter;
+    
+    static inline constexpr DescriptorSetInfo value = {
+        /* .descriptor = */ data_filter::DESCRIPTOR_SET,
+        /* .name       = */ "Filter Data",
+        /* .fields     = */ DATA_FILTER_FIELDS,
+    };
+};
+template<> struct TypeForDescriptor< (data_filter::DESCRIPTOR_SET << 8) > { using type = DataSetFilter; };
 
 static constexpr DescriptorSetInfo DATA_FILTER = {
     /* .descriptor = */ mip::data_filter::DESCRIPTOR_SET,
