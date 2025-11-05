@@ -18,40 +18,32 @@
 
 namespace mip::metadata
 {
-    static constexpr inline const DescriptorSetInfo DATA_GNSS1 =
-    {
-        .descriptor = mip::data_gnss::MIP_GNSS1_DATA_DESC_SET,
-        .name       = "Gnss1 Data",
-        .fields     = DATA_GNSS_FIELDS,
-    };
+#define DECLARE_GNSS_DATASET_I(I) \
+    static constexpr inline const DescriptorSetInfo DATA_GNSS##I = \
+    { \
+        .descriptor = mip::data_gnss::MIP_GNSS##I##_DATA_DESC_SET, \
+        .name       = "Gnss" #I " Data", \
+        .fields     = DATA_GNSS_FIELDS, \
+    }; \
+    struct DataSetGnss##I : public DataSetGnss \
+    { \
+        static constexpr inline const uint8_t             DESCRIPTOR_SET = DATA_GNSS##I.descriptor; \
+        static constexpr inline const CompositeDescriptor DESCRIPTOR     = {DESCRIPTOR_SET, INVALID_FIELD_DESCRIPTOR}; \
+    };\
+    template<> \
+    struct MetadataFor<DataSetGnss##I> : public MetadataFor<DataSetGnss> \
+    { \
+        using type = DataSetGnss##I; \
+        static inline constexpr const DescriptorSetInfo& value = DATA_GNSS##I; \
+    };\
 
-    static constexpr inline const DescriptorSetInfo DATA_GNSS2 =
-    {
-        .descriptor = mip::data_gnss::MIP_GNSS2_DATA_DESC_SET,
-        .name       = "Gnss2 Data",
-        .fields     = DATA_GNSS_FIELDS,
-    };
+    DECLARE_GNSS_DATASET_I(1)
+    DECLARE_GNSS_DATASET_I(2)
+    DECLARE_GNSS_DATASET_I(3)
+    DECLARE_GNSS_DATASET_I(4)
+    DECLARE_GNSS_DATASET_I(5)
 
-    static constexpr inline const DescriptorSetInfo DATA_GNSS3 =
-    {
-        .descriptor = mip::data_gnss::MIP_GNSS3_DATA_DESC_SET,
-        .name       = "Gnss3 Data",
-        .fields     = DATA_GNSS_FIELDS,
-    };
-
-    static constexpr inline const DescriptorSetInfo DATA_GNSS4 =
-    {
-        .descriptor = mip::data_gnss::MIP_GNSS4_DATA_DESC_SET,
-        .name       = "Gnss4 Data",
-        .fields     = DATA_GNSS_FIELDS,
-    };
-
-    static constexpr inline const DescriptorSetInfo DATA_GNSS5 =
-    {
-        .descriptor = mip::data_gnss::MIP_GNSS5_DATA_DESC_SET,
-        .name       = "Gnss5 Data",
-        .fields     = DATA_GNSS_FIELDS,
-    };
+#undef DECLARE_GNSS_DATASET_I
 
     static constexpr inline const DescriptorSetInfo* ALL_DESCRIPTOR_SETS[] = {
         // Commands
@@ -74,4 +66,27 @@ namespace mip::metadata
         &DATA_SYSTEM,
         &DATA_SHARED,
     };
+
+    using AllDescriptorSets = std::tuple<
+        // Commands
+        CommandSetBase,
+        CommandSet3dm,
+        CommandSetFilter,
+        CommandSetGnss,
+        CommandSetRtk,
+        CommandSetAiding,
+        CommandSetSystem,
+        // Data
+        DataSetSensor,
+        DataSetGnss,
+        DataSetFilter,
+        DataSetGnss1,
+        DataSetGnss2,
+        DataSetGnss3,
+        DataSetGnss4,
+        DataSetGnss5,
+        DataSetSystem,
+        DataSetShared
+    >;
+
 } // namespace mip::metadata
