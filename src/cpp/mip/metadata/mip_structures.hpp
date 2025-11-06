@@ -50,14 +50,14 @@ namespace mip::metadata
 
         const void* infoPtr = nullptr;
 
-        const EnumInfo*     enumPointer()     const { return (type == Type::ENUM  ) ? static_cast<const EnumInfo*    >(infoPtr) : nullptr; }
-        const BitfieldInfo* bitfieldPointer() const { return (type == Type::BITS  ) ? static_cast<const BitfieldInfo*>(infoPtr) : nullptr; }
-        const UnionInfo*    unionPointer()    const { return (type == Type::UNION ) ? static_cast<const UnionInfo*   >(infoPtr) : nullptr; }
-        const StructInfo*   structPointer()   const { return (type == Type::STRUCT) ? static_cast<const StructInfo*  >(infoPtr) : nullptr; }
+        constexpr const EnumInfo*     enumPointer()     const { return (type == Type::ENUM  ) ? static_cast<const EnumInfo*    >(infoPtr) : nullptr; }
+        constexpr const BitfieldInfo* bitfieldPointer() const { return (type == Type::BITS  ) ? static_cast<const BitfieldInfo*>(infoPtr) : nullptr; }
+        constexpr const UnionInfo*    unionPointer()    const { return (type == Type::UNION ) ? static_cast<const UnionInfo*   >(infoPtr) : nullptr; }
+        constexpr const StructInfo*   structPointer()   const { return (type == Type::STRUCT) ? static_cast<const StructInfo*  >(infoPtr) : nullptr; }
 
-        bool isBasicType() const { return type <= Type::DOUBLE; }
-        bool isCustom()    const { return type != Type::NONE && type >= Type::ENUM; }
-        bool isClass()     const { return type != Type::NONE && type >= Type::STRUCT; }
+        constexpr bool isBasicType() const { return type <= Type::DOUBLE; }
+        constexpr bool isCustom()    const { return type != Type::NONE && type >= Type::ENUM; }
+        constexpr bool isClass()     const { return type != Type::NONE && type >= Type::STRUCT; }
     };
 
     struct EnumInfo
