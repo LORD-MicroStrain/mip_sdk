@@ -14,6 +14,19 @@ struct MetadataFor<commands_gnss::ReceiverInfo::Info>
 {
     using type = commands_gnss::ReceiverInfo::Info;
 
+    using ParamTypes = std::tuple<
+        uint8_t,
+        uint8_t,
+        char
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.receiver_id;
+        if constexpr(I == 1) return value_.mip_data_descriptor_set;
+        if constexpr(I == 2) return value_.description;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "receiver_id",
@@ -43,7 +56,6 @@ struct MetadataFor<commands_gnss::ReceiverInfo::Info>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline StructInfo value = {
         /* .name        = */ "Info",
         /* .title       = */ "Info",
@@ -59,6 +71,17 @@ struct MetadataFor<commands_gnss::ReceiverInfo::Response>
 {
     using type = commands_gnss::ReceiverInfo::Response;
 
+    using ParamTypes = std::tuple<
+        uint8_t,
+        commands_gnss::ReceiverInfo::Info
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.num_receivers;
+        if constexpr(I == 1) return value_.receiver_info;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "num_receivers",
@@ -79,7 +102,6 @@ struct MetadataFor<commands_gnss::ReceiverInfo::Response>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_gnss::ReceiverInfo::Response",
@@ -99,6 +121,8 @@ template<>
 struct MetadataFor<commands_gnss::ReceiverInfo>
 {
     using type = commands_gnss::ReceiverInfo;
+
+    using ParamTypes = std::tuple<>;
 
     static constexpr inline FieldInfo value = {
         {
@@ -121,6 +145,23 @@ struct MetadataFor<commands_gnss::SignalConfiguration::Response>
 {
     using type = commands_gnss::SignalConfiguration::Response;
 
+    using ParamTypes = std::tuple<
+        uint8_t,
+        uint8_t,
+        uint8_t,
+        uint8_t,
+        uint8_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.gps_enable;
+        if constexpr(I == 1) return value_.glonass_enable;
+        if constexpr(I == 2) return value_.galileo_enable;
+        if constexpr(I == 3) return value_.beidou_enable;
+        if constexpr(I == 4) return value_.reserved;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "gps_enable",
@@ -168,7 +209,6 @@ struct MetadataFor<commands_gnss::SignalConfiguration::Response>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_gnss::SignalConfiguration::Response",
@@ -189,6 +229,25 @@ struct MetadataFor<commands_gnss::SignalConfiguration>
 {
     using type = commands_gnss::SignalConfiguration;
 
+    using ParamTypes = std::tuple<
+        FunctionSelector,
+        uint8_t,
+        uint8_t,
+        uint8_t,
+        uint8_t,
+        uint8_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.function;
+        if constexpr(I == 1) return value_.gps_enable;
+        if constexpr(I == 2) return value_.glonass_enable;
+        if constexpr(I == 3) return value_.galileo_enable;
+        if constexpr(I == 4) return value_.beidou_enable;
+        if constexpr(I == 5) return value_.reserved;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         FUNCTION_SELECTOR_PARAM,
         {
@@ -237,7 +296,6 @@ struct MetadataFor<commands_gnss::SignalConfiguration>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_gnss::SignalConfiguration",
@@ -259,6 +317,29 @@ struct MetadataFor<commands_gnss::SpartnConfiguration::Response>
 {
     using type = commands_gnss::SpartnConfiguration::Response;
 
+    using ParamTypes = std::tuple<
+        uint8_t,
+        uint8_t,
+        uint32_t,
+        uint16_t,
+        uint8_t,
+        uint32_t,
+        uint16_t,
+        uint8_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.enable;
+        if constexpr(I == 1) return value_.type;
+        if constexpr(I == 2) return value_.current_key_tow;
+        if constexpr(I == 3) return value_.current_key_week;
+        if constexpr(I == 4) return value_.current_key;
+        if constexpr(I == 5) return value_.next_key_tow;
+        if constexpr(I == 6) return value_.next_key_week;
+        if constexpr(I == 7) return value_.next_key;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "enable",
@@ -333,7 +414,6 @@ struct MetadataFor<commands_gnss::SpartnConfiguration::Response>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_gnss::SpartnConfiguration::Response",
@@ -354,6 +434,31 @@ struct MetadataFor<commands_gnss::SpartnConfiguration>
 {
     using type = commands_gnss::SpartnConfiguration;
 
+    using ParamTypes = std::tuple<
+        FunctionSelector,
+        uint8_t,
+        uint8_t,
+        uint32_t,
+        uint16_t,
+        uint8_t,
+        uint32_t,
+        uint16_t,
+        uint8_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.function;
+        if constexpr(I == 1) return value_.enable;
+        if constexpr(I == 2) return value_.type;
+        if constexpr(I == 3) return value_.current_key_tow;
+        if constexpr(I == 4) return value_.current_key_week;
+        if constexpr(I == 5) return value_.current_key;
+        if constexpr(I == 6) return value_.next_key_tow;
+        if constexpr(I == 7) return value_.next_key_week;
+        if constexpr(I == 8) return value_.next_key;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         FUNCTION_SELECTOR_PARAM,
         {
@@ -429,7 +534,6 @@ struct MetadataFor<commands_gnss::SpartnConfiguration>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_gnss::SpartnConfiguration",
@@ -451,6 +555,17 @@ struct MetadataFor<commands_gnss::RtkDongleConfiguration::Response>
 {
     using type = commands_gnss::RtkDongleConfiguration::Response;
 
+    using ParamTypes = std::tuple<
+        uint8_t,
+        uint8_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.enable;
+        if constexpr(I == 1) return value_.reserved;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "enable",
@@ -471,7 +586,6 @@ struct MetadataFor<commands_gnss::RtkDongleConfiguration::Response>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_gnss::RtkDongleConfiguration::Response",
@@ -492,6 +606,19 @@ struct MetadataFor<commands_gnss::RtkDongleConfiguration>
 {
     using type = commands_gnss::RtkDongleConfiguration;
 
+    using ParamTypes = std::tuple<
+        FunctionSelector,
+        uint8_t,
+        uint8_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.function;
+        if constexpr(I == 1) return value_.enable;
+        if constexpr(I == 2) return value_.reserved;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         FUNCTION_SELECTOR_PARAM,
         {
@@ -513,7 +640,6 @@ struct MetadataFor<commands_gnss::RtkDongleConfiguration>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_gnss::RtkDongleConfiguration",

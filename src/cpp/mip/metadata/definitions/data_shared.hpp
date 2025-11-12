@@ -14,6 +14,15 @@ struct MetadataFor<data_shared::EventSource>
 {
     using type = data_shared::EventSource;
 
+    using ParamTypes = std::tuple<
+        uint8_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.trigger_id;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "trigger_id",
@@ -25,7 +34,6 @@ struct MetadataFor<data_shared::EventSource>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_shared::EventSource",
@@ -47,6 +55,15 @@ struct MetadataFor<data_shared::Ticks>
 {
     using type = data_shared::Ticks;
 
+    using ParamTypes = std::tuple<
+        uint32_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.ticks;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "ticks",
@@ -58,7 +75,6 @@ struct MetadataFor<data_shared::Ticks>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_shared::Ticks",
@@ -80,6 +96,15 @@ struct MetadataFor<data_shared::DeltaTicks>
 {
     using type = data_shared::DeltaTicks;
 
+    using ParamTypes = std::tuple<
+        uint32_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.ticks;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "ticks",
@@ -91,7 +116,6 @@ struct MetadataFor<data_shared::DeltaTicks>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_shared::DeltaTicks",
@@ -135,6 +159,19 @@ struct MetadataFor<data_shared::GpsTimestamp>
 {
     using type = data_shared::GpsTimestamp;
 
+    using ParamTypes = std::tuple<
+        double,
+        uint16_t,
+        data_shared::GpsTimestamp::ValidFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.tow;
+        if constexpr(I == 1) return value_.week_number;
+        if constexpr(I == 2) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "tow",
@@ -164,7 +201,6 @@ struct MetadataFor<data_shared::GpsTimestamp>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_shared::GpsTimestamp",
@@ -186,6 +222,15 @@ struct MetadataFor<data_shared::DeltaTime>
 {
     using type = data_shared::DeltaTime;
 
+    using ParamTypes = std::tuple<
+        double
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.seconds;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "seconds",
@@ -197,7 +242,6 @@ struct MetadataFor<data_shared::DeltaTime>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_shared::DeltaTime",
@@ -219,6 +263,15 @@ struct MetadataFor<data_shared::ReferenceTimestamp>
 {
     using type = data_shared::ReferenceTimestamp;
 
+    using ParamTypes = std::tuple<
+        uint64_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.nanoseconds;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "nanoseconds",
@@ -230,7 +283,6 @@ struct MetadataFor<data_shared::ReferenceTimestamp>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_shared::ReferenceTimestamp",
@@ -252,6 +304,15 @@ struct MetadataFor<data_shared::ReferenceTimeDelta>
 {
     using type = data_shared::ReferenceTimeDelta;
 
+    using ParamTypes = std::tuple<
+        uint64_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.dt_nanos;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "dt_nanos",
@@ -263,7 +324,6 @@ struct MetadataFor<data_shared::ReferenceTimeDelta>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_shared::ReferenceTimeDelta",
@@ -305,6 +365,17 @@ struct MetadataFor<data_shared::ExternalTimestamp>
 {
     using type = data_shared::ExternalTimestamp;
 
+    using ParamTypes = std::tuple<
+        uint64_t,
+        data_shared::ExternalTimestamp::ValidFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.nanoseconds;
+        if constexpr(I == 1) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "nanoseconds",
@@ -325,7 +396,6 @@ struct MetadataFor<data_shared::ExternalTimestamp>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_shared::ExternalTimestamp",
@@ -367,6 +437,17 @@ struct MetadataFor<data_shared::ExternalTimeDelta>
 {
     using type = data_shared::ExternalTimeDelta;
 
+    using ParamTypes = std::tuple<
+        uint64_t,
+        data_shared::ExternalTimeDelta::ValidFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.dt_nanos;
+        if constexpr(I == 1) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "dt_nanos",
@@ -387,7 +468,6 @@ struct MetadataFor<data_shared::ExternalTimeDelta>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_shared::ExternalTimeDelta",

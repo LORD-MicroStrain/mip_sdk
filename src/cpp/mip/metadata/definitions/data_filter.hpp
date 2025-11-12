@@ -14,6 +14,21 @@ struct MetadataFor<data_filter::PositionLlh>
 {
     using type = data_filter::PositionLlh;
 
+    using ParamTypes = std::tuple<
+        double,
+        double,
+        double,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.latitude;
+        if constexpr(I == 1) return value_.longitude;
+        if constexpr(I == 2) return value_.ellipsoid_height;
+        if constexpr(I == 3) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "latitude",
@@ -52,7 +67,6 @@ struct MetadataFor<data_filter::PositionLlh>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::PositionLlh",
@@ -74,6 +88,21 @@ struct MetadataFor<data_filter::VelocityNed>
 {
     using type = data_filter::VelocityNed;
 
+    using ParamTypes = std::tuple<
+        float,
+        float,
+        float,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.north;
+        if constexpr(I == 1) return value_.east;
+        if constexpr(I == 2) return value_.down;
+        if constexpr(I == 3) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "north",
@@ -112,7 +141,6 @@ struct MetadataFor<data_filter::VelocityNed>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::VelocityNed",
@@ -134,6 +162,17 @@ struct MetadataFor<data_filter::AttitudeQuaternion>
 {
     using type = data_filter::AttitudeQuaternion;
 
+    using ParamTypes = std::tuple<
+        Quatf,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.q;
+        if constexpr(I == 1) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "q",
@@ -154,7 +193,6 @@ struct MetadataFor<data_filter::AttitudeQuaternion>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::AttitudeQuaternion",
@@ -176,6 +214,17 @@ struct MetadataFor<data_filter::AttitudeDcm>
 {
     using type = data_filter::AttitudeDcm;
 
+    using ParamTypes = std::tuple<
+        Matrix3f,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.dcm;
+        if constexpr(I == 1) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "dcm",
@@ -196,7 +245,6 @@ struct MetadataFor<data_filter::AttitudeDcm>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::AttitudeDcm",
@@ -218,6 +266,21 @@ struct MetadataFor<data_filter::EulerAngles>
 {
     using type = data_filter::EulerAngles;
 
+    using ParamTypes = std::tuple<
+        float,
+        float,
+        float,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.roll;
+        if constexpr(I == 1) return value_.pitch;
+        if constexpr(I == 2) return value_.yaw;
+        if constexpr(I == 3) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "roll",
@@ -256,7 +319,6 @@ struct MetadataFor<data_filter::EulerAngles>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::EulerAngles",
@@ -278,6 +340,17 @@ struct MetadataFor<data_filter::GyroBias>
 {
     using type = data_filter::GyroBias;
 
+    using ParamTypes = std::tuple<
+        Vector3f,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.bias;
+        if constexpr(I == 1) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "bias",
@@ -298,7 +371,6 @@ struct MetadataFor<data_filter::GyroBias>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::GyroBias",
@@ -320,6 +392,17 @@ struct MetadataFor<data_filter::AccelBias>
 {
     using type = data_filter::AccelBias;
 
+    using ParamTypes = std::tuple<
+        Vector3f,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.bias;
+        if constexpr(I == 1) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "bias",
@@ -340,7 +423,6 @@ struct MetadataFor<data_filter::AccelBias>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::AccelBias",
@@ -362,6 +444,21 @@ struct MetadataFor<data_filter::PositionLlhUncertainty>
 {
     using type = data_filter::PositionLlhUncertainty;
 
+    using ParamTypes = std::tuple<
+        float,
+        float,
+        float,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.north;
+        if constexpr(I == 1) return value_.east;
+        if constexpr(I == 2) return value_.down;
+        if constexpr(I == 3) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "north",
@@ -400,7 +497,6 @@ struct MetadataFor<data_filter::PositionLlhUncertainty>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::PositionLlhUncertainty",
@@ -422,6 +518,21 @@ struct MetadataFor<data_filter::VelocityNedUncertainty>
 {
     using type = data_filter::VelocityNedUncertainty;
 
+    using ParamTypes = std::tuple<
+        float,
+        float,
+        float,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.north;
+        if constexpr(I == 1) return value_.east;
+        if constexpr(I == 2) return value_.down;
+        if constexpr(I == 3) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "north",
@@ -460,7 +571,6 @@ struct MetadataFor<data_filter::VelocityNedUncertainty>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::VelocityNedUncertainty",
@@ -482,6 +592,21 @@ struct MetadataFor<data_filter::EulerAnglesUncertainty>
 {
     using type = data_filter::EulerAnglesUncertainty;
 
+    using ParamTypes = std::tuple<
+        float,
+        float,
+        float,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.roll;
+        if constexpr(I == 1) return value_.pitch;
+        if constexpr(I == 2) return value_.yaw;
+        if constexpr(I == 3) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "roll",
@@ -520,7 +645,6 @@ struct MetadataFor<data_filter::EulerAnglesUncertainty>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::EulerAnglesUncertainty",
@@ -542,6 +666,17 @@ struct MetadataFor<data_filter::GyroBiasUncertainty>
 {
     using type = data_filter::GyroBiasUncertainty;
 
+    using ParamTypes = std::tuple<
+        Vector3f,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.bias_uncert;
+        if constexpr(I == 1) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "bias_uncert",
@@ -562,7 +697,6 @@ struct MetadataFor<data_filter::GyroBiasUncertainty>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::GyroBiasUncertainty",
@@ -584,6 +718,17 @@ struct MetadataFor<data_filter::AccelBiasUncertainty>
 {
     using type = data_filter::AccelBiasUncertainty;
 
+    using ParamTypes = std::tuple<
+        Vector3f,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.bias_uncert;
+        if constexpr(I == 1) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "bias_uncert",
@@ -604,7 +749,6 @@ struct MetadataFor<data_filter::AccelBiasUncertainty>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::AccelBiasUncertainty",
@@ -626,6 +770,19 @@ struct MetadataFor<data_filter::Timestamp>
 {
     using type = data_filter::Timestamp;
 
+    using ParamTypes = std::tuple<
+        double,
+        uint16_t,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.tow;
+        if constexpr(I == 1) return value_.week_number;
+        if constexpr(I == 2) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "tow",
@@ -655,7 +812,6 @@ struct MetadataFor<data_filter::Timestamp>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::Timestamp",
@@ -774,6 +930,19 @@ struct MetadataFor<data_filter::Status>
 {
     using type = data_filter::Status;
 
+    using ParamTypes = std::tuple<
+        data_filter::FilterMode,
+        data_filter::FilterDynamicsMode,
+        data_filter::FilterStatusFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.filter_state;
+        if constexpr(I == 1) return value_.dynamics_mode;
+        if constexpr(I == 2) return value_.status_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "filter_state",
@@ -803,7 +972,6 @@ struct MetadataFor<data_filter::Status>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::Status",
@@ -825,6 +993,17 @@ struct MetadataFor<data_filter::LinearAccel>
 {
     using type = data_filter::LinearAccel;
 
+    using ParamTypes = std::tuple<
+        Vector3f,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.accel;
+        if constexpr(I == 1) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "accel",
@@ -845,7 +1024,6 @@ struct MetadataFor<data_filter::LinearAccel>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::LinearAccel",
@@ -867,6 +1045,17 @@ struct MetadataFor<data_filter::GravityVector>
 {
     using type = data_filter::GravityVector;
 
+    using ParamTypes = std::tuple<
+        Vector3f,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.gravity;
+        if constexpr(I == 1) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "gravity",
@@ -887,7 +1076,6 @@ struct MetadataFor<data_filter::GravityVector>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::GravityVector",
@@ -909,6 +1097,17 @@ struct MetadataFor<data_filter::CompAccel>
 {
     using type = data_filter::CompAccel;
 
+    using ParamTypes = std::tuple<
+        Vector3f,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.accel;
+        if constexpr(I == 1) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "accel",
@@ -929,7 +1128,6 @@ struct MetadataFor<data_filter::CompAccel>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::CompAccel",
@@ -951,6 +1149,17 @@ struct MetadataFor<data_filter::CompAngularRate>
 {
     using type = data_filter::CompAngularRate;
 
+    using ParamTypes = std::tuple<
+        Vector3f,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.gyro;
+        if constexpr(I == 1) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "gyro",
@@ -971,7 +1180,6 @@ struct MetadataFor<data_filter::CompAngularRate>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::CompAngularRate",
@@ -993,6 +1201,17 @@ struct MetadataFor<data_filter::QuaternionAttitudeUncertainty>
 {
     using type = data_filter::QuaternionAttitudeUncertainty;
 
+    using ParamTypes = std::tuple<
+        Quatf,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.q;
+        if constexpr(I == 1) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "q",
@@ -1013,7 +1232,6 @@ struct MetadataFor<data_filter::QuaternionAttitudeUncertainty>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::QuaternionAttitudeUncertainty",
@@ -1035,6 +1253,17 @@ struct MetadataFor<data_filter::Wgs84GravityMag>
 {
     using type = data_filter::Wgs84GravityMag;
 
+    using ParamTypes = std::tuple<
+        float,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.magnitude;
+        if constexpr(I == 1) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "magnitude",
@@ -1055,7 +1284,6 @@ struct MetadataFor<data_filter::Wgs84GravityMag>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::Wgs84GravityMag",
@@ -1101,6 +1329,21 @@ struct MetadataFor<data_filter::HeadingUpdateState>
 {
     using type = data_filter::HeadingUpdateState;
 
+    using ParamTypes = std::tuple<
+        float,
+        float,
+        data_filter::HeadingUpdateState::HeadingSource,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.heading;
+        if constexpr(I == 1) return value_.heading_1sigma;
+        if constexpr(I == 2) return value_.source;
+        if constexpr(I == 3) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "heading",
@@ -1139,7 +1382,6 @@ struct MetadataFor<data_filter::HeadingUpdateState>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::HeadingUpdateState",
@@ -1161,6 +1403,25 @@ struct MetadataFor<data_filter::MagneticModel>
 {
     using type = data_filter::MagneticModel;
 
+    using ParamTypes = std::tuple<
+        float,
+        float,
+        float,
+        float,
+        float,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.intensity_north;
+        if constexpr(I == 1) return value_.intensity_east;
+        if constexpr(I == 2) return value_.intensity_down;
+        if constexpr(I == 3) return value_.inclination;
+        if constexpr(I == 4) return value_.declination;
+        if constexpr(I == 5) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "intensity_north",
@@ -1217,7 +1478,6 @@ struct MetadataFor<data_filter::MagneticModel>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::MagneticModel",
@@ -1239,6 +1499,17 @@ struct MetadataFor<data_filter::AccelScaleFactor>
 {
     using type = data_filter::AccelScaleFactor;
 
+    using ParamTypes = std::tuple<
+        Vector3f,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.scale_factor;
+        if constexpr(I == 1) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "scale_factor",
@@ -1259,7 +1530,6 @@ struct MetadataFor<data_filter::AccelScaleFactor>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::AccelScaleFactor",
@@ -1281,6 +1551,17 @@ struct MetadataFor<data_filter::AccelScaleFactorUncertainty>
 {
     using type = data_filter::AccelScaleFactorUncertainty;
 
+    using ParamTypes = std::tuple<
+        Vector3f,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.scale_factor_uncert;
+        if constexpr(I == 1) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "scale_factor_uncert",
@@ -1301,7 +1582,6 @@ struct MetadataFor<data_filter::AccelScaleFactorUncertainty>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::AccelScaleFactorUncertainty",
@@ -1323,6 +1603,17 @@ struct MetadataFor<data_filter::GyroScaleFactor>
 {
     using type = data_filter::GyroScaleFactor;
 
+    using ParamTypes = std::tuple<
+        Vector3f,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.scale_factor;
+        if constexpr(I == 1) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "scale_factor",
@@ -1343,7 +1634,6 @@ struct MetadataFor<data_filter::GyroScaleFactor>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::GyroScaleFactor",
@@ -1365,6 +1655,17 @@ struct MetadataFor<data_filter::GyroScaleFactorUncertainty>
 {
     using type = data_filter::GyroScaleFactorUncertainty;
 
+    using ParamTypes = std::tuple<
+        Vector3f,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.scale_factor_uncert;
+        if constexpr(I == 1) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "scale_factor_uncert",
@@ -1385,7 +1686,6 @@ struct MetadataFor<data_filter::GyroScaleFactorUncertainty>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::GyroScaleFactorUncertainty",
@@ -1407,6 +1707,17 @@ struct MetadataFor<data_filter::MagBias>
 {
     using type = data_filter::MagBias;
 
+    using ParamTypes = std::tuple<
+        Vector3f,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.bias;
+        if constexpr(I == 1) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "bias",
@@ -1427,7 +1738,6 @@ struct MetadataFor<data_filter::MagBias>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::MagBias",
@@ -1449,6 +1759,17 @@ struct MetadataFor<data_filter::MagBiasUncertainty>
 {
     using type = data_filter::MagBiasUncertainty;
 
+    using ParamTypes = std::tuple<
+        Vector3f,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.bias_uncert;
+        if constexpr(I == 1) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "bias_uncert",
@@ -1469,7 +1790,6 @@ struct MetadataFor<data_filter::MagBiasUncertainty>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::MagBiasUncertainty",
@@ -1491,6 +1811,25 @@ struct MetadataFor<data_filter::StandardAtmosphere>
 {
     using type = data_filter::StandardAtmosphere;
 
+    using ParamTypes = std::tuple<
+        float,
+        float,
+        float,
+        float,
+        float,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.geometric_altitude;
+        if constexpr(I == 1) return value_.geopotential_altitude;
+        if constexpr(I == 2) return value_.standard_temperature;
+        if constexpr(I == 3) return value_.standard_pressure;
+        if constexpr(I == 4) return value_.standard_density;
+        if constexpr(I == 5) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "geometric_altitude",
@@ -1547,7 +1886,6 @@ struct MetadataFor<data_filter::StandardAtmosphere>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::StandardAtmosphere",
@@ -1569,6 +1907,17 @@ struct MetadataFor<data_filter::PressureAltitude>
 {
     using type = data_filter::PressureAltitude;
 
+    using ParamTypes = std::tuple<
+        float,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.pressure_altitude;
+        if constexpr(I == 1) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "pressure_altitude",
@@ -1589,7 +1938,6 @@ struct MetadataFor<data_filter::PressureAltitude>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::PressureAltitude",
@@ -1611,6 +1959,17 @@ struct MetadataFor<data_filter::DensityAltitude>
 {
     using type = data_filter::DensityAltitude;
 
+    using ParamTypes = std::tuple<
+        float,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.density_altitude;
+        if constexpr(I == 1) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "density_altitude",
@@ -1631,7 +1990,6 @@ struct MetadataFor<data_filter::DensityAltitude>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::DensityAltitude",
@@ -1653,6 +2011,17 @@ struct MetadataFor<data_filter::AntennaOffsetCorrection>
 {
     using type = data_filter::AntennaOffsetCorrection;
 
+    using ParamTypes = std::tuple<
+        Vector3f,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.offset;
+        if constexpr(I == 1) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "offset",
@@ -1673,7 +2042,6 @@ struct MetadataFor<data_filter::AntennaOffsetCorrection>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::AntennaOffsetCorrection",
@@ -1695,6 +2063,17 @@ struct MetadataFor<data_filter::AntennaOffsetCorrectionUncertainty>
 {
     using type = data_filter::AntennaOffsetCorrectionUncertainty;
 
+    using ParamTypes = std::tuple<
+        Vector3f,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.offset_uncert;
+        if constexpr(I == 1) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "offset_uncert",
@@ -1715,7 +2094,6 @@ struct MetadataFor<data_filter::AntennaOffsetCorrectionUncertainty>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::AntennaOffsetCorrectionUncertainty",
@@ -1737,6 +2115,19 @@ struct MetadataFor<data_filter::MultiAntennaOffsetCorrection>
 {
     using type = data_filter::MultiAntennaOffsetCorrection;
 
+    using ParamTypes = std::tuple<
+        uint8_t,
+        Vector3f,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.receiver_id;
+        if constexpr(I == 1) return value_.offset;
+        if constexpr(I == 2) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "receiver_id",
@@ -1766,7 +2157,6 @@ struct MetadataFor<data_filter::MultiAntennaOffsetCorrection>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::MultiAntennaOffsetCorrection",
@@ -1788,6 +2178,19 @@ struct MetadataFor<data_filter::MultiAntennaOffsetCorrectionUncertainty>
 {
     using type = data_filter::MultiAntennaOffsetCorrectionUncertainty;
 
+    using ParamTypes = std::tuple<
+        uint8_t,
+        Vector3f,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.receiver_id;
+        if constexpr(I == 1) return value_.offset_uncert;
+        if constexpr(I == 2) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "receiver_id",
@@ -1817,7 +2220,6 @@ struct MetadataFor<data_filter::MultiAntennaOffsetCorrectionUncertainty>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::MultiAntennaOffsetCorrectionUncertainty",
@@ -1839,6 +2241,17 @@ struct MetadataFor<data_filter::MagnetometerOffset>
 {
     using type = data_filter::MagnetometerOffset;
 
+    using ParamTypes = std::tuple<
+        Vector3f,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.hard_iron;
+        if constexpr(I == 1) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "hard_iron",
@@ -1859,7 +2272,6 @@ struct MetadataFor<data_filter::MagnetometerOffset>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::MagnetometerOffset",
@@ -1881,6 +2293,17 @@ struct MetadataFor<data_filter::MagnetometerMatrix>
 {
     using type = data_filter::MagnetometerMatrix;
 
+    using ParamTypes = std::tuple<
+        Matrix3f,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.soft_iron;
+        if constexpr(I == 1) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "soft_iron",
@@ -1901,7 +2324,6 @@ struct MetadataFor<data_filter::MagnetometerMatrix>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::MagnetometerMatrix",
@@ -1923,6 +2345,17 @@ struct MetadataFor<data_filter::MagnetometerOffsetUncertainty>
 {
     using type = data_filter::MagnetometerOffsetUncertainty;
 
+    using ParamTypes = std::tuple<
+        Vector3f,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.hard_iron_uncertainty;
+        if constexpr(I == 1) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "hard_iron_uncertainty",
@@ -1943,7 +2376,6 @@ struct MetadataFor<data_filter::MagnetometerOffsetUncertainty>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::MagnetometerOffsetUncertainty",
@@ -1965,6 +2397,17 @@ struct MetadataFor<data_filter::MagnetometerMatrixUncertainty>
 {
     using type = data_filter::MagnetometerMatrixUncertainty;
 
+    using ParamTypes = std::tuple<
+        Matrix3f,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.soft_iron_uncertainty;
+        if constexpr(I == 1) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "soft_iron_uncertainty",
@@ -1985,7 +2428,6 @@ struct MetadataFor<data_filter::MagnetometerMatrixUncertainty>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::MagnetometerMatrixUncertainty",
@@ -2007,6 +2449,17 @@ struct MetadataFor<data_filter::MagnetometerCovarianceMatrix>
 {
     using type = data_filter::MagnetometerCovarianceMatrix;
 
+    using ParamTypes = std::tuple<
+        Matrix3f,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.covariance;
+        if constexpr(I == 1) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "covariance",
@@ -2027,7 +2480,6 @@ struct MetadataFor<data_filter::MagnetometerCovarianceMatrix>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::MagnetometerCovarianceMatrix",
@@ -2049,6 +2501,17 @@ struct MetadataFor<data_filter::MagnetometerResidualVector>
 {
     using type = data_filter::MagnetometerResidualVector;
 
+    using ParamTypes = std::tuple<
+        Vector3f,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.residual;
+        if constexpr(I == 1) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "residual",
@@ -2069,7 +2532,6 @@ struct MetadataFor<data_filter::MagnetometerResidualVector>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::MagnetometerResidualVector",
@@ -2091,6 +2553,21 @@ struct MetadataFor<data_filter::ClockCorrection>
 {
     using type = data_filter::ClockCorrection;
 
+    using ParamTypes = std::tuple<
+        uint8_t,
+        float,
+        float,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.receiver_id;
+        if constexpr(I == 1) return value_.bias;
+        if constexpr(I == 2) return value_.bias_drift;
+        if constexpr(I == 3) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "receiver_id",
@@ -2129,7 +2606,6 @@ struct MetadataFor<data_filter::ClockCorrection>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::ClockCorrection",
@@ -2151,6 +2627,21 @@ struct MetadataFor<data_filter::ClockCorrectionUncertainty>
 {
     using type = data_filter::ClockCorrectionUncertainty;
 
+    using ParamTypes = std::tuple<
+        uint8_t,
+        float,
+        float,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.receiver_id;
+        if constexpr(I == 1) return value_.bias_uncertainty;
+        if constexpr(I == 2) return value_.bias_drift_uncertainty;
+        if constexpr(I == 3) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "receiver_id",
@@ -2189,7 +2680,6 @@ struct MetadataFor<data_filter::ClockCorrectionUncertainty>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::ClockCorrectionUncertainty",
@@ -2246,6 +2736,21 @@ struct MetadataFor<data_filter::GnssPosAidStatus>
 {
     using type = data_filter::GnssPosAidStatus;
 
+    using ParamTypes = std::tuple<
+        uint8_t,
+        float,
+        data_filter::GnssAidStatusFlags,
+        uint8_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.receiver_id;
+        if constexpr(I == 1) return value_.time_of_week;
+        if constexpr(I == 2) return value_.status;
+        if constexpr(I == 3) return value_.reserved;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "receiver_id",
@@ -2284,7 +2789,6 @@ struct MetadataFor<data_filter::GnssPosAidStatus>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::GnssPosAidStatus",
@@ -2306,6 +2810,19 @@ struct MetadataFor<data_filter::GnssAttAidStatus>
 {
     using type = data_filter::GnssAttAidStatus;
 
+    using ParamTypes = std::tuple<
+        float,
+        data_filter::GnssAidStatusFlags,
+        uint8_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.time_of_week;
+        if constexpr(I == 1) return value_.status;
+        if constexpr(I == 2) return value_.reserved;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "time_of_week",
@@ -2335,7 +2852,6 @@ struct MetadataFor<data_filter::GnssAttAidStatus>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::GnssAttAidStatus",
@@ -2378,6 +2894,19 @@ struct MetadataFor<data_filter::HeadAidStatus>
 {
     using type = data_filter::HeadAidStatus;
 
+    using ParamTypes = std::tuple<
+        float,
+        data_filter::HeadAidStatus::HeadingAidType,
+        float
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.time_of_week;
+        if constexpr(I == 1) return value_.type;
+        if constexpr(I == 2) return value_.reserved;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "time_of_week",
@@ -2407,7 +2936,6 @@ struct MetadataFor<data_filter::HeadAidStatus>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::HeadAidStatus",
@@ -2429,6 +2957,17 @@ struct MetadataFor<data_filter::RelPosNed>
 {
     using type = data_filter::RelPosNed;
 
+    using ParamTypes = std::tuple<
+        Vector3d,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.relative_position;
+        if constexpr(I == 1) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "relative_position",
@@ -2449,7 +2988,6 @@ struct MetadataFor<data_filter::RelPosNed>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::RelPosNed",
@@ -2471,6 +3009,17 @@ struct MetadataFor<data_filter::EcefPos>
 {
     using type = data_filter::EcefPos;
 
+    using ParamTypes = std::tuple<
+        Vector3d,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.position_ecef;
+        if constexpr(I == 1) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "position_ecef",
@@ -2491,7 +3040,6 @@ struct MetadataFor<data_filter::EcefPos>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::EcefPos",
@@ -2513,6 +3061,17 @@ struct MetadataFor<data_filter::EcefVel>
 {
     using type = data_filter::EcefVel;
 
+    using ParamTypes = std::tuple<
+        Vector3f,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.velocity_ecef;
+        if constexpr(I == 1) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "velocity_ecef",
@@ -2533,7 +3092,6 @@ struct MetadataFor<data_filter::EcefVel>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::EcefVel",
@@ -2555,6 +3113,17 @@ struct MetadataFor<data_filter::EcefPosUncertainty>
 {
     using type = data_filter::EcefPosUncertainty;
 
+    using ParamTypes = std::tuple<
+        Vector3f,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.pos_uncertainty;
+        if constexpr(I == 1) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "pos_uncertainty",
@@ -2575,7 +3144,6 @@ struct MetadataFor<data_filter::EcefPosUncertainty>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::EcefPosUncertainty",
@@ -2597,6 +3165,17 @@ struct MetadataFor<data_filter::EcefVelUncertainty>
 {
     using type = data_filter::EcefVelUncertainty;
 
+    using ParamTypes = std::tuple<
+        Vector3f,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.vel_uncertainty;
+        if constexpr(I == 1) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "vel_uncertainty",
@@ -2617,7 +3196,6 @@ struct MetadataFor<data_filter::EcefVelUncertainty>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::EcefVelUncertainty",
@@ -2698,6 +3276,21 @@ struct MetadataFor<data_filter::AidingMeasurementSummary>
 {
     using type = data_filter::AidingMeasurementSummary;
 
+    using ParamTypes = std::tuple<
+        float,
+        uint8_t,
+        data_filter::FilterAidingMeasurementType,
+        data_filter::FilterMeasurementIndicator
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.time_of_week;
+        if constexpr(I == 1) return value_.source;
+        if constexpr(I == 2) return value_.type;
+        if constexpr(I == 3) return value_.indicator;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "time_of_week",
@@ -2736,7 +3329,6 @@ struct MetadataFor<data_filter::AidingMeasurementSummary>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::AidingMeasurementSummary",
@@ -2758,6 +3350,17 @@ struct MetadataFor<data_filter::OdometerScaleFactorError>
 {
     using type = data_filter::OdometerScaleFactorError;
 
+    using ParamTypes = std::tuple<
+        float,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.scale_factor_error;
+        if constexpr(I == 1) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "scale_factor_error",
@@ -2778,7 +3381,6 @@ struct MetadataFor<data_filter::OdometerScaleFactorError>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::OdometerScaleFactorError",
@@ -2800,6 +3402,17 @@ struct MetadataFor<data_filter::OdometerScaleFactorErrorUncertainty>
 {
     using type = data_filter::OdometerScaleFactorErrorUncertainty;
 
+    using ParamTypes = std::tuple<
+        float,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.scale_factor_error_uncertainty;
+        if constexpr(I == 1) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "scale_factor_error_uncertainty",
@@ -2820,7 +3433,6 @@ struct MetadataFor<data_filter::OdometerScaleFactorErrorUncertainty>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::OdometerScaleFactorErrorUncertainty",
@@ -2886,6 +3498,25 @@ struct MetadataFor<data_filter::GnssDualAntennaStatus>
 {
     using type = data_filter::GnssDualAntennaStatus;
 
+    using ParamTypes = std::tuple<
+        float,
+        float,
+        float,
+        data_filter::GnssDualAntennaStatus::FixType,
+        data_filter::GnssDualAntennaStatus::DualAntennaStatusFlags,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.time_of_week;
+        if constexpr(I == 1) return value_.heading;
+        if constexpr(I == 2) return value_.heading_unc;
+        if constexpr(I == 3) return value_.fix_type;
+        if constexpr(I == 4) return value_.status_flags;
+        if constexpr(I == 5) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "time_of_week",
@@ -2942,7 +3573,6 @@ struct MetadataFor<data_filter::GnssDualAntennaStatus>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::GnssDualAntennaStatus",
@@ -2964,6 +3594,19 @@ struct MetadataFor<data_filter::AidingFrameConfigError>
 {
     using type = data_filter::AidingFrameConfigError;
 
+    using ParamTypes = std::tuple<
+        uint8_t,
+        Vector3f,
+        Quatf
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.frame_id;
+        if constexpr(I == 1) return value_.translation;
+        if constexpr(I == 2) return value_.attitude;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "frame_id",
@@ -2993,7 +3636,6 @@ struct MetadataFor<data_filter::AidingFrameConfigError>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::AidingFrameConfigError",
@@ -3015,6 +3657,19 @@ struct MetadataFor<data_filter::AidingFrameConfigErrorUncertainty>
 {
     using type = data_filter::AidingFrameConfigErrorUncertainty;
 
+    using ParamTypes = std::tuple<
+        uint8_t,
+        Vector3f,
+        Vector3f
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.frame_id;
+        if constexpr(I == 1) return value_.translation_unc;
+        if constexpr(I == 2) return value_.attitude_unc;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "frame_id",
@@ -3044,7 +3699,6 @@ struct MetadataFor<data_filter::AidingFrameConfigErrorUncertainty>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_filter::AidingFrameConfigErrorUncertainty",

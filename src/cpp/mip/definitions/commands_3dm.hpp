@@ -2181,16 +2181,8 @@ struct EventTrigger
         uint8_t field_desc = 0; ///< Field descriptor of target data quantity.
         uint8_t param_id = 0; ///< 1-based index of the target parameter within the MIP field. E.g. for Scaled Accel (0x80,0x04) a value of 2 would represent the Y axis.
         Type type = static_cast<Type>(0); ///< Determines the type of comparison.
-        union
-        {
-            double low_thres;
-            double int_thres;
-        };
-        union
-        {
-            double high_thres;
-            double interval;
-        };
+        double first_thres = 0; ///< First threshold.
+        double second_thres = 0; ///< Second threshold or interval.
         
         /// Serialization
         void insert(Serializer& serializer) const;

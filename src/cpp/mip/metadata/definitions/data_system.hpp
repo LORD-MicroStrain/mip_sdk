@@ -14,6 +14,15 @@ struct MetadataFor<data_system::BuiltInTest>
 {
     using type = data_system::BuiltInTest;
 
+    using ParamTypes = std::tuple<
+        uint8_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.result;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "result",
@@ -25,7 +34,6 @@ struct MetadataFor<data_system::BuiltInTest>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_system::BuiltInTest",
@@ -47,6 +55,17 @@ struct MetadataFor<data_system::TimeSyncStatus>
 {
     using type = data_system::TimeSyncStatus;
 
+    using ParamTypes = std::tuple<
+        bool,
+        uint8_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.time_sync;
+        if constexpr(I == 1) return value_.last_pps_rcvd;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "time_sync",
@@ -67,7 +86,6 @@ struct MetadataFor<data_system::TimeSyncStatus>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_system::TimeSyncStatus",
@@ -89,6 +107,15 @@ struct MetadataFor<data_system::GpioState>
 {
     using type = data_system::GpioState;
 
+    using ParamTypes = std::tuple<
+        uint8_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.states;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "states",
@@ -100,7 +127,6 @@ struct MetadataFor<data_system::GpioState>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_system::GpioState",
@@ -122,6 +148,17 @@ struct MetadataFor<data_system::GpioAnalogValue>
 {
     using type = data_system::GpioAnalogValue;
 
+    using ParamTypes = std::tuple<
+        uint8_t,
+        float
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.gpio_id;
+        if constexpr(I == 1) return value_.value;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "gpio_id",
@@ -142,7 +179,6 @@ struct MetadataFor<data_system::GpioAnalogValue>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_system::GpioAnalogValue",

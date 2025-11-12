@@ -2283,26 +2283,10 @@ void insert_mip_3dm_event_trigger_command_threshold_params(microstrain_serialize
     
     insert_mip_3dm_event_trigger_command_threshold_params_type(serializer, self->type);
     
-    if( self->type == MIP_3DM_EVENT_TRIGGER_COMMAND_THRESHOLD_PARAMS_TYPE_WINDOW )
-    {
-        microstrain_insert_double(serializer, self->low_thres);
-        
-    }
-    if( self->type == MIP_3DM_EVENT_TRIGGER_COMMAND_THRESHOLD_PARAMS_TYPE_INTERVAL )
-    {
-        microstrain_insert_double(serializer, self->int_thres);
-        
-    }
-    if( self->type == MIP_3DM_EVENT_TRIGGER_COMMAND_THRESHOLD_PARAMS_TYPE_WINDOW )
-    {
-        microstrain_insert_double(serializer, self->high_thres);
-        
-    }
-    if( self->type == MIP_3DM_EVENT_TRIGGER_COMMAND_THRESHOLD_PARAMS_TYPE_INTERVAL )
-    {
-        microstrain_insert_double(serializer, self->interval);
-        
-    }
+    microstrain_insert_double(serializer, self->first_thres);
+    
+    microstrain_insert_double(serializer, self->second_thres);
+    
 }
 void extract_mip_3dm_event_trigger_command_threshold_params(microstrain_serializer* serializer, mip_3dm_event_trigger_command_threshold_params* self)
 {
@@ -2314,26 +2298,10 @@ void extract_mip_3dm_event_trigger_command_threshold_params(microstrain_serializ
     
     extract_mip_3dm_event_trigger_command_threshold_params_type(serializer, &self->type);
     
-    if( self->type == MIP_3DM_EVENT_TRIGGER_COMMAND_THRESHOLD_PARAMS_TYPE_WINDOW )
-    {
-        microstrain_extract_double(serializer, &self->low_thres);
-        
-    }
-    if( self->type == MIP_3DM_EVENT_TRIGGER_COMMAND_THRESHOLD_PARAMS_TYPE_INTERVAL )
-    {
-        microstrain_extract_double(serializer, &self->int_thres);
-        
-    }
-    if( self->type == MIP_3DM_EVENT_TRIGGER_COMMAND_THRESHOLD_PARAMS_TYPE_WINDOW )
-    {
-        microstrain_extract_double(serializer, &self->high_thres);
-        
-    }
-    if( self->type == MIP_3DM_EVENT_TRIGGER_COMMAND_THRESHOLD_PARAMS_TYPE_INTERVAL )
-    {
-        microstrain_extract_double(serializer, &self->interval);
-        
-    }
+    microstrain_extract_double(serializer, &self->first_thres);
+    
+    microstrain_extract_double(serializer, &self->second_thres);
+    
 }
 
 void insert_mip_3dm_event_trigger_command_combination_params(microstrain_serializer* serializer, const mip_3dm_event_trigger_command_combination_params* self)

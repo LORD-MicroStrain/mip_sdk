@@ -14,6 +14,15 @@ struct MetadataFor<data_sensor::RawAccel>
 {
     using type = data_sensor::RawAccel;
 
+    using ParamTypes = std::tuple<
+        Vector3f
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.raw_accel;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "raw_accel",
@@ -25,7 +34,6 @@ struct MetadataFor<data_sensor::RawAccel>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_sensor::RawAccel",
@@ -47,6 +55,15 @@ struct MetadataFor<data_sensor::RawGyro>
 {
     using type = data_sensor::RawGyro;
 
+    using ParamTypes = std::tuple<
+        Vector3f
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.raw_gyro;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "raw_gyro",
@@ -58,7 +75,6 @@ struct MetadataFor<data_sensor::RawGyro>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_sensor::RawGyro",
@@ -80,6 +96,15 @@ struct MetadataFor<data_sensor::RawMag>
 {
     using type = data_sensor::RawMag;
 
+    using ParamTypes = std::tuple<
+        Vector3f
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.raw_mag;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "raw_mag",
@@ -91,7 +116,6 @@ struct MetadataFor<data_sensor::RawMag>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_sensor::RawMag",
@@ -113,6 +137,15 @@ struct MetadataFor<data_sensor::RawPressure>
 {
     using type = data_sensor::RawPressure;
 
+    using ParamTypes = std::tuple<
+        float
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.raw_pressure;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "raw_pressure",
@@ -124,7 +157,6 @@ struct MetadataFor<data_sensor::RawPressure>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_sensor::RawPressure",
@@ -146,6 +178,15 @@ struct MetadataFor<data_sensor::ScaledAccel>
 {
     using type = data_sensor::ScaledAccel;
 
+    using ParamTypes = std::tuple<
+        Vector3f
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.scaled_accel;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "scaled_accel",
@@ -157,7 +198,6 @@ struct MetadataFor<data_sensor::ScaledAccel>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_sensor::ScaledAccel",
@@ -179,6 +219,15 @@ struct MetadataFor<data_sensor::ScaledGyro>
 {
     using type = data_sensor::ScaledGyro;
 
+    using ParamTypes = std::tuple<
+        Vector3f
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.scaled_gyro;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "scaled_gyro",
@@ -190,7 +239,6 @@ struct MetadataFor<data_sensor::ScaledGyro>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_sensor::ScaledGyro",
@@ -212,6 +260,15 @@ struct MetadataFor<data_sensor::ScaledMag>
 {
     using type = data_sensor::ScaledMag;
 
+    using ParamTypes = std::tuple<
+        Vector3f
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.scaled_mag;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "scaled_mag",
@@ -223,7 +280,6 @@ struct MetadataFor<data_sensor::ScaledMag>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_sensor::ScaledMag",
@@ -245,6 +301,15 @@ struct MetadataFor<data_sensor::ScaledPressure>
 {
     using type = data_sensor::ScaledPressure;
 
+    using ParamTypes = std::tuple<
+        float
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.scaled_pressure;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "scaled_pressure",
@@ -256,7 +321,6 @@ struct MetadataFor<data_sensor::ScaledPressure>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_sensor::ScaledPressure",
@@ -278,6 +342,15 @@ struct MetadataFor<data_sensor::DeltaTheta>
 {
     using type = data_sensor::DeltaTheta;
 
+    using ParamTypes = std::tuple<
+        Vector3f
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.delta_theta;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "delta_theta",
@@ -289,7 +362,6 @@ struct MetadataFor<data_sensor::DeltaTheta>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_sensor::DeltaTheta",
@@ -311,6 +383,15 @@ struct MetadataFor<data_sensor::DeltaVelocity>
 {
     using type = data_sensor::DeltaVelocity;
 
+    using ParamTypes = std::tuple<
+        Vector3f
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.delta_velocity;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "delta_velocity",
@@ -322,7 +403,6 @@ struct MetadataFor<data_sensor::DeltaVelocity>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_sensor::DeltaVelocity",
@@ -344,6 +424,15 @@ struct MetadataFor<data_sensor::CompOrientationMatrix>
 {
     using type = data_sensor::CompOrientationMatrix;
 
+    using ParamTypes = std::tuple<
+        Matrix3f
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.m;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "m",
@@ -355,7 +444,6 @@ struct MetadataFor<data_sensor::CompOrientationMatrix>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_sensor::CompOrientationMatrix",
@@ -377,6 +465,15 @@ struct MetadataFor<data_sensor::CompQuaternion>
 {
     using type = data_sensor::CompQuaternion;
 
+    using ParamTypes = std::tuple<
+        Quatf
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.q;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "q",
@@ -388,7 +485,6 @@ struct MetadataFor<data_sensor::CompQuaternion>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_sensor::CompQuaternion",
@@ -410,6 +506,19 @@ struct MetadataFor<data_sensor::CompEulerAngles>
 {
     using type = data_sensor::CompEulerAngles;
 
+    using ParamTypes = std::tuple<
+        float,
+        float,
+        float
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.roll;
+        if constexpr(I == 1) return value_.pitch;
+        if constexpr(I == 2) return value_.yaw;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "roll",
@@ -439,7 +548,6 @@ struct MetadataFor<data_sensor::CompEulerAngles>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_sensor::CompEulerAngles",
@@ -461,6 +569,15 @@ struct MetadataFor<data_sensor::CompOrientationUpdateMatrix>
 {
     using type = data_sensor::CompOrientationUpdateMatrix;
 
+    using ParamTypes = std::tuple<
+        Matrix3f
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.m;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "m",
@@ -472,7 +589,6 @@ struct MetadataFor<data_sensor::CompOrientationUpdateMatrix>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_sensor::CompOrientationUpdateMatrix",
@@ -494,6 +610,15 @@ struct MetadataFor<data_sensor::OrientationRawTemp>
 {
     using type = data_sensor::OrientationRawTemp;
 
+    using ParamTypes = std::tuple<
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.raw_temp;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "raw_temp",
@@ -505,7 +630,6 @@ struct MetadataFor<data_sensor::OrientationRawTemp>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_sensor::OrientationRawTemp",
@@ -527,6 +651,15 @@ struct MetadataFor<data_sensor::InternalTimestamp>
 {
     using type = data_sensor::InternalTimestamp;
 
+    using ParamTypes = std::tuple<
+        uint32_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.counts;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "counts",
@@ -538,7 +671,6 @@ struct MetadataFor<data_sensor::InternalTimestamp>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_sensor::InternalTimestamp",
@@ -560,6 +692,17 @@ struct MetadataFor<data_sensor::PpsTimestamp>
 {
     using type = data_sensor::PpsTimestamp;
 
+    using ParamTypes = std::tuple<
+        uint32_t,
+        uint32_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.seconds;
+        if constexpr(I == 1) return value_.useconds;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "seconds",
@@ -580,7 +723,6 @@ struct MetadataFor<data_sensor::PpsTimestamp>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_sensor::PpsTimestamp",
@@ -626,6 +768,19 @@ struct MetadataFor<data_sensor::GpsTimestamp>
 {
     using type = data_sensor::GpsTimestamp;
 
+    using ParamTypes = std::tuple<
+        double,
+        uint16_t,
+        data_sensor::GpsTimestamp::ValidFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.tow;
+        if constexpr(I == 1) return value_.week_number;
+        if constexpr(I == 2) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "tow",
@@ -655,7 +810,6 @@ struct MetadataFor<data_sensor::GpsTimestamp>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_sensor::GpsTimestamp",
@@ -677,6 +831,19 @@ struct MetadataFor<data_sensor::TemperatureAbs>
 {
     using type = data_sensor::TemperatureAbs;
 
+    using ParamTypes = std::tuple<
+        float,
+        float,
+        float
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.min_temp;
+        if constexpr(I == 1) return value_.max_temp;
+        if constexpr(I == 2) return value_.mean_temp;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "min_temp",
@@ -706,7 +873,6 @@ struct MetadataFor<data_sensor::TemperatureAbs>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_sensor::TemperatureAbs",
@@ -728,6 +894,15 @@ struct MetadataFor<data_sensor::UpVector>
 {
     using type = data_sensor::UpVector;
 
+    using ParamTypes = std::tuple<
+        Vector3f
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.up;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "up",
@@ -739,7 +914,6 @@ struct MetadataFor<data_sensor::UpVector>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_sensor::UpVector",
@@ -761,6 +935,15 @@ struct MetadataFor<data_sensor::NorthVector>
 {
     using type = data_sensor::NorthVector;
 
+    using ParamTypes = std::tuple<
+        Vector3f
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.north;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "north",
@@ -772,7 +955,6 @@ struct MetadataFor<data_sensor::NorthVector>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_sensor::NorthVector",
@@ -823,6 +1005,15 @@ struct MetadataFor<data_sensor::OverrangeStatus>
 {
     using type = data_sensor::OverrangeStatus;
 
+    using ParamTypes = std::tuple<
+        data_sensor::OverrangeStatus::Status
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.status;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "status",
@@ -834,7 +1025,6 @@ struct MetadataFor<data_sensor::OverrangeStatus>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_sensor::OverrangeStatus",
@@ -856,6 +1046,19 @@ struct MetadataFor<data_sensor::OdometerData>
 {
     using type = data_sensor::OdometerData;
 
+    using ParamTypes = std::tuple<
+        float,
+        float,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.speed;
+        if constexpr(I == 1) return value_.uncertainty;
+        if constexpr(I == 2) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "speed",
@@ -885,7 +1088,6 @@ struct MetadataFor<data_sensor::OdometerData>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_sensor::OdometerData",

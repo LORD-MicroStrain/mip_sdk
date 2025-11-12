@@ -1342,16 +1342,8 @@ struct mip_3dm_event_trigger_command_threshold_params
     uint8_t field_desc; ///< Field descriptor of target data quantity.
     uint8_t param_id; ///< 1-based index of the target parameter within the MIP field. E.g. for Scaled Accel (0x80,0x04) a value of 2 would represent the Y axis.
     mip_3dm_event_trigger_command_threshold_params_type type; ///< Determines the type of comparison.
-    union
-    {
-        double low_thres;
-        double int_thres;
-    };
-    union
-    {
-        double high_thres;
-        double interval;
-    };
+    double first_thres; ///< First threshold.
+    double second_thres; ///< Second threshold or interval.
 };
 typedef struct mip_3dm_event_trigger_command_threshold_params mip_3dm_event_trigger_command_threshold_params;
 

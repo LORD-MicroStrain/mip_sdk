@@ -2109,26 +2109,10 @@ void EventTrigger::ThresholdParams::insert(Serializer& serializer) const
     
     serializer.insert(type);
     
-    if( type == EventTrigger::ThresholdParams::Type::WINDOW )
-    {
-        serializer.insert(low_thres);
-        
-    }
-    if( type == EventTrigger::ThresholdParams::Type::INTERVAL )
-    {
-        serializer.insert(int_thres);
-        
-    }
-    if( type == EventTrigger::ThresholdParams::Type::WINDOW )
-    {
-        serializer.insert(high_thres);
-        
-    }
-    if( type == EventTrigger::ThresholdParams::Type::INTERVAL )
-    {
-        serializer.insert(interval);
-        
-    }
+    serializer.insert(first_thres);
+    
+    serializer.insert(second_thres);
+    
 }
 void EventTrigger::ThresholdParams::extract(Serializer& serializer)
 {
@@ -2140,26 +2124,10 @@ void EventTrigger::ThresholdParams::extract(Serializer& serializer)
     
     serializer.extract(type);
     
-    if( type == EventTrigger::ThresholdParams::Type::WINDOW )
-    {
-        serializer.extract(low_thres);
-        
-    }
-    if( type == EventTrigger::ThresholdParams::Type::INTERVAL )
-    {
-        serializer.extract(int_thres);
-        
-    }
-    if( type == EventTrigger::ThresholdParams::Type::WINDOW )
-    {
-        serializer.extract(high_thres);
-        
-    }
-    if( type == EventTrigger::ThresholdParams::Type::INTERVAL )
-    {
-        serializer.extract(interval);
-        
-    }
+    serializer.extract(first_thres);
+    
+    serializer.extract(second_thres);
+    
 }
 
 void EventTrigger::CombinationParams::insert(Serializer& serializer) const

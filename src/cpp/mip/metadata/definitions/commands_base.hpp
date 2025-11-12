@@ -14,6 +14,8 @@ struct MetadataFor<commands_base::Ping>
 {
     using type = commands_base::Ping;
 
+    using ParamTypes = std::tuple<>;
+
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_base::Ping",
@@ -34,6 +36,8 @@ template<>
 struct MetadataFor<commands_base::SetIdle>
 {
     using type = commands_base::SetIdle;
+
+    using ParamTypes = std::tuple<>;
 
     static constexpr inline FieldInfo value = {
         {
@@ -56,6 +60,25 @@ struct MetadataFor<commands_base::BaseDeviceInfo>
 {
     using type = commands_base::BaseDeviceInfo;
 
+    using ParamTypes = std::tuple<
+        uint16_t,
+        char,
+        char,
+        char,
+        char,
+        char
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.firmware_version;
+        if constexpr(I == 1) return value_.model_name;
+        if constexpr(I == 2) return value_.model_number;
+        if constexpr(I == 3) return value_.serial_number;
+        if constexpr(I == 4) return value_.lot_number;
+        if constexpr(I == 5) return value_.device_options;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "firmware_version",
@@ -112,7 +135,6 @@ struct MetadataFor<commands_base::BaseDeviceInfo>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline StructInfo value = {
         /* .name        = */ "BaseDeviceInfo",
         /* .title       = */ "Base Device Info",
@@ -128,6 +150,15 @@ struct MetadataFor<commands_base::GetDeviceInfo::Response>
 {
     using type = commands_base::GetDeviceInfo::Response;
 
+    using ParamTypes = std::tuple<
+        commands_base::BaseDeviceInfo
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.device_info;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "device_info",
@@ -139,7 +170,6 @@ struct MetadataFor<commands_base::GetDeviceInfo::Response>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_base::GetDeviceInfo::Response",
@@ -159,6 +189,8 @@ template<>
 struct MetadataFor<commands_base::GetDeviceInfo>
 {
     using type = commands_base::GetDeviceInfo;
+
+    using ParamTypes = std::tuple<>;
 
     static constexpr inline FieldInfo value = {
         {
@@ -181,6 +213,17 @@ struct MetadataFor<commands_base::GetDeviceDescriptors::Response>
 {
     using type = commands_base::GetDeviceDescriptors::Response;
 
+    using ParamTypes = std::tuple<
+        uint16_t,
+        uint8_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.descriptors;
+        if constexpr(I == 1) return value_.descriptors_count;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "descriptors",
@@ -201,7 +244,6 @@ struct MetadataFor<commands_base::GetDeviceDescriptors::Response>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_base::GetDeviceDescriptors::Response",
@@ -221,6 +263,8 @@ template<>
 struct MetadataFor<commands_base::GetDeviceDescriptors>
 {
     using type = commands_base::GetDeviceDescriptors;
+
+    using ParamTypes = std::tuple<>;
 
     static constexpr inline FieldInfo value = {
         {
@@ -243,6 +287,15 @@ struct MetadataFor<commands_base::BuiltInTest::Response>
 {
     using type = commands_base::BuiltInTest::Response;
 
+    using ParamTypes = std::tuple<
+        uint32_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.result;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "result",
@@ -254,7 +307,6 @@ struct MetadataFor<commands_base::BuiltInTest::Response>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_base::BuiltInTest::Response",
@@ -274,6 +326,8 @@ template<>
 struct MetadataFor<commands_base::BuiltInTest>
 {
     using type = commands_base::BuiltInTest;
+
+    using ParamTypes = std::tuple<>;
 
     static constexpr inline FieldInfo value = {
         {
@@ -296,6 +350,8 @@ struct MetadataFor<commands_base::Resume>
 {
     using type = commands_base::Resume;
 
+    using ParamTypes = std::tuple<>;
+
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_base::Resume",
@@ -317,6 +373,17 @@ struct MetadataFor<commands_base::GetExtendedDescriptors::Response>
 {
     using type = commands_base::GetExtendedDescriptors::Response;
 
+    using ParamTypes = std::tuple<
+        uint16_t,
+        uint8_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.descriptors;
+        if constexpr(I == 1) return value_.descriptors_count;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "descriptors",
@@ -337,7 +404,6 @@ struct MetadataFor<commands_base::GetExtendedDescriptors::Response>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_base::GetExtendedDescriptors::Response",
@@ -357,6 +423,8 @@ template<>
 struct MetadataFor<commands_base::GetExtendedDescriptors>
 {
     using type = commands_base::GetExtendedDescriptors;
+
+    using ParamTypes = std::tuple<>;
 
     static constexpr inline FieldInfo value = {
         {
@@ -379,6 +447,15 @@ struct MetadataFor<commands_base::ContinuousBit::Response>
 {
     using type = commands_base::ContinuousBit::Response;
 
+    using ParamTypes = std::tuple<
+        uint8_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.result;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "result",
@@ -390,7 +467,6 @@ struct MetadataFor<commands_base::ContinuousBit::Response>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_base::ContinuousBit::Response",
@@ -410,6 +486,8 @@ template<>
 struct MetadataFor<commands_base::ContinuousBit>
 {
     using type = commands_base::ContinuousBit;
+
+    using ParamTypes = std::tuple<>;
 
     static constexpr inline FieldInfo value = {
         {
@@ -432,6 +510,17 @@ struct MetadataFor<commands_base::CommSpeed::Response>
 {
     using type = commands_base::CommSpeed::Response;
 
+    using ParamTypes = std::tuple<
+        uint8_t,
+        uint32_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.port;
+        if constexpr(I == 1) return value_.baud;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "port",
@@ -452,7 +541,6 @@ struct MetadataFor<commands_base::CommSpeed::Response>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_base::CommSpeed::Response",
@@ -473,6 +561,19 @@ struct MetadataFor<commands_base::CommSpeed>
 {
     using type = commands_base::CommSpeed;
 
+    using ParamTypes = std::tuple<
+        FunctionSelector,
+        uint8_t,
+        uint32_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.function;
+        if constexpr(I == 1) return value_.port;
+        if constexpr(I == 2) return value_.baud;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         FUNCTION_SELECTOR_PARAM,
         {
@@ -494,7 +595,6 @@ struct MetadataFor<commands_base::CommSpeed>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_base::CommSpeed",
@@ -537,6 +637,19 @@ struct MetadataFor<commands_base::GpsTimeUpdate>
 {
     using type = commands_base::GpsTimeUpdate;
 
+    using ParamTypes = std::tuple<
+        FunctionSelector,
+        commands_base::GpsTimeUpdate::FieldId,
+        uint32_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.function;
+        if constexpr(I == 1) return value_.field_id;
+        if constexpr(I == 2) return value_.value;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         FUNCTION_SELECTOR_PARAM,
         {
@@ -558,7 +671,6 @@ struct MetadataFor<commands_base::GpsTimeUpdate>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_base::GpsTimeUpdate",
@@ -579,6 +691,8 @@ template<>
 struct MetadataFor<commands_base::SoftReset>
 {
     using type = commands_base::SoftReset;
+
+    using ParamTypes = std::tuple<>;
 
     static constexpr inline FieldInfo value = {
         {

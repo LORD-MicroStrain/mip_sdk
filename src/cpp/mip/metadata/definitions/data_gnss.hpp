@@ -39,6 +39,27 @@ struct MetadataFor<data_gnss::PosLlh>
 {
     using type = data_gnss::PosLlh;
 
+    using ParamTypes = std::tuple<
+        double,
+        double,
+        double,
+        double,
+        float,
+        float,
+        data_gnss::PosLlh::ValidFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.latitude;
+        if constexpr(I == 1) return value_.longitude;
+        if constexpr(I == 2) return value_.ellipsoid_height;
+        if constexpr(I == 3) return value_.msl_height;
+        if constexpr(I == 4) return value_.horizontal_accuracy;
+        if constexpr(I == 5) return value_.vertical_accuracy;
+        if constexpr(I == 6) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "latitude",
@@ -104,7 +125,6 @@ struct MetadataFor<data_gnss::PosLlh>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_gnss::PosLlh",
@@ -148,6 +168,19 @@ struct MetadataFor<data_gnss::PosEcef>
 {
     using type = data_gnss::PosEcef;
 
+    using ParamTypes = std::tuple<
+        Vector3d,
+        float,
+        data_gnss::PosEcef::ValidFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.x;
+        if constexpr(I == 1) return value_.x_accuracy;
+        if constexpr(I == 2) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "x",
@@ -177,7 +210,6 @@ struct MetadataFor<data_gnss::PosEcef>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_gnss::PosEcef",
@@ -225,6 +257,27 @@ struct MetadataFor<data_gnss::VelNed>
 {
     using type = data_gnss::VelNed;
 
+    using ParamTypes = std::tuple<
+        Vector3f,
+        float,
+        float,
+        float,
+        float,
+        float,
+        data_gnss::VelNed::ValidFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.v;
+        if constexpr(I == 1) return value_.speed;
+        if constexpr(I == 2) return value_.ground_speed;
+        if constexpr(I == 3) return value_.heading;
+        if constexpr(I == 4) return value_.speed_accuracy;
+        if constexpr(I == 5) return value_.heading_accuracy;
+        if constexpr(I == 6) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "v",
@@ -290,7 +343,6 @@ struct MetadataFor<data_gnss::VelNed>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_gnss::VelNed",
@@ -334,6 +386,19 @@ struct MetadataFor<data_gnss::VelEcef>
 {
     using type = data_gnss::VelEcef;
 
+    using ParamTypes = std::tuple<
+        Vector3f,
+        float,
+        data_gnss::VelEcef::ValidFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.v;
+        if constexpr(I == 1) return value_.v_accuracy;
+        if constexpr(I == 2) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "v",
@@ -363,7 +428,6 @@ struct MetadataFor<data_gnss::VelEcef>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_gnss::VelEcef",
@@ -412,6 +476,29 @@ struct MetadataFor<data_gnss::Dop>
 {
     using type = data_gnss::Dop;
 
+    using ParamTypes = std::tuple<
+        float,
+        float,
+        float,
+        float,
+        float,
+        float,
+        float,
+        data_gnss::Dop::ValidFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.gdop;
+        if constexpr(I == 1) return value_.pdop;
+        if constexpr(I == 2) return value_.hdop;
+        if constexpr(I == 3) return value_.vdop;
+        if constexpr(I == 4) return value_.tdop;
+        if constexpr(I == 5) return value_.ndop;
+        if constexpr(I == 6) return value_.edop;
+        if constexpr(I == 7) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "gdop",
@@ -486,7 +573,6 @@ struct MetadataFor<data_gnss::Dop>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_gnss::Dop",
@@ -530,6 +616,29 @@ struct MetadataFor<data_gnss::UtcTime>
 {
     using type = data_gnss::UtcTime;
 
+    using ParamTypes = std::tuple<
+        uint16_t,
+        uint8_t,
+        uint8_t,
+        uint8_t,
+        uint8_t,
+        uint8_t,
+        uint32_t,
+        data_gnss::UtcTime::ValidFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.year;
+        if constexpr(I == 1) return value_.month;
+        if constexpr(I == 2) return value_.day;
+        if constexpr(I == 3) return value_.hour;
+        if constexpr(I == 4) return value_.min;
+        if constexpr(I == 5) return value_.sec;
+        if constexpr(I == 6) return value_.msec;
+        if constexpr(I == 7) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "year",
@@ -604,7 +713,6 @@ struct MetadataFor<data_gnss::UtcTime>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_gnss::UtcTime",
@@ -648,6 +756,19 @@ struct MetadataFor<data_gnss::GpsTime>
 {
     using type = data_gnss::GpsTime;
 
+    using ParamTypes = std::tuple<
+        double,
+        uint16_t,
+        data_gnss::GpsTime::ValidFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.tow;
+        if constexpr(I == 1) return value_.week_number;
+        if constexpr(I == 2) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "tow",
@@ -677,7 +798,6 @@ struct MetadataFor<data_gnss::GpsTime>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_gnss::GpsTime",
@@ -722,6 +842,21 @@ struct MetadataFor<data_gnss::ClockInfo>
 {
     using type = data_gnss::ClockInfo;
 
+    using ParamTypes = std::tuple<
+        double,
+        double,
+        double,
+        data_gnss::ClockInfo::ValidFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.bias;
+        if constexpr(I == 1) return value_.drift;
+        if constexpr(I == 2) return value_.accuracy_estimate;
+        if constexpr(I == 3) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "bias",
@@ -760,7 +895,6 @@ struct MetadataFor<data_gnss::ClockInfo>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_gnss::ClockInfo",
@@ -853,6 +987,21 @@ struct MetadataFor<data_gnss::FixInfo>
 {
     using type = data_gnss::FixInfo;
 
+    using ParamTypes = std::tuple<
+        data_gnss::FixInfo::FixType,
+        uint8_t,
+        data_gnss::FixInfo::FixFlags,
+        data_gnss::FixInfo::ValidFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.fix_type;
+        if constexpr(I == 1) return value_.num_sv;
+        if constexpr(I == 2) return value_.fix_flags;
+        if constexpr(I == 3) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "fix_type",
@@ -891,7 +1040,6 @@ struct MetadataFor<data_gnss::FixInfo>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_gnss::FixInfo",
@@ -960,6 +1108,27 @@ struct MetadataFor<data_gnss::SvInfo>
 {
     using type = data_gnss::SvInfo;
 
+    using ParamTypes = std::tuple<
+        uint8_t,
+        uint8_t,
+        uint16_t,
+        int16_t,
+        int16_t,
+        data_gnss::SvInfo::SVFlags,
+        data_gnss::SvInfo::ValidFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.channel;
+        if constexpr(I == 1) return value_.sv_id;
+        if constexpr(I == 2) return value_.carrier_noise_ratio;
+        if constexpr(I == 3) return value_.azimuth;
+        if constexpr(I == 4) return value_.elevation;
+        if constexpr(I == 5) return value_.sv_flags;
+        if constexpr(I == 6) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "channel",
@@ -1025,7 +1194,6 @@ struct MetadataFor<data_gnss::SvInfo>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_gnss::SvInfo",
@@ -1138,6 +1306,21 @@ struct MetadataFor<data_gnss::HwStatus>
 {
     using type = data_gnss::HwStatus;
 
+    using ParamTypes = std::tuple<
+        data_gnss::HwStatus::ReceiverState,
+        data_gnss::HwStatus::AntennaState,
+        data_gnss::HwStatus::AntennaPower,
+        data_gnss::HwStatus::ValidFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.receiver_state;
+        if constexpr(I == 1) return value_.antenna_state;
+        if constexpr(I == 2) return value_.antenna_power;
+        if constexpr(I == 3) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "receiver_state",
@@ -1176,7 +1359,6 @@ struct MetadataFor<data_gnss::HwStatus>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_gnss::HwStatus",
@@ -1222,6 +1404,23 @@ struct MetadataFor<data_gnss::DgpsInfo>
 {
     using type = data_gnss::DgpsInfo;
 
+    using ParamTypes = std::tuple<
+        uint8_t,
+        float,
+        float,
+        float,
+        data_gnss::DgpsInfo::ValidFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.sv_id;
+        if constexpr(I == 1) return value_.age;
+        if constexpr(I == 2) return value_.range_correction;
+        if constexpr(I == 3) return value_.range_rate_correction;
+        if constexpr(I == 4) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "sv_id",
@@ -1269,7 +1468,6 @@ struct MetadataFor<data_gnss::DgpsInfo>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_gnss::DgpsInfo",
@@ -1315,6 +1513,23 @@ struct MetadataFor<data_gnss::DgpsChannel>
 {
     using type = data_gnss::DgpsChannel;
 
+    using ParamTypes = std::tuple<
+        uint8_t,
+        float,
+        float,
+        float,
+        data_gnss::DgpsChannel::ValidFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.sv_id;
+        if constexpr(I == 1) return value_.age;
+        if constexpr(I == 2) return value_.range_correction;
+        if constexpr(I == 3) return value_.range_rate_correction;
+        if constexpr(I == 4) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "sv_id",
@@ -1362,7 +1577,6 @@ struct MetadataFor<data_gnss::DgpsChannel>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_gnss::DgpsChannel",
@@ -1408,6 +1622,23 @@ struct MetadataFor<data_gnss::ClockInfo2>
 {
     using type = data_gnss::ClockInfo2;
 
+    using ParamTypes = std::tuple<
+        double,
+        double,
+        double,
+        double,
+        data_gnss::ClockInfo2::ValidFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.bias;
+        if constexpr(I == 1) return value_.drift;
+        if constexpr(I == 2) return value_.bias_accuracy_estimate;
+        if constexpr(I == 3) return value_.drift_accuracy_estimate;
+        if constexpr(I == 4) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "bias",
@@ -1455,7 +1686,6 @@ struct MetadataFor<data_gnss::ClockInfo2>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_gnss::ClockInfo2",
@@ -1497,6 +1727,17 @@ struct MetadataFor<data_gnss::GpsLeapSeconds>
 {
     using type = data_gnss::GpsLeapSeconds;
 
+    using ParamTypes = std::tuple<
+        uint8_t,
+        data_gnss::GpsLeapSeconds::ValidFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.leap_seconds;
+        if constexpr(I == 1) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "leap_seconds",
@@ -1517,7 +1758,6 @@ struct MetadataFor<data_gnss::GpsLeapSeconds>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_gnss::GpsLeapSeconds",
@@ -1612,6 +1852,27 @@ struct MetadataFor<data_gnss::SbasInfo>
 {
     using type = data_gnss::SbasInfo;
 
+    using ParamTypes = std::tuple<
+        double,
+        uint16_t,
+        data_gnss::SbasSystem,
+        uint8_t,
+        uint8_t,
+        data_gnss::SbasInfo::SbasStatus,
+        data_gnss::SbasInfo::ValidFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.time_of_week;
+        if constexpr(I == 1) return value_.week_number;
+        if constexpr(I == 2) return value_.sbas_system;
+        if constexpr(I == 3) return value_.sbas_id;
+        if constexpr(I == 4) return value_.count;
+        if constexpr(I == 5) return value_.sbas_status;
+        if constexpr(I == 6) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "time_of_week",
@@ -1677,7 +1938,6 @@ struct MetadataFor<data_gnss::SbasInfo>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_gnss::SbasInfo",
@@ -1747,6 +2007,33 @@ struct MetadataFor<data_gnss::SbasCorrection>
 {
     using type = data_gnss::SbasCorrection;
 
+    using ParamTypes = std::tuple<
+        uint8_t,
+        uint8_t,
+        double,
+        uint16_t,
+        data_gnss::GnssConstellationId,
+        uint8_t,
+        uint8_t,
+        float,
+        float,
+        data_gnss::SbasCorrection::ValidFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.index;
+        if constexpr(I == 1) return value_.count;
+        if constexpr(I == 2) return value_.time_of_week;
+        if constexpr(I == 3) return value_.week_number;
+        if constexpr(I == 4) return value_.gnss_id;
+        if constexpr(I == 5) return value_.sv_id;
+        if constexpr(I == 6) return value_.udrei;
+        if constexpr(I == 7) return value_.pseudorange_correction;
+        if constexpr(I == 8) return value_.iono_correction;
+        if constexpr(I == 9) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "index",
@@ -1839,7 +2126,6 @@ struct MetadataFor<data_gnss::SbasCorrection>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_gnss::SbasCorrection",
@@ -1953,6 +2239,23 @@ struct MetadataFor<data_gnss::RfErrorDetection>
 {
     using type = data_gnss::RfErrorDetection;
 
+    using ParamTypes = std::tuple<
+        data_gnss::RfErrorDetection::RFBand,
+        data_gnss::RfErrorDetection::JammingState,
+        data_gnss::RfErrorDetection::SpoofingState,
+        uint8_t,
+        data_gnss::RfErrorDetection::ValidFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.rf_band;
+        if constexpr(I == 1) return value_.jamming_state;
+        if constexpr(I == 2) return value_.spoofing_state;
+        if constexpr(I == 3) return value_.reserved;
+        if constexpr(I == 4) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "rf_band",
@@ -2000,7 +2303,6 @@ struct MetadataFor<data_gnss::RfErrorDetection>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_gnss::RfErrorDetection",
@@ -2076,6 +2378,27 @@ struct MetadataFor<data_gnss::BaseStationInfo>
 {
     using type = data_gnss::BaseStationInfo;
 
+    using ParamTypes = std::tuple<
+        double,
+        uint16_t,
+        Vector3d,
+        float,
+        uint16_t,
+        data_gnss::BaseStationInfo::IndicatorFlags,
+        data_gnss::BaseStationInfo::ValidFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.time_of_week;
+        if constexpr(I == 1) return value_.week_number;
+        if constexpr(I == 2) return value_.ecef_pos;
+        if constexpr(I == 3) return value_.height;
+        if constexpr(I == 4) return value_.station_id;
+        if constexpr(I == 5) return value_.indicators;
+        if constexpr(I == 6) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "time_of_week",
@@ -2141,7 +2464,6 @@ struct MetadataFor<data_gnss::BaseStationInfo>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_gnss::BaseStationInfo",
@@ -2219,6 +2541,33 @@ struct MetadataFor<data_gnss::RtkCorrectionsStatus>
 {
     using type = data_gnss::RtkCorrectionsStatus;
 
+    using ParamTypes = std::tuple<
+        double,
+        uint16_t,
+        data_gnss::RtkCorrectionsStatus::EpochStatus,
+        uint32_t,
+        float,
+        float,
+        float,
+        float,
+        uint32_t,
+        data_gnss::RtkCorrectionsStatus::ValidFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.time_of_week;
+        if constexpr(I == 1) return value_.week_number;
+        if constexpr(I == 2) return value_.epoch_status;
+        if constexpr(I == 3) return value_.dongle_status;
+        if constexpr(I == 4) return value_.gps_correction_latency;
+        if constexpr(I == 5) return value_.glonass_correction_latency;
+        if constexpr(I == 6) return value_.galileo_correction_latency;
+        if constexpr(I == 7) return value_.beidou_correction_latency;
+        if constexpr(I == 8) return value_.reserved;
+        if constexpr(I == 9) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "time_of_week",
@@ -2311,7 +2660,6 @@ struct MetadataFor<data_gnss::RtkCorrectionsStatus>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_gnss::RtkCorrectionsStatus",
@@ -2360,6 +2708,33 @@ struct MetadataFor<data_gnss::SatelliteStatus>
 {
     using type = data_gnss::SatelliteStatus;
 
+    using ParamTypes = std::tuple<
+        uint8_t,
+        uint8_t,
+        double,
+        uint16_t,
+        data_gnss::GnssConstellationId,
+        uint8_t,
+        float,
+        float,
+        bool,
+        data_gnss::SatelliteStatus::ValidFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.index;
+        if constexpr(I == 1) return value_.count;
+        if constexpr(I == 2) return value_.time_of_week;
+        if constexpr(I == 3) return value_.week_number;
+        if constexpr(I == 4) return value_.gnss_id;
+        if constexpr(I == 5) return value_.satellite_id;
+        if constexpr(I == 6) return value_.elevation;
+        if constexpr(I == 7) return value_.azimuth;
+        if constexpr(I == 8) return value_.health;
+        if constexpr(I == 9) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "index",
@@ -2452,7 +2827,6 @@ struct MetadataFor<data_gnss::SatelliteStatus>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_gnss::SatelliteStatus",
@@ -2620,6 +2994,51 @@ struct MetadataFor<data_gnss::Raw>
 {
     using type = data_gnss::Raw;
 
+    using ParamTypes = std::tuple<
+        uint8_t,
+        uint8_t,
+        double,
+        uint16_t,
+        uint16_t,
+        uint8_t,
+        data_gnss::GnssConstellationId,
+        uint8_t,
+        data_gnss::GnssSignalId,
+        float,
+        data_gnss::Raw::GnssSignalQuality,
+        double,
+        double,
+        float,
+        float,
+        float,
+        float,
+        float,
+        data_gnss::Raw::ValidFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.index;
+        if constexpr(I == 1) return value_.count;
+        if constexpr(I == 2) return value_.time_of_week;
+        if constexpr(I == 3) return value_.week_number;
+        if constexpr(I == 4) return value_.receiver_id;
+        if constexpr(I == 5) return value_.tracking_channel;
+        if constexpr(I == 6) return value_.gnss_id;
+        if constexpr(I == 7) return value_.satellite_id;
+        if constexpr(I == 8) return value_.signal_id;
+        if constexpr(I == 9) return value_.signal_strength;
+        if constexpr(I == 10) return value_.quality;
+        if constexpr(I == 11) return value_.pseudorange;
+        if constexpr(I == 12) return value_.carrier_phase;
+        if constexpr(I == 13) return value_.doppler;
+        if constexpr(I == 14) return value_.range_uncert;
+        if constexpr(I == 15) return value_.phase_uncert;
+        if constexpr(I == 16) return value_.doppler_uncert;
+        if constexpr(I == 17) return value_.lock_time;
+        if constexpr(I == 18) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "index",
@@ -2793,7 +3212,6 @@ struct MetadataFor<data_gnss::Raw>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_gnss::Raw",
@@ -2838,6 +3256,81 @@ struct MetadataFor<data_gnss::GpsEphemeris>
 {
     using type = data_gnss::GpsEphemeris;
 
+    using ParamTypes = std::tuple<
+        uint8_t,
+        uint8_t,
+        double,
+        uint16_t,
+        uint8_t,
+        uint8_t,
+        uint8_t,
+        uint8_t,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        data_gnss::GpsEphemeris::ValidFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.index;
+        if constexpr(I == 1) return value_.count;
+        if constexpr(I == 2) return value_.time_of_week;
+        if constexpr(I == 3) return value_.week_number;
+        if constexpr(I == 4) return value_.satellite_id;
+        if constexpr(I == 5) return value_.health;
+        if constexpr(I == 6) return value_.iodc;
+        if constexpr(I == 7) return value_.iode;
+        if constexpr(I == 8) return value_.t_oc;
+        if constexpr(I == 9) return value_.af0;
+        if constexpr(I == 10) return value_.af1;
+        if constexpr(I == 11) return value_.af2;
+        if constexpr(I == 12) return value_.t_gd;
+        if constexpr(I == 13) return value_.ISC_L1CA;
+        if constexpr(I == 14) return value_.ISC_L2C;
+        if constexpr(I == 15) return value_.t_oe;
+        if constexpr(I == 16) return value_.a;
+        if constexpr(I == 17) return value_.a_dot;
+        if constexpr(I == 18) return value_.mean_anomaly;
+        if constexpr(I == 19) return value_.delta_mean_motion;
+        if constexpr(I == 20) return value_.delta_mean_motion_dot;
+        if constexpr(I == 21) return value_.eccentricity;
+        if constexpr(I == 22) return value_.argument_of_perigee;
+        if constexpr(I == 23) return value_.omega;
+        if constexpr(I == 24) return value_.omega_dot;
+        if constexpr(I == 25) return value_.inclination;
+        if constexpr(I == 26) return value_.inclination_dot;
+        if constexpr(I == 27) return value_.c_ic;
+        if constexpr(I == 28) return value_.c_is;
+        if constexpr(I == 29) return value_.c_uc;
+        if constexpr(I == 30) return value_.c_us;
+        if constexpr(I == 31) return value_.c_rc;
+        if constexpr(I == 32) return value_.c_rs;
+        if constexpr(I == 33) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "index",
@@ -3146,7 +3639,6 @@ struct MetadataFor<data_gnss::GpsEphemeris>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_gnss::GpsEphemeris",
@@ -3191,6 +3683,81 @@ struct MetadataFor<data_gnss::GalileoEphemeris>
 {
     using type = data_gnss::GalileoEphemeris;
 
+    using ParamTypes = std::tuple<
+        uint8_t,
+        uint8_t,
+        double,
+        uint16_t,
+        uint8_t,
+        uint8_t,
+        uint8_t,
+        uint8_t,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        data_gnss::GalileoEphemeris::ValidFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.index;
+        if constexpr(I == 1) return value_.count;
+        if constexpr(I == 2) return value_.time_of_week;
+        if constexpr(I == 3) return value_.week_number;
+        if constexpr(I == 4) return value_.satellite_id;
+        if constexpr(I == 5) return value_.health;
+        if constexpr(I == 6) return value_.iodc;
+        if constexpr(I == 7) return value_.iode;
+        if constexpr(I == 8) return value_.t_oc;
+        if constexpr(I == 9) return value_.af0;
+        if constexpr(I == 10) return value_.af1;
+        if constexpr(I == 11) return value_.af2;
+        if constexpr(I == 12) return value_.t_gd;
+        if constexpr(I == 13) return value_.ISC_L1CA;
+        if constexpr(I == 14) return value_.ISC_L2C;
+        if constexpr(I == 15) return value_.t_oe;
+        if constexpr(I == 16) return value_.a;
+        if constexpr(I == 17) return value_.a_dot;
+        if constexpr(I == 18) return value_.mean_anomaly;
+        if constexpr(I == 19) return value_.delta_mean_motion;
+        if constexpr(I == 20) return value_.delta_mean_motion_dot;
+        if constexpr(I == 21) return value_.eccentricity;
+        if constexpr(I == 22) return value_.argument_of_perigee;
+        if constexpr(I == 23) return value_.omega;
+        if constexpr(I == 24) return value_.omega_dot;
+        if constexpr(I == 25) return value_.inclination;
+        if constexpr(I == 26) return value_.inclination_dot;
+        if constexpr(I == 27) return value_.c_ic;
+        if constexpr(I == 28) return value_.c_is;
+        if constexpr(I == 29) return value_.c_uc;
+        if constexpr(I == 30) return value_.c_us;
+        if constexpr(I == 31) return value_.c_rc;
+        if constexpr(I == 32) return value_.c_rs;
+        if constexpr(I == 33) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "index",
@@ -3499,7 +4066,6 @@ struct MetadataFor<data_gnss::GalileoEphemeris>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_gnss::GalileoEphemeris",
@@ -3542,6 +4108,63 @@ struct MetadataFor<data_gnss::GloEphemeris>
 {
     using type = data_gnss::GloEphemeris;
 
+    using ParamTypes = std::tuple<
+        uint8_t,
+        uint8_t,
+        double,
+        uint16_t,
+        uint8_t,
+        int8_t,
+        uint32_t,
+        uint32_t,
+        uint8_t,
+        double,
+        double,
+        Vector3d,
+        Vector3f,
+        Vector3f,
+        uint8_t,
+        uint8_t,
+        uint8_t,
+        float,
+        uint8_t,
+        uint8_t,
+        uint8_t,
+        uint8_t,
+        uint8_t,
+        uint8_t,
+        data_gnss::GloEphemeris::ValidFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.index;
+        if constexpr(I == 1) return value_.count;
+        if constexpr(I == 2) return value_.time_of_week;
+        if constexpr(I == 3) return value_.week_number;
+        if constexpr(I == 4) return value_.satellite_id;
+        if constexpr(I == 5) return value_.freq_number;
+        if constexpr(I == 6) return value_.tk;
+        if constexpr(I == 7) return value_.tb;
+        if constexpr(I == 8) return value_.sat_type;
+        if constexpr(I == 9) return value_.gamma;
+        if constexpr(I == 10) return value_.tau_n;
+        if constexpr(I == 11) return value_.x;
+        if constexpr(I == 12) return value_.v;
+        if constexpr(I == 13) return value_.a;
+        if constexpr(I == 14) return value_.health;
+        if constexpr(I == 15) return value_.P;
+        if constexpr(I == 16) return value_.NT;
+        if constexpr(I == 17) return value_.delta_tau_n;
+        if constexpr(I == 18) return value_.Ft;
+        if constexpr(I == 19) return value_.En;
+        if constexpr(I == 20) return value_.P1;
+        if constexpr(I == 21) return value_.P2;
+        if constexpr(I == 22) return value_.P3;
+        if constexpr(I == 23) return value_.P4;
+        if constexpr(I == 24) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "index",
@@ -3769,7 +4392,6 @@ struct MetadataFor<data_gnss::GloEphemeris>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_gnss::GloEphemeris",
@@ -3814,6 +4436,81 @@ struct MetadataFor<data_gnss::BeidouEphemeris>
 {
     using type = data_gnss::BeidouEphemeris;
 
+    using ParamTypes = std::tuple<
+        uint8_t,
+        uint8_t,
+        double,
+        uint16_t,
+        uint8_t,
+        uint8_t,
+        uint8_t,
+        uint8_t,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        double,
+        data_gnss::BeidouEphemeris::ValidFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.index;
+        if constexpr(I == 1) return value_.count;
+        if constexpr(I == 2) return value_.time_of_week;
+        if constexpr(I == 3) return value_.week_number;
+        if constexpr(I == 4) return value_.satellite_id;
+        if constexpr(I == 5) return value_.health;
+        if constexpr(I == 6) return value_.iodc;
+        if constexpr(I == 7) return value_.iode;
+        if constexpr(I == 8) return value_.t_oc;
+        if constexpr(I == 9) return value_.af0;
+        if constexpr(I == 10) return value_.af1;
+        if constexpr(I == 11) return value_.af2;
+        if constexpr(I == 12) return value_.t_gd;
+        if constexpr(I == 13) return value_.ISC_L1CA;
+        if constexpr(I == 14) return value_.ISC_L2C;
+        if constexpr(I == 15) return value_.t_oe;
+        if constexpr(I == 16) return value_.a;
+        if constexpr(I == 17) return value_.a_dot;
+        if constexpr(I == 18) return value_.mean_anomaly;
+        if constexpr(I == 19) return value_.delta_mean_motion;
+        if constexpr(I == 20) return value_.delta_mean_motion_dot;
+        if constexpr(I == 21) return value_.eccentricity;
+        if constexpr(I == 22) return value_.argument_of_perigee;
+        if constexpr(I == 23) return value_.omega;
+        if constexpr(I == 24) return value_.omega_dot;
+        if constexpr(I == 25) return value_.inclination;
+        if constexpr(I == 26) return value_.inclination_dot;
+        if constexpr(I == 27) return value_.c_ic;
+        if constexpr(I == 28) return value_.c_is;
+        if constexpr(I == 29) return value_.c_uc;
+        if constexpr(I == 30) return value_.c_us;
+        if constexpr(I == 31) return value_.c_rc;
+        if constexpr(I == 32) return value_.c_rs;
+        if constexpr(I == 33) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "index",
@@ -4122,7 +4819,6 @@ struct MetadataFor<data_gnss::BeidouEphemeris>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_gnss::BeidouEphemeris",
@@ -4168,6 +4864,23 @@ struct MetadataFor<data_gnss::GpsIonoCorr>
 {
     using type = data_gnss::GpsIonoCorr;
 
+    using ParamTypes = std::tuple<
+        double,
+        uint16_t,
+        double,
+        double,
+        data_gnss::GpsIonoCorr::ValidFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.time_of_week;
+        if constexpr(I == 1) return value_.week_number;
+        if constexpr(I == 2) return value_.alpha;
+        if constexpr(I == 3) return value_.beta;
+        if constexpr(I == 4) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "time_of_week",
@@ -4215,7 +4928,6 @@ struct MetadataFor<data_gnss::GpsIonoCorr>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_gnss::GpsIonoCorr",
@@ -4261,6 +4973,23 @@ struct MetadataFor<data_gnss::GalileoIonoCorr>
 {
     using type = data_gnss::GalileoIonoCorr;
 
+    using ParamTypes = std::tuple<
+        double,
+        uint16_t,
+        Vector3d,
+        uint8_t,
+        data_gnss::GalileoIonoCorr::ValidFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.time_of_week;
+        if constexpr(I == 1) return value_.week_number;
+        if constexpr(I == 2) return value_.alpha;
+        if constexpr(I == 3) return value_.disturbance_flags;
+        if constexpr(I == 4) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "time_of_week",
@@ -4308,7 +5037,6 @@ struct MetadataFor<data_gnss::GalileoIonoCorr>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_gnss::GalileoIonoCorr",
@@ -4355,6 +5083,25 @@ struct MetadataFor<data_gnss::BeidouIonoCorr>
 {
     using type = data_gnss::BeidouIonoCorr;
 
+    using ParamTypes = std::tuple<
+        double,
+        uint16_t,
+        double,
+        double,
+        double,
+        data_gnss::BeidouIonoCorr::ValidFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.time_of_week;
+        if constexpr(I == 1) return value_.week_number;
+        if constexpr(I == 2) return value_.alpha;
+        if constexpr(I == 3) return value_.beta;
+        if constexpr(I == 4) return value_.alpha_corr;
+        if constexpr(I == 5) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "time_of_week",
@@ -4411,7 +5158,6 @@ struct MetadataFor<data_gnss::BeidouIonoCorr>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "data_gnss::BeidouIonoCorr",

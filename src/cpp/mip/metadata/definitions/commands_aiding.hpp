@@ -35,6 +35,17 @@ struct MetadataFor<commands_aiding::FrameConfig::Rotation>
 {
     using type = commands_aiding::FrameConfig::Rotation;
 
+    using ParamTypes = std::tuple<
+        Vector3f,
+        Quatf
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.euler;
+        if constexpr(I == 1) return value_.quaternion;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "euler",
@@ -55,7 +66,6 @@ struct MetadataFor<commands_aiding::FrameConfig::Rotation>
             /* .condition     = */ {ParameterInfo::Condition::Type::ENUM, microstrain::Index(1) /* format */, static_cast<uint16_t>(commands_aiding::FrameConfig::Format::QUATERNION)} /* format == QUATERNION */,
         },
     };
-
     static constexpr inline StructInfo value = {
         /* .name        = */ "Rotation",
         /* .title       = */ "Rotation",
@@ -71,6 +81,23 @@ struct MetadataFor<commands_aiding::FrameConfig::Response>
 {
     using type = commands_aiding::FrameConfig::Response;
 
+    using ParamTypes = std::tuple<
+        uint8_t,
+        commands_aiding::FrameConfig::Format,
+        bool,
+        Vector3f,
+        commands_aiding::FrameConfig::Rotation
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.frame_id;
+        if constexpr(I == 1) return value_.format;
+        if constexpr(I == 2) return value_.tracking_enabled;
+        if constexpr(I == 3) return value_.translation;
+        if constexpr(I == 4) return value_.rotation;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "frame_id",
@@ -118,7 +145,6 @@ struct MetadataFor<commands_aiding::FrameConfig::Response>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_aiding::FrameConfig::Response",
@@ -139,6 +165,25 @@ struct MetadataFor<commands_aiding::FrameConfig>
 {
     using type = commands_aiding::FrameConfig;
 
+    using ParamTypes = std::tuple<
+        FunctionSelector,
+        uint8_t,
+        commands_aiding::FrameConfig::Format,
+        bool,
+        Vector3f,
+        commands_aiding::FrameConfig::Rotation
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.function;
+        if constexpr(I == 1) return value_.frame_id;
+        if constexpr(I == 2) return value_.format;
+        if constexpr(I == 3) return value_.tracking_enabled;
+        if constexpr(I == 4) return value_.translation;
+        if constexpr(I == 5) return value_.rotation;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         FUNCTION_SELECTOR_PARAM,
         {
@@ -187,7 +232,6 @@ struct MetadataFor<commands_aiding::FrameConfig>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_aiding::FrameConfig",
@@ -231,6 +275,15 @@ struct MetadataFor<commands_aiding::EchoControl::Response>
 {
     using type = commands_aiding::EchoControl::Response;
 
+    using ParamTypes = std::tuple<
+        commands_aiding::EchoControl::Mode
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.mode;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "mode",
@@ -242,7 +295,6 @@ struct MetadataFor<commands_aiding::EchoControl::Response>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_aiding::EchoControl::Response",
@@ -263,6 +315,17 @@ struct MetadataFor<commands_aiding::EchoControl>
 {
     using type = commands_aiding::EchoControl;
 
+    using ParamTypes = std::tuple<
+        FunctionSelector,
+        commands_aiding::EchoControl::Mode
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.function;
+        if constexpr(I == 1) return value_.mode;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         FUNCTION_SELECTOR_PARAM,
         {
@@ -275,7 +338,6 @@ struct MetadataFor<commands_aiding::EchoControl>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_aiding::EchoControl",
@@ -319,6 +381,19 @@ struct MetadataFor<commands_aiding::Time>
 {
     using type = commands_aiding::Time;
 
+    using ParamTypes = std::tuple<
+        commands_aiding::Time::Timebase,
+        uint8_t,
+        uint64_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.timebase;
+        if constexpr(I == 1) return value_.reserved;
+        if constexpr(I == 2) return value_.nanoseconds;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "timebase",
@@ -348,7 +423,6 @@ struct MetadataFor<commands_aiding::Time>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline StructInfo value = {
         /* .name        = */ "Time",
         /* .title       = */ "Time",
@@ -386,6 +460,23 @@ struct MetadataFor<commands_aiding::PosEcef>
 {
     using type = commands_aiding::PosEcef;
 
+    using ParamTypes = std::tuple<
+        commands_aiding::Time,
+        uint8_t,
+        Vector3d,
+        Vector3f,
+        commands_aiding::PosEcef::ValidFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.time;
+        if constexpr(I == 1) return value_.frame_id;
+        if constexpr(I == 2) return value_.position;
+        if constexpr(I == 3) return value_.uncertainty;
+        if constexpr(I == 4) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "time",
@@ -433,7 +524,6 @@ struct MetadataFor<commands_aiding::PosEcef>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_aiding::PosEcef",
@@ -477,6 +567,27 @@ struct MetadataFor<commands_aiding::PosLlh>
 {
     using type = commands_aiding::PosLlh;
 
+    using ParamTypes = std::tuple<
+        commands_aiding::Time,
+        uint8_t,
+        double,
+        double,
+        double,
+        Vector3f,
+        commands_aiding::PosLlh::ValidFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.time;
+        if constexpr(I == 1) return value_.frame_id;
+        if constexpr(I == 2) return value_.latitude;
+        if constexpr(I == 3) return value_.longitude;
+        if constexpr(I == 4) return value_.height;
+        if constexpr(I == 5) return value_.uncertainty;
+        if constexpr(I == 6) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "time",
@@ -542,7 +653,6 @@ struct MetadataFor<commands_aiding::PosLlh>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_aiding::PosLlh",
@@ -564,6 +674,23 @@ struct MetadataFor<commands_aiding::HeightAboveEllipsoid>
 {
     using type = commands_aiding::HeightAboveEllipsoid;
 
+    using ParamTypes = std::tuple<
+        commands_aiding::Time,
+        uint8_t,
+        float,
+        float,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.time;
+        if constexpr(I == 1) return value_.frame_id;
+        if constexpr(I == 2) return value_.height;
+        if constexpr(I == 3) return value_.uncertainty;
+        if constexpr(I == 4) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "time",
@@ -611,7 +738,6 @@ struct MetadataFor<commands_aiding::HeightAboveEllipsoid>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_aiding::HeightAboveEllipsoid",
@@ -655,6 +781,23 @@ struct MetadataFor<commands_aiding::VelEcef>
 {
     using type = commands_aiding::VelEcef;
 
+    using ParamTypes = std::tuple<
+        commands_aiding::Time,
+        uint8_t,
+        Vector3f,
+        Vector3f,
+        commands_aiding::VelEcef::ValidFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.time;
+        if constexpr(I == 1) return value_.frame_id;
+        if constexpr(I == 2) return value_.velocity;
+        if constexpr(I == 3) return value_.uncertainty;
+        if constexpr(I == 4) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "time",
@@ -702,7 +845,6 @@ struct MetadataFor<commands_aiding::VelEcef>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_aiding::VelEcef",
@@ -746,6 +888,23 @@ struct MetadataFor<commands_aiding::VelNed>
 {
     using type = commands_aiding::VelNed;
 
+    using ParamTypes = std::tuple<
+        commands_aiding::Time,
+        uint8_t,
+        Vector3f,
+        Vector3f,
+        commands_aiding::VelNed::ValidFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.time;
+        if constexpr(I == 1) return value_.frame_id;
+        if constexpr(I == 2) return value_.velocity;
+        if constexpr(I == 3) return value_.uncertainty;
+        if constexpr(I == 4) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "time",
@@ -793,7 +952,6 @@ struct MetadataFor<commands_aiding::VelNed>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_aiding::VelNed",
@@ -837,6 +995,23 @@ struct MetadataFor<commands_aiding::VelBodyFrame>
 {
     using type = commands_aiding::VelBodyFrame;
 
+    using ParamTypes = std::tuple<
+        commands_aiding::Time,
+        uint8_t,
+        Vector3f,
+        Vector3f,
+        commands_aiding::VelBodyFrame::ValidFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.time;
+        if constexpr(I == 1) return value_.frame_id;
+        if constexpr(I == 2) return value_.velocity;
+        if constexpr(I == 3) return value_.uncertainty;
+        if constexpr(I == 4) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "time",
@@ -884,7 +1059,6 @@ struct MetadataFor<commands_aiding::VelBodyFrame>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_aiding::VelBodyFrame",
@@ -906,6 +1080,23 @@ struct MetadataFor<commands_aiding::HeadingTrue>
 {
     using type = commands_aiding::HeadingTrue;
 
+    using ParamTypes = std::tuple<
+        commands_aiding::Time,
+        uint8_t,
+        float,
+        float,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.time;
+        if constexpr(I == 1) return value_.frame_id;
+        if constexpr(I == 2) return value_.heading;
+        if constexpr(I == 3) return value_.uncertainty;
+        if constexpr(I == 4) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "time",
@@ -953,7 +1144,6 @@ struct MetadataFor<commands_aiding::HeadingTrue>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_aiding::HeadingTrue",
@@ -997,6 +1187,23 @@ struct MetadataFor<commands_aiding::MagneticField>
 {
     using type = commands_aiding::MagneticField;
 
+    using ParamTypes = std::tuple<
+        commands_aiding::Time,
+        uint8_t,
+        Vector3f,
+        Vector3f,
+        commands_aiding::MagneticField::ValidFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.time;
+        if constexpr(I == 1) return value_.frame_id;
+        if constexpr(I == 2) return value_.magnetic_field;
+        if constexpr(I == 3) return value_.uncertainty;
+        if constexpr(I == 4) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "time",
@@ -1044,7 +1251,6 @@ struct MetadataFor<commands_aiding::MagneticField>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_aiding::MagneticField",
@@ -1066,6 +1272,23 @@ struct MetadataFor<commands_aiding::Pressure>
 {
     using type = commands_aiding::Pressure;
 
+    using ParamTypes = std::tuple<
+        commands_aiding::Time,
+        uint8_t,
+        float,
+        float,
+        uint16_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.time;
+        if constexpr(I == 1) return value_.frame_id;
+        if constexpr(I == 2) return value_.pressure;
+        if constexpr(I == 3) return value_.uncertainty;
+        if constexpr(I == 4) return value_.valid_flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "time",
@@ -1113,7 +1336,6 @@ struct MetadataFor<commands_aiding::Pressure>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_aiding::Pressure",

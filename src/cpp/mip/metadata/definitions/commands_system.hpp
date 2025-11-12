@@ -14,6 +14,15 @@ struct MetadataFor<commands_system::CommMode::Response>
 {
     using type = commands_system::CommMode::Response;
 
+    using ParamTypes = std::tuple<
+        uint8_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.mode;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "mode",
@@ -25,7 +34,6 @@ struct MetadataFor<commands_system::CommMode::Response>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_system::CommMode::Response",
@@ -46,6 +54,17 @@ struct MetadataFor<commands_system::CommMode>
 {
     using type = commands_system::CommMode;
 
+    using ParamTypes = std::tuple<
+        FunctionSelector,
+        uint8_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.function;
+        if constexpr(I == 1) return value_.mode;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         FUNCTION_SELECTOR_PARAM,
         {
@@ -58,7 +77,6 @@ struct MetadataFor<commands_system::CommMode>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_system::CommMode",
@@ -129,6 +147,19 @@ struct MetadataFor<commands_system::InterfaceControl::Response>
 {
     using type = commands_system::InterfaceControl::Response;
 
+    using ParamTypes = std::tuple<
+        commands_system::CommsInterface,
+        commands_system::CommsProtocol,
+        commands_system::CommsProtocol
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.port;
+        if constexpr(I == 1) return value_.protocols_incoming;
+        if constexpr(I == 2) return value_.protocols_outgoing;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "port",
@@ -158,7 +189,6 @@ struct MetadataFor<commands_system::InterfaceControl::Response>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_system::InterfaceControl::Response",
@@ -179,6 +209,21 @@ struct MetadataFor<commands_system::InterfaceControl>
 {
     using type = commands_system::InterfaceControl;
 
+    using ParamTypes = std::tuple<
+        FunctionSelector,
+        commands_system::CommsInterface,
+        commands_system::CommsProtocol,
+        commands_system::CommsProtocol
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.function;
+        if constexpr(I == 1) return value_.port;
+        if constexpr(I == 2) return value_.protocols_incoming;
+        if constexpr(I == 3) return value_.protocols_outgoing;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         FUNCTION_SELECTOR_PARAM,
         {
@@ -209,7 +254,6 @@ struct MetadataFor<commands_system::InterfaceControl>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_system::InterfaceControl",

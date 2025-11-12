@@ -75,6 +75,15 @@ struct MetadataFor<commands_rtk::GetStatusFlags::Response>
 {
     using type = commands_rtk::GetStatusFlags::Response;
 
+    using ParamTypes = std::tuple<
+        commands_rtk::GetStatusFlags::StatusFlags
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.flags;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "flags",
@@ -86,7 +95,6 @@ struct MetadataFor<commands_rtk::GetStatusFlags::Response>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_rtk::GetStatusFlags::Response",
@@ -106,6 +114,8 @@ template<>
 struct MetadataFor<commands_rtk::GetStatusFlags>
 {
     using type = commands_rtk::GetStatusFlags;
+
+    using ParamTypes = std::tuple<>;
 
     static constexpr inline FieldInfo value = {
         {
@@ -128,6 +138,15 @@ struct MetadataFor<commands_rtk::GetImei::Response>
 {
     using type = commands_rtk::GetImei::Response;
 
+    using ParamTypes = std::tuple<
+        char
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.IMEI;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "IMEI",
@@ -139,7 +158,6 @@ struct MetadataFor<commands_rtk::GetImei::Response>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_rtk::GetImei::Response",
@@ -159,6 +177,8 @@ template<>
 struct MetadataFor<commands_rtk::GetImei>
 {
     using type = commands_rtk::GetImei;
+
+    using ParamTypes = std::tuple<>;
 
     static constexpr inline FieldInfo value = {
         {
@@ -181,6 +201,15 @@ struct MetadataFor<commands_rtk::GetImsi::Response>
 {
     using type = commands_rtk::GetImsi::Response;
 
+    using ParamTypes = std::tuple<
+        char
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.IMSI;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "IMSI",
@@ -192,7 +221,6 @@ struct MetadataFor<commands_rtk::GetImsi::Response>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_rtk::GetImsi::Response",
@@ -212,6 +240,8 @@ template<>
 struct MetadataFor<commands_rtk::GetImsi>
 {
     using type = commands_rtk::GetImsi;
+
+    using ParamTypes = std::tuple<>;
 
     static constexpr inline FieldInfo value = {
         {
@@ -234,6 +264,15 @@ struct MetadataFor<commands_rtk::GetIccid::Response>
 {
     using type = commands_rtk::GetIccid::Response;
 
+    using ParamTypes = std::tuple<
+        char
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.ICCID;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "ICCID",
@@ -245,7 +284,6 @@ struct MetadataFor<commands_rtk::GetIccid::Response>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_rtk::GetIccid::Response",
@@ -265,6 +303,8 @@ template<>
 struct MetadataFor<commands_rtk::GetIccid>
 {
     using type = commands_rtk::GetIccid;
+
+    using ParamTypes = std::tuple<>;
 
     static constexpr inline FieldInfo value = {
         {
@@ -308,6 +348,15 @@ struct MetadataFor<commands_rtk::ConnectedDeviceType::Response>
 {
     using type = commands_rtk::ConnectedDeviceType::Response;
 
+    using ParamTypes = std::tuple<
+        commands_rtk::ConnectedDeviceType::Type
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.devType;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "devType",
@@ -319,7 +368,6 @@ struct MetadataFor<commands_rtk::ConnectedDeviceType::Response>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_rtk::ConnectedDeviceType::Response",
@@ -340,6 +388,17 @@ struct MetadataFor<commands_rtk::ConnectedDeviceType>
 {
     using type = commands_rtk::ConnectedDeviceType;
 
+    using ParamTypes = std::tuple<
+        FunctionSelector,
+        commands_rtk::ConnectedDeviceType::Type
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.function;
+        if constexpr(I == 1) return value_.devType;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         FUNCTION_SELECTOR_PARAM,
         {
@@ -352,7 +411,6 @@ struct MetadataFor<commands_rtk::ConnectedDeviceType>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_rtk::ConnectedDeviceType",
@@ -374,6 +432,15 @@ struct MetadataFor<commands_rtk::GetActCode::Response>
 {
     using type = commands_rtk::GetActCode::Response;
 
+    using ParamTypes = std::tuple<
+        char
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.ActivationCode;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "ActivationCode",
@@ -385,7 +452,6 @@ struct MetadataFor<commands_rtk::GetActCode::Response>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_rtk::GetActCode::Response",
@@ -405,6 +471,8 @@ template<>
 struct MetadataFor<commands_rtk::GetActCode>
 {
     using type = commands_rtk::GetActCode;
+
+    using ParamTypes = std::tuple<>;
 
     static constexpr inline FieldInfo value = {
         {
@@ -427,6 +495,15 @@ struct MetadataFor<commands_rtk::GetModemFirmwareVersion::Response>
 {
     using type = commands_rtk::GetModemFirmwareVersion::Response;
 
+    using ParamTypes = std::tuple<
+        char
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.ModemFirmwareVersion;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "ModemFirmwareVersion",
@@ -438,7 +515,6 @@ struct MetadataFor<commands_rtk::GetModemFirmwareVersion::Response>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_rtk::GetModemFirmwareVersion::Response",
@@ -458,6 +534,8 @@ template<>
 struct MetadataFor<commands_rtk::GetModemFirmwareVersion>
 {
     using type = commands_rtk::GetModemFirmwareVersion;
+
+    using ParamTypes = std::tuple<>;
 
     static constexpr inline FieldInfo value = {
         {
@@ -480,6 +558,19 @@ struct MetadataFor<commands_rtk::GetRssi::Response>
 {
     using type = commands_rtk::GetRssi::Response;
 
+    using ParamTypes = std::tuple<
+        bool,
+        int32_t,
+        int32_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.valid;
+        if constexpr(I == 1) return value_.rssi;
+        if constexpr(I == 2) return value_.signalQuality;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "valid",
@@ -509,7 +600,6 @@ struct MetadataFor<commands_rtk::GetRssi::Response>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_rtk::GetRssi::Response",
@@ -529,6 +619,8 @@ template<>
 struct MetadataFor<commands_rtk::GetRssi>
 {
     using type = commands_rtk::GetRssi;
+
+    using ParamTypes = std::tuple<>;
 
     static constexpr inline FieldInfo value = {
         {
@@ -573,6 +665,21 @@ struct MetadataFor<commands_rtk::ServiceStatus::Response>
 {
     using type = commands_rtk::ServiceStatus::Response;
 
+    using ParamTypes = std::tuple<
+        commands_rtk::ServiceStatus::ServiceFlags,
+        uint32_t,
+        uint32_t,
+        uint64_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.flags;
+        if constexpr(I == 1) return value_.receivedBytes;
+        if constexpr(I == 2) return value_.lastBytes;
+        if constexpr(I == 3) return value_.lastBytesTime;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "flags",
@@ -611,7 +718,6 @@ struct MetadataFor<commands_rtk::ServiceStatus::Response>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_rtk::ServiceStatus::Response",
@@ -632,6 +738,17 @@ struct MetadataFor<commands_rtk::ServiceStatus>
 {
     using type = commands_rtk::ServiceStatus;
 
+    using ParamTypes = std::tuple<
+        uint32_t,
+        uint32_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.reserved1;
+        if constexpr(I == 1) return value_.reserved2;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "reserved1",
@@ -652,7 +769,6 @@ struct MetadataFor<commands_rtk::ServiceStatus>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_rtk::ServiceStatus",
@@ -695,6 +811,15 @@ struct MetadataFor<commands_rtk::ProdEraseStorage>
 {
     using type = commands_rtk::ProdEraseStorage;
 
+    using ParamTypes = std::tuple<
+        commands_rtk::MediaSelector
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.media;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "media",
@@ -706,7 +831,6 @@ struct MetadataFor<commands_rtk::ProdEraseStorage>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_rtk::ProdEraseStorage",
@@ -750,6 +874,21 @@ struct MetadataFor<commands_rtk::LedControl>
 {
     using type = commands_rtk::LedControl;
 
+    using ParamTypes = std::tuple<
+        uint8_t,
+        uint8_t,
+        commands_rtk::LedAction,
+        uint32_t
+    >;
+
+    template<size_t I>
+    static auto& access(const type& value_) {
+        if constexpr(I == 0) return value_.primaryColor;
+        if constexpr(I == 1) return value_.altColor;
+        if constexpr(I == 2) return value_.act;
+        if constexpr(I == 3) return value_.period;
+    }
+    
     static constexpr inline ParameterInfo parameters[] = {
         {
             /* .name          = */ "primaryColor",
@@ -788,7 +927,6 @@ struct MetadataFor<commands_rtk::LedControl>
             /* .condition     = */ {},
         },
     };
-
     static constexpr inline FieldInfo value = {
         {
             /* .name        = */ "commands_rtk::LedControl",
@@ -809,6 +947,8 @@ template<>
 struct MetadataFor<commands_rtk::ModemHardReset>
 {
     using type = commands_rtk::ModemHardReset;
+
+    using ParamTypes = std::tuple<>;
 
     static constexpr inline FieldInfo value = {
         {
