@@ -20,8 +20,8 @@ struct MetadataFor<commands_gnss::ReceiverInfo::Info>
         char
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.receiver_id;
         if constexpr(I == 1) return value_.mip_data_descriptor_set;
         if constexpr(I == 2) return value_.description;
@@ -76,8 +76,8 @@ struct MetadataFor<commands_gnss::ReceiverInfo::Response>
         commands_gnss::ReceiverInfo::Info
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.num_receivers;
         if constexpr(I == 1) return value_.receiver_info;
     }
@@ -153,8 +153,8 @@ struct MetadataFor<commands_gnss::SignalConfiguration::Response>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.gps_enable;
         if constexpr(I == 1) return value_.glonass_enable;
         if constexpr(I == 2) return value_.galileo_enable;
@@ -238,8 +238,8 @@ struct MetadataFor<commands_gnss::SignalConfiguration>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.gps_enable;
         if constexpr(I == 2) return value_.glonass_enable;
@@ -328,8 +328,8 @@ struct MetadataFor<commands_gnss::SpartnConfiguration::Response>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.enable;
         if constexpr(I == 1) return value_.type;
         if constexpr(I == 2) return value_.current_key_tow;
@@ -446,8 +446,8 @@ struct MetadataFor<commands_gnss::SpartnConfiguration>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.enable;
         if constexpr(I == 2) return value_.type;
@@ -560,8 +560,8 @@ struct MetadataFor<commands_gnss::RtkDongleConfiguration::Response>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.enable;
         if constexpr(I == 1) return value_.reserved;
     }
@@ -612,8 +612,8 @@ struct MetadataFor<commands_gnss::RtkDongleConfiguration>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.enable;
         if constexpr(I == 2) return value_.reserved;

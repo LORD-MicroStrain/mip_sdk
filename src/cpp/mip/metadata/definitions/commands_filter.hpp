@@ -43,8 +43,8 @@ struct MetadataFor<commands_filter::SetInitialAttitude>
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.roll;
         if constexpr(I == 1) return value_.pitch;
         if constexpr(I == 2) return value_.heading;
@@ -130,8 +130,8 @@ struct MetadataFor<commands_filter::EstimationControl::Response>
         commands_filter::EstimationControl::EnableFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.enable;
     }
     
@@ -171,8 +171,8 @@ struct MetadataFor<commands_filter::EstimationControl>
         commands_filter::EstimationControl::EnableFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.enable;
     }
@@ -221,8 +221,8 @@ struct MetadataFor<commands_filter::ExternalGnssUpdate>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.gps_time;
         if constexpr(I == 1) return value_.gps_week;
         if constexpr(I == 2) return value_.latitude;
@@ -334,8 +334,8 @@ struct MetadataFor<commands_filter::ExternalHeadingUpdate>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.heading;
         if constexpr(I == 1) return value_.heading_uncertainty;
         if constexpr(I == 2) return value_.type;
@@ -399,8 +399,8 @@ struct MetadataFor<commands_filter::ExternalHeadingUpdateWithTime>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.gps_time;
         if constexpr(I == 1) return value_.gps_week;
         if constexpr(I == 2) return value_.heading;
@@ -502,8 +502,8 @@ struct MetadataFor<commands_filter::TareOrientation::Response>
         commands_filter::TareOrientation::MipTareAxes
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.axes;
     }
     
@@ -543,8 +543,8 @@ struct MetadataFor<commands_filter::TareOrientation>
         commands_filter::TareOrientation::MipTareAxes
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.axes;
     }
@@ -609,8 +609,8 @@ struct MetadataFor<commands_filter::VehicleDynamicsMode::Response>
         commands_filter::VehicleDynamicsMode::DynamicsMode
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.mode;
     }
     
@@ -650,8 +650,8 @@ struct MetadataFor<commands_filter::VehicleDynamicsMode>
         commands_filter::VehicleDynamicsMode::DynamicsMode
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.mode;
     }
@@ -695,8 +695,8 @@ struct MetadataFor<commands_filter::SensorToVehicleRotationEuler::Response>
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.roll;
         if constexpr(I == 1) return value_.pitch;
         if constexpr(I == 2) return value_.yaw;
@@ -758,8 +758,8 @@ struct MetadataFor<commands_filter::SensorToVehicleRotationEuler>
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.roll;
         if constexpr(I == 2) return value_.pitch;
@@ -821,8 +821,8 @@ struct MetadataFor<commands_filter::SensorToVehicleRotationDcm::Response>
         Matrix3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.dcm;
     }
     
@@ -862,8 +862,8 @@ struct MetadataFor<commands_filter::SensorToVehicleRotationDcm>
         Matrix3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.dcm;
     }
@@ -905,8 +905,8 @@ struct MetadataFor<commands_filter::SensorToVehicleRotationQuaternion::Response>
         Quatf
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.quat;
     }
     
@@ -946,8 +946,8 @@ struct MetadataFor<commands_filter::SensorToVehicleRotationQuaternion>
         Quatf
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.quat;
     }
@@ -989,8 +989,8 @@ struct MetadataFor<commands_filter::SensorToVehicleOffset::Response>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.offset;
     }
     
@@ -1030,8 +1030,8 @@ struct MetadataFor<commands_filter::SensorToVehicleOffset>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.offset;
     }
@@ -1073,8 +1073,8 @@ struct MetadataFor<commands_filter::AntennaOffset::Response>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.offset;
     }
     
@@ -1114,8 +1114,8 @@ struct MetadataFor<commands_filter::AntennaOffset>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.offset;
     }
@@ -1180,8 +1180,8 @@ struct MetadataFor<commands_filter::GnssSource::Response>
         commands_filter::GnssSource::Source
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.source;
     }
     
@@ -1221,8 +1221,8 @@ struct MetadataFor<commands_filter::GnssSource>
         commands_filter::GnssSource::Source
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.source;
     }
@@ -1291,8 +1291,8 @@ struct MetadataFor<commands_filter::HeadingSource::Response>
         commands_filter::HeadingSource::Source
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.source;
     }
     
@@ -1332,8 +1332,8 @@ struct MetadataFor<commands_filter::HeadingSource>
         commands_filter::HeadingSource::Source
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.source;
     }
@@ -1375,8 +1375,8 @@ struct MetadataFor<commands_filter::AutoInitControl::Response>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.enable;
     }
     
@@ -1416,8 +1416,8 @@ struct MetadataFor<commands_filter::AutoInitControl>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.enable;
     }
@@ -1459,8 +1459,8 @@ struct MetadataFor<commands_filter::AccelNoise::Response>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.noise;
     }
     
@@ -1500,8 +1500,8 @@ struct MetadataFor<commands_filter::AccelNoise>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.noise;
     }
@@ -1543,8 +1543,8 @@ struct MetadataFor<commands_filter::GyroNoise::Response>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.noise;
     }
     
@@ -1584,8 +1584,8 @@ struct MetadataFor<commands_filter::GyroNoise>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.noise;
     }
@@ -1628,8 +1628,8 @@ struct MetadataFor<commands_filter::AccelBiasModel::Response>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.beta;
         if constexpr(I == 1) return value_.noise;
     }
@@ -1680,8 +1680,8 @@ struct MetadataFor<commands_filter::AccelBiasModel>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.beta;
         if constexpr(I == 2) return value_.noise;
@@ -1734,8 +1734,8 @@ struct MetadataFor<commands_filter::GyroBiasModel::Response>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.beta;
         if constexpr(I == 1) return value_.noise;
     }
@@ -1786,8 +1786,8 @@ struct MetadataFor<commands_filter::GyroBiasModel>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.beta;
         if constexpr(I == 2) return value_.noise;
@@ -1860,8 +1860,8 @@ struct MetadataFor<commands_filter::AltitudeAiding::Response>
         commands_filter::AltitudeAiding::AidingSelector
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.selector;
     }
     
@@ -1901,8 +1901,8 @@ struct MetadataFor<commands_filter::AltitudeAiding>
         commands_filter::AltitudeAiding::AidingSelector
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.selector;
     }
@@ -1965,8 +1965,8 @@ struct MetadataFor<commands_filter::PitchRollAiding::Response>
         commands_filter::PitchRollAiding::AidingSource
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.source;
     }
     
@@ -2006,8 +2006,8 @@ struct MetadataFor<commands_filter::PitchRollAiding>
         commands_filter::PitchRollAiding::AidingSource
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.source;
     }
@@ -2050,8 +2050,8 @@ struct MetadataFor<commands_filter::AutoZupt::Response>
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.enable;
         if constexpr(I == 1) return value_.threshold;
     }
@@ -2102,8 +2102,8 @@ struct MetadataFor<commands_filter::AutoZupt>
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.enable;
         if constexpr(I == 2) return value_.threshold;
@@ -2156,8 +2156,8 @@ struct MetadataFor<commands_filter::AutoAngularZupt::Response>
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.enable;
         if constexpr(I == 1) return value_.threshold;
     }
@@ -2208,8 +2208,8 @@ struct MetadataFor<commands_filter::AutoAngularZupt>
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.enable;
         if constexpr(I == 2) return value_.threshold;
@@ -2307,8 +2307,8 @@ struct MetadataFor<commands_filter::MagCaptureAutoCal>
         FunctionSelector
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
     }
     
@@ -2341,8 +2341,8 @@ struct MetadataFor<commands_filter::GravityNoise::Response>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.noise;
     }
     
@@ -2382,8 +2382,8 @@ struct MetadataFor<commands_filter::GravityNoise>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.noise;
     }
@@ -2425,8 +2425,8 @@ struct MetadataFor<commands_filter::PressureAltitudeNoise::Response>
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.noise;
     }
     
@@ -2466,8 +2466,8 @@ struct MetadataFor<commands_filter::PressureAltitudeNoise>
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.noise;
     }
@@ -2509,8 +2509,8 @@ struct MetadataFor<commands_filter::HardIronOffsetNoise::Response>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.noise;
     }
     
@@ -2550,8 +2550,8 @@ struct MetadataFor<commands_filter::HardIronOffsetNoise>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.noise;
     }
@@ -2593,8 +2593,8 @@ struct MetadataFor<commands_filter::SoftIronMatrixNoise::Response>
         Matrix3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.noise;
     }
     
@@ -2634,8 +2634,8 @@ struct MetadataFor<commands_filter::SoftIronMatrixNoise>
         Matrix3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.noise;
     }
@@ -2677,8 +2677,8 @@ struct MetadataFor<commands_filter::MagNoise::Response>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.noise;
     }
     
@@ -2718,8 +2718,8 @@ struct MetadataFor<commands_filter::MagNoise>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.noise;
     }
@@ -2784,8 +2784,8 @@ struct MetadataFor<commands_filter::InclinationSource::Response>
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.source;
         if constexpr(I == 1) return value_.inclination;
     }
@@ -2836,8 +2836,8 @@ struct MetadataFor<commands_filter::InclinationSource>
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.source;
         if constexpr(I == 2) return value_.inclination;
@@ -2890,8 +2890,8 @@ struct MetadataFor<commands_filter::MagneticDeclinationSource::Response>
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.source;
         if constexpr(I == 1) return value_.declination;
     }
@@ -2942,8 +2942,8 @@ struct MetadataFor<commands_filter::MagneticDeclinationSource>
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.source;
         if constexpr(I == 2) return value_.declination;
@@ -2996,8 +2996,8 @@ struct MetadataFor<commands_filter::MagFieldMagnitudeSource::Response>
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.source;
         if constexpr(I == 1) return value_.magnitude;
     }
@@ -3048,8 +3048,8 @@ struct MetadataFor<commands_filter::MagFieldMagnitudeSource>
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.source;
         if constexpr(I == 2) return value_.magnitude;
@@ -3104,8 +3104,8 @@ struct MetadataFor<commands_filter::ReferencePosition::Response>
         double
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.enable;
         if constexpr(I == 1) return value_.latitude;
         if constexpr(I == 2) return value_.longitude;
@@ -3178,8 +3178,8 @@ struct MetadataFor<commands_filter::ReferencePosition>
         double
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.enable;
         if constexpr(I == 2) return value_.latitude;
@@ -3279,8 +3279,8 @@ struct MetadataFor<commands_filter::AccelMagnitudeErrorAdaptiveMeasurement::Resp
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.adaptive_measurement;
         if constexpr(I == 1) return value_.frequency;
         if constexpr(I == 2) return value_.low_limit;
@@ -3386,8 +3386,8 @@ struct MetadataFor<commands_filter::AccelMagnitudeErrorAdaptiveMeasurement>
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.adaptive_measurement;
         if constexpr(I == 2) return value_.frequency;
@@ -3495,8 +3495,8 @@ struct MetadataFor<commands_filter::MagMagnitudeErrorAdaptiveMeasurement::Respon
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.adaptive_measurement;
         if constexpr(I == 1) return value_.frequency;
         if constexpr(I == 2) return value_.low_limit;
@@ -3602,8 +3602,8 @@ struct MetadataFor<commands_filter::MagMagnitudeErrorAdaptiveMeasurement>
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.adaptive_measurement;
         if constexpr(I == 2) return value_.frequency;
@@ -3709,8 +3709,8 @@ struct MetadataFor<commands_filter::MagDipAngleErrorAdaptiveMeasurement::Respons
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.enable;
         if constexpr(I == 1) return value_.frequency;
         if constexpr(I == 2) return value_.high_limit;
@@ -3794,8 +3794,8 @@ struct MetadataFor<commands_filter::MagDipAngleErrorAdaptiveMeasurement>
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.enable;
         if constexpr(I == 2) return value_.frequency;
@@ -3907,8 +3907,8 @@ struct MetadataFor<commands_filter::AidingMeasurementEnable::Response>
         bool
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.aiding_source;
         if constexpr(I == 1) return value_.enable;
     }
@@ -3959,8 +3959,8 @@ struct MetadataFor<commands_filter::AidingMeasurementEnable>
         bool
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.aiding_source;
         if constexpr(I == 2) return value_.enable;
@@ -4037,8 +4037,8 @@ struct MetadataFor<commands_filter::KinematicConstraint::Response>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.acceleration_constraint_selection;
         if constexpr(I == 1) return value_.velocity_constraint_selection;
         if constexpr(I == 2) return value_.angular_constraint_selection;
@@ -4100,8 +4100,8 @@ struct MetadataFor<commands_filter::KinematicConstraint>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.acceleration_constraint_selection;
         if constexpr(I == 2) return value_.velocity_constraint_selection;
@@ -4238,8 +4238,8 @@ struct MetadataFor<commands_filter::InitializationConfiguration::Response>
         commands_filter::FilterReferenceFrame
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.wait_for_run_command;
         if constexpr(I == 1) return value_.initial_cond_src;
         if constexpr(I == 2) return value_.auto_heading_alignment_selector;
@@ -4367,8 +4367,8 @@ struct MetadataFor<commands_filter::InitializationConfiguration>
         commands_filter::FilterReferenceFrame
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.wait_for_run_command;
         if constexpr(I == 2) return value_.initial_cond_src;
@@ -4491,8 +4491,8 @@ struct MetadataFor<commands_filter::AdaptiveFilterOptions::Response>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.level;
         if constexpr(I == 1) return value_.time_limit;
     }
@@ -4543,8 +4543,8 @@ struct MetadataFor<commands_filter::AdaptiveFilterOptions>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.level;
         if constexpr(I == 2) return value_.time_limit;
@@ -4597,8 +4597,8 @@ struct MetadataFor<commands_filter::MultiAntennaOffset::Response>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.receiver_id;
         if constexpr(I == 1) return value_.antenna_offset;
     }
@@ -4649,8 +4649,8 @@ struct MetadataFor<commands_filter::MultiAntennaOffset>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.receiver_id;
         if constexpr(I == 2) return value_.antenna_offset;
@@ -4704,8 +4704,8 @@ struct MetadataFor<commands_filter::RelPosConfiguration::Response>
         Vector3d
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.source;
         if constexpr(I == 1) return value_.reference_frame_selector;
         if constexpr(I == 2) return value_.reference_coordinates;
@@ -4767,8 +4767,8 @@ struct MetadataFor<commands_filter::RelPosConfiguration>
         Vector3d
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.source;
         if constexpr(I == 2) return value_.reference_frame_selector;
@@ -4851,8 +4851,8 @@ struct MetadataFor<commands_filter::RefPointLeverArm::Response>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.ref_point_sel;
         if constexpr(I == 1) return value_.lever_arm_offset;
     }
@@ -4903,8 +4903,8 @@ struct MetadataFor<commands_filter::RefPointLeverArm>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.ref_point_sel;
         if constexpr(I == 2) return value_.lever_arm_offset;
@@ -4959,8 +4959,8 @@ struct MetadataFor<commands_filter::SpeedMeasurement>
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.source;
         if constexpr(I == 1) return value_.time_of_week;
         if constexpr(I == 2) return value_.speed;
@@ -5031,8 +5031,8 @@ struct MetadataFor<commands_filter::SpeedLeverArm::Response>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.source;
         if constexpr(I == 1) return value_.lever_arm_offset;
     }
@@ -5083,8 +5083,8 @@ struct MetadataFor<commands_filter::SpeedLeverArm>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.source;
         if constexpr(I == 2) return value_.lever_arm_offset;
@@ -5136,8 +5136,8 @@ struct MetadataFor<commands_filter::WheeledVehicleConstraintControl::Response>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.enable;
     }
     
@@ -5177,8 +5177,8 @@ struct MetadataFor<commands_filter::WheeledVehicleConstraintControl>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.enable;
     }
@@ -5220,8 +5220,8 @@ struct MetadataFor<commands_filter::VerticalGyroConstraintControl::Response>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.enable;
     }
     
@@ -5261,8 +5261,8 @@ struct MetadataFor<commands_filter::VerticalGyroConstraintControl>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.enable;
     }
@@ -5305,8 +5305,8 @@ struct MetadataFor<commands_filter::GnssAntennaCalControl::Response>
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.enable;
         if constexpr(I == 1) return value_.max_offset;
     }
@@ -5357,8 +5357,8 @@ struct MetadataFor<commands_filter::GnssAntennaCalControl>
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.enable;
         if constexpr(I == 2) return value_.max_offset;
@@ -5410,8 +5410,8 @@ struct MetadataFor<commands_filter::SetInitialHeading>
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.heading;
     }
     

@@ -40,8 +40,8 @@ struct MetadataFor<commands_aiding::FrameConfig::Rotation>
         Quatf
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.euler;
         if constexpr(I == 1) return value_.quaternion;
     }
@@ -89,8 +89,8 @@ struct MetadataFor<commands_aiding::FrameConfig::Response>
         commands_aiding::FrameConfig::Rotation
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.frame_id;
         if constexpr(I == 1) return value_.format;
         if constexpr(I == 2) return value_.tracking_enabled;
@@ -174,8 +174,8 @@ struct MetadataFor<commands_aiding::FrameConfig>
         commands_aiding::FrameConfig::Rotation
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.frame_id;
         if constexpr(I == 2) return value_.format;
@@ -279,8 +279,8 @@ struct MetadataFor<commands_aiding::EchoControl::Response>
         commands_aiding::EchoControl::Mode
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.mode;
     }
     
@@ -320,8 +320,8 @@ struct MetadataFor<commands_aiding::EchoControl>
         commands_aiding::EchoControl::Mode
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.mode;
     }
@@ -387,8 +387,8 @@ struct MetadataFor<commands_aiding::Time>
         uint64_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.timebase;
         if constexpr(I == 1) return value_.reserved;
         if constexpr(I == 2) return value_.nanoseconds;
@@ -468,8 +468,8 @@ struct MetadataFor<commands_aiding::PosEcef>
         commands_aiding::PosEcef::ValidFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.time;
         if constexpr(I == 1) return value_.frame_id;
         if constexpr(I == 2) return value_.position;
@@ -577,8 +577,8 @@ struct MetadataFor<commands_aiding::PosLlh>
         commands_aiding::PosLlh::ValidFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.time;
         if constexpr(I == 1) return value_.frame_id;
         if constexpr(I == 2) return value_.latitude;
@@ -682,8 +682,8 @@ struct MetadataFor<commands_aiding::HeightAboveEllipsoid>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.time;
         if constexpr(I == 1) return value_.frame_id;
         if constexpr(I == 2) return value_.height;
@@ -789,8 +789,8 @@ struct MetadataFor<commands_aiding::VelEcef>
         commands_aiding::VelEcef::ValidFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.time;
         if constexpr(I == 1) return value_.frame_id;
         if constexpr(I == 2) return value_.velocity;
@@ -896,8 +896,8 @@ struct MetadataFor<commands_aiding::VelNed>
         commands_aiding::VelNed::ValidFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.time;
         if constexpr(I == 1) return value_.frame_id;
         if constexpr(I == 2) return value_.velocity;
@@ -1003,8 +1003,8 @@ struct MetadataFor<commands_aiding::VelBodyFrame>
         commands_aiding::VelBodyFrame::ValidFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.time;
         if constexpr(I == 1) return value_.frame_id;
         if constexpr(I == 2) return value_.velocity;
@@ -1088,8 +1088,8 @@ struct MetadataFor<commands_aiding::HeadingTrue>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.time;
         if constexpr(I == 1) return value_.frame_id;
         if constexpr(I == 2) return value_.heading;
@@ -1195,8 +1195,8 @@ struct MetadataFor<commands_aiding::MagneticField>
         commands_aiding::MagneticField::ValidFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.time;
         if constexpr(I == 1) return value_.frame_id;
         if constexpr(I == 2) return value_.magnetic_field;
@@ -1280,8 +1280,8 @@ struct MetadataFor<commands_aiding::Pressure>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.time;
         if constexpr(I == 1) return value_.frame_id;
         if constexpr(I == 2) return value_.pressure;

@@ -18,8 +18,8 @@ struct MetadataFor<data_system::BuiltInTest>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.result;
     }
     
@@ -60,8 +60,8 @@ struct MetadataFor<data_system::TimeSyncStatus>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.time_sync;
         if constexpr(I == 1) return value_.last_pps_rcvd;
     }
@@ -111,8 +111,8 @@ struct MetadataFor<data_system::GpioState>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.states;
     }
     
@@ -153,8 +153,8 @@ struct MetadataFor<data_system::GpioAnalogValue>
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.gpio_id;
         if constexpr(I == 1) return value_.value;
     }

@@ -18,8 +18,8 @@ struct MetadataFor<data_sensor::RawAccel>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.raw_accel;
     }
     
@@ -59,8 +59,8 @@ struct MetadataFor<data_sensor::RawGyro>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.raw_gyro;
     }
     
@@ -100,8 +100,8 @@ struct MetadataFor<data_sensor::RawMag>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.raw_mag;
     }
     
@@ -141,8 +141,8 @@ struct MetadataFor<data_sensor::RawPressure>
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.raw_pressure;
     }
     
@@ -182,8 +182,8 @@ struct MetadataFor<data_sensor::ScaledAccel>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.scaled_accel;
     }
     
@@ -223,8 +223,8 @@ struct MetadataFor<data_sensor::ScaledGyro>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.scaled_gyro;
     }
     
@@ -264,8 +264,8 @@ struct MetadataFor<data_sensor::ScaledMag>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.scaled_mag;
     }
     
@@ -305,8 +305,8 @@ struct MetadataFor<data_sensor::ScaledPressure>
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.scaled_pressure;
     }
     
@@ -346,8 +346,8 @@ struct MetadataFor<data_sensor::DeltaTheta>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.delta_theta;
     }
     
@@ -387,8 +387,8 @@ struct MetadataFor<data_sensor::DeltaVelocity>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.delta_velocity;
     }
     
@@ -428,8 +428,8 @@ struct MetadataFor<data_sensor::CompOrientationMatrix>
         Matrix3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.m;
     }
     
@@ -469,8 +469,8 @@ struct MetadataFor<data_sensor::CompQuaternion>
         Quatf
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.q;
     }
     
@@ -512,8 +512,8 @@ struct MetadataFor<data_sensor::CompEulerAngles>
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.roll;
         if constexpr(I == 1) return value_.pitch;
         if constexpr(I == 2) return value_.yaw;
@@ -573,8 +573,8 @@ struct MetadataFor<data_sensor::CompOrientationUpdateMatrix>
         Matrix3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.m;
     }
     
@@ -614,8 +614,8 @@ struct MetadataFor<data_sensor::OrientationRawTemp>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.raw_temp;
     }
     
@@ -655,8 +655,8 @@ struct MetadataFor<data_sensor::InternalTimestamp>
         uint32_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.counts;
     }
     
@@ -697,8 +697,8 @@ struct MetadataFor<data_sensor::PpsTimestamp>
         uint32_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.seconds;
         if constexpr(I == 1) return value_.useconds;
     }
@@ -774,8 +774,8 @@ struct MetadataFor<data_sensor::GpsTimestamp>
         data_sensor::GpsTimestamp::ValidFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.tow;
         if constexpr(I == 1) return value_.week_number;
         if constexpr(I == 2) return value_.valid_flags;
@@ -837,8 +837,8 @@ struct MetadataFor<data_sensor::TemperatureAbs>
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.min_temp;
         if constexpr(I == 1) return value_.max_temp;
         if constexpr(I == 2) return value_.mean_temp;
@@ -898,8 +898,8 @@ struct MetadataFor<data_sensor::UpVector>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.up;
     }
     
@@ -939,8 +939,8 @@ struct MetadataFor<data_sensor::NorthVector>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.north;
     }
     
@@ -1009,8 +1009,8 @@ struct MetadataFor<data_sensor::OverrangeStatus>
         data_sensor::OverrangeStatus::Status
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.status;
     }
     
@@ -1052,8 +1052,8 @@ struct MetadataFor<data_sensor::OdometerData>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.speed;
         if constexpr(I == 1) return value_.uncertainty;
         if constexpr(I == 2) return value_.valid_flags;

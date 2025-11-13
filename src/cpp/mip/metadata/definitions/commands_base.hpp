@@ -69,8 +69,8 @@ struct MetadataFor<commands_base::BaseDeviceInfo>
         char
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.firmware_version;
         if constexpr(I == 1) return value_.model_name;
         if constexpr(I == 2) return value_.model_number;
@@ -154,8 +154,8 @@ struct MetadataFor<commands_base::GetDeviceInfo::Response>
         commands_base::BaseDeviceInfo
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.device_info;
     }
     
@@ -218,8 +218,8 @@ struct MetadataFor<commands_base::GetDeviceDescriptors::Response>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.descriptors;
         if constexpr(I == 1) return value_.descriptors_count;
     }
@@ -291,8 +291,8 @@ struct MetadataFor<commands_base::BuiltInTest::Response>
         uint32_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.result;
     }
     
@@ -378,8 +378,8 @@ struct MetadataFor<commands_base::GetExtendedDescriptors::Response>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.descriptors;
         if constexpr(I == 1) return value_.descriptors_count;
     }
@@ -451,8 +451,8 @@ struct MetadataFor<commands_base::ContinuousBit::Response>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.result;
     }
     
@@ -515,8 +515,8 @@ struct MetadataFor<commands_base::CommSpeed::Response>
         uint32_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.port;
         if constexpr(I == 1) return value_.baud;
     }
@@ -567,8 +567,8 @@ struct MetadataFor<commands_base::CommSpeed>
         uint32_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.port;
         if constexpr(I == 2) return value_.baud;
@@ -643,8 +643,8 @@ struct MetadataFor<commands_base::GpsTimeUpdate>
         uint32_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.field_id;
         if constexpr(I == 2) return value_.value;

@@ -18,8 +18,8 @@ struct MetadataFor<data_shared::EventSource>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.trigger_id;
     }
     
@@ -59,8 +59,8 @@ struct MetadataFor<data_shared::Ticks>
         uint32_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.ticks;
     }
     
@@ -100,8 +100,8 @@ struct MetadataFor<data_shared::DeltaTicks>
         uint32_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.ticks;
     }
     
@@ -165,8 +165,8 @@ struct MetadataFor<data_shared::GpsTimestamp>
         data_shared::GpsTimestamp::ValidFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.tow;
         if constexpr(I == 1) return value_.week_number;
         if constexpr(I == 2) return value_.valid_flags;
@@ -226,8 +226,8 @@ struct MetadataFor<data_shared::DeltaTime>
         double
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.seconds;
     }
     
@@ -267,8 +267,8 @@ struct MetadataFor<data_shared::ReferenceTimestamp>
         uint64_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.nanoseconds;
     }
     
@@ -308,8 +308,8 @@ struct MetadataFor<data_shared::ReferenceTimeDelta>
         uint64_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.dt_nanos;
     }
     
@@ -370,8 +370,8 @@ struct MetadataFor<data_shared::ExternalTimestamp>
         data_shared::ExternalTimestamp::ValidFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.nanoseconds;
         if constexpr(I == 1) return value_.valid_flags;
     }
@@ -442,8 +442,8 @@ struct MetadataFor<data_shared::ExternalTimeDelta>
         data_shared::ExternalTimeDelta::ValidFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.dt_nanos;
         if constexpr(I == 1) return value_.valid_flags;
     }

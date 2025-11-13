@@ -20,8 +20,8 @@ struct MetadataFor<commands_3dm::PollImuMessage>
         DescriptorRate
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.suppress_ack;
         if constexpr(I == 1) return value_.num_descriptors;
         if constexpr(I == 2) return value_.descriptors;
@@ -83,8 +83,8 @@ struct MetadataFor<commands_3dm::PollGnssMessage>
         DescriptorRate
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.suppress_ack;
         if constexpr(I == 1) return value_.num_descriptors;
         if constexpr(I == 2) return value_.descriptors;
@@ -146,8 +146,8 @@ struct MetadataFor<commands_3dm::PollFilterMessage>
         DescriptorRate
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.suppress_ack;
         if constexpr(I == 1) return value_.num_descriptors;
         if constexpr(I == 2) return value_.descriptors;
@@ -263,8 +263,8 @@ struct MetadataFor<commands_3dm::NmeaMessage>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.message_id;
         if constexpr(I == 1) return value_.talker_id;
         if constexpr(I == 2) return value_.source_desc_set;
@@ -330,8 +330,8 @@ struct MetadataFor<commands_3dm::NmeaPollData>
         commands_3dm::NmeaMessage
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.suppress_ack;
         if constexpr(I == 1) return value_.count;
         if constexpr(I == 2) return value_.format_entries;
@@ -391,8 +391,8 @@ struct MetadataFor<commands_3dm::ImuGetBaseRate::Response>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.rate;
     }
     
@@ -454,8 +454,8 @@ struct MetadataFor<commands_3dm::GnssGetBaseRate::Response>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.rate;
     }
     
@@ -518,8 +518,8 @@ struct MetadataFor<commands_3dm::ImuMessageFormat::Response>
         DescriptorRate
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.num_descriptors;
         if constexpr(I == 1) return value_.descriptors;
     }
@@ -570,8 +570,8 @@ struct MetadataFor<commands_3dm::ImuMessageFormat>
         DescriptorRate
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.num_descriptors;
         if constexpr(I == 2) return value_.descriptors;
@@ -624,8 +624,8 @@ struct MetadataFor<commands_3dm::GnssMessageFormat::Response>
         DescriptorRate
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.num_descriptors;
         if constexpr(I == 1) return value_.descriptors;
     }
@@ -676,8 +676,8 @@ struct MetadataFor<commands_3dm::GnssMessageFormat>
         DescriptorRate
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.num_descriptors;
         if constexpr(I == 2) return value_.descriptors;
@@ -730,8 +730,8 @@ struct MetadataFor<commands_3dm::FilterMessageFormat::Response>
         DescriptorRate
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.num_descriptors;
         if constexpr(I == 1) return value_.descriptors;
     }
@@ -782,8 +782,8 @@ struct MetadataFor<commands_3dm::FilterMessageFormat>
         DescriptorRate
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.num_descriptors;
         if constexpr(I == 2) return value_.descriptors;
@@ -835,8 +835,8 @@ struct MetadataFor<commands_3dm::FilterGetBaseRate::Response>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.rate;
     }
     
@@ -899,8 +899,8 @@ struct MetadataFor<commands_3dm::NmeaMessageFormat::Response>
         commands_3dm::NmeaMessage
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.count;
         if constexpr(I == 1) return value_.format_entries;
     }
@@ -951,8 +951,8 @@ struct MetadataFor<commands_3dm::NmeaMessageFormat>
         commands_3dm::NmeaMessage
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.count;
         if constexpr(I == 2) return value_.format_entries;
@@ -1007,8 +1007,8 @@ struct MetadataFor<commands_3dm::PollData>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.desc_set;
         if constexpr(I == 1) return value_.suppress_ack;
         if constexpr(I == 2) return value_.num_descriptors;
@@ -1079,8 +1079,8 @@ struct MetadataFor<commands_3dm::GetBaseRate::Response>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.desc_set;
         if constexpr(I == 1) return value_.rate;
     }
@@ -1129,8 +1129,8 @@ struct MetadataFor<commands_3dm::GetBaseRate>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.desc_set;
     }
     
@@ -1172,8 +1172,8 @@ struct MetadataFor<commands_3dm::MessageFormat::Response>
         DescriptorRate
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.desc_set;
         if constexpr(I == 1) return value_.num_descriptors;
         if constexpr(I == 2) return value_.descriptors;
@@ -1235,8 +1235,8 @@ struct MetadataFor<commands_3dm::MessageFormat>
         DescriptorRate
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.desc_set;
         if constexpr(I == 2) return value_.num_descriptors;
@@ -1321,8 +1321,8 @@ struct MetadataFor<commands_3dm::FactoryStreaming>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.action;
         if constexpr(I == 1) return value_.reserved;
     }
@@ -1373,8 +1373,8 @@ struct MetadataFor<commands_3dm::DatastreamControl::Response>
         bool
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.desc_set;
         if constexpr(I == 1) return value_.enabled;
     }
@@ -1425,8 +1425,8 @@ struct MetadataFor<commands_3dm::DatastreamControl>
         bool
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.desc_set;
         if constexpr(I == 2) return value_.enable;
@@ -1527,8 +1527,8 @@ struct MetadataFor<commands_3dm::ConstellationSettings::Settings>
         commands_3dm::ConstellationSettings::OptionFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.constellation_id;
         if constexpr(I == 1) return value_.enable;
         if constexpr(I == 2) return value_.reserved_channels;
@@ -1605,8 +1605,8 @@ struct MetadataFor<commands_3dm::ConstellationSettings::Response>
         commands_3dm::ConstellationSettings::Settings
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.max_channels_available;
         if constexpr(I == 1) return value_.max_channels_use;
         if constexpr(I == 2) return value_.config_count;
@@ -1678,8 +1678,8 @@ struct MetadataFor<commands_3dm::ConstellationSettings>
         commands_3dm::ConstellationSettings::Settings
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.max_channels;
         if constexpr(I == 2) return value_.config_count;
@@ -1766,8 +1766,8 @@ struct MetadataFor<commands_3dm::GnssSbasSettings::Response>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.enable_sbas;
         if constexpr(I == 1) return value_.sbas_options;
         if constexpr(I == 2) return value_.num_included_prns;
@@ -1840,8 +1840,8 @@ struct MetadataFor<commands_3dm::GnssSbasSettings>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.enable_sbas;
         if constexpr(I == 2) return value_.sbas_options;
@@ -1935,8 +1935,8 @@ struct MetadataFor<commands_3dm::GnssAssistedFix::Response>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.option;
         if constexpr(I == 1) return value_.flags;
     }
@@ -1987,8 +1987,8 @@ struct MetadataFor<commands_3dm::GnssAssistedFix>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.option;
         if constexpr(I == 2) return value_.flags;
@@ -2042,8 +2042,8 @@ struct MetadataFor<commands_3dm::GnssTimeAssistance::Response>
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.tow;
         if constexpr(I == 1) return value_.week_number;
         if constexpr(I == 2) return value_.accuracy;
@@ -2105,8 +2105,8 @@ struct MetadataFor<commands_3dm::GnssTimeAssistance>
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.tow;
         if constexpr(I == 2) return value_.week_number;
@@ -2192,8 +2192,8 @@ struct MetadataFor<commands_3dm::PpsSource::Response>
         commands_3dm::PpsSource::Source
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.source;
     }
     
@@ -2233,8 +2233,8 @@ struct MetadataFor<commands_3dm::PpsSource>
         commands_3dm::PpsSource::Source
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.source;
     }
@@ -2298,8 +2298,8 @@ struct MetadataFor<commands_3dm::GetEventSupport::Info>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.type;
         if constexpr(I == 1) return value_.count;
     }
@@ -2346,8 +2346,8 @@ struct MetadataFor<commands_3dm::GetEventSupport::Response>
         commands_3dm::GetEventSupport::Info
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.query;
         if constexpr(I == 1) return value_.max_instances;
         if constexpr(I == 2) return value_.num_entries;
@@ -2416,8 +2416,8 @@ struct MetadataFor<commands_3dm::GetEventSupport>
         commands_3dm::GetEventSupport::Query
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.query;
     }
     
@@ -2481,8 +2481,8 @@ struct MetadataFor<commands_3dm::EventControl::Response>
         commands_3dm::EventControl::Mode
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.instance;
         if constexpr(I == 1) return value_.mode;
     }
@@ -2533,8 +2533,8 @@ struct MetadataFor<commands_3dm::EventControl>
         commands_3dm::EventControl::Mode
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.instance;
         if constexpr(I == 2) return value_.mode;
@@ -2609,8 +2609,8 @@ struct MetadataFor<commands_3dm::GetEventTriggerStatus::Entry>
         commands_3dm::GetEventTriggerStatus::Status
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.type;
         if constexpr(I == 1) return value_.status;
     }
@@ -2655,8 +2655,8 @@ struct MetadataFor<commands_3dm::GetEventTriggerStatus::Response>
         commands_3dm::GetEventTriggerStatus::Entry
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.count;
         if constexpr(I == 1) return value_.triggers;
     }
@@ -2706,8 +2706,8 @@ struct MetadataFor<commands_3dm::GetEventTriggerStatus>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.requested_count;
         if constexpr(I == 1) return value_.requested_instances;
     }
@@ -2758,8 +2758,8 @@ struct MetadataFor<commands_3dm::GetEventActionStatus::Entry>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.action_type;
         if constexpr(I == 1) return value_.trigger_id;
     }
@@ -2804,8 +2804,8 @@ struct MetadataFor<commands_3dm::GetEventActionStatus::Response>
         commands_3dm::GetEventActionStatus::Entry
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.count;
         if constexpr(I == 1) return value_.actions;
     }
@@ -2855,8 +2855,8 @@ struct MetadataFor<commands_3dm::GetEventActionStatus>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.requested_count;
         if constexpr(I == 1) return value_.requested_instances;
     }
@@ -2930,8 +2930,8 @@ struct MetadataFor<commands_3dm::EventTrigger::GpioParams>
         commands_3dm::EventTrigger::GpioParams::Mode
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.pin;
         if constexpr(I == 1) return value_.mode;
     }
@@ -3001,8 +3001,8 @@ struct MetadataFor<commands_3dm::EventTrigger::ThresholdParams>
         double
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.desc_set;
         if constexpr(I == 1) return value_.field_desc;
         if constexpr(I == 2) return value_.param_id;
@@ -3087,8 +3087,8 @@ struct MetadataFor<commands_3dm::EventTrigger::CombinationParams>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.logic_table;
         if constexpr(I == 1) return value_.input_triggers;
     }
@@ -3157,8 +3157,8 @@ struct MetadataFor<commands_3dm::EventTrigger::Parameters>
         commands_3dm::EventTrigger::CombinationParams
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.gpio;
         if constexpr(I == 1) return value_.threshold;
         if constexpr(I == 2) return value_.combination;
@@ -3214,8 +3214,8 @@ struct MetadataFor<commands_3dm::EventTrigger::Response>
         commands_3dm::EventTrigger::Parameters
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.instance;
         if constexpr(I == 1) return value_.type;
         if constexpr(I == 2) return value_.parameters;
@@ -3277,8 +3277,8 @@ struct MetadataFor<commands_3dm::EventTrigger>
         commands_3dm::EventTrigger::Parameters
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.instance;
         if constexpr(I == 2) return value_.type;
@@ -3366,8 +3366,8 @@ struct MetadataFor<commands_3dm::EventAction::GpioParams>
         commands_3dm::EventAction::GpioParams::Mode
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.pin;
         if constexpr(I == 1) return value_.mode;
     }
@@ -3414,8 +3414,8 @@ struct MetadataFor<commands_3dm::EventAction::MessageParams>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.desc_set;
         if constexpr(I == 1) return value_.decimation;
         if constexpr(I == 2) return value_.num_fields;
@@ -3502,8 +3502,8 @@ struct MetadataFor<commands_3dm::EventAction::Parameters>
         commands_3dm::EventAction::MessageParams
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.gpio;
         if constexpr(I == 1) return value_.message;
     }
@@ -3550,8 +3550,8 @@ struct MetadataFor<commands_3dm::EventAction::Response>
         commands_3dm::EventAction::Parameters
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.instance;
         if constexpr(I == 1) return value_.trigger;
         if constexpr(I == 2) return value_.type;
@@ -3624,8 +3624,8 @@ struct MetadataFor<commands_3dm::EventAction>
         commands_3dm::EventAction::Parameters
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.instance;
         if constexpr(I == 2) return value_.trigger;
@@ -3697,8 +3697,8 @@ struct MetadataFor<commands_3dm::DeviceSettings>
         FunctionSelector
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
     }
     
@@ -3733,8 +3733,8 @@ struct MetadataFor<commands_3dm::Sensor2VehicleTransformEuler::Response>
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.roll;
         if constexpr(I == 1) return value_.pitch;
         if constexpr(I == 2) return value_.yaw;
@@ -3796,8 +3796,8 @@ struct MetadataFor<commands_3dm::Sensor2VehicleTransformEuler>
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.roll;
         if constexpr(I == 2) return value_.pitch;
@@ -3859,8 +3859,8 @@ struct MetadataFor<commands_3dm::Sensor2VehicleTransformQuaternion::Response>
         Quatf
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.q;
     }
     
@@ -3900,8 +3900,8 @@ struct MetadataFor<commands_3dm::Sensor2VehicleTransformQuaternion>
         Quatf
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.q;
     }
@@ -3943,8 +3943,8 @@ struct MetadataFor<commands_3dm::Sensor2VehicleTransformDcm::Response>
         Matrix3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.dcm;
     }
     
@@ -3984,8 +3984,8 @@ struct MetadataFor<commands_3dm::Sensor2VehicleTransformDcm>
         Matrix3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.dcm;
     }
@@ -4027,8 +4027,8 @@ struct MetadataFor<commands_3dm::AccelBias::Response>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.bias;
     }
     
@@ -4068,8 +4068,8 @@ struct MetadataFor<commands_3dm::AccelBias>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.bias;
     }
@@ -4111,8 +4111,8 @@ struct MetadataFor<commands_3dm::GyroBias::Response>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.bias;
     }
     
@@ -4152,8 +4152,8 @@ struct MetadataFor<commands_3dm::GyroBias>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.bias;
     }
@@ -4195,8 +4195,8 @@ struct MetadataFor<commands_3dm::CaptureGyroBias::Response>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.bias;
     }
     
@@ -4235,8 +4235,8 @@ struct MetadataFor<commands_3dm::CaptureGyroBias>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.averaging_time_ms;
     }
     
@@ -4276,8 +4276,8 @@ struct MetadataFor<commands_3dm::MagHardIronOffset::Response>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.offset;
     }
     
@@ -4317,8 +4317,8 @@ struct MetadataFor<commands_3dm::MagHardIronOffset>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.offset;
     }
@@ -4360,8 +4360,8 @@ struct MetadataFor<commands_3dm::MagSoftIronMatrix::Response>
         Matrix3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.offset;
     }
     
@@ -4401,8 +4401,8 @@ struct MetadataFor<commands_3dm::MagSoftIronMatrix>
         Matrix3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.offset;
     }
@@ -4444,8 +4444,8 @@ struct MetadataFor<commands_3dm::ConingScullingEnable::Response>
         bool
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.enable;
     }
     
@@ -4485,8 +4485,8 @@ struct MetadataFor<commands_3dm::ConingScullingEnable>
         bool
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.enable;
     }
@@ -4528,8 +4528,8 @@ struct MetadataFor<commands_3dm::UartBaudrate::Response>
         uint32_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.baud;
     }
     
@@ -4569,8 +4569,8 @@ struct MetadataFor<commands_3dm::UartBaudrate>
         uint32_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.baud;
     }
@@ -4696,8 +4696,8 @@ struct MetadataFor<commands_3dm::GpioConfig::Response>
         commands_3dm::GpioConfig::PinMode
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.pin;
         if constexpr(I == 1) return value_.feature;
         if constexpr(I == 2) return value_.behavior;
@@ -4770,8 +4770,8 @@ struct MetadataFor<commands_3dm::GpioConfig>
         commands_3dm::GpioConfig::PinMode
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.pin;
         if constexpr(I == 2) return value_.feature;
@@ -4844,8 +4844,8 @@ struct MetadataFor<commands_3dm::GpioState::Response>
         bool
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.pin;
         if constexpr(I == 1) return value_.state;
     }
@@ -4896,8 +4896,8 @@ struct MetadataFor<commands_3dm::GpioState>
         bool
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.pin;
         if constexpr(I == 2) return value_.state;
@@ -4972,8 +4972,8 @@ struct MetadataFor<commands_3dm::Odometer::Response>
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.mode;
         if constexpr(I == 1) return value_.scaling;
         if constexpr(I == 2) return value_.uncertainty;
@@ -5035,8 +5035,8 @@ struct MetadataFor<commands_3dm::Odometer>
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.mode;
         if constexpr(I == 2) return value_.scaling;
@@ -5102,8 +5102,8 @@ struct MetadataFor<commands_3dm::ImuLowpassFilter::Response>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.target_descriptor;
         if constexpr(I == 1) return value_.enable;
         if constexpr(I == 2) return value_.manual;
@@ -5187,8 +5187,8 @@ struct MetadataFor<commands_3dm::ImuLowpassFilter>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.target_descriptor;
         if constexpr(I == 2) return value_.enable;
@@ -5273,8 +5273,8 @@ struct MetadataFor<commands_3dm::ComplementaryFilter::Response>
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.pitch_roll_enable;
         if constexpr(I == 1) return value_.heading_enable;
         if constexpr(I == 2) return value_.pitch_roll_time_constant;
@@ -5347,8 +5347,8 @@ struct MetadataFor<commands_3dm::ComplementaryFilter>
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.pitch_roll_enable;
         if constexpr(I == 2) return value_.heading_enable;
@@ -5445,8 +5445,8 @@ struct MetadataFor<commands_3dm::SensorRange::Response>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.sensor;
         if constexpr(I == 1) return value_.setting;
     }
@@ -5497,8 +5497,8 @@ struct MetadataFor<commands_3dm::SensorRange>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.sensor;
         if constexpr(I == 2) return value_.setting;
@@ -5551,8 +5551,8 @@ struct MetadataFor<commands_3dm::CalibratedSensorRanges::Entry>
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.setting;
         if constexpr(I == 1) return value_.range;
     }
@@ -5598,8 +5598,8 @@ struct MetadataFor<commands_3dm::CalibratedSensorRanges::Response>
         commands_3dm::CalibratedSensorRanges::Entry
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.sensor;
         if constexpr(I == 1) return value_.num_ranges;
         if constexpr(I == 2) return value_.ranges;
@@ -5658,8 +5658,8 @@ struct MetadataFor<commands_3dm::CalibratedSensorRanges>
         commands_3dm::SensorRangeType
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.sensor;
     }
     
@@ -5703,8 +5703,8 @@ struct MetadataFor<commands_3dm::LowpassFilter::Response>
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.desc_set;
         if constexpr(I == 1) return value_.field_desc;
         if constexpr(I == 2) return value_.enable;
@@ -5788,8 +5788,8 @@ struct MetadataFor<commands_3dm::LowpassFilter>
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.desc_set;
         if constexpr(I == 2) return value_.field_desc;

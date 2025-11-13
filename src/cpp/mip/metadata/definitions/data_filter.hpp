@@ -21,8 +21,8 @@ struct MetadataFor<data_filter::PositionLlh>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.latitude;
         if constexpr(I == 1) return value_.longitude;
         if constexpr(I == 2) return value_.ellipsoid_height;
@@ -95,8 +95,8 @@ struct MetadataFor<data_filter::VelocityNed>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.north;
         if constexpr(I == 1) return value_.east;
         if constexpr(I == 2) return value_.down;
@@ -167,8 +167,8 @@ struct MetadataFor<data_filter::AttitudeQuaternion>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.q;
         if constexpr(I == 1) return value_.valid_flags;
     }
@@ -219,8 +219,8 @@ struct MetadataFor<data_filter::AttitudeDcm>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.dcm;
         if constexpr(I == 1) return value_.valid_flags;
     }
@@ -273,8 +273,8 @@ struct MetadataFor<data_filter::EulerAngles>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.roll;
         if constexpr(I == 1) return value_.pitch;
         if constexpr(I == 2) return value_.yaw;
@@ -345,8 +345,8 @@ struct MetadataFor<data_filter::GyroBias>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.bias;
         if constexpr(I == 1) return value_.valid_flags;
     }
@@ -397,8 +397,8 @@ struct MetadataFor<data_filter::AccelBias>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.bias;
         if constexpr(I == 1) return value_.valid_flags;
     }
@@ -451,8 +451,8 @@ struct MetadataFor<data_filter::PositionLlhUncertainty>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.north;
         if constexpr(I == 1) return value_.east;
         if constexpr(I == 2) return value_.down;
@@ -525,8 +525,8 @@ struct MetadataFor<data_filter::VelocityNedUncertainty>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.north;
         if constexpr(I == 1) return value_.east;
         if constexpr(I == 2) return value_.down;
@@ -599,8 +599,8 @@ struct MetadataFor<data_filter::EulerAnglesUncertainty>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.roll;
         if constexpr(I == 1) return value_.pitch;
         if constexpr(I == 2) return value_.yaw;
@@ -671,8 +671,8 @@ struct MetadataFor<data_filter::GyroBiasUncertainty>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.bias_uncert;
         if constexpr(I == 1) return value_.valid_flags;
     }
@@ -723,8 +723,8 @@ struct MetadataFor<data_filter::AccelBiasUncertainty>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.bias_uncert;
         if constexpr(I == 1) return value_.valid_flags;
     }
@@ -776,8 +776,8 @@ struct MetadataFor<data_filter::Timestamp>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.tow;
         if constexpr(I == 1) return value_.week_number;
         if constexpr(I == 2) return value_.valid_flags;
@@ -936,8 +936,8 @@ struct MetadataFor<data_filter::Status>
         data_filter::FilterStatusFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.filter_state;
         if constexpr(I == 1) return value_.dynamics_mode;
         if constexpr(I == 2) return value_.status_flags;
@@ -998,8 +998,8 @@ struct MetadataFor<data_filter::LinearAccel>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.accel;
         if constexpr(I == 1) return value_.valid_flags;
     }
@@ -1050,8 +1050,8 @@ struct MetadataFor<data_filter::GravityVector>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.gravity;
         if constexpr(I == 1) return value_.valid_flags;
     }
@@ -1102,8 +1102,8 @@ struct MetadataFor<data_filter::CompAccel>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.accel;
         if constexpr(I == 1) return value_.valid_flags;
     }
@@ -1154,8 +1154,8 @@ struct MetadataFor<data_filter::CompAngularRate>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.gyro;
         if constexpr(I == 1) return value_.valid_flags;
     }
@@ -1206,8 +1206,8 @@ struct MetadataFor<data_filter::QuaternionAttitudeUncertainty>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.q;
         if constexpr(I == 1) return value_.valid_flags;
     }
@@ -1258,8 +1258,8 @@ struct MetadataFor<data_filter::Wgs84GravityMag>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.magnitude;
         if constexpr(I == 1) return value_.valid_flags;
     }
@@ -1336,8 +1336,8 @@ struct MetadataFor<data_filter::HeadingUpdateState>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.heading;
         if constexpr(I == 1) return value_.heading_1sigma;
         if constexpr(I == 2) return value_.source;
@@ -1412,8 +1412,8 @@ struct MetadataFor<data_filter::MagneticModel>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.intensity_north;
         if constexpr(I == 1) return value_.intensity_east;
         if constexpr(I == 2) return value_.intensity_down;
@@ -1504,8 +1504,8 @@ struct MetadataFor<data_filter::AccelScaleFactor>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.scale_factor;
         if constexpr(I == 1) return value_.valid_flags;
     }
@@ -1556,8 +1556,8 @@ struct MetadataFor<data_filter::AccelScaleFactorUncertainty>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.scale_factor_uncert;
         if constexpr(I == 1) return value_.valid_flags;
     }
@@ -1608,8 +1608,8 @@ struct MetadataFor<data_filter::GyroScaleFactor>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.scale_factor;
         if constexpr(I == 1) return value_.valid_flags;
     }
@@ -1660,8 +1660,8 @@ struct MetadataFor<data_filter::GyroScaleFactorUncertainty>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.scale_factor_uncert;
         if constexpr(I == 1) return value_.valid_flags;
     }
@@ -1712,8 +1712,8 @@ struct MetadataFor<data_filter::MagBias>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.bias;
         if constexpr(I == 1) return value_.valid_flags;
     }
@@ -1764,8 +1764,8 @@ struct MetadataFor<data_filter::MagBiasUncertainty>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.bias_uncert;
         if constexpr(I == 1) return value_.valid_flags;
     }
@@ -1820,8 +1820,8 @@ struct MetadataFor<data_filter::StandardAtmosphere>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.geometric_altitude;
         if constexpr(I == 1) return value_.geopotential_altitude;
         if constexpr(I == 2) return value_.standard_temperature;
@@ -1912,8 +1912,8 @@ struct MetadataFor<data_filter::PressureAltitude>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.pressure_altitude;
         if constexpr(I == 1) return value_.valid_flags;
     }
@@ -1964,8 +1964,8 @@ struct MetadataFor<data_filter::DensityAltitude>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.density_altitude;
         if constexpr(I == 1) return value_.valid_flags;
     }
@@ -2016,8 +2016,8 @@ struct MetadataFor<data_filter::AntennaOffsetCorrection>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.offset;
         if constexpr(I == 1) return value_.valid_flags;
     }
@@ -2068,8 +2068,8 @@ struct MetadataFor<data_filter::AntennaOffsetCorrectionUncertainty>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.offset_uncert;
         if constexpr(I == 1) return value_.valid_flags;
     }
@@ -2121,8 +2121,8 @@ struct MetadataFor<data_filter::MultiAntennaOffsetCorrection>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.receiver_id;
         if constexpr(I == 1) return value_.offset;
         if constexpr(I == 2) return value_.valid_flags;
@@ -2184,8 +2184,8 @@ struct MetadataFor<data_filter::MultiAntennaOffsetCorrectionUncertainty>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.receiver_id;
         if constexpr(I == 1) return value_.offset_uncert;
         if constexpr(I == 2) return value_.valid_flags;
@@ -2246,8 +2246,8 @@ struct MetadataFor<data_filter::MagnetometerOffset>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.hard_iron;
         if constexpr(I == 1) return value_.valid_flags;
     }
@@ -2298,8 +2298,8 @@ struct MetadataFor<data_filter::MagnetometerMatrix>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.soft_iron;
         if constexpr(I == 1) return value_.valid_flags;
     }
@@ -2350,8 +2350,8 @@ struct MetadataFor<data_filter::MagnetometerOffsetUncertainty>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.hard_iron_uncertainty;
         if constexpr(I == 1) return value_.valid_flags;
     }
@@ -2402,8 +2402,8 @@ struct MetadataFor<data_filter::MagnetometerMatrixUncertainty>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.soft_iron_uncertainty;
         if constexpr(I == 1) return value_.valid_flags;
     }
@@ -2454,8 +2454,8 @@ struct MetadataFor<data_filter::MagnetometerCovarianceMatrix>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.covariance;
         if constexpr(I == 1) return value_.valid_flags;
     }
@@ -2506,8 +2506,8 @@ struct MetadataFor<data_filter::MagnetometerResidualVector>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.residual;
         if constexpr(I == 1) return value_.valid_flags;
     }
@@ -2560,8 +2560,8 @@ struct MetadataFor<data_filter::ClockCorrection>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.receiver_id;
         if constexpr(I == 1) return value_.bias;
         if constexpr(I == 2) return value_.bias_drift;
@@ -2634,8 +2634,8 @@ struct MetadataFor<data_filter::ClockCorrectionUncertainty>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.receiver_id;
         if constexpr(I == 1) return value_.bias_uncertainty;
         if constexpr(I == 2) return value_.bias_drift_uncertainty;
@@ -2743,8 +2743,8 @@ struct MetadataFor<data_filter::GnssPosAidStatus>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.receiver_id;
         if constexpr(I == 1) return value_.time_of_week;
         if constexpr(I == 2) return value_.status;
@@ -2816,8 +2816,8 @@ struct MetadataFor<data_filter::GnssAttAidStatus>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.time_of_week;
         if constexpr(I == 1) return value_.status;
         if constexpr(I == 2) return value_.reserved;
@@ -2900,8 +2900,8 @@ struct MetadataFor<data_filter::HeadAidStatus>
         float
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.time_of_week;
         if constexpr(I == 1) return value_.type;
         if constexpr(I == 2) return value_.reserved;
@@ -2962,8 +2962,8 @@ struct MetadataFor<data_filter::RelPosNed>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.relative_position;
         if constexpr(I == 1) return value_.valid_flags;
     }
@@ -3014,8 +3014,8 @@ struct MetadataFor<data_filter::EcefPos>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.position_ecef;
         if constexpr(I == 1) return value_.valid_flags;
     }
@@ -3066,8 +3066,8 @@ struct MetadataFor<data_filter::EcefVel>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.velocity_ecef;
         if constexpr(I == 1) return value_.valid_flags;
     }
@@ -3118,8 +3118,8 @@ struct MetadataFor<data_filter::EcefPosUncertainty>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.pos_uncertainty;
         if constexpr(I == 1) return value_.valid_flags;
     }
@@ -3170,8 +3170,8 @@ struct MetadataFor<data_filter::EcefVelUncertainty>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.vel_uncertainty;
         if constexpr(I == 1) return value_.valid_flags;
     }
@@ -3283,8 +3283,8 @@ struct MetadataFor<data_filter::AidingMeasurementSummary>
         data_filter::FilterMeasurementIndicator
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.time_of_week;
         if constexpr(I == 1) return value_.source;
         if constexpr(I == 2) return value_.type;
@@ -3355,8 +3355,8 @@ struct MetadataFor<data_filter::OdometerScaleFactorError>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.scale_factor_error;
         if constexpr(I == 1) return value_.valid_flags;
     }
@@ -3407,8 +3407,8 @@ struct MetadataFor<data_filter::OdometerScaleFactorErrorUncertainty>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.scale_factor_error_uncertainty;
         if constexpr(I == 1) return value_.valid_flags;
     }
@@ -3507,8 +3507,8 @@ struct MetadataFor<data_filter::GnssDualAntennaStatus>
         uint16_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.time_of_week;
         if constexpr(I == 1) return value_.heading;
         if constexpr(I == 2) return value_.heading_unc;
@@ -3600,8 +3600,8 @@ struct MetadataFor<data_filter::AidingFrameConfigError>
         Quatf
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.frame_id;
         if constexpr(I == 1) return value_.translation;
         if constexpr(I == 2) return value_.attitude;
@@ -3663,8 +3663,8 @@ struct MetadataFor<data_filter::AidingFrameConfigErrorUncertainty>
         Vector3f
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.frame_id;
         if constexpr(I == 1) return value_.translation_unc;
         if constexpr(I == 2) return value_.attitude_unc;

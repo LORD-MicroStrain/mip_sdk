@@ -79,8 +79,8 @@ struct MetadataFor<commands_rtk::GetStatusFlags::Response>
         commands_rtk::GetStatusFlags::StatusFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.flags;
     }
     
@@ -142,8 +142,8 @@ struct MetadataFor<commands_rtk::GetImei::Response>
         char
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.IMEI;
     }
     
@@ -205,8 +205,8 @@ struct MetadataFor<commands_rtk::GetImsi::Response>
         char
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.IMSI;
     }
     
@@ -268,8 +268,8 @@ struct MetadataFor<commands_rtk::GetIccid::Response>
         char
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.ICCID;
     }
     
@@ -352,8 +352,8 @@ struct MetadataFor<commands_rtk::ConnectedDeviceType::Response>
         commands_rtk::ConnectedDeviceType::Type
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.devType;
     }
     
@@ -393,8 +393,8 @@ struct MetadataFor<commands_rtk::ConnectedDeviceType>
         commands_rtk::ConnectedDeviceType::Type
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.devType;
     }
@@ -436,8 +436,8 @@ struct MetadataFor<commands_rtk::GetActCode::Response>
         char
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.ActivationCode;
     }
     
@@ -499,8 +499,8 @@ struct MetadataFor<commands_rtk::GetModemFirmwareVersion::Response>
         char
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.ModemFirmwareVersion;
     }
     
@@ -564,8 +564,8 @@ struct MetadataFor<commands_rtk::GetRssi::Response>
         int32_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.valid;
         if constexpr(I == 1) return value_.rssi;
         if constexpr(I == 2) return value_.signalQuality;
@@ -672,8 +672,8 @@ struct MetadataFor<commands_rtk::ServiceStatus::Response>
         uint64_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.flags;
         if constexpr(I == 1) return value_.receivedBytes;
         if constexpr(I == 2) return value_.lastBytes;
@@ -743,8 +743,8 @@ struct MetadataFor<commands_rtk::ServiceStatus>
         uint32_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.reserved1;
         if constexpr(I == 1) return value_.reserved2;
     }
@@ -815,8 +815,8 @@ struct MetadataFor<commands_rtk::ProdEraseStorage>
         commands_rtk::MediaSelector
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.media;
     }
     
@@ -881,8 +881,8 @@ struct MetadataFor<commands_rtk::LedControl>
         uint32_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.primaryColor;
         if constexpr(I == 1) return value_.altColor;
         if constexpr(I == 2) return value_.act;

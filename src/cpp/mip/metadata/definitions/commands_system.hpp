@@ -18,8 +18,8 @@ struct MetadataFor<commands_system::CommMode::Response>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.mode;
     }
     
@@ -59,8 +59,8 @@ struct MetadataFor<commands_system::CommMode>
         uint8_t
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.mode;
     }
@@ -153,8 +153,8 @@ struct MetadataFor<commands_system::InterfaceControl::Response>
         commands_system::CommsProtocol
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.port;
         if constexpr(I == 1) return value_.protocols_incoming;
         if constexpr(I == 2) return value_.protocols_outgoing;
@@ -216,8 +216,8 @@ struct MetadataFor<commands_system::InterfaceControl>
         commands_system::CommsProtocol
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.function;
         if constexpr(I == 1) return value_.port;
         if constexpr(I == 2) return value_.protocols_incoming;

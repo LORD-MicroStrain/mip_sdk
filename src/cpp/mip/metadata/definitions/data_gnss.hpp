@@ -49,8 +49,8 @@ struct MetadataFor<data_gnss::PosLlh>
         data_gnss::PosLlh::ValidFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.latitude;
         if constexpr(I == 1) return value_.longitude;
         if constexpr(I == 2) return value_.ellipsoid_height;
@@ -174,8 +174,8 @@ struct MetadataFor<data_gnss::PosEcef>
         data_gnss::PosEcef::ValidFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.x;
         if constexpr(I == 1) return value_.x_accuracy;
         if constexpr(I == 2) return value_.valid_flags;
@@ -267,8 +267,8 @@ struct MetadataFor<data_gnss::VelNed>
         data_gnss::VelNed::ValidFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.v;
         if constexpr(I == 1) return value_.speed;
         if constexpr(I == 2) return value_.ground_speed;
@@ -392,8 +392,8 @@ struct MetadataFor<data_gnss::VelEcef>
         data_gnss::VelEcef::ValidFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.v;
         if constexpr(I == 1) return value_.v_accuracy;
         if constexpr(I == 2) return value_.valid_flags;
@@ -487,8 +487,8 @@ struct MetadataFor<data_gnss::Dop>
         data_gnss::Dop::ValidFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.gdop;
         if constexpr(I == 1) return value_.pdop;
         if constexpr(I == 2) return value_.hdop;
@@ -627,8 +627,8 @@ struct MetadataFor<data_gnss::UtcTime>
         data_gnss::UtcTime::ValidFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.year;
         if constexpr(I == 1) return value_.month;
         if constexpr(I == 2) return value_.day;
@@ -762,8 +762,8 @@ struct MetadataFor<data_gnss::GpsTime>
         data_gnss::GpsTime::ValidFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.tow;
         if constexpr(I == 1) return value_.week_number;
         if constexpr(I == 2) return value_.valid_flags;
@@ -849,8 +849,8 @@ struct MetadataFor<data_gnss::ClockInfo>
         data_gnss::ClockInfo::ValidFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.bias;
         if constexpr(I == 1) return value_.drift;
         if constexpr(I == 2) return value_.accuracy_estimate;
@@ -994,8 +994,8 @@ struct MetadataFor<data_gnss::FixInfo>
         data_gnss::FixInfo::ValidFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.fix_type;
         if constexpr(I == 1) return value_.num_sv;
         if constexpr(I == 2) return value_.fix_flags;
@@ -1118,8 +1118,8 @@ struct MetadataFor<data_gnss::SvInfo>
         data_gnss::SvInfo::ValidFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.channel;
         if constexpr(I == 1) return value_.sv_id;
         if constexpr(I == 2) return value_.carrier_noise_ratio;
@@ -1313,8 +1313,8 @@ struct MetadataFor<data_gnss::HwStatus>
         data_gnss::HwStatus::ValidFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.receiver_state;
         if constexpr(I == 1) return value_.antenna_state;
         if constexpr(I == 2) return value_.antenna_power;
@@ -1412,8 +1412,8 @@ struct MetadataFor<data_gnss::DgpsInfo>
         data_gnss::DgpsInfo::ValidFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.sv_id;
         if constexpr(I == 1) return value_.age;
         if constexpr(I == 2) return value_.range_correction;
@@ -1521,8 +1521,8 @@ struct MetadataFor<data_gnss::DgpsChannel>
         data_gnss::DgpsChannel::ValidFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.sv_id;
         if constexpr(I == 1) return value_.age;
         if constexpr(I == 2) return value_.range_correction;
@@ -1630,8 +1630,8 @@ struct MetadataFor<data_gnss::ClockInfo2>
         data_gnss::ClockInfo2::ValidFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.bias;
         if constexpr(I == 1) return value_.drift;
         if constexpr(I == 2) return value_.bias_accuracy_estimate;
@@ -1732,8 +1732,8 @@ struct MetadataFor<data_gnss::GpsLeapSeconds>
         data_gnss::GpsLeapSeconds::ValidFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.leap_seconds;
         if constexpr(I == 1) return value_.valid_flags;
     }
@@ -1862,8 +1862,8 @@ struct MetadataFor<data_gnss::SbasInfo>
         data_gnss::SbasInfo::ValidFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.time_of_week;
         if constexpr(I == 1) return value_.week_number;
         if constexpr(I == 2) return value_.sbas_system;
@@ -2020,8 +2020,8 @@ struct MetadataFor<data_gnss::SbasCorrection>
         data_gnss::SbasCorrection::ValidFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.index;
         if constexpr(I == 1) return value_.count;
         if constexpr(I == 2) return value_.time_of_week;
@@ -2247,8 +2247,8 @@ struct MetadataFor<data_gnss::RfErrorDetection>
         data_gnss::RfErrorDetection::ValidFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.rf_band;
         if constexpr(I == 1) return value_.jamming_state;
         if constexpr(I == 2) return value_.spoofing_state;
@@ -2388,8 +2388,8 @@ struct MetadataFor<data_gnss::BaseStationInfo>
         data_gnss::BaseStationInfo::ValidFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.time_of_week;
         if constexpr(I == 1) return value_.week_number;
         if constexpr(I == 2) return value_.ecef_pos;
@@ -2554,8 +2554,8 @@ struct MetadataFor<data_gnss::RtkCorrectionsStatus>
         data_gnss::RtkCorrectionsStatus::ValidFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.time_of_week;
         if constexpr(I == 1) return value_.week_number;
         if constexpr(I == 2) return value_.epoch_status;
@@ -2721,8 +2721,8 @@ struct MetadataFor<data_gnss::SatelliteStatus>
         data_gnss::SatelliteStatus::ValidFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.index;
         if constexpr(I == 1) return value_.count;
         if constexpr(I == 2) return value_.time_of_week;
@@ -3016,8 +3016,8 @@ struct MetadataFor<data_gnss::Raw>
         data_gnss::Raw::ValidFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.index;
         if constexpr(I == 1) return value_.count;
         if constexpr(I == 2) return value_.time_of_week;
@@ -3293,8 +3293,8 @@ struct MetadataFor<data_gnss::GpsEphemeris>
         data_gnss::GpsEphemeris::ValidFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.index;
         if constexpr(I == 1) return value_.count;
         if constexpr(I == 2) return value_.time_of_week;
@@ -3720,8 +3720,8 @@ struct MetadataFor<data_gnss::GalileoEphemeris>
         data_gnss::GalileoEphemeris::ValidFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.index;
         if constexpr(I == 1) return value_.count;
         if constexpr(I == 2) return value_.time_of_week;
@@ -4136,8 +4136,8 @@ struct MetadataFor<data_gnss::GloEphemeris>
         data_gnss::GloEphemeris::ValidFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.index;
         if constexpr(I == 1) return value_.count;
         if constexpr(I == 2) return value_.time_of_week;
@@ -4473,8 +4473,8 @@ struct MetadataFor<data_gnss::BeidouEphemeris>
         data_gnss::BeidouEphemeris::ValidFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.index;
         if constexpr(I == 1) return value_.count;
         if constexpr(I == 2) return value_.time_of_week;
@@ -4872,8 +4872,8 @@ struct MetadataFor<data_gnss::GpsIonoCorr>
         data_gnss::GpsIonoCorr::ValidFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.time_of_week;
         if constexpr(I == 1) return value_.week_number;
         if constexpr(I == 2) return value_.alpha;
@@ -4981,8 +4981,8 @@ struct MetadataFor<data_gnss::GalileoIonoCorr>
         data_gnss::GalileoIonoCorr::ValidFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.time_of_week;
         if constexpr(I == 1) return value_.week_number;
         if constexpr(I == 2) return value_.alpha;
@@ -5092,8 +5092,8 @@ struct MetadataFor<data_gnss::BeidouIonoCorr>
         data_gnss::BeidouIonoCorr::ValidFlags
     >;
 
-    template<size_t I>
-    static auto& access(const type& value_) {
+    template<size_t I, class T = type>
+    static auto& access(T& value_) {
         if constexpr(I == 0) return value_.time_of_week;
         if constexpr(I == 1) return value_.week_number;
         if constexpr(I == 2) return value_.alpha;
