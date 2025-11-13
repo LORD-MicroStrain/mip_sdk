@@ -12,6 +12,14 @@ namespace mip::metadata
     {
         using type = CmdResult;
 
+        using ParamTypes = std::tuple<uint8_t>;
+
+        template<size_t I, typename T>
+        static auto& access(T& result)
+        {
+            if constexpr(I == 0) return result.value;
+        }
+
         static constexpr inline EnumInfo::Entry entries[] = {
             {
                 /* .value = */ CmdResult::ACK_OK,
@@ -71,6 +79,15 @@ namespace mip::metadata
     {
         using type = ReplyField;
 
+        using ParamTypes = std::tuple<uint8_t, CmdResult>;
+
+        template<size_t I, typename T>
+        static auto& access(T& value_)
+        {
+            if constexpr(I == 0) return value_.cmd_field_desc;
+            if constexpr(I == 1) return value_.result;
+        }
+
         static constexpr inline ParameterInfo parameters[] = {
             {
                 /* .name       = */ "cmd_field_desc",
@@ -109,6 +126,15 @@ namespace mip::metadata
     {
         using type = DescriptorRate;
 
+        using ParamTypes = std::tuple<uint8_t, uint16_t>;
+
+        template<size_t I, typename T>
+        static auto& access(T& value_)
+        {
+            if constexpr(I == 0) return value_.descriptor;
+            if constexpr(I == 1) return value_.decimation;
+        }
+
         static constexpr inline ParameterInfo parameters[] = {
             {
                 /*. name       = */ "descriptor",
@@ -143,6 +169,14 @@ namespace mip::metadata
     struct MetadataFor<Vector<T,N>>
     {
         using type = Vector<T,N>;
+
+        using ParamTypes = std::array<T, N>;
+
+        template<size_t I>
+        static T& access(type& value_) { return value_[I]; }
+
+        template<size_t I>
+        static T access(const type& value_) { return value_[I]; }
 
         static constexpr inline ParameterInfo parameters_v[] = {
             {
