@@ -38,9 +38,9 @@ struct MetadataFor<commands_filter::SetInitialAttitude>
     using type = commands_filter::SetInitialAttitude;
 
     using ParamTypes = std::tuple<
-        float,
-        float,
-        float
+        decltype(type::roll),
+        decltype(type::pitch),
+        decltype(type::heading)
     >;
 
     template<size_t I, class T = type>
@@ -127,7 +127,7 @@ struct MetadataFor<commands_filter::EstimationControl::Response>
     using type = commands_filter::EstimationControl::Response;
 
     using ParamTypes = std::tuple<
-        commands_filter::EstimationControl::EnableFlags
+        decltype(type::enable)
     >;
 
     template<size_t I, class T = type>
@@ -167,8 +167,8 @@ struct MetadataFor<commands_filter::EstimationControl>
     using type = commands_filter::EstimationControl;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        commands_filter::EstimationControl::EnableFlags
+        decltype(type::function),
+        decltype(type::enable)
     >;
 
     template<size_t I, class T = type>
@@ -211,14 +211,14 @@ struct MetadataFor<commands_filter::ExternalGnssUpdate>
     using type = commands_filter::ExternalGnssUpdate;
 
     using ParamTypes = std::tuple<
-        double,
-        uint16_t,
-        double,
-        double,
-        double,
-        Vector3f,
-        Vector3f,
-        Vector3f
+        decltype(type::gps_time),
+        decltype(type::gps_week),
+        decltype(type::latitude),
+        decltype(type::longitude),
+        decltype(type::height),
+        decltype(type::velocity),
+        decltype(type::pos_uncertainty),
+        decltype(type::vel_uncertainty)
     >;
 
     template<size_t I, class T = type>
@@ -329,9 +329,9 @@ struct MetadataFor<commands_filter::ExternalHeadingUpdate>
     using type = commands_filter::ExternalHeadingUpdate;
 
     using ParamTypes = std::tuple<
-        float,
-        float,
-        uint8_t
+        decltype(type::heading),
+        decltype(type::heading_uncertainty),
+        decltype(type::type)
     >;
 
     template<size_t I, class T = type>
@@ -392,11 +392,11 @@ struct MetadataFor<commands_filter::ExternalHeadingUpdateWithTime>
     using type = commands_filter::ExternalHeadingUpdateWithTime;
 
     using ParamTypes = std::tuple<
-        double,
-        uint16_t,
-        float,
-        float,
-        uint8_t
+        decltype(type::gps_time),
+        decltype(type::gps_week),
+        decltype(type::heading),
+        decltype(type::heading_uncertainty),
+        decltype(type::type)
     >;
 
     template<size_t I, class T = type>
@@ -499,7 +499,7 @@ struct MetadataFor<commands_filter::TareOrientation::Response>
     using type = commands_filter::TareOrientation::Response;
 
     using ParamTypes = std::tuple<
-        commands_filter::TareOrientation::MipTareAxes
+        decltype(type::axes)
     >;
 
     template<size_t I, class T = type>
@@ -539,8 +539,8 @@ struct MetadataFor<commands_filter::TareOrientation>
     using type = commands_filter::TareOrientation;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        commands_filter::TareOrientation::MipTareAxes
+        decltype(type::function),
+        decltype(type::axes)
     >;
 
     template<size_t I, class T = type>
@@ -606,7 +606,7 @@ struct MetadataFor<commands_filter::VehicleDynamicsMode::Response>
     using type = commands_filter::VehicleDynamicsMode::Response;
 
     using ParamTypes = std::tuple<
-        commands_filter::VehicleDynamicsMode::DynamicsMode
+        decltype(type::mode)
     >;
 
     template<size_t I, class T = type>
@@ -646,8 +646,8 @@ struct MetadataFor<commands_filter::VehicleDynamicsMode>
     using type = commands_filter::VehicleDynamicsMode;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        commands_filter::VehicleDynamicsMode::DynamicsMode
+        decltype(type::function),
+        decltype(type::mode)
     >;
 
     template<size_t I, class T = type>
@@ -690,9 +690,9 @@ struct MetadataFor<commands_filter::SensorToVehicleRotationEuler::Response>
     using type = commands_filter::SensorToVehicleRotationEuler::Response;
 
     using ParamTypes = std::tuple<
-        float,
-        float,
-        float
+        decltype(type::roll),
+        decltype(type::pitch),
+        decltype(type::yaw)
     >;
 
     template<size_t I, class T = type>
@@ -752,10 +752,10 @@ struct MetadataFor<commands_filter::SensorToVehicleRotationEuler>
     using type = commands_filter::SensorToVehicleRotationEuler;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        float,
-        float,
-        float
+        decltype(type::function),
+        decltype(type::roll),
+        decltype(type::pitch),
+        decltype(type::yaw)
     >;
 
     template<size_t I, class T = type>
@@ -818,7 +818,7 @@ struct MetadataFor<commands_filter::SensorToVehicleRotationDcm::Response>
     using type = commands_filter::SensorToVehicleRotationDcm::Response;
 
     using ParamTypes = std::tuple<
-        Matrix3f
+        decltype(type::dcm)
     >;
 
     template<size_t I, class T = type>
@@ -858,8 +858,8 @@ struct MetadataFor<commands_filter::SensorToVehicleRotationDcm>
     using type = commands_filter::SensorToVehicleRotationDcm;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        Matrix3f
+        decltype(type::function),
+        decltype(type::dcm)
     >;
 
     template<size_t I, class T = type>
@@ -902,7 +902,7 @@ struct MetadataFor<commands_filter::SensorToVehicleRotationQuaternion::Response>
     using type = commands_filter::SensorToVehicleRotationQuaternion::Response;
 
     using ParamTypes = std::tuple<
-        Quatf
+        decltype(type::quat)
     >;
 
     template<size_t I, class T = type>
@@ -942,8 +942,8 @@ struct MetadataFor<commands_filter::SensorToVehicleRotationQuaternion>
     using type = commands_filter::SensorToVehicleRotationQuaternion;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        Quatf
+        decltype(type::function),
+        decltype(type::quat)
     >;
 
     template<size_t I, class T = type>
@@ -986,7 +986,7 @@ struct MetadataFor<commands_filter::SensorToVehicleOffset::Response>
     using type = commands_filter::SensorToVehicleOffset::Response;
 
     using ParamTypes = std::tuple<
-        Vector3f
+        decltype(type::offset)
     >;
 
     template<size_t I, class T = type>
@@ -1026,8 +1026,8 @@ struct MetadataFor<commands_filter::SensorToVehicleOffset>
     using type = commands_filter::SensorToVehicleOffset;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        Vector3f
+        decltype(type::function),
+        decltype(type::offset)
     >;
 
     template<size_t I, class T = type>
@@ -1070,7 +1070,7 @@ struct MetadataFor<commands_filter::AntennaOffset::Response>
     using type = commands_filter::AntennaOffset::Response;
 
     using ParamTypes = std::tuple<
-        Vector3f
+        decltype(type::offset)
     >;
 
     template<size_t I, class T = type>
@@ -1110,8 +1110,8 @@ struct MetadataFor<commands_filter::AntennaOffset>
     using type = commands_filter::AntennaOffset;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        Vector3f
+        decltype(type::function),
+        decltype(type::offset)
     >;
 
     template<size_t I, class T = type>
@@ -1177,7 +1177,7 @@ struct MetadataFor<commands_filter::GnssSource::Response>
     using type = commands_filter::GnssSource::Response;
 
     using ParamTypes = std::tuple<
-        commands_filter::GnssSource::Source
+        decltype(type::source)
     >;
 
     template<size_t I, class T = type>
@@ -1217,8 +1217,8 @@ struct MetadataFor<commands_filter::GnssSource>
     using type = commands_filter::GnssSource;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        commands_filter::GnssSource::Source
+        decltype(type::function),
+        decltype(type::source)
     >;
 
     template<size_t I, class T = type>
@@ -1288,7 +1288,7 @@ struct MetadataFor<commands_filter::HeadingSource::Response>
     using type = commands_filter::HeadingSource::Response;
 
     using ParamTypes = std::tuple<
-        commands_filter::HeadingSource::Source
+        decltype(type::source)
     >;
 
     template<size_t I, class T = type>
@@ -1328,8 +1328,8 @@ struct MetadataFor<commands_filter::HeadingSource>
     using type = commands_filter::HeadingSource;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        commands_filter::HeadingSource::Source
+        decltype(type::function),
+        decltype(type::source)
     >;
 
     template<size_t I, class T = type>
@@ -1372,7 +1372,7 @@ struct MetadataFor<commands_filter::AutoInitControl::Response>
     using type = commands_filter::AutoInitControl::Response;
 
     using ParamTypes = std::tuple<
-        uint8_t
+        decltype(type::enable)
     >;
 
     template<size_t I, class T = type>
@@ -1412,8 +1412,8 @@ struct MetadataFor<commands_filter::AutoInitControl>
     using type = commands_filter::AutoInitControl;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        uint8_t
+        decltype(type::function),
+        decltype(type::enable)
     >;
 
     template<size_t I, class T = type>
@@ -1456,7 +1456,7 @@ struct MetadataFor<commands_filter::AccelNoise::Response>
     using type = commands_filter::AccelNoise::Response;
 
     using ParamTypes = std::tuple<
-        Vector3f
+        decltype(type::noise)
     >;
 
     template<size_t I, class T = type>
@@ -1496,8 +1496,8 @@ struct MetadataFor<commands_filter::AccelNoise>
     using type = commands_filter::AccelNoise;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        Vector3f
+        decltype(type::function),
+        decltype(type::noise)
     >;
 
     template<size_t I, class T = type>
@@ -1540,7 +1540,7 @@ struct MetadataFor<commands_filter::GyroNoise::Response>
     using type = commands_filter::GyroNoise::Response;
 
     using ParamTypes = std::tuple<
-        Vector3f
+        decltype(type::noise)
     >;
 
     template<size_t I, class T = type>
@@ -1580,8 +1580,8 @@ struct MetadataFor<commands_filter::GyroNoise>
     using type = commands_filter::GyroNoise;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        Vector3f
+        decltype(type::function),
+        decltype(type::noise)
     >;
 
     template<size_t I, class T = type>
@@ -1624,8 +1624,8 @@ struct MetadataFor<commands_filter::AccelBiasModel::Response>
     using type = commands_filter::AccelBiasModel::Response;
 
     using ParamTypes = std::tuple<
-        Vector3f,
-        Vector3f
+        decltype(type::beta),
+        decltype(type::noise)
     >;
 
     template<size_t I, class T = type>
@@ -1675,9 +1675,9 @@ struct MetadataFor<commands_filter::AccelBiasModel>
     using type = commands_filter::AccelBiasModel;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        Vector3f,
-        Vector3f
+        decltype(type::function),
+        decltype(type::beta),
+        decltype(type::noise)
     >;
 
     template<size_t I, class T = type>
@@ -1730,8 +1730,8 @@ struct MetadataFor<commands_filter::GyroBiasModel::Response>
     using type = commands_filter::GyroBiasModel::Response;
 
     using ParamTypes = std::tuple<
-        Vector3f,
-        Vector3f
+        decltype(type::beta),
+        decltype(type::noise)
     >;
 
     template<size_t I, class T = type>
@@ -1781,9 +1781,9 @@ struct MetadataFor<commands_filter::GyroBiasModel>
     using type = commands_filter::GyroBiasModel;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        Vector3f,
-        Vector3f
+        decltype(type::function),
+        decltype(type::beta),
+        decltype(type::noise)
     >;
 
     template<size_t I, class T = type>
@@ -1857,7 +1857,7 @@ struct MetadataFor<commands_filter::AltitudeAiding::Response>
     using type = commands_filter::AltitudeAiding::Response;
 
     using ParamTypes = std::tuple<
-        commands_filter::AltitudeAiding::AidingSelector
+        decltype(type::selector)
     >;
 
     template<size_t I, class T = type>
@@ -1897,8 +1897,8 @@ struct MetadataFor<commands_filter::AltitudeAiding>
     using type = commands_filter::AltitudeAiding;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        commands_filter::AltitudeAiding::AidingSelector
+        decltype(type::function),
+        decltype(type::selector)
     >;
 
     template<size_t I, class T = type>
@@ -1962,7 +1962,7 @@ struct MetadataFor<commands_filter::PitchRollAiding::Response>
     using type = commands_filter::PitchRollAiding::Response;
 
     using ParamTypes = std::tuple<
-        commands_filter::PitchRollAiding::AidingSource
+        decltype(type::source)
     >;
 
     template<size_t I, class T = type>
@@ -2002,8 +2002,8 @@ struct MetadataFor<commands_filter::PitchRollAiding>
     using type = commands_filter::PitchRollAiding;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        commands_filter::PitchRollAiding::AidingSource
+        decltype(type::function),
+        decltype(type::source)
     >;
 
     template<size_t I, class T = type>
@@ -2046,8 +2046,8 @@ struct MetadataFor<commands_filter::AutoZupt::Response>
     using type = commands_filter::AutoZupt::Response;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        float
+        decltype(type::enable),
+        decltype(type::threshold)
     >;
 
     template<size_t I, class T = type>
@@ -2097,9 +2097,9 @@ struct MetadataFor<commands_filter::AutoZupt>
     using type = commands_filter::AutoZupt;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        uint8_t,
-        float
+        decltype(type::function),
+        decltype(type::enable),
+        decltype(type::threshold)
     >;
 
     template<size_t I, class T = type>
@@ -2152,8 +2152,8 @@ struct MetadataFor<commands_filter::AutoAngularZupt::Response>
     using type = commands_filter::AutoAngularZupt::Response;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        float
+        decltype(type::enable),
+        decltype(type::threshold)
     >;
 
     template<size_t I, class T = type>
@@ -2203,9 +2203,9 @@ struct MetadataFor<commands_filter::AutoAngularZupt>
     using type = commands_filter::AutoAngularZupt;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        uint8_t,
-        float
+        decltype(type::function),
+        decltype(type::enable),
+        decltype(type::threshold)
     >;
 
     template<size_t I, class T = type>
@@ -2304,7 +2304,7 @@ struct MetadataFor<commands_filter::MagCaptureAutoCal>
     using type = commands_filter::MagCaptureAutoCal;
 
     using ParamTypes = std::tuple<
-        FunctionSelector
+        decltype(type::function)
     >;
 
     template<size_t I, class T = type>
@@ -2338,7 +2338,7 @@ struct MetadataFor<commands_filter::GravityNoise::Response>
     using type = commands_filter::GravityNoise::Response;
 
     using ParamTypes = std::tuple<
-        Vector3f
+        decltype(type::noise)
     >;
 
     template<size_t I, class T = type>
@@ -2378,8 +2378,8 @@ struct MetadataFor<commands_filter::GravityNoise>
     using type = commands_filter::GravityNoise;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        Vector3f
+        decltype(type::function),
+        decltype(type::noise)
     >;
 
     template<size_t I, class T = type>
@@ -2422,7 +2422,7 @@ struct MetadataFor<commands_filter::PressureAltitudeNoise::Response>
     using type = commands_filter::PressureAltitudeNoise::Response;
 
     using ParamTypes = std::tuple<
-        float
+        decltype(type::noise)
     >;
 
     template<size_t I, class T = type>
@@ -2462,8 +2462,8 @@ struct MetadataFor<commands_filter::PressureAltitudeNoise>
     using type = commands_filter::PressureAltitudeNoise;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        float
+        decltype(type::function),
+        decltype(type::noise)
     >;
 
     template<size_t I, class T = type>
@@ -2506,7 +2506,7 @@ struct MetadataFor<commands_filter::HardIronOffsetNoise::Response>
     using type = commands_filter::HardIronOffsetNoise::Response;
 
     using ParamTypes = std::tuple<
-        Vector3f
+        decltype(type::noise)
     >;
 
     template<size_t I, class T = type>
@@ -2546,8 +2546,8 @@ struct MetadataFor<commands_filter::HardIronOffsetNoise>
     using type = commands_filter::HardIronOffsetNoise;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        Vector3f
+        decltype(type::function),
+        decltype(type::noise)
     >;
 
     template<size_t I, class T = type>
@@ -2590,7 +2590,7 @@ struct MetadataFor<commands_filter::SoftIronMatrixNoise::Response>
     using type = commands_filter::SoftIronMatrixNoise::Response;
 
     using ParamTypes = std::tuple<
-        Matrix3f
+        decltype(type::noise)
     >;
 
     template<size_t I, class T = type>
@@ -2630,8 +2630,8 @@ struct MetadataFor<commands_filter::SoftIronMatrixNoise>
     using type = commands_filter::SoftIronMatrixNoise;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        Matrix3f
+        decltype(type::function),
+        decltype(type::noise)
     >;
 
     template<size_t I, class T = type>
@@ -2674,7 +2674,7 @@ struct MetadataFor<commands_filter::MagNoise::Response>
     using type = commands_filter::MagNoise::Response;
 
     using ParamTypes = std::tuple<
-        Vector3f
+        decltype(type::noise)
     >;
 
     template<size_t I, class T = type>
@@ -2714,8 +2714,8 @@ struct MetadataFor<commands_filter::MagNoise>
     using type = commands_filter::MagNoise;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        Vector3f
+        decltype(type::function),
+        decltype(type::noise)
     >;
 
     template<size_t I, class T = type>
@@ -2780,8 +2780,8 @@ struct MetadataFor<commands_filter::InclinationSource::Response>
     using type = commands_filter::InclinationSource::Response;
 
     using ParamTypes = std::tuple<
-        commands_filter::FilterMagParamSource,
-        float
+        decltype(type::source),
+        decltype(type::inclination)
     >;
 
     template<size_t I, class T = type>
@@ -2831,9 +2831,9 @@ struct MetadataFor<commands_filter::InclinationSource>
     using type = commands_filter::InclinationSource;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        commands_filter::FilterMagParamSource,
-        float
+        decltype(type::function),
+        decltype(type::source),
+        decltype(type::inclination)
     >;
 
     template<size_t I, class T = type>
@@ -2886,8 +2886,8 @@ struct MetadataFor<commands_filter::MagneticDeclinationSource::Response>
     using type = commands_filter::MagneticDeclinationSource::Response;
 
     using ParamTypes = std::tuple<
-        commands_filter::FilterMagParamSource,
-        float
+        decltype(type::source),
+        decltype(type::declination)
     >;
 
     template<size_t I, class T = type>
@@ -2937,9 +2937,9 @@ struct MetadataFor<commands_filter::MagneticDeclinationSource>
     using type = commands_filter::MagneticDeclinationSource;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        commands_filter::FilterMagParamSource,
-        float
+        decltype(type::function),
+        decltype(type::source),
+        decltype(type::declination)
     >;
 
     template<size_t I, class T = type>
@@ -2992,8 +2992,8 @@ struct MetadataFor<commands_filter::MagFieldMagnitudeSource::Response>
     using type = commands_filter::MagFieldMagnitudeSource::Response;
 
     using ParamTypes = std::tuple<
-        commands_filter::FilterMagParamSource,
-        float
+        decltype(type::source),
+        decltype(type::magnitude)
     >;
 
     template<size_t I, class T = type>
@@ -3043,9 +3043,9 @@ struct MetadataFor<commands_filter::MagFieldMagnitudeSource>
     using type = commands_filter::MagFieldMagnitudeSource;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        commands_filter::FilterMagParamSource,
-        float
+        decltype(type::function),
+        decltype(type::source),
+        decltype(type::magnitude)
     >;
 
     template<size_t I, class T = type>
@@ -3098,10 +3098,10 @@ struct MetadataFor<commands_filter::ReferencePosition::Response>
     using type = commands_filter::ReferencePosition::Response;
 
     using ParamTypes = std::tuple<
-        bool,
-        double,
-        double,
-        double
+        decltype(type::enable),
+        decltype(type::latitude),
+        decltype(type::longitude),
+        decltype(type::altitude)
     >;
 
     template<size_t I, class T = type>
@@ -3171,11 +3171,11 @@ struct MetadataFor<commands_filter::ReferencePosition>
     using type = commands_filter::ReferencePosition;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        bool,
-        double,
-        double,
-        double
+        decltype(type::function),
+        decltype(type::enable),
+        decltype(type::latitude),
+        decltype(type::longitude),
+        decltype(type::altitude)
     >;
 
     template<size_t I, class T = type>
@@ -3270,13 +3270,13 @@ struct MetadataFor<commands_filter::AccelMagnitudeErrorAdaptiveMeasurement::Resp
     using type = commands_filter::AccelMagnitudeErrorAdaptiveMeasurement::Response;
 
     using ParamTypes = std::tuple<
-        commands_filter::FilterAdaptiveMeasurement,
-        float,
-        float,
-        float,
-        float,
-        float,
-        float
+        decltype(type::adaptive_measurement),
+        decltype(type::frequency),
+        decltype(type::low_limit),
+        decltype(type::high_limit),
+        decltype(type::low_limit_uncertainty),
+        decltype(type::high_limit_uncertainty),
+        decltype(type::minimum_uncertainty)
     >;
 
     template<size_t I, class T = type>
@@ -3376,14 +3376,14 @@ struct MetadataFor<commands_filter::AccelMagnitudeErrorAdaptiveMeasurement>
     using type = commands_filter::AccelMagnitudeErrorAdaptiveMeasurement;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        commands_filter::FilterAdaptiveMeasurement,
-        float,
-        float,
-        float,
-        float,
-        float,
-        float
+        decltype(type::function),
+        decltype(type::adaptive_measurement),
+        decltype(type::frequency),
+        decltype(type::low_limit),
+        decltype(type::high_limit),
+        decltype(type::low_limit_uncertainty),
+        decltype(type::high_limit_uncertainty),
+        decltype(type::minimum_uncertainty)
     >;
 
     template<size_t I, class T = type>
@@ -3486,13 +3486,13 @@ struct MetadataFor<commands_filter::MagMagnitudeErrorAdaptiveMeasurement::Respon
     using type = commands_filter::MagMagnitudeErrorAdaptiveMeasurement::Response;
 
     using ParamTypes = std::tuple<
-        commands_filter::FilterAdaptiveMeasurement,
-        float,
-        float,
-        float,
-        float,
-        float,
-        float
+        decltype(type::adaptive_measurement),
+        decltype(type::frequency),
+        decltype(type::low_limit),
+        decltype(type::high_limit),
+        decltype(type::low_limit_uncertainty),
+        decltype(type::high_limit_uncertainty),
+        decltype(type::minimum_uncertainty)
     >;
 
     template<size_t I, class T = type>
@@ -3592,14 +3592,14 @@ struct MetadataFor<commands_filter::MagMagnitudeErrorAdaptiveMeasurement>
     using type = commands_filter::MagMagnitudeErrorAdaptiveMeasurement;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        commands_filter::FilterAdaptiveMeasurement,
-        float,
-        float,
-        float,
-        float,
-        float,
-        float
+        decltype(type::function),
+        decltype(type::adaptive_measurement),
+        decltype(type::frequency),
+        decltype(type::low_limit),
+        decltype(type::high_limit),
+        decltype(type::low_limit_uncertainty),
+        decltype(type::high_limit_uncertainty),
+        decltype(type::minimum_uncertainty)
     >;
 
     template<size_t I, class T = type>
@@ -3702,11 +3702,11 @@ struct MetadataFor<commands_filter::MagDipAngleErrorAdaptiveMeasurement::Respons
     using type = commands_filter::MagDipAngleErrorAdaptiveMeasurement::Response;
 
     using ParamTypes = std::tuple<
-        bool,
-        float,
-        float,
-        float,
-        float
+        decltype(type::enable),
+        decltype(type::frequency),
+        decltype(type::high_limit),
+        decltype(type::high_limit_uncertainty),
+        decltype(type::minimum_uncertainty)
     >;
 
     template<size_t I, class T = type>
@@ -3786,12 +3786,12 @@ struct MetadataFor<commands_filter::MagDipAngleErrorAdaptiveMeasurement>
     using type = commands_filter::MagDipAngleErrorAdaptiveMeasurement;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        bool,
-        float,
-        float,
-        float,
-        float
+        decltype(type::function),
+        decltype(type::enable),
+        decltype(type::frequency),
+        decltype(type::high_limit),
+        decltype(type::high_limit_uncertainty),
+        decltype(type::minimum_uncertainty)
     >;
 
     template<size_t I, class T = type>
@@ -3903,8 +3903,8 @@ struct MetadataFor<commands_filter::AidingMeasurementEnable::Response>
     using type = commands_filter::AidingMeasurementEnable::Response;
 
     using ParamTypes = std::tuple<
-        commands_filter::AidingMeasurementEnable::AidingSource,
-        bool
+        decltype(type::aiding_source),
+        decltype(type::enable)
     >;
 
     template<size_t I, class T = type>
@@ -3954,9 +3954,9 @@ struct MetadataFor<commands_filter::AidingMeasurementEnable>
     using type = commands_filter::AidingMeasurementEnable;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        commands_filter::AidingMeasurementEnable::AidingSource,
-        bool
+        decltype(type::function),
+        decltype(type::aiding_source),
+        decltype(type::enable)
     >;
 
     template<size_t I, class T = type>
@@ -4032,9 +4032,9 @@ struct MetadataFor<commands_filter::KinematicConstraint::Response>
     using type = commands_filter::KinematicConstraint::Response;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        uint8_t,
-        uint8_t
+        decltype(type::acceleration_constraint_selection),
+        decltype(type::velocity_constraint_selection),
+        decltype(type::angular_constraint_selection)
     >;
 
     template<size_t I, class T = type>
@@ -4094,10 +4094,10 @@ struct MetadataFor<commands_filter::KinematicConstraint>
     using type = commands_filter::KinematicConstraint;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        uint8_t,
-        uint8_t,
-        uint8_t
+        decltype(type::function),
+        decltype(type::acceleration_constraint_selection),
+        decltype(type::velocity_constraint_selection),
+        decltype(type::angular_constraint_selection)
     >;
 
     template<size_t I, class T = type>
@@ -4227,15 +4227,15 @@ struct MetadataFor<commands_filter::InitializationConfiguration::Response>
     using type = commands_filter::InitializationConfiguration::Response;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        commands_filter::InitializationConfiguration::InitialConditionSource,
-        commands_filter::InitializationConfiguration::AlignmentSelector,
-        float,
-        float,
-        float,
-        Vector3f,
-        Vector3f,
-        commands_filter::FilterReferenceFrame
+        decltype(type::wait_for_run_command),
+        decltype(type::initial_cond_src),
+        decltype(type::auto_heading_alignment_selector),
+        decltype(type::initial_heading),
+        decltype(type::initial_pitch),
+        decltype(type::initial_roll),
+        decltype(type::initial_position),
+        decltype(type::initial_velocity),
+        decltype(type::reference_frame_selector)
     >;
 
     template<size_t I, class T = type>
@@ -4355,16 +4355,16 @@ struct MetadataFor<commands_filter::InitializationConfiguration>
     using type = commands_filter::InitializationConfiguration;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        uint8_t,
-        commands_filter::InitializationConfiguration::InitialConditionSource,
-        commands_filter::InitializationConfiguration::AlignmentSelector,
-        float,
-        float,
-        float,
-        Vector3f,
-        Vector3f,
-        commands_filter::FilterReferenceFrame
+        decltype(type::function),
+        decltype(type::wait_for_run_command),
+        decltype(type::initial_cond_src),
+        decltype(type::auto_heading_alignment_selector),
+        decltype(type::initial_heading),
+        decltype(type::initial_pitch),
+        decltype(type::initial_roll),
+        decltype(type::initial_position),
+        decltype(type::initial_velocity),
+        decltype(type::reference_frame_selector)
     >;
 
     template<size_t I, class T = type>
@@ -4487,8 +4487,8 @@ struct MetadataFor<commands_filter::AdaptiveFilterOptions::Response>
     using type = commands_filter::AdaptiveFilterOptions::Response;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        uint16_t
+        decltype(type::level),
+        decltype(type::time_limit)
     >;
 
     template<size_t I, class T = type>
@@ -4538,9 +4538,9 @@ struct MetadataFor<commands_filter::AdaptiveFilterOptions>
     using type = commands_filter::AdaptiveFilterOptions;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        uint8_t,
-        uint16_t
+        decltype(type::function),
+        decltype(type::level),
+        decltype(type::time_limit)
     >;
 
     template<size_t I, class T = type>
@@ -4593,8 +4593,8 @@ struct MetadataFor<commands_filter::MultiAntennaOffset::Response>
     using type = commands_filter::MultiAntennaOffset::Response;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        Vector3f
+        decltype(type::receiver_id),
+        decltype(type::antenna_offset)
     >;
 
     template<size_t I, class T = type>
@@ -4644,9 +4644,9 @@ struct MetadataFor<commands_filter::MultiAntennaOffset>
     using type = commands_filter::MultiAntennaOffset;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        uint8_t,
-        Vector3f
+        decltype(type::function),
+        decltype(type::receiver_id),
+        decltype(type::antenna_offset)
     >;
 
     template<size_t I, class T = type>
@@ -4699,9 +4699,9 @@ struct MetadataFor<commands_filter::RelPosConfiguration::Response>
     using type = commands_filter::RelPosConfiguration::Response;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        commands_filter::FilterReferenceFrame,
-        Vector3d
+        decltype(type::source),
+        decltype(type::reference_frame_selector),
+        decltype(type::reference_coordinates)
     >;
 
     template<size_t I, class T = type>
@@ -4761,10 +4761,10 @@ struct MetadataFor<commands_filter::RelPosConfiguration>
     using type = commands_filter::RelPosConfiguration;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        uint8_t,
-        commands_filter::FilterReferenceFrame,
-        Vector3d
+        decltype(type::function),
+        decltype(type::source),
+        decltype(type::reference_frame_selector),
+        decltype(type::reference_coordinates)
     >;
 
     template<size_t I, class T = type>
@@ -4847,8 +4847,8 @@ struct MetadataFor<commands_filter::RefPointLeverArm::Response>
     using type = commands_filter::RefPointLeverArm::Response;
 
     using ParamTypes = std::tuple<
-        commands_filter::RefPointLeverArm::ReferencePointSelector,
-        Vector3f
+        decltype(type::ref_point_sel),
+        decltype(type::lever_arm_offset)
     >;
 
     template<size_t I, class T = type>
@@ -4898,9 +4898,9 @@ struct MetadataFor<commands_filter::RefPointLeverArm>
     using type = commands_filter::RefPointLeverArm;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        commands_filter::RefPointLeverArm::ReferencePointSelector,
-        Vector3f
+        decltype(type::function),
+        decltype(type::ref_point_sel),
+        decltype(type::lever_arm_offset)
     >;
 
     template<size_t I, class T = type>
@@ -4953,10 +4953,10 @@ struct MetadataFor<commands_filter::SpeedMeasurement>
     using type = commands_filter::SpeedMeasurement;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        float,
-        float,
-        float
+        decltype(type::source),
+        decltype(type::time_of_week),
+        decltype(type::speed),
+        decltype(type::speed_uncertainty)
     >;
 
     template<size_t I, class T = type>
@@ -5027,8 +5027,8 @@ struct MetadataFor<commands_filter::SpeedLeverArm::Response>
     using type = commands_filter::SpeedLeverArm::Response;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        Vector3f
+        decltype(type::source),
+        decltype(type::lever_arm_offset)
     >;
 
     template<size_t I, class T = type>
@@ -5078,9 +5078,9 @@ struct MetadataFor<commands_filter::SpeedLeverArm>
     using type = commands_filter::SpeedLeverArm;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        uint8_t,
-        Vector3f
+        decltype(type::function),
+        decltype(type::source),
+        decltype(type::lever_arm_offset)
     >;
 
     template<size_t I, class T = type>
@@ -5133,7 +5133,7 @@ struct MetadataFor<commands_filter::WheeledVehicleConstraintControl::Response>
     using type = commands_filter::WheeledVehicleConstraintControl::Response;
 
     using ParamTypes = std::tuple<
-        uint8_t
+        decltype(type::enable)
     >;
 
     template<size_t I, class T = type>
@@ -5173,8 +5173,8 @@ struct MetadataFor<commands_filter::WheeledVehicleConstraintControl>
     using type = commands_filter::WheeledVehicleConstraintControl;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        uint8_t
+        decltype(type::function),
+        decltype(type::enable)
     >;
 
     template<size_t I, class T = type>
@@ -5217,7 +5217,7 @@ struct MetadataFor<commands_filter::VerticalGyroConstraintControl::Response>
     using type = commands_filter::VerticalGyroConstraintControl::Response;
 
     using ParamTypes = std::tuple<
-        uint8_t
+        decltype(type::enable)
     >;
 
     template<size_t I, class T = type>
@@ -5257,8 +5257,8 @@ struct MetadataFor<commands_filter::VerticalGyroConstraintControl>
     using type = commands_filter::VerticalGyroConstraintControl;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        uint8_t
+        decltype(type::function),
+        decltype(type::enable)
     >;
 
     template<size_t I, class T = type>
@@ -5301,8 +5301,8 @@ struct MetadataFor<commands_filter::GnssAntennaCalControl::Response>
     using type = commands_filter::GnssAntennaCalControl::Response;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        float
+        decltype(type::enable),
+        decltype(type::max_offset)
     >;
 
     template<size_t I, class T = type>
@@ -5352,9 +5352,9 @@ struct MetadataFor<commands_filter::GnssAntennaCalControl>
     using type = commands_filter::GnssAntennaCalControl;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        uint8_t,
-        float
+        decltype(type::function),
+        decltype(type::enable),
+        decltype(type::max_offset)
     >;
 
     template<size_t I, class T = type>
@@ -5407,7 +5407,7 @@ struct MetadataFor<commands_filter::SetInitialHeading>
     using type = commands_filter::SetInitialHeading;
 
     using ParamTypes = std::tuple<
-        float
+        decltype(type::heading)
     >;
 
     template<size_t I, class T = type>

@@ -76,7 +76,7 @@ struct MetadataFor<commands_rtk::GetStatusFlags::Response>
     using type = commands_rtk::GetStatusFlags::Response;
 
     using ParamTypes = std::tuple<
-        commands_rtk::GetStatusFlags::StatusFlags
+        decltype(type::flags)
     >;
 
     template<size_t I, class T = type>
@@ -139,7 +139,7 @@ struct MetadataFor<commands_rtk::GetImei::Response>
     using type = commands_rtk::GetImei::Response;
 
     using ParamTypes = std::tuple<
-        char
+        decltype(type::IMEI)
     >;
 
     template<size_t I, class T = type>
@@ -202,7 +202,7 @@ struct MetadataFor<commands_rtk::GetImsi::Response>
     using type = commands_rtk::GetImsi::Response;
 
     using ParamTypes = std::tuple<
-        char
+        decltype(type::IMSI)
     >;
 
     template<size_t I, class T = type>
@@ -265,7 +265,7 @@ struct MetadataFor<commands_rtk::GetIccid::Response>
     using type = commands_rtk::GetIccid::Response;
 
     using ParamTypes = std::tuple<
-        char
+        decltype(type::ICCID)
     >;
 
     template<size_t I, class T = type>
@@ -349,7 +349,7 @@ struct MetadataFor<commands_rtk::ConnectedDeviceType::Response>
     using type = commands_rtk::ConnectedDeviceType::Response;
 
     using ParamTypes = std::tuple<
-        commands_rtk::ConnectedDeviceType::Type
+        decltype(type::devType)
     >;
 
     template<size_t I, class T = type>
@@ -389,8 +389,8 @@ struct MetadataFor<commands_rtk::ConnectedDeviceType>
     using type = commands_rtk::ConnectedDeviceType;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        commands_rtk::ConnectedDeviceType::Type
+        decltype(type::function),
+        decltype(type::devType)
     >;
 
     template<size_t I, class T = type>
@@ -433,7 +433,7 @@ struct MetadataFor<commands_rtk::GetActCode::Response>
     using type = commands_rtk::GetActCode::Response;
 
     using ParamTypes = std::tuple<
-        char
+        decltype(type::ActivationCode)
     >;
 
     template<size_t I, class T = type>
@@ -496,7 +496,7 @@ struct MetadataFor<commands_rtk::GetModemFirmwareVersion::Response>
     using type = commands_rtk::GetModemFirmwareVersion::Response;
 
     using ParamTypes = std::tuple<
-        char
+        decltype(type::ModemFirmwareVersion)
     >;
 
     template<size_t I, class T = type>
@@ -559,9 +559,9 @@ struct MetadataFor<commands_rtk::GetRssi::Response>
     using type = commands_rtk::GetRssi::Response;
 
     using ParamTypes = std::tuple<
-        bool,
-        int32_t,
-        int32_t
+        decltype(type::valid),
+        decltype(type::rssi),
+        decltype(type::signalQuality)
     >;
 
     template<size_t I, class T = type>
@@ -666,10 +666,10 @@ struct MetadataFor<commands_rtk::ServiceStatus::Response>
     using type = commands_rtk::ServiceStatus::Response;
 
     using ParamTypes = std::tuple<
-        commands_rtk::ServiceStatus::ServiceFlags,
-        uint32_t,
-        uint32_t,
-        uint64_t
+        decltype(type::flags),
+        decltype(type::receivedBytes),
+        decltype(type::lastBytes),
+        decltype(type::lastBytesTime)
     >;
 
     template<size_t I, class T = type>
@@ -739,8 +739,8 @@ struct MetadataFor<commands_rtk::ServiceStatus>
     using type = commands_rtk::ServiceStatus;
 
     using ParamTypes = std::tuple<
-        uint32_t,
-        uint32_t
+        decltype(type::reserved1),
+        decltype(type::reserved2)
     >;
 
     template<size_t I, class T = type>
@@ -812,7 +812,7 @@ struct MetadataFor<commands_rtk::ProdEraseStorage>
     using type = commands_rtk::ProdEraseStorage;
 
     using ParamTypes = std::tuple<
-        commands_rtk::MediaSelector
+        decltype(type::media)
     >;
 
     template<size_t I, class T = type>
@@ -875,10 +875,10 @@ struct MetadataFor<commands_rtk::LedControl>
     using type = commands_rtk::LedControl;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        uint8_t,
-        commands_rtk::LedAction,
-        uint32_t
+        decltype(type::primaryColor),
+        decltype(type::altColor),
+        decltype(type::act),
+        decltype(type::period)
     >;
 
     template<size_t I, class T = type>

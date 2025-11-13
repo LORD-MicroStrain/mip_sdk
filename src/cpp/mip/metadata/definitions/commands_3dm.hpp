@@ -15,9 +15,9 @@ struct MetadataFor<commands_3dm::PollImuMessage>
     using type = commands_3dm::PollImuMessage;
 
     using ParamTypes = std::tuple<
-        bool,
-        uint8_t,
-        DescriptorRate
+        decltype(type::suppress_ack),
+        decltype(type::num_descriptors),
+        decltype(type::descriptors)
     >;
 
     template<size_t I, class T = type>
@@ -78,9 +78,9 @@ struct MetadataFor<commands_3dm::PollGnssMessage>
     using type = commands_3dm::PollGnssMessage;
 
     using ParamTypes = std::tuple<
-        bool,
-        uint8_t,
-        DescriptorRate
+        decltype(type::suppress_ack),
+        decltype(type::num_descriptors),
+        decltype(type::descriptors)
     >;
 
     template<size_t I, class T = type>
@@ -141,9 +141,9 @@ struct MetadataFor<commands_3dm::PollFilterMessage>
     using type = commands_3dm::PollFilterMessage;
 
     using ParamTypes = std::tuple<
-        bool,
-        uint8_t,
-        DescriptorRate
+        decltype(type::suppress_ack),
+        decltype(type::num_descriptors),
+        decltype(type::descriptors)
     >;
 
     template<size_t I, class T = type>
@@ -257,10 +257,10 @@ struct MetadataFor<commands_3dm::NmeaMessage>
     using type = commands_3dm::NmeaMessage;
 
     using ParamTypes = std::tuple<
-        commands_3dm::NmeaMessage::MessageID,
-        commands_3dm::NmeaMessage::TalkerID,
-        uint8_t,
-        uint16_t
+        decltype(type::message_id),
+        decltype(type::talker_id),
+        decltype(type::source_desc_set),
+        decltype(type::decimation)
     >;
 
     template<size_t I, class T = type>
@@ -325,9 +325,9 @@ struct MetadataFor<commands_3dm::NmeaPollData>
     using type = commands_3dm::NmeaPollData;
 
     using ParamTypes = std::tuple<
-        bool,
-        uint8_t,
-        commands_3dm::NmeaMessage
+        decltype(type::suppress_ack),
+        decltype(type::count),
+        decltype(type::format_entries)
     >;
 
     template<size_t I, class T = type>
@@ -388,7 +388,7 @@ struct MetadataFor<commands_3dm::ImuGetBaseRate::Response>
     using type = commands_3dm::ImuGetBaseRate::Response;
 
     using ParamTypes = std::tuple<
-        uint16_t
+        decltype(type::rate)
     >;
 
     template<size_t I, class T = type>
@@ -451,7 +451,7 @@ struct MetadataFor<commands_3dm::GnssGetBaseRate::Response>
     using type = commands_3dm::GnssGetBaseRate::Response;
 
     using ParamTypes = std::tuple<
-        uint16_t
+        decltype(type::rate)
     >;
 
     template<size_t I, class T = type>
@@ -514,8 +514,8 @@ struct MetadataFor<commands_3dm::ImuMessageFormat::Response>
     using type = commands_3dm::ImuMessageFormat::Response;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        DescriptorRate
+        decltype(type::num_descriptors),
+        decltype(type::descriptors)
     >;
 
     template<size_t I, class T = type>
@@ -565,9 +565,9 @@ struct MetadataFor<commands_3dm::ImuMessageFormat>
     using type = commands_3dm::ImuMessageFormat;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        uint8_t,
-        DescriptorRate
+        decltype(type::function),
+        decltype(type::num_descriptors),
+        decltype(type::descriptors)
     >;
 
     template<size_t I, class T = type>
@@ -620,8 +620,8 @@ struct MetadataFor<commands_3dm::GnssMessageFormat::Response>
     using type = commands_3dm::GnssMessageFormat::Response;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        DescriptorRate
+        decltype(type::num_descriptors),
+        decltype(type::descriptors)
     >;
 
     template<size_t I, class T = type>
@@ -671,9 +671,9 @@ struct MetadataFor<commands_3dm::GnssMessageFormat>
     using type = commands_3dm::GnssMessageFormat;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        uint8_t,
-        DescriptorRate
+        decltype(type::function),
+        decltype(type::num_descriptors),
+        decltype(type::descriptors)
     >;
 
     template<size_t I, class T = type>
@@ -726,8 +726,8 @@ struct MetadataFor<commands_3dm::FilterMessageFormat::Response>
     using type = commands_3dm::FilterMessageFormat::Response;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        DescriptorRate
+        decltype(type::num_descriptors),
+        decltype(type::descriptors)
     >;
 
     template<size_t I, class T = type>
@@ -777,9 +777,9 @@ struct MetadataFor<commands_3dm::FilterMessageFormat>
     using type = commands_3dm::FilterMessageFormat;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        uint8_t,
-        DescriptorRate
+        decltype(type::function),
+        decltype(type::num_descriptors),
+        decltype(type::descriptors)
     >;
 
     template<size_t I, class T = type>
@@ -832,7 +832,7 @@ struct MetadataFor<commands_3dm::FilterGetBaseRate::Response>
     using type = commands_3dm::FilterGetBaseRate::Response;
 
     using ParamTypes = std::tuple<
-        uint16_t
+        decltype(type::rate)
     >;
 
     template<size_t I, class T = type>
@@ -895,8 +895,8 @@ struct MetadataFor<commands_3dm::NmeaMessageFormat::Response>
     using type = commands_3dm::NmeaMessageFormat::Response;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        commands_3dm::NmeaMessage
+        decltype(type::count),
+        decltype(type::format_entries)
     >;
 
     template<size_t I, class T = type>
@@ -946,9 +946,9 @@ struct MetadataFor<commands_3dm::NmeaMessageFormat>
     using type = commands_3dm::NmeaMessageFormat;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        uint8_t,
-        commands_3dm::NmeaMessage
+        decltype(type::function),
+        decltype(type::count),
+        decltype(type::format_entries)
     >;
 
     template<size_t I, class T = type>
@@ -1001,10 +1001,10 @@ struct MetadataFor<commands_3dm::PollData>
     using type = commands_3dm::PollData;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        bool,
-        uint8_t,
-        uint8_t
+        decltype(type::desc_set),
+        decltype(type::suppress_ack),
+        decltype(type::num_descriptors),
+        decltype(type::descriptors)
     >;
 
     template<size_t I, class T = type>
@@ -1075,8 +1075,8 @@ struct MetadataFor<commands_3dm::GetBaseRate::Response>
     using type = commands_3dm::GetBaseRate::Response;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        uint16_t
+        decltype(type::desc_set),
+        decltype(type::rate)
     >;
 
     template<size_t I, class T = type>
@@ -1126,7 +1126,7 @@ struct MetadataFor<commands_3dm::GetBaseRate>
     using type = commands_3dm::GetBaseRate;
 
     using ParamTypes = std::tuple<
-        uint8_t
+        decltype(type::desc_set)
     >;
 
     template<size_t I, class T = type>
@@ -1167,9 +1167,9 @@ struct MetadataFor<commands_3dm::MessageFormat::Response>
     using type = commands_3dm::MessageFormat::Response;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        uint8_t,
-        DescriptorRate
+        decltype(type::desc_set),
+        decltype(type::num_descriptors),
+        decltype(type::descriptors)
     >;
 
     template<size_t I, class T = type>
@@ -1229,10 +1229,10 @@ struct MetadataFor<commands_3dm::MessageFormat>
     using type = commands_3dm::MessageFormat;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        uint8_t,
-        uint8_t,
-        DescriptorRate
+        decltype(type::function),
+        decltype(type::desc_set),
+        decltype(type::num_descriptors),
+        decltype(type::descriptors)
     >;
 
     template<size_t I, class T = type>
@@ -1317,8 +1317,8 @@ struct MetadataFor<commands_3dm::FactoryStreaming>
     using type = commands_3dm::FactoryStreaming;
 
     using ParamTypes = std::tuple<
-        commands_3dm::FactoryStreaming::Action,
-        uint8_t
+        decltype(type::action),
+        decltype(type::reserved)
     >;
 
     template<size_t I, class T = type>
@@ -1369,8 +1369,8 @@ struct MetadataFor<commands_3dm::DatastreamControl::Response>
     using type = commands_3dm::DatastreamControl::Response;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        bool
+        decltype(type::desc_set),
+        decltype(type::enabled)
     >;
 
     template<size_t I, class T = type>
@@ -1420,9 +1420,9 @@ struct MetadataFor<commands_3dm::DatastreamControl>
     using type = commands_3dm::DatastreamControl;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        uint8_t,
-        bool
+        decltype(type::function),
+        decltype(type::desc_set),
+        decltype(type::enable)
     >;
 
     template<size_t I, class T = type>
@@ -1520,11 +1520,11 @@ struct MetadataFor<commands_3dm::ConstellationSettings::Settings>
     using type = commands_3dm::ConstellationSettings::Settings;
 
     using ParamTypes = std::tuple<
-        commands_3dm::ConstellationSettings::ConstellationId,
-        uint8_t,
-        uint8_t,
-        uint8_t,
-        commands_3dm::ConstellationSettings::OptionFlags
+        decltype(type::constellation_id),
+        decltype(type::enable),
+        decltype(type::reserved_channels),
+        decltype(type::max_channels),
+        decltype(type::option_flags)
     >;
 
     template<size_t I, class T = type>
@@ -1599,10 +1599,10 @@ struct MetadataFor<commands_3dm::ConstellationSettings::Response>
     using type = commands_3dm::ConstellationSettings::Response;
 
     using ParamTypes = std::tuple<
-        uint16_t,
-        uint16_t,
-        uint8_t,
-        commands_3dm::ConstellationSettings::Settings
+        decltype(type::max_channels_available),
+        decltype(type::max_channels_use),
+        decltype(type::config_count),
+        decltype(type::settings)
     >;
 
     template<size_t I, class T = type>
@@ -1672,10 +1672,10 @@ struct MetadataFor<commands_3dm::ConstellationSettings>
     using type = commands_3dm::ConstellationSettings;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        uint16_t,
-        uint8_t,
-        commands_3dm::ConstellationSettings::Settings
+        decltype(type::function),
+        decltype(type::max_channels),
+        decltype(type::config_count),
+        decltype(type::settings)
     >;
 
     template<size_t I, class T = type>
@@ -1760,10 +1760,10 @@ struct MetadataFor<commands_3dm::GnssSbasSettings::Response>
     using type = commands_3dm::GnssSbasSettings::Response;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        commands_3dm::GnssSbasSettings::SBASOptions,
-        uint8_t,
-        uint16_t
+        decltype(type::enable_sbas),
+        decltype(type::sbas_options),
+        decltype(type::num_included_prns),
+        decltype(type::included_prns)
     >;
 
     template<size_t I, class T = type>
@@ -1833,11 +1833,11 @@ struct MetadataFor<commands_3dm::GnssSbasSettings>
     using type = commands_3dm::GnssSbasSettings;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        uint8_t,
-        commands_3dm::GnssSbasSettings::SBASOptions,
-        uint8_t,
-        uint16_t
+        decltype(type::function),
+        decltype(type::enable_sbas),
+        decltype(type::sbas_options),
+        decltype(type::num_included_prns),
+        decltype(type::included_prns)
     >;
 
     template<size_t I, class T = type>
@@ -1931,8 +1931,8 @@ struct MetadataFor<commands_3dm::GnssAssistedFix::Response>
     using type = commands_3dm::GnssAssistedFix::Response;
 
     using ParamTypes = std::tuple<
-        commands_3dm::GnssAssistedFix::AssistedFixOption,
-        uint8_t
+        decltype(type::option),
+        decltype(type::flags)
     >;
 
     template<size_t I, class T = type>
@@ -1982,9 +1982,9 @@ struct MetadataFor<commands_3dm::GnssAssistedFix>
     using type = commands_3dm::GnssAssistedFix;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        commands_3dm::GnssAssistedFix::AssistedFixOption,
-        uint8_t
+        decltype(type::function),
+        decltype(type::option),
+        decltype(type::flags)
     >;
 
     template<size_t I, class T = type>
@@ -2037,9 +2037,9 @@ struct MetadataFor<commands_3dm::GnssTimeAssistance::Response>
     using type = commands_3dm::GnssTimeAssistance::Response;
 
     using ParamTypes = std::tuple<
-        double,
-        uint16_t,
-        float
+        decltype(type::tow),
+        decltype(type::week_number),
+        decltype(type::accuracy)
     >;
 
     template<size_t I, class T = type>
@@ -2099,10 +2099,10 @@ struct MetadataFor<commands_3dm::GnssTimeAssistance>
     using type = commands_3dm::GnssTimeAssistance;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        double,
-        uint16_t,
-        float
+        decltype(type::function),
+        decltype(type::tow),
+        decltype(type::week_number),
+        decltype(type::accuracy)
     >;
 
     template<size_t I, class T = type>
@@ -2189,7 +2189,7 @@ struct MetadataFor<commands_3dm::PpsSource::Response>
     using type = commands_3dm::PpsSource::Response;
 
     using ParamTypes = std::tuple<
-        commands_3dm::PpsSource::Source
+        decltype(type::source)
     >;
 
     template<size_t I, class T = type>
@@ -2229,8 +2229,8 @@ struct MetadataFor<commands_3dm::PpsSource>
     using type = commands_3dm::PpsSource;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        commands_3dm::PpsSource::Source
+        decltype(type::function),
+        decltype(type::source)
     >;
 
     template<size_t I, class T = type>
@@ -2294,8 +2294,8 @@ struct MetadataFor<commands_3dm::GetEventSupport::Info>
     using type = commands_3dm::GetEventSupport::Info;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        uint8_t
+        decltype(type::type),
+        decltype(type::count)
     >;
 
     template<size_t I, class T = type>
@@ -2340,10 +2340,10 @@ struct MetadataFor<commands_3dm::GetEventSupport::Response>
     using type = commands_3dm::GetEventSupport::Response;
 
     using ParamTypes = std::tuple<
-        commands_3dm::GetEventSupport::Query,
-        uint8_t,
-        uint8_t,
-        commands_3dm::GetEventSupport::Info
+        decltype(type::query),
+        decltype(type::max_instances),
+        decltype(type::num_entries),
+        decltype(type::entries)
     >;
 
     template<size_t I, class T = type>
@@ -2413,7 +2413,7 @@ struct MetadataFor<commands_3dm::GetEventSupport>
     using type = commands_3dm::GetEventSupport;
 
     using ParamTypes = std::tuple<
-        commands_3dm::GetEventSupport::Query
+        decltype(type::query)
     >;
 
     template<size_t I, class T = type>
@@ -2477,8 +2477,8 @@ struct MetadataFor<commands_3dm::EventControl::Response>
     using type = commands_3dm::EventControl::Response;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        commands_3dm::EventControl::Mode
+        decltype(type::instance),
+        decltype(type::mode)
     >;
 
     template<size_t I, class T = type>
@@ -2528,9 +2528,9 @@ struct MetadataFor<commands_3dm::EventControl>
     using type = commands_3dm::EventControl;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        uint8_t,
-        commands_3dm::EventControl::Mode
+        decltype(type::function),
+        decltype(type::instance),
+        decltype(type::mode)
     >;
 
     template<size_t I, class T = type>
@@ -2605,8 +2605,8 @@ struct MetadataFor<commands_3dm::GetEventTriggerStatus::Entry>
     using type = commands_3dm::GetEventTriggerStatus::Entry;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        commands_3dm::GetEventTriggerStatus::Status
+        decltype(type::type),
+        decltype(type::status)
     >;
 
     template<size_t I, class T = type>
@@ -2651,8 +2651,8 @@ struct MetadataFor<commands_3dm::GetEventTriggerStatus::Response>
     using type = commands_3dm::GetEventTriggerStatus::Response;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        commands_3dm::GetEventTriggerStatus::Entry
+        decltype(type::count),
+        decltype(type::triggers)
     >;
 
     template<size_t I, class T = type>
@@ -2702,8 +2702,8 @@ struct MetadataFor<commands_3dm::GetEventTriggerStatus>
     using type = commands_3dm::GetEventTriggerStatus;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        uint8_t
+        decltype(type::requested_count),
+        decltype(type::requested_instances)
     >;
 
     template<size_t I, class T = type>
@@ -2754,8 +2754,8 @@ struct MetadataFor<commands_3dm::GetEventActionStatus::Entry>
     using type = commands_3dm::GetEventActionStatus::Entry;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        uint8_t
+        decltype(type::action_type),
+        decltype(type::trigger_id)
     >;
 
     template<size_t I, class T = type>
@@ -2800,8 +2800,8 @@ struct MetadataFor<commands_3dm::GetEventActionStatus::Response>
     using type = commands_3dm::GetEventActionStatus::Response;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        commands_3dm::GetEventActionStatus::Entry
+        decltype(type::count),
+        decltype(type::actions)
     >;
 
     template<size_t I, class T = type>
@@ -2851,8 +2851,8 @@ struct MetadataFor<commands_3dm::GetEventActionStatus>
     using type = commands_3dm::GetEventActionStatus;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        uint8_t
+        decltype(type::requested_count),
+        decltype(type::requested_instances)
     >;
 
     template<size_t I, class T = type>
@@ -2926,8 +2926,8 @@ struct MetadataFor<commands_3dm::EventTrigger::GpioParams>
     using type = commands_3dm::EventTrigger::GpioParams;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        commands_3dm::EventTrigger::GpioParams::Mode
+        decltype(type::pin),
+        decltype(type::mode)
     >;
 
     template<size_t I, class T = type>
@@ -2993,12 +2993,12 @@ struct MetadataFor<commands_3dm::EventTrigger::ThresholdParams>
     using type = commands_3dm::EventTrigger::ThresholdParams;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        uint8_t,
-        uint8_t,
-        commands_3dm::EventTrigger::ThresholdParams::Type,
-        double,
-        double
+        decltype(type::desc_set),
+        decltype(type::field_desc),
+        decltype(type::param_id),
+        decltype(type::type),
+        decltype(type::first_thres),
+        decltype(type::second_thres)
     >;
 
     template<size_t I, class T = type>
@@ -3083,8 +3083,8 @@ struct MetadataFor<commands_3dm::EventTrigger::CombinationParams>
     using type = commands_3dm::EventTrigger::CombinationParams;
 
     using ParamTypes = std::tuple<
-        uint16_t,
-        uint8_t
+        decltype(type::logic_table),
+        decltype(type::input_triggers)
     >;
 
     template<size_t I, class T = type>
@@ -3152,9 +3152,9 @@ struct MetadataFor<commands_3dm::EventTrigger::Parameters>
     using type = commands_3dm::EventTrigger::Parameters;
 
     using ParamTypes = std::tuple<
-        commands_3dm::EventTrigger::GpioParams,
-        commands_3dm::EventTrigger::ThresholdParams,
-        commands_3dm::EventTrigger::CombinationParams
+        decltype(type::gpio),
+        decltype(type::threshold),
+        decltype(type::combination)
     >;
 
     template<size_t I, class T = type>
@@ -3209,9 +3209,9 @@ struct MetadataFor<commands_3dm::EventTrigger::Response>
     using type = commands_3dm::EventTrigger::Response;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        commands_3dm::EventTrigger::Type,
-        commands_3dm::EventTrigger::Parameters
+        decltype(type::instance),
+        decltype(type::type),
+        decltype(type::parameters)
     >;
 
     template<size_t I, class T = type>
@@ -3271,10 +3271,10 @@ struct MetadataFor<commands_3dm::EventTrigger>
     using type = commands_3dm::EventTrigger;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        uint8_t,
-        commands_3dm::EventTrigger::Type,
-        commands_3dm::EventTrigger::Parameters
+        decltype(type::function),
+        decltype(type::instance),
+        decltype(type::type),
+        decltype(type::parameters)
     >;
 
     template<size_t I, class T = type>
@@ -3362,8 +3362,8 @@ struct MetadataFor<commands_3dm::EventAction::GpioParams>
     using type = commands_3dm::EventAction::GpioParams;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        commands_3dm::EventAction::GpioParams::Mode
+        decltype(type::pin),
+        decltype(type::mode)
     >;
 
     template<size_t I, class T = type>
@@ -3408,10 +3408,10 @@ struct MetadataFor<commands_3dm::EventAction::MessageParams>
     using type = commands_3dm::EventAction::MessageParams;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        uint16_t,
-        uint8_t,
-        uint8_t
+        decltype(type::desc_set),
+        decltype(type::decimation),
+        decltype(type::num_fields),
+        decltype(type::descriptors)
     >;
 
     template<size_t I, class T = type>
@@ -3498,8 +3498,8 @@ struct MetadataFor<commands_3dm::EventAction::Parameters>
     using type = commands_3dm::EventAction::Parameters;
 
     using ParamTypes = std::tuple<
-        commands_3dm::EventAction::GpioParams,
-        commands_3dm::EventAction::MessageParams
+        decltype(type::gpio),
+        decltype(type::message)
     >;
 
     template<size_t I, class T = type>
@@ -3544,10 +3544,10 @@ struct MetadataFor<commands_3dm::EventAction::Response>
     using type = commands_3dm::EventAction::Response;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        uint8_t,
-        commands_3dm::EventAction::Type,
-        commands_3dm::EventAction::Parameters
+        decltype(type::instance),
+        decltype(type::trigger),
+        decltype(type::type),
+        decltype(type::parameters)
     >;
 
     template<size_t I, class T = type>
@@ -3617,11 +3617,11 @@ struct MetadataFor<commands_3dm::EventAction>
     using type = commands_3dm::EventAction;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        uint8_t,
-        uint8_t,
-        commands_3dm::EventAction::Type,
-        commands_3dm::EventAction::Parameters
+        decltype(type::function),
+        decltype(type::instance),
+        decltype(type::trigger),
+        decltype(type::type),
+        decltype(type::parameters)
     >;
 
     template<size_t I, class T = type>
@@ -3694,7 +3694,7 @@ struct MetadataFor<commands_3dm::DeviceSettings>
     using type = commands_3dm::DeviceSettings;
 
     using ParamTypes = std::tuple<
-        FunctionSelector
+        decltype(type::function)
     >;
 
     template<size_t I, class T = type>
@@ -3728,9 +3728,9 @@ struct MetadataFor<commands_3dm::Sensor2VehicleTransformEuler::Response>
     using type = commands_3dm::Sensor2VehicleTransformEuler::Response;
 
     using ParamTypes = std::tuple<
-        float,
-        float,
-        float
+        decltype(type::roll),
+        decltype(type::pitch),
+        decltype(type::yaw)
     >;
 
     template<size_t I, class T = type>
@@ -3790,10 +3790,10 @@ struct MetadataFor<commands_3dm::Sensor2VehicleTransformEuler>
     using type = commands_3dm::Sensor2VehicleTransformEuler;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        float,
-        float,
-        float
+        decltype(type::function),
+        decltype(type::roll),
+        decltype(type::pitch),
+        decltype(type::yaw)
     >;
 
     template<size_t I, class T = type>
@@ -3856,7 +3856,7 @@ struct MetadataFor<commands_3dm::Sensor2VehicleTransformQuaternion::Response>
     using type = commands_3dm::Sensor2VehicleTransformQuaternion::Response;
 
     using ParamTypes = std::tuple<
-        Quatf
+        decltype(type::q)
     >;
 
     template<size_t I, class T = type>
@@ -3896,8 +3896,8 @@ struct MetadataFor<commands_3dm::Sensor2VehicleTransformQuaternion>
     using type = commands_3dm::Sensor2VehicleTransformQuaternion;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        Quatf
+        decltype(type::function),
+        decltype(type::q)
     >;
 
     template<size_t I, class T = type>
@@ -3940,7 +3940,7 @@ struct MetadataFor<commands_3dm::Sensor2VehicleTransformDcm::Response>
     using type = commands_3dm::Sensor2VehicleTransformDcm::Response;
 
     using ParamTypes = std::tuple<
-        Matrix3f
+        decltype(type::dcm)
     >;
 
     template<size_t I, class T = type>
@@ -3980,8 +3980,8 @@ struct MetadataFor<commands_3dm::Sensor2VehicleTransformDcm>
     using type = commands_3dm::Sensor2VehicleTransformDcm;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        Matrix3f
+        decltype(type::function),
+        decltype(type::dcm)
     >;
 
     template<size_t I, class T = type>
@@ -4024,7 +4024,7 @@ struct MetadataFor<commands_3dm::AccelBias::Response>
     using type = commands_3dm::AccelBias::Response;
 
     using ParamTypes = std::tuple<
-        Vector3f
+        decltype(type::bias)
     >;
 
     template<size_t I, class T = type>
@@ -4064,8 +4064,8 @@ struct MetadataFor<commands_3dm::AccelBias>
     using type = commands_3dm::AccelBias;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        Vector3f
+        decltype(type::function),
+        decltype(type::bias)
     >;
 
     template<size_t I, class T = type>
@@ -4108,7 +4108,7 @@ struct MetadataFor<commands_3dm::GyroBias::Response>
     using type = commands_3dm::GyroBias::Response;
 
     using ParamTypes = std::tuple<
-        Vector3f
+        decltype(type::bias)
     >;
 
     template<size_t I, class T = type>
@@ -4148,8 +4148,8 @@ struct MetadataFor<commands_3dm::GyroBias>
     using type = commands_3dm::GyroBias;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        Vector3f
+        decltype(type::function),
+        decltype(type::bias)
     >;
 
     template<size_t I, class T = type>
@@ -4192,7 +4192,7 @@ struct MetadataFor<commands_3dm::CaptureGyroBias::Response>
     using type = commands_3dm::CaptureGyroBias::Response;
 
     using ParamTypes = std::tuple<
-        Vector3f
+        decltype(type::bias)
     >;
 
     template<size_t I, class T = type>
@@ -4232,7 +4232,7 @@ struct MetadataFor<commands_3dm::CaptureGyroBias>
     using type = commands_3dm::CaptureGyroBias;
 
     using ParamTypes = std::tuple<
-        uint16_t
+        decltype(type::averaging_time_ms)
     >;
 
     template<size_t I, class T = type>
@@ -4273,7 +4273,7 @@ struct MetadataFor<commands_3dm::MagHardIronOffset::Response>
     using type = commands_3dm::MagHardIronOffset::Response;
 
     using ParamTypes = std::tuple<
-        Vector3f
+        decltype(type::offset)
     >;
 
     template<size_t I, class T = type>
@@ -4313,8 +4313,8 @@ struct MetadataFor<commands_3dm::MagHardIronOffset>
     using type = commands_3dm::MagHardIronOffset;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        Vector3f
+        decltype(type::function),
+        decltype(type::offset)
     >;
 
     template<size_t I, class T = type>
@@ -4357,7 +4357,7 @@ struct MetadataFor<commands_3dm::MagSoftIronMatrix::Response>
     using type = commands_3dm::MagSoftIronMatrix::Response;
 
     using ParamTypes = std::tuple<
-        Matrix3f
+        decltype(type::offset)
     >;
 
     template<size_t I, class T = type>
@@ -4397,8 +4397,8 @@ struct MetadataFor<commands_3dm::MagSoftIronMatrix>
     using type = commands_3dm::MagSoftIronMatrix;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        Matrix3f
+        decltype(type::function),
+        decltype(type::offset)
     >;
 
     template<size_t I, class T = type>
@@ -4441,7 +4441,7 @@ struct MetadataFor<commands_3dm::ConingScullingEnable::Response>
     using type = commands_3dm::ConingScullingEnable::Response;
 
     using ParamTypes = std::tuple<
-        bool
+        decltype(type::enable)
     >;
 
     template<size_t I, class T = type>
@@ -4481,8 +4481,8 @@ struct MetadataFor<commands_3dm::ConingScullingEnable>
     using type = commands_3dm::ConingScullingEnable;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        bool
+        decltype(type::function),
+        decltype(type::enable)
     >;
 
     template<size_t I, class T = type>
@@ -4525,7 +4525,7 @@ struct MetadataFor<commands_3dm::UartBaudrate::Response>
     using type = commands_3dm::UartBaudrate::Response;
 
     using ParamTypes = std::tuple<
-        uint32_t
+        decltype(type::baud)
     >;
 
     template<size_t I, class T = type>
@@ -4565,8 +4565,8 @@ struct MetadataFor<commands_3dm::UartBaudrate>
     using type = commands_3dm::UartBaudrate;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        uint32_t
+        decltype(type::function),
+        decltype(type::baud)
     >;
 
     template<size_t I, class T = type>
@@ -4690,10 +4690,10 @@ struct MetadataFor<commands_3dm::GpioConfig::Response>
     using type = commands_3dm::GpioConfig::Response;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        commands_3dm::GpioConfig::Feature,
-        commands_3dm::GpioConfig::Behavior,
-        commands_3dm::GpioConfig::PinMode
+        decltype(type::pin),
+        decltype(type::feature),
+        decltype(type::behavior),
+        decltype(type::pin_mode)
     >;
 
     template<size_t I, class T = type>
@@ -4763,11 +4763,11 @@ struct MetadataFor<commands_3dm::GpioConfig>
     using type = commands_3dm::GpioConfig;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        uint8_t,
-        commands_3dm::GpioConfig::Feature,
-        commands_3dm::GpioConfig::Behavior,
-        commands_3dm::GpioConfig::PinMode
+        decltype(type::function),
+        decltype(type::pin),
+        decltype(type::feature),
+        decltype(type::behavior),
+        decltype(type::pin_mode)
     >;
 
     template<size_t I, class T = type>
@@ -4840,8 +4840,8 @@ struct MetadataFor<commands_3dm::GpioState::Response>
     using type = commands_3dm::GpioState::Response;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        bool
+        decltype(type::pin),
+        decltype(type::state)
     >;
 
     template<size_t I, class T = type>
@@ -4891,9 +4891,9 @@ struct MetadataFor<commands_3dm::GpioState>
     using type = commands_3dm::GpioState;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        uint8_t,
-        bool
+        decltype(type::function),
+        decltype(type::pin),
+        decltype(type::state)
     >;
 
     template<size_t I, class T = type>
@@ -4967,9 +4967,9 @@ struct MetadataFor<commands_3dm::Odometer::Response>
     using type = commands_3dm::Odometer::Response;
 
     using ParamTypes = std::tuple<
-        commands_3dm::Odometer::Mode,
-        float,
-        float
+        decltype(type::mode),
+        decltype(type::scaling),
+        decltype(type::uncertainty)
     >;
 
     template<size_t I, class T = type>
@@ -5029,10 +5029,10 @@ struct MetadataFor<commands_3dm::Odometer>
     using type = commands_3dm::Odometer;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        commands_3dm::Odometer::Mode,
-        float,
-        float
+        decltype(type::function),
+        decltype(type::mode),
+        decltype(type::scaling),
+        decltype(type::uncertainty)
     >;
 
     template<size_t I, class T = type>
@@ -5095,11 +5095,11 @@ struct MetadataFor<commands_3dm::ImuLowpassFilter::Response>
     using type = commands_3dm::ImuLowpassFilter::Response;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        bool,
-        bool,
-        uint16_t,
-        uint8_t
+        decltype(type::target_descriptor),
+        decltype(type::enable),
+        decltype(type::manual),
+        decltype(type::frequency),
+        decltype(type::reserved)
     >;
 
     template<size_t I, class T = type>
@@ -5179,12 +5179,12 @@ struct MetadataFor<commands_3dm::ImuLowpassFilter>
     using type = commands_3dm::ImuLowpassFilter;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        uint8_t,
-        bool,
-        bool,
-        uint16_t,
-        uint8_t
+        decltype(type::function),
+        decltype(type::target_descriptor),
+        decltype(type::enable),
+        decltype(type::manual),
+        decltype(type::frequency),
+        decltype(type::reserved)
     >;
 
     template<size_t I, class T = type>
@@ -5267,10 +5267,10 @@ struct MetadataFor<commands_3dm::ComplementaryFilter::Response>
     using type = commands_3dm::ComplementaryFilter::Response;
 
     using ParamTypes = std::tuple<
-        bool,
-        bool,
-        float,
-        float
+        decltype(type::pitch_roll_enable),
+        decltype(type::heading_enable),
+        decltype(type::pitch_roll_time_constant),
+        decltype(type::heading_time_constant)
     >;
 
     template<size_t I, class T = type>
@@ -5340,11 +5340,11 @@ struct MetadataFor<commands_3dm::ComplementaryFilter>
     using type = commands_3dm::ComplementaryFilter;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        bool,
-        bool,
-        float,
-        float
+        decltype(type::function),
+        decltype(type::pitch_roll_enable),
+        decltype(type::heading_enable),
+        decltype(type::pitch_roll_time_constant),
+        decltype(type::heading_time_constant)
     >;
 
     template<size_t I, class T = type>
@@ -5441,8 +5441,8 @@ struct MetadataFor<commands_3dm::SensorRange::Response>
     using type = commands_3dm::SensorRange::Response;
 
     using ParamTypes = std::tuple<
-        commands_3dm::SensorRangeType,
-        uint8_t
+        decltype(type::sensor),
+        decltype(type::setting)
     >;
 
     template<size_t I, class T = type>
@@ -5492,9 +5492,9 @@ struct MetadataFor<commands_3dm::SensorRange>
     using type = commands_3dm::SensorRange;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        commands_3dm::SensorRangeType,
-        uint8_t
+        decltype(type::function),
+        decltype(type::sensor),
+        decltype(type::setting)
     >;
 
     template<size_t I, class T = type>
@@ -5547,8 +5547,8 @@ struct MetadataFor<commands_3dm::CalibratedSensorRanges::Entry>
     using type = commands_3dm::CalibratedSensorRanges::Entry;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        float
+        decltype(type::setting),
+        decltype(type::range)
     >;
 
     template<size_t I, class T = type>
@@ -5593,9 +5593,9 @@ struct MetadataFor<commands_3dm::CalibratedSensorRanges::Response>
     using type = commands_3dm::CalibratedSensorRanges::Response;
 
     using ParamTypes = std::tuple<
-        commands_3dm::SensorRangeType,
-        uint8_t,
-        commands_3dm::CalibratedSensorRanges::Entry
+        decltype(type::sensor),
+        decltype(type::num_ranges),
+        decltype(type::ranges)
     >;
 
     template<size_t I, class T = type>
@@ -5655,7 +5655,7 @@ struct MetadataFor<commands_3dm::CalibratedSensorRanges>
     using type = commands_3dm::CalibratedSensorRanges;
 
     using ParamTypes = std::tuple<
-        commands_3dm::SensorRangeType
+        decltype(type::sensor)
     >;
 
     template<size_t I, class T = type>
@@ -5696,11 +5696,11 @@ struct MetadataFor<commands_3dm::LowpassFilter::Response>
     using type = commands_3dm::LowpassFilter::Response;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        uint8_t,
-        bool,
-        bool,
-        float
+        decltype(type::desc_set),
+        decltype(type::field_desc),
+        decltype(type::enable),
+        decltype(type::manual),
+        decltype(type::frequency)
     >;
 
     template<size_t I, class T = type>
@@ -5780,12 +5780,12 @@ struct MetadataFor<commands_3dm::LowpassFilter>
     using type = commands_3dm::LowpassFilter;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        uint8_t,
-        uint8_t,
-        bool,
-        bool,
-        float
+        decltype(type::function),
+        decltype(type::desc_set),
+        decltype(type::field_desc),
+        decltype(type::enable),
+        decltype(type::manual),
+        decltype(type::frequency)
     >;
 
     template<size_t I, class T = type>

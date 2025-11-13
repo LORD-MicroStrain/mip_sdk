@@ -15,7 +15,7 @@ struct MetadataFor<data_system::BuiltInTest>
     using type = data_system::BuiltInTest;
 
     using ParamTypes = std::tuple<
-        uint8_t
+        decltype(type::result)
     >;
 
     template<size_t I, class T = type>
@@ -56,8 +56,8 @@ struct MetadataFor<data_system::TimeSyncStatus>
     using type = data_system::TimeSyncStatus;
 
     using ParamTypes = std::tuple<
-        bool,
-        uint8_t
+        decltype(type::time_sync),
+        decltype(type::last_pps_rcvd)
     >;
 
     template<size_t I, class T = type>
@@ -108,7 +108,7 @@ struct MetadataFor<data_system::GpioState>
     using type = data_system::GpioState;
 
     using ParamTypes = std::tuple<
-        uint8_t
+        decltype(type::states)
     >;
 
     template<size_t I, class T = type>
@@ -149,8 +149,8 @@ struct MetadataFor<data_system::GpioAnalogValue>
     using type = data_system::GpioAnalogValue;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        float
+        decltype(type::gpio_id),
+        decltype(type::value)
     >;
 
     template<size_t I, class T = type>

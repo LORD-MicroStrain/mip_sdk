@@ -36,8 +36,8 @@ struct MetadataFor<commands_aiding::FrameConfig::Rotation>
     using type = commands_aiding::FrameConfig::Rotation;
 
     using ParamTypes = std::tuple<
-        Vector3f,
-        Quatf
+        decltype(type::euler),
+        decltype(type::quaternion)
     >;
 
     template<size_t I, class T = type>
@@ -82,11 +82,11 @@ struct MetadataFor<commands_aiding::FrameConfig::Response>
     using type = commands_aiding::FrameConfig::Response;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        commands_aiding::FrameConfig::Format,
-        bool,
-        Vector3f,
-        commands_aiding::FrameConfig::Rotation
+        decltype(type::frame_id),
+        decltype(type::format),
+        decltype(type::tracking_enabled),
+        decltype(type::translation),
+        decltype(type::rotation)
     >;
 
     template<size_t I, class T = type>
@@ -166,12 +166,12 @@ struct MetadataFor<commands_aiding::FrameConfig>
     using type = commands_aiding::FrameConfig;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        uint8_t,
-        commands_aiding::FrameConfig::Format,
-        bool,
-        Vector3f,
-        commands_aiding::FrameConfig::Rotation
+        decltype(type::function),
+        decltype(type::frame_id),
+        decltype(type::format),
+        decltype(type::tracking_enabled),
+        decltype(type::translation),
+        decltype(type::rotation)
     >;
 
     template<size_t I, class T = type>
@@ -276,7 +276,7 @@ struct MetadataFor<commands_aiding::EchoControl::Response>
     using type = commands_aiding::EchoControl::Response;
 
     using ParamTypes = std::tuple<
-        commands_aiding::EchoControl::Mode
+        decltype(type::mode)
     >;
 
     template<size_t I, class T = type>
@@ -316,8 +316,8 @@ struct MetadataFor<commands_aiding::EchoControl>
     using type = commands_aiding::EchoControl;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        commands_aiding::EchoControl::Mode
+        decltype(type::function),
+        decltype(type::mode)
     >;
 
     template<size_t I, class T = type>
@@ -382,9 +382,9 @@ struct MetadataFor<commands_aiding::Time>
     using type = commands_aiding::Time;
 
     using ParamTypes = std::tuple<
-        commands_aiding::Time::Timebase,
-        uint8_t,
-        uint64_t
+        decltype(type::timebase),
+        decltype(type::reserved),
+        decltype(type::nanoseconds)
     >;
 
     template<size_t I, class T = type>
@@ -461,11 +461,11 @@ struct MetadataFor<commands_aiding::PosEcef>
     using type = commands_aiding::PosEcef;
 
     using ParamTypes = std::tuple<
-        commands_aiding::Time,
-        uint8_t,
-        Vector3d,
-        Vector3f,
-        commands_aiding::PosEcef::ValidFlags
+        decltype(type::time),
+        decltype(type::frame_id),
+        decltype(type::position),
+        decltype(type::uncertainty),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -568,13 +568,13 @@ struct MetadataFor<commands_aiding::PosLlh>
     using type = commands_aiding::PosLlh;
 
     using ParamTypes = std::tuple<
-        commands_aiding::Time,
-        uint8_t,
-        double,
-        double,
-        double,
-        Vector3f,
-        commands_aiding::PosLlh::ValidFlags
+        decltype(type::time),
+        decltype(type::frame_id),
+        decltype(type::latitude),
+        decltype(type::longitude),
+        decltype(type::height),
+        decltype(type::uncertainty),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -675,11 +675,11 @@ struct MetadataFor<commands_aiding::HeightAboveEllipsoid>
     using type = commands_aiding::HeightAboveEllipsoid;
 
     using ParamTypes = std::tuple<
-        commands_aiding::Time,
-        uint8_t,
-        float,
-        float,
-        uint16_t
+        decltype(type::time),
+        decltype(type::frame_id),
+        decltype(type::height),
+        decltype(type::uncertainty),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -782,11 +782,11 @@ struct MetadataFor<commands_aiding::VelEcef>
     using type = commands_aiding::VelEcef;
 
     using ParamTypes = std::tuple<
-        commands_aiding::Time,
-        uint8_t,
-        Vector3f,
-        Vector3f,
-        commands_aiding::VelEcef::ValidFlags
+        decltype(type::time),
+        decltype(type::frame_id),
+        decltype(type::velocity),
+        decltype(type::uncertainty),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -889,11 +889,11 @@ struct MetadataFor<commands_aiding::VelNed>
     using type = commands_aiding::VelNed;
 
     using ParamTypes = std::tuple<
-        commands_aiding::Time,
-        uint8_t,
-        Vector3f,
-        Vector3f,
-        commands_aiding::VelNed::ValidFlags
+        decltype(type::time),
+        decltype(type::frame_id),
+        decltype(type::velocity),
+        decltype(type::uncertainty),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -996,11 +996,11 @@ struct MetadataFor<commands_aiding::VelBodyFrame>
     using type = commands_aiding::VelBodyFrame;
 
     using ParamTypes = std::tuple<
-        commands_aiding::Time,
-        uint8_t,
-        Vector3f,
-        Vector3f,
-        commands_aiding::VelBodyFrame::ValidFlags
+        decltype(type::time),
+        decltype(type::frame_id),
+        decltype(type::velocity),
+        decltype(type::uncertainty),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -1081,11 +1081,11 @@ struct MetadataFor<commands_aiding::HeadingTrue>
     using type = commands_aiding::HeadingTrue;
 
     using ParamTypes = std::tuple<
-        commands_aiding::Time,
-        uint8_t,
-        float,
-        float,
-        uint16_t
+        decltype(type::time),
+        decltype(type::frame_id),
+        decltype(type::heading),
+        decltype(type::uncertainty),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -1188,11 +1188,11 @@ struct MetadataFor<commands_aiding::MagneticField>
     using type = commands_aiding::MagneticField;
 
     using ParamTypes = std::tuple<
-        commands_aiding::Time,
-        uint8_t,
-        Vector3f,
-        Vector3f,
-        commands_aiding::MagneticField::ValidFlags
+        decltype(type::time),
+        decltype(type::frame_id),
+        decltype(type::magnetic_field),
+        decltype(type::uncertainty),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -1273,11 +1273,11 @@ struct MetadataFor<commands_aiding::Pressure>
     using type = commands_aiding::Pressure;
 
     using ParamTypes = std::tuple<
-        commands_aiding::Time,
-        uint8_t,
-        float,
-        float,
-        uint16_t
+        decltype(type::time),
+        decltype(type::frame_id),
+        decltype(type::pressure),
+        decltype(type::uncertainty),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>

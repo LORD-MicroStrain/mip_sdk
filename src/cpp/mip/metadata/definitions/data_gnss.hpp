@@ -40,13 +40,13 @@ struct MetadataFor<data_gnss::PosLlh>
     using type = data_gnss::PosLlh;
 
     using ParamTypes = std::tuple<
-        double,
-        double,
-        double,
-        double,
-        float,
-        float,
-        data_gnss::PosLlh::ValidFlags
+        decltype(type::latitude),
+        decltype(type::longitude),
+        decltype(type::ellipsoid_height),
+        decltype(type::msl_height),
+        decltype(type::horizontal_accuracy),
+        decltype(type::vertical_accuracy),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -169,9 +169,9 @@ struct MetadataFor<data_gnss::PosEcef>
     using type = data_gnss::PosEcef;
 
     using ParamTypes = std::tuple<
-        Vector3d,
-        float,
-        data_gnss::PosEcef::ValidFlags
+        decltype(type::x),
+        decltype(type::x_accuracy),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -258,13 +258,13 @@ struct MetadataFor<data_gnss::VelNed>
     using type = data_gnss::VelNed;
 
     using ParamTypes = std::tuple<
-        Vector3f,
-        float,
-        float,
-        float,
-        float,
-        float,
-        data_gnss::VelNed::ValidFlags
+        decltype(type::v),
+        decltype(type::speed),
+        decltype(type::ground_speed),
+        decltype(type::heading),
+        decltype(type::speed_accuracy),
+        decltype(type::heading_accuracy),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -387,9 +387,9 @@ struct MetadataFor<data_gnss::VelEcef>
     using type = data_gnss::VelEcef;
 
     using ParamTypes = std::tuple<
-        Vector3f,
-        float,
-        data_gnss::VelEcef::ValidFlags
+        decltype(type::v),
+        decltype(type::v_accuracy),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -477,14 +477,14 @@ struct MetadataFor<data_gnss::Dop>
     using type = data_gnss::Dop;
 
     using ParamTypes = std::tuple<
-        float,
-        float,
-        float,
-        float,
-        float,
-        float,
-        float,
-        data_gnss::Dop::ValidFlags
+        decltype(type::gdop),
+        decltype(type::pdop),
+        decltype(type::hdop),
+        decltype(type::vdop),
+        decltype(type::tdop),
+        decltype(type::ndop),
+        decltype(type::edop),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -617,14 +617,14 @@ struct MetadataFor<data_gnss::UtcTime>
     using type = data_gnss::UtcTime;
 
     using ParamTypes = std::tuple<
-        uint16_t,
-        uint8_t,
-        uint8_t,
-        uint8_t,
-        uint8_t,
-        uint8_t,
-        uint32_t,
-        data_gnss::UtcTime::ValidFlags
+        decltype(type::year),
+        decltype(type::month),
+        decltype(type::day),
+        decltype(type::hour),
+        decltype(type::min),
+        decltype(type::sec),
+        decltype(type::msec),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -757,9 +757,9 @@ struct MetadataFor<data_gnss::GpsTime>
     using type = data_gnss::GpsTime;
 
     using ParamTypes = std::tuple<
-        double,
-        uint16_t,
-        data_gnss::GpsTime::ValidFlags
+        decltype(type::tow),
+        decltype(type::week_number),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -843,10 +843,10 @@ struct MetadataFor<data_gnss::ClockInfo>
     using type = data_gnss::ClockInfo;
 
     using ParamTypes = std::tuple<
-        double,
-        double,
-        double,
-        data_gnss::ClockInfo::ValidFlags
+        decltype(type::bias),
+        decltype(type::drift),
+        decltype(type::accuracy_estimate),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -988,10 +988,10 @@ struct MetadataFor<data_gnss::FixInfo>
     using type = data_gnss::FixInfo;
 
     using ParamTypes = std::tuple<
-        data_gnss::FixInfo::FixType,
-        uint8_t,
-        data_gnss::FixInfo::FixFlags,
-        data_gnss::FixInfo::ValidFlags
+        decltype(type::fix_type),
+        decltype(type::num_sv),
+        decltype(type::fix_flags),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -1109,13 +1109,13 @@ struct MetadataFor<data_gnss::SvInfo>
     using type = data_gnss::SvInfo;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        uint8_t,
-        uint16_t,
-        int16_t,
-        int16_t,
-        data_gnss::SvInfo::SVFlags,
-        data_gnss::SvInfo::ValidFlags
+        decltype(type::channel),
+        decltype(type::sv_id),
+        decltype(type::carrier_noise_ratio),
+        decltype(type::azimuth),
+        decltype(type::elevation),
+        decltype(type::sv_flags),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -1307,10 +1307,10 @@ struct MetadataFor<data_gnss::HwStatus>
     using type = data_gnss::HwStatus;
 
     using ParamTypes = std::tuple<
-        data_gnss::HwStatus::ReceiverState,
-        data_gnss::HwStatus::AntennaState,
-        data_gnss::HwStatus::AntennaPower,
-        data_gnss::HwStatus::ValidFlags
+        decltype(type::receiver_state),
+        decltype(type::antenna_state),
+        decltype(type::antenna_power),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -1405,11 +1405,11 @@ struct MetadataFor<data_gnss::DgpsInfo>
     using type = data_gnss::DgpsInfo;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        float,
-        float,
-        float,
-        data_gnss::DgpsInfo::ValidFlags
+        decltype(type::sv_id),
+        decltype(type::age),
+        decltype(type::range_correction),
+        decltype(type::range_rate_correction),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -1514,11 +1514,11 @@ struct MetadataFor<data_gnss::DgpsChannel>
     using type = data_gnss::DgpsChannel;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        float,
-        float,
-        float,
-        data_gnss::DgpsChannel::ValidFlags
+        decltype(type::sv_id),
+        decltype(type::age),
+        decltype(type::range_correction),
+        decltype(type::range_rate_correction),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -1623,11 +1623,11 @@ struct MetadataFor<data_gnss::ClockInfo2>
     using type = data_gnss::ClockInfo2;
 
     using ParamTypes = std::tuple<
-        double,
-        double,
-        double,
-        double,
-        data_gnss::ClockInfo2::ValidFlags
+        decltype(type::bias),
+        decltype(type::drift),
+        decltype(type::bias_accuracy_estimate),
+        decltype(type::drift_accuracy_estimate),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -1728,8 +1728,8 @@ struct MetadataFor<data_gnss::GpsLeapSeconds>
     using type = data_gnss::GpsLeapSeconds;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        data_gnss::GpsLeapSeconds::ValidFlags
+        decltype(type::leap_seconds),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -1853,13 +1853,13 @@ struct MetadataFor<data_gnss::SbasInfo>
     using type = data_gnss::SbasInfo;
 
     using ParamTypes = std::tuple<
-        double,
-        uint16_t,
-        data_gnss::SbasSystem,
-        uint8_t,
-        uint8_t,
-        data_gnss::SbasInfo::SbasStatus,
-        data_gnss::SbasInfo::ValidFlags
+        decltype(type::time_of_week),
+        decltype(type::week_number),
+        decltype(type::sbas_system),
+        decltype(type::sbas_id),
+        decltype(type::count),
+        decltype(type::sbas_status),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -2008,16 +2008,16 @@ struct MetadataFor<data_gnss::SbasCorrection>
     using type = data_gnss::SbasCorrection;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        uint8_t,
-        double,
-        uint16_t,
-        data_gnss::GnssConstellationId,
-        uint8_t,
-        uint8_t,
-        float,
-        float,
-        data_gnss::SbasCorrection::ValidFlags
+        decltype(type::index),
+        decltype(type::count),
+        decltype(type::time_of_week),
+        decltype(type::week_number),
+        decltype(type::gnss_id),
+        decltype(type::sv_id),
+        decltype(type::udrei),
+        decltype(type::pseudorange_correction),
+        decltype(type::iono_correction),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -2240,11 +2240,11 @@ struct MetadataFor<data_gnss::RfErrorDetection>
     using type = data_gnss::RfErrorDetection;
 
     using ParamTypes = std::tuple<
-        data_gnss::RfErrorDetection::RFBand,
-        data_gnss::RfErrorDetection::JammingState,
-        data_gnss::RfErrorDetection::SpoofingState,
-        uint8_t,
-        data_gnss::RfErrorDetection::ValidFlags
+        decltype(type::rf_band),
+        decltype(type::jamming_state),
+        decltype(type::spoofing_state),
+        decltype(type::reserved),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -2379,13 +2379,13 @@ struct MetadataFor<data_gnss::BaseStationInfo>
     using type = data_gnss::BaseStationInfo;
 
     using ParamTypes = std::tuple<
-        double,
-        uint16_t,
-        Vector3d,
-        float,
-        uint16_t,
-        data_gnss::BaseStationInfo::IndicatorFlags,
-        data_gnss::BaseStationInfo::ValidFlags
+        decltype(type::time_of_week),
+        decltype(type::week_number),
+        decltype(type::ecef_pos),
+        decltype(type::height),
+        decltype(type::station_id),
+        decltype(type::indicators),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -2542,16 +2542,16 @@ struct MetadataFor<data_gnss::RtkCorrectionsStatus>
     using type = data_gnss::RtkCorrectionsStatus;
 
     using ParamTypes = std::tuple<
-        double,
-        uint16_t,
-        data_gnss::RtkCorrectionsStatus::EpochStatus,
-        uint32_t,
-        float,
-        float,
-        float,
-        float,
-        uint32_t,
-        data_gnss::RtkCorrectionsStatus::ValidFlags
+        decltype(type::time_of_week),
+        decltype(type::week_number),
+        decltype(type::epoch_status),
+        decltype(type::dongle_status),
+        decltype(type::gps_correction_latency),
+        decltype(type::glonass_correction_latency),
+        decltype(type::galileo_correction_latency),
+        decltype(type::beidou_correction_latency),
+        decltype(type::reserved),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -2709,16 +2709,16 @@ struct MetadataFor<data_gnss::SatelliteStatus>
     using type = data_gnss::SatelliteStatus;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        uint8_t,
-        double,
-        uint16_t,
-        data_gnss::GnssConstellationId,
-        uint8_t,
-        float,
-        float,
-        bool,
-        data_gnss::SatelliteStatus::ValidFlags
+        decltype(type::index),
+        decltype(type::count),
+        decltype(type::time_of_week),
+        decltype(type::week_number),
+        decltype(type::gnss_id),
+        decltype(type::satellite_id),
+        decltype(type::elevation),
+        decltype(type::azimuth),
+        decltype(type::health),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -2995,25 +2995,25 @@ struct MetadataFor<data_gnss::Raw>
     using type = data_gnss::Raw;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        uint8_t,
-        double,
-        uint16_t,
-        uint16_t,
-        uint8_t,
-        data_gnss::GnssConstellationId,
-        uint8_t,
-        data_gnss::GnssSignalId,
-        float,
-        data_gnss::Raw::GnssSignalQuality,
-        double,
-        double,
-        float,
-        float,
-        float,
-        float,
-        float,
-        data_gnss::Raw::ValidFlags
+        decltype(type::index),
+        decltype(type::count),
+        decltype(type::time_of_week),
+        decltype(type::week_number),
+        decltype(type::receiver_id),
+        decltype(type::tracking_channel),
+        decltype(type::gnss_id),
+        decltype(type::satellite_id),
+        decltype(type::signal_id),
+        decltype(type::signal_strength),
+        decltype(type::quality),
+        decltype(type::pseudorange),
+        decltype(type::carrier_phase),
+        decltype(type::doppler),
+        decltype(type::range_uncert),
+        decltype(type::phase_uncert),
+        decltype(type::doppler_uncert),
+        decltype(type::lock_time),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -3257,40 +3257,40 @@ struct MetadataFor<data_gnss::GpsEphemeris>
     using type = data_gnss::GpsEphemeris;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        uint8_t,
-        double,
-        uint16_t,
-        uint8_t,
-        uint8_t,
-        uint8_t,
-        uint8_t,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        data_gnss::GpsEphemeris::ValidFlags
+        decltype(type::index),
+        decltype(type::count),
+        decltype(type::time_of_week),
+        decltype(type::week_number),
+        decltype(type::satellite_id),
+        decltype(type::health),
+        decltype(type::iodc),
+        decltype(type::iode),
+        decltype(type::t_oc),
+        decltype(type::af0),
+        decltype(type::af1),
+        decltype(type::af2),
+        decltype(type::t_gd),
+        decltype(type::ISC_L1CA),
+        decltype(type::ISC_L2C),
+        decltype(type::t_oe),
+        decltype(type::a),
+        decltype(type::a_dot),
+        decltype(type::mean_anomaly),
+        decltype(type::delta_mean_motion),
+        decltype(type::delta_mean_motion_dot),
+        decltype(type::eccentricity),
+        decltype(type::argument_of_perigee),
+        decltype(type::omega),
+        decltype(type::omega_dot),
+        decltype(type::inclination),
+        decltype(type::inclination_dot),
+        decltype(type::c_ic),
+        decltype(type::c_is),
+        decltype(type::c_uc),
+        decltype(type::c_us),
+        decltype(type::c_rc),
+        decltype(type::c_rs),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -3684,40 +3684,40 @@ struct MetadataFor<data_gnss::GalileoEphemeris>
     using type = data_gnss::GalileoEphemeris;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        uint8_t,
-        double,
-        uint16_t,
-        uint8_t,
-        uint8_t,
-        uint8_t,
-        uint8_t,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        data_gnss::GalileoEphemeris::ValidFlags
+        decltype(type::index),
+        decltype(type::count),
+        decltype(type::time_of_week),
+        decltype(type::week_number),
+        decltype(type::satellite_id),
+        decltype(type::health),
+        decltype(type::iodc),
+        decltype(type::iode),
+        decltype(type::t_oc),
+        decltype(type::af0),
+        decltype(type::af1),
+        decltype(type::af2),
+        decltype(type::t_gd),
+        decltype(type::ISC_L1CA),
+        decltype(type::ISC_L2C),
+        decltype(type::t_oe),
+        decltype(type::a),
+        decltype(type::a_dot),
+        decltype(type::mean_anomaly),
+        decltype(type::delta_mean_motion),
+        decltype(type::delta_mean_motion_dot),
+        decltype(type::eccentricity),
+        decltype(type::argument_of_perigee),
+        decltype(type::omega),
+        decltype(type::omega_dot),
+        decltype(type::inclination),
+        decltype(type::inclination_dot),
+        decltype(type::c_ic),
+        decltype(type::c_is),
+        decltype(type::c_uc),
+        decltype(type::c_us),
+        decltype(type::c_rc),
+        decltype(type::c_rs),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -4109,31 +4109,31 @@ struct MetadataFor<data_gnss::GloEphemeris>
     using type = data_gnss::GloEphemeris;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        uint8_t,
-        double,
-        uint16_t,
-        uint8_t,
-        int8_t,
-        uint32_t,
-        uint32_t,
-        uint8_t,
-        double,
-        double,
-        Vector3d,
-        Vector3f,
-        Vector3f,
-        uint8_t,
-        uint8_t,
-        uint8_t,
-        float,
-        uint8_t,
-        uint8_t,
-        uint8_t,
-        uint8_t,
-        uint8_t,
-        uint8_t,
-        data_gnss::GloEphemeris::ValidFlags
+        decltype(type::index),
+        decltype(type::count),
+        decltype(type::time_of_week),
+        decltype(type::week_number),
+        decltype(type::satellite_id),
+        decltype(type::freq_number),
+        decltype(type::tk),
+        decltype(type::tb),
+        decltype(type::sat_type),
+        decltype(type::gamma),
+        decltype(type::tau_n),
+        decltype(type::x),
+        decltype(type::v),
+        decltype(type::a),
+        decltype(type::health),
+        decltype(type::P),
+        decltype(type::NT),
+        decltype(type::delta_tau_n),
+        decltype(type::Ft),
+        decltype(type::En),
+        decltype(type::P1),
+        decltype(type::P2),
+        decltype(type::P3),
+        decltype(type::P4),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -4437,40 +4437,40 @@ struct MetadataFor<data_gnss::BeidouEphemeris>
     using type = data_gnss::BeidouEphemeris;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        uint8_t,
-        double,
-        uint16_t,
-        uint8_t,
-        uint8_t,
-        uint8_t,
-        uint8_t,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        double,
-        data_gnss::BeidouEphemeris::ValidFlags
+        decltype(type::index),
+        decltype(type::count),
+        decltype(type::time_of_week),
+        decltype(type::week_number),
+        decltype(type::satellite_id),
+        decltype(type::health),
+        decltype(type::iodc),
+        decltype(type::iode),
+        decltype(type::t_oc),
+        decltype(type::af0),
+        decltype(type::af1),
+        decltype(type::af2),
+        decltype(type::t_gd),
+        decltype(type::ISC_L1CA),
+        decltype(type::ISC_L2C),
+        decltype(type::t_oe),
+        decltype(type::a),
+        decltype(type::a_dot),
+        decltype(type::mean_anomaly),
+        decltype(type::delta_mean_motion),
+        decltype(type::delta_mean_motion_dot),
+        decltype(type::eccentricity),
+        decltype(type::argument_of_perigee),
+        decltype(type::omega),
+        decltype(type::omega_dot),
+        decltype(type::inclination),
+        decltype(type::inclination_dot),
+        decltype(type::c_ic),
+        decltype(type::c_is),
+        decltype(type::c_uc),
+        decltype(type::c_us),
+        decltype(type::c_rc),
+        decltype(type::c_rs),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -4865,11 +4865,11 @@ struct MetadataFor<data_gnss::GpsIonoCorr>
     using type = data_gnss::GpsIonoCorr;
 
     using ParamTypes = std::tuple<
-        double,
-        uint16_t,
-        double,
-        double,
-        data_gnss::GpsIonoCorr::ValidFlags
+        decltype(type::time_of_week),
+        decltype(type::week_number),
+        decltype(type::alpha),
+        decltype(type::beta),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -4974,11 +4974,11 @@ struct MetadataFor<data_gnss::GalileoIonoCorr>
     using type = data_gnss::GalileoIonoCorr;
 
     using ParamTypes = std::tuple<
-        double,
-        uint16_t,
-        Vector3d,
-        uint8_t,
-        data_gnss::GalileoIonoCorr::ValidFlags
+        decltype(type::time_of_week),
+        decltype(type::week_number),
+        decltype(type::alpha),
+        decltype(type::disturbance_flags),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -5084,12 +5084,12 @@ struct MetadataFor<data_gnss::BeidouIonoCorr>
     using type = data_gnss::BeidouIonoCorr;
 
     using ParamTypes = std::tuple<
-        double,
-        uint16_t,
-        double,
-        double,
-        double,
-        data_gnss::BeidouIonoCorr::ValidFlags
+        decltype(type::time_of_week),
+        decltype(type::week_number),
+        decltype(type::alpha),
+        decltype(type::beta),
+        decltype(type::alpha_corr),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>

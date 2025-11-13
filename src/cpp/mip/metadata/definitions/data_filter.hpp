@@ -15,10 +15,10 @@ struct MetadataFor<data_filter::PositionLlh>
     using type = data_filter::PositionLlh;
 
     using ParamTypes = std::tuple<
-        double,
-        double,
-        double,
-        uint16_t
+        decltype(type::latitude),
+        decltype(type::longitude),
+        decltype(type::ellipsoid_height),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -89,10 +89,10 @@ struct MetadataFor<data_filter::VelocityNed>
     using type = data_filter::VelocityNed;
 
     using ParamTypes = std::tuple<
-        float,
-        float,
-        float,
-        uint16_t
+        decltype(type::north),
+        decltype(type::east),
+        decltype(type::down),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -163,8 +163,8 @@ struct MetadataFor<data_filter::AttitudeQuaternion>
     using type = data_filter::AttitudeQuaternion;
 
     using ParamTypes = std::tuple<
-        Quatf,
-        uint16_t
+        decltype(type::q),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -215,8 +215,8 @@ struct MetadataFor<data_filter::AttitudeDcm>
     using type = data_filter::AttitudeDcm;
 
     using ParamTypes = std::tuple<
-        Matrix3f,
-        uint16_t
+        decltype(type::dcm),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -267,10 +267,10 @@ struct MetadataFor<data_filter::EulerAngles>
     using type = data_filter::EulerAngles;
 
     using ParamTypes = std::tuple<
-        float,
-        float,
-        float,
-        uint16_t
+        decltype(type::roll),
+        decltype(type::pitch),
+        decltype(type::yaw),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -341,8 +341,8 @@ struct MetadataFor<data_filter::GyroBias>
     using type = data_filter::GyroBias;
 
     using ParamTypes = std::tuple<
-        Vector3f,
-        uint16_t
+        decltype(type::bias),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -393,8 +393,8 @@ struct MetadataFor<data_filter::AccelBias>
     using type = data_filter::AccelBias;
 
     using ParamTypes = std::tuple<
-        Vector3f,
-        uint16_t
+        decltype(type::bias),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -445,10 +445,10 @@ struct MetadataFor<data_filter::PositionLlhUncertainty>
     using type = data_filter::PositionLlhUncertainty;
 
     using ParamTypes = std::tuple<
-        float,
-        float,
-        float,
-        uint16_t
+        decltype(type::north),
+        decltype(type::east),
+        decltype(type::down),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -519,10 +519,10 @@ struct MetadataFor<data_filter::VelocityNedUncertainty>
     using type = data_filter::VelocityNedUncertainty;
 
     using ParamTypes = std::tuple<
-        float,
-        float,
-        float,
-        uint16_t
+        decltype(type::north),
+        decltype(type::east),
+        decltype(type::down),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -593,10 +593,10 @@ struct MetadataFor<data_filter::EulerAnglesUncertainty>
     using type = data_filter::EulerAnglesUncertainty;
 
     using ParamTypes = std::tuple<
-        float,
-        float,
-        float,
-        uint16_t
+        decltype(type::roll),
+        decltype(type::pitch),
+        decltype(type::yaw),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -667,8 +667,8 @@ struct MetadataFor<data_filter::GyroBiasUncertainty>
     using type = data_filter::GyroBiasUncertainty;
 
     using ParamTypes = std::tuple<
-        Vector3f,
-        uint16_t
+        decltype(type::bias_uncert),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -719,8 +719,8 @@ struct MetadataFor<data_filter::AccelBiasUncertainty>
     using type = data_filter::AccelBiasUncertainty;
 
     using ParamTypes = std::tuple<
-        Vector3f,
-        uint16_t
+        decltype(type::bias_uncert),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -771,9 +771,9 @@ struct MetadataFor<data_filter::Timestamp>
     using type = data_filter::Timestamp;
 
     using ParamTypes = std::tuple<
-        double,
-        uint16_t,
-        uint16_t
+        decltype(type::tow),
+        decltype(type::week_number),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -931,9 +931,9 @@ struct MetadataFor<data_filter::Status>
     using type = data_filter::Status;
 
     using ParamTypes = std::tuple<
-        data_filter::FilterMode,
-        data_filter::FilterDynamicsMode,
-        data_filter::FilterStatusFlags
+        decltype(type::filter_state),
+        decltype(type::dynamics_mode),
+        decltype(type::status_flags)
     >;
 
     template<size_t I, class T = type>
@@ -994,8 +994,8 @@ struct MetadataFor<data_filter::LinearAccel>
     using type = data_filter::LinearAccel;
 
     using ParamTypes = std::tuple<
-        Vector3f,
-        uint16_t
+        decltype(type::accel),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -1046,8 +1046,8 @@ struct MetadataFor<data_filter::GravityVector>
     using type = data_filter::GravityVector;
 
     using ParamTypes = std::tuple<
-        Vector3f,
-        uint16_t
+        decltype(type::gravity),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -1098,8 +1098,8 @@ struct MetadataFor<data_filter::CompAccel>
     using type = data_filter::CompAccel;
 
     using ParamTypes = std::tuple<
-        Vector3f,
-        uint16_t
+        decltype(type::accel),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -1150,8 +1150,8 @@ struct MetadataFor<data_filter::CompAngularRate>
     using type = data_filter::CompAngularRate;
 
     using ParamTypes = std::tuple<
-        Vector3f,
-        uint16_t
+        decltype(type::gyro),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -1202,8 +1202,8 @@ struct MetadataFor<data_filter::QuaternionAttitudeUncertainty>
     using type = data_filter::QuaternionAttitudeUncertainty;
 
     using ParamTypes = std::tuple<
-        Quatf,
-        uint16_t
+        decltype(type::q),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -1254,8 +1254,8 @@ struct MetadataFor<data_filter::Wgs84GravityMag>
     using type = data_filter::Wgs84GravityMag;
 
     using ParamTypes = std::tuple<
-        float,
-        uint16_t
+        decltype(type::magnitude),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -1330,10 +1330,10 @@ struct MetadataFor<data_filter::HeadingUpdateState>
     using type = data_filter::HeadingUpdateState;
 
     using ParamTypes = std::tuple<
-        float,
-        float,
-        data_filter::HeadingUpdateState::HeadingSource,
-        uint16_t
+        decltype(type::heading),
+        decltype(type::heading_1sigma),
+        decltype(type::source),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -1404,12 +1404,12 @@ struct MetadataFor<data_filter::MagneticModel>
     using type = data_filter::MagneticModel;
 
     using ParamTypes = std::tuple<
-        float,
-        float,
-        float,
-        float,
-        float,
-        uint16_t
+        decltype(type::intensity_north),
+        decltype(type::intensity_east),
+        decltype(type::intensity_down),
+        decltype(type::inclination),
+        decltype(type::declination),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -1500,8 +1500,8 @@ struct MetadataFor<data_filter::AccelScaleFactor>
     using type = data_filter::AccelScaleFactor;
 
     using ParamTypes = std::tuple<
-        Vector3f,
-        uint16_t
+        decltype(type::scale_factor),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -1552,8 +1552,8 @@ struct MetadataFor<data_filter::AccelScaleFactorUncertainty>
     using type = data_filter::AccelScaleFactorUncertainty;
 
     using ParamTypes = std::tuple<
-        Vector3f,
-        uint16_t
+        decltype(type::scale_factor_uncert),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -1604,8 +1604,8 @@ struct MetadataFor<data_filter::GyroScaleFactor>
     using type = data_filter::GyroScaleFactor;
 
     using ParamTypes = std::tuple<
-        Vector3f,
-        uint16_t
+        decltype(type::scale_factor),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -1656,8 +1656,8 @@ struct MetadataFor<data_filter::GyroScaleFactorUncertainty>
     using type = data_filter::GyroScaleFactorUncertainty;
 
     using ParamTypes = std::tuple<
-        Vector3f,
-        uint16_t
+        decltype(type::scale_factor_uncert),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -1708,8 +1708,8 @@ struct MetadataFor<data_filter::MagBias>
     using type = data_filter::MagBias;
 
     using ParamTypes = std::tuple<
-        Vector3f,
-        uint16_t
+        decltype(type::bias),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -1760,8 +1760,8 @@ struct MetadataFor<data_filter::MagBiasUncertainty>
     using type = data_filter::MagBiasUncertainty;
 
     using ParamTypes = std::tuple<
-        Vector3f,
-        uint16_t
+        decltype(type::bias_uncert),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -1812,12 +1812,12 @@ struct MetadataFor<data_filter::StandardAtmosphere>
     using type = data_filter::StandardAtmosphere;
 
     using ParamTypes = std::tuple<
-        float,
-        float,
-        float,
-        float,
-        float,
-        uint16_t
+        decltype(type::geometric_altitude),
+        decltype(type::geopotential_altitude),
+        decltype(type::standard_temperature),
+        decltype(type::standard_pressure),
+        decltype(type::standard_density),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -1908,8 +1908,8 @@ struct MetadataFor<data_filter::PressureAltitude>
     using type = data_filter::PressureAltitude;
 
     using ParamTypes = std::tuple<
-        float,
-        uint16_t
+        decltype(type::pressure_altitude),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -1960,8 +1960,8 @@ struct MetadataFor<data_filter::DensityAltitude>
     using type = data_filter::DensityAltitude;
 
     using ParamTypes = std::tuple<
-        float,
-        uint16_t
+        decltype(type::density_altitude),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -2012,8 +2012,8 @@ struct MetadataFor<data_filter::AntennaOffsetCorrection>
     using type = data_filter::AntennaOffsetCorrection;
 
     using ParamTypes = std::tuple<
-        Vector3f,
-        uint16_t
+        decltype(type::offset),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -2064,8 +2064,8 @@ struct MetadataFor<data_filter::AntennaOffsetCorrectionUncertainty>
     using type = data_filter::AntennaOffsetCorrectionUncertainty;
 
     using ParamTypes = std::tuple<
-        Vector3f,
-        uint16_t
+        decltype(type::offset_uncert),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -2116,9 +2116,9 @@ struct MetadataFor<data_filter::MultiAntennaOffsetCorrection>
     using type = data_filter::MultiAntennaOffsetCorrection;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        Vector3f,
-        uint16_t
+        decltype(type::receiver_id),
+        decltype(type::offset),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -2179,9 +2179,9 @@ struct MetadataFor<data_filter::MultiAntennaOffsetCorrectionUncertainty>
     using type = data_filter::MultiAntennaOffsetCorrectionUncertainty;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        Vector3f,
-        uint16_t
+        decltype(type::receiver_id),
+        decltype(type::offset_uncert),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -2242,8 +2242,8 @@ struct MetadataFor<data_filter::MagnetometerOffset>
     using type = data_filter::MagnetometerOffset;
 
     using ParamTypes = std::tuple<
-        Vector3f,
-        uint16_t
+        decltype(type::hard_iron),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -2294,8 +2294,8 @@ struct MetadataFor<data_filter::MagnetometerMatrix>
     using type = data_filter::MagnetometerMatrix;
 
     using ParamTypes = std::tuple<
-        Matrix3f,
-        uint16_t
+        decltype(type::soft_iron),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -2346,8 +2346,8 @@ struct MetadataFor<data_filter::MagnetometerOffsetUncertainty>
     using type = data_filter::MagnetometerOffsetUncertainty;
 
     using ParamTypes = std::tuple<
-        Vector3f,
-        uint16_t
+        decltype(type::hard_iron_uncertainty),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -2398,8 +2398,8 @@ struct MetadataFor<data_filter::MagnetometerMatrixUncertainty>
     using type = data_filter::MagnetometerMatrixUncertainty;
 
     using ParamTypes = std::tuple<
-        Matrix3f,
-        uint16_t
+        decltype(type::soft_iron_uncertainty),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -2450,8 +2450,8 @@ struct MetadataFor<data_filter::MagnetometerCovarianceMatrix>
     using type = data_filter::MagnetometerCovarianceMatrix;
 
     using ParamTypes = std::tuple<
-        Matrix3f,
-        uint16_t
+        decltype(type::covariance),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -2502,8 +2502,8 @@ struct MetadataFor<data_filter::MagnetometerResidualVector>
     using type = data_filter::MagnetometerResidualVector;
 
     using ParamTypes = std::tuple<
-        Vector3f,
-        uint16_t
+        decltype(type::residual),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -2554,10 +2554,10 @@ struct MetadataFor<data_filter::ClockCorrection>
     using type = data_filter::ClockCorrection;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        float,
-        float,
-        uint16_t
+        decltype(type::receiver_id),
+        decltype(type::bias),
+        decltype(type::bias_drift),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -2628,10 +2628,10 @@ struct MetadataFor<data_filter::ClockCorrectionUncertainty>
     using type = data_filter::ClockCorrectionUncertainty;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        float,
-        float,
-        uint16_t
+        decltype(type::receiver_id),
+        decltype(type::bias_uncertainty),
+        decltype(type::bias_drift_uncertainty),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -2737,10 +2737,10 @@ struct MetadataFor<data_filter::GnssPosAidStatus>
     using type = data_filter::GnssPosAidStatus;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        float,
-        data_filter::GnssAidStatusFlags,
-        uint8_t
+        decltype(type::receiver_id),
+        decltype(type::time_of_week),
+        decltype(type::status),
+        decltype(type::reserved)
     >;
 
     template<size_t I, class T = type>
@@ -2811,9 +2811,9 @@ struct MetadataFor<data_filter::GnssAttAidStatus>
     using type = data_filter::GnssAttAidStatus;
 
     using ParamTypes = std::tuple<
-        float,
-        data_filter::GnssAidStatusFlags,
-        uint8_t
+        decltype(type::time_of_week),
+        decltype(type::status),
+        decltype(type::reserved)
     >;
 
     template<size_t I, class T = type>
@@ -2895,9 +2895,9 @@ struct MetadataFor<data_filter::HeadAidStatus>
     using type = data_filter::HeadAidStatus;
 
     using ParamTypes = std::tuple<
-        float,
-        data_filter::HeadAidStatus::HeadingAidType,
-        float
+        decltype(type::time_of_week),
+        decltype(type::type),
+        decltype(type::reserved)
     >;
 
     template<size_t I, class T = type>
@@ -2958,8 +2958,8 @@ struct MetadataFor<data_filter::RelPosNed>
     using type = data_filter::RelPosNed;
 
     using ParamTypes = std::tuple<
-        Vector3d,
-        uint16_t
+        decltype(type::relative_position),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -3010,8 +3010,8 @@ struct MetadataFor<data_filter::EcefPos>
     using type = data_filter::EcefPos;
 
     using ParamTypes = std::tuple<
-        Vector3d,
-        uint16_t
+        decltype(type::position_ecef),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -3062,8 +3062,8 @@ struct MetadataFor<data_filter::EcefVel>
     using type = data_filter::EcefVel;
 
     using ParamTypes = std::tuple<
-        Vector3f,
-        uint16_t
+        decltype(type::velocity_ecef),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -3114,8 +3114,8 @@ struct MetadataFor<data_filter::EcefPosUncertainty>
     using type = data_filter::EcefPosUncertainty;
 
     using ParamTypes = std::tuple<
-        Vector3f,
-        uint16_t
+        decltype(type::pos_uncertainty),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -3166,8 +3166,8 @@ struct MetadataFor<data_filter::EcefVelUncertainty>
     using type = data_filter::EcefVelUncertainty;
 
     using ParamTypes = std::tuple<
-        Vector3f,
-        uint16_t
+        decltype(type::vel_uncertainty),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -3277,10 +3277,10 @@ struct MetadataFor<data_filter::AidingMeasurementSummary>
     using type = data_filter::AidingMeasurementSummary;
 
     using ParamTypes = std::tuple<
-        float,
-        uint8_t,
-        data_filter::FilterAidingMeasurementType,
-        data_filter::FilterMeasurementIndicator
+        decltype(type::time_of_week),
+        decltype(type::source),
+        decltype(type::type),
+        decltype(type::indicator)
     >;
 
     template<size_t I, class T = type>
@@ -3351,8 +3351,8 @@ struct MetadataFor<data_filter::OdometerScaleFactorError>
     using type = data_filter::OdometerScaleFactorError;
 
     using ParamTypes = std::tuple<
-        float,
-        uint16_t
+        decltype(type::scale_factor_error),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -3403,8 +3403,8 @@ struct MetadataFor<data_filter::OdometerScaleFactorErrorUncertainty>
     using type = data_filter::OdometerScaleFactorErrorUncertainty;
 
     using ParamTypes = std::tuple<
-        float,
-        uint16_t
+        decltype(type::scale_factor_error_uncertainty),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -3499,12 +3499,12 @@ struct MetadataFor<data_filter::GnssDualAntennaStatus>
     using type = data_filter::GnssDualAntennaStatus;
 
     using ParamTypes = std::tuple<
-        float,
-        float,
-        float,
-        data_filter::GnssDualAntennaStatus::FixType,
-        data_filter::GnssDualAntennaStatus::DualAntennaStatusFlags,
-        uint16_t
+        decltype(type::time_of_week),
+        decltype(type::heading),
+        decltype(type::heading_unc),
+        decltype(type::fix_type),
+        decltype(type::status_flags),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -3595,9 +3595,9 @@ struct MetadataFor<data_filter::AidingFrameConfigError>
     using type = data_filter::AidingFrameConfigError;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        Vector3f,
-        Quatf
+        decltype(type::frame_id),
+        decltype(type::translation),
+        decltype(type::attitude)
     >;
 
     template<size_t I, class T = type>
@@ -3658,9 +3658,9 @@ struct MetadataFor<data_filter::AidingFrameConfigErrorUncertainty>
     using type = data_filter::AidingFrameConfigErrorUncertainty;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        Vector3f,
-        Vector3f
+        decltype(type::frame_id),
+        decltype(type::translation_unc),
+        decltype(type::attitude_unc)
     >;
 
     template<size_t I, class T = type>

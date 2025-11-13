@@ -61,12 +61,12 @@ struct MetadataFor<commands_base::BaseDeviceInfo>
     using type = commands_base::BaseDeviceInfo;
 
     using ParamTypes = std::tuple<
-        uint16_t,
-        char,
-        char,
-        char,
-        char,
-        char
+        decltype(type::firmware_version),
+        decltype(type::model_name),
+        decltype(type::model_number),
+        decltype(type::serial_number),
+        decltype(type::lot_number),
+        decltype(type::device_options)
     >;
 
     template<size_t I, class T = type>
@@ -151,7 +151,7 @@ struct MetadataFor<commands_base::GetDeviceInfo::Response>
     using type = commands_base::GetDeviceInfo::Response;
 
     using ParamTypes = std::tuple<
-        commands_base::BaseDeviceInfo
+        decltype(type::device_info)
     >;
 
     template<size_t I, class T = type>
@@ -214,8 +214,8 @@ struct MetadataFor<commands_base::GetDeviceDescriptors::Response>
     using type = commands_base::GetDeviceDescriptors::Response;
 
     using ParamTypes = std::tuple<
-        uint16_t,
-        uint8_t
+        decltype(type::descriptors),
+        decltype(type::descriptors_count)
     >;
 
     template<size_t I, class T = type>
@@ -288,7 +288,7 @@ struct MetadataFor<commands_base::BuiltInTest::Response>
     using type = commands_base::BuiltInTest::Response;
 
     using ParamTypes = std::tuple<
-        uint32_t
+        decltype(type::result)
     >;
 
     template<size_t I, class T = type>
@@ -374,8 +374,8 @@ struct MetadataFor<commands_base::GetExtendedDescriptors::Response>
     using type = commands_base::GetExtendedDescriptors::Response;
 
     using ParamTypes = std::tuple<
-        uint16_t,
-        uint8_t
+        decltype(type::descriptors),
+        decltype(type::descriptors_count)
     >;
 
     template<size_t I, class T = type>
@@ -448,7 +448,7 @@ struct MetadataFor<commands_base::ContinuousBit::Response>
     using type = commands_base::ContinuousBit::Response;
 
     using ParamTypes = std::tuple<
-        uint8_t
+        decltype(type::result)
     >;
 
     template<size_t I, class T = type>
@@ -511,8 +511,8 @@ struct MetadataFor<commands_base::CommSpeed::Response>
     using type = commands_base::CommSpeed::Response;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        uint32_t
+        decltype(type::port),
+        decltype(type::baud)
     >;
 
     template<size_t I, class T = type>
@@ -562,9 +562,9 @@ struct MetadataFor<commands_base::CommSpeed>
     using type = commands_base::CommSpeed;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        uint8_t,
-        uint32_t
+        decltype(type::function),
+        decltype(type::port),
+        decltype(type::baud)
     >;
 
     template<size_t I, class T = type>
@@ -638,9 +638,9 @@ struct MetadataFor<commands_base::GpsTimeUpdate>
     using type = commands_base::GpsTimeUpdate;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        commands_base::GpsTimeUpdate::FieldId,
-        uint32_t
+        decltype(type::function),
+        decltype(type::field_id),
+        decltype(type::value)
     >;
 
     template<size_t I, class T = type>

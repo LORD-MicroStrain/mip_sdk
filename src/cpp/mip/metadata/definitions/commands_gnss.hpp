@@ -15,9 +15,9 @@ struct MetadataFor<commands_gnss::ReceiverInfo::Info>
     using type = commands_gnss::ReceiverInfo::Info;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        uint8_t,
-        char
+        decltype(type::receiver_id),
+        decltype(type::mip_data_descriptor_set),
+        decltype(type::description)
     >;
 
     template<size_t I, class T = type>
@@ -72,8 +72,8 @@ struct MetadataFor<commands_gnss::ReceiverInfo::Response>
     using type = commands_gnss::ReceiverInfo::Response;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        commands_gnss::ReceiverInfo::Info
+        decltype(type::num_receivers),
+        decltype(type::receiver_info)
     >;
 
     template<size_t I, class T = type>
@@ -146,11 +146,11 @@ struct MetadataFor<commands_gnss::SignalConfiguration::Response>
     using type = commands_gnss::SignalConfiguration::Response;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        uint8_t,
-        uint8_t,
-        uint8_t,
-        uint8_t
+        decltype(type::gps_enable),
+        decltype(type::glonass_enable),
+        decltype(type::galileo_enable),
+        decltype(type::beidou_enable),
+        decltype(type::reserved)
     >;
 
     template<size_t I, class T = type>
@@ -230,12 +230,12 @@ struct MetadataFor<commands_gnss::SignalConfiguration>
     using type = commands_gnss::SignalConfiguration;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        uint8_t,
-        uint8_t,
-        uint8_t,
-        uint8_t,
-        uint8_t
+        decltype(type::function),
+        decltype(type::gps_enable),
+        decltype(type::glonass_enable),
+        decltype(type::galileo_enable),
+        decltype(type::beidou_enable),
+        decltype(type::reserved)
     >;
 
     template<size_t I, class T = type>
@@ -318,14 +318,14 @@ struct MetadataFor<commands_gnss::SpartnConfiguration::Response>
     using type = commands_gnss::SpartnConfiguration::Response;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        uint8_t,
-        uint32_t,
-        uint16_t,
-        uint8_t,
-        uint32_t,
-        uint16_t,
-        uint8_t
+        decltype(type::enable),
+        decltype(type::type),
+        decltype(type::current_key_tow),
+        decltype(type::current_key_week),
+        decltype(type::current_key),
+        decltype(type::next_key_tow),
+        decltype(type::next_key_week),
+        decltype(type::next_key)
     >;
 
     template<size_t I, class T = type>
@@ -435,15 +435,15 @@ struct MetadataFor<commands_gnss::SpartnConfiguration>
     using type = commands_gnss::SpartnConfiguration;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        uint8_t,
-        uint8_t,
-        uint32_t,
-        uint16_t,
-        uint8_t,
-        uint32_t,
-        uint16_t,
-        uint8_t
+        decltype(type::function),
+        decltype(type::enable),
+        decltype(type::type),
+        decltype(type::current_key_tow),
+        decltype(type::current_key_week),
+        decltype(type::current_key),
+        decltype(type::next_key_tow),
+        decltype(type::next_key_week),
+        decltype(type::next_key)
     >;
 
     template<size_t I, class T = type>
@@ -556,8 +556,8 @@ struct MetadataFor<commands_gnss::RtkDongleConfiguration::Response>
     using type = commands_gnss::RtkDongleConfiguration::Response;
 
     using ParamTypes = std::tuple<
-        uint8_t,
-        uint8_t
+        decltype(type::enable),
+        decltype(type::reserved)
     >;
 
     template<size_t I, class T = type>
@@ -607,9 +607,9 @@ struct MetadataFor<commands_gnss::RtkDongleConfiguration>
     using type = commands_gnss::RtkDongleConfiguration;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        uint8_t,
-        uint8_t
+        decltype(type::function),
+        decltype(type::enable),
+        decltype(type::reserved)
     >;
 
     template<size_t I, class T = type>

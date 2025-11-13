@@ -15,7 +15,7 @@ struct MetadataFor<data_shared::EventSource>
     using type = data_shared::EventSource;
 
     using ParamTypes = std::tuple<
-        uint8_t
+        decltype(type::trigger_id)
     >;
 
     template<size_t I, class T = type>
@@ -56,7 +56,7 @@ struct MetadataFor<data_shared::Ticks>
     using type = data_shared::Ticks;
 
     using ParamTypes = std::tuple<
-        uint32_t
+        decltype(type::ticks)
     >;
 
     template<size_t I, class T = type>
@@ -97,7 +97,7 @@ struct MetadataFor<data_shared::DeltaTicks>
     using type = data_shared::DeltaTicks;
 
     using ParamTypes = std::tuple<
-        uint32_t
+        decltype(type::ticks)
     >;
 
     template<size_t I, class T = type>
@@ -160,9 +160,9 @@ struct MetadataFor<data_shared::GpsTimestamp>
     using type = data_shared::GpsTimestamp;
 
     using ParamTypes = std::tuple<
-        double,
-        uint16_t,
-        data_shared::GpsTimestamp::ValidFlags
+        decltype(type::tow),
+        decltype(type::week_number),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -223,7 +223,7 @@ struct MetadataFor<data_shared::DeltaTime>
     using type = data_shared::DeltaTime;
 
     using ParamTypes = std::tuple<
-        double
+        decltype(type::seconds)
     >;
 
     template<size_t I, class T = type>
@@ -264,7 +264,7 @@ struct MetadataFor<data_shared::ReferenceTimestamp>
     using type = data_shared::ReferenceTimestamp;
 
     using ParamTypes = std::tuple<
-        uint64_t
+        decltype(type::nanoseconds)
     >;
 
     template<size_t I, class T = type>
@@ -305,7 +305,7 @@ struct MetadataFor<data_shared::ReferenceTimeDelta>
     using type = data_shared::ReferenceTimeDelta;
 
     using ParamTypes = std::tuple<
-        uint64_t
+        decltype(type::dt_nanos)
     >;
 
     template<size_t I, class T = type>
@@ -366,8 +366,8 @@ struct MetadataFor<data_shared::ExternalTimestamp>
     using type = data_shared::ExternalTimestamp;
 
     using ParamTypes = std::tuple<
-        uint64_t,
-        data_shared::ExternalTimestamp::ValidFlags
+        decltype(type::nanoseconds),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -438,8 +438,8 @@ struct MetadataFor<data_shared::ExternalTimeDelta>
     using type = data_shared::ExternalTimeDelta;
 
     using ParamTypes = std::tuple<
-        uint64_t,
-        data_shared::ExternalTimeDelta::ValidFlags
+        decltype(type::dt_nanos),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>

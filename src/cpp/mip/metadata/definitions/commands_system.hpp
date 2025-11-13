@@ -15,7 +15,7 @@ struct MetadataFor<commands_system::CommMode::Response>
     using type = commands_system::CommMode::Response;
 
     using ParamTypes = std::tuple<
-        uint8_t
+        decltype(type::mode)
     >;
 
     template<size_t I, class T = type>
@@ -55,8 +55,8 @@ struct MetadataFor<commands_system::CommMode>
     using type = commands_system::CommMode;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        uint8_t
+        decltype(type::function),
+        decltype(type::mode)
     >;
 
     template<size_t I, class T = type>
@@ -148,9 +148,9 @@ struct MetadataFor<commands_system::InterfaceControl::Response>
     using type = commands_system::InterfaceControl::Response;
 
     using ParamTypes = std::tuple<
-        commands_system::CommsInterface,
-        commands_system::CommsProtocol,
-        commands_system::CommsProtocol
+        decltype(type::port),
+        decltype(type::protocols_incoming),
+        decltype(type::protocols_outgoing)
     >;
 
     template<size_t I, class T = type>
@@ -210,10 +210,10 @@ struct MetadataFor<commands_system::InterfaceControl>
     using type = commands_system::InterfaceControl;
 
     using ParamTypes = std::tuple<
-        FunctionSelector,
-        commands_system::CommsInterface,
-        commands_system::CommsProtocol,
-        commands_system::CommsProtocol
+        decltype(type::function),
+        decltype(type::port),
+        decltype(type::protocols_incoming),
+        decltype(type::protocols_outgoing)
     >;
 
     template<size_t I, class T = type>

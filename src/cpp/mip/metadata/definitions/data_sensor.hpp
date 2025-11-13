@@ -15,7 +15,7 @@ struct MetadataFor<data_sensor::RawAccel>
     using type = data_sensor::RawAccel;
 
     using ParamTypes = std::tuple<
-        Vector3f
+        decltype(type::raw_accel)
     >;
 
     template<size_t I, class T = type>
@@ -56,7 +56,7 @@ struct MetadataFor<data_sensor::RawGyro>
     using type = data_sensor::RawGyro;
 
     using ParamTypes = std::tuple<
-        Vector3f
+        decltype(type::raw_gyro)
     >;
 
     template<size_t I, class T = type>
@@ -97,7 +97,7 @@ struct MetadataFor<data_sensor::RawMag>
     using type = data_sensor::RawMag;
 
     using ParamTypes = std::tuple<
-        Vector3f
+        decltype(type::raw_mag)
     >;
 
     template<size_t I, class T = type>
@@ -138,7 +138,7 @@ struct MetadataFor<data_sensor::RawPressure>
     using type = data_sensor::RawPressure;
 
     using ParamTypes = std::tuple<
-        float
+        decltype(type::raw_pressure)
     >;
 
     template<size_t I, class T = type>
@@ -179,7 +179,7 @@ struct MetadataFor<data_sensor::ScaledAccel>
     using type = data_sensor::ScaledAccel;
 
     using ParamTypes = std::tuple<
-        Vector3f
+        decltype(type::scaled_accel)
     >;
 
     template<size_t I, class T = type>
@@ -220,7 +220,7 @@ struct MetadataFor<data_sensor::ScaledGyro>
     using type = data_sensor::ScaledGyro;
 
     using ParamTypes = std::tuple<
-        Vector3f
+        decltype(type::scaled_gyro)
     >;
 
     template<size_t I, class T = type>
@@ -261,7 +261,7 @@ struct MetadataFor<data_sensor::ScaledMag>
     using type = data_sensor::ScaledMag;
 
     using ParamTypes = std::tuple<
-        Vector3f
+        decltype(type::scaled_mag)
     >;
 
     template<size_t I, class T = type>
@@ -302,7 +302,7 @@ struct MetadataFor<data_sensor::ScaledPressure>
     using type = data_sensor::ScaledPressure;
 
     using ParamTypes = std::tuple<
-        float
+        decltype(type::scaled_pressure)
     >;
 
     template<size_t I, class T = type>
@@ -343,7 +343,7 @@ struct MetadataFor<data_sensor::DeltaTheta>
     using type = data_sensor::DeltaTheta;
 
     using ParamTypes = std::tuple<
-        Vector3f
+        decltype(type::delta_theta)
     >;
 
     template<size_t I, class T = type>
@@ -384,7 +384,7 @@ struct MetadataFor<data_sensor::DeltaVelocity>
     using type = data_sensor::DeltaVelocity;
 
     using ParamTypes = std::tuple<
-        Vector3f
+        decltype(type::delta_velocity)
     >;
 
     template<size_t I, class T = type>
@@ -425,7 +425,7 @@ struct MetadataFor<data_sensor::CompOrientationMatrix>
     using type = data_sensor::CompOrientationMatrix;
 
     using ParamTypes = std::tuple<
-        Matrix3f
+        decltype(type::m)
     >;
 
     template<size_t I, class T = type>
@@ -466,7 +466,7 @@ struct MetadataFor<data_sensor::CompQuaternion>
     using type = data_sensor::CompQuaternion;
 
     using ParamTypes = std::tuple<
-        Quatf
+        decltype(type::q)
     >;
 
     template<size_t I, class T = type>
@@ -507,9 +507,9 @@ struct MetadataFor<data_sensor::CompEulerAngles>
     using type = data_sensor::CompEulerAngles;
 
     using ParamTypes = std::tuple<
-        float,
-        float,
-        float
+        decltype(type::roll),
+        decltype(type::pitch),
+        decltype(type::yaw)
     >;
 
     template<size_t I, class T = type>
@@ -570,7 +570,7 @@ struct MetadataFor<data_sensor::CompOrientationUpdateMatrix>
     using type = data_sensor::CompOrientationUpdateMatrix;
 
     using ParamTypes = std::tuple<
-        Matrix3f
+        decltype(type::m)
     >;
 
     template<size_t I, class T = type>
@@ -611,7 +611,7 @@ struct MetadataFor<data_sensor::OrientationRawTemp>
     using type = data_sensor::OrientationRawTemp;
 
     using ParamTypes = std::tuple<
-        uint16_t
+        decltype(type::raw_temp)
     >;
 
     template<size_t I, class T = type>
@@ -652,7 +652,7 @@ struct MetadataFor<data_sensor::InternalTimestamp>
     using type = data_sensor::InternalTimestamp;
 
     using ParamTypes = std::tuple<
-        uint32_t
+        decltype(type::counts)
     >;
 
     template<size_t I, class T = type>
@@ -693,8 +693,8 @@ struct MetadataFor<data_sensor::PpsTimestamp>
     using type = data_sensor::PpsTimestamp;
 
     using ParamTypes = std::tuple<
-        uint32_t,
-        uint32_t
+        decltype(type::seconds),
+        decltype(type::useconds)
     >;
 
     template<size_t I, class T = type>
@@ -769,9 +769,9 @@ struct MetadataFor<data_sensor::GpsTimestamp>
     using type = data_sensor::GpsTimestamp;
 
     using ParamTypes = std::tuple<
-        double,
-        uint16_t,
-        data_sensor::GpsTimestamp::ValidFlags
+        decltype(type::tow),
+        decltype(type::week_number),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
@@ -832,9 +832,9 @@ struct MetadataFor<data_sensor::TemperatureAbs>
     using type = data_sensor::TemperatureAbs;
 
     using ParamTypes = std::tuple<
-        float,
-        float,
-        float
+        decltype(type::min_temp),
+        decltype(type::max_temp),
+        decltype(type::mean_temp)
     >;
 
     template<size_t I, class T = type>
@@ -895,7 +895,7 @@ struct MetadataFor<data_sensor::UpVector>
     using type = data_sensor::UpVector;
 
     using ParamTypes = std::tuple<
-        Vector3f
+        decltype(type::up)
     >;
 
     template<size_t I, class T = type>
@@ -936,7 +936,7 @@ struct MetadataFor<data_sensor::NorthVector>
     using type = data_sensor::NorthVector;
 
     using ParamTypes = std::tuple<
-        Vector3f
+        decltype(type::north)
     >;
 
     template<size_t I, class T = type>
@@ -1006,7 +1006,7 @@ struct MetadataFor<data_sensor::OverrangeStatus>
     using type = data_sensor::OverrangeStatus;
 
     using ParamTypes = std::tuple<
-        data_sensor::OverrangeStatus::Status
+        decltype(type::status)
     >;
 
     template<size_t I, class T = type>
@@ -1047,9 +1047,9 @@ struct MetadataFor<data_sensor::OdometerData>
     using type = data_sensor::OdometerData;
 
     using ParamTypes = std::tuple<
-        float,
-        float,
-        uint16_t
+        decltype(type::speed),
+        decltype(type::uncertainty),
+        decltype(type::valid_flags)
     >;
 
     template<size_t I, class T = type>
