@@ -1825,7 +1825,7 @@ struct MetadataFor<data_gnss::RfErrorDetection::ValidFlags>
         { uint32_t(1), "rf_band", "" },
         { uint32_t(2), "jamming_state", "" },
         { uint32_t(4), "spoofing_state", "" },
-        { uint32_t(7), "flags", "" },
+        { uint32_t(8), "frequency", "" },
     };
 
     static constexpr inline BitfieldInfo value = {
@@ -1871,12 +1871,21 @@ struct MetadataFor<data_gnss::RfErrorDetection>
             /* .condition     = */ {},
         },
         {
+            /* .name          = */ "frequency",
+            /* .docs          = */ "Center frequency of the RF band in MHz",
+            /* .type          = */ {Type::U16, nullptr},
+            /* .accessor      = */ nullptr, //utils::access<type, uint16_t, &type::frequency>,
+            /* .attributes    = */ {true, false, false, false, false},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
             /* .name          = */ "reserved",
             /* .docs          = */ "Reserved for future use",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ nullptr, //utils::access<type, uint8_t, &type::reserved>,
             /* .attributes    = */ {true, false, false, false, false},
-            /* .count         = */ 4,
+            /* .count         = */ 2,
             /* .condition     = */ {},
         },
         {
