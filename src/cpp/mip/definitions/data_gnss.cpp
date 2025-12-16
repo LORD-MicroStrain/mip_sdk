@@ -515,7 +515,9 @@ void RfErrorDetection::insert(Serializer& serializer) const
     
     serializer.insert(spoofing_state);
     
-    for(unsigned int i=0; i < 4; i++)
+    serializer.insert(frequency);
+    
+    for(unsigned int i=0; i < 2; i++)
         serializer.insert(reserved[i]);
     
     serializer.insert(valid_flags);
@@ -529,7 +531,9 @@ void RfErrorDetection::extract(Serializer& serializer)
     
     serializer.extract(spoofing_state);
     
-    for(unsigned int i=0; i < 4; i++)
+    serializer.extract(frequency);
+    
+    for(unsigned int i=0; i < 2; i++)
         serializer.extract(reserved[i]);
     
     serializer.extract(valid_flags);
@@ -1143,6 +1147,149 @@ void GloEphemeris::extract(Serializer& serializer)
     
 }
 
+void BeidouEphemeris::insert(Serializer& serializer) const
+{
+    serializer.insert(index);
+    
+    serializer.insert(count);
+    
+    serializer.insert(time_of_week);
+    
+    serializer.insert(week_number);
+    
+    serializer.insert(satellite_id);
+    
+    serializer.insert(health);
+    
+    serializer.insert(iodc);
+    
+    serializer.insert(iode);
+    
+    serializer.insert(t_oc);
+    
+    serializer.insert(af0);
+    
+    serializer.insert(af1);
+    
+    serializer.insert(af2);
+    
+    serializer.insert(t_gd);
+    
+    serializer.insert(ISC_L1CA);
+    
+    serializer.insert(ISC_L2C);
+    
+    serializer.insert(t_oe);
+    
+    serializer.insert(a);
+    
+    serializer.insert(a_dot);
+    
+    serializer.insert(mean_anomaly);
+    
+    serializer.insert(delta_mean_motion);
+    
+    serializer.insert(delta_mean_motion_dot);
+    
+    serializer.insert(eccentricity);
+    
+    serializer.insert(argument_of_perigee);
+    
+    serializer.insert(omega);
+    
+    serializer.insert(omega_dot);
+    
+    serializer.insert(inclination);
+    
+    serializer.insert(inclination_dot);
+    
+    serializer.insert(c_ic);
+    
+    serializer.insert(c_is);
+    
+    serializer.insert(c_uc);
+    
+    serializer.insert(c_us);
+    
+    serializer.insert(c_rc);
+    
+    serializer.insert(c_rs);
+    
+    serializer.insert(valid_flags);
+    
+}
+void BeidouEphemeris::extract(Serializer& serializer)
+{
+    serializer.extract(index);
+    
+    serializer.extract(count);
+    
+    serializer.extract(time_of_week);
+    
+    serializer.extract(week_number);
+    
+    serializer.extract(satellite_id);
+    
+    serializer.extract(health);
+    
+    serializer.extract(iodc);
+    
+    serializer.extract(iode);
+    
+    serializer.extract(t_oc);
+    
+    serializer.extract(af0);
+    
+    serializer.extract(af1);
+    
+    serializer.extract(af2);
+    
+    serializer.extract(t_gd);
+    
+    serializer.extract(ISC_L1CA);
+    
+    serializer.extract(ISC_L2C);
+    
+    serializer.extract(t_oe);
+    
+    serializer.extract(a);
+    
+    serializer.extract(a_dot);
+    
+    serializer.extract(mean_anomaly);
+    
+    serializer.extract(delta_mean_motion);
+    
+    serializer.extract(delta_mean_motion_dot);
+    
+    serializer.extract(eccentricity);
+    
+    serializer.extract(argument_of_perigee);
+    
+    serializer.extract(omega);
+    
+    serializer.extract(omega_dot);
+    
+    serializer.extract(inclination);
+    
+    serializer.extract(inclination_dot);
+    
+    serializer.extract(c_ic);
+    
+    serializer.extract(c_is);
+    
+    serializer.extract(c_uc);
+    
+    serializer.extract(c_us);
+    
+    serializer.extract(c_rc);
+    
+    serializer.extract(c_rs);
+    
+    serializer.extract(valid_flags);
+    
+}
+
 void GpsIonoCorr::insert(Serializer& serializer) const
 {
     serializer.insert(time_of_week);
@@ -1196,6 +1343,43 @@ void GalileoIonoCorr::extract(Serializer& serializer)
     serializer.extract(alpha);
     
     serializer.extract(disturbance_flags);
+    
+    serializer.extract(valid_flags);
+    
+}
+
+void BeidouIonoCorr::insert(Serializer& serializer) const
+{
+    serializer.insert(time_of_week);
+    
+    serializer.insert(week_number);
+    
+    for(unsigned int i=0; i < 4; i++)
+        serializer.insert(alpha[i]);
+    
+    for(unsigned int i=0; i < 4; i++)
+        serializer.insert(beta[i]);
+    
+    for(unsigned int i=0; i < 9; i++)
+        serializer.insert(alpha_corr[i]);
+    
+    serializer.insert(valid_flags);
+    
+}
+void BeidouIonoCorr::extract(Serializer& serializer)
+{
+    serializer.extract(time_of_week);
+    
+    serializer.extract(week_number);
+    
+    for(unsigned int i=0; i < 4; i++)
+        serializer.extract(alpha[i]);
+    
+    for(unsigned int i=0; i < 4; i++)
+        serializer.extract(beta[i]);
+    
+    for(unsigned int i=0; i < 9; i++)
+        serializer.extract(alpha_corr[i]);
     
     serializer.extract(valid_flags);
     

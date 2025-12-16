@@ -667,7 +667,9 @@ void insert_mip_gnss_rf_error_detection_data(microstrain_serializer* serializer,
     
     insert_mip_gnss_rf_error_detection_data_spoofing_state(serializer, self->spoofing_state);
     
-    for(unsigned int i=0; i < 4; i++)
+    microstrain_insert_u16(serializer, self->frequency);
+    
+    for(unsigned int i=0; i < 2; i++)
         microstrain_insert_u8(serializer, self->reserved[i]);
     
     insert_mip_gnss_rf_error_detection_data_valid_flags(serializer, self->valid_flags);
@@ -681,7 +683,9 @@ void extract_mip_gnss_rf_error_detection_data(microstrain_serializer* serializer
     
     extract_mip_gnss_rf_error_detection_data_spoofing_state(serializer, &self->spoofing_state);
     
-    for(unsigned int i=0; i < 4; i++)
+    microstrain_extract_u16(serializer, &self->frequency);
+    
+    for(unsigned int i=0; i < 2; i++)
         microstrain_extract_u8(serializer, &self->reserved[i]);
     
     extract_mip_gnss_rf_error_detection_data_valid_flags(serializer, &self->valid_flags);
@@ -1367,6 +1371,158 @@ bool extract_mip_gnss_glo_ephemeris_data_from_field(const mip_field_view* field,
     return microstrain_serializer_is_complete(&serializer);
 }
 
+void insert_mip_gnss_beidou_ephemeris_data(microstrain_serializer* serializer, const mip_gnss_beidou_ephemeris_data* self)
+{
+    microstrain_insert_u8(serializer, self->index);
+    
+    microstrain_insert_u8(serializer, self->count);
+    
+    microstrain_insert_double(serializer, self->time_of_week);
+    
+    microstrain_insert_u16(serializer, self->week_number);
+    
+    microstrain_insert_u8(serializer, self->satellite_id);
+    
+    microstrain_insert_u8(serializer, self->health);
+    
+    microstrain_insert_u8(serializer, self->iodc);
+    
+    microstrain_insert_u8(serializer, self->iode);
+    
+    microstrain_insert_double(serializer, self->t_oc);
+    
+    microstrain_insert_double(serializer, self->af0);
+    
+    microstrain_insert_double(serializer, self->af1);
+    
+    microstrain_insert_double(serializer, self->af2);
+    
+    microstrain_insert_double(serializer, self->t_gd);
+    
+    microstrain_insert_double(serializer, self->ISC_L1CA);
+    
+    microstrain_insert_double(serializer, self->ISC_L2C);
+    
+    microstrain_insert_double(serializer, self->t_oe);
+    
+    microstrain_insert_double(serializer, self->a);
+    
+    microstrain_insert_double(serializer, self->a_dot);
+    
+    microstrain_insert_double(serializer, self->mean_anomaly);
+    
+    microstrain_insert_double(serializer, self->delta_mean_motion);
+    
+    microstrain_insert_double(serializer, self->delta_mean_motion_dot);
+    
+    microstrain_insert_double(serializer, self->eccentricity);
+    
+    microstrain_insert_double(serializer, self->argument_of_perigee);
+    
+    microstrain_insert_double(serializer, self->omega);
+    
+    microstrain_insert_double(serializer, self->omega_dot);
+    
+    microstrain_insert_double(serializer, self->inclination);
+    
+    microstrain_insert_double(serializer, self->inclination_dot);
+    
+    microstrain_insert_double(serializer, self->c_ic);
+    
+    microstrain_insert_double(serializer, self->c_is);
+    
+    microstrain_insert_double(serializer, self->c_uc);
+    
+    microstrain_insert_double(serializer, self->c_us);
+    
+    microstrain_insert_double(serializer, self->c_rc);
+    
+    microstrain_insert_double(serializer, self->c_rs);
+    
+    insert_mip_gnss_beidou_ephemeris_data_valid_flags(serializer, self->valid_flags);
+    
+}
+void extract_mip_gnss_beidou_ephemeris_data(microstrain_serializer* serializer, mip_gnss_beidou_ephemeris_data* self)
+{
+    microstrain_extract_u8(serializer, &self->index);
+    
+    microstrain_extract_u8(serializer, &self->count);
+    
+    microstrain_extract_double(serializer, &self->time_of_week);
+    
+    microstrain_extract_u16(serializer, &self->week_number);
+    
+    microstrain_extract_u8(serializer, &self->satellite_id);
+    
+    microstrain_extract_u8(serializer, &self->health);
+    
+    microstrain_extract_u8(serializer, &self->iodc);
+    
+    microstrain_extract_u8(serializer, &self->iode);
+    
+    microstrain_extract_double(serializer, &self->t_oc);
+    
+    microstrain_extract_double(serializer, &self->af0);
+    
+    microstrain_extract_double(serializer, &self->af1);
+    
+    microstrain_extract_double(serializer, &self->af2);
+    
+    microstrain_extract_double(serializer, &self->t_gd);
+    
+    microstrain_extract_double(serializer, &self->ISC_L1CA);
+    
+    microstrain_extract_double(serializer, &self->ISC_L2C);
+    
+    microstrain_extract_double(serializer, &self->t_oe);
+    
+    microstrain_extract_double(serializer, &self->a);
+    
+    microstrain_extract_double(serializer, &self->a_dot);
+    
+    microstrain_extract_double(serializer, &self->mean_anomaly);
+    
+    microstrain_extract_double(serializer, &self->delta_mean_motion);
+    
+    microstrain_extract_double(serializer, &self->delta_mean_motion_dot);
+    
+    microstrain_extract_double(serializer, &self->eccentricity);
+    
+    microstrain_extract_double(serializer, &self->argument_of_perigee);
+    
+    microstrain_extract_double(serializer, &self->omega);
+    
+    microstrain_extract_double(serializer, &self->omega_dot);
+    
+    microstrain_extract_double(serializer, &self->inclination);
+    
+    microstrain_extract_double(serializer, &self->inclination_dot);
+    
+    microstrain_extract_double(serializer, &self->c_ic);
+    
+    microstrain_extract_double(serializer, &self->c_is);
+    
+    microstrain_extract_double(serializer, &self->c_uc);
+    
+    microstrain_extract_double(serializer, &self->c_us);
+    
+    microstrain_extract_double(serializer, &self->c_rc);
+    
+    microstrain_extract_double(serializer, &self->c_rs);
+    
+    extract_mip_gnss_beidou_ephemeris_data_valid_flags(serializer, &self->valid_flags);
+    
+}
+bool extract_mip_gnss_beidou_ephemeris_data_from_field(const mip_field_view* field, void* ptr)
+{
+    assert(ptr);
+    mip_gnss_beidou_ephemeris_data* self = ptr;
+    microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
+    extract_mip_gnss_beidou_ephemeris_data(&serializer, self);
+    return microstrain_serializer_is_complete(&serializer);
+}
+
 void insert_mip_gnss_gps_iono_corr_data(microstrain_serializer* serializer, const mip_gnss_gps_iono_corr_data* self)
 {
     microstrain_insert_double(serializer, self->time_of_week);
@@ -1440,6 +1596,52 @@ bool extract_mip_gnss_galileo_iono_corr_data_from_field(const mip_field_view* fi
     microstrain_serializer serializer;
     microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_gnss_galileo_iono_corr_data(&serializer, self);
+    return microstrain_serializer_is_complete(&serializer);
+}
+
+void insert_mip_gnss_beidou_iono_corr_data(microstrain_serializer* serializer, const mip_gnss_beidou_iono_corr_data* self)
+{
+    microstrain_insert_double(serializer, self->time_of_week);
+    
+    microstrain_insert_u16(serializer, self->week_number);
+    
+    for(unsigned int i=0; i < 4; i++)
+        microstrain_insert_double(serializer, self->alpha[i]);
+    
+    for(unsigned int i=0; i < 4; i++)
+        microstrain_insert_double(serializer, self->beta[i]);
+    
+    for(unsigned int i=0; i < 9; i++)
+        microstrain_insert_double(serializer, self->alpha_corr[i]);
+    
+    insert_mip_gnss_beidou_iono_corr_data_valid_flags(serializer, self->valid_flags);
+    
+}
+void extract_mip_gnss_beidou_iono_corr_data(microstrain_serializer* serializer, mip_gnss_beidou_iono_corr_data* self)
+{
+    microstrain_extract_double(serializer, &self->time_of_week);
+    
+    microstrain_extract_u16(serializer, &self->week_number);
+    
+    for(unsigned int i=0; i < 4; i++)
+        microstrain_extract_double(serializer, &self->alpha[i]);
+    
+    for(unsigned int i=0; i < 4; i++)
+        microstrain_extract_double(serializer, &self->beta[i]);
+    
+    for(unsigned int i=0; i < 9; i++)
+        microstrain_extract_double(serializer, &self->alpha_corr[i]);
+    
+    extract_mip_gnss_beidou_iono_corr_data_valid_flags(serializer, &self->valid_flags);
+    
+}
+bool extract_mip_gnss_beidou_iono_corr_data_from_field(const mip_field_view* field, void* ptr)
+{
+    assert(ptr);
+    mip_gnss_beidou_iono_corr_data* self = ptr;
+    microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
+    extract_mip_gnss_beidou_iono_corr_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 

@@ -121,7 +121,7 @@ static inline void extract_mip_filter_mode(microstrain_serializer* serializer, m
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_filter_mode)tmp;
 }
 
 enum mip_filter_dynamics_mode
@@ -141,7 +141,7 @@ static inline void extract_mip_filter_dynamics_mode(microstrain_serializer* seri
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_filter_dynamics_mode)tmp;
 }
 
 typedef uint16_t mip_filter_status_flags;
@@ -183,7 +183,7 @@ static inline void extract_mip_filter_status_flags(microstrain_serializer* seria
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_filter_status_flags)tmp;
 }
 
 enum mip_filter_aiding_measurement_type
@@ -214,7 +214,7 @@ static inline void extract_mip_filter_aiding_measurement_type(microstrain_serial
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_filter_aiding_measurement_type)tmp;
 }
 
 typedef uint8_t mip_filter_measurement_indicator;
@@ -234,7 +234,7 @@ static inline void extract_mip_filter_measurement_indicator(microstrain_serializ
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_filter_measurement_indicator)tmp;
 }
 
 typedef uint16_t mip_gnss_aid_status_flags;
@@ -264,7 +264,7 @@ static inline void extract_mip_gnss_aid_status_flags(microstrain_serializer* ser
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_aid_status_flags)tmp;
 }
 
 
@@ -740,7 +740,7 @@ static inline void extract_mip_filter_heading_update_state_data_heading_source(m
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_filter_heading_update_state_data_heading_source)tmp;
 }
 
 
@@ -1291,7 +1291,7 @@ static inline void extract_mip_filter_head_aid_status_data_heading_aid_type(micr
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_filter_head_aid_status_data_heading_aid_type)tmp;
 }
 
 
@@ -1494,7 +1494,7 @@ static inline void extract_mip_filter_gnss_dual_antenna_status_data_fix_type(mic
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_filter_gnss_dual_antenna_status_data_fix_type)tmp;
 }
 
 typedef uint16_t mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags;
@@ -1511,7 +1511,7 @@ static inline void extract_mip_filter_gnss_dual_antenna_status_data_dual_antenna
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags)tmp;
 }
 
 

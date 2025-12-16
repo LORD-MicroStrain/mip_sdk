@@ -104,38 +104,38 @@ struct GetStatusFlags
         };
         uint32_t value = NONE;
         
-        StatusFlagsLegacy() : value(NONE) {}
-        StatusFlagsLegacy(int val) : value((uint32_t)val) {}
-        operator uint32_t() const { return value; }
-        StatusFlagsLegacy& operator=(uint32_t val) { value = val; return *this; }
-        StatusFlagsLegacy& operator=(int val) { value = uint32_t(val); return *this; }
-        StatusFlagsLegacy& operator|=(uint32_t val) { return *this = value | val; }
-        StatusFlagsLegacy& operator&=(uint32_t val) { return *this = value & val; }
+        constexpr StatusFlagsLegacy() : value(NONE) {}
+        constexpr StatusFlagsLegacy(int val) : value((uint32_t)val) {}
+        constexpr operator uint32_t() const { return value; }
+        constexpr StatusFlagsLegacy& operator=(uint32_t val) { value = val; return *this; }
+        constexpr StatusFlagsLegacy& operator=(int val) { value = uint32_t(val); return *this; }
+        constexpr StatusFlagsLegacy& operator|=(uint32_t val) { return *this = value | val; }
+        constexpr StatusFlagsLegacy& operator&=(uint32_t val) { return *this = value & val; }
         
-        uint32_t controllerstate() const { return (value & CONTROLLERSTATE) >> 0; }
-        void controllerstate(uint32_t val) { value = (value & ~CONTROLLERSTATE) | (val << 0); }
-        uint32_t platformstate() const { return (value & PLATFORMSTATE) >> 3; }
-        void platformstate(uint32_t val) { value = (value & ~PLATFORMSTATE) | (val << 3); }
-        uint32_t controllerstatuscode() const { return (value & CONTROLLERSTATUSCODE) >> 8; }
-        void controllerstatuscode(uint32_t val) { value = (value & ~CONTROLLERSTATUSCODE) | (val << 8); }
-        uint32_t platformstatuscode() const { return (value & PLATFORMSTATUSCODE) >> 11; }
-        void platformstatuscode(uint32_t val) { value = (value & ~PLATFORMSTATUSCODE) | (val << 11); }
-        uint32_t resetcode() const { return (value & RESETCODE) >> 14; }
-        void resetcode(uint32_t val) { value = (value & ~RESETCODE) | (val << 14); }
-        uint32_t signalquality() const { return (value & SIGNALQUALITY) >> 16; }
-        void signalquality(uint32_t val) { value = (value & ~SIGNALQUALITY) | (val << 16); }
-        uint32_t reserved() const { return (value & RESERVED) >> 20; }
-        void reserved(uint32_t val) { value = (value & ~RESERVED) | (val << 20); }
-        uint32_t rssi() const { return (value & RSSI) >> 20; }
-        void rssi(uint32_t val) { value = (value & ~RSSI) | (val << 20); }
-        uint32_t rsrp() const { return (value & RSRP) >> 26; }
-        void rsrp(uint32_t val) { value = (value & ~RSRP) | (val << 26); }
-        uint32_t rsrq() const { return (value & RSRQ) >> 28; }
-        void rsrq(uint32_t val) { value = (value & ~RSRQ) | (val << 28); }
-        uint32_t sinr() const { return (value & SINR) >> 30; }
-        void sinr(uint32_t val) { value = (value & ~SINR) | (val << 30); }
-        bool allSet() const { return value == ALL; }
-        void setAll() { value |= ALL; }
+        constexpr uint32_t controllerstate() const { return (value & CONTROLLERSTATE) >> 0; }
+        constexpr void controllerstate(uint32_t val) { value = (value & ~CONTROLLERSTATE) | (val << 0); }
+        constexpr uint32_t platformstate() const { return (value & PLATFORMSTATE) >> 3; }
+        constexpr void platformstate(uint32_t val) { value = (value & ~PLATFORMSTATE) | (val << 3); }
+        constexpr uint32_t controllerstatuscode() const { return (value & CONTROLLERSTATUSCODE) >> 8; }
+        constexpr void controllerstatuscode(uint32_t val) { value = (value & ~CONTROLLERSTATUSCODE) | (val << 8); }
+        constexpr uint32_t platformstatuscode() const { return (value & PLATFORMSTATUSCODE) >> 11; }
+        constexpr void platformstatuscode(uint32_t val) { value = (value & ~PLATFORMSTATUSCODE) | (val << 11); }
+        constexpr uint32_t resetcode() const { return (value & RESETCODE) >> 14; }
+        constexpr void resetcode(uint32_t val) { value = (value & ~RESETCODE) | (val << 14); }
+        constexpr uint32_t signalquality() const { return (value & SIGNALQUALITY) >> 16; }
+        constexpr void signalquality(uint32_t val) { value = (value & ~SIGNALQUALITY) | (val << 16); }
+        constexpr uint32_t reserved() const { return (value & RESERVED) >> 20; }
+        constexpr void reserved(uint32_t val) { value = (value & ~RESERVED) | (val << 20); }
+        constexpr uint32_t rssi() const { return (value & RSSI) >> 20; }
+        constexpr void rssi(uint32_t val) { value = (value & ~RSSI) | (val << 20); }
+        constexpr uint32_t rsrp() const { return (value & RSRP) >> 26; }
+        constexpr void rsrp(uint32_t val) { value = (value & ~RSRP) | (val << 26); }
+        constexpr uint32_t rsrq() const { return (value & RSRQ) >> 28; }
+        constexpr void rsrq(uint32_t val) { value = (value & ~RSRQ) | (val << 28); }
+        constexpr uint32_t sinr() const { return (value & SINR) >> 30; }
+        constexpr void sinr(uint32_t val) { value = (value & ~SINR) | (val << 30); }
+        constexpr bool allSet() const { return value == ALL; }
+        constexpr void setAll() { value |= ALL; }
     };
     struct StatusFlags : Bitfield<StatusFlags>
     {
@@ -159,40 +159,40 @@ struct GetStatusFlags
         };
         uint32_t value = NONE;
         
-        StatusFlags() : value(NONE) {}
-        StatusFlags(int val) : value((uint32_t)val) {}
-        operator uint32_t() const { return value; }
-        StatusFlags& operator=(uint32_t val) { value = val; return *this; }
-        StatusFlags& operator=(int val) { value = uint32_t(val); return *this; }
-        StatusFlags& operator|=(uint32_t val) { return *this = value | val; }
-        StatusFlags& operator&=(uint32_t val) { return *this = value & val; }
+        constexpr StatusFlags() : value(NONE) {}
+        constexpr StatusFlags(int val) : value((uint32_t)val) {}
+        constexpr operator uint32_t() const { return value; }
+        constexpr StatusFlags& operator=(uint32_t val) { value = val; return *this; }
+        constexpr StatusFlags& operator=(int val) { value = uint32_t(val); return *this; }
+        constexpr StatusFlags& operator|=(uint32_t val) { return *this = value | val; }
+        constexpr StatusFlags& operator&=(uint32_t val) { return *this = value & val; }
         
-        uint32_t modemState() const { return (value & MODEM_STATE) >> 0; }
-        void modemState(uint32_t val) { value = (value & ~MODEM_STATE) | (val << 0); }
-        uint32_t connectionType() const { return (value & CONNECTION_TYPE) >> 4; }
-        void connectionType(uint32_t val) { value = (value & ~CONNECTION_TYPE) | (val << 4); }
-        uint32_t rssi() const { return (value & RSSI) >> 8; }
-        void rssi(uint32_t val) { value = (value & ~RSSI) | (val << 8); }
-        uint32_t signalQuality() const { return (value & SIGNAL_QUALITY) >> 16; }
-        void signalQuality(uint32_t val) { value = (value & ~SIGNAL_QUALITY) | (val << 16); }
-        uint32_t towerChangeIndicator() const { return (value & TOWER_CHANGE_INDICATOR) >> 20; }
-        void towerChangeIndicator(uint32_t val) { value = (value & ~TOWER_CHANGE_INDICATOR) | (val << 20); }
-        bool nmeaTimeout() const { return (value & NMEA_TIMEOUT) > 0; }
-        void nmeaTimeout(bool val) { value &= ~NMEA_TIMEOUT; if(val) value |= NMEA_TIMEOUT; }
-        bool serverTimeout() const { return (value & SERVER_TIMEOUT) > 0; }
-        void serverTimeout(bool val) { value &= ~SERVER_TIMEOUT; if(val) value |= SERVER_TIMEOUT; }
-        bool correctionsTimeout() const { return (value & CORRECTIONS_TIMEOUT) > 0; }
-        void correctionsTimeout(bool val) { value &= ~CORRECTIONS_TIMEOUT; if(val) value |= CORRECTIONS_TIMEOUT; }
-        bool deviceOutOfRange() const { return (value & DEVICE_OUT_OF_RANGE) > 0; }
-        void deviceOutOfRange(bool val) { value &= ~DEVICE_OUT_OF_RANGE; if(val) value |= DEVICE_OUT_OF_RANGE; }
-        bool correctionsUnavailable() const { return (value & CORRECTIONS_UNAVAILABLE) > 0; }
-        void correctionsUnavailable(bool val) { value &= ~CORRECTIONS_UNAVAILABLE; if(val) value |= CORRECTIONS_UNAVAILABLE; }
-        bool reserved() const { return (value & RESERVED) > 0; }
-        void reserved(bool val) { value &= ~RESERVED; if(val) value |= RESERVED; }
-        uint32_t version() const { return (value & VERSION) >> 30; }
-        void version(uint32_t val) { value = (value & ~VERSION) | (val << 30); }
-        bool allSet() const { return value == ALL; }
-        void setAll() { value |= ALL; }
+        constexpr uint32_t modemState() const { return (value & MODEM_STATE) >> 0; }
+        constexpr void modemState(uint32_t val) { value = (value & ~MODEM_STATE) | (val << 0); }
+        constexpr uint32_t connectionType() const { return (value & CONNECTION_TYPE) >> 4; }
+        constexpr void connectionType(uint32_t val) { value = (value & ~CONNECTION_TYPE) | (val << 4); }
+        constexpr uint32_t rssi() const { return (value & RSSI) >> 8; }
+        constexpr void rssi(uint32_t val) { value = (value & ~RSSI) | (val << 8); }
+        constexpr uint32_t signalQuality() const { return (value & SIGNAL_QUALITY) >> 16; }
+        constexpr void signalQuality(uint32_t val) { value = (value & ~SIGNAL_QUALITY) | (val << 16); }
+        constexpr uint32_t towerChangeIndicator() const { return (value & TOWER_CHANGE_INDICATOR) >> 20; }
+        constexpr void towerChangeIndicator(uint32_t val) { value = (value & ~TOWER_CHANGE_INDICATOR) | (val << 20); }
+        constexpr bool nmeaTimeout() const { return (value & NMEA_TIMEOUT) > 0; }
+        constexpr void nmeaTimeout(bool val) { value &= ~NMEA_TIMEOUT; if(val) value |= NMEA_TIMEOUT; }
+        constexpr bool serverTimeout() const { return (value & SERVER_TIMEOUT) > 0; }
+        constexpr void serverTimeout(bool val) { value &= ~SERVER_TIMEOUT; if(val) value |= SERVER_TIMEOUT; }
+        constexpr bool correctionsTimeout() const { return (value & CORRECTIONS_TIMEOUT) > 0; }
+        constexpr void correctionsTimeout(bool val) { value &= ~CORRECTIONS_TIMEOUT; if(val) value |= CORRECTIONS_TIMEOUT; }
+        constexpr bool deviceOutOfRange() const { return (value & DEVICE_OUT_OF_RANGE) > 0; }
+        constexpr void deviceOutOfRange(bool val) { value &= ~DEVICE_OUT_OF_RANGE; if(val) value |= DEVICE_OUT_OF_RANGE; }
+        constexpr bool correctionsUnavailable() const { return (value & CORRECTIONS_UNAVAILABLE) > 0; }
+        constexpr void correctionsUnavailable(bool val) { value &= ~CORRECTIONS_UNAVAILABLE; if(val) value |= CORRECTIONS_UNAVAILABLE; }
+        constexpr bool reserved() const { return (value & RESERVED) > 0; }
+        constexpr void reserved(bool val) { value &= ~RESERVED; if(val) value |= RESERVED; }
+        constexpr uint32_t version() const { return (value & VERSION) >> 30; }
+        constexpr void version(uint32_t val) { value = (value & ~VERSION) | (val << 30); }
+        constexpr bool allSet() const { return value == ALL; }
+        constexpr void setAll() { value |= ALL; }
     };
     /// Descriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
@@ -728,22 +728,22 @@ struct ServiceStatus
         };
         uint8_t value = NONE;
         
-        ServiceFlags() : value(NONE) {}
-        ServiceFlags(int val) : value((uint8_t)val) {}
-        operator uint8_t() const { return value; }
-        ServiceFlags& operator=(uint8_t val) { value = val; return *this; }
-        ServiceFlags& operator=(int val) { value = uint8_t(val); return *this; }
-        ServiceFlags& operator|=(uint8_t val) { return *this = value | val; }
-        ServiceFlags& operator&=(uint8_t val) { return *this = value & val; }
+        constexpr ServiceFlags() : value(NONE) {}
+        constexpr ServiceFlags(int val) : value((uint8_t)val) {}
+        constexpr operator uint8_t() const { return value; }
+        constexpr ServiceFlags& operator=(uint8_t val) { value = val; return *this; }
+        constexpr ServiceFlags& operator=(int val) { value = uint8_t(val); return *this; }
+        constexpr ServiceFlags& operator|=(uint8_t val) { return *this = value | val; }
+        constexpr ServiceFlags& operator&=(uint8_t val) { return *this = value & val; }
         
-        bool throttle() const { return (value & THROTTLE) > 0; }
-        void throttle(bool val) { value &= ~THROTTLE; if(val) value |= THROTTLE; }
-        bool correctionsUnavailable() const { return (value & CORRECTIONS_UNAVAILABLE) > 0; }
-        void correctionsUnavailable(bool val) { value &= ~CORRECTIONS_UNAVAILABLE; if(val) value |= CORRECTIONS_UNAVAILABLE; }
-        uint8_t reserved() const { return (value & RESERVED) >> 2; }
-        void reserved(uint8_t val) { value = (value & ~RESERVED) | (val << 2); }
-        bool allSet() const { return value == ALL; }
-        void setAll() { value |= ALL; }
+        constexpr bool throttle() const { return (value & THROTTLE) > 0; }
+        constexpr void throttle(bool val) { value &= ~THROTTLE; if(val) value |= THROTTLE; }
+        constexpr bool correctionsUnavailable() const { return (value & CORRECTIONS_UNAVAILABLE) > 0; }
+        constexpr void correctionsUnavailable(bool val) { value &= ~CORRECTIONS_UNAVAILABLE; if(val) value |= CORRECTIONS_UNAVAILABLE; }
+        constexpr uint8_t reserved() const { return (value & RESERVED) >> 2; }
+        constexpr void reserved(uint8_t val) { value = (value & ~RESERVED) | (val << 2); }
+        constexpr bool allSet() const { return value == ALL; }
+        constexpr void setAll() { value |= ALL; }
     };
     /// Parameters
     uint32_t reserved1 = 0;

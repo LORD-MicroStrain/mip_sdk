@@ -57,8 +57,10 @@ enum
     MIP_DATA_DESC_GNSS_GPS_EPHEMERIS           = 0x61,
     MIP_DATA_DESC_GNSS_GLONASS_EPHEMERIS       = 0x62,
     MIP_DATA_DESC_GNSS_GALILEO_EPHEMERIS       = 0x63,
+    MIP_DATA_DESC_GNSS_BEIDOU_EPHEMERIS        = 0x64,
     MIP_DATA_DESC_GNSS_GPS_IONO_CORR           = 0x71,
     MIP_DATA_DESC_GNSS_GALILEO_IONO_CORR       = 0x73,
+    MIP_DATA_DESC_GNSS_BEIDOU_IONO_CORR        = 0x74,
     
 };
 
@@ -90,7 +92,7 @@ static inline void extract_mip_gnss_constellation_id(microstrain_serializer* ser
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_constellation_id)tmp;
 }
 
 enum mip_gnss_signal_id
@@ -172,7 +174,7 @@ static inline void extract_mip_gnss_signal_id(microstrain_serializer* serializer
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_signal_id)tmp;
 }
 
 enum mip_sbas_system
@@ -193,7 +195,7 @@ static inline void extract_mip_sbas_system(microstrain_serializer* serializer, m
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_sbas_system)tmp;
 }
 
 enum { MIP_GNSS_DGPS_INFO_MAX_CHANNEL_NUMBER = 32 };
@@ -226,7 +228,7 @@ static inline void extract_mip_gnss_pos_llh_data_valid_flags(microstrain_seriali
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_pos_llh_data_valid_flags)tmp;
 }
 
 
@@ -269,7 +271,7 @@ static inline void extract_mip_gnss_pos_ecef_data_valid_flags(microstrain_serial
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_pos_ecef_data_valid_flags)tmp;
 }
 
 
@@ -312,7 +314,7 @@ static inline void extract_mip_gnss_vel_ned_data_valid_flags(microstrain_seriali
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_vel_ned_data_valid_flags)tmp;
 }
 
 
@@ -355,7 +357,7 @@ static inline void extract_mip_gnss_vel_ecef_data_valid_flags(microstrain_serial
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_vel_ecef_data_valid_flags)tmp;
 }
 
 
@@ -399,7 +401,7 @@ static inline void extract_mip_gnss_dop_data_valid_flags(microstrain_serializer*
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_dop_data_valid_flags)tmp;
 }
 
 
@@ -443,7 +445,7 @@ static inline void extract_mip_gnss_utc_time_data_valid_flags(microstrain_serial
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_utc_time_data_valid_flags)tmp;
 }
 
 
@@ -487,7 +489,7 @@ static inline void extract_mip_gnss_gps_time_data_valid_flags(microstrain_serial
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_gps_time_data_valid_flags)tmp;
 }
 
 
@@ -527,7 +529,7 @@ static inline void extract_mip_gnss_clock_info_data_valid_flags(microstrain_seri
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_clock_info_data_valid_flags)tmp;
 }
 
 
@@ -574,7 +576,7 @@ static inline void extract_mip_gnss_fix_info_data_fix_type(microstrain_serialize
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_fix_info_data_fix_type)tmp;
 }
 
 typedef uint16_t mip_gnss_fix_info_data_fix_flags;
@@ -590,7 +592,7 @@ static inline void extract_mip_gnss_fix_info_data_fix_flags(microstrain_serializ
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_fix_info_data_fix_flags)tmp;
 }
 
 typedef uint16_t mip_gnss_fix_info_data_valid_flags;
@@ -608,7 +610,7 @@ static inline void extract_mip_gnss_fix_info_data_valid_flags(microstrain_serial
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_fix_info_data_valid_flags)tmp;
 }
 
 
@@ -649,7 +651,7 @@ static inline void extract_mip_gnss_sv_info_data_svflags(microstrain_serializer*
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_sv_info_data_svflags)tmp;
 }
 
 typedef uint16_t mip_gnss_sv_info_data_valid_flags;
@@ -670,7 +672,7 @@ static inline void extract_mip_gnss_sv_info_data_valid_flags(microstrain_seriali
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_sv_info_data_valid_flags)tmp;
 }
 
 
@@ -715,7 +717,7 @@ static inline void extract_mip_gnss_hw_status_data_receiver_state(microstrain_se
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_hw_status_data_receiver_state)tmp;
 }
 
 enum mip_gnss_hw_status_data_antenna_state
@@ -736,7 +738,7 @@ static inline void extract_mip_gnss_hw_status_data_antenna_state(microstrain_ser
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_hw_status_data_antenna_state)tmp;
 }
 
 enum mip_gnss_hw_status_data_antenna_power
@@ -755,7 +757,7 @@ static inline void extract_mip_gnss_hw_status_data_antenna_power(microstrain_ser
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_hw_status_data_antenna_power)tmp;
 }
 
 typedef uint16_t mip_gnss_hw_status_data_valid_flags;
@@ -773,7 +775,7 @@ static inline void extract_mip_gnss_hw_status_data_valid_flags(microstrain_seria
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_hw_status_data_valid_flags)tmp;
 }
 
 
@@ -827,7 +829,7 @@ static inline void extract_mip_gnss_dgps_info_data_valid_flags(microstrain_seria
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_dgps_info_data_valid_flags)tmp;
 }
 
 
@@ -872,7 +874,7 @@ static inline void extract_mip_gnss_dgps_channel_data_valid_flags(microstrain_se
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_dgps_channel_data_valid_flags)tmp;
 }
 
 
@@ -917,7 +919,7 @@ static inline void extract_mip_gnss_clock_info_2_data_valid_flags(microstrain_se
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_clock_info_2_data_valid_flags)tmp;
 }
 
 
@@ -956,7 +958,7 @@ static inline void extract_mip_gnss_gps_leap_seconds_data_valid_flags(microstrai
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_gps_leap_seconds_data_valid_flags)tmp;
 }
 
 
@@ -995,7 +997,7 @@ static inline void extract_mip_gnss_sbas_info_data_sbas_status(microstrain_seria
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_sbas_info_data_sbas_status)tmp;
 }
 
 typedef uint16_t mip_gnss_sbas_info_data_valid_flags;
@@ -1016,7 +1018,7 @@ static inline void extract_mip_gnss_sbas_info_data_valid_flags(microstrain_seria
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_sbas_info_data_valid_flags)tmp;
 }
 
 
@@ -1082,7 +1084,7 @@ static inline void extract_mip_gnss_sbas_correction_data_valid_flags(microstrain
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_sbas_correction_data_valid_flags)tmp;
 }
 
 
@@ -1131,7 +1133,7 @@ static inline void extract_mip_gnss_rf_error_detection_data_rfband(microstrain_s
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_rf_error_detection_data_rfband)tmp;
 }
 
 enum mip_gnss_rf_error_detection_data_jamming_state
@@ -1151,7 +1153,7 @@ static inline void extract_mip_gnss_rf_error_detection_data_jamming_state(micros
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_rf_error_detection_data_jamming_state)tmp;
 }
 
 enum mip_gnss_rf_error_detection_data_spoofing_state
@@ -1171,7 +1173,7 @@ static inline void extract_mip_gnss_rf_error_detection_data_spoofing_state(micro
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_rf_error_detection_data_spoofing_state)tmp;
 }
 
 typedef uint16_t mip_gnss_rf_error_detection_data_valid_flags;
@@ -1179,8 +1181,8 @@ static const mip_gnss_rf_error_detection_data_valid_flags MIP_GNSS_RF_ERROR_DETE
 static const mip_gnss_rf_error_detection_data_valid_flags MIP_GNSS_RF_ERROR_DETECTION_DATA_VALID_FLAGS_RF_BAND        = 0x0001; ///<  
 static const mip_gnss_rf_error_detection_data_valid_flags MIP_GNSS_RF_ERROR_DETECTION_DATA_VALID_FLAGS_JAMMING_STATE  = 0x0002; ///<  
 static const mip_gnss_rf_error_detection_data_valid_flags MIP_GNSS_RF_ERROR_DETECTION_DATA_VALID_FLAGS_SPOOFING_STATE = 0x0004; ///<  
-static const mip_gnss_rf_error_detection_data_valid_flags MIP_GNSS_RF_ERROR_DETECTION_DATA_VALID_FLAGS_FLAGS          = 0x0007; ///<  
-static const mip_gnss_rf_error_detection_data_valid_flags MIP_GNSS_RF_ERROR_DETECTION_DATA_VALID_FLAGS_ALL            = 0x0007;
+static const mip_gnss_rf_error_detection_data_valid_flags MIP_GNSS_RF_ERROR_DETECTION_DATA_VALID_FLAGS_FREQUENCY      = 0x0008; ///<  
+static const mip_gnss_rf_error_detection_data_valid_flags MIP_GNSS_RF_ERROR_DETECTION_DATA_VALID_FLAGS_ALL            = 0x000F;
 static inline void insert_mip_gnss_rf_error_detection_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_rf_error_detection_data_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
@@ -1189,7 +1191,7 @@ static inline void extract_mip_gnss_rf_error_detection_data_valid_flags(microstr
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_rf_error_detection_data_valid_flags)tmp;
 }
 
 
@@ -1198,7 +1200,8 @@ struct mip_gnss_rf_error_detection_data
     mip_gnss_rf_error_detection_data_rfband rf_band; ///< RF Band of the reported information
     mip_gnss_rf_error_detection_data_jamming_state jamming_state; ///< GNSS Jamming State (as reported by the GNSS module)
     mip_gnss_rf_error_detection_data_spoofing_state spoofing_state; ///< GNSS Spoofing State (as reported by the GNSS module)
-    uint8_t reserved[4]; ///< Reserved for future use
+    uint16_t frequency; ///< Center frequency of the RF band in MHz
+    uint8_t reserved[2]; ///< Reserved for future use
     mip_gnss_rf_error_detection_data_valid_flags valid_flags;
 };
 typedef struct mip_gnss_rf_error_detection_data mip_gnss_rf_error_detection_data;
@@ -1238,7 +1241,7 @@ static inline void extract_mip_gnss_base_station_info_data_indicator_flags(micro
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_base_station_info_data_indicator_flags)tmp;
 }
 
 typedef uint16_t mip_gnss_base_station_info_data_valid_flags;
@@ -1259,7 +1262,7 @@ static inline void extract_mip_gnss_base_station_info_data_valid_flags(microstra
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_base_station_info_data_valid_flags)tmp;
 }
 
 
@@ -1307,7 +1310,7 @@ static inline void extract_mip_gnss_rtk_corrections_status_data_valid_flags(micr
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_rtk_corrections_status_data_valid_flags)tmp;
 }
 
 typedef uint16_t mip_gnss_rtk_corrections_status_data_epoch_status;
@@ -1330,7 +1333,7 @@ static inline void extract_mip_gnss_rtk_corrections_status_data_epoch_status(mic
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_rtk_corrections_status_data_epoch_status)tmp;
 }
 
 
@@ -1381,7 +1384,7 @@ static inline void extract_mip_gnss_satellite_status_data_valid_flags(microstrai
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_satellite_status_data_valid_flags)tmp;
 }
 
 
@@ -1432,7 +1435,7 @@ static inline void extract_mip_gnss_raw_data_gnss_signal_quality(microstrain_ser
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_raw_data_gnss_signal_quality)tmp;
 }
 
 typedef uint16_t mip_gnss_raw_data_valid_flags;
@@ -1463,7 +1466,7 @@ static inline void extract_mip_gnss_raw_data_valid_flags(microstrain_serializer*
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_raw_data_valid_flags)tmp;
 }
 
 
@@ -1519,7 +1522,7 @@ static inline void extract_mip_gnss_gps_ephemeris_data_valid_flags(microstrain_s
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_gps_ephemeris_data_valid_flags)tmp;
 }
 
 
@@ -1590,7 +1593,7 @@ static inline void extract_mip_gnss_galileo_ephemeris_data_valid_flags(microstra
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_galileo_ephemeris_data_valid_flags)tmp;
 }
 
 
@@ -1659,7 +1662,7 @@ static inline void extract_mip_gnss_glo_ephemeris_data_valid_flags(microstrain_s
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_glo_ephemeris_data_valid_flags)tmp;
 }
 
 
@@ -1701,6 +1704,77 @@ bool extract_mip_gnss_glo_ephemeris_data_from_field(const mip_field_view* field,
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
+///@defgroup gnss_beidou_ephemeris_c  (0x81,0x64) Beidou Ephemeris
+/// BeiDou Ephemeris Data
+///
+///@{
+
+typedef uint16_t mip_gnss_beidou_ephemeris_data_valid_flags;
+static const mip_gnss_beidou_ephemeris_data_valid_flags MIP_GNSS_BEIDOU_EPHEMERIS_DATA_VALID_FLAGS_NONE        = 0x0000;
+static const mip_gnss_beidou_ephemeris_data_valid_flags MIP_GNSS_BEIDOU_EPHEMERIS_DATA_VALID_FLAGS_EPHEMERIS   = 0x0001; ///<  
+static const mip_gnss_beidou_ephemeris_data_valid_flags MIP_GNSS_BEIDOU_EPHEMERIS_DATA_VALID_FLAGS_MODERN_DATA = 0x0002; ///<  
+static const mip_gnss_beidou_ephemeris_data_valid_flags MIP_GNSS_BEIDOU_EPHEMERIS_DATA_VALID_FLAGS_ISC_L5      = 0x0004; ///<  
+static const mip_gnss_beidou_ephemeris_data_valid_flags MIP_GNSS_BEIDOU_EPHEMERIS_DATA_VALID_FLAGS_FLAGS       = 0x0007; ///<  
+static const mip_gnss_beidou_ephemeris_data_valid_flags MIP_GNSS_BEIDOU_EPHEMERIS_DATA_VALID_FLAGS_ALL         = 0x0007;
+static inline void insert_mip_gnss_beidou_ephemeris_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_beidou_ephemeris_data_valid_flags self)
+{
+    microstrain_insert_u16(serializer, (uint16_t)(self));
+}
+static inline void extract_mip_gnss_beidou_ephemeris_data_valid_flags(microstrain_serializer* serializer, mip_gnss_beidou_ephemeris_data_valid_flags* self)
+{
+    uint16_t tmp = 0;
+    microstrain_extract_u16(serializer, &tmp);
+    *self = (mip_gnss_beidou_ephemeris_data_valid_flags)tmp;
+}
+
+
+struct mip_gnss_beidou_ephemeris_data
+{
+    uint8_t index; ///< Index of this field in this epoch.
+    uint8_t count; ///< Total number of fields in this epoch.
+    double time_of_week; ///< GPS Time of week [seconds]
+    uint16_t week_number; ///< GPS Week since 1980 [weeks]
+    uint8_t satellite_id; ///< GNSS satellite id within the constellation.
+    uint8_t health; ///< Satellite and signal health
+    uint8_t iodc; ///< Issue of Data Clock. This increments each time the data changes and rolls over at 4. It is used to make sure various raw data elements from different sources line up correctly.
+    uint8_t iode; ///< Issue of Data Ephemeris.
+    double t_oc; ///< Reference time for clock data.
+    double af0; ///< Clock bias in [s].
+    double af1; ///< Clock drift in [s/s].
+    double af2; ///< Clock drift rate in [s/s^2].
+    double t_gd; ///< T Group Delay [s].
+    double ISC_L1CA; ///< Inter-signal correction (L1).
+    double ISC_L2C; ///< Inter-signal correction (L2, or L5 if isc_l5 flag is set).
+    double t_oe; ///< Reference time for ephemeris in [s].
+    double a; ///< Semi-major axis [m].
+    double a_dot; ///< Semi-major axis rate [m/s].
+    double mean_anomaly; ///< [rad].
+    double delta_mean_motion; ///< [rad].
+    double delta_mean_motion_dot; ///< [rad/s].
+    double eccentricity;
+    double argument_of_perigee; ///< [rad].
+    double omega; ///< Longitude of Ascending Node [rad].
+    double omega_dot; ///< Rate of Right Ascension [rad/s].
+    double inclination; ///< Inclination angle [rad].
+    double inclination_dot; ///< Inclination angle rate of change [rad/s].
+    double c_ic; ///< Harmonic Correction Term.
+    double c_is; ///< Harmonic Correction Term.
+    double c_uc; ///< Harmonic Correction Term.
+    double c_us; ///< Harmonic Correction Term.
+    double c_rc; ///< Harmonic Correction Term.
+    double c_rs; ///< Harmonic Correction Term.
+    mip_gnss_beidou_ephemeris_data_valid_flags valid_flags;
+};
+typedef struct mip_gnss_beidou_ephemeris_data mip_gnss_beidou_ephemeris_data;
+
+void insert_mip_gnss_beidou_ephemeris_data(microstrain_serializer* serializer, const mip_gnss_beidou_ephemeris_data* self);
+void extract_mip_gnss_beidou_ephemeris_data(microstrain_serializer* serializer, mip_gnss_beidou_ephemeris_data* self);
+bool extract_mip_gnss_beidou_ephemeris_data_from_field(const mip_field_view* field, void* ptr);
+
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
 ///@defgroup gnss_gps_iono_corr_c  (0x81,0x71) Gps Iono Corr
 /// Ionospheric Correction Terms for GNSS
 ///
@@ -1722,7 +1796,7 @@ static inline void extract_mip_gnss_gps_iono_corr_data_valid_flags(microstrain_s
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_gps_iono_corr_data_valid_flags)tmp;
 }
 
 
@@ -1765,7 +1839,7 @@ static inline void extract_mip_gnss_galileo_iono_corr_data_valid_flags(microstra
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_gnss_galileo_iono_corr_data_valid_flags)tmp;
 }
 
 
@@ -1782,6 +1856,51 @@ typedef struct mip_gnss_galileo_iono_corr_data mip_gnss_galileo_iono_corr_data;
 void insert_mip_gnss_galileo_iono_corr_data(microstrain_serializer* serializer, const mip_gnss_galileo_iono_corr_data* self);
 void extract_mip_gnss_galileo_iono_corr_data(microstrain_serializer* serializer, mip_gnss_galileo_iono_corr_data* self);
 bool extract_mip_gnss_galileo_iono_corr_data_from_field(const mip_field_view* field, void* ptr);
+
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup gnss_beidou_iono_corr_c  (0x81,0x74) Beidou Iono Corr
+/// Ionospheric Correction Terms for BeiDou
+///
+///@{
+
+typedef uint16_t mip_gnss_beidou_iono_corr_data_valid_flags;
+static const mip_gnss_beidou_iono_corr_data_valid_flags MIP_GNSS_BEIDOU_IONO_CORR_DATA_VALID_FLAGS_NONE        = 0x0000;
+static const mip_gnss_beidou_iono_corr_data_valid_flags MIP_GNSS_BEIDOU_IONO_CORR_DATA_VALID_FLAGS_TOW         = 0x0001; ///<  
+static const mip_gnss_beidou_iono_corr_data_valid_flags MIP_GNSS_BEIDOU_IONO_CORR_DATA_VALID_FLAGS_WEEK_NUMBER = 0x0002; ///<  
+static const mip_gnss_beidou_iono_corr_data_valid_flags MIP_GNSS_BEIDOU_IONO_CORR_DATA_VALID_FLAGS_ALPHA       = 0x0004; ///<  
+static const mip_gnss_beidou_iono_corr_data_valid_flags MIP_GNSS_BEIDOU_IONO_CORR_DATA_VALID_FLAGS_BETA        = 0x0008; ///<  
+static const mip_gnss_beidou_iono_corr_data_valid_flags MIP_GNSS_BEIDOU_IONO_CORR_DATA_VALID_FLAGS_ALPHA_CORR  = 0x0010; ///<  
+static const mip_gnss_beidou_iono_corr_data_valid_flags MIP_GNSS_BEIDOU_IONO_CORR_DATA_VALID_FLAGS_FLAGS       = 0x001F; ///<  
+static const mip_gnss_beidou_iono_corr_data_valid_flags MIP_GNSS_BEIDOU_IONO_CORR_DATA_VALID_FLAGS_ALL         = 0x001F;
+static inline void insert_mip_gnss_beidou_iono_corr_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_beidou_iono_corr_data_valid_flags self)
+{
+    microstrain_insert_u16(serializer, (uint16_t)(self));
+}
+static inline void extract_mip_gnss_beidou_iono_corr_data_valid_flags(microstrain_serializer* serializer, mip_gnss_beidou_iono_corr_data_valid_flags* self)
+{
+    uint16_t tmp = 0;
+    microstrain_extract_u16(serializer, &tmp);
+    *self = (mip_gnss_beidou_iono_corr_data_valid_flags)tmp;
+}
+
+
+struct mip_gnss_beidou_iono_corr_data
+{
+    double time_of_week; ///< GPS Time of week [seconds]
+    uint16_t week_number; ///< GPS Week since 1980 [weeks]
+    double alpha[4]; ///< Ionospheric Delay Terms.
+    double beta[4]; ///< Ionospheric Delay Terms.
+    double alpha_corr[9]; ///< Ionospheric Delay Correction Terms.
+    mip_gnss_beidou_iono_corr_data_valid_flags valid_flags;
+};
+typedef struct mip_gnss_beidou_iono_corr_data mip_gnss_beidou_iono_corr_data;
+
+void insert_mip_gnss_beidou_iono_corr_data(microstrain_serializer* serializer, const mip_gnss_beidou_iono_corr_data* self);
+void extract_mip_gnss_beidou_iono_corr_data(microstrain_serializer* serializer, mip_gnss_beidou_iono_corr_data* self);
+bool extract_mip_gnss_beidou_iono_corr_data_from_field(const mip_field_view* field, void* ptr);
 
 
 ///@}

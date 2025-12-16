@@ -144,7 +144,7 @@ static inline void extract_mip_shared_gps_timestamp_data_valid_flags(microstrain
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_shared_gps_timestamp_data_valid_flags)tmp;
 }
 
 
@@ -271,7 +271,7 @@ static inline void extract_mip_shared_external_timestamp_data_valid_flags(micros
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_shared_external_timestamp_data_valid_flags)tmp;
 }
 
 
@@ -319,7 +319,7 @@ static inline void extract_mip_shared_external_time_delta_data_valid_flags(micro
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
-    *self = tmp;
+    *self = (mip_shared_external_time_delta_data_valid_flags)tmp;
 }
 
 
