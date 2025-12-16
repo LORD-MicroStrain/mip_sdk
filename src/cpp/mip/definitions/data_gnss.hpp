@@ -1669,8 +1669,8 @@ struct RfErrorDetection
             RF_BAND        = 0x0001,  ///<  
             JAMMING_STATE  = 0x0002,  ///<  
             SPOOFING_STATE = 0x0004,  ///<  
-            FLAGS          = 0x0007,  ///<  
-            ALL            = 0x0007,
+            FREQUENCY      = 0x0008,  ///<  
+            ALL            = 0x000F,
         };
         uint16_t value = NONE;
         
@@ -1688,8 +1688,8 @@ struct RfErrorDetection
         constexpr void jammingState(bool val) { value &= ~JAMMING_STATE; if(val) value |= JAMMING_STATE; }
         constexpr bool spoofingState() const { return (value & SPOOFING_STATE) > 0; }
         constexpr void spoofingState(bool val) { value &= ~SPOOFING_STATE; if(val) value |= SPOOFING_STATE; }
-        constexpr uint16_t flags() const { return (value & FLAGS) >> 0; }
-        constexpr void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
+        constexpr bool frequency() const { return (value & FREQUENCY) > 0; }
+        constexpr void frequency(bool val) { value &= ~FREQUENCY; if(val) value |= FREQUENCY; }
         constexpr bool allSet() const { return value == ALL; }
         constexpr void setAll() { value |= ALL; }
     };
@@ -1697,7 +1697,8 @@ struct RfErrorDetection
     RFBand rf_band = static_cast<RFBand>(0); ///< RF Band of the reported information
     JammingState jamming_state = static_cast<JammingState>(0); ///< GNSS Jamming State (as reported by the GNSS module)
     SpoofingState spoofing_state = static_cast<SpoofingState>(0); ///< GNSS Spoofing State (as reported by the GNSS module)
-    uint8_t reserved[4] = {0}; ///< Reserved for future use
+    uint16_t frequency = 0; ///< Center frequency of the RF band in MHz
+    uint8_t reserved[2] = {0}; ///< Reserved for future use
     ValidFlags valid_flags;
     
     /// Descriptors
@@ -1710,12 +1711,12 @@ struct RfErrorDetection
     
     auto asTuple() const
     {
-        return std::make_tuple(rf_band,jamming_state,spoofing_state,reserved,valid_flags);
+        return std::make_tuple(rf_band,jamming_state,spoofing_state,frequency,reserved,valid_flags);
     }
     
     auto asTuple()
     {
-        return std::make_tuple(std::ref(rf_band),std::ref(jamming_state),std::ref(spoofing_state),std::ref(reserved),std::ref(valid_flags));
+        return std::make_tuple(std::ref(rf_band),std::ref(jamming_state),std::ref(spoofing_state),std::ref(frequency),std::ref(reserved),std::ref(valid_flags));
     }
     
     /// Serialization

@@ -667,7 +667,9 @@ void insert_mip_gnss_rf_error_detection_data(microstrain_serializer* serializer,
     
     insert_mip_gnss_rf_error_detection_data_spoofing_state(serializer, self->spoofing_state);
     
-    for(unsigned int i=0; i < 4; i++)
+    microstrain_insert_u16(serializer, self->frequency);
+    
+    for(unsigned int i=0; i < 2; i++)
         microstrain_insert_u8(serializer, self->reserved[i]);
     
     insert_mip_gnss_rf_error_detection_data_valid_flags(serializer, self->valid_flags);
@@ -681,7 +683,9 @@ void extract_mip_gnss_rf_error_detection_data(microstrain_serializer* serializer
     
     extract_mip_gnss_rf_error_detection_data_spoofing_state(serializer, &self->spoofing_state);
     
-    for(unsigned int i=0; i < 4; i++)
+    microstrain_extract_u16(serializer, &self->frequency);
+    
+    for(unsigned int i=0; i < 2; i++)
         microstrain_extract_u8(serializer, &self->reserved[i]);
     
     extract_mip_gnss_rf_error_detection_data_valid_flags(serializer, &self->valid_flags);

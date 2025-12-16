@@ -515,7 +515,9 @@ void RfErrorDetection::insert(Serializer& serializer) const
     
     serializer.insert(spoofing_state);
     
-    for(unsigned int i=0; i < 4; i++)
+    serializer.insert(frequency);
+    
+    for(unsigned int i=0; i < 2; i++)
         serializer.insert(reserved[i]);
     
     serializer.insert(valid_flags);
@@ -529,7 +531,9 @@ void RfErrorDetection::extract(Serializer& serializer)
     
     serializer.extract(spoofing_state);
     
-    for(unsigned int i=0; i < 4; i++)
+    serializer.extract(frequency);
+    
+    for(unsigned int i=0; i < 2; i++)
         serializer.extract(reserved[i]);
     
     serializer.extract(valid_flags);

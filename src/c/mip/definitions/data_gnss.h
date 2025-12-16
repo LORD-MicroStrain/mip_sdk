@@ -1181,8 +1181,8 @@ static const mip_gnss_rf_error_detection_data_valid_flags MIP_GNSS_RF_ERROR_DETE
 static const mip_gnss_rf_error_detection_data_valid_flags MIP_GNSS_RF_ERROR_DETECTION_DATA_VALID_FLAGS_RF_BAND        = 0x0001; ///<  
 static const mip_gnss_rf_error_detection_data_valid_flags MIP_GNSS_RF_ERROR_DETECTION_DATA_VALID_FLAGS_JAMMING_STATE  = 0x0002; ///<  
 static const mip_gnss_rf_error_detection_data_valid_flags MIP_GNSS_RF_ERROR_DETECTION_DATA_VALID_FLAGS_SPOOFING_STATE = 0x0004; ///<  
-static const mip_gnss_rf_error_detection_data_valid_flags MIP_GNSS_RF_ERROR_DETECTION_DATA_VALID_FLAGS_FLAGS          = 0x0007; ///<  
-static const mip_gnss_rf_error_detection_data_valid_flags MIP_GNSS_RF_ERROR_DETECTION_DATA_VALID_FLAGS_ALL            = 0x0007;
+static const mip_gnss_rf_error_detection_data_valid_flags MIP_GNSS_RF_ERROR_DETECTION_DATA_VALID_FLAGS_FREQUENCY      = 0x0008; ///<  
+static const mip_gnss_rf_error_detection_data_valid_flags MIP_GNSS_RF_ERROR_DETECTION_DATA_VALID_FLAGS_ALL            = 0x000F;
 static inline void insert_mip_gnss_rf_error_detection_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_rf_error_detection_data_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
@@ -1200,7 +1200,8 @@ struct mip_gnss_rf_error_detection_data
     mip_gnss_rf_error_detection_data_rfband rf_band; ///< RF Band of the reported information
     mip_gnss_rf_error_detection_data_jamming_state jamming_state; ///< GNSS Jamming State (as reported by the GNSS module)
     mip_gnss_rf_error_detection_data_spoofing_state spoofing_state; ///< GNSS Spoofing State (as reported by the GNSS module)
-    uint8_t reserved[4]; ///< Reserved for future use
+    uint16_t frequency; ///< Center frequency of the RF band in MHz
+    uint8_t reserved[2]; ///< Reserved for future use
     mip_gnss_rf_error_detection_data_valid_flags valid_flags;
 };
 typedef struct mip_gnss_rf_error_detection_data mip_gnss_rf_error_detection_data;
