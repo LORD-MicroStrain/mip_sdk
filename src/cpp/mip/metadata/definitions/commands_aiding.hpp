@@ -1402,17 +1402,14 @@ struct MetadataFor<CommandSetAiding>
     
     static inline constexpr DescriptorSetInfo value = {
         /* .descriptor = */ commands_aiding::DESCRIPTOR_SET,
-        /* .name       = */ "Aiding Commands",
+        /* .name       = */ "commands_aiding",
+        /* .title      = */ "Aiding Commands",
         /* .fields     = */ COMMANDS_AIDING_FIELDS,
     };
 };
 template<> struct TypeForDescriptor< (commands_aiding::DESCRIPTOR_SET << 8) > { using type = CommandSetAiding; };
 
-static constexpr DescriptorSetInfo COMMANDS_AIDING = {
-    /* .descriptor = */ mip::commands_aiding::DESCRIPTOR_SET,
-    /* .name       = */ "Aiding Commands",
-    /* .fields     = */ COMMANDS_AIDING_FIELDS,
-};
+static constexpr const DescriptorSetInfo& COMMANDS_AIDING = MetadataFor<CommandSetAiding>::value;
 
 } // namespace mip::metadata
 

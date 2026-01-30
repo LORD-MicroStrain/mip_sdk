@@ -3853,17 +3853,14 @@ struct MetadataFor<DataSetFilter>
     
     static inline constexpr DescriptorSetInfo value = {
         /* .descriptor = */ data_filter::DESCRIPTOR_SET,
-        /* .name       = */ "Filter Data",
+        /* .name       = */ "data_filter",
+        /* .title      = */ "Filter Data",
         /* .fields     = */ DATA_FILTER_FIELDS,
     };
 };
 template<> struct TypeForDescriptor< (data_filter::DESCRIPTOR_SET << 8) > { using type = DataSetFilter; };
 
-static constexpr DescriptorSetInfo DATA_FILTER = {
-    /* .descriptor = */ mip::data_filter::DESCRIPTOR_SET,
-    /* .name       = */ "Filter Data",
-    /* .fields     = */ DATA_FILTER_FIELDS,
-};
+static constexpr const DescriptorSetInfo& DATA_FILTER = MetadataFor<DataSetFilter>::value;
 
 } // namespace mip::metadata
 

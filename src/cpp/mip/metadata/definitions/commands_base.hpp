@@ -768,17 +768,14 @@ struct MetadataFor<CommandSetBase>
     
     static inline constexpr DescriptorSetInfo value = {
         /* .descriptor = */ commands_base::DESCRIPTOR_SET,
-        /* .name       = */ "Base Commands",
+        /* .name       = */ "commands_base",
+        /* .title      = */ "Base Commands",
         /* .fields     = */ COMMANDS_BASE_FIELDS,
     };
 };
 template<> struct TypeForDescriptor< (commands_base::DESCRIPTOR_SET << 8) > { using type = CommandSetBase; };
 
-static constexpr DescriptorSetInfo COMMANDS_BASE = {
-    /* .descriptor = */ mip::commands_base::DESCRIPTOR_SET,
-    /* .name       = */ "Base Commands",
-    /* .fields     = */ COMMANDS_BASE_FIELDS,
-};
+static constexpr const DescriptorSetInfo& COMMANDS_BASE = MetadataFor<CommandSetBase>::value;
 
 } // namespace mip::metadata
 

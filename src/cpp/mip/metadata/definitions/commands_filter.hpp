@@ -5656,17 +5656,14 @@ struct MetadataFor<CommandSetFilter>
     
     static inline constexpr DescriptorSetInfo value = {
         /* .descriptor = */ commands_filter::DESCRIPTOR_SET,
-        /* .name       = */ "Filter Commands",
+        /* .name       = */ "commands_filter",
+        /* .title      = */ "Filter Commands",
         /* .fields     = */ COMMANDS_FILTER_FIELDS,
     };
 };
 template<> struct TypeForDescriptor< (commands_filter::DESCRIPTOR_SET << 8) > { using type = CommandSetFilter; };
 
-static constexpr DescriptorSetInfo COMMANDS_FILTER = {
-    /* .descriptor = */ mip::commands_filter::DESCRIPTOR_SET,
-    /* .name       = */ "Filter Commands",
-    /* .fields     = */ COMMANDS_FILTER_FIELDS,
-};
+static constexpr const DescriptorSetInfo& COMMANDS_FILTER = MetadataFor<CommandSetFilter>::value;
 
 } // namespace mip::metadata
 

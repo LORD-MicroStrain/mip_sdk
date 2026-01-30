@@ -696,17 +696,14 @@ struct MetadataFor<CommandSetGnss>
     
     static inline constexpr DescriptorSetInfo value = {
         /* .descriptor = */ commands_gnss::DESCRIPTOR_SET,
-        /* .name       = */ "Gnss Commands",
+        /* .name       = */ "commands_gnss",
+        /* .title      = */ "Gnss Commands",
         /* .fields     = */ COMMANDS_GNSS_FIELDS,
     };
 };
 template<> struct TypeForDescriptor< (commands_gnss::DESCRIPTOR_SET << 8) > { using type = CommandSetGnss; };
 
-static constexpr DescriptorSetInfo COMMANDS_GNSS = {
-    /* .descriptor = */ mip::commands_gnss::DESCRIPTOR_SET,
-    /* .name       = */ "Gnss Commands",
-    /* .fields     = */ COMMANDS_GNSS_FIELDS,
-};
+static constexpr const DescriptorSetInfo& COMMANDS_GNSS = MetadataFor<CommandSetGnss>::value;
 
 } // namespace mip::metadata
 

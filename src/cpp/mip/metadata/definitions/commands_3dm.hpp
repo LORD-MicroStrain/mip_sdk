@@ -6056,17 +6056,14 @@ struct MetadataFor<CommandSet3dm>
     
     static inline constexpr DescriptorSetInfo value = {
         /* .descriptor = */ commands_3dm::DESCRIPTOR_SET,
-        /* .name       = */ "3dm Commands",
+        /* .name       = */ "commands_3dm",
+        /* .title      = */ "3dm Commands",
         /* .fields     = */ COMMANDS_3DM_FIELDS,
     };
 };
 template<> struct TypeForDescriptor< (commands_3dm::DESCRIPTOR_SET << 8) > { using type = CommandSet3dm; };
 
-static constexpr DescriptorSetInfo COMMANDS_3DM = {
-    /* .descriptor = */ mip::commands_3dm::DESCRIPTOR_SET,
-    /* .name       = */ "3dm Commands",
-    /* .fields     = */ COMMANDS_3DM_FIELDS,
-};
+static constexpr const DescriptorSetInfo& COMMANDS_3DM = MetadataFor<CommandSet3dm>::value;
 
 } // namespace mip::metadata
 

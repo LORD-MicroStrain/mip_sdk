@@ -5256,17 +5256,14 @@ struct MetadataFor<DataSetGnss>
     
     static inline constexpr DescriptorSetInfo value = {
         /* .descriptor = */ data_gnss::DESCRIPTOR_SET,
-        /* .name       = */ "Gnss Data",
+        /* .name       = */ "data_gnss",
+        /* .title      = */ "Gnss Data",
         /* .fields     = */ DATA_GNSS_FIELDS,
     };
 };
 template<> struct TypeForDescriptor< (data_gnss::DESCRIPTOR_SET << 8) > { using type = DataSetGnss; };
 
-static constexpr DescriptorSetInfo DATA_GNSS = {
-    /* .descriptor = */ mip::data_gnss::DESCRIPTOR_SET,
-    /* .name       = */ "Gnss Data",
-    /* .fields     = */ DATA_GNSS_FIELDS,
-};
+static constexpr const DescriptorSetInfo& DATA_GNSS = MetadataFor<DataSetGnss>::value;
 
 } // namespace mip::metadata
 

@@ -220,6 +220,7 @@ namespace mip::metadata
     {
         uint8_t                      descriptor = mip::INVALID_DESCRIPTOR_SET;
         const char*                  name       = nullptr;
+        const char*                  title      = nullptr;
         ConstArrayView<const FieldInfo*> fields     = {};
 
         //const FieldInfo* findField(uint8_t field_desc) const

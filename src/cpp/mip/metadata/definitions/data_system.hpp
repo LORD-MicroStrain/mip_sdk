@@ -227,17 +227,14 @@ struct MetadataFor<DataSetSystem>
     
     static inline constexpr DescriptorSetInfo value = {
         /* .descriptor = */ data_system::DESCRIPTOR_SET,
-        /* .name       = */ "System Data",
+        /* .name       = */ "data_system",
+        /* .title      = */ "System Data",
         /* .fields     = */ DATA_SYSTEM_FIELDS,
     };
 };
 template<> struct TypeForDescriptor< (data_system::DESCRIPTOR_SET << 8) > { using type = DataSetSystem; };
 
-static constexpr DescriptorSetInfo DATA_SYSTEM = {
-    /* .descriptor = */ mip::data_system::DESCRIPTOR_SET,
-    /* .name       = */ "System Data",
-    /* .fields     = */ DATA_SYSTEM_FIELDS,
-};
+static constexpr const DescriptorSetInfo& DATA_SYSTEM = MetadataFor<DataSetSystem>::value;
 
 } // namespace mip::metadata
 

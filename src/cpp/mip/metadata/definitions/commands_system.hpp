@@ -302,17 +302,14 @@ struct MetadataFor<CommandSetSystem>
     
     static inline constexpr DescriptorSetInfo value = {
         /* .descriptor = */ commands_system::DESCRIPTOR_SET,
-        /* .name       = */ "System Commands",
+        /* .name       = */ "commands_system",
+        /* .title      = */ "System Commands",
         /* .fields     = */ COMMANDS_SYSTEM_FIELDS,
     };
 };
 template<> struct TypeForDescriptor< (commands_system::DESCRIPTOR_SET << 8) > { using type = CommandSetSystem; };
 
-static constexpr DescriptorSetInfo COMMANDS_SYSTEM = {
-    /* .descriptor = */ mip::commands_system::DESCRIPTOR_SET,
-    /* .name       = */ "System Commands",
-    /* .fields     = */ COMMANDS_SYSTEM_FIELDS,
-};
+static constexpr const DescriptorSetInfo& COMMANDS_SYSTEM = MetadataFor<CommandSetSystem>::value;
 
 } // namespace mip::metadata
 

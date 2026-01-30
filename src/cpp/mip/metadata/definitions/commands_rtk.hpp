@@ -1032,17 +1032,14 @@ struct MetadataFor<CommandSetRtk>
     
     static inline constexpr DescriptorSetInfo value = {
         /* .descriptor = */ commands_rtk::DESCRIPTOR_SET,
-        /* .name       = */ "Rtk Commands",
+        /* .name       = */ "commands_rtk",
+        /* .title      = */ "Rtk Commands",
         /* .fields     = */ COMMANDS_RTK_FIELDS,
     };
 };
 template<> struct TypeForDescriptor< (commands_rtk::DESCRIPTOR_SET << 8) > { using type = CommandSetRtk; };
 
-static constexpr DescriptorSetInfo COMMANDS_RTK = {
-    /* .descriptor = */ mip::commands_rtk::DESCRIPTOR_SET,
-    /* .name       = */ "Rtk Commands",
-    /* .fields     = */ COMMANDS_RTK_FIELDS,
-};
+static constexpr const DescriptorSetInfo& COMMANDS_RTK = MetadataFor<CommandSetRtk>::value;
 
 } // namespace mip::metadata
 

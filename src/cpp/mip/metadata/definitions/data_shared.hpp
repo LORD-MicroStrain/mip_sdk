@@ -526,17 +526,14 @@ struct MetadataFor<DataSetShared>
     
     static inline constexpr DescriptorSetInfo value = {
         /* .descriptor = */ data_shared::DESCRIPTOR_SET,
-        /* .name       = */ "Shared Data",
+        /* .name       = */ "data_shared",
+        /* .title      = */ "Shared Data",
         /* .fields     = */ DATA_SHARED_FIELDS,
     };
 };
 template<> struct TypeForDescriptor< (data_shared::DESCRIPTOR_SET << 8) > { using type = DataSetShared; };
 
-static constexpr DescriptorSetInfo DATA_SHARED = {
-    /* .descriptor = */ mip::data_shared::DESCRIPTOR_SET,
-    /* .name       = */ "Shared Data",
-    /* .fields     = */ DATA_SHARED_FIELDS,
-};
+static constexpr const DescriptorSetInfo& DATA_SHARED = MetadataFor<DataSetShared>::value;
 
 } // namespace mip::metadata
 

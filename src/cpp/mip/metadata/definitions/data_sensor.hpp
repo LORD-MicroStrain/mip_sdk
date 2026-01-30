@@ -1174,17 +1174,14 @@ struct MetadataFor<DataSetSensor>
     
     static inline constexpr DescriptorSetInfo value = {
         /* .descriptor = */ data_sensor::DESCRIPTOR_SET,
-        /* .name       = */ "Sensor Data",
+        /* .name       = */ "data_sensor",
+        /* .title      = */ "Sensor Data",
         /* .fields     = */ DATA_SENSOR_FIELDS,
     };
 };
 template<> struct TypeForDescriptor< (data_sensor::DESCRIPTOR_SET << 8) > { using type = DataSetSensor; };
 
-static constexpr DescriptorSetInfo DATA_SENSOR = {
-    /* .descriptor = */ mip::data_sensor::DESCRIPTOR_SET,
-    /* .name       = */ "Sensor Data",
-    /* .fields     = */ DATA_SENSOR_FIELDS,
-};
+static constexpr const DescriptorSetInfo& DATA_SENSOR = MetadataFor<DataSetSensor>::value;
 
 } // namespace mip::metadata
 
