@@ -25,17 +25,17 @@ using microstrain::extract;
 // since the endianness can't be deduced from the arguments.
 
 template<class T>
-inline bool extract(T& object, const uint8_t* buffer, size_t bufferLength, size_t offset=0, bool exactSize=false)
+inline bool extract(T& object, microstrain::ConstU8ArrayView buffer, size_t offset=0, bool exactSize=false)
 {
     using namespace microstrain::serialization;
-    return extract<Endian::big>(object, buffer, bufferLength, offset, exactSize);
+    return extract<Endian::big>(object, buffer, offset, exactSize);
 }
 
 template<class T>
-inline bool insert(const T& object, uint8_t* buffer, size_t bufferLength, size_t offset=0)
+inline bool insert(const T& object, microstrain::U8ArrayView buffer, size_t offset=0)
 {
     using namespace microstrain::serialization;
-    return insert<Endian::big>(object, buffer, bufferLength, offset);
+    return insert<Endian::big>(object, buffer, offset);
 }
 
 
