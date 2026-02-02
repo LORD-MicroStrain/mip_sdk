@@ -594,7 +594,7 @@ struct MetadataFor<commands_3dm::ImuMessageFormat>
             /* .type          = */ {Type::STRUCT, &MetadataFor<DescriptorRate>::value},
             /* .accessor      = */ nullptr, //utils::access<type, DescriptorRate, &type::descriptors>,
             /* .attributes    = */ {true, false, false, false, false},
-            /* .count         = */ {82, microstrain::Index(0) /* num_descriptors */},
+            /* .count         = */ {82, microstrain::Index(1) /* num_descriptors */},
             /* .condition     = */ {},
         },
     };
@@ -700,7 +700,7 @@ struct MetadataFor<commands_3dm::GnssMessageFormat>
             /* .type          = */ {Type::STRUCT, &MetadataFor<DescriptorRate>::value},
             /* .accessor      = */ nullptr, //utils::access<type, DescriptorRate, &type::descriptors>,
             /* .attributes    = */ {true, false, false, false, false},
-            /* .count         = */ {82, microstrain::Index(0) /* num_descriptors */},
+            /* .count         = */ {82, microstrain::Index(1) /* num_descriptors */},
             /* .condition     = */ {},
         },
     };
@@ -806,7 +806,7 @@ struct MetadataFor<commands_3dm::FilterMessageFormat>
             /* .type          = */ {Type::STRUCT, &MetadataFor<DescriptorRate>::value},
             /* .accessor      = */ nullptr, //utils::access<type, DescriptorRate, &type::descriptors>,
             /* .attributes    = */ {true, false, false, false, false},
-            /* .count         = */ {82, microstrain::Index(0) /* num_descriptors */},
+            /* .count         = */ {82, microstrain::Index(1) /* num_descriptors */},
             /* .condition     = */ {},
         },
     };
@@ -975,7 +975,7 @@ struct MetadataFor<commands_3dm::NmeaMessageFormat>
             /* .type          = */ {Type::STRUCT, &MetadataFor<commands_3dm::NmeaMessage>::value},
             /* .accessor      = */ nullptr, //utils::access<type, commands_3dm::NmeaMessage, &type::format_entries>,
             /* .attributes    = */ {true, false, false, false, false},
-            /* .count         = */ {40, microstrain::Index(0) /* count */},
+            /* .count         = */ {40, microstrain::Index(1) /* count */},
             /* .condition     = */ {},
         },
     };
@@ -1269,7 +1269,7 @@ struct MetadataFor<commands_3dm::MessageFormat>
             /* .type          = */ {Type::STRUCT, &MetadataFor<DescriptorRate>::value},
             /* .accessor      = */ nullptr, //utils::access<type, DescriptorRate, &type::descriptors>,
             /* .attributes    = */ {true, false, false, false, false},
-            /* .count         = */ {82, microstrain::Index(1) /* num_descriptors */},
+            /* .count         = */ {82, microstrain::Index(2) /* num_descriptors */},
             /* .condition     = */ {},
         },
     };
@@ -1712,7 +1712,7 @@ struct MetadataFor<commands_3dm::ConstellationSettings>
             /* .type          = */ {Type::STRUCT, &MetadataFor<commands_3dm::ConstellationSettings::Settings>::value},
             /* .accessor      = */ nullptr, //utils::access<type, commands_3dm::ConstellationSettings::Settings, &type::settings>,
             /* .attributes    = */ {true, false, false, false, false},
-            /* .count         = */ {0, microstrain::Index(1) /* config_count */},
+            /* .count         = */ {0, microstrain::Index(2) /* config_count */},
             /* .condition     = */ {},
         },
     };
@@ -1884,7 +1884,7 @@ struct MetadataFor<commands_3dm::GnssSbasSettings>
             /* .type          = */ {Type::U16, nullptr},
             /* .accessor      = */ nullptr, //utils::access<type, uint16_t, &type::included_prns>,
             /* .attributes    = */ {true, false, false, false, false},
-            /* .count         = */ {39, microstrain::Index(2) /* num_included_prns */},
+            /* .count         = */ {39, microstrain::Index(3) /* num_included_prns */},
             /* .condition     = */ {},
         },
     };
@@ -3172,7 +3172,7 @@ struct MetadataFor<commands_3dm::EventTrigger::Parameters>
             /* .accessor      = */ nullptr, //utils::access<type, commands_3dm::EventTrigger::GpioParams, &type::gpio>,
             /* .attributes    = */ NO_FUNCTIONS,
             /* .count         = */ 1,
-            /* .condition     = */ {ParameterInfo::Condition::Type::ENUM, microstrain::Index(1) /* type */, static_cast<uint16_t>(commands_3dm::EventTrigger::Type::GPIO)} /* type == GPIO */,
+            /* .condition     = */ {ParameterInfo::Condition::Type::ENUM, microstrain::Index(2) /* type */, static_cast<uint16_t>(commands_3dm::EventTrigger::Type::GPIO)} /* type == GPIO */,
         },
         {
             /* .name          = */ "threshold",
@@ -3181,7 +3181,7 @@ struct MetadataFor<commands_3dm::EventTrigger::Parameters>
             /* .accessor      = */ nullptr, //utils::access<type, commands_3dm::EventTrigger::ThresholdParams, &type::threshold>,
             /* .attributes    = */ NO_FUNCTIONS,
             /* .count         = */ 1,
-            /* .condition     = */ {ParameterInfo::Condition::Type::ENUM, microstrain::Index(1) /* type */, static_cast<uint16_t>(commands_3dm::EventTrigger::Type::THRESHOLD)} /* type == THRESHOLD */,
+            /* .condition     = */ {ParameterInfo::Condition::Type::ENUM, microstrain::Index(2) /* type */, static_cast<uint16_t>(commands_3dm::EventTrigger::Type::THRESHOLD)} /* type == THRESHOLD */,
         },
         {
             /* .name          = */ "combination",
@@ -3190,7 +3190,7 @@ struct MetadataFor<commands_3dm::EventTrigger::Parameters>
             /* .accessor      = */ nullptr, //utils::access<type, commands_3dm::EventTrigger::CombinationParams, &type::combination>,
             /* .attributes    = */ NO_FUNCTIONS,
             /* .count         = */ 1,
-            /* .condition     = */ {ParameterInfo::Condition::Type::ENUM, microstrain::Index(1) /* type */, static_cast<uint16_t>(commands_3dm::EventTrigger::Type::COMBINATION)} /* type == COMBINATION */,
+            /* .condition     = */ {ParameterInfo::Condition::Type::ENUM, microstrain::Index(2) /* type */, static_cast<uint16_t>(commands_3dm::EventTrigger::Type::COMBINATION)} /* type == COMBINATION */,
         },
     };
     static constexpr inline StructInfo value = {
@@ -3516,7 +3516,7 @@ struct MetadataFor<commands_3dm::EventAction::Parameters>
             /* .accessor      = */ nullptr, //utils::access<type, commands_3dm::EventAction::GpioParams, &type::gpio>,
             /* .attributes    = */ NO_FUNCTIONS,
             /* .count         = */ 1,
-            /* .condition     = */ {ParameterInfo::Condition::Type::ENUM, microstrain::Index(2) /* type */, static_cast<uint16_t>(commands_3dm::EventAction::Type::GPIO)} /* type == GPIO */,
+            /* .condition     = */ {ParameterInfo::Condition::Type::ENUM, microstrain::Index(3) /* type */, static_cast<uint16_t>(commands_3dm::EventAction::Type::GPIO)} /* type == GPIO */,
         },
         {
             /* .name          = */ "message",
@@ -3525,7 +3525,7 @@ struct MetadataFor<commands_3dm::EventAction::Parameters>
             /* .accessor      = */ nullptr, //utils::access<type, commands_3dm::EventAction::MessageParams, &type::message>,
             /* .attributes    = */ NO_FUNCTIONS,
             /* .count         = */ 1,
-            /* .condition     = */ {ParameterInfo::Condition::Type::ENUM, microstrain::Index(2) /* type */, static_cast<uint16_t>(commands_3dm::EventAction::Type::MESSAGE)} /* type == MESSAGE */,
+            /* .condition     = */ {ParameterInfo::Condition::Type::ENUM, microstrain::Index(3) /* type */, static_cast<uint16_t>(commands_3dm::EventAction::Type::MESSAGE)} /* type == MESSAGE */,
         },
     };
     static constexpr inline StructInfo value = {

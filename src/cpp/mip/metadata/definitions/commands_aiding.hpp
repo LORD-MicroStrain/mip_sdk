@@ -54,7 +54,7 @@ struct MetadataFor<commands_aiding::FrameConfig::Rotation>
             /* .accessor      = */ nullptr, //utils::access<type, Vector3f, &type::euler>,
             /* .attributes    = */ NO_FUNCTIONS,
             /* .count         = */ 1,
-            /* .condition     = */ {ParameterInfo::Condition::Type::ENUM, microstrain::Index(1) /* format */, static_cast<uint16_t>(commands_aiding::FrameConfig::Format::EULER)} /* format == EULER */,
+            /* .condition     = */ {ParameterInfo::Condition::Type::ENUM, microstrain::Index(2) /* format */, static_cast<uint16_t>(commands_aiding::FrameConfig::Format::EULER)} /* format == EULER */,
         },
         {
             /* .name          = */ "quaternion",
@@ -63,7 +63,7 @@ struct MetadataFor<commands_aiding::FrameConfig::Rotation>
             /* .accessor      = */ nullptr, //utils::access<type, Quatf, &type::quaternion>,
             /* .attributes    = */ NO_FUNCTIONS,
             /* .count         = */ 1,
-            /* .condition     = */ {ParameterInfo::Condition::Type::ENUM, microstrain::Index(1) /* format */, static_cast<uint16_t>(commands_aiding::FrameConfig::Format::QUATERNION)} /* format == QUATERNION */,
+            /* .condition     = */ {ParameterInfo::Condition::Type::ENUM, microstrain::Index(2) /* format */, static_cast<uint16_t>(commands_aiding::FrameConfig::Format::QUATERNION)} /* format == QUATERNION */,
         },
     };
     static constexpr inline StructInfo value = {
