@@ -1,3 +1,10 @@
+
+# The MIP SDK has moved!
+Please go here for the most current version:
+https://github.com/HBK-MicroStrain/mip_sdk
+
+
+
 MIP SDK
 =======
 
